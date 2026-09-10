@@ -1,0 +1,499 @@
+Dependencies for Project 'Project', Target 'Project': (DO NOT MODIFY !)
+CompilerVersion: 5060960::V5.06 update 7 (build 960)::.\ARM_Compiler_5.06u7
+F (..\..\..\..\IdeSupport\MDK\startup_cw32l010.s)(0x685A4681)(--cpu Cortex-M0+ -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include--pd "__UVISION_VERSION SETA 538" --pd "_RTE_ SETA 1" --pd "_RTE_ SETA 1"-o .\output\exe\startup_cw32l010.o --depend .\output\exe\startup_cw32l010.d)
+F (..\..\..\..\Libraries\src\system_cw32l010.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\system_cw32l010.o --omf_browse .\output\exe\system_cw32l010.crf --depend .\output\exe\system_cw32l010.d)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\output\modules\2.1_i2c_driver\i2c_driver.c)(0x6A0814C5)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\i2c_driver.o --omf_browse .\output\exe\i2c_driver.crf --depend .\output\exe\i2c_driver.d)
+I (..\output\modules\2.1_i2c_driver\i2c_driver.h)(0x6A0813CC)
+I (..\output\modules\2.1_i2c_driver\interface.h)(0x6A0813C6)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdbool.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_gpio.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010_systick.h)(0x685A4681)
+F (..\output\modules\2.2_aht10_driver\aht10_driver.c)(0x6A092F29)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\aht10_driver.o --omf_browse .\output\exe\aht10_driver.crf --depend .\output\exe\aht10_driver.d)
+I (..\output\modules\2.2_aht10_driver\aht10_driver.h)(0x6A081544)
+I (..\output\modules\2.2_aht10_driver\interface.h)(0x6A08153A)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdbool.h)(0x5E8E3CC2)
+I (..\UM2005C\./../output/modules/2.1_i2c_driver/interface.h)(0x6A0813C6)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_systick.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+F (..\output\modules\2.3_uart_console\uart_console.c)(0x6A082038)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\uart_console.o --omf_browse .\output\exe\uart_console.crf --depend .\output\exe\uart_console.d)
+I (..\output\modules\2.3_uart_console\uart_console.h)(0x6A0816B9)
+I (..\output\modules\2.3_uart_console\interface.h)(0x6A08203E)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdarg.h)(0x5E8E3CC2)
+I (..\output\design\common_types.h)(0x6A080B41)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdbool.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_uart.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_gpio.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+F (..\output\modules\2.4_rf_twi_driver\rf_twi_driver.c)(0x6A08188D)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\rf_twi_driver.o --omf_browse .\output\exe\rf_twi_driver.crf --depend .\output\exe\rf_twi_driver.d)
+I (..\output\modules\2.4_rf_twi_driver\rf_twi_driver.h)(0x6A092F8C)
+I (..\output\modules\2.4_rf_twi_driver\interface.h)(0x6A092F5A)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdbool.h)(0x5E8E3CC2)
+I (..\UM2005C\./../output/design/common_types.h)(0x6A080B41)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_gpio.h)(0x685A4681)
+F (..\output\modules\2.5_power_manager\power_manager.c)(0x6A081A93)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\power_manager.o --omf_browse .\output\exe\power_manager.crf --depend .\output\exe\power_manager.d)
+I (..\output\modules\2.5_power_manager\power_manager.h)(0x6A081A6E)
+I (..\output\modules\2.5_power_manager\interface.h)(0x6A081A5F)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdbool.h)(0x5E8E3CC2)
+I (..\output\design\common_types.h)(0x6A080B41)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_pwr.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_rtc.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010_iwdt.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010_lvd.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+F (..\output\modules\2.6_packet_builder\packet_builder.c)(0x6A092FD7)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\packet_builder.o --omf_browse .\output\exe\packet_builder.crf --depend .\output\exe\packet_builder.d)
+I (..\output\modules\2.6_packet_builder\packet_builder.h)(0x6A092F8C)
+I (..\output\modules\2.6_packet_builder\interface.h)(0x6A092F59)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdbool.h)(0x5E8E3CC2)
+I (..\UM2005C\./../output/design/common_types.h)(0x6A080B41)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_digitalsign.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\output\modules\2.7_sensor_mgr\sensor_mgr.c)(0x6A081CA9)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\sensor_mgr.o --omf_browse .\output\exe\sensor_mgr.crf --depend .\output\exe\sensor_mgr.d)
+I (..\output\modules\2.7_sensor_mgr\sensor_mgr.h)(0x6A092FAA)
+I (..\output\modules\2.7_sensor_mgr\interface.h)(0x6A092F44)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdbool.h)(0x5E8E3CC2)
+I (..\UM2005C\./../output/design/common_types.h)(0x6A080B41)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_systick.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\UM2005C\./../output/modules/2.2_aht10_driver/interface.h)(0x6A08153A)
+I (..\UM2005C\./../output/modules/2.2_aht10_driver/aht10_driver.h)(0x6A081544)
+I (..\UM2005C\./../output/modules/2.6_packet_builder/interface.h)(0x6A092F59)
+I (..\UM2005C\./../output/modules/2.5_power_manager/interface.h)(0x6A081A5F)
+I (..\UM2005C\./../output/modules/2.3_uart_console/interface.h)(0x6A08203E)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdarg.h)(0x5E8E3CC2)
+F (..\output\modules\2.8_schedule\schedule.c)(0x6A09344A)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\schedule.o --omf_browse .\output\exe\schedule.crf --depend .\output\exe\schedule.d)
+I (..\output\modules\2.8_schedule\schedule.h)(0x6A092F8C)
+I (..\output\modules\2.8_schedule\interface.h)(0x6A092F46)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdbool.h)(0x5E8E3CC2)
+I (..\UM2005C\./../output/design/common_types.h)(0x6A080B41)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_systick.h)(0x685A4681)
+I (..\UM2005C\./../output/modules/2.5_power_manager/interface.h)(0x6A081A5F)
+I (..\UM2005C\./../output/modules/2.7_sensor_mgr/interface.h)(0x6A092F44)
+I (..\UM2005C\./../output/modules/2.4_rf_twi_driver/interface.h)(0x6A092F5A)
+I (..\UM2005C\./../output/modules/2.3_uart_console/interface.h)(0x6A08203E)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdarg.h)(0x5E8E3CC2)
+F (..\..\..\..\Libraries\src\cw32l010_sysctrl.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_sysctrl.o --omf_browse .\output\exe\cw32l010_sysctrl.crf --depend .\output\exe\cw32l010_sysctrl.d)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\..\..\..\Libraries\src\cw32l010_gpio.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_gpio.o --omf_browse .\output\exe\cw32l010_gpio.crf --depend .\output\exe\cw32l010_gpio.d)
+I (..\..\..\..\Libraries\inc\cw32l010_gpio.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+F (..\..\..\..\Libraries\src\cw32l010_flash.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_flash.o --omf_browse .\output\exe\cw32l010_flash.crf --depend .\output\exe\cw32l010_flash.d)
+I (..\..\..\..\Libraries\inc\cw32l010_flash.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\..\..\..\Libraries\src\cw32l010_rtc.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_rtc.o --omf_browse .\output\exe\cw32l010_rtc.crf --depend .\output\exe\cw32l010_rtc.d)
+I (..\..\..\..\Libraries\inc\cw32l010_rtc.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+F (..\..\..\..\Libraries\src\cw32l010_uart.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_uart.o --omf_browse .\output\exe\cw32l010_uart.crf --depend .\output\exe\cw32l010_uart.d)
+I (..\..\..\..\Libraries\inc\cw32l010_uart.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\..\..\..\Libraries\src\cw32l010_lptim.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_lptim.o --omf_browse .\output\exe\cw32l010_lptim.crf --depend .\output\exe\cw32l010_lptim.d)
+I (..\..\..\..\Libraries\inc\cw32l010_lptim.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+F (..\..\..\..\Libraries\src\cw32l010_digitalsign.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_digitalsign.o --omf_browse .\output\exe\cw32l010_digitalsign.crf --depend .\output\exe\cw32l010_digitalsign.d)
+I (..\..\..\..\Libraries\inc\cw32l010_digitalsign.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+F (..\..\..\..\Libraries\src\cw32l010_adc.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_adc.o --omf_browse .\output\exe\cw32l010_adc.crf --depend .\output\exe\cw32l010_adc.d)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_adc.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_gpio.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+F (..\..\..\..\Libraries\src\cw32l010_atim.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_atim.o --omf_browse .\output\exe\cw32l010_atim.crf --depend .\output\exe\cw32l010_atim.d)
+I (..\..\..\..\Libraries\inc\cw32l010_atim.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\..\..\..\Libraries\src\cw32l010_btim.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_btim.o --omf_browse .\output\exe\cw32l010_btim.crf --depend .\output\exe\cw32l010_btim.d)
+I (..\..\..\..\Libraries\inc\cw32l010_btim.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+F (..\..\..\..\Libraries\src\cw32l010_crc.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_crc.o --omf_browse .\output\exe\cw32l010_crc.crf --depend .\output\exe\cw32l010_crc.d)
+I (..\..\..\..\Libraries\inc\cw32l010_crc.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+F (..\..\..\..\Libraries\src\cw32l010_debug.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_debug.o --omf_browse .\output\exe\cw32l010_debug.crf --depend .\output\exe\cw32l010_debug.d)
+I (..\..\..\..\Libraries\inc\cw32l010_debug.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+F (..\..\..\..\Libraries\src\cw32l010_gtim.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_gtim.o --omf_browse .\output\exe\cw32l010_gtim.crf --depend .\output\exe\cw32l010_gtim.d)
+I (..\..\..\..\Libraries\inc\cw32l010_gtim.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+F (..\..\..\..\Libraries\src\cw32l010_i2c.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_i2c.o --omf_browse .\output\exe\cw32l010_i2c.crf --depend .\output\exe\cw32l010_i2c.d)
+I (..\..\..\..\Libraries\inc\cw32l010_i2c.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\..\..\..\Libraries\src\cw32l010_iwdt.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_iwdt.o --omf_browse .\output\exe\cw32l010_iwdt.crf --depend .\output\exe\cw32l010_iwdt.d)
+I (..\..\..\..\Libraries\inc\cw32l010_iwdt.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+F (..\..\..\..\Libraries\src\cw32l010_lvd.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_lvd.o --omf_browse .\output\exe\cw32l010_lvd.crf --depend .\output\exe\cw32l010_lvd.d)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_lvd.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\..\..\..\Libraries\src\cw32l010_pwr.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_pwr.o --omf_browse .\output\exe\cw32l010_pwr.crf --depend .\output\exe\cw32l010_pwr.d)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_pwr.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\..\..\..\Libraries\src\cw32l010_ram.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_ram.o --omf_browse .\output\exe\cw32l010_ram.crf --depend .\output\exe\cw32l010_ram.d)
+I (..\..\..\..\Libraries\inc\cw32l010_ram.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\..\..\..\Libraries\src\cw32l010_spi.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_spi.o --omf_browse .\output\exe\cw32l010_spi.crf --depend .\output\exe\cw32l010_spi.d)
+I (..\..\..\..\Libraries\inc\cw32l010_spi.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\..\..\..\Libraries\src\cw32l010_systick.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_systick.o --omf_browse .\output\exe\cw32l010_systick.crf --depend .\output\exe\cw32l010_systick.d)
+I (..\..\..\..\Libraries\inc\cw32l010_systick.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+F (..\..\..\..\Libraries\src\cw32l010_vc.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\cw32l010_vc.o --omf_browse .\output\exe\cw32l010_vc.crf --depend .\output\exe\cw32l010_vc.d)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\cw32l010_vc.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+I (..\..\..\..\Libraries\inc\cw32l010_adc.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010_sysctrl.h)(0x685A4681)
+F (..\..\..\..\Libraries\src\i2c_eeprom.c)(0x685A4681)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\i2c_eeprom.o --omf_browse .\output\exe\i2c_eeprom.crf --depend .\output\exe\i2c_eeprom.d)
+I (..\..\..\..\Libraries\inc\i2c_eeprom.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010_i2c.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\system_cw32l010.h)(0x685A4681)
+I (..\..\..\..\Libraries\inc\cw32l010.h)(0x685A4681)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h)(0x626F4ADE)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h)(0x626F4ADE)
+I (C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h)(0x626F4ADE)
+I (..\..\..\..\Libraries\inc\base_types.h)(0x685A4681)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\string.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stddef.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\assert.h)(0x5E8E3CC2)
+F (..\readme.txt)(0x685A4681)()
+F (..\COMMON\convert.c)(0x66B2E68F)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\convert.o --omf_browse .\output\exe\convert.crf --depend .\output\exe\convert.d)
+I (..\COMMON\convert.h)(0x66B2E68F)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdio.h)(0x5E8E3CC2)
+F (..\COMMON\delay.c)(0x6A0933EC)(--c99 -c --cpu Cortex-M0+ -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\..\..\..\IdeSupport\MDK -I ..\..\..\..\Libraries\inc -I ..\USER\inc -I ..\UM2005C -I ..\COMMON -I ..\user1 -I ..\output\modules\2.1_i2c_driver -I ..\output\modules\2.2_aht10_driver -I ..\output\modules\2.3_uart_console -I ..\output\modules\2.4_rf_twi_driver -I ..\output\modules\2.5_power_manager -I ..\output\modules\2.6_packet_builder -I ..\output\modules\2.7_sensor_mgr -I ..\output\modules\2.8_schedule -I ..\output\design-I.\RTE\_Project-IC:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IC:\Users\kason\AppData\Local\Arm\Packs\WHXY\CW32L010_DFP\1.0.2\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -D_RTE_-o .\output\exe\delay.o --omf_browse .\output\exe\delay.crf --depend .\output\exe\delay.d)
+I (..\COMMON\delay.h)(0x6868A3B6)
+I (C:\Keil_v5\ARM\ARM_Compiler_5.06u7\include\stdint.h)(0x5E8E3CC2)

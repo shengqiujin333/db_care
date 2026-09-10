@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 品牌色板(Phase 4):温暖青绿 + 暖琥珀,关怀/医疗感 -->
+    <color name="brand_primary">#FF00897B</color>           <!-- 温暖青绿,主色 -->
+    <color name="brand_on_primary">#FFFFFFFF</color>
+    <color name="brand_primary_variant">#FF00695C</color>   <!-- 深一档青绿,status bar 用 -->
+    <color name="brand_secondary">#FFFFB300</color>        <!-- 暖琥珀,次色/提示 -->
+    <color name="brand_on_secondary">#FF1A1A1A</color>
+    <color name="brand_secondary_variant">#FFFF8F00</color>
+    <color name="brand_surface">#FFFAFAFA</color>
+    <color name="brand_surface_variant">#FFE0F2F1</color>   <!-- 浅青绿,容器背景 -->
+    <color name="brand_on_surface">#FF1A1A1A</color>
+    <color name="brand_on_surface_variant">#FF49454F</color>
+    <color name="brand_error">#FFD32F2F</color>             <!-- 报警红 -->
+    <color name="brand_on_error">#FFFFFFFF</color>
+    <color name="brand_warning">#FFFB8C00</color>           <!-- 警告橙 -->
+    <color name="brand_ok">#FF43A047</color>               <!-- 正常绿 -->
+
+    <!-- 老 fallback 颜色(Phase 4 后逐步替换为品牌色) -->
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="red">#FFD32F2F</color>
+    <color name="linkColor">#2196F3</color>
+</resources>

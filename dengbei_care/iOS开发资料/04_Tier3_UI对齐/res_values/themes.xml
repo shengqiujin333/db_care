@@ -1,0 +1,31 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- 应用主题:基于 Material3 (Base.Theme.Dengbei_care 已在父级声明) -->
+    <style name="Theme.Dengbei_care" parent="Base.Theme.Dengbei_care">
+        <!-- 主品牌色:温暖青绿 -->
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorOnPrimary">@color/brand_on_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_primary_variant</item>
+
+        <!-- 次品牌色:暖琥珀 -->
+        <item name="colorSecondary">@color/brand_secondary</item>
+        <item name="colorOnSecondary">@color/brand_on_secondary</item>
+        <item name="colorSecondaryVariant">@color/brand_secondary_variant</item>
+
+        <!-- 表面色 -->
+        <item name="colorSurface">@color/brand_surface</item>
+        <item name="colorOnSurface">@color/brand_on_surface</item>
+        <item name="colorSurfaceVariant">@color/brand_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/brand_on_surface_variant</item>
+
+        <!-- 报警色 -->
+        <item name="colorError">@color/brand_error</item>
+        <item name="colorOnError">@color/brand_on_error</item>
+
+        <!-- 状态栏 -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <!-- Material3 基础(原项目已声明,保留) -->
+    <style name="Base.Theme.Dengbei_care" parent="Theme.Material3.DayNight.NoActionBar">
+    </style>
+</resources>

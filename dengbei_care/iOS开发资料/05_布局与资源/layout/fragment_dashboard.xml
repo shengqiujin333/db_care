@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.dashboard.DashboardFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="80dp">
+
+        <!-- 选择设备:全局默认 或 某个具体设备 -->
+        <TextView
+            android:id="@+id/select_device_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择设备"
+            android:textSize="@dimen/text_title"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_md"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/deviceSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:padding="@dimen/spacing_xs"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/select_device_label" />
+
+        <TextView
+            android:id="@+id/paramScopeHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:text="选「全局默认值」会应用到所有未单独设置的设备;选某设备可单独覆盖默认值"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="@dimen/text_caption"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/deviceSpinner" />
+
+        <!-- 选择传感器 -->
+        <TextView
+            android:id="@+id/select_sensor_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_sensor"
+            android:textSize="@dimen/text_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/paramScopeHint"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_md" />
+
+        <!-- 跌破报警 -->
+
+        <!-- 温度下降 -->
+        <CheckBox
+            android:id="@+id/break_report_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:text="@string/break_report"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/select_sensor_text" />
+
+        <EditText
+            android:id="@+id/temp_drop_threshold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/temp_drop_threshold"
+            app:layout_constraintTop_toBottomOf="@+id/break_report_checkbox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm" />
+
+        <!-- 湿度下降 -->
+        <EditText
+            android:id="@+id/humidity_drop_threshold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/humidity_drop_threshold"
+            app:layout_constraintTop_toBottomOf="@+id/temp_drop_threshold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm" />
+
+        <!-- 阈值报警 -->
+        <CheckBox
+            android:id="@+id/over_value_report_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/over_value_report"
+            app:layout_constraintTop_toBottomOf="@+id/humidity_drop_threshold"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_md" />
+
+        <!-- 温度范围 -->
+        <EditText
+            android:id="@+id/temp_range_max"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/temp_range_min"
+            app:layout_constraintTop_toBottomOf="@+id/over_value_report_checkbox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm" />
+
+        <EditText
+            android:id="@+id/temp_range_min"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/temp_range_max"
+            app:layout_constraintTop_toBottomOf="@+id/temp_range_max"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm" />
+
+        <!-- 湿度范围 -->
+        <EditText
+            android:id="@+id/humidity_range_max"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/humidity_range_min"
+            app:layout_constraintTop_toBottomOf="@+id/temp_range_min"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm" />
+
+        <EditText
+            android:id="@+id/humidity_range_min"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/humidity_range_max"
+            app:layout_constraintTop_toBottomOf="@+id/humidity_range_max"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm" />
+
+        <!-- 报警方式 -->
+        <TextView
+            android:id="@+id/report_method_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/report_method"
+            app:layout_constraintTop_toBottomOf="@+id/humidity_range_min"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_md" />
+
+        <CheckBox
+            android:id="@+id/vibration_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vibration"
+            app:layout_constraintTop_toBottomOf="@+id/report_method_text"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm" />
+
+        <CheckBox
+            android:id="@+id/buzzer_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/buzzer"
+            app:layout_constraintTop_toBottomOf="@+id/vibration_checkbox"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm" />
+
+        <!-- 守报时间 -->
+        <EditText
+            android:id="@+id/report_interval"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/report_interval"
+            app:layout_constraintTop_toBottomOf="@+id/buzzer_checkbox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_md" />
+
+        <!-- 延时报警 -->
+        <EditText
+            android:id="@+id/delay_report"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/delay_report"
+            app:layout_constraintTop_toBottomOf="@+id/report_interval"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_sm" />
+
+        <!-- 确定和取消按钮 -->
+        <Button
+            android:id="@+id/confirm_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm"
+            app:layout_constraintTop_toBottomOf="@+id/delay_report"
+            app:layout_constraintEnd_toStartOf="@+id/cancel_button"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_md" />
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            app:layout_constraintTop_toBottomOf="@+id/delay_report"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:layout_marginTop="@dimen/spacing_md" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

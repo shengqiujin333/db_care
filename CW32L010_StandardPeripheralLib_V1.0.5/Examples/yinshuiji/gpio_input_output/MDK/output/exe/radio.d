@@ -1,0 +1,14 @@
+.\output\exe\radio.o: ..\UM2005C\radio.c
+.\output\exe\radio.o: ..\UM2005C\radio.h
+.\output\exe\radio.o: ..\COMMON\type.h
+.\output\exe\radio.o: ..\..\..\..\Libraries\inc\base_types.h
+.\output\exe\radio.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+.\output\exe\radio.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
+.\output\exe\radio.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
+.\output\exe\radio.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+.\output\exe\radio.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\assert.h
+.\output\exe\radio.o: ..\UM2005C\um2005C.h
+.\output\exe\radio.o: ..\UM2005C\um2005C_defs.h
+.\output\exe\radio.o: ..\UM2005C\um2005C_hal.h
+.\output\exe\radio.o: ..\COMMON\delay.h
+.\output\exe\radio.o: ..\UM2005C\app_gtimer.h

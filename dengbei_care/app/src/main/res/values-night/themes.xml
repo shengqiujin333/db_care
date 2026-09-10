@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- 深色主题:基于 Material3 -->
+    <style name="Theme.Dengbei_care" parent="Base.Theme.Dengbei_care">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorOnPrimary">@color/brand_on_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_primary_variant</item>
+
+        <item name="colorSecondary">@color/brand_secondary</item>
+        <item name="colorOnSecondary">@color/brand_on_secondary</item>
+        <item name="colorSecondaryVariant">@color/brand_secondary_variant</item>
+
+        <!-- 深色模式 surface 反色 -->
+        <item name="colorSurface">#FF121212</item>
+        <item name="colorOnSurface">#FFECECEC</item>
+        <item name="colorSurfaceVariant">#FF2A2A2A</item>
+        <item name="colorOnSurfaceVariant">#FFCACACA</item>
+
+        <item name="colorError">@color/brand_error</item>
+        <item name="colorOnError">@color/brand_on_error</item>
+
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="Base.Theme.Dengbei_care" parent="Theme.Material3.DayNight.NoActionBar">
+    </style>
+</resources>

@@ -1,0 +1,13 @@
+.\output\exe\um2005c.o: ..\UM2005C\um2005C.c
+.\output\exe\um2005c.o: ..\UM2005C\um2005C.h
+.\output\exe\um2005c.o: ..\COMMON\type.h
+.\output\exe\um2005c.o: ..\..\..\..\Libraries\inc\base_types.h
+.\output\exe\um2005c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+.\output\exe\um2005c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
+.\output\exe\um2005c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
+.\output\exe\um2005c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+.\output\exe\um2005c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\assert.h
+.\output\exe\um2005c.o: ..\UM2005C\um2005C_defs.h
+.\output\exe\um2005c.o: ..\UM2005C\rfconfig.h
+.\output\exe\um2005c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\math.h
+.\output\exe\um2005c.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdlib.h

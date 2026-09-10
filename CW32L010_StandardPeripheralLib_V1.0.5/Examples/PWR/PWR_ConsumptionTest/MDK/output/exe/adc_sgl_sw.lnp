@@ -1,0 +1,17 @@
+--cpu Cortex-M0+
+".\output\exe\startup_cw32l010.o"
+".\output\exe\system_cw32l010.o"
+".\output\exe\main.o"
+".\output\exe\interrupts_cw32l010.o"
+".\output\exe\cw32l010_adc.o"
+".\output\exe\cw32l010_sysctrl.o"
+".\output\exe\cw32l010_systick.o"
+".\output\exe\cw32l010_gpio.o"
+".\output\exe\cw32l010_lptim.o"
+".\output\exe\cw32l010_rtc.o"
+".\output\exe\cw32l010_iwdt.o"
+".\output\exe\cw32l010_uart.o"
+--library_type=microlib --strict --scatter ".\output\exe\adc_sgl_sw.sct"
+--keep=*Handler --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\output\list\adc_sgl_sw.map" -o .\output\exe\adc_sgl_sw.axf

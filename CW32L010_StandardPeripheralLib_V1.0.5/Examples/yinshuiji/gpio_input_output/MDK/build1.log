@@ -1,0 +1,19 @@
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin'
+Build target 'Project'
+compiling main.c...
+..\USER\src\../inc/seg_display.h(18): warning:  #1-D: last line of file ends without a newline
+  #endif
+..\USER\src\main.c(352): warning:  #177-D: variable "i"  was declared but never referenced
+  	uint8_t i = 0;
+..\USER\src\main.c(353): warning:  #177-D: variable "k"  was declared but never referenced
+  	uint32_t k = 0;
+..\USER\src\main.c(582): warning:  #177-D: variable "left_count"  was declared but never referenced
+  		uint8_t left_count = 0;
+..\USER\src\main.c(638): warning:  #177-D: variable "left_count"  was declared but never referenced
+  		uint8_t left_count = 0;
+..\USER\src\main.c: 5 warnings, 0 errors
+linking...
+Program Size: Code=5076 RO-data=292 RW-data=56 ZI-data=768  
+FromELF: creating hex file...
+".\output\exe\Project.axf" - 0 Error(s), 5 Warning(s).
+Build Time Elapsed:  00:00:01

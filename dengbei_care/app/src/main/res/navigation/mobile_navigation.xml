@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.jinyuni.dengbei_care.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_deviceDetailFragment"
+            app:destination="@id/deviceDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_sensorIdListFragment"
+            app:destination="@id/sensorIdListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/deviceDetailFragment"
+        android:name="com.jinyuni.dengbei_care.ui.detail.DeviceDetailFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_device_detail">
+        <argument
+            android:name="devid"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.jinyuni.dengbei_care.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.jinyuni.dengbei_care.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" >
+        <action
+            android:id="@+id/action_notificationsFragment_to_dengLuFragment"
+            app:destination="@id/dengLuFragment" />
+        <action
+            android:id="@+id/action_notificationsFragment_to_SensorIdListFragment"
+            app:destination="@id/sensorIdListFragment" />
+        <action
+            android:id="@+id/action_notificationsFragment_to_zhuCeFragment"
+            app:destination="@id/zhuCeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/gatewayFragment"
+        android:name="com.jinyuni.dengbei_care.ui.gateway.GatewayFragment"
+        android:label="@string/join_gateway"
+        tools:layout="@layout/fragment_gateway" >
+        <action
+        android:id="@+id/action_gatewayFragment_to_notificationsFragment"
+        app:destination="@id/navigation_notifications" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/dengLuFragment"
+        android:name="com.jinyuni.dengbei_care.ui.denglu.DengLuFragment"
+        android:label="@string/login_button"
+        tools:layout="@layout/fragment_denglu" >
+        <action
+            android:id="@+id/action_dengLuFragment_to_notificationsFragment"
+            app:destination="@id/navigation_notifications" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/zhuCeFragment"
+        android:name="com.jinyuni.dengbei_care.ui.zhuce.ZhuCeFragment"
+        android:label="@string/register_button"
+        tools:layout="@layout/fragment_zhuce" >
+        <action
+            android:id="@+id/action_zhuCeFragment_to_notificationsFragment"
+            app:destination="@id/navigation_notifications" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/sensorIdListFragment"
+        android:name="com.jinyuni.dengbei_care.ui.sensorid.SensorIdListFragment"
+        android:label="@string/sensorl"
+        tools:layout="@layout/fragment_sensor_id_list" >
+        <action
+            android:id="@+id/action_SensorIdListFragment_to_notificationsFragment"
+            app:destination="@id/navigation_notifications" />
+    </fragment>
+
+</navigation>

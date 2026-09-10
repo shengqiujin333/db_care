@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 盾牌主体(白色):爱守护 = love + protection -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M54,30 L33,39 L33,56 C33,69 41,78 54,82 C67,78 75,69 75,56 L75,39 Z" />
+
+    <!-- 心形(品牌主色,嵌入盾牌内部) -->
+    <path
+        android:fillColor="#FF00897B"
+        android:pathData="M54,66 C46,59 41,53 41,49 C41,46 43,44 46,44 C49,44 52,46 54,49 C56,46 59,44 62,44 C65,44 67,46 67,49 C67,53 62,59 54,66 Z" />
+</vector>

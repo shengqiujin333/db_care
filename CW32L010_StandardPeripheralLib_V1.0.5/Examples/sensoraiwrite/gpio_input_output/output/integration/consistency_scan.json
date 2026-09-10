@@ -1,0 +1,156 @@
+{
+  "ok": true,
+  "diffs": [
+    {
+      "where": "2.3_uart_console\\uart_console.c:7",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.c:10",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.c:45",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.c:54",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.c:92",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.c:95",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.c:113",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.c:117",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.c:139",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.c:149",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.8_schedule\\schedule.c:244",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:7",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:9",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:35",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:47",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:53",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:54",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:59",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:65",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:68",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:70",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\interface.h:79",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.h:7",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.h:10",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    },
+    {
+      "where": "2.3_uart_console\\uart_console.h:11",
+      "expected": "instance in ['GPIO_IN_INTERRUPT', 'I2C', 'POWER', 'RESET_CLOCK', 'UART'] (declared in connectivity)",
+      "actual": "UART1",
+      "severity": "warn"
+    }
+  ],
+  "advice": "Phase 3.0 consistency scan passed"
+}

@@ -1,0 +1,80 @@
+T6A68 000:202.454   SEGGER J-Link V8.18 Log File
+T6A68 000:202.555   DLL Compiled: Mar  5 2025 14:38:20
+T6A68 000:202.560   Logging started @ 2026-04-19 02:14
+T6A68 000:202.564   Process: C:\Keil_v5\UV4\UV4.exe
+T6A68 000:202.572 - 202.568ms 
+T6A68 000:202.580 JLINK_SetWarnOutHandler(...)
+T6A68 000:202.584 - 0.005ms 
+T6A68 000:202.590 JLINK_OpenEx(...)
+T6A68 000:207.061   Firmware: J-Link V11 compiled Feb 20 2025 16:24:17
+T6A68 000:208.161   Firmware: J-Link V11 compiled Feb 20 2025 16:24:17
+T6A68 000:228.514   Hardware: V11.00
+T6A68 000:228.536   S/N: 601012352
+T6A68 000:228.541   OEM: SEGGER
+T6A68 000:228.547   Feature(s): RDI, FlashBP, FlashDL, JFlash, GDB
+T6A68 000:230.199   Bootloader: (FW returned invalid version)
+T6A68 000:231.208   USB speed mode: High speed (480 MBit/s)
+T6A68 000:231.735   TELNET listener socket opened on port 19021
+T6A68 000:232.133   WEBSRV WEBSRV_Init(): Starting webserver thread(s)
+T6A68 000:232.458   WEBSRV Webserver running on local port 19080
+T6A68 000:232.712   Looking for J-Link GUI Server exe at: C:\Keil_v5\ARM\Segger\JLinkGUIServer.exe
+T6A68 000:232.861   Looking for J-Link GUI Server exe at: C:\Program Files\SEGGER\JLink_V818\JLinkGUIServer.exe
+T6A68 000:232.925   Forking J-Link GUI Server: C:\Program Files\SEGGER\JLink_V818\JLinkGUIServer.exe
+T6A68 000:267.183   J-Link GUI Server info: "J-Link GUI server V8.18 "
+T6A68 000:267.682 - 65.083ms returns "O.K."
+T6A68 000:267.724 JLINK_GetEmuCaps()
+T6A68 000:267.734 - 0.007ms returns 0xB9FF7BBF
+T6A68 000:267.744 JLINK_TIF_GetAvailable(...)
+T6A68 000:268.164 - 0.421ms 
+T6A68 000:268.178 JLINK_SetErrorOutHandler(...)
+T6A68 000:268.182 - 0.004ms 
+T6A68 000:268.200 JLINK_ExecCommand("ProjectFile = "D:\mypro\beiwo2\embedded software\CW32L010_StandardPeripheralLib_V1.0.5\Examples\wk_huoer\gpio_input_output\MDK\JLinkSettings.ini"", ...). 
+T6A68 000:281.177   Ref file found at: C:\Keil_v5\ARM\Segger\JLinkDevices.ref
+T6A68 000:281.368   REF file references invalid XML file: C:\Program Files\SEGGER\JLink_V818\JLinkDevices.xml
+T6A68 000:282.687   Device "CORTEX-M0" selected.
+T6A68 000:283.052 - 14.853ms returns 0x00
+T6A68 000:283.079 JLINK_ExecCommand("Device = CW32L010F8", ...). 
+T6A68 000:283.295   Device "CORTEX-M0" selected.
+T6A68 000:283.590 - 0.503ms returns 0x00
+T6A68 000:283.600 JLINK_ExecCommand("DisableConnectionTimeout", ...). 
+T6A68 000:283.610   ERROR: Unknown command
+T6A68 000:283.616 - 0.011ms returns 0x01
+T6A68 000:283.622 JLINK_GetHardwareVersion()
+T6A68 000:283.626 - 0.004ms returns 110000
+T6A68 000:283.631 JLINK_GetDLLVersion()
+T6A68 000:283.635 - 0.004ms returns 81800
+T6A68 000:283.639 JLINK_GetOEMString(...)
+T6A68 000:283.644 JLINK_GetFirmwareString(...)
+T6A68 000:283.648 - 0.004ms 
+T6A68 000:283.655 JLINK_GetDLLVersion()
+T6A68 000:283.659 - 0.004ms returns 81800
+T6A68 000:283.664 JLINK_GetCompileDateTime()
+T6A68 000:283.667 - 0.003ms 
+T6A68 000:283.673 JLINK_GetFirmwareString(...)
+T6A68 000:283.677 - 0.004ms 
+T6A68 000:283.682 JLINK_GetHardwareVersion()
+T6A68 000:283.686 - 0.003ms returns 110000
+T6A68 000:283.691 JLINK_GetSN()
+T6A68 000:283.695 - 0.004ms returns 601012352
+T6A68 000:283.700 JLINK_GetOEMString(...)
+T6A68 000:283.709 JLINK_TIF_Select(JLINKARM_TIF_SWD)
+T6A68 000:284.919 - 1.210ms returns 0x00
+T6A68 000:284.935 JLINK_HasError()
+T6A68 000:284.947 JLINK_SetSpeed(5000)
+T6A68 000:285.251 - 0.305ms 
+T6A68 000:285.623 JLINK_HasError()
+T6A68 000:285.637 JLINK_SetResetType(JLINKARM_RESET_TYPE_NORMAL)
+T6A68 000:285.642 - 0.004ms returns JLINKARM_RESET_TYPE_NORMAL
+T6A68 000:285.651 JLINK_Reset()
+T6A68 000:395.075   Failed to attach to CPU. Trying connect under reset.
+T6A68 001:953.490 - 1667.837ms 
+T6A68 001:954.039 JLINK_GetId()
+T6A68 002:218.236 - 264.193ms returns 0x00000000
+T6A68 002:218.409 JLINK_GetId()
+T6A68 002:796.138 - 577.726ms returns 0x00000000
+T6A68 002:802.041 JLINK_GetFirmwareString(...)
+T6A68 002:802.057 - 0.015ms 
+T6A68 003:582.285 JLINK_Close()
+T6A68 003:594.618 - 12.330ms
+T6A68 003:594.642   
+T6A68 003:594.645   Closed

@@ -1,0 +1,17 @@
+.\output\exe\packet_builder.o: ..\output\modules\2.6_packet_builder\packet_builder.c
+.\output\exe\packet_builder.o: ..\output\modules\2.6_packet_builder\packet_builder.h
+.\output\exe\packet_builder.o: ..\output\modules\2.6_packet_builder\interface.h
+.\output\exe\packet_builder.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdint.h
+.\output\exe\packet_builder.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdbool.h
+.\output\exe\packet_builder.o: ..\UM2005C\./../output/design/common_types.h
+.\output\exe\packet_builder.o: ..\..\..\..\Libraries\inc\cw32l010.h
+.\output\exe\packet_builder.o: C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm0plus.h
+.\output\exe\packet_builder.o: C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h
+.\output\exe\packet_builder.o: C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h
+.\output\exe\packet_builder.o: C:\Users\kason\AppData\Local\Arm\Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_armcc.h
+.\output\exe\packet_builder.o: ..\..\..\..\Libraries\inc\cw32l010_digitalsign.h
+.\output\exe\packet_builder.o: ..\..\..\..\Libraries\inc\base_types.h
+.\output\exe\packet_builder.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stdio.h
+.\output\exe\packet_builder.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\string.h
+.\output\exe\packet_builder.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\stddef.h
+.\output\exe\packet_builder.o: C:\Keil_v5\ARM\ARM_Compiler_5.06u7\Bin\..\include\assert.h
