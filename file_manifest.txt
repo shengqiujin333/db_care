@@ -1,5 +1,6 @@
 # Project File Manifest
 # path | status | purpose
+.gitignore | active | 由 code_intelligence_engineer.codegraph_indexing 新增或修改的项目相关文件
 CH592EVT/EVT/20240119105503_8338.zip | active | 上述归档压缩包
 CH592EVT/EVT/20240119105503_8338/ | active | CH592 EVT 归档版本（含 aht20 例程等参考；粗路径）
 CH592EVT/EVT/EXAM/ | active | 沁恒 CH592 官方其它示例（ADC/BLE/I2C/FreeRTOS 等；粗路径，不展开）
@@ -27,6 +28,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 软件 I2C（读取 AHT20）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 工程说明
 CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外设库（inc+src，传感器工程编译依赖；粗路径）
+artifacts/codegraph_index.md | active | Local CodeGraph index collection descriptor for the three product code roots.
 dengbei_care/_REFACTOR_NOTES.md | active | Android 工程重构说明
 dengbei_care/app/build.gradle.kts | active | App 模块 Gradle 脚本
 dengbei_care/app/src/main/AndroidManifest.xml | active | Android 清单
@@ -53,6 +55,7 @@ dengbei_care/gradle/libs.versions.toml | active | Gradle 版本目录
 dengbei_care/gradle/wrapper/ | active | Gradle wrapper（粗路径）
 dengbei_care/iOS开发资料/ | active | 苹果 App 开发参考资料（需求文档 + 参照 Android 代码的 01-05 Tier 资料；间接相关，粗路径）
 dengbei_care/settings.gradle.kts | active | Gradle 设置
+evidence/codegraph_validation.md | active | Minimal status and explore-query validation evidence for the CodeGraph indexes.
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护）
 gateway_board.xml | active | 中继器原理图（Cadence OrCAD dsn XML 导出；硬件参考）
 readme.txt | active | 项目说明：蹬被报警器产品简介与本次增量需求（霍尔检测磁铁、GPIO 供电光敏接收手机闪光灯、6 个 float 阈值参数、1min 测量、约 20min 缓冲、超阈值即发/平时 1h 上报、Android 闪光灯设参）
