@@ -30,6 +30,9 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.t
 CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外设库（inc+src，传感器工程编译依赖；粗路径）
 artifacts/codegraph_index.md | active | Local CodeGraph index collection descriptor for the three product code roots.
 artifacts/component_selection.md | active | hardware_engineer.hardware_solution_design 产出的关键器件选型类别与约束（霍尔、光敏接收、功率开关）
+artifacts/firmware_design.md | active | firmware_engineer.firmware_solution_design 产出的固件设计方案（模块划分、数据流、时序、资源预算、接口处理、异常策略、实现约束；含 30s 窗口风险与端到端温湿度字段顺序交接）
+artifacts/firmware_requirements.md | active | firmware_engineer.firmware_solution_design 产出的固件需求清单（FR-001，传感器/中继器固件，可追溯到 readme/IC-001/HWI/HW/SCH）
+artifacts/firmware_rtos_architecture.md | active | firmware_engineer.firmware_solution_design 产出的并发与调度架构（RTA-001，裸机任务/ISR/同步/资源预算）
 artifacts/hardware_feasibility.md | active | hardware_engineer.hardware_solution_design 产出的硬件可行性评估报告
 artifacts/hardware_interface.md | active | hardware_engineer.hardware_solution_design 产出的硬件接口定义（Hall/光敏/电源开关）
 artifacts/hardware_solution.md | active | hardware_engineer.hardware_solution_design 产出的传感器硬件总体方案（功能块/器件类别/接口/电源边界/设计约束）
