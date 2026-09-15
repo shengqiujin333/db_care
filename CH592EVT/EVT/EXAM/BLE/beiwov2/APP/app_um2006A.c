@@ -99,7 +99,7 @@ void app_um2006A_run(void)
 {
 //	uint8_t recv_data[64] = {0};
 //	uint8_t len = 0;
-//	if(SUCCESS == app_ev1527_recv_data(recv_data,&len))														/* ·¢ÉäµÄµÚÒ»¸ö×Ö½ÚÎªÊý¾Ý³¤¶È */
+//	if(SUCCESS == app_ev1527_recv_data(recv_data,&len))														/* ï¿½ï¿½ï¿½ï¿½Äµï¿½Ò»ï¿½ï¿½ï¿½Ö½ï¿½Îªï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½ */
 //	{
 //	    PRINT("Recv Data [len:%d] : ",len);
 //	     for(uint8_t i=0;i<len;i++)
@@ -185,16 +185,20 @@ void app_um2006A_run(void)
                     sensorres[i*8+2] = resbf[2];
                     sensorres[i*8+3] = resbf[3];
 
-                    sensorres[i*8+4] = resbf[4];
-                    sensorres[i*8+5] = resbf[5];
-                    sensorres[i*8+6] = resbf[6];
-                    sensorres[i*8+7] = resbf[7];
+                    /* FR-401: æ¯è®¾å¤‡è®°å½• = [id(4) | humidity_be(2) | temperature_be(2)]
+                     * (IC-001 6 èŠ‚; ä¼ æ„Ÿå™¨å®žå‚ä¿®æ­£åŽ tempervalue=æ¸©åº¦, humivalue=æ¹¿åº¦)
+                     * åŽŸ resbf[4..5]=tempervalue(æ¸©åº¦), resbf[6..7]=humivalue(æ¹¿åº¦)
+                     * â†’ äº¤æ¢ä¸º [æ¹¿åº¦ | æ¸©åº¦], ä¸Ž Android parsePlainFrame(u16be@4/s16be@6) ä¸€è‡´ */
+                    sensorres[i*8+4] = resbf[6];   /* æ¹¿åº¦é«˜å­—èŠ‚ */
+                    sensorres[i*8+5] = resbf[7];   /* æ¹¿åº¦ä½Žå­—èŠ‚ */
+                    sensorres[i*8+6] = resbf[4];   /* æ¸©åº¦é«˜å­—èŠ‚ */
+                    sensorres[i*8+7] = resbf[5];   /* æ¸©åº¦ä½Žå­—èŠ‚ */
                 }
             }
 
 
-//ÅÐ¶ÏidºÅÊÇ·ñÓÐ±£´æÏÂÀ´£¬Èç¹û±£´æÏÂÀ´£¬ÄÇÃ´¾Í½øÐÐÉÏ´«£¬Èç¹ûÃ»ÓÐ±£´æÏÂÀ´£¬ÄÇÃ´Õâ¸öÊý¾Ý·ÏÆú£¬²»Í¨¹ýÀ¶ÑÀÉÏ´«
-            //ÕÒµ½ËüÔÚÐ­ÒéÀïÃæµÄÎ»ÖÃ£¬È»ºóÔÙ½øÐÐÉÏ´«
+//ï¿½Ð¶ï¿½idï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½Í½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½Ð±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½
+            //ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½Ð­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½Ã£ï¿½È»ï¿½ï¿½ï¿½Ù½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½
             needbytes = build_padded_frame_blocks(acaddr,bind_device_cnt,sensorres,ble_send_bf,sizeof(ble_send_bf));
 //            for(uint8_t i=0;i<needbytes;i++){
 //                PRINT("0x%02X ",ble_send_bf[i]);
@@ -283,12 +287,12 @@ void get_temperature_task_init( void )
 {
     app_um2006A_init();
 
-    //×¢²átask id,Í¬ÊÂ°Ñ¸ÃtaskµÄevent´¦Àíº¯Êý´«½øÈ¥
+    //×¢ï¿½ï¿½task id,Í¬ï¿½Â°Ñ¸ï¿½taskï¿½ï¿½eventï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥
     temperature_task_idx  = TMOS_ProcessEventRegister( get_temperature_task_process_event );
-    //Á¢¼´¿ªÊ¼Ò»¸öevent
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼Ò»ï¿½ï¿½event
     //tmos_set_event(temperature_task_id,DEMO_TASK_TMOS_EVT_TEST_1);
-    //¿ªÊ¼Ò»¸ö¶¨Ê±event,1sºó²úÉú,µ±Ç°Óï¾äÖ»»á²úÉúÒ»´Îevent
-    //¿ÉÒÔÔÚevent²úÉúºóÈ¥¿ªÆôevent,¿ÉÒÔÊÇ±ðµÄtaskµÄ,Ò²¿ÉÒÔÊÇµ±Ç°taskµÄevent`
+    //ï¿½ï¿½Ê¼Ò»ï¿½ï¿½ï¿½ï¿½Ê±event,1sï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½Ç°ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½event
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½eventï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½event,ï¿½ï¿½ï¿½ï¿½ï¿½Ç±ï¿½ï¿½taskï¿½ï¿½,Ò²ï¿½ï¿½ï¿½ï¿½ï¿½Çµï¿½Ç°taskï¿½ï¿½event`
     tmos_start_task(temperature_task_idx,waitdata,160);
 //    PRINT("lalalalala....\r\n");
 //    tmos_start_reload_task(temperature_task_id,start_measure,1);

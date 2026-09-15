@@ -48,4 +48,9 @@ void DebugUART_Close(void);
 
 void send_data_to_gateway(void);
 void go_to_sleep(void);
+
+/* 上报调度状态 (FR-203) */
+extern uint16_t samples_since_report;
+extern uint8_t report_req;
+extern uint8_t first_sample_reported;
 #endif /* MEASURE_H_ */

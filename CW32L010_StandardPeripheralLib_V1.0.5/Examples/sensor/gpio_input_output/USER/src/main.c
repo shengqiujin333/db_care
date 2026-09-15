@@ -99,34 +99,19 @@ void delay(uint16_t ms)
 uint8_t temp_cnt = 0;
 extern uint8_t sample_flag;
 uint8_t rtc_set_cnt = 0;
-extern uint8_t send_flag;
 
 uint8_t work_period_flag = 0;
 
+/* RTC 1 min/拍 → 每拍一次采样 (FR-204); 小时上报由 samples_since_report 计数 */
 void RTC_IRQHandlerCallBack(void)
 {
     if (RTC_GetITState(RTC_IT_INTERVAL))
     {
-//				temp_cnt++;
-//				if(temp_cnt > 10){
-//					rtc_set_flag = 1;
-//					temp_cnt = 0;
-//				}
-			
-			
 			rtc_set_cnt++;
-			if(rtc_set_cnt == 2){
+			if(rtc_set_cnt >= 1){
 				sample_flag = 1;
-				//rtc_set_cnt = 0;
-			}
-			
-			if(rtc_set_cnt >= 5){
-				send_flag = 1;
 				rtc_set_cnt = 0;
 			}
-			
-			
-			
       RTC_ClearITPendingBit(RTC_IT_INTERVAL);
     }
 }
@@ -254,11 +239,24 @@ int32_t main(void)
 	__SYSCTRL_FLASH_CLK_ENABLE();
 	FLASH_SetReadOutLevel(FLASH_RDLEVEL2);
 	
+	/* --- 新增初始化 (FR-108/204, FD-001 6.3) --- */
+	params_init();       /* 装载 NVM 阈值或默认值 */
+	history_init();      /* 20 项历史环清零 */
+	optcfg_init();       /* PB06 高(F2 断电) + PB05 输入 */
+	hall_init();         /* PB04 输入 + EXTI 唤醒 */
+	
     while(1)
     {
         //-----------------------------------------------------------------------
-			temperature_process();
-			send_data_to_gateway();
+			if(hall_event_pending()){              /* Hall 有效沿 → 去抖 → 开配置窗口 */
+				hall_event_clear();
+				if(hall_debounced_active()){
+					optcfg_window_start();
+				}
+			}
+			optcfg_process();       /* 配置窗口生命周期/提交 (FR-101..108) */
+			temperature_process(); /* 1 min 采样 */
+			send_data_to_gateway();/* 立即/小时/首样本上报 (FR-203) */
 			go_to_sleep();
 //			printf("helllo world\r\n");
 //			delay(3000);

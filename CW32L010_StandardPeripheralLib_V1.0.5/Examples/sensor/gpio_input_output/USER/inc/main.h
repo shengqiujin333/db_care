@@ -40,6 +40,10 @@ extern "C"
 /* USER CODE END Includes */
 #include "measure.h"
 #include "sf_i2c.h"
+#include "params.h"
+#include "history.h"
+#include "optcfg.h"
+#include "hall.h"
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */

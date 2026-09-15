@@ -12,33 +12,40 @@
 #include "cw32l010_uart.h"
 #include "app_um2005c.h"
 #include "encrytogate.h"
+#include "history.h"
+#include "params.h"
+#include "optcfg.h"
+#include "hall.h"
+
+/* å‘Šè­¦åˆ¤å®š(å®šä¹‰åœ¨ send_data_to_gateway å‰, æ­¤å¤„å‰å‘å£°æ˜) (FR-201/202) */
+static bool alarm_triggered(int16_t temp_x10, uint16_t hum_x10);
 void i2c0_sda_pin_out_low(void)
 {
-    //ÉèÖÃSDAÒı½ÅÊä³öµÍµçÆ½
+    //ï¿½ï¿½ï¿½ï¿½SDAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½Æ½
     GPIO_WritePin( CW_GPIOA, GPIO_PIN_4, GPIO_Pin_RESET );
 }
 
 void i2c0_sda_pin_out_high(void)
 {
-    //ÉèÖÃSDAÒı½ÅÊä³ö¸ßµçÆ½
+    //ï¿½ï¿½ï¿½ï¿½SDAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½Æ½
     GPIO_WritePin( CW_GPIOA, GPIO_PIN_4, GPIO_Pin_SET );
 }
 
 void i2c0_scl_pin_out_low(void)
 {
-    //ÉèÖÃSCLÒı½ÅÊä³öµÍµçÆ½
+    //ï¿½ï¿½ï¿½ï¿½SCLï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Íµï¿½Æ½
     GPIO_WritePin( CW_GPIOA, GPIO_PIN_3, GPIO_Pin_RESET );
 }
 
 void i2c0_scl_pin_out_high(void)
 {
-    //ÉèÖÃSCLÒı½ÅÊä³ö¸ßµçÆ½
+    //ï¿½ï¿½ï¿½ï¿½SCLï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½Æ½
     GPIO_WritePin( CW_GPIOA, GPIO_PIN_3, GPIO_Pin_SET );
 }
 
 uint8_t i2c0_sda_pin_read_level(void)
 {
-    //·µ»ØSDAÒı½ÅµçÆ½×´Ì¬
+    //ï¿½ï¿½ï¿½ï¿½SDAï¿½ï¿½ï¿½Åµï¿½Æ½×´Ì¬
     if(GPIO_ReadPin(CW_GPIOA, GPIO_PIN_4 )){
         return 1;
     }else{
@@ -49,7 +56,7 @@ uint8_t i2c0_sda_pin_read_level(void)
 void i2c0_sda_pin_dir_input(void)
 {
 		GPIO_InitTypeDef GPIO_InitStruct = {0};
-    //ÉèÖÃSDAÒı½ÅÊäÈë·½Ïò
+    //ï¿½ï¿½ï¿½ï¿½SDAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë·½ï¿½ï¿½
     GPIO_InitStruct.Pins =  GPIO_PIN_4;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.IT   = GPIO_IT_NONE;
@@ -59,7 +66,7 @@ void i2c0_sda_pin_dir_input(void)
 void i2c0_scl_pin_dir_input(void)
 {
 		GPIO_InitTypeDef GPIO_InitStruct = {0};
-    //ÉèÖÃSDAÒı½ÅÊäÈë·½Ïò
+    //ï¿½ï¿½ï¿½ï¿½SDAï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë·½ï¿½ï¿½
     GPIO_InitStruct.Pins =  GPIO_PIN_3;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
     GPIO_InitStruct.IT   = GPIO_IT_NONE;
@@ -116,7 +123,7 @@ void bsp_i2c_init(void)
 
 uint8_t txbf[7];
 uint8_t rxbf[7];
-uint16_t tempvalue = 0;
+int16_t tempvalue = 0;   /* æ¸©åº¦ x10, æœ‰ç¬¦å· 0.1 C (FR-205) */
 uint16_t huminityvalue = 0;
 uint8_t wait_data_cnt = 0;
 
@@ -137,8 +144,10 @@ typedef struct __attribute__((packed)){
 
 uint8_t start_once = 1;
 uint8_t sample_flag = 1;
-uint8_t send_flag = 1;
-uint8_t start_dealonce = 1;
+uint16_t samples_since_report = 0;   /* è·ä¸Šæ¬¡æˆåŠŸä¸ŠæŠ¥çš„é‡‡æ ·å‘¨æœŸæ•° (FR-203) */
+uint8_t report_req = 0;              /* å¾…ä¸ŠæŠ¥æ ‡å¿— */
+uint8_t first_sample_reported = 0;   /* é‡å¯åé¦–æ ·æœ¬ç«‹å³ä¸ŠæŠ¥ (IC-001 2) */
+static uint8_t report_retry = 0;
 
 void DebugUART_Close(void)
 {
@@ -192,7 +201,7 @@ extern uint32_t hclk ,pclk ;
 uint8_t send_data[10] ;
 
 uint16_t temperature_process( void ) {
-    //event ´¦Àí
+    //event ï¿½ï¿½ï¿½ï¿½
     uint8_t i;
     unsigned long s32x;
     //char resbf[4] = {0,0,0,0};
@@ -234,10 +243,10 @@ uint16_t temperature_process( void ) {
         txbf[0] = 0x71;
         i2c_start(temp_ptr);
         i2c_write_byte(temp_ptr,txbf[0]);
-        for(i = 0; i < 5;i++){//AHT21B ÕâÀïÊÇ¶ÁÈ¡7¸ö×Ö½Ú£¬ÓĞÒ»¸öcrc£¬¶øaht10È´Ö»ÓĞ6¸ö×Ö½Ú£¬Ã»ÓĞcrc
+        for(i = 0; i < 5;i++){//AHT21B ï¿½ï¿½ï¿½ï¿½ï¿½Ç¶ï¿½È¡7ï¿½ï¿½ï¿½Ö½Ú£ï¿½ï¿½ï¿½Ò»ï¿½ï¿½crcï¿½ï¿½ï¿½ï¿½aht10È´Ö»ï¿½ï¿½6ï¿½ï¿½ï¿½Ö½Ú£ï¿½Ã»ï¿½ï¿½crc
             rxbf[i] = i2c_read_byte(temp_ptr,1);
         }
-        rxbf[i] = i2c_read_byte(temp_ptr,0);//ÒªÓÈÆä×¢Òâ£¬ÓĞµÄaht10µÄËµÃ÷ÊéÕâÀïÓĞÎÊÌâ£¬ËµÃ÷ÊéÏÔÊ¾ÕâÀïÈÔÈ»ÓĞack
+        rxbf[i] = i2c_read_byte(temp_ptr,0);//Òªï¿½ï¿½ï¿½ï¿½×¢ï¿½â£¬ï¿½Ğµï¿½aht10ï¿½ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â£¬Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½ack
         i2c_stop(temp_ptr);
 				_tstep++;
 				break;
@@ -260,9 +269,20 @@ uint16_t temperature_process( void ) {
 				i2c0_sda_pin_dir_input();
 				i2c0_scl_pin_dir_input();
 				
+				/* --- æ–°å¢: å†å² + å‘Šè­¦åˆ¤å®š + ä¸ŠæŠ¥è°ƒåº¦ (FR-202/203/204) --- */
+				history_push(tempvalue, huminityvalue);   /* ä»…æˆåŠŸæµ‹é‡å†™å…¥ (FR-505) */
+				samples_since_report++;
+				if (!first_sample_reported) {
+					first_sample_reported = 1;
+					report_req = 1;                          /* é¦–æ ·æœ¬ç«‹å³ä¸ŠæŠ¥ */
+				} else if (alarm_triggered(tempvalue, huminityvalue)) {
+					report_req = 1;                          /* è¶Šç•Œ/ä¸‹é™ç«‹å³ä¸ŠæŠ¥ */
+				} else if (samples_since_report >= 60u) {
+					report_req = 1;                          /* æ»¡ 60 é‡‡æ ·å‘¨æœŸå°æ—¶ä¸ŠæŠ¥ */
+				}
+				
 				sample_flag = 0;
 				_tstep = 0;
-				start_dealonce = 0;
 				DebugUART_Close();
 				//SYSCTRL_GotoDeepSleep();			
 				break;
@@ -291,12 +311,25 @@ uint16_t temperature_process( void ) {
 
 uint8_t mcu_uid[10];
 
+/* å‘Šè­¦åˆ¤å®š: ä¸¥æ ¼è¶Šç•Œ + ä¸‹é™ (FR-201/202) */
+static bool alarm_triggered(int16_t temp_x10, uint16_t hum_x10)
+{
+	if (temp_x10 < params_get_temp_low_x10()  || temp_x10 > params_get_temp_high_x10()) return true;
+	if (hum_x10  < params_get_hum_low_x10()   || hum_x10  > params_get_hum_high_x10())  return true;
+	if (history_any_drop(temp_x10, hum_x10,
+	                     params_get_temp_drop_x10(), params_get_hum_drop_x10())) return true;
+	return false;
+}
+
 void send_data_to_gateway(void)
 {
 	
 	uint8_t *ptr = &mcu_uid[1];
 	
-	if((start_dealonce == 1)||(send_flag == 0)){
+	if(report_req == 0){
+		return;
+	}
+	if(optcfg_window_active()){   /* FR-305: é…ç½®çª—å£å†…å»¶åä¸ŠæŠ¥ */
 		return;
 	}
 	
@@ -305,24 +338,33 @@ void send_data_to_gateway(void)
 	send_data[2] = ptr[6];
 	send_data[3] = ptr[8];
 	
-	send_data[4] = (huminityvalue >> 8) & 0xff;
-	send_data[5] = huminityvalue & 0xff;
+	send_data[4] = (tempvalue >> 8) & 0xff;   /* æ¸©åº¦ (FR-302 æ­£åº) */
+	send_data[5] = tempvalue & 0xff;
 	
-	send_data[6] = (tempvalue >> 8) & 0xff;
-	send_data[7] = tempvalue & 0xff;
+	send_data[6] = (huminityvalue >> 8) & 0xff;   /* æ¹¿åº¦ */
+	send_data[7] = huminityvalue & 0xff;
 	
 	
-	encode_frame10(mcu_uid, huminityvalue, tempvalue, send_data);
-	app_um2005C_send_data(send_data,10);	
-	
-	send_flag = 0;
+	encode_frame10(mcu_uid, tempvalue, huminityvalue, send_data);  /* å®å‚ä¿®æ­£ FR-302 */
+	if(app_um2005C_send_data_timeout(send_data,10,200)){   /* æœ‰ç•Œå‘é€ FR-304 */
+		report_req = 0;
+		samples_since_report = 0;    /* æˆåŠŸä¸ŠæŠ¥å½’é›¶ (FR-203) */
+		report_retry = 0;
+	}else{
+		report_retry++;               /* å¤±è´¥ä¸è®°æˆåŠŸ */
+		if(report_retry >= 3){
+			report_req = 0;           /* æœ¬è½®æ”¾å¼ƒ, å°æ—¶è°ƒåº¦è‡ªç„¶é‡è¯• */
+			report_retry = 0;
+		}
+	}
 	//SYSCTRL_GotoDeepSleep();
 	
 }
 
 void go_to_sleep(void)
 {
-	if((send_flag == 0)&&(sample_flag == 0)){
+	if((report_req == 0)&&(sample_flag == 0)&&
+	   (!hall_event_pending())&&(!optcfg_window_active())){
 		SYSCTRL_GotoDeepSleep();
 	}
 
