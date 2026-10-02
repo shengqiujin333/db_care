@@ -23,6 +23,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/ | a
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/ | active | 宿主机逻辑单元测试（host_sensor_core_test.c、build_test.sh）
 CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外设库（传感器工程编译依赖；粗路径）
+artifacts/codegraph_index.md | active | 当前需求相关三个软件工程的 CodeGraph 本地索引位置与集合描述（数据库保留在被忽略的 .codegraph/）
 dengbei_care/ | active | Android App 工程根（本次需同步修改；iOS 本轮不改）
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
 dengbei_care/app/build.gradle.kts | active | App 模块 Gradle 构建脚本
@@ -45,6 +46,7 @@ dengbei_care/readme.txt | active | Android 版本变更记录
 dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书
+evidence/codegraph_validation.md | active | 三个代码根的 CodeGraph status 与 explore 最小可用性查询记录
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护；由各 Agent 共同维护）
 gateway_board.xml | active | 网关（中继器）硬件原理图 XML（OrCAD 导出）
 gxht40.pdf | active | GXHT40 温湿度传感器数据手册（本次温度传感器选型/驱动依据）
