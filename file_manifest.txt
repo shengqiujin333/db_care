@@ -18,14 +18,17 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/EWARM/pr
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/Project.uvprojx | active | 传感器 Keil MDK 工程
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/UM2005C/ | active | UM2005C 433MHz 发射驱动与收发（radio、app_gtimer、app_um2005C、um2005C 及 HAL）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/ | active | 传感器用户头文件（与 USER/src 对应）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/gxht40.h | active | GXHT40 驱动接口（结果码、gxht40_init/measure/detected_addr7；FD-002/ITEM-003）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/main.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h | active | 传感器固件唯一配置点（PB04/PB05 引脚与 AIN11、GXHT40 地址/命令/重试/等待、光照阈值与滞回、3 分钟节拍、0.9℃/35.0℃ 上报常量、调试钩子；FD-002/ITEM-001）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sf_i2c.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/ | active | 传感器用户源码（main 采样节拍、measure 测量与阈值上报、sf_i2c 读温湿度、fw_core/hall/history/optcfg/params/encrytogate/interrupts）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/gxht40.c | active | GXHT40 温湿度驱动实现（0x44/0x45 探测与缓存、0xFD 测量、6B 读取、双字 CRC-8、整数 x10 换算与量程/重试策略；FD-002/ITEM-003）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/ | active | GNU 交叉编译支持（build.sh、cw32l010.ld、startup；obj/ 为忽略产物）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/ | active | 宿主机逻辑单元测试（host_sensor_core_test.c、build_test.sh）与驱动级自检（host_sf_i2c_bus_check.c：sf_i2c 无寄存器地址总线原语的 mock 总线检查；host_sf_i2c_verify_ev.c：嵌入式测试独立编写的 sf_i2c mock 总线验证 harness）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/ | active | 宿主机逻辑单元测试（host_sensor_core_test.c、build_test.sh）与驱动级自检（host_sf_i2c_bus_check.c：sf_i2c 无寄存器地址总线原语的 mock 总线检查；host_sf_i2c_verify_ev.c：嵌入式测试独立编写的 sf_i2c mock 总线验证 harness；host_gxht40_check.c：GXHT40 驱动 27 项 mock 总线检查）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_check.c | active | 由 firmware_engineer.firmware_implementation 新增：ITEM-003 GXHT40 驱动实现侧自检（mock I²C 从机；手册 CRC 向量、地址探测/缓存、读 NACK 重读、CRC 错重测上限、无器件/超范围、失败不改输出、命令白名单；27/27）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_bus_check.c | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_verify_ev.c | active | 由 embedded_tester.embedded_verification 新增：ITEM-002 独立验证 harness（位级 mock 总线/从机，校验命令写与连续读的线上字节、START/STOP、主机 ACK/NACK 位置、ACK 失败返回值，并回归既有 i2c 函数）
 CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外设库（传感器工程编译依赖；粗路径）
