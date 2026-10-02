@@ -1,104 +1,59 @@
 # Project File Manifest
 # path | status | purpose
-.gitignore | active | 由 code_intelligence_engineer.codegraph_indexing 新增或修改的项目相关文件
-CH592EVT/EVT/20240119105503_8338.zip | active | 上述归档压缩包
-CH592EVT/EVT/20240119105503_8338/ | active | CH592 EVT 归档版本（含 aht20 例程等参考；粗路径）
-CH592EVT/EVT/EXAM/ | active | 沁恒 CH592 官方其它示例（ADC/BLE/I2C/FreeRTOS 等；粗路径，不展开）
-CH592EVT/EVT/EXAM/BLE/HAL/ | active | CH592 HAL 驱动（MCU/RTC/SLEEP 等，beiwov2 依赖；粗路径）
-CH592EVT/EVT/EXAM/BLE/LIB/ | active | CH592 BLE 协议栈预编译库（CH59xBLE_LIB.a、ROM 等，beiwov2 依赖；粗路径）
-CH592EVT/EVT/EXAM/BLE/Peripheral_2/ | active | 中继器变体工程（beiwov2 复制版；配合 ESP32 场景 5min 测量缓冲；含 APP/Profile）
-CH592EVT/EVT/EXAM/BLE/beiwov2/ | active | 中继器 CH592 BLE 固件工程（UM2006A 433MHz 接收 + EV1527 解码 + BLE 上报手机）
-CH592EVT/EVT/EXAM/BLE/beiwov2/APP/ | active | 中继器应用源码（app_ev1527、app_um2006A/um2006A 接收驱动、app_uart、measure、radio、peripheral_main、bleencrypt/feistel_al 加密、sf_i2c、peripheral）；app_um2006A.c 已按 FR-401 调整 sensorres 记录顺序为 [id|hum_be|temp_be]
-CH592EVT/EVT/EXAM/BLE/beiwov2/APP/app_um2006A.c | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CH592EVT/EVT/EXAM/BLE/beiwov2/Profile/ | active | BLE GATT Profile 服务（gattprofile、devinfoservice）
-CH592EVT/EVT/EXAM/BLE/beiwov2/beiwov2.wvproj | active | 工程文件（WCH wvproj）
-CH592EVT/EVT/EXAM/SRC/ | active | 沁恒共享驱动树（StdPeriphDriver/RVMSIS/Startup，beiwov2 编译依赖；粗路径）
-CH592EVT/EVT/PUB/ | active | 沁恒官方手册、原理图/PCB/天线参考与 zip 包（粗路径）
-CH592EVT/EVT/蓝牙天线设计.zip | active | 官方蓝牙天线设计参考
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/ | active | 官方其它示例（sensoraiwrite/wk_huoer/yinshuiji/ADC/GPIO/I2C 等；仅参考，粗路径不展开）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/ | active | 传感器固件工程根（CW32L010 + AHT20 温湿度 + UM2005C 433MHz 发射；本次主要改动点：霍尔检测、光敏接收 GPIO 供电、1min 测量、20min 缓冲、阈值上报）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/COMMON/ | active | 通用模块（delay/convert/type）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/EWARM/project.eww | active | IAR EWARM 工程
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/Project.uvprojx | active | Keil MDK 工程
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/UM2005C/ | active | UM2005C 433MHz 发射驱动与无线收发（radio、app_gtimer、app_um2005C、um2005C、rfconfig）；app_um2005C.c 新增有界发送 app_um2005C_send_data_timeout（FR-303/304）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/UM2005C/app_um2005C.c | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/UM2005C/app_um2005C.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/ | active | 用户头文件（main/measure/sf_i2c/encrytogate/interrupts + 新增 fw_core/hall/history/optcfg/params）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/fw_core.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/hall.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/history.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/main.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/measure.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/optcfg.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/params.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/encrytogate.c | active | 加密/门禁逻辑
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c | active | 纯逻辑核心（CRC16、参数校验/x10 换算/NVM 记录编解码、OPTCFG 帧校验、Manchester 解码器；宿主机 L0 可测）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/hall.c | active | 霍尔磁铁检测（PB04 EXTI、去抖、窗口内忽略重复触发）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/history.c | active | 20 项温湿度历史环形缓冲与下降告警判定
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/interrupts_cw32l010.c | active | 中断服务（新增 GPIOB Hall 沿处理与 LPTIM 窗口/433 双模式路由）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c | active | 传感器主程序（1 min 采样节拍、主循环分发 Hall/配置窗口/采样/上报/深睡）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c | active | 温湿度测量逻辑（历史环写入、阈值告警判定、立即/小时/首样本上报调度、encode_frame10 实参修正、有界发送）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/optcfg.c | active | OPTCFG/1 配置窗口状态机（PB06 F2 供电、PB05 采样、LPTIM 5ms/200Hz、35s 窗口）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/params.c | active | 阈值参数 RAM 模型与 Flash 顶层页 NVM 持久化（幂等/默认装载）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 软件 I2C（读取 AHT20）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/ | active | GNU 交叉编译支持（startup_cw32l010.S、cw32l010.ld、build.sh；obj/ 产物被 .gitignore 忽略）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/cw32l010.ld | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/startup_cw32l010.S | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 工程说明
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/ | active | L0 宿主机单元测试（host_sensor_core_test.c、build_test.sh；56/56 通过）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外设库（inc+src，传感器工程编译依赖；粗路径）
-artifacts/codegraph_index.md | active | Local CodeGraph index collection descriptor for the three product code roots.
-artifacts/component_selection.md | active | hardware_engineer.hardware_solution_design 产出的关键器件选型类别与约束（霍尔、光敏接收、功率开关）
-artifacts/firmware_design.md | active | firmware_engineer.firmware_solution_design 产出的固件设计方案（模块划分、数据流、时序、资源预算、接口处理、异常策略、实现约束；含 30s 窗口风险与端到端温湿度字段顺序交接）
-artifacts/firmware_implementation.md | active | firmware_engineer.firmware_implementation 产出的固件实现说明（FW-IMP-001：传感器 5 新模块+6 修改、中继器 FR-401 记录顺序、交叉编译与 L0 验证结果、200Hz 采样决策留痕、交接未决项）
-artifacts/firmware_requirements.md | active | firmware_engineer.firmware_solution_design 产出的固件需求清单（FR-001，传感器/中继器固件，可追溯到 readme/IC-001/HWI/HW/SCH）
-artifacts/firmware_rtos_architecture.md | active | firmware_engineer.firmware_solution_design 产出的并发与调度架构（RTA-001，裸机任务/ISR/同步/资源预算）
-artifacts/hardware_feasibility.md | active | hardware_engineer.hardware_solution_design 产出的硬件可行性评估报告
-artifacts/hardware_interface.md | active | hardware_engineer.hardware_solution_design 产出的硬件接口定义（Hall/光敏/电源开关）
-artifacts/hardware_solution.md | active | hardware_engineer.hardware_solution_design 产出的传感器硬件总体方案（功能块/器件类别/接口/电源边界/设计约束）
-artifacts/interface_contract.md | active | system_architect.interface_architecture 产出的端到端接口契约（光学配置、采样、433 MHz、BLE）
-artifacts/schematic.md | active | hardware_engineer.schematic_design 产出的原理图设计规格（新增 F1 霍尔 + F2 光敏闪光灯接收前端；器件/封装/引脚级网表/电源拓扑/接线到 CW32 PA02/PB04/PB05/PB06）
-artifacts/test_design.md | active | embedded_tester.embedded_test_design 产出的嵌入式测试设计（TD-001：测试范围/环境/台架/仪器/数据采集/判定方法/用例矩阵，覆盖 OPTCFG 光学配置、采样阈值、上报调度、433/BLE 端到端、并发时序、功耗、异常容错；含 35 B 参考帧与互操作向量）
-dengbei_care/_REFACTOR_NOTES.md | active | Android 工程重构说明
-dengbei_care/app/build.gradle.kts | active | App 模块 Gradle 脚本
-dengbei_care/app/src/main/AndroidManifest.xml | active | Android 清单
-dengbei_care/app/src/main/assets/ | active | assets（CA 证书、隐私政策/服务条款页面）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ | active | Android 业务源码根包（本次需增加闪光灯设置 6 个 float 参数的功能）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/BaseActivity.kt | active | Activity 基类
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/DeviceParamsBook.kt | active | 设备参数存储/管理（阈值等参数相关）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt | active | 设备状态模型
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt | active | MAC/设备 ID 管理
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MainActivity.kt | active | 主界面入口
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt | active | MQTT 通信服务（与网关/服务器数据交互）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MyApplication.kt | active | Application 类
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt | active | 铃声播放
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/SensorIdAdapter.kt | active | 传感器 ID 列表适配
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt | active | 温湿度数据存储
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt | active | 震动提示
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/report/ | active | 报表模块（DailyReportWorker/ReportActivity/ReportGenerator/ReportScheduler）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/ | active | UI 模块（dashboard/denglu/detail/gateway/home/notifications/sensorid/zhuce）
-dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | active | Paho MQTT Android 内嵌客户端（vendor；粗路径）
-dengbei_care/app/src/main/res/ | active | 资源（layout/values/navigation/drawable/mipmap/xml；粗路径）
-dengbei_care/build.gradle.kts | active | 工程级 Gradle 脚本
-dengbei_care/dependencies.txt | active | 依赖清单
-dengbei_care/gradle/libs.versions.toml | active | Gradle 版本目录
+.gitignore | active | 仓库忽略规则（obj/build/Debug/Release、编译产物、.idea/.codegraph 等）
+CH592EVT/EVT/20240119105503_8338.zip | active | 沁恒官方归档样例（间接参考；粗路径）
+CH592EVT/EVT/EXAM/ | active | 沁恒官方其它示例（ADC/I2C/TMR/FreeRTOS 等，间接参考；粗路径，不逐文件展开）
+CH592EVT/EVT/EXAM/BLE/HAL/ | active | CH592 HAL 驱动（beiwov2 编译依赖；粗路径）
+CH592EVT/EVT/EXAM/BLE/LIB/ | active | CH59x BLE 协议栈预编译库（beiwov2 编译依赖；粗路径）
+CH592EVT/EVT/EXAM/BLE/beiwov2/ | active | 网关（中继器）CH592 BLE 固件工程：UM2006A 433MHz 接收 + BLE 上报手机
+CH592EVT/EVT/EXAM/BLE/beiwov2/APP/ | active | 网关应用源码（app_um2006A/um2006A 433 接收、app_ev1527、app_uart、app_i2c、measure、radio、peripheral_main、bleencrypt/feistel_al 加密、sf_i2c）
+CH592EVT/EVT/EXAM/BLE/beiwov2/Profile/ | active | 网关 BLE GATT Profile 服务（gattprofile、devinfoservice）
+CH592EVT/EVT/EXAM/BLE/beiwov2/beiwov2.wvproj | active | 网关固件 WCH 工程文件
+CH592EVT/EVT/EXAM/SRC/ | active | CH592 标准外设驱动/RVMSIS/Startup（beiwov2 编译依赖；粗路径）
+CH592EVT/EVT/PUB/ | active | 沁恒官方手册/评估板原理图/天线参考（间接；粗路径）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/ | active | 官方其它示例（间接参考；粗路径，不展开）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/ | active | 传感器 CW32L010 固件工程根：温湿度采集 + UM2005C 433MHz 发射
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/COMMON/ | active | 通用模块（delay、convert、type）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/EWARM/project.eww | active | 传感器 IAR EWARM 工程
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/Project.uvprojx | active | 传感器 Keil MDK 工程
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/UM2005C/ | active | UM2005C 433MHz 发射驱动与收发（radio、app_gtimer、app_um2005C、um2005C 及 HAL）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/ | active | 传感器用户头文件（与 USER/src 对应）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/ | active | 传感器用户源码（main 采样节拍、measure 测量与阈值上报、sf_i2c 读温湿度、fw_core/hall/history/optcfg/params/encrytogate/interrupts）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/ | active | GNU 交叉编译支持（build.sh、cw32l010.ld、startup；obj/ 为忽略产物）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/ | active | 宿主机逻辑单元测试（host_sensor_core_test.c、build_test.sh）
+CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外设库（传感器工程编译依赖；粗路径）
+dengbei_care/ | active | Android App 工程根（本次需同步修改；iOS 本轮不改）
+dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
+dengbei_care/app/build.gradle.kts | active | App 模块 Gradle 构建脚本
+dengbei_care/app/src/main/AndroidManifest.xml | active | Android 应用清单
+dengbei_care/app/src/main/assets/ | active | 内嵌资源（CA 证书、隐私政策/服务条款 HTML）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ | active | Android 业务源码根包（MainActivity、MqtttService、DeviceParamsBook、TemperatureDatabaseHelper、ui/、report/ 等）
+dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | active | 内嵌 Paho MQTT Android 客户端（vendor；粗路径）
+dengbei_care/app/src/main/res/ | active | Android 资源（layout/values/navigation/drawable/mipmap/xml；粗路径）
+dengbei_care/build.gradle.kts | active | 工程级 Gradle 构建脚本
+dengbei_care/dependencies.txt | active | Android 依赖清单
+dengbei_care/gradle.properties | active | Gradle 属性
+dengbei_care/gradle/libs.versions.toml | active | Gradle 依赖版本目录
 dengbei_care/gradle/wrapper/ | active | Gradle wrapper（粗路径）
-dengbei_care/iOS开发资料/ | active | 苹果 App 开发参考资料（需求文档 + 参照 Android 代码的 01-05 Tier 资料；间接相关，粗路径）
-dengbei_care/settings.gradle.kts | active | Gradle 设置
-evidence/alternate_parts.md | active | hardware_engineer.hardware_solution_design 产出的备选器件评估证据
-evidence/build.md | active | firmware_engineer.firmware_implementation 产出的构建证据（GNU 交叉编译 40 TU 0 错误，链接 FLASH 51.72%/RAM 47.85%，新增静态 RAM 180B）
-evidence/codegraph_validation.md | active | Minimal status and explore-query validation evidence for the CodeGraph indexes.
-evidence/driver_test.md | active | firmware_engineer.firmware_implementation 产出的驱动/逻辑 L0 测试证据（参数校验/记录编解码/历史环/下降告警）
-evidence/erc.md | active | hardware_engineer.schematic_design 产出的原理图电气规则自检证据（新增 F1/F2 网络 ERC：接线/引脚/电源/负载/去耦/暗电流）
-evidence/hardware_assessment.md | active | hardware_engineer.hardware_solution_design 产出的硬件评估证据（源码/图纸溯源与结论）
-evidence/interface_contract_validation.md | active | IC-001 接口契约的源码溯源、一致性检查与后续验证风险证据
-evidence/protocol_test.md | active | firmware_engineer.firmware_implementation 产出的协议 L0 测试证据（CRC 0xB540、帧校验、Manchester 解码含 ±25% 抖动 3/3、反相拒绝；200Hz 采样决策留痕）
-file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护）
-gateway_board.xml | active | 中继器原理图（Cadence OrCAD dsn XML 导出；硬件参考）
-readme.txt | active | 项目说明：蹬被报警器产品简介与本次增量需求（霍尔检测磁铁、GPIO 供电光敏接收手机闪光灯、6 个 float 阈值参数、1min 测量、约 20min 缓冲、超阈值即发/平时 1h 上报、Android 闪光灯设参）
-sensor_board.xml | active | 传感器原理图（Cadence OrCAD dsn XML 导出；本次需在此原理图上增加霍尔传感器与光敏接收设计）
+dengbei_care/gradlew | active | Gradle 启动脚本
+dengbei_care/iOS开发所需资料清单.md | active | iOS 资料清单（间接参考）
+dengbei_care/iOS开发资料/ | active | iOS 开发资料包（需求/行为对齐/UI/资源；本轮不改 iOS，间接参考；粗路径）
+dengbei_care/iOS版功能需求文档.md | active | iOS 功能需求文档（间接参考）
+dengbei_care/play_store_512.png | active | 应用商店图标
+dengbei_care/readme.txt | active | Android 版本变更记录
+dengbei_care/settings.gradle.kts | active | Gradle 工程设置
+dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
+dengbei_care/用户使用说明书.md | active | Android 用户使用说明书
+file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护；由各 Agent 共同维护）
+gateway_board.xml | active | 网关（中继器）硬件原理图 XML（OrCAD 导出）
+gxht40.pdf | active | GXHT40 温湿度传感器数据手册（本次温度传感器选型/驱动依据）
+readme.txt | active | 项目总说明与本次修改点：温度传感器改用 GXHT40、新增光敏电阻分压、采样周期 3 分钟、温降(<0.9℃ 且无光)或超 35℃ 才上报、broker 服务器信息、同步 Android、不改硬件与 iOS
+sensor_hardware/ | active | 传感器硬件资料根目录（BOM + OrCAD 网表/器件）
+sensor_hardware/MAIN_BOARD.BOM | active | 传感器 BOM（含本次新增光敏电阻与分压电路元件）
+sensor_hardware/pstchip.dat | active | 传感器器件引脚定义
+sensor_hardware/pstxnet.dat | active | 传感器网表连接关系（光敏分压电路接线参考）
+sensor_hardware/pstxprt.dat | active | 传感器元件/封装清单
+服务器迁移记录.md | active | 平台服务器迁移记录（EMQX broker、MySQL、注册服务地址/端口/证书）
 蹬被子报警器服务器部署方法.png | active | 服务器部署方法参考图
-项目地址.txt | active | 子工程入口定位：ch592f=中继器固件、sensor=传感器固件、android=Android App
+项目地址.txt | active | 子工程入口定位（网关/传感器/安卓源码、网关/传感器硬件、服务器信息）
