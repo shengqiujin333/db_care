@@ -57,6 +57,7 @@ dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书
 evidence/build.md | active | 传感器固件构建证据（交叉编译结果与内存占用、sensor_config.h 编译期断言、宿主机 L0 回归；BUILD-002）
 evidence/codegraph_validation.md | active | 三个代码根的 CodeGraph status 与 explore 最小可用性查询记录
+evidence/test.md | active | 嵌入式验证证据（EV-002，逐任务项追加；ITEM-001：sensor_config.h 独立性验证——43 条编译期断言、GNU 交叉编译与基线逐字节比对、AC5 兼容性、宿主 L0 回归、既有 Keil/CMSIS 环境问题定位）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护；由各 Agent 共同维护）
 gateway_board.xml | active | 网关（中继器）硬件原理图 XML（OrCAD 导出）
 gxht40.pdf | active | GXHT40 温湿度传感器数据手册（本次温度传感器选型/驱动依据）
