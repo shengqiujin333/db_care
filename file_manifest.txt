@@ -24,6 +24,10 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.t
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/ | active | 宿主机逻辑单元测试（host_sensor_core_test.c、build_test.sh）
 CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外设库（传感器工程编译依赖；粗路径）
 artifacts/codegraph_index.md | active | 当前需求相关三个软件工程的 CodeGraph 本地索引位置与集合描述（数据库保留在被忽略的 .codegraph/）
+artifacts/firmware_design.md | active | 传感器/网关固件设计方案 FD-002（GXHT40 驱动、光敏 PB05/PB04-AIN11 采样、3 分钟节拍、条件上报、模块划分/时序/资源/异常/接口与实现约束）
+artifacts/firmware_requirements.md | active | 固件需求 FWR-002（本次固件域需求分解、验收行为与未决项；来源 readme + IC-002 + 网表）
+artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002（传感器裸机超级循环 + RTC 深睡与中断边界；网关 TMOS 不变；时间/存储/功耗预算）
+artifacts/firmware_tasks.yaml | active | 固件实现任务清单（按前置依赖排序，供 firmware_engineer.firmware_implementation 消费）
 artifacts/interface_contract.md | active | 本次 GXHT40/光敏输入、3 分钟条件上报及 433→BLE→Android/MQTT 遥测字段与兼容性接口契约（IC-002）
 dengbei_care/ | active | Android App 工程根（本次需同步修改；iOS 本轮不改）
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
