@@ -263,3 +263,103 @@ AC5（`armcc --cpu=Cortex-M0+ --c99`，工程固定 CMSIS 5.9.0）单 TU 编译�
 「命令写（START→地址+W→命令→STOP）」「连续读（START→地址+R→N 字节→末字节 NACK→STOP）」「从机 ACK 失败作为可判断返回值」「既有 i2c 函数语义与调用方式不变」四项声明均经独立复现成立，且既有函数机器码逐指令未变。
 
 **判定：TEST_PASS**（真实板电气/时序与 GXHT40 器件交互不在本项范围，交接 TD-002 T-L2-01/02/03/07）。
+
+---
+
+# ITEM-003 验证（GXHT40 驱动 `gxht40.c/.h`）
+
+验证对象：任务项 **ITEM-003**（地址探测 0x44/0x45、`0xFD` 高重复率测量、tMEAS 等待、读 6 字节、温度/湿度字分别 CRC-8 校验、x10 换算与截断、失败返回失败码且不修改输出）
+被测提交：`3bbd292`；源码基线：`1712162`
+结论：**TEST_PASS**
+
+## A. 选测说明与变更范围
+
+| 选测项 | 理由 |
+|---|---|
+| 新增文件 diff 审查 | `git show --numstat 3bbd292`：`gxht40.h` 48/0、`gxht40.c` 183/0、`test/host_gxht40_check.c` 308/0，**均为纯新增，无既有源码修改** |
+| 独立参考帧生成（Python 独立实现 CRC/换算） | 不让被测驱动的 CRC/换算参与构造期望值，避免同源验证 |
+| 自研 mock I²C + mock GXHT40 器件（链接真实 `gxht40.c`/`sf_i2c.c`） | 独立复现地址探测/命令/帧顺序/双字 CRC/重试/失败语义 |
+| 失败不改输出（逐失败码） | 任务硬性要求，需直接断言 |
+| GNU 交叉编译 + AC5 单 TU 编译 | 可编译性与量产编译器兼容（gxht40.c 尚未加入 Keil/IAR 源列表，属 ITEM-011） |
+
+不适用（后续 ITEM 才有可测对象）：光照通路、采样节拍、条件上报判定、端到端与功耗。**真实 tMEAS 等待下界、地址变体实物确认、电气与真实器件 CRC 实读**属 TD-002 T-L2-01/02/03/06/07，本轮无逻辑分析仪/实物板，不在此判定。
+
+## B. 独立参考帧与 CRC 变体确认（通过）
+
+用独立 Python 实现（poly 0x31、init 0xFF、MSB-first、无反转、xorout 0x00）生成期望值：
+
+```
+CRC-8({0xBE,0xEF}) = 0x92   （与 gxht40.pdf / FD-002 §6.1 参考向量一致）
+CRC-8("123456789") = 0xF7   （即 CRC-8/NRSC-5 标准校验值，确认变体无歧义）
+换算：raw_t=0x0000 -> -450（超范围）; 0xFFFF -> 1300（超范围）; raw_h=0 -> 0; 0xFFFF -> 1190 -> 截断 1000
+```
+
+用于 mock 器件的 6 字节帧（**由上述独立脚本生成后硬编码，harness 不调用驱动的 CRC/换算**）：
+
+| 向量 | 6 字节 | 期望结果 |
+|---|---|---|
+| 手册参考 0xBEEF/0x1234 | `BE EF 92 12 34 37` | OK，temp=855，hum=29 |
+| 常温 25.0 ℃/50 %RH | `66 66 93 72 B0 DC` | OK，250 / 500 |
+| 负温 −10.0 ℃/0 % | `33 33 88 00 00 81` | OK，−100 / 0 |
+| 湿度越界（raw 0xFFFF） | `66 66 93 FF FF AC` | OK，hum 截断 1000 |
+| 湿度 raw 0 | `66 66 93 00 00 81` | OK，hum 0 |
+| 量程低（raw_t 0） | `00 00 81 72 B0 DC` | `GXHT40_ERR_RANGE`（换算 −450） |
+| 量程高 125.1 ℃ | `F8 CA 32 72 B0 DC` | `GXHT40_ERR_RANGE`（换算 1251） |
+| 温度字 CRC 错 | `66 66 00 72 B0 DC` | `GXHT40_ERR_CRC` |
+| 湿度字 CRC 错 | `66 66 93 72 B0 00` | `GXHT40_ERR_CRC` |
+
+字节序独立验证：若温度字字节序颠倒，0xEFBE 会得到 1189 而非 855；若湿度字颠倒，0x3412 会得到 194 而非 29——实际得到 855/29，证明 `T_MSB,T_LSB,T_CRC,RH_MSB,RH_LSB,RH_CRC` 顺序正确。
+
+## C. 独立 mock 器件功能测试（通过，核心）
+
+harness 入库于 `.../gpio_input_output/test/host_gxht40_verify_ev.c`（链接**未打桩的** `gxht40.c` + `sf_i2c.c`；`delay_ms` 为计数测试桩以断言 tMEAS 等待）。
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+<mingw64 gcc> -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast \
+  -I../USER/inc -I../COMMON -I../../../../Libraries/inc -I<CMSIS 5.9.0 Core Include> \
+  host_gxht40_verify_ev.c ../USER/src/gxht40.c ../USER/src/sf_i2c.c -o gxht40_verify && ./gxht40_verify
+=> ==== result: 42 passed, 0 failed ====   (0 编译告警)
+```
+
+| 组 | 独立断言 | 结果 |
+|---|---|---|
+| 手册向量与帧封装 | OK；855/29；命令恰为 0xFD 一次；写地址 `0x88`、读地址 `0x89`；探测地址缓存 0x44；每次测量一次 10 ms tMEAS 等待 | PASS |
+| 换算 | 25.0 ℃/50 %→250/500；−10.0 ℃/0 %→−100/0（符号保留）；hum raw 0xFFFF→1000；raw 0→0 | PASS |
+| 地址探测与缓存 | 器件仅在 0x45：先 `0x88`（无应答）再 `0x8A`（成功）、读 `0x8B`；缓存 0x45；第二次测量直接用 `0x8A`，**不再探测 0x88** | PASS |
+| 读 NACK 重试 | 前 2 次读地址 NACK、第 3 次成功；**命令未重发**（转换中）；三次读尝试；两次 1 ms 重试等待 | PASS |
+| 读 NACK 用尽 | `GXHT40_ERR_IO`；输出不变；命令尝试 ≤ `GXHT40_MEAS_RETRY`；读尝试 ≤ `MEAS_RETRY×READ_RETRY` | PASS |
+| CRC 错（温度字/湿度字） | 均 `GXHT40_ERR_CRC`；输出不变；**恰好重测 `GXHT40_MEAS_RETRY`(=3) 次** | PASS |
+| 超范围（低/高） | 均 `GXHT40_ERR_RANGE`；输出不变 | PASS |
+| 无器件 | `GXHT40_ERR_NO_DEVICE`；`0x88` 与 `0x8A` 均被探测；输出不变；探测次数有界 | PASS |
+| 入参 | NULL 温度指针 / NULL 湿度指针 / 未绑定总线 均 `GXHT40_ERR_PARAM` | PASS |
+| 命令白名单 | 全程共 23 次已发命令**全部为 `0xFD`**（无 `0x94` 软复位、无 `0x39` 加热器、无 `0xE0/0xF6` 低/中重复率） | PASS |
+
+实现者自带 harness 也被独立执行确认：`host_gxht40_check.c` → **27 passed, 0 failed**（不以其自报为唯一依据）。
+
+## D. 失败不修改输出（逐失败码，通过）
+
+每类失败均先写入哨兵值（`temp=0x1111`、`hum=0x2222`，或 `0x7F7F`）再调用：`ERR_IO`、`ERR_CRC`（温度字/湿度字）、`ERR_RANGE`（低/高）、`ERR_NO_DEVICE`、`ERR_PARAM` 全部保持哨兵值不变。代码层核对：输出指针仅在完全成功分支末尾写入。
+
+## E. 构建与对现网固件的影响（通过）
+
+| 项 | 结果 |
+|---|---|
+| GNU 交叉编译（`gcc/build.sh`，含 `USER/src/gxht40.c`） | 0 error；29 warning（与基线同数，**无一条指向 `gxht40.c`**） |
+| `gxht40.o` | text 460 B / data 0 / bss 5；符号 `gxht40_init`、`gxht40_measure`、`gxht40_detected_addr7`（`gxht40_crc8`、`gxht40_start_and_read` 为 static） |
+| 固件镜像 | FLASH 34,060 B、RAM 1,960 B；`sensor_fw.bin` MD5 **与 ITEM-002 构建完全相同**（`67917abd…`）——模块尚未被调用，链接器 `--gc-sections` 丢弃，对现网固件零影响 |
+| AC5（`armcc --cpu=Cortex-M0+ --c99`，CMSIS 5.9.0） | `gxht40.c` 0 error；`main.c` 0 error |
+| 宿主机 L0 回归 | `test/build_test.sh` → 56 passed, 0 failed（未涉及，回归确认） |
+
+## F. 观察项与交接
+
+1. **CRC/换算实现会重复（交 ITEM-005）**：`gxht40.c` 内 `gxht40_crc8` / `gxht40_conv_*` 为 static；而 ITEM-005 要求在 `fw_core.c` 提供可宿主机直测的 `fw_crc8_gxht` / `gxht40_raw_to_x10` 等纯函数。若两份实现并存且不互调，存在后续漂移风险。建议 ITEM-005 完成后让 `gxht40.c` 复用 `fw_core.c` 的纯函数（或至少由 ITEM-005 的宿主测试锁定两者一致性）。**本项不因此判失败**（当前单份实现自洽且经独立验证）。
+2. **Keil/IAR 源文件列表尚未包含 `gxht40.c`**（`Project.uvprojx`/`project.ewp` 中 `gxht40` 匹配数为 0）。这属 ITEM-011（“MDK/IAR 工程源文件列表与新增/移除源文件保持一致”）的范围，故在 ITEM-003 不判缺陷；但意味着**当前 Keil/IAR 构建不会编译该驱动**，ITEM-011 必须补上。
+3. **无器件时的探测次数**：缓存失效后每次外层尝试会依次试 0x44/0x45，最坏 3×2=6 次命令（每次 10 ms 等待）≈ 60 ms 额外活动；有界且仅发生在器件缺失/故障场景，记录备查。
+4. **真实 tMEAS 等待与地址变体**未在实物验证（无板/无逻辑分析仪）：软件侧已确认“命令→等待 10 ms→读”顺序与“读 NACK 不重发命令”，但实测下界（≥8.3 ms）与 0x44/0x45 实物确认仍需 TD-002 T-L2-01/02/03。
+
+## G. ITEM-003 判定
+
+地址探测（0x44/0x45，8 位 0x88/0x8A 写、0x89/0x8B 读）、`0xFD` 高重复率测量与 tMEAS 等待、6 字节读取与温度/湿度字分别 CRC-8（poly 0x31/init 0xFF）校验、x10 整数换算（含负温、0..1000 截断、−40.0..125.0 ℃ 有效域）、有界重试、失败返回失败码且不修改输出——全部经**独立于被测实现的参考帧与 mock 器件**复现成立。
+
+**判定：TEST_PASS**。
