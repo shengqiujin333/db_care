@@ -1,7 +1,7 @@
 # 构建证据（BUILD-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）
+本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）
 
 ## 1. 环境
 
@@ -64,7 +64,28 @@ CC=<minGW full path> sh test/build_test.sh
 
 本项未改动 `fw_core.c`/`history.c`/`host_sensor_core_test.c`，56/56 与改动前一致，属回归确认（新的纯逻辑用例属后续任务项）。
 
-## 5. 限制与交接
+## 5. ITEM-002 增量（sf_i2c 原语）
+
+改动：`USER/inc/sf_i2c.h`（+8 行声明）、`USER/src/sf_i2c.c`（+62 行实现，**0 行删除**）；新增测试载体 `test/host_sf_i2c_bus_check.c`（不进入固件构建）。
+
+```
+== compile ==  全部翻译单元
+== link ==
+Memory region   Used Size   Region Size   %age Used
+FLASH:          34,060 B    64 KB         51.97%
+RAM:             1,960 B    4 KB          47.85%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+arm-none-eabi-size: text 34060 / data 84 / bss 1876 / dec 36020
+```
+
+- **0 错误**。相对 ITEM-001（FLASH 33,896 B / RAM 1,960 B）：FLASH **+164 B**（两个原语），RAM 不变。
+- 告警：无新增。`sf_i2c.c` 仍只有改动前既有的 2 条 `err may be used uninitialized`（位于未触碰的 `i2c_write_multi_byte` / `i2c_write_multi_byte_16bit`）。
+- 链接符号（`arm-none-eabi-nm obj/sensor_fw.elf`）：`i2c_write_cmd 0x46b2 T`、`i2c_read_bytes 0x46e4 T` 已进入镜像；既有 `i2c_write_byte`/`i2c_read_byte`/`i2c_read_multi_byte`/`i2c_write_multi_byte`/`i2c_*_16bit`/`i2c_start`/`i2c_stop`/`i2c_init`/`i2c_obj_find` 全部保留。
+- 变更范围：`git diff --numstat` = `62 insertions / 0 deletions`（sf_i2c.c），既有函数未被改动。
+- 驱动级自检：`test/host_sf_i2c_bus_check.c` → **15 passed / 0 failed**（详见 `evidence/driver_test.md`）。
+- 宿主机 L0 回归：`test/build_test.sh` → 56 passed / 0 failed。
+
+## 6. 限制与交接
 
 - 本证据为 GNU 交叉编译 + 宿主机回归；量产构建走 Keil MDK / IAR EWARM（既有工程，`USER/inc` 已在两者 include 路径中，故新头文件无需改工程文件列表），未在本环境复编译 MDK/IAR。
 - 网关（CH592 beiwov2）需 WCH 工具链，本轮未涉及。

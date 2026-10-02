@@ -1,0 +1,52 @@
+# 驱动测试证据（DRV-002）
+
+状态：固件实现证据（firmware_engineer.firmware_implementation）
+本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）
+被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（提交时以 `git diff` 为准）
+测试载体：`CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_bus_check.c`（宿主机 mock 总线，不依赖 MCU 寄存器）
+
+## 1. 环境与运行
+
+| 项 | 值 |
+|---|---|
+| 编译器 | MinGW-w64 GCC 12.2.0（`C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin/gcc.exe`） |
+| 被测单元 | `../USER/src/sf_i2c.c`（真实实现，未打桩） |
+| mock | 测试文件内的 I²C 从机模型：按 SCL 边沿采样/驱动 SDA，模拟地址 0x44（8bit 0x88/0x89）与 6 字节返回 |
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+gcc -std=c11 -Wall -Wextra -I../USER/inc host_sf_i2c_bus_check.c ../USER/src/sf_i2c.c \
+    -o host_sf_i2c_bus_check.exe && ./host_sf_i2c_bus_check.exe
+```
+
+结果：**15 passed, 0 failed**（编译 0 告警；`*.exe` 为构建产物，运行后已清理，不入库）。
+
+## 2. 检查明细
+
+| # | 检查 | 期望 | 结果 |
+|---|---|---|---|
+| 1.1 | `i2c_write_cmd(dev,0x88,0xFD)` 返回值 | `SF_I2C_SUCCESS`（命令被 ACK） | PASS |
+| 1.2 | 命令写的 START/STOP 数 | 恰好 1 个 START、1 个 STOP | PASS |
+| 1.3 | 命令写线上字节 | `0x88` 后接 `0xFD`，**无寄存器地址** | PASS |
+| 1.4 | 事务结束后总线状态 | SCL/SDA 均为高（已释放） | PASS |
+| 2.1 | `i2c_read_bytes(dev,0x89,buf,6)` 返回值 | `SF_I2C_SUCCESS` | PASS |
+| 2.2 | 连续读的 START/STOP 数 | 恰好 1 个 START、1 个 STOP | PASS |
+| 2.3 | 连续读先发字节 | 仅读地址字节 `0x89` | PASS |
+| 2.4 | 读回数据 | 6 字节与从机数据逐字节一致 | PASS |
+| 2.5 | 主机应答位 | 前 5 字节 ACK(0)、第 6 字节 NACK(1)（TD-002 T-L2-03） | PASS |
+| 3.1 | 从机不响应时 `i2c_write_cmd` | `SF_I2C_TIMEOUT` | PASS |
+| 3.2 | 超时后总线释放 | 已发出 STOP（TD-002 T-L2-07 的软件侧行为） | PASS |
+| 3.3 | 从机不响应时 `i2c_read_bytes` | `SF_I2C_TIMEOUT`（读地址未 ACK） | PASS |
+| 3.4 | 超时后总线释放 | 已发出 STOP | PASS |
+| 4.1 | `length==0` 返回值 | `SF_I2C_SUCCESS` | PASS |
+| 4.2 | `length==0` 总线动作 | 无任何 START/STOP | PASS |
+
+## 3. 覆盖边界
+
+- 本证据只验证**软件侧总线序列与返回值**：字节内容、START/STOP 边界、主机 ACK/NACK 位置、ACK 失败传播、空长度短路。
+- mock 从机是**按 I²C 位时序重建的模型**，不是真实器件；不验证电气特性（上升沿、上拉、时钟频率、噪声）、也不验证 GXHT40 的 tMEAS 等待与器件地址变体——这些属 TD-002 T-L2-01/02/03/07，须由嵌入式测试在真实传感器板上用逻辑分析仪完成。
+- 既有 `i2c_*` 函数未在本测试中覆盖；其"语义不变"由 `git diff --numstat`（`62 insertions / 0 deletions`）与交叉编译符号集证明。
+
+## 4. 结论
+
+ITEM-002 两个原语的行为与 FD-002 §3.2/§2.2/§10 及 TD-002 T-L2-03/T-L2-07 的软件侧期望一致，ACK 失败可作为返回值判断，既有函数未被改动。板上验证交接给嵌入式测试。

@@ -327,6 +327,68 @@ void i2c_read_multi_byte(const i2c_dev *dev, uint8_t slave_addr,
 }
 
 /**
+ * @brief  i2c writes a single command byte to a register-less device
+ *         (START -> slave+W -> command -> STOP).
+ * @param  dev         : Pointer to iic structure
+ * @param  slave_addr  : Device address (8bit form, e.g. 0x88)
+ * @param  cmd         : Command byte (e.g. GXHT40 0xFD)
+ * @return SF_I2C_SUCCESS : Command accepted (ACK received)
+ *         SF_I2C_TIMEOUT : Device did not acknowledge (bus already released
+ *                          by i2c_wait_ack, which issues STOP on timeout)
+ */
+sf_i2c_err i2c_write_cmd(const i2c_dev *dev, uint8_t slave_addr, uint8_t cmd)
+{
+    sf_i2c_err err;
+
+    i2c_start(dev);
+    err = i2c_write_byte(dev, I2C_WRITE(slave_addr));
+    if (err != SF_I2C_SUCCESS) {
+        return err;
+    }
+    err = i2c_write_byte(dev, cmd);
+    i2c_stop(dev);
+    return err;
+}
+
+/**
+ * @brief  i2c reads length bytes from a register-less device
+ *         (START -> slave+R -> N-1 x ACK + last x NACK -> STOP).
+ * @param  dev         : Pointer to iic structure
+ * @param  slave_addr  : Device address (8bit form, e.g. 0x89 read form)
+ * @param  pbuf        : Pointer to target buffer (length >= 1)
+ * @param  length      : The number of bytes that need to be read
+ * @return SF_I2C_SUCCESS : Read address acknowledged, bytes transferred
+ *         SF_I2C_TIMEOUT : Read address not acknowledged (e.g. conversion not
+ *                          finished on GXHT40, which returns NACK)
+ */
+sf_i2c_err i2c_read_bytes(const i2c_dev *dev, uint8_t slave_addr, void *pbuf, uint16_t length)
+{
+    uint16_t i;
+    uint8_t *p = (uint8_t*)pbuf;
+    sf_i2c_err err;
+
+    if ((p == NULL) || (length == 0u)) {
+        return SF_I2C_SUCCESS;   /* no bus activity for empty request */
+    }
+
+    i2c_start(dev);
+    err = i2c_write_byte(dev, I2C_READ(slave_addr));
+    if (err != SF_I2C_SUCCESS) {
+        return err;
+    }
+
+    for (i = 0; i < length; i++) {
+        if (i != (length - 1u)) {
+            p[i] = i2c_read_byte(dev, 1);
+        } else {
+            p[i] = i2c_read_byte(dev, 0);
+        }
+    }
+    i2c_stop(dev);
+    return SF_I2C_SUCCESS;
+}
+
+/**
  * @brief  i2c writes multiple bytes to a register consecutively
  * @param  dev Pointer : to iic structure
  * @param  slave_addr  : Device address

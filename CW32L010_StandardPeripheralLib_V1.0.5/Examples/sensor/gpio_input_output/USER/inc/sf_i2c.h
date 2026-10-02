@@ -74,6 +74,14 @@ sf_i2c_err  i2c_write_multi_byte(const i2c_dev *dev, uint8_t slave_addr,
                                  uint8_t reg_addr, void *pbuf, uint16_t length);
 void        i2c_read_multi_byte(const i2c_dev *dev, uint8_t slave_addr, 
                                 uint8_t reg_addr, void *pbuf, uint16_t length);
+
+/* 无寄存器地址器件原语 (FD-002 §3.2, 供 GXHT40 使用):
+ *   i2c_write_cmd  : START -> 地址+W -> 命令 -> STOP
+ *   i2c_read_bytes : START -> 地址+R -> N 字节(前 N-1 字节主机 ACK, 末字节主机 NACK) -> STOP
+ * 两者都把从机 ACK 结果作为返回值 (SF_I2C_SUCCESS / SF_I2C_TIMEOUT)。
+ * 既有函数语义与调用方式不变。 */
+sf_i2c_err  i2c_write_cmd(const i2c_dev *dev, uint8_t slave_addr, uint8_t cmd);
+sf_i2c_err  i2c_read_bytes(const i2c_dev *dev, uint8_t slave_addr, void *pbuf, uint16_t length);
 sf_i2c_err  i2c_write_multi_byte_16bit(const i2c_dev *dev, uint8_t slave_addr, 
                                        uint16_t reg_addr, void *pbuf, uint16_t length);
 void        i2c_read_multi_byte_16bit(const i2c_dev *dev, uint8_t slave_addr, 
