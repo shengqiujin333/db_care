@@ -18,6 +18,8 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/EWARM/pr
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/Project.uvprojx | active | 传感器 Keil MDK 工程
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/UM2005C/ | active | UM2005C 433MHz 发射驱动与收发（radio、app_gtimer、app_um2005C、um2005C 及 HAL）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/ | active | 传感器用户头文件（与 USER/src 对应）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/main.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h | active | 传感器固件唯一配置点（PB04/PB05 引脚与 AIN11、GXHT40 地址/命令/重试/等待、光照阈值与滞回、3 分钟节拍、0.9℃/35.0℃ 上报常量、调试钩子；FD-002/ITEM-001）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/ | active | 传感器用户源码（main 采样节拍、measure 测量与阈值上报、sf_i2c 读温湿度、fw_core/hall/history/optcfg/params/encrytogate/interrupts）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/ | active | GNU 交叉编译支持（build.sh、cw32l010.ld、startup；obj/ 为忽略产物）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
@@ -25,6 +27,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/ | 
 CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外设库（传感器工程编译依赖；粗路径）
 artifacts/codegraph_index.md | active | 当前需求相关三个软件工程的 CodeGraph 本地索引位置与集合描述（数据库保留在被忽略的 .codegraph/）
 artifacts/firmware_design.md | active | 传感器/网关固件设计方案 FD-002（GXHT40 驱动、光敏 PB05/PB04-AIN11 采样、3 分钟节拍、条件上报、模块划分/时序/资源/异常/接口与实现约束）
+artifacts/firmware_implementation.md | active | 固件实现记录（当前任务项实际改动、预期行为与验证结果，逐项推进；FWI-002）
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002（本次固件域需求分解、验收行为与未决项；来源 readme + IC-002 + 网表）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002（传感器裸机超级循环 + RTC 深睡与中断边界；网关 TMOS 不变；时间/存储/功耗预算）
 artifacts/firmware_tasks.yaml | active | 固件实现任务清单（按前置依赖排序，供 firmware_engineer.firmware_implementation 消费）
@@ -52,6 +55,7 @@ dengbei_care/readme.txt | active | Android 版本变更记录
 dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书
+evidence/build.md | active | 传感器固件构建证据（交叉编译结果与内存占用、sensor_config.h 编译期断言、宿主机 L0 回归；BUILD-002）
 evidence/codegraph_validation.md | active | 三个代码根的 CodeGraph status 与 explore 最小可用性查询记录
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护；由各 Agent 共同维护）
 gateway_board.xml | active | 网关（中继器）硬件原理图 XML（OrCAD 导出）

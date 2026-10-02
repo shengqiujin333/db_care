@@ -38,6 +38,7 @@ extern "C"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
+#include "sensor_config.h"   /* 唯一配置点: 引脚/器件参数/阈值/节拍/上报常量 (FD-002) */
 #include "measure.h"
 #include "sf_i2c.h"
 #include "params.h"
