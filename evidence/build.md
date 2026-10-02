@@ -1,7 +1,7 @@
 # 构建证据（BUILD-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）、ITEM-003（GXHT40 驱动 `gxht40.c/.h`）
+本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）、ITEM-003（GXHT40 驱动 `gxht40.c/.h`）、ITEM-004（光照通路 `light.c/.h`）
 
 ## 1. 环境
 
@@ -112,7 +112,31 @@ arm-none-eabi-nm   obj/gxht40.o :
 - 宿主机 L0 回归：`test/build_test.sh` → 56 passed / 0 failed。
 - 工程文件注册（MDK `Project.uvprojx` / IAR `project.ewp` 的源文件列表加入 `gxht40.c`）属 ITEM-011 范围，本项未改工程文件；`gcc/build.sh` 通过通配自动包含。
 
-## 7. 限制与交接
+## 7. ITEM-004 增量（光照通路）
+
+改动：新增 `USER/inc/light.h`、`USER/src/light.c`；`USER/inc/sensor_config.h` +2 行（`LIGHT_ADC_EOC_GUARD`）；新增测试载体 `test/host_light_check.c`。
+
+```
+== compile ==  全部翻译单元（含 light.c）
+== link ==
+Memory region   Used Size   Region Size   %age Used
+FLASH:          34,060 B    64 KB         51.97%
+RAM:             1,960 B    4 KB          47.85%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+
+arm-none-eabi-size obj/light.o : text 364 / data 0 / bss 4
+arm-none-eabi-nm   obj/light.o : T light_code_is_dark / light_init / light_last_code /
+                                 light_reset_state / light_sample ; b s_dark_state / s_last_code
+```
+
+- **0 错误，无任何告警指向 `light.c`**；总告警 29 条，与基线同数。
+- 工程 FLASH/RAM **与 ITEM-003 相同（34,060 / 1,960 B）**：`light.o` 已编译但尚未被引用，链接器未拉入（接线由 ITEM-006 完成）。
+- 依赖面：`light.c` 仅依赖 `sensor_config.h`（配置）、`delay_ms` 与 CW32 标准外设库（GPIO/ADC/SYSCTRL）；无浮点。
+- 纯逻辑自检：`test/host_light_check.c` → **17 passed / 0 failed**（详见 `evidence/driver_test.md`）。
+- 宿主机 L0 回归：`test/build_test.sh` → 56 passed / 0 failed。
+- 工程文件注册（MDK/IAR 源列表加入 `light.c`）属 ITEM-011；`gcc/build.sh` 通过通配自动包含。
+
+## 8. 限制与交接
 
 - 本证据为 GNU 交叉编译 + 宿主机回归；量产构建走 Keil MDK / IAR EWARM（既有工程，`USER/inc` 已在两者 include 路径中，故新头文件无需改工程文件列表），未在本环境复编译 MDK/IAR。
 - 网关（CH592 beiwov2）需 WCH 工具链，本轮未涉及。

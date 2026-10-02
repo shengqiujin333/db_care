@@ -93,6 +93,8 @@
 #define LIGHT_ADC_CLK_DIV               ADC_Clk_Div8
 #define LIGHT_ADC_SAMPLE_TIME           ADC_SampTime390Clk
 #define LIGHT_ADC_SAMPLES               8u              /* 多次取样求算术平均 */
+/* ADC EOC 轮询上限(防转换挂死): 超时样本丢弃, 全部超时按满量程(无光)处理, 不阻塞 */
+#define LIGHT_ADC_EOC_GUARD             100000uL
 /* PB05 上电到首次转换的稳定等待, 覆盖分压 RC 与光敏器件响应 */
 #define LIGHT_SETTLE_MS                 100u
 /* 采样结束到 PB05 置低的余量 (无) */

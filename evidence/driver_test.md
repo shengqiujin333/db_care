@@ -1,9 +1,9 @@
 # 驱动测试证据（DRV-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）
-被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）
-测试载体：`.../gpio_input_output/test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（宿主机 mock 总线，不依赖 MCU 寄存器）
+本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）、**ITEM-004**（光照通路）
+被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）
+测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（宿主机 mock 总线）、`.../test/host_light_check.c`（宿主机纯逻辑 + 硬件桩）
 
 ## 1. 环境与运行
 
@@ -105,3 +105,42 @@ gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast \
 ## 4. 结论
 
 `gxht40_measure` 的行为与 FD-002 §6.1/§6.2/§10 及任务项 ITEM-003 的声明一致：地址探测与缓存、`0xFD` + 6 字节 + 双字 CRC、整数 x10 换算（含负温与 0..1000 截断）、有界重试、失败返回失败码且不修改输出。板上验证交接给嵌入式测试。
+
+---
+
+# ITEM-004：光照通路自检
+
+被测实现：`USER/src/light.c` / `USER/inc/light.h`（新增）
+测试载体：`.../test/host_light_check.c`（宿主机；只调用纯函数 `light_code_is_dark`，ADC/GPIO 函数以桩满足链接、不被执行）
+
+## 1. 运行
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast \
+    -I../USER/inc -I../COMMON -I../../../../Libraries/inc \
+    -I<CMSIS 5.9.0 Core Include> \
+    host_light_check.c ../USER/src/light.c -o host_light_check.exe \
+    && ./host_light_check.exe
+```
+
+结果：**17 passed, 0 failed**（harness 与 light.c 纯逻辑部分 0 告警）。
+
+## 2. 检查明细（TD-002 T-L0-04 边界）
+
+| 组 | 检查 | 结果 |
+|---|---|---|
+| 配置关系 | `ENTER=350`/`EXIT=250`；`EXIT<ENTER`；`ENTER-EXIT==HYSTERESIS_STEP`；满量程 4095 | PASS ×4 |
+| 已明→暗 | `0→LIT`、`349→LIT`、`350→DARK`、`351→DARK`、`4095→DARK` | PASS ×5 |
+| 已暗→明 | `4095→DARK`、`351→DARK`、`251→DARK`、`250→LIT`、`249→LIT`、`0→LIT` | PASS ×6 |
+| 带内不抖动 | 已明 + 300 → LIT；已暗 + 300 → DARK | PASS ×2 |
+
+## 3. 覆盖边界
+
+- 本证据只验证**滞回判定的纯逻辑**（阈值方向、端点、带内保持），不验证 ADC 采样序列（PB05 供电时序、稳定延时、多次取样均值、PB05 置低）——那需要 ADC 寄存器/实板，属 TD-002 T-L3-01/02（极性）与 T-L3-03（标定），由嵌入式测试在真实硬件完成。
+- `light_sample()` / `light_init()` 的寄存器操作未在宿主机执行；已用交叉编译（0 告警）与源码审查确认其引脚配置（PB04 模拟输入、PB05 推挽输出）与序列（PB05 高→延时→8 次采样→PB05 低、ADC 使能位开关）。
+- `light_code_is_dark` 现位于 `light.c`；ITEM-005 将抽取到 `fw_core.c`（同名纯函数），届时本 harness 可直接改指 `fw_core.c`。
+
+## 4. 结论
+
+光照滞回判定与 FD-002 §6.3 及任务项 ITEM-004 的声明一致（无光 = code ≥ 进入阈值，滞回带 250..349 不抖动）；采样序列与引脚所有权经编译与源码核对。实板光照阈值与极性交接给嵌入式测试（TD-002 T-L3）。
