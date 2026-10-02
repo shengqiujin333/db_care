@@ -363,3 +363,80 @@ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
 地址探测（0x44/0x45，8 位 0x88/0x8A 写、0x89/0x8B 读）、`0xFD` 高重复率测量与 tMEAS 等待、6 字节读取与温度/湿度字分别 CRC-8（poly 0x31/init 0xFF）校验、x10 整数换算（含负温、0..1000 截断、−40.0..125.0 ℃ 有效域）、有界重试、失败返回失败码且不修改输出——全部经**独立于被测实现的参考帧与 mock 器件**复现成立。
 
 **判定：TEST_PASS**。
+
+---
+
+# ITEM-004 验证（光照通路 `light.c/.h`）
+
+验证对象：任务项 **ITEM-004**（采样时 PB05 输出高 → 稳定延时 → PB04/AIN11 多次取样求均值 → 阈值/滞回输出 DARK/LIT（无光 = 读数 ≥ 进入阈值）→ 采样结束 PB05 置低）
+被测提交：`8e91e08`；源码基线：`d91f89c`
+结论：**TEST_PASS**（带一项已登记的后续 ITEM 依赖，见 F.1）
+
+## A. 选测说明与变更范围
+
+| 选测项 | 理由 |
+|---|---|
+| 新增/修改 diff 审查 | `light.h` 44/0、`light.c` 136/0、`test/host_light_check.c` 74/0 新增；`sensor_config.h` **+2/0**（仅新增 `LIGHT_ADC_EOC_GUARD`），无既有行为被改 |
+| **阴影头 mock MCU 层**（自研，链接真实 `light.c`） | 实现者的测试只覆盖纯滞回函数（ADC/GPIO 全为不执行的空桩），**采样序列/均值/超时回退未被覆盖**；本轮用仿真 MCU 层把真实 `light.c` 跑起来 |
+| 滞回真值表直接调用真实 `light_code_is_dark` | 需求硬性语义（无光 = code ≥ ENTER） |
+| 交叉编译 + AC5 + 对现网镜像影响 | 可编译性与回归 |
+
+不适用（后续 ITEM）：采样节拍接入（ITEM-006）、上报判定（ITEM-008）、旧通路退役（ITEM-009）、纯逻辑抽取（ITEM-005）、板级电气/时序（TD-002 T-L3-01/03/04/05，需暗箱/照度计/示波器，本轮无仪器）。
+
+## B. 独立仿真 MCU 层验证（通过，核心）
+
+自研阴影头（`test/mock_mcu/cw32l010_{gpio,adc,sysctrl}.h` + `mock_cw32.h`）置于 include 路径最前，使**真实的 `light.c`** 针对仿真 MCU 层编译；`delay_ms` 为计数桩，ADC 样本序列可脚本化（含 EOC 永不置位 = 转换超时）。
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+<mingw64 gcc> -std=c11 -Wall -Wextra -I test/mock_mcu -I USER/inc -I COMMON \
+  test/host_light_verify_ev.c USER/src/light.c -o light_verify && ./light_verify
+=> ==== result: 45 passed, 0 failed ====   (0 编译告警；未引用任何厂商头)
+```
+
+| 组 | 独立断言 | 结果 |
+|---|---|---|
+| 引脚所有权与 ADC 配置 | PB05 = 推挽输出且初始低；PB04 = 模拟输入；未配置其它引脚；ADC_Init 仅 1 次且通道 = `ADC_InputCH11`(AIN11)、`ADC_Clk_Div8`、`ADC_SampTime390Clk`、单次模式；init 后 ADC 关闭 | PASS ×10 |
+| 采样序列（LIT 场景） | PB05 先高、后低（每次采样恰好 1 高 1 低、无其它引脚写）；稳定延时 = `LIGHT_SETTLE_MS`(100 ms) 在采样前；恰好 `LIGHT_ADC_SAMPLES`(8) 次转换；ADC 使能/关闭各 1 次且事后关闭 | PASS ×10 |
+| DARK 场景 | code=400 → DARK | PASS |
+| 均值 | 4×0 + 4×4095 → `light_last_code()`=2047（整数均值），判定用均值 | PASS ×3 |
+| **滞回状态机（经真实 `light_sample`）** | 400→DARK；300（带内）保持 DARK；250(≤EXIT)→LIT；300(<ENTER) 保持 LIT；350(=ENTER)→DARK；349(>EXIT) 保持 DARK | PASS ×6 |
+| 部分转换超时 | 2 次超时 + 6×1000 → 均值 1000（仅对成功样本求均值）；仍尝试 8 个时隙 | PASS ×3 |
+| **全部转换超时（分压开路）** | 回退满量程 4095 → DARK（倾向上报、不阻塞）；PB05 仍置低；ADC 仍关闭；**轮询次数 800008，严格落在 8×GUARD…8×(GUARD+1) 内（有界，无死等）** | PASS ×5 |
+| `light_reset_state()` | 复位后首样本用 ENTER 阈值（300→LIT），随后 350→DARK | PASS ×2 |
+| 滞回真值表（直接调用） | 0/349→LIT；350/4095→DARK；251 保持/250→LIT；带内保持原状态 | PASS ×4 |
+
+实现者自带 harness 也被独立执行确认：`host_light_check.c` → **17 passed, 0 failed**。
+
+## C. 配置点与引脚所有权（通过，带依赖）
+
+- `sensor_config.h` 仍为唯一配置点：本轮仅 +2 行（`LIGHT_ADC_EOC_GUARD`），光照阈值/引脚/采样数/稳定延时等常量未重复定义。
+- `light.c` 内部：PB05 → `GPIO_MODE_OUTPUT_PP`（初始 `RESET`）；PB04 → `GPIO_MODE_ANALOG`（即 AIN11）；**非采样期 PB05 低、ADC 关闭**（低功耗约束）。
+- **整个固件层面的引脚所有权尚未唯一（后续 ITEM 依赖，见 F.1）**。
+
+## D. 构建与对现网镜像的影响（通过）
+
+| 项 | 结果 |
+|---|---|
+| GNU 交叉编译 | 0 error；29 warning（与基线同数，无一条指向 `light.c`） |
+| `light.o` | text 364 B / data 0 / bss 4；符号 `light_init`、`light_sample`、`light_last_code`、`light_code_is_dark`、`light_reset_state`；需 `__aeabi_uidiv`（32 位整数除法，无浮点）与 `memset` |
+| 固件镜像 | FLASH 34,060 B、RAM 1,960 B；`sensor_fw.bin` MD5 与 ITEM-003 构建**完全相同**（模块尚未被调用，`--gc-sections` 丢弃） |
+| AC5（`--c99`，CMSIS 5.9.0） | `light.c` 0 error；`main.c` 0 error |
+| 宿主机 L0 回归 | `test/build_test.sh` → 56 passed, 0 failed |
+
+## E. 观测与边界
+
+- 仿真层验证的是**软件序列与判定逻辑**：PB05 高/低时序、延时值、转换次数、均值、滞回、超时回退与有界轮询。
+- **未验证**（属板级）：PB05 高电平的实际建立时间与分压 RC/光敏响应（TD-002 T-L3-05）、实际暗/亮照度下的码值与阈值标定（T-L3-03）、ADC 真实 EOC 时序与 5 MΩ 源阻抗下的采样精度（T-L3-04）、PB04 电压/引脚真实电平（T-L3-01）。本轮无暗箱/照度计/示波器。
+
+## F. 依赖与交接
+
+1. **【重要・交 ITEM-009】整机引脚所有权冲突仍未消除**：`main.c` 目前仍调用 `optcfg_init(); hall_init();`（第 245/246 行），而 `optcfg.h` 定义 `OPT_IN_PIN = GPIO_PIN_5`（PB05 数字输入）、`F2_PWR_EN_PIN = GPIO_PIN_6`（PB06）、`hall.c` 将 `HALL_IN_PIN = GPIO_PIN_4`（PB04）配为带 EXTI 的数字输入。即：**在 ITEM-009 退役 hall/optcfg/params/history 之前，PB04/PB05/PB06 仍会被旧模块重新配置，光照通路在真实板上不会按设计工作**。这不属于 ITEM-004 的实现缺陷（ITEM-004 只交付 `light.c/.h`，且任务清单已把退役列入 ITEM-009），但意味着：在 ITEM-009 完成前，TD-002 的 T-L3-01/03/04/05 板级验证**不具备有效前提**，不得据此判光照功能通过。
+2. **接线（交 ITEM-006）**：`light_init()` 与 `light_sample()` 尚未被主循环调用（因此镜像零变化）。ITEM-006 需在采样流程中先 `light_sample()` 后测温湿度，并注意 `light_sample()` 自带 100 ms 阻塞延时（RTA-002 时间预算已计入）。
+3. **滞回纯函数重复（交 ITEM-005）**：`light_code_is_dark(code, prev_dark)` 已在 `light.c` 中为可宿主机直测的全局函数；ITEM-005 将其抽取到 `fw_core.c` 时，应保持签名/语义一致并让 `light.c` 复用，避免两份实现漂移。
+
+## G. ITEM-004 判定
+
+“PB05 输出高 → 稳定延时 → PB04/AIN11 多次取样求均值 → 阈值+滞回输出 DARK/LIT（无光=读数≥进入阈值）→ 采样结束 PB05 置低”以及“转换超时不阻塞、回退满量程（无光）”全部经**真实 `light.c` + 独立仿真 MCU 层**复现成立，既有配置点与现网镜像无回归。
+
+**判定：TEST_PASS**（F.1 的整机引脚冲突为已登记的后续 ITEM 依赖，不影响本项模块级判定）。
