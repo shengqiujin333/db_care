@@ -116,6 +116,8 @@ dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCod
 dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | active | 内嵌 Paho MQTT Android 客户端（vendor；粗路径）
 dengbei_care/app/src/main/res/ | active | Android 资源（layout/values/navigation/drawable/mipmap/xml；粗路径）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt | active | GatewayFrameCodec 宿主机 JUnit4 自检 11 项（帧长规则、温度/湿度向量与符号、devId 格式、多设备归属、与改动前 parsePlainFrame 固定种子随机逐位比对；ITEM-001）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt | active | 由 software_tester.software_verification 新增：ITEM-001 独立验证（内嵌 Git 历史逐字提取的改动前 parsePlainFrame 为基准；1848 组边界 + 600 组随机帧的网关 ID/devCount/devId/湿度/温度 Double toRawBits 逐位一致；拒绝边界差异仅为显式拒绝；3/3）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-001 独立验证（按 IC-002 §4 自写参考；65536 温度字 + 65536 湿度字穷举与 FNV-1a 表哈希比对独立 Python 参考、65536 组 ID 字节序、帧长矩阵 devCount 0..8、拒绝结果无读数反射检查、灵敏度负对照；7/7）
 dengbei_care/build.gradle.kts | active | 工程级 Gradle 构建脚本
 dengbei_care/dependencies.txt | active | Android 依赖清单
 dengbei_care/gradle.properties | active | Gradle 属性
@@ -135,6 +137,8 @@ evidence/build.md | active | 传感器固件构建证据（交叉编译结果与
 evidence/codegraph_validation.md | active | 三个代码根的 CodeGraph status 与 explore 最小可用性查询记录
 evidence/driver_test.md | active | 驱动/流程测试证据（DRV-002：sf_i2c 原语、GXHT40 驱动、光照滞回、fw_core 纯逻辑、measure 采样流程与发送路径；逐任务项追加）
 evidence/protocol_test.md | active | 协议测试证据（PROTO-002：ITEM-008 空口往返——真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c，14/14）
+evidence/software_reference_frame_codec.py | active | 由 software_tester.software_verification 新增：软件验证用独立 Python 参考（按 IC-002 §4 推导全部 65536 个温度/湿度原始字的期望值与 FNV-1a 表哈希；输出 0x2852B22D36982325 / 0x7E93E747630A2325，与 Kotlin 独立验证测试断言常量一致）
+evidence/software_test.md | active | 软件测试执行证据 ST-002（逐队列项追加；ST-001/ITEM-001：适用用例选择与理由、独立验证方法（Git 历史基准逐位一致 + 穷举表哈希 + 负对照）、raw 结果 22 项 0 失败、接线/单一实现静态核查、回归覆盖、判定 TEST_PASS 与未覆盖项、交接观察）
 evidence/test.md | active | 嵌入式验证证据（EV-002，逐任务项追加；ITEM-001：sensor_config.h 独立性验证；ITEM-002：sf_i2c 命令写/连续读；ITEM-003：GXHT40 驱动；ITEM-004：光照通路；ITEM-005：fw_core 纯逻辑；ITEM-006：measure.c 采样流程；ITEM-007：3 分钟节拍；ITEM-008：条件上报发送；ITEM-009：旧通路退役——退役文件/符号/引用清零、GPIOB_IRQHandler 在 ELF 中为空（bx lr）、LPTIM 仅调 433 位时钟、整机引脚所有权唯一（PB04 仅 AIN11/PB05 仅光照供电/PB06 不驱动）、FLASH −3,648 B、回归 53/42/45/79/30/10/17；ITEM-010：宿主机 L0 套件——build_test.sh 两阶段 38+24 项、期望值经独立 Python 参考逐条复核、注入失败验证门禁确实 exit=1；ITEM-011：交叉编译与工程列表——gcc/build.sh 生成 elf/hex/bin、FLASH 32,208 B/RAM 1,712 B（预算内）、MDK 与 IAR 列表逐条路径存在且与 USER/src 一致、两列表均编译链接零未定义符号、*.exe 入 .gitignore；ITEM-012：网关/Android 兼容性——逐段源码核对 + 真实编解码器端到端 11 项（含负对照）、AES 密钥/帧长/记录顺序一致、网关与 Android 自基线未改）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护；由各 Agent 共同维护）
 gateway_board.xml | active | 网关（中继器）硬件原理图 XML（OrCAD 导出）
