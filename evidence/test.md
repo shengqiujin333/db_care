@@ -955,3 +955,83 @@ CC=<mingw64 gcc> sh build_test.sh
 `host_sensor_core_test.c` 已覆盖 CRC-8 参考向量、温度/湿度换算边界（含负温与 0/100% 截断）、光照阈值与滞回、上报判定边界（含恰好 0.9 ℃、恰好 35.0 ℃、无前值、非暗）；“失败不更新前值”由脚本阶段 2 覆盖；退役用例已彻底移除；`build_test.sh` 在本机两阶段 38+24 全部通过、退出码 0、零编译告警、可重复，且经注入验证为**真实门禁**；测试期望值经独立参考逐条确认正确。
 
 **判定：TEST_PASS**。
+
+---
+
+# ITEM-011 验证（交叉编译与 MDK/IAR 工程源文件列表）
+
+验证对象：任务项 **ITEM-011**（执行 `gcc/build.sh` 完成编译与链接并生成 elf/hex/bin；RAM/Flash 不超过 4 KB/64 KB；MDK/IAR 工程源文件列表与新增、移除的源文件保持一致）
+被测提交：`eada262`；源码基线：`74f663f`
+结论：**TEST_PASS**
+
+## A. 变更范围
+
+| 文件 | 变化 |
+|---|---|
+| `.gitignore` | **+1**：新增 `*.exe`（关闭 ITEM-010 登记的“测试脚本留下未跟踪 .exe”卫生项） |
+| `EWARM/project.ewp` | **+64**：User 组补齐 8 个 `USER/src`；新增 UM2005C/COMMON 组与对应 include 路径；Driver 组补齐 adc/digitalsign/lptim/rtc/uart |
+| `MDK/Project.uvprojx` | **+20**：User 组补 `fw_core.c`/`gxht40.c`/`light.c`；Driver 组补 `cw32l010_adc.c` |
+| **源码/头文件** | **无任何改动**（`git show --numstat` 中 `USER/(src\|inc)/` 计数 = 0） |
+
+## B. 交叉编译（通过）
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+sh gcc/build.sh
+```
+
+| 项 | 结果 |
+|---|---|
+| 退出码 | **0** |
+| 编译/链接 | **0 error**；28 warning（全部为既有：encrytogate 未用静态量/缩进、main 模板参数与返回类型、sf_i2c maybe-uninitialized；**无一条指向 fw_core/gxht40/light/measure**） |
+| 产物 | `gcc/obj/sensor_fw.elf`（156,508 B）、`sensor_fw.hex`（90,878 B）、`sensor_fw.bin`（32,292 B）均生成 |
+| 目标 | Cortex-M0+（`-mcpu=cortex-m0plus -mthumb`） |
+
+## C. 内存预算（通过）
+
+| 区域 | 占用 | 限额 | 判定 |
+|---|---|---|---|
+| FLASH（text+data） | **32,208 B**（链接器报告 49.15%；`size` text 32,208 + data 84 = 32,292） | 64 KB = 65,536 B | **PASS**（余量约 50%） |
+| RAM（data+bss） | **1,712 B**（链接器报告 41.80%；data 84 + bss 1,628） | 4 KB = 4,096 B | **PASS**（余量约 58%） |
+
+## D. MDK/IAR 工程源文件列表一致性（通过，含功能完整性）
+
+路径按各自工程目录解析（MDK 的 `FilePath` 相对于 `MDK/`，IAR 的 `$PROJ_DIR$` 相对于 `EWARM/`）。
+
+| 检查 | 结果 |
+|---|---|
+| 条目数 | MDK 25、IAR 25 |
+| **每条路径存在** | 全部存在（无悬空引用） |
+| 两列表集合 | **完全相同**（唯一差异是工具链各自的 startup：`IdeSupport/MDK/startup_cw32l010.s` vs `IdeSupport/EWARM/startup_cw32l010.s`） |
+| `USER/src` 一致性 | 实际 8 个 .c == 列表 8 个（encrytogate/fw_core/gxht40/interrupts/light/main/measure/sf_i2c） |
+| 新增文件 | `fw_core.c`/`gxht40.c`/`light.c` 在**两个**列表中均存在 |
+| 退役文件 | `hall/optcfg/params/history` 在列表中**零出现** |
+| 新增依赖 | MDK 补 `cw32l010_adc.c`（light.c 需要）；IAR 补 `UM2005C`/`COMMON` 的 include 路径（gxht40.c 需要 `delay.h`，measure.c 需要 `app_um2005c.h`） |
+| **功能完整性（链接验证）** | 用 GNU 工具链编译两列表的 25 个文件（工具链专用 startup 以 `gcc/startup_cw32l010.S` 等价替代）→ 均 **0 error**，链接**无未定义符号**；MDK 集合 FLASH 32,300 B / RAM 1,696 B，IAR 集合 FLASH 32,300 B / RAM 1,704 B |
+
+即：列表不仅“名字对齐”，而且**足以完整链接出固件**（无缺文件）。
+
+> 说明：Keil/IAR 专用 startup 使用 ARMASM / IAR 语法，无法用 GNU `as` 汇编（报 `bad instruction`），这是**预期**而非缺陷；`gcc/build.sh` 使用 `gcc/startup_cw32l010.S`。
+
+## E. .gitignore 与仓库卫生（通过）
+
+运行 `test/build_test.sh`（38/38 + 24/24，exit 0）后 `git status` **为空**——`*.exe` 已入 `.gitignore`，ITEM-010 登记的卫生项已关闭。
+
+## F. 回归（通过）
+
+| 项 | 结果 |
+|---|---|
+| `test/build_test.sh` | 38/38（纯逻辑）+ 24/24（采样/上报流程），exit 0 |
+| 独立 harness 抽查（本项未改源码，结论沿用） | fw_core 53/53、measure 流程 79/79、空口帧互操作 10/10 |
+
+## G. 观察与交接
+
+1. **两套构建的编译集合不完全相同（非缺陷）**：`gcc/build.sh` 以通配符编译 `Libraries/src/*.c`（**23 个**），而 MDK/IAR 只列实际使用的 **9 个**库文件；未使用的库代码在 GNU 链接时被 `--gc-sections` 丢弃，因此内存数字仍只反映实际使用代码。验收要求的是“工程列表与新增/移除的源文件一致”，项目自有源码集合（USER/src/UM2005C/COMMON）两列表完全一致，已满足；此差异仅记录备查。
+2. **Keil 全量构建仍不可用**：本机 CMSIS 解析到 6.3.0 与 AC5 不兼容（ITEM-001 已登记定位），`mdk_build` 会报 `Unknown compiler`；因此 `mdk_flash`/`mdk_build` 不能作为构建证据（无 Verify OK 不得判成功）。本轮构建证据 = GNU 交叉编译 + AC5 逐文件编译（ITEM-009/010 已做）+ 上述“列表功能完整性链接”。
+3. **板级验证未做**：烧录/运行/串口/波形观测本轮无设备确认（无 SWD 探针枚举、无实测环境），属 TD-002 T-L2/L4/L8 范围。
+
+## H. ITEM-011 判定
+
+`gcc/build.sh` 编译链接通过并生成 elf/hex/bin，FLASH 32,208 B（≤ 64 KB）与 RAM 1,712 B（≤ 4 KB）均在预算内；MDK 与 IAR 工程源文件列表已补齐新增源文件、无退役残留、路径全部存在、与 `USER/src` 实际集合一致，且两列表均可完整链接（零未定义符号）；`.gitignore` 补齐 `*.exe`。
+
+**判定：TEST_PASS**。

@@ -125,7 +125,7 @@ evidence/build.md | active | 传感器固件构建证据（交叉编译结果与
 evidence/codegraph_validation.md | active | 三个代码根的 CodeGraph status 与 explore 最小可用性查询记录
 evidence/driver_test.md | active | 驱动/流程测试证据（DRV-002：sf_i2c 原语、GXHT40 驱动、光照滞回、fw_core 纯逻辑、measure 采样流程与发送路径；逐任务项追加）
 evidence/protocol_test.md | active | 协议测试证据（PROTO-002：ITEM-008 空口往返——真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c，14/14）
-evidence/test.md | active | 嵌入式验证证据（EV-002，逐任务项追加；ITEM-001：sensor_config.h 独立性验证；ITEM-002：sf_i2c 命令写/连续读；ITEM-003：GXHT40 驱动；ITEM-004：光照通路；ITEM-005：fw_core 纯逻辑；ITEM-006：measure.c 采样流程；ITEM-007：3 分钟节拍；ITEM-008：条件上报发送；ITEM-009：旧通路退役——退役文件/符号/引用清零、GPIOB_IRQHandler 在 ELF 中为空（bx lr）、LPTIM 仅调 433 位时钟、整机引脚所有权唯一（PB04 仅 AIN11/PB05 仅光照供电/PB06 不驱动）、FLASH −3,648 B、回归 53/42/45/79/30/10/17；ITEM-010：宿主机 L0 套件——build_test.sh 两阶段 38+24 项、期望值经独立 Python 参考逐条复核、注入失败验证门禁确实 exit=1）
+evidence/test.md | active | 嵌入式验证证据（EV-002，逐任务项追加；ITEM-001：sensor_config.h 独立性验证；ITEM-002：sf_i2c 命令写/连续读；ITEM-003：GXHT40 驱动；ITEM-004：光照通路；ITEM-005：fw_core 纯逻辑；ITEM-006：measure.c 采样流程；ITEM-007：3 分钟节拍；ITEM-008：条件上报发送；ITEM-009：旧通路退役——退役文件/符号/引用清零、GPIOB_IRQHandler 在 ELF 中为空（bx lr）、LPTIM 仅调 433 位时钟、整机引脚所有权唯一（PB04 仅 AIN11/PB05 仅光照供电/PB06 不驱动）、FLASH −3,648 B、回归 53/42/45/79/30/10/17；ITEM-010：宿主机 L0 套件——build_test.sh 两阶段 38+24 项、期望值经独立 Python 参考逐条复核、注入失败验证门禁确实 exit=1；ITEM-011：交叉编译与工程列表——gcc/build.sh 生成 elf/hex/bin、FLASH 32,208 B/RAM 1,712 B（预算内）、MDK 与 IAR 列表逐条路径存在且与 USER/src 一致、两列表均编译链接零未定义符号、*.exe 入 .gitignore）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护；由各 Agent 共同维护）
 gateway_board.xml | active | 网关（中继器）硬件原理图 XML（OrCAD 导出）
 gxht40.pdf | active | GXHT40 温湿度传感器数据手册（本次温度传感器选型/驱动依据）
