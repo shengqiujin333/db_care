@@ -2,7 +2,7 @@
 
 状态：软件测试执行证据（`software_tester.software_verification`），按 Runtime 逐个指派的队列项追加
 对象：Android App `dengbei_care`（Kotlin / AGP 8.3.2 / Gradle 8.4 / JDK 21）
-本轮项：队列 **ITEM-001**…**ITEM-007**（逐项分节记录）
+本轮项：队列 **ITEM-001**…**ITEM-008**（逐项分节记录）
 依据：`artifacts/software_test_design.md`（TD-SW-002）、`artifacts/software_e2e_plan.md`（E2E-SW-002）、`artifacts/interface_contract.md`（IC-002 §4）、`artifacts/android_architecture.md`（AA-002 §5.1/§10）
 被测代码版本：`3e0ed11`（android_engineer.android_implementation 提交）；改动前基线：`fe9a81c`
 说明：本文件为本能力**独立执行**的记录；实现侧自检（`evidence/android_test.md` AT-001）仅作为被核对对象，不重复引用为通过依据。
@@ -620,3 +620,77 @@ BUILD SUCCESSFUL in 3s
 3. **`60L` 静态口径**：全仓字面清零需显式排除 `AlarmEvaluator` 的时间窗口算术（本项已在脚本中固化该例外）。
 4. **iOS 参考快照**仍含旧列表式 API 与 60 s 回填（非编译、不参与构建，readme 点 6 本轮不改 iOS），属文档/iOS 资料维护交接项。
 5. **本项不涉及**：待发箱 DAO 与上传编排（ITEM-009）、Service 接入 `AlarmEvaluator`（ITEM-010）、UI（ITEM-011/012）。
+
+---
+
+## ST-008 · ITEM-008（`/upload_data` 端点与请求体构造 `cloud/UploadPayload.kt`）
+
+**被测代码版本**：`0c45960`（android_engineer.android_implementation 提交，相对上一提交 `cec8e01`）
+**变更范围**：`ui/zhuce/ApiService.kt`（**纯追加**：`@Headers`+`@POST("/upload_data")` 的 `uploadData` 与两个 DTO）；新增 `cloud/UploadPayload.kt`；实现侧宿主机测试。
+**任务期望**：字段名与服务器契约一致（`phone`/`mac`/`readings[{devId,time,temperature,humidity}]`）；`temperature` ℃、`humidity` %RH、`time` Unix 秒；`devId` 来自记录自身归因；既有 5 个端点签名与数据类字段不变。
+
+### 1. 适用测试的选择与理由
+
+| TD-SW-002 用例 | 是否适用 | 本轮结果 |
+|---|---|---|
+| T-SW-L0-11（上传载荷构造：字段名/单位/时间/devId/空集） | 适用 | 已执行（逐字 JSON + 结构 + 反射 + 静态） |
+| T-SW-L0d-07（既有 5 端点契约不变） | 适用 | 已执行（基线行作为有序子序列 + 端点清单） |
+| T-SW-L1-01/L1-02（构建、宿主机单测） | 适用 | 已执行（119 项 0 失败） |
+| T-SW-L2-12（真实 `/upload_data` 幂等与 `inserted` 计数） | **本轮不适用** | 本能力本次未授权 `api_client` 且本机无外网（代理拒绝）；属 E2E-SW-002 J-1/J-5，不作为本项判定依据 |
+
+### 2. 独立验证方法
+
+1. 独立脚本 `evidence/software_verify_upload_payload_item008.py`：把改动前 `ApiService.kt` 的**每一行**作为有序子序列在现文件中断言（任何既有行被删/改即失败）；端点清单与返回类型；新 DTO 字段名/类型；**单位仅一次换算**链条（非注释代码中 `GatewayFrameCodec` 恰 2 处、`ReadingAttribution`/`UploadPayload` 各 0 处、`MqtttService` 仅存于无调用点的旧解析族）；`UploadPayload` 无副作用依赖且两入口均空集返回 null。
+2. 宿主机独立单测 `verification/UploadPayloadItem008VerificationTest.kt`（9 项）：独立写出的**逐字 JSON**、JSON key 集合与类型（`time` 必须是 JSON 数字）、单位不二次换算（含负对照与负温保号）、`time` 非毫秒、`devId` 与数值成对随读数下沉、空集不产生请求体与待发箱逐行时间、新增/既有 DTO 字段与类型、`ApiService` 6 端点（注解路径/suspend/参数类型/JSON 头）。
+
+### 3. 原始结果
+
+**独立脚本（EXIT=0）**：
+
+```
+== A 既有端点/数据类未被修改 ==
+  PASS  基线 31 行全部按序保留（缺失/被改=0）
+  PASS  端点清单 = [/sendVerificationCode, /verifyCode, /register, /login, /setmac, /upload_data]
+  PASS  6 个端点均返回 Response（Response<Void>×5 + Response<LoginResponse>）
+== B 新增 DTO 字段名/类型 ==
+  PASS  SensorReading = [(devId,String),(time,Long),(temperature,Double),(humidity,Double)]
+  PASS  SensorUploadData = [(phone,String),(mac,String),(readings,List<SensorReading>)]
+== C 单位只换算一次 ==
+  PASS  非注释换算计数 = {GatewayFrameCodec:2, ReadingAttribution:0, UploadPayload:0, MqtttService:2}
+  PASS  MqtttService: 旧解析族内换算=2、存活路径换算=0、interpretPayloadV3 调用点=0
+== D UploadPayload 纯逻辑与空集门控 ==
+  PASS  无副作用依赖（getSharedPreferences/Retrofit/OkHttp/HttpURLConnection/writableDatabase 均未命中）
+  PASS  两个入口均有空集返回 null
+== RESULT ==  OK
+```
+
+**宿主机独立单测（9/9）**：`serializedJson_isExactlyTheServerContract`、`jsonStructure_hasExactKeysAndTypes`、`unitsArePassedThrough_soNoDoubleScaling`、`timeIsUnixSeconds_notMillis`、`devIdComesFromEachReading_notFromIndex`、`emptyReadings_produceNoPayload_butOutboxPathKeepsPerRowTimes`、`dtoFieldNamesAndTypes_matchServerContract`、`existingDataClasses_areUnchanged`、`apiService_endpointInventoryAndContentType`。逐字 JSON 期望：
+
+```
+{"phone":"13800000000","mac":"1010100000A1","readings":[{"devId":"A1B2C3D4","time":1699999999,"temperature":25.5,"humidity":60.0}]}
+```
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单测（14 套件） | `./gradlew :app:testDebugUnitTest --offline` | BUILD SUCCESSFUL；**119 tests / 0 failures / 0 errors / 0 skipped** |
+| 构建 | `./gradlew :app:assembleDebug --offline` | BUILD SUCCESSFUL；`app-debug.apk` 10,359,867 B（与实现侧一致） |
+| 前项独立脚本 | ITEM-002/004/006/007 脚本 | 均 EXIT=0 |
+| 差异范围 | `git diff --name-only cec8e01 0c45960` | 仅 `ApiService.kt`（纯追加）、新增 `UploadPayload.kt`、实现侧测试 + 文档/清单 |
+
+### 4. 判定
+
+1. **字段名与单位**：序列化结果与服务器契约**逐字一致**；JSON key 集合精确；`time` 为 Unix 秒（JSON 数字、非毫秒）；`temperature`/`humidity` 为 ℃/%RH，且**不再二次换算**（换算只发生在 `GatewayFrameCodec` 的 2 处；`ReadingAttribution`/`UploadPayload` 为 0）；负温保号。**通过**
+2. **`devId` 归属**：`readings` 的 `devId` 来自读数自身（打乱顺序后 `devId` 与数值仍成对），不依赖下标。**通过**
+3. **空集**：两个入口均返回 null（不产生请求）。**通过**
+4. **既有端点/数据类不变**：基线 31 行全部按序保留（含 5 个端点与 6 个既有数据类），端点清单恰为 5 旧 + `/upload_data`，返回类型与签名未变；新增端点为 JSON POST 且参数为 `SensorUploadData`。**通过**
+5. **回归**：119 项宿主机用例全绿、构建成功、前项独立脚本均通过。**通过**
+
+结论：**TEST_PASS**（契约级：字段/单位/归属/幂等键形式与既有端点兼容性；不含真实服务器调用）。
+
+### 5. 交接与观察
+
+1. **真实 `/upload_data` 调用未执行**：本次未授权 `api_client` 且本机无外网（代理 127.0.0.1:10808 拒绝）；T-SW-L2-12 的 HTTP 状态/`inserted` 幂等核对属 E2E-SW-002 J-1/J-5。本项为端点/载荷构造交付，契约级证据已充分（不声称服务端已联调）。
+2. **响应体未建模**：接口用 `Response<Void>`（仅 2xx 判定）；服务端实际返回 `inserted` 计数。若后续需在 App 侧读取，属新增需求（一处类型改动）。
+3. **手机号/守护门控**（空手机号不入队、守护关闭不入队）属后续队列项（ITEM-009/D-09）；`UploadPayload` 只做结构组装，不读 `SharedPreferences`（已静态核查）。
+4. **旧解析族的重复换算**：`MqtttService.interpretPayloadV3`（无调用点）内仍有 2 处 `/10.0`，与存活路径无关（已核实调用点=0）；清理属后续维护项，已在脚本中固化该例外以便回归。
+5. **本项不涉及**：待发箱 DAO/重试与上传编排（ITEM-009）、Service 接线（ITEM-010）、UI（ITEM-011/012）。
