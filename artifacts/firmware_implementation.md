@@ -355,7 +355,7 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
-# 任务项 ITEM-009（本轮）
+# 任务项 ITEM-009（已完成，独立验证 TEST_PASS）
 
 **ITEM-009**：退役与新硬件冲突的旧通路：从工程与构建中移除 hall/OPTCFG/params/history 模块及其对 PB04/PB05/PB06 的初始化，移除 GPIOB 霍尔 EXTI 分支与 LPTIM 中的 OPTCFG 分支；PB04 仅作 AIN11 模拟输入、PB05 仅作光照供电输出、PB06 不外驱动。
 
@@ -400,9 +400,58 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
+# 任务项 ITEM-010（本轮）
+
+**ITEM-010**：更新宿主机纯逻辑测试 `test/host_sensor_core_test.c` 与 `test/build_test.sh`：覆盖 CRC-8 参考向量、换算边界（负温、0%/100% 截断）、光照阈值与滞回、上报判定边界（恰好 0.9℃、恰好 35.0℃、无前值、非暗、失败不更新），移除已退役的 OPTCFG/params 用例，脚本在本机运行通过。
+
+设计映射：TD-002 T-L0-01…T-L0-06、T-L6-01；FD-002 §6。
+
+## 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `.../test/host_sensor_core_test.c` | 重写为综合纯逻辑套件 | 保留 CRC16 回归，新增 T-L0-01 CRC-8、T-L0-02 温度换算/合法域、T-L0-03 湿度换算/截断、组合换算、T-L0-04 光照滞回、T-L0-05 上报判定共 38 项 |
+| `.../test/build_test.sh` | 扩展为两阶段 | 阶段 1：fw_core 纯逻辑（`host_sensor_core_test.c`）；阶段 2：采样/上报流程（`host_measure_flow_check.c` + mock MCU），覆盖“测量失败不更新前值” |
+
+已退役的 OPTCFG/params/history 用例已在 ITEM-009 移除；本项不再涉及旧模块。
+
+### 覆盖对应（TD-002）
+
+| 用例 | 断言要点 | 结果 |
+|---|---|---|
+| T-L0-06 | CRC16 `123456789`→0x29B1、参考帧 33B→0xB540 | PASS ×2 |
+| T-L0-01 | CRC-8 `{BE,EF}`→0x92、`{00}`→0xAC、空长度→0xFF | PASS ×3 |
+| T-L0-02 | 温度 S=1872→−400 / 16855→0 / 26214→250 / 63664→1250；S=0→−450、0xFFFF→1300；有效域 -400/1250 合法、−450/1251/1300 无效；组合换算有效写输出/无效不写 | PASS ×11 |
+| T-L0-03 | 湿度 S=0→0 / 2247→0 / 29360→500 / 55575→1000 / 0xFFFF→1000 | PASS ×5 |
+| T-L0-04 | 已明 349→LIT、350→DARK；已暗 251→DARK、250→LIT；0→LIT、4095→DARK；带内保持 | PASS ×7 |
+| T-L0-05 | 无前值 200→false / 351→true；降 9→false、10→true、11→true；非 DARK→false；cur=350→false；prev==cur→false | PASS ×9 |
+| T-L6-01（流程） | 失败周期：不置 report_req、不更新前值、不写 0；恢复后按失败前前值判定 | PASS（阶段 2） |
+
+### 行为要点
+
+1. `build_test.sh` 成为单一宿主入口：**阶段 1** 纯逻辑（38/38）、**阶段 2** 流程（24/24），退出码 0。
+2. “失败不更新前值”属 `measure.c` 流程行为，放在阶段 2（`host_measure_flow_check.c`，mock MCU 影子头）验证；文件头注释已交叉引用。
+3. 保留的 `host_fw_core_pure_check.c`（ITEM-005 引入）与本套件用例重叠，作为独立 harness 保留。
+
+**本项不包含**：MDK/IAR 源列表一致性（ITEM-011）、网关固件核对（ITEM-012）。
+
+## 验证（本轮实际执行）
+
+- `test/build_test.sh`（本机 MinGW-w64 gcc 12.2.0）→ 阶段 1 **38 passed / 0 failed**、阶段 2 **24 passed / 0 failed**，**退出码 0**。
+- 交叉编译：`gcc/build.sh` → **0 错误、28 条告警**；FLASH 32,208 B / RAM 1,712 B（不变，测试不进入固件）。
+- 回归：`host_fw_core_pure_check.c` 36/36、`host_measure_flow_check.c` 24/24、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`host_rf_frame_check.c` 14/14。
+
+## 交接与依赖
+
+- **T-L0-05 用例数值（TD-002 需校正）**：任务文本/FD-002/IC-002 均为 `(prev-cur)>9`（降 9 不触发、降 10 触发）；TD-002 第②行写作 `prev=300,cur=290` 期望 false 与规则不符（“恰好 0.9℃”应为 cur=291）。实现与测试均按 `>9`，并同时固定 9/10/11 三个边界。
+- MDK/IAR 源列表一致性（含 fw_core.c/gxht40.c/light.c）属 ITEM-011。
+- 板级长时基/功耗/射频验证仍属嵌入式测试（TD-002 T-L4/T-L6/T-L8）。
+
+---
+
 # 后续任务项状态
 
-`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-009（前八项独立验证 TEST_PASS，ITEM-009 本轮）。其余 3 项由 Runtime 后续指派，未指派项不在本轮产出。
+`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-010（前九项独立验证 TEST_PASS，ITEM-010 本轮）。其余 2 项由 Runtime 后续指派，未指派项不在本轮产出。
 
 # 交接与依赖（累计）
 

@@ -1,7 +1,7 @@
 # 驱动测试证据（DRV-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 **ITEM-002**…**ITEM-008**（总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报）与 **ITEM-009**（退役 hall/OPTCFG/params/history）
+本轮对象：任务项 **ITEM-002**…**ITEM-009**（总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报/退役旧通路）与 **ITEM-010**（宿主机测试更新）
 被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）；`USER/src/fw_core.c` / `USER/inc/fw_core.h`（ITEM-005）；`USER/src/measure.c` / `USER/inc/measure.h`（ITEM-006）
 测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（mock 总线）、`.../test/host_light_check.c`（纯逻辑 + 硬件桩）、`.../test/host_fw_core_pure_check.c`（纯逻辑）、`.../test/host_measure_flow_check.c` + `.../test/mock_measure_mcu/`（mock MCU 影子头）
 
@@ -380,3 +380,44 @@ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
 ## 4. 结论
 
 hall/OPTCFG/params/history 及其对 PB04/PB05/PB06 的初始化、GPIOB 霍尔 EXTI 分支与 LPTIM 的 OPTCFG 分支均已从源码、构建与固件镜像中移除；PB04 仅作 AIN11 模拟输入、PB05 仅作光照供电输出、PB06 不外驱动；采样→判定→上报→深睡主流程回归全部通过。
+
+---
+
+# ITEM-010：宿主机测试套件
+
+被测对象：`USER/src/fw_core.c`（纯逻辑）+ `USER/src/measure.c`（流程）
+测试入口：`test/build_test.sh`（两阶段）
+
+## 1. 运行
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+CC=<mingw64 gcc full path> sh build_test.sh
+```
+
+结果：**阶段 1 纯逻辑 38 passed / 0 failed；阶段 2 流程 24 passed / 0 failed；退出码 0**。
+
+## 2. 阶段 1 检查明细（host_sensor_core_test.c，TD-002 T-L0-01..06）
+
+| 用例 | 断言 | 结果 |
+|---|---|---|
+| T-L0-06 | CRC16 `123456789`→0x29B1；参考帧 33B→0xB540 | PASS ×2 |
+| T-L0-01 | CRC-8 `{BE,EF}`→0x92；`{00}`→0xAC；空长度→0xFF | PASS ×3 |
+| T-L0-02 | 温度 1872→−400、16855→0、26214→250、63664→1250；0→−450、0xFFFF→1300；域端点/域外有效性与组合换算（有效才写输出） | PASS ×11 |
+| T-L0-03 | 湿度 0→0、2247→0、29360→500、55575→1000、0xFFFF→1000 | PASS ×5 |
+| T-L0-04 | 已明 349→LIT/350→DARK；已暗 251→DARK/250→LIT；0→LIT；4095→DARK；带内保持 | PASS ×7 |
+| T-L0-05 | 无前值 200→false/351→true；降 9→false、10→true、11→true；非 DARK→false；cur=350→false；prev==cur→false | PASS ×9 |
+
+## 3. 阶段 2 检查明细（host_measure_flow_check.c，TD-002 T-L6-01 + ITEM-006/008）
+
+先光照后温湿度；降 9/10 边界；需 DARK；待上报保持；**整周期失败不置 report_req / 不更新前值 / 不写 0**；失败后按失败前前值判定；超温分支；`sample_flag==0` 不采样；发送路径门控/样本/长度/成功清除/失败重试/放弃（24 项）。
+
+## 4. 覆盖边界
+
+- 阶段 1 为纯逻辑（无 MCU 寄存器）；阶段 2 以 mock MCU 影子头 + 可控 GXHT40/光照/发送桩编译真实 `measure.c`，未执行真实驱动/硬件。
+- 真实板级时序/功耗/射频（TD-002 T-L3/T-L4/T-L6/T-L8）由嵌入式测试完成。
+- **TD-002 T-L0-05 数值校正**：第②行 `prev=300,cur=290` 期望 false 与 `>9` 规则不符（“恰好 0.9℃”为 cur=291）；实现与测试按任务文本/FD-002/IC-002 的 `>9`，并同时固定 9/10/11 三个边界。
+
+## 5. 结论
+
+`test/build_test.sh` 单命令覆盖本次需求新增的全部纯逻辑边界与“失败不更新前值”流程行为，本机运行退出码 0；已退役的 OPTCFG/params/history 用例不再存在。

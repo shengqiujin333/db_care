@@ -1,7 +1,7 @@
 # 构建证据（BUILD-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 ITEM-001…ITEM-008（配置点/总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报）与 ITEM-009（退役 hall/OPTCFG/params/history）
+本轮对象：任务项 ITEM-001…ITEM-009（配置点/总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报/退役旧通路）与 ITEM-010（宿主机测试更新）
 
 ## 1. 环境
 
@@ -234,7 +234,24 @@ arm-none-eabi-nm : hall/optcfg/params/history 符号 = 0；
 - 回归：`test/build_test.sh` 2/2、`host_fw_core_pure_check.c` 36/36、`host_measure_flow_check.c` 24/24、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`host_rf_frame_check.c` 14/14。
 - MDK/IAR 源列表一致性（补 gxht40.c/light.c/fw_core.c）属 ITEM-011；新增纯逻辑用例属 ITEM-010。
 
-## 13. 限制与交接
+## 13. ITEM-010 增量（宿主机测试更新）
+
+改动：`test/host_sensor_core_test.c` 重写为综合纯逻辑套件（保留 CRC16，新增 CRC-8/换算/光照/上报判定）；`test/build_test.sh` 扩展为两阶段（纯逻辑 + 采样/上报流程）。
+
+```
+== [1/2] fw_core pure logic ==   result: 38 passed, 0 failed
+== [2/2] measure flow (mock) ==  result: 24 passed, 0 failed
+build_test.sh exit = 0
+
+== 交叉编译 ==  0 error / 28 warning
+FLASH: 32,208 B / RAM: 1,712 B   (测试不进入固件, 与 ITEM-009 相同)
+```
+
+- 覆盖 TD-002 T-L0-01…T-L0-06（含温度/湿度边界、光照滞回、上报判定 0.9℃/35.0℃/无前值/非暗）与 T-L6-01（失败不更新前值，阶段 2）。
+- 回归：`host_fw_core_pure_check.c` 36/36、`host_measure_flow_check.c` 24/24、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`host_rf_frame_check.c` 14/14。
+- 本机依赖：MinGW-w64 gcc（PATH 上的 chocolatey shim 损坏，需完整路径 `CC=<full path>`）。
+
+## 14. 限制与交接
 
 - 本证据为 GNU 交叉编译 + 宿主机回归；量产构建走 Keil MDK / IAR EWARM（既有工程，`USER/inc` 已在两者 include 路径中，故新头文件无需改工程文件列表），未在本环境复编译 MDK/IAR。
 - 网关（CH592 beiwov2）需 WCH 工具链，本轮未涉及。
