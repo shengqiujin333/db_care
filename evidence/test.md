@@ -614,3 +614,87 @@ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
 “先光照后温湿度”“失败不上报/不推进前值/不构造 0 值/不清除待上报”“成功推进前值与最近有效湿度”“每周期一次有界重试调用”均经**真实 `measure.c` + 独立仿真 MCU 层与参考模型**逐周期复现成立；旧 AHT21 序列已清除；GNU 与 AC5 均可编译，既有回归全部通过。
 
 **判定：TEST_PASS**。
+
+---
+
+# ITEM-007 验证（3 分钟采样节拍）
+
+验证对象：任务项 **ITEM-007**（RTC 1 分钟中断累计到配置的 3 次才置采样标志；一个采样周期只执行一次测量；移除小时上报与首样本强制上报逻辑）
+被测提交：`fd65dcf`；源码基线：`2ea1431`
+结论：**TEST_PASS**
+
+## A. 选测说明与变更范围
+
+| 选测项 | 理由 |
+|---|---|
+| 变更范围审查 | 仅 `main.c` **+12/−11**：`RTC_IRQHandlerCallBack` 阀值 `>= 1` → `>= SENSOR_SAMPLE_TICKS`；删除未用全局量 `temp_cnt`/`work_period_flag`；注释更新 |
+| **真实 `main.c` 的 RTC 回调行为验证** | 用自研仿真 MCU 层直接驱动 `RTC_IRQHandlerCallBack()` 与 `RTC_Configuration()` |
+| **与基线的全函数反汇编差异** | 证明本次改动**仅**是节拍阀值 + 2 个已删全局量，无其它代码变化 |
+| 旧上报逻辑残留检查 | 确认小时上报/首样本强制上报已无实现（仅注释提及） |
+| 回归 | 既有独立 harness + 宿主机 L0 + 构建 |
+
+不适用（后续 ITEM）：发送路径对齐（ITEM-008）、旧通路退役（ITEM-009）、MDK/IAR 源列表（ITEM-011）、板级长时基实测（TD-002 T-L4-01/02，需逻辑分析仪/电流波形）。
+
+## B. 独立 RTC 节拍验证（通过，核心）
+
+自研阴影头（`test/mock_main_ev/`，共 11 个头）置于 include 路径最前，编译**真实 `main.c`**（为避免与本 harness 的 `main` 冲突，编译时用 `-Dmain=firmware_main_entry`，并用 `--gc-sections` 丢弃未引用函数）；harness 直接调用 `RTC_Configuration()` 与 `RTC_IRQHandlerCallBack()`。
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+<mingw64 gcc> -c -ffunction-sections -fdata-sections -Dmain=firmware_main_entry \
+  -I test/mock_main_ev -I USER/inc -I UM2005C -I COMMON USER/src/main.c -o main_ev.o
+<mingw64 gcc> -c -ffunction-sections -fdata-sections -I test/mock_main_ev -I USER/inc \
+  -I UM2005C -I COMMON test/host_rtc_cadence_verify_ev.c -o rtc_ev.o
+<mingw64 gcc> -Wl,--gc-sections main_ev.o rtc_ev.o -o rtc_verify && ./rtc_verify
+=> ==== result: 17 passed, 0 failed ====
+```
+
+| 组 | 独立断言 | 结果 |
+|---|---|---|
+| RTC 间隔 | `RTC_Configuration()` 传给 `RTC_SetInterval` 的值 == `RTC_INTERVAL_EVERY_1M`；并由厂商头 `cw32l010_rtc.h` 独立确认该宏 = `0x03`（1 分钟档，同表还有 0.5s/1s/1h/1d/1month）；RTC 初始化/中断使能/NVIC/LSI 各 1 次 | PASS ×4 |
+| 无中断挂起 | `RTC_GetITState` 返回 RESET 时回调不动计数器也不置标志 | PASS |
+| 第一周期 | 第 1/2 拍：无标志、计数器 1→2；第 3 拍：**置采样标志且计数器归零** | PASS ×3 |
+| 后续周期 | 第 4/5 拍无标志，第 6 拍再次置标志 | PASS ×3 |
+| 长时行为 | 连续 30 拍：**恰好 10 次采样机会，且落在第 3/6/9/…/30 拍**；计数器始终 < 3（有界） | PASS ×3 |
+| 配置关系 | `SENSOR_RTC_TICK_PERIOD_MIN × SENSOR_SAMPLE_TICKS = 3`（即 3 分钟） | PASS ×2 |
+
+“一个周期只测一次”由两端共同保证：ISR 每 3 拍才置一次 `sample_flag`（本 harness），而 `temperature_process()` 在完成一次测量后清除该标志（**已在 ITEM-006 独立 harness 79/79 中验证**）。
+
+## C. 与基线的机器码差异（通过，最强回归证据）
+
+在临时 worktree 中独立构建基线 `2ea1431`，对全二进制反汇编做归一化逐指令比对：
+
+```
+RTC_IRQHandlerCallBack:
+  baseline:  cmp r3, #0   ; beq.n ...      (rtc_set_cnt >= 1)
+  HEAD:      cmp r3, #2   ; bls.n ...      (rtc_set_cnt >= 3)
+```
+
+除该阀值外，全部差异仅为**字面量池地址偏移**（因删除 2 个 .bss 全局量导致地址平移 4 字节）与文件路径行；**没有任何其它指令变化**。基线 ELF 中 `temp_cnt`(0x200004cd)、`work_period_flag`(0x200004cc) 存在，HEAD ELF 中已不存在。
+
+## D. 旧上报逻辑清理（通过）
+
+- 小时上报（旧 `samples_since_report >= 60`）与首样本强制上报（旧 `first_sample_reported`）**已无任何实现或引用**；全树仅两处注释提到该词：`main.c:105`（说明“已无小时/首样本上报”）与 `main.c:260` 的**陈旧注释** `/* 立即/小时/首样本上报 (FR-203) */`。后者是文档级残留，建议 ITEM-008/010 清理（不影响行为）。
+- ELF 中无 `first_sample*`/`samples_since*`/`temp_cnt`/`work_period_flag` 符号。
+
+## E. 构建与回归（通过）
+
+| 项 | 结果 |
+|---|---|
+| GNU 交叉编译 | 0 error；28 warning（与基线同数；`main.c` 的 3 条 warning 均为模板/既有：`__write` 未用参数、`main` 返回类型、`assert_failed` 未用参数） |
+| AC5（`--c99`，CMSIS 5.9.0） | `main.c` **0 error / 0 warning** |
+| 资源 | FLASH 35,884 B、RAM 1,896 B（与基线**完全相同**，仅指令常量与 2 字节全局量变化）；`.bin` MD5 `2f6efa92…`（基线 `fff8aa9c…`） |
+| 既有独立 harness | fw_core 53/53、gxht40 42/42、light 45/45、measure 流程 79/79 |
+| 宿主机 L0 | `test/build_test.sh` 56/56 |
+
+## F. 观测与交接
+
+1. **节拍精度未实测**：RTC 时钟源为 LSI，3 分钟为近似值；需求未给精度指标。实际间隔/离散度需板级长时基测量（TD-002 T-L4-01），本轮无逻辑分析仪/电流波形，**未验证**。
+2. `main.c:260` 陈旧注释（“立即/小时/首样本上报”）建议后续清理。
+3. 采样仍与光照/温湿度模块以及 `send_data_to_gateway`（旧路径，ITEM-008）在同一主循环内，每次 RTC 唤醒都会进一次循环体（无采样时立即回睡）；低功耗实测仍属板级（TD-002 T-L4-04/T-L8）。
+
+## G. ITEM-007 判定
+
+“RTC 1 分钟中断累计 3 次才置采样标志”“一个周期只测一次”“移除小时上报与首样本强制上报”均经**真实 `main.c` + 独立仿真 MCU 层**验证，并与基线逐指令比对确认无其它副作用；既有回归全部通过。
+
+**判定：TEST_PASS**。
