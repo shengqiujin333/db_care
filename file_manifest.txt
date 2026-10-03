@@ -112,6 +112,7 @@ dengbei_care/app/src/main/AndroidManifest.xml | active | Android 应用清单
 dengbei_care/app/src/main/assets/ | active | 内嵌资源（CA 证书、隐私政策/服务条款 HTML）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ | active | Android 业务源码根包（MainActivity、MqtttService、DeviceParamsBook、TemperatureDatabaseHelper、ui/、report/、protocol/ 等）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt | active | 本地 SQLite（bwtemperature_database1）：ITEM-006 升至 DATABASE_VERSION=3，新增 pending_uploads(device_id,time,temperature,humidity,attempts,next_attempt_at, PK(device_id,time)) 表与 idx_pending_uploads_next 索引；v2→v3 迁移只新建新对象（temperature/alarm_events 结构与数据不动），回退不采用重建全部表
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt | active | 平台服务器常量唯一来源（SERVER_HOST=8.140.23.253、MQTT_BROKER_URI=ssl://…:8883、HTTP_BASE_URL=http://…:5000；旧京东云主机退役；TLS 信任锚/认证不在此处；ITEM-004）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt | active | BLE 聚合帧解码纯逻辑模块（16B 头块=gwId6+devCount@6；每设备 16B 块取前 8B=id4B 原序|hum u16be@4|temp s16be@6 有符号；Result.Success/Rejected 显式拒绝帧长不足/devCount=0/密文未对齐/解密失败；ITEM-001）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt | active | 报警判定纯逻辑模块（时间窗下降 5/10/15min、基准=窗口内最新样本含 30min 回溯容差；阈值超限/紧急 >65.0℃ 语义保持现状；四类文案+Severity；纯函数且输出不含温湿度数值；ITEM-005）
@@ -121,6 +122,7 @@ dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | active | 内�
 dengbei_care/app/src/main/res/ | active | Android 资源（layout/values/navigation/drawable/mipmap/xml；粗路径）；xml/network_security_config.xml 于 ITEM-004 追加放行 8.140.23.253（保留既有两项，未新增其它主机）
 dengbei_care/app/src/main/res/xml/network_security_config.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt | active | CloudConfig 常量与 network_security_config 明文放行自检 3 项（新主机 8883/5000、旧主机不再作为连接目标、明文放行仍为 3 个且未新增其它主机；ITEM-004）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt | active | SQLite v3 schema 宿主机自检 9 项（版本号/待发箱表列与复合主键/索引/既有 temperature 与 alarm_events DDL 逐字未变/迁移步骤只新建新对象；ITEM-006）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt | active | GatewayFrameCodec 宿主机 JUnit4 自检 11 项（帧长规则、温度/湿度向量与符号、devId 格式、多设备归属、与改动前 parsePlainFrame 固定种子随机逐位比对；ITEM-001）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt | active | AlarmEvaluator 宿主机 JUnit4 自检 23 项（L0-06..L0-10：开关语义/时间窗基准与边界/负对照/阈值与紧急边界/优先级文案/纯函数性与不携带温湿度数值；ITEM-005）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt | active | ReadingAttribution 宿主机 JUnit4 自检 16 项（归因顺序/负温0值/绑定顺序无关/数目不一致/空序列/非法数值/时间非法/无绑定设备/多余段兼容；ITEM-003）

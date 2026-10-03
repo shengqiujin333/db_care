@@ -36,7 +36,9 @@ class TemperatureDatabaseHelper(context: Context, name: String, factory: SQLiteD
 
     companion object TemperatureDatabaseHelper {
         const val DATABASE_NAME = "bwtemperature_database1"
-        const val DATABASE_VERSION = 2
+
+        /** v3：新增待发箱（pending_uploads）表；temperature / alarm_events 结构与数据不变 */
+        const val DATABASE_VERSION = 3
 
         // 单表替代老版本的 temperatureA/B/C 三表
         const val TABLE_TEMPERATURE = "temperature"
@@ -56,7 +58,14 @@ class TemperatureDatabaseHelper(context: Context, name: String, factory: SQLiteD
         const val ALARM_TYPE_THRESHOLD = "threshold" // 温湿度超限报警
         const val ALARM_TYPE_EMERGENCY = "emergency" // 紧急报警(温度>65°C 火灾预警)
 
-        private const val SQL_CREATE_TABLE_TEMPERATURE =
+        // ===== v3 新增：云上传待发箱（outbox）=====
+        // 幂等键 (dev_id, time)；上传成功后删除，失败按 attempts/next_attempt_at 有界退避重试。
+        // 该表只服务上传，不参与温湿度/报警展示，也不改变既有表结构与语义。
+        const val TABLE_PENDING_UPLOADS = "pending_uploads"
+        const val COLUMN_PENDING_ATTEMPTS = "attempts"
+        const val COLUMN_PENDING_NEXT_ATTEMPT_AT = "next_attempt_at"
+
+        const val SQL_CREATE_TABLE_TEMPERATURE =
             "CREATE TABLE $TABLE_TEMPERATURE (" +
                     "$COLUMN_TIME INTEGER, " +
                     "$COLUMN_DEVICE_ID TEXT, " +
@@ -64,7 +73,7 @@ class TemperatureDatabaseHelper(context: Context, name: String, factory: SQLiteD
                     "$COLUMN_HUMIDITY REAL, " +
                     "PRIMARY KEY($COLUMN_TIME, $COLUMN_DEVICE_ID))"
 
-        private const val SQL_CREATE_TABLE_ALARM_EVENTS =
+        const val SQL_CREATE_TABLE_ALARM_EVENTS =
             "CREATE TABLE $TABLE_ALARM_EVENTS (" +
                     "$COLUMN_ALARM_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "$COLUMN_TIME INTEGER, " +
@@ -72,11 +81,31 @@ class TemperatureDatabaseHelper(context: Context, name: String, factory: SQLiteD
                     "$COLUMN_ALARM_TYPE TEXT, " +
                     "$COLUMN_ALARM_MESSAGE TEXT)"
 
-        private const val SQL_CREATE_INDEX_TEMPERATURE_DEVICE =
+        const val SQL_CREATE_INDEX_TEMPERATURE_DEVICE =
             "CREATE INDEX idx_temperature_device ON $TABLE_TEMPERATURE($COLUMN_DEVICE_ID, $COLUMN_TIME)"
 
-        private const val SQL_CREATE_INDEX_ALARM_DEVICE =
+        const val SQL_CREATE_INDEX_ALARM_DEVICE =
             "CREATE INDEX idx_alarm_device ON $TABLE_ALARM_EVENTS($COLUMN_DEVICE_ID, $COLUMN_TIME)"
+
+        const val SQL_CREATE_TABLE_PENDING_UPLOADS =
+            "CREATE TABLE IF NOT EXISTS $TABLE_PENDING_UPLOADS (" +
+                    "$COLUMN_DEVICE_ID TEXT, " +
+                    "$COLUMN_TIME INTEGER, " +
+                    "$COLUMN_TEMPERATURE REAL, " +
+                    "$COLUMN_HUMIDITY REAL, " +
+                    "$COLUMN_PENDING_ATTEMPTS INTEGER DEFAULT 0, " +
+                    "$COLUMN_PENDING_NEXT_ATTEMPT_AT INTEGER DEFAULT 0, " +
+                    "PRIMARY KEY($COLUMN_DEVICE_ID, $COLUMN_TIME))"
+
+        const val SQL_CREATE_INDEX_PENDING_UPLOADS_NEXT =
+            "CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON " +
+                    "$TABLE_PENDING_UPLOADS($COLUMN_PENDING_NEXT_ATTEMPT_AT)"
+
+        /** v2 → v3 的迁移步骤（只新建待发箱表与索引，不触碰既有表） */
+        val MIGRATION_V2_TO_V3: List<String> = listOf(
+            SQL_CREATE_TABLE_PENDING_UPLOADS,
+            SQL_CREATE_INDEX_PENDING_UPLOADS_NEXT
+        )
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -84,6 +113,9 @@ class TemperatureDatabaseHelper(context: Context, name: String, factory: SQLiteD
         db.execSQL(SQL_CREATE_TABLE_ALARM_EVENTS)
         db.execSQL(SQL_CREATE_INDEX_TEMPERATURE_DEVICE)
         db.execSQL(SQL_CREATE_INDEX_ALARM_DEVICE)
+        // v3：新装也应有待发箱表
+        db.execSQL(SQL_CREATE_TABLE_PENDING_UPLOADS)
+        db.execSQL(SQL_CREATE_INDEX_PENDING_UPLOADS_NEXT)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -132,6 +164,26 @@ class TemperatureDatabaseHelper(context: Context, name: String, factory: SQLiteD
                 db.execSQL("DROP TABLE IF EXISTS temperatureB")
                 db.execSQL("DROP TABLE IF EXISTS temperatureC")
                 onCreate(db)
+            }
+        }
+
+        if (oldVersion < 3) {
+            // v2 -> v3: 只新增待发箱表与索引；temperature / alarm_events 的结构与数据不动。
+            // 回退策略：不采用 v1->v2 的“重建全部表”（那会丢历史数据），而是只重建新表；
+            // 若仍失败则记录日志并继续（App 不崩溃，既有读写保持可用）。
+            try {
+                MIGRATION_V2_TO_V3.forEach { db.execSQL(it) }
+                Log.i("TempDb", "Migration v2->v3 done: $TABLE_PENDING_UPLOADS ready")
+            } catch (e: Exception) {
+                Log.e("TempDb", "Migration v2->v3 failed, retrying after dropping conflicting object: ${e.message}", e)
+                try {
+                    db.execSQL("DROP VIEW IF EXISTS $TABLE_PENDING_UPLOADS")
+                    db.execSQL("DROP TABLE IF EXISTS $TABLE_PENDING_UPLOADS")
+                    MIGRATION_V2_TO_V3.forEach { db.execSQL(it) }
+                    Log.i("TempDb", "Migration v2->v3 recovered")
+                } catch (e2: Exception) {
+                    Log.e("TempDb", "Migration v2->v3 still failing; outbox unavailable this run: ${e2.message}", e2)
+                }
             }
         }
     }

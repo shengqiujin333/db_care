@@ -351,3 +351,72 @@ ITEM-004 的期望行为成立：MQTT broker 与 HTTP 基址指向 `8.140.23.253
 ITEM-005 的期望行为成立：下降判定改为基于时间戳的 5/10/15 分钟窗口（基准取窗口内最新样本，含回溯容差，无基准不成立）；阈值超限与紧急（>65.0℃）语义与改动前一致（严格比较、恰好等于不触发、超限文案优先、紧急覆盖且不受去抖限制）；四类文案与严重级别齐备；纯函数、不修改入参、输出不含温度/湿度数值；全量 72 项宿主机用例通过、构建成功。
 
 未覆盖（属后续能力/队列项）：① 与 `MqtttService.processTemperatureHumidityData` 的接线及基准样本来自本地库（ITEM-010，需 ITEM-006/007 的库查询 API）；② 真机链路与 UI 展示（TD-SW-002 T-SW-L2-13/L2-14/L2-15、T-SW-L3-01..03，需设备）。本项为纯逻辑层，不声称已改变运行行为。
+
+---
+
+## AT-006 · ITEM-006（SQLite v3 与待发箱表）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`./gradlew :app:compileDebugKotlin --offline --rerun` |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：`TemperatureDatabaseHelper.kt` 修改（版本 2→3、新增待发箱表/索引/迁移块、既有 DDL 由 private 改公开常量）；新增 `test/.../db/DatabaseSchemaV3Test.kt` |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 887ms
+```
+
+| 套件 | 项数 | 失败 | 跳过 | 归属 |
+|---|---|---|---|---|
+| `com.jinyuni.dengbei_care.db.DatabaseSchemaV3Test` | 9 | 0 | 0 | 本项实现侧自检（新增） |
+| `com.jinyuni.dengbei_care.telemetry.AlarmEvaluatorTest` | 23 | 0 | 0 | ITEM-005 实现侧自检 |
+| `com.jinyuni.dengbei_care.telemetry.ReadingAttributionTest` | 16 | 0 | 0 | ITEM-003 实现侧自检 |
+| `com.jinyuni.dengbei_care.protocol.GatewayFrameCodecTest` | 11 | 0 | 0 | ITEM-001 实现侧自检 |
+| `com.jinyuni.dengbei_care.verification.AlarmEvaluatorItem005VerificationTest` | 10 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.verification.ReadingAttributionItem003VerificationTest` | 8 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001VerificationTest` | 7 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.cloud.CloudConfigTest` | 3 | 0 | 0 | ITEM-004 实现侧自检 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001LegacyParityTest` | 3 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.ExampleUnitTest` | 1 | 0 | 0 | 既有 |
+| **合计** | **91** | **0（0 errors、0 skipped）** | 0 | — |
+
+新增 9 项用例（TD-SW-002 对应）：
+
+| 用例 | 覆盖 | 结果 |
+|---|---|---|
+| `databaseVersion_isThree` | 版本号升到 3 | PASS |
+| `pendingUploadsTable_hasRequiredColumnsAndCompositePrimaryKey` | 列齐备（device_id/time/temperature/humidity/attempts/next_attempt_at）+ `PRIMARY KEY(device_id, time)` | PASS |
+| `pendingUploadsIndex_coversNextAttemptAt_andIsIdempotent` | `idx_pending_uploads_next(next_attempt_at)` + `IF NOT EXISTS` | PASS |
+| `tableAndColumnNames_areStable` | 表/列名常量 | PASS |
+| `temperatureTable_ddlIsUnchangedFromV2` | 既有表 DDL 逐字未变（T-SW-L0d-06 前提） | PASS |
+| `alarmEventsTable_ddlIsUnchangedFromV2` | 同上 | PASS |
+| `existingIndexes_areUnchangedFromV2` | 两个既有索引逐字未变 | PASS |
+| `migrationV2ToV3_onlyCreatesNewObjects` | 迁移仅 2 步且均为 `IF NOT EXISTS`，不含 DROP/ALTER/UPDATE | PASS |
+| `migrationV2ToV3_neverReferencesLegacyTables` | 迁移语句不引用 `temperature(...)`/`alarm_events` | PASS |
+
+### 3. 构建与告警
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,360,124 B（较 ITEM-005 的 10,359,236 B 增加 888 B） |
+
+全量重编译（`--rerun`）共 11 条 warning，全部位于改动前既有位置（`MqtttService` 5 条、`TemperatureDatabaseHelper.storeAlarmEvent` 的 `rowId` 冗余初值 1 条（未改动函数）、`MacIdBox`/`VibrationPlayer`/`DashboardFragment`/`NotificationsFragment`/`ZhuCeFragment` 各 1 条），**无新增 warning 指向本项新增代码**。
+
+### 4. 判定
+
+ITEM-006 可在宿主机确定断言的部分全部成立：`DATABASE_VERSION = 3`；`pending_uploads` 表含全部要求列与 `(device_id, time)` 复合主键；`next_attempt_at` 索引存在且带 `IF NOT EXISTS`；既有 `temperature`/`alarm_events` 的 DDL 与索引逐字未变；v2→v3 迁移只新建新对象、不触碰既有表；迁移异常回退不抛异常（不采用破坏性重建）；全量 91 项宿主机用例通过、构建成功。
+
+未覆盖（需 Android 运行时，属软件测试能力）：v2→v3 真实升级后历史行可查、v1→v3 路径、冲突对象导致的异常回退实测、既有查询 API 结果一致 —— TD-SW-002 §4.2 T-SW-L0d-01/02/03/06。本项不声称设备侧迁移已验证。
+
+另：待发箱 DAO 与上传编排（`enqueue/peekBatch/ack/markFailed`）属 ITEM-009；入库真实时间戳属 ITEM-007。

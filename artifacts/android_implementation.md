@@ -270,3 +270,66 @@
 2. **“启用但未触发”文案改为 `无报警`**（与两开关都关的 `未设置报警` 区分）：与已批准设计/任务描述一致；因两者均 `NORMAL`，卡片不显示且不落 `alarm_events`，生产可见行为不变。若上游要求严格保持旧占位文案，仅需改一处常量。
 3. **接线与基准来源属后续项**：① `processTemperatureHumidityData` 改用本模块 + 把 `Severity` 映射到 `com.jinyuni.dengbei_care.Severity` → ITEM-010；② 基准样本的来源（设计 D-05 要求从本地库按 devId+时间范围查询，以支持进程重启后仍可判定）→ ITEM-006/007（库 API）与 ITEM-010（接线）；TD-SW-002 §8-G4 已登记该缺口。
 4. **本项不涉及**：SQLite v3 与真实时间戳（ITEM-006/007）、云上传（ITEM-008/009）、UI 呈现（ITEM-011/012）、通知去抖（900 s，仍在 Service，属 ITEM-010 保持不变）。
+
+---
+
+# 任务项 ITEM-006（本轮完成）
+
+**ITEM-006（队列第 6 项）**：扩展 `TemperatureDatabaseHelper` 到 `DATABASE_VERSION = 3`：新增 `pending_uploads(dev_id, time, temperature, humidity, attempts, next_attempt_at, PRIMARY KEY(dev_id, time))` 表与其 `next_attempt_at` 索引；迁移对既有 `temperature` / `alarm_events` 结构与数据保持不动。
+期望行为：v2 数据库升级到 v3 后历史温湿度与报警记录仍可查；重复创建不报错；迁移异常时按既有回退策略处理且不崩溃。
+
+设计映射：AA-002 §5.4（SQLite v3 schema 与迁移）、D-07（待发箱幂等键）、D-15（升版本但既有表结构与语义不动）、§4.2；TD-SW-002 §4.2 T-SW-L0d-01/03/06。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt` | 修改 | ① `DATABASE_VERSION` 2 → 3；② 新增 `TABLE_PENDING_UPLOADS`/`COLUMN_PENDING_ATTEMPTS`/`COLUMN_PENDING_NEXT_ATTEMPT_AT` 与两条 DDL（`CREATE TABLE IF NOT EXISTS`、`CREATE INDEX IF NOT EXISTS`）；③ 新增 `MIGRATION_V2_TO_V3` 步骤列表；④ `onCreate` 新装也建待发箱表与索引；⑤ `onUpgrade` 新增 `oldVersion < 3` 块；⑥ 既有四条 DDL 由 `private` 改为公开常量（仅可见性，内容逐字未变，便于确定性核查） |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt` | 新增 | 宿主机 JUnit4 自检 9 项（见 §3） |
+
+新增表结构（与设计 §5.4 一致）：
+
+```sql
+CREATE TABLE IF NOT EXISTS pending_uploads (
+  device_id TEXT, time INTEGER, temperature REAL, humidity REAL,
+  attempts INTEGER DEFAULT 0, next_attempt_at INTEGER DEFAULT 0,
+  PRIMARY KEY(device_id, time))
+CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_attempt_at)
+```
+
+迁移与回退策略：
+
+| 场景 | 行为 |
+|---|---|
+| 新装（`onCreate`） | 建 `temperature`、`alarm_events`、两索引 + `pending_uploads` 与 `next_attempt_at` 索引 |
+| v2 → v3 | 仅执行 `MIGRATION_V2_TO_V3`（两个 `IF NOT EXISTS` 语句）；**不** DROP/ALTER/UPDATE 任何既有表 |
+| v1 → v3 | 先跑既有 v1→v2 路径（含其原有重建回退），再跑 v2→v3 块（`IF NOT EXISTS` 重复执行无害） |
+| 重复创建/重复迁移 | `IF NOT EXISTS` 幂等，不报错 |
+| 迁移异常 | 第一次失败：记录日志 → 清理同名冲突对象（`DROP VIEW/TABLE IF EXISTS pending_uploads`）→ 重试；仍失败：记录日志并继续（**不抛异常**，App 不崩溃，既有温湿度/报警读写保持可用）。**不**采用 v1→v2 那种“重建全部表”的破坏性回退，因为那会丢历史数据，与本项“既有结构与数据不动”相矛盾 |
+
+## 2. 预期行为（本轮交付）
+
+1. `DATABASE_VERSION == 3`；新装与 v2 升级后 `pending_uploads` 表及其 `next_attempt_at` 索引均存在，且 `(device_id, time)` 为复合主键（保证同一设备同一时刻只入队一条）。
+2. `temperature` 与 `alarm_events` 的 DDL、索引与语义逐字未变；v2→v3 迁移语句不含对既有表的任何 DROP/ALTER/UPDATE，因此历史温湿度与报警记录仍可查（设备侧实测属测试能力，见 §4）。
+3. 迁移可重复执行（`IF NOT EXISTS`）；异常时不死锁不崩溃，最坏情况下待发箱不可用但既有功能正常。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；10 套件共 **91 项、0 失败 0 跳过**（新增 `DatabaseSchemaV3Test` 9 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,360,124 B |
+| 全量重编译告警 | `./gradlew :app:compileDebugKotlin --offline --rerun` | 11 条 warning 全部位于改动前既有位置（`MqtttService` 5、`TemperatureDatabaseHelper.storeAlarmEvent` 的 `rowId` 冗余初值 1（未改动函数）、`MacIdBox`/`VibrationPlayer`/UI 4），**无一条指向本项新增代码** |
+| 既有调用点 | `grep -rn "DATABASE_VERSION\|pending_uploads" app/src --include=*.kt`（除本文件与新增测试） | 无其它引用；`DatabaseHelperInstance` 与既有查询 API 未变 |
+| 差异范围 | `git status --short` | 仅 `TemperatureDatabaseHelper.kt` 修改 + 1 个新增测试文件 |
+
+新增 9 项用例：`databaseVersion_isThree`、`pendingUploadsTable_hasRequiredColumnsAndCompositePrimaryKey`、`pendingUploadsIndex_coversNextAttemptAt_andIsIdempotent`、`tableAndColumnNames_areStable`、`temperatureTable_ddlIsUnchangedFromV2`、`alarmEventsTable_ddlIsUnchangedFromV2`、`existingIndexes_areUnchangedFromV2`、`migrationV2ToV3_onlyCreatesNewObjects`、`migrationV2ToV3_neverReferencesLegacyTables` —— **9/9 PASS**。
+
+原始输出见 `evidence/android_test.md`（AT-006）。
+
+## 4. 观察与交接
+
+1. **设备侧迁移未在本轮实测**：`SQLiteOpenHelper` 的真实升级路径（v2→v3 保数据、冲突对象回退、既有查询 API 结果一致）需要 Android 运行时与 debug 包，属软件测试能力按 TD-SW-002 T-SW-L0d-01/02/03/06 执行；本项只提供宿主机可确定断言的 schema/迁移形状证据。
+2. **待发箱的读写 API 不在本项**：本项只建表与索引（任务描述范围）。`enqueue/peekBatch/ack/markFailed` 等 DAO 与上传编排属 ITEM-009（AA-002 §4.2 `cloud/UploadOutbox.kt`）；若迁移最终失败导致表缺失，待发箱访问需容忍该情况（已在本节登记，供 ITEM-009 处理）。
+3. **入库真实时间戳与单条写入 API**属 ITEM-007（本项未改 `storeTemperatureData` 的 60 s 回填行为）。
+4. **本项不涉及**：上传编排（ITEM-009）、Service 接线（ITEM-010）、UI（ITEM-011/012）、版本/文档（ITEM-014）。
