@@ -2,7 +2,7 @@
 
 状态：软件测试执行证据（`software_tester.software_verification`），按 Runtime 逐个指派的队列项追加
 对象：Android App `dengbei_care`（Kotlin / AGP 8.3.2 / Gradle 8.4 / JDK 21）
-本轮项：队列 **ITEM-001**、**ITEM-002**、**ITEM-003**（逐项分节记录）
+本轮项：队列 **ITEM-001**、**ITEM-002**、**ITEM-003**、**ITEM-004**（逐项分节记录）
 依据：`artifacts/software_test_design.md`（TD-SW-002）、`artifacts/software_e2e_plan.md`（E2E-SW-002）、`artifacts/interface_contract.md`（IC-002 §4）、`artifacts/android_architecture.md`（AA-002 §5.1/§10）
 被测代码版本：`3e0ed11`（android_engineer.android_implementation 提交）；改动前基线：`fe9a81c`
 说明：本文件为本能力**独立执行**的记录；实现侧自检（`evidence/android_test.md` AT-001）仅作为被核对对象，不重复引用为通过依据。
@@ -297,3 +297,78 @@ BUILD SUCCESSFUL in 3s
 1. **绑定设备 > 50 时的拒绝风险**：网关 `0xA1` 配置包取 `MacIdBook.all()` 的**前 50 个**（`take(maxCount=50)`），而归因比较对象是**全部**已绑定 ID；若绑定数 >50，数量不等将导致**每批都被拒绝**（安全优先，符合 D-08“拒绝而非错归因”）。这是实现侧已登记的观察项；是否改为“只比对前 50 个”或限制绑定上限，属产品/协议决定，需需求方确认，不在本能力内自行改判。
 2. **拒绝后不再提前 `return`**：旧代码仅在“空序列/无绑定设备”两种情形提前 return（“数目不一致”情形本就继续），新代码统一继续到后续时间校准发布块。行为差异仅出现在旧代码的两种提前返回情形；若产品要求“拒绝即不发布校准”，属新行为需另行确认。
 3. **本项未涉及**：告警时间窗（ITEM-005）、入库真实时间戳（ITEM-007）、云上传与待发箱（ITEM-008/009）、UI（ITEM-011/012）；真机 MQTT 链路的“拒绝整批”端到端确认留在 E2E-SW-002 J-1。
+
+---
+
+## ST-004 · ITEM-004（服务器常量集中与地址迁移 `cloud/CloudConfig.kt`）
+
+**被测代码版本**：`5090f5d`（android_engineer.android_implementation 提交，相对上一提交 `e4982e5`）
+**变更范围**：新增 `cloud/CloudConfig.kt` + `cloud/CloudConfigTest.kt`；`MqtttService.kt` +4/−1（broker URI 改引常量）；`ui/zhuce/ZhuCeViewModel.kt` +3/−1（baseUrl 改引常量）；`res/xml/network_security_config.xml` +8/−1（**追加**新主机放行）；`ApiService.kt` **未改动**
+**任务期望**：App 内不再出现 `117.72.84.210`；TLS 信任锚仍为 `assets/jd-ca.crt`、`TLSv1.2`、用户名=MAC、密码=MAC+`&^!A:z?` 全部保持原样；资源合并与构建通过。
+
+### 1. 适用测试的选择与理由
+
+| TD-SW-002 用例 | 是否适用 | 理由 |
+|---|---|---|
+| T-SW-L0-13（服务器常量与旧 IP 清零） | 适用 | 本项核心期望（常量值 + 旧主机不再作为连接目标） |
+| T-SW-L1-05（旧 IP 清零） | 适用 | 同上 |
+| T-SW-L1-06（明文放行最小化） | 适用 | 追加新主机且不得新增其它主机 |
+| T-SW-L1-07（兼容面 diff） | 适用 | 证书/TLS/认证/密钥/MTU/既有端点必须不变 |
+| T-SW-L1-01/L1-02（构建、宿主机单测） | 适用 | 资源合并与回归 |
+| T-SW-L2-01/L2-12（新 broker 连通、`/upload_data` 契约） | **本轮不适用** | 本能力工具边界无网络探测（工具仅 `android_test`/`usb_list_devices`）；属 E2E-SW-002 J-5，且本项期望本身为配置级 |
+
+**判定口径说明（重要）**：任务描述的“App 内不再出现 `117.72.84.210`”与已批准设计 AA-002 §5.6 / D-13 的“明文放行**追加**而非替换”存在字面差异。本能力按下列口径判定并在 §5 如实记录：
+- **连接目标**：App 的 Kotlin/Java 源码中旧 IP 必须 0 命中（已成立）；
+- **明文放行**：按已批准设计与 TD-SW-002 T-SW-L1-06 的口径，允许 `network_security_config.xml` 保留该历史条目（**非连接目标**），但域名集合不得扩大。
+
+### 2. 独立验证方法
+
+新增可复跑独立静态核查 `evidence/software_static_check_server_migration.py`（EXIT 0/1，不依赖实现侧声明）：A 常量值精确比对（含 URI/基址拼接结果）；B 旧主机分布（Kotlin 源码 0、非 Kotlin 仅允许 1 处且必须是该 XML）；C 新主机集中性 + `app/src/main/**/*.kt` 的 IPv4 字面量全集；D XML 可解析、`domain-config` 恰 3 个且均 `cleartextTrafficPermitted=true`、域名集合精确相等；E 兼容面（证书 md5、TLSv1.2、信任锚、认证拼接、MTU、AES、`ApiService` 5 端点）。
+另做**产物级**核查：直接解析 `app-debug.apk` 内 `res/xml/network_security_config.xml`（二进制 AXML）的字符串池与 `assets/jd-ca.crt` 摘要。
+
+### 3. 原始结果
+
+```
+$ python evidence/software_static_check_server_migration.py   # EXIT=0
+== A CloudConfig 常量 ==           SERVER_HOST / MQTT_BROKER_PORT=8883 / HTTP_PORT=5000 / MQTT_BROKER_URI / HTTP_BASE_URL 全 PASS
+  解析结果: ssl://8.140.23.253:8883 ; http://8.140.23.253:5000
+== B 旧主机 117.72.84.210 ==      Kotlin/Java 命中 0；非 Kotlin 命中 1（network_security_config.xml:9，设计允许保留项）
+== C 新主机集中性 ==               含新主机 main Kotlin 文件 = [cloud/CloudConfig.kt]；main Kotlin IPv4 字面量全集 = [8.140.23.253]
+== D 明文放行 ==                   domain-config=3，cleartext=[true,true,true]，domains=[8.140.23.253, 117.72.84.210, 192.168.4.1]
+== E 兼容面 ==                     E1..E9 全 PASS（jd-ca.crt md5=f1a8212e3c690d57894b8a3a5fd901ab）
+== RESULT ==                       OK
+```
+
+产物级核查（直接读 APK，非源码）：
+
+```
+res/xml/network_security_config.xml (844 B, 头部 03000800=AXML) 字符串池：
+  8.140.23.253: utf8=True   117.72.84.210: utf8=True   192.168.4.1: utf8=True   9.9.9.9(负对照): False
+assets/jd-ca.crt: 1512 B, md5 f1a8212e3c690d57894b8a3a5fd901ab（与迁移记录 §三 一致）
+```
+
+构建与回归：
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单测 | `./gradlew :app:testDebugUnitTest --offline` | BUILD SUCCESSFUL；7 套件 **49 tests / 0 failures / 0 errors / 0 skipped**（本轮新增 `CloudConfigTest` 3 项全过） |
+| 构建与资源合并 | `./gradlew :app:assembleDebug --offline` | BUILD SUCCESSFUL；`app-debug.apk` 10,359,236 B |
+| 前项静态口径 | `python evidence/software_static_check_no_little_endian_parser.py` | EXIT=0（ITEM-002 门禁未被破坏） |
+| 差异范围 | `git diff --name-only e4982e5 5090f5d` | 仅上列 4 个产品文件 + 2 个新增文件 + 文档/清单；**`ApiService.kt` 未改** |
+
+### 4. 判定
+
+1. **地址迁移与集中**：`CloudConfig` 5 个常量精确等于约定值（`ssl://8.140.23.253:8883`、`http://8.140.23.253:5000`）；`app/src/main` 中唯一 IPv4 字面量就在该文件；broker URI 与 Retrofit baseUrl 均引用该常量。**通过**
+2. **旧主机不再是连接目标**：Kotlin/Java 源码 0 命中；全 `app/src` 仅 XML 保留 1 处（设计要求的追加保留项，非连接目标）。按 §1 口径 **通过**；字面差异见 §5-1。
+3. **明文放行最小化**：源码与**打包后**的 AXML 字符串池都恰含 3 个主机（含负对照验证），无新增主机，均允许明文。**通过**
+4. **兼容面未变**：`jd-ca.crt` md5 一致（源码与 APK 内均一致）、`TLSv1.2`、`CertificateFactory`+jd-ca.crt 信任锚、`options.userName=MAC`、`options.password=MAC+"&^!A:z?"`、`requestMtu(240)`、`APP_AES_KEY16`、`ApiService` 既有 5 端点均原样。**通过**
+5. **资源合并与构建**：`assembleDebug` 成功，合并后的二进制 XML 已含新主机。**通过**
+
+结论：**TEST_PASS**（依据 §1 判定口径：连接目标清零 + 明文放行按设计追加且不扩大）。
+
+### 5. 交接与观察
+
+1. **字面差异（需产品/上游确认，不影响本项功能判定）**：任务描述要求“App 内不再出现 `117.72.84.210`”，而已批准设计 AA-002 §5.6/D-13 与 TD-SW-002 T-SW-L1-06 要求“追加而非替换”；实现按设计保留 XML 条目。若项目要求字面清零（含已退役主机的明文放行条目），属设计变更（删 1 个 `domain-config` 块），需上游确认后由实现能力处理；本能力未自行改判。
+2. **运行期连通性/TLS 未在本轮验证**：本能力工具边界内无网络探测；`ssl://8.140.23.253:8883` 的握手/认证与 `http://8.140.23.253:5000` 可达性属 E2E-SW-002 J-5（T-SW-L2-01/L2-12）。本项期望为配置级，已由上述静态与产物级证据充分覆盖；不把静态结论当作链路连通性结论。
+3. **仍引用旧地址的非编译材料**（未改动，属文档/iOS 资料维护或 ITEM-014）：`_REFACTOR_NOTES.md`、`iOS开发所需资料清单.md`、`iOS版功能需求文档.md`、`iOS开发资料/**`。
+4. **本项未涉及**：`/upload_data` 端点与上传编排（ITEM-008/009）、SQLite v3（ITEM-006）、告警时间窗（ITEM-005）、UI（ITEM-011/012）、版本/文档（ITEM-014）。
