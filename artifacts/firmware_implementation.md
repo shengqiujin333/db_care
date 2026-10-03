@@ -182,7 +182,7 @@
 
 ---
 
-# 任务项 ITEM-005（本轮）
+# 任务项 ITEM-005（已完成，独立验证 TEST_PASS）
 
 **ITEM-005**：在 `fw_core.c` 中实现并保持不依赖 MCU 寄存器的纯逻辑：`fw_crc8_gxht`（参考向量 CRC(0xBEEF)=0x92）、GXHT40 原始字到 x10 的整数换算（含负温与 0-100%RH 截断）、`light_code_is_dark` 滞回判定、`sensor_decide_report` 判定 `((prev-cur)>9 且 DARK) 或 (cur>350)`（无前值时下降分支恒假）。
 
@@ -237,9 +237,50 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
+# 任务项 ITEM-006（本轮）
+
+**ITEM-006**：改造 `measure.c` 采样流程：每个采样周期先取光照再取温湿度；GXHT40 读 NACK 与 CRC 错按配置上限有界重试；整周期失败时不上报、不更新前一有效温度、不构造 0 值；成功后更新前一有效温度与最近有效湿度。
+
+设计映射：FD-002 §4（数据流）、§6.4（上报判定）、§10（异常策略）、§3.2（纯逻辑在 fw_core）。测试映射：TD-002 T-L5/T-L6（实板/集成）。
+
+## 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `.../USER/src/measure.c` | 重写采样部分 | 删除 AHT21 步进状态机与 `alarm_triggered()`；新增 `measure_sample()`（`light_sample()` → `gxht40_measure()`）与新的 `temperature_process()`；保留软 I2C 端口与 `send_data_to_gateway()`/`go_to_sleep()` 框架 |
+| `.../USER/inc/measure.h` | 修改 | 移除已废弃的 `samples_since_report`/`first_sample_reported` 声明 |
+| `.../USER/src/fw_core.c` | 微调 | `SENSOR_CONFIG_NO_MCU` 定义加 `#ifndef` 守卫（避免命令行 `-D` 时重定义告警；不改变行为） |
+| `.../test/host_measure_flow_check.c`、`test/mock_measure_mcu/` | 新增（测试载体） | 宿主机 mock MCU 影子头 + 可控 GXHT40/光照桩，编译**真实 measure.c**，15 项 |
+
+### 行为要点
+
+1. **顺序**：`measure_sample()` 先 `light_sample()`（PB05 供电→稳定→ADC 均值→PB05 低），再 `gxht40_measure()`。
+2. **有界重试**：读 NACK（`GXHT40_READ_RETRY`×`GXHT40_READ_RETRY_DELAY_MS`）与 CRC 错（`GXHT40_MEAS_RETRY`）均在 `gxht40_measure()` 内按 `sensor_config.h` 上限完成；`measure.c` 只调用一次并按返回码分支。
+3. **失败（`GXHT40_ERR_*`）**：`measure_sample()` 在写 `tempvalue`/`huminityvalue` **之前** 返回 false；`temperature_process()` 失败分支不置 `report_req`、不推进 `s_prev_temp_x10`/`s_have_prev`/`s_last_hum_x10`，也不写 0 值（`tempvalue`/`huminityvalue` 保持上次有效值）。
+4. **成功**：先用**更新前**的 `prev` 调 `sensor_decide_report()` 置 `report_req`，再推进 `s_prev_temp_x10 = tempvalue`、`s_have_prev = true`、`s_last_hum_x10 = huminityvalue`。
+5. **待上报不丢**：无上报条件的成功周期不清除已挂起的 `report_req`（发送失败重试语义保留）。
+6. **初始化**：首次采样惰性执行 `bsp_i2c_init()` + `gxht40_init(temp_ptr)` + `light_init()`（`s_sensor_ready` 一次性）。
+7. **发送路径**：帧布局/加密不变；仅把硬编码的 200 ms/3 次改为引用 `SENSOR_RF_TX_TIMEOUT_MS`/`SENSOR_RF_TX_RETRY`，并移除已废弃的 `samples_since_report` 归零。完整对齐属 ITEM-008。
+
+**本项不包含**：3 分钟节拍（ITEM-007）、发送路径完整对齐（ITEM-008）、旧 `hall/OPTCFG/params/history` 退役（ITEM-009）、宿主机测试合并（ITEM-010）。
+
+## 验证（本轮实际执行）
+
+- 交叉编译：`gcc/build.sh` → **0 错误、28 条告警**（基线 29；旧 AHT21 序列移除后少 1 条，无新增告警）；FLASH **35,884 B**（较 ITEM-005 +1,532 B，新驱动/光照模块被引用入镜像；`history.o` 不再被引用）、RAM **1,896 B**（-64 B）。`arm-none-eabi-nm` 确认 `gxht40_measure`/`light_sample`/`sensor_decide_report` 已入镜像。
+- 采样流程自检：`test/host_measure_flow_check.c` → **15 passed / 0 failed**，覆盖顺序、9/10 下降边界、需 DARK、待上报保持、失败不改前值/不置位/不写 0、失败后前值判定、超温分支、`sample_flag==0` 不采样。详见 `evidence/driver_test.md`。
+- 回归：`host_fw_core_pure_check.c` 36/36、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15；既有 `test/build_test.sh` 56/56。
+
+## 交接与依赖
+
+- **报告判定位置**：本项已在采样成功分支调用 `sensor_decide_report()` 并置 `report_req`；ITEM-008 据此完成/校对发送路径（`encode_frame10` + `app_um2005C_send_data_timeout` + 成功清除/失败重试）。
+- **引脚所有权冲突仍未消除**：`main.c` 仍调用 `optcfg_init()`/`hall_init()`（PB05 数字输入/PB04 EXTI/PB06），可能在运行中重新配置光照引脚；`light_init()` 在首次采样时会重新配置，但完整退役属 ITEM-009。在 ITEM-009 完成前，TD-002 的 T-L3/T-L5/T-L6 实板结论不具备有效前提。
+- 宿主机 mock（`test/mock_measure_mcu/`）只影子 `cw32l010_gpio/sysctrl/uart`；`gxht40_measure`/`light_sample` 以桩替换，未在本 harness 中执行其真实实现（其行为已由 ITEM-003/004 harness 单独验证）。
+
+---
+
 # 后续任务项状态
 
-`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-005（前四项独立验证 TEST_PASS，ITEM-005 本轮）。其余 7 项由 Runtime 后续指派，未指派项不在本轮产出。
+`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-006（前五项独立验证 TEST_PASS，ITEM-006 本轮）。其余 6 项由 Runtime 后续指派，未指派项不在本轮产出。
 
 # 交接与依赖（累计）
 

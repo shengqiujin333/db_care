@@ -9,7 +9,9 @@
 #include <math.h>
 
 /* 纯数值配置(不含 MCU 引脚/外设宏): fw_core.c 不依赖 MCU 头 (FD-002 §3.2) */
+#ifndef SENSOR_CONFIG_NO_MCU
 #define SENSOR_CONFIG_NO_MCU
+#endif
 #include "sensor_config.h"
 
 /* ------------------------------------------------------------------ */

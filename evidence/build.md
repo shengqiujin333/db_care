@@ -1,7 +1,7 @@
 # 构建证据（BUILD-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）、ITEM-003（GXHT40 驱动 `gxht40.c/.h`）、ITEM-004（光照通路 `light.c/.h`）、ITEM-005（`fw_core.c` 纯逻辑）
+本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）、ITEM-003（GXHT40 驱动 `gxht40.c/.h`）、ITEM-004（光照通路 `light.c/.h`）、ITEM-005（`fw_core.c` 纯逻辑）、ITEM-006（`measure.c` 采样流程）
 
 ## 1. 环境
 
@@ -156,7 +156,29 @@ RAM:             1,960 B     4 KB         47.85%
 - 回归自检：`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15。
 - 既有宿主机 L0：`test/build_test.sh` → 56 passed / 0 failed。
 
-## 9. 限制与交接
+## 9. ITEM-006 增量（measure.c 采样流程）
+
+改动：`USER/src/measure.c` 采样部分重写（AHT21 步进状态机 → `light_sample()` + `gxht40_measure()`；新增前一有效温度/最近有效湿度状态）；`USER/inc/measure.h` 移除废弃声明；`fw_core.c` 的 `SENSOR_CONFIG_NO_MCU` 加 `#ifndef` 守卫；新增 `test/host_measure_flow_check.c` + `test/mock_measure_mcu/`。
+
+```
+== compile ==  全部翻译单元
+== link ==
+Memory region   Used Size   Region Size   %age Used
+FLASH:          35,884 B    64 KB         54.75%
+RAM:             1,896 B     4 KB         46.29%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+
+arm-none-eabi-nm obj/sensor_fw.elf :
+  T gxht40_measure / light_sample / sensor_decide_report  (已入镜像)
+```
+
+- **0 错误；告警 28 条**（基线 29：旧 AHT21 序列移除后少 1 条，无新增；无一条指向 `measure.c`）。
+- FLASH 34,352 → **35,884 B**（+1,532 B）：`gxht40.o`/`light.o`/新增纯函数因 `measure.c` 引用而入镜像；`history.o` 不再被引用。RAM 1,960 → **1,896 B**。
+- 采样流程自检：`test/host_measure_flow_check.c`（mock MCU 影子头 + 可控 GXHT40/光照桩，编译真实 `measure.c`）→ **15 passed / 0 failed**。
+- 回归：`host_fw_core_pure_check.c` 36/36、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`test/build_test.sh` 56/56。
+- 工程文件注册（MDK/IAR 源列表）属 ITEM-011；`gcc/build.sh` 通配自动包含。
+
+## 10. 限制与交接
 
 - 本证据为 GNU 交叉编译 + 宿主机回归；量产构建走 Keil MDK / IAR EWARM（既有工程，`USER/inc` 已在两者 include 路径中，故新头文件无需改工程文件列表），未在本环境复编译 MDK/IAR。
 - 网关（CH592 beiwov2）需 WCH 工具链，本轮未涉及。

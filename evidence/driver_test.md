@@ -1,9 +1,9 @@
 # 驱动测试证据（DRV-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）、**ITEM-004**（光照通路）、**ITEM-005**（`fw_core.c` 纯逻辑）
-被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）；`USER/src/fw_core.c` / `USER/inc/fw_core.h`（ITEM-005）
-测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（宿主机 mock 总线）、`.../test/host_light_check.c`（宿主机纯逻辑 + 硬件桩）、`.../test/host_fw_core_pure_check.c`（纯逻辑）
+本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）、**ITEM-004**（光照通路）、**ITEM-005**（`fw_core.c` 纯逻辑）、**ITEM-006**（`measure.c` 采样流程）
+被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）；`USER/src/fw_core.c` / `USER/inc/fw_core.h`（ITEM-005）；`USER/src/measure.c` / `USER/inc/measure.h`（ITEM-006）
+测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（mock 总线）、`.../test/host_light_check.c`（纯逻辑 + 硬件桩）、`.../test/host_fw_core_pure_check.c`（纯逻辑）、`.../test/host_measure_flow_check.c` + `.../test/mock_measure_mcu/`（mock MCU 影子头）
 
 ## 1. 环境与运行
 
@@ -184,3 +184,47 @@ gcc -std=c11 -Wall -Wextra -I../USER/inc host_fw_core_pure_check.c \
 ## 4. 结论
 
 `fw_crc8_gxht`、GXHT40 整数换算（含负温/有效域/0..1000 截断）、`light_code_is_dark` 滞回、`sensor_decide_report` 判定均与 FD-002 §6 及任务项 ITEM-005 一致，且不依赖 MCU 寄存器；`gxht40.c`/`light.c` 已改为复用本纯逻辑（消除双份实现）。
+
+---
+
+# ITEM-006：measure.c 采样流程自检
+
+被测实现：`USER/src/measure.c` / `USER/inc/measure.h`（采样部分重写）
+测试载体：`.../test/host_measure_flow_check.c` + `.../test/mock_measure_mcu/`（影子 `cw32l010_gpio/sysctrl/uart`，编译真实 `measure.c`；`gxht40_measure`/`light_sample` 以可控桩替换）
+
+## 1. 运行
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+gcc -std=c11 -Wall -Wextra -DSENSOR_CONFIG_NO_MCU -Imock_measure_mcu \
+    -I../USER/inc -I../COMMON -I../UM2005C \
+    host_measure_flow_check.c ../USER/src/measure.c ../USER/src/sf_i2c.c \
+    ../USER/src/fw_core.c -lm -o host_measure_flow_check.exe \
+    && ./host_measure_flow_check.exe
+```
+
+结果：**15 passed, 0 failed**（真实 `measure.c` 0 告警）。
+
+## 2. 检查明细
+
+| 组 | 检查 | 结果 |
+|---|---|---|
+| 顺序 | 每次采样调用顺序 = `light_sample` → `gxht40_measure`（“LT”），含失败周期 | PASS ×2 |
+| 首样本 | 无前值 + cur=200 → `report_req=0`；成功写入 `tempvalue`/`huminityvalue` | PASS ×3 |
+| 下降边界 | prev=200,cur=191（降 9）→ 0；prev=191,cur=181（降 10）且 DARK → 1；成功时更新最近有效湿度 | PASS ×3 |
+| 待上报保持 | 无上报条件的后续成功周期不清除已挂起的 `report_req` | PASS ×1 |
+| 需 DARK | 降 11 但有光 → 0 | PASS ×1 |
+| 失败路径 | 返回 `GXHT40_ERR_CRC` 时：不置 `report_req`；`tempvalue`/`huminityvalue` 保持上次有效值（不被失败的 50/999 覆盖，也不写 0） | PASS ×4 |
+| 前值不被污染 | 失败后恢复：prev=170,cur=160（降 10）→ 上报（证明失败未把 prev 改成 50） | PASS ×1 |
+| 超温分支 | cur=351（LIT）→ 1 | PASS ×1 |
+| 无节拍 | `sample_flag==0` → 无 light/temp 调用 | PASS ×1 |
+
+## 3. 覆盖边界
+
+- 本证据验证 `measure.c` 的**采样流程与状态推进**；`gxht40_measure`/`light_sample` 为桩，其真实行为已由 ITEM-003/004 harness 单独验证（27/27、17/17）。
+- 影子头只覆盖 `cw32l010_gpio/sysctrl/uart`；未执行真实 GPIO/ADC/UART 寄存器与时序。
+- 板上时序与真实温度下的上报边界（TD-002 T-L4/T-L5/T-L6）须由嵌入式测试在真实硬件完成；且 ITEM-009 退役 `hall/OPTCFG` 前，PB04/PB05 引脚所有权冲突使实板光照/上报验证不具备有效前提。
+
+## 4. 结论
+
+`measure.c` 满足 ITEM-006 声明：先光照后温湿度、依赖驱动的有界重试、失败不上报/不更新前值/不构造 0 值、成功后推进前一有效温度与最近有效湿度，并按 `sensor_decide_report` 置待上报标志。发送路径完整对齐交接 ITEM-008。
