@@ -2,7 +2,7 @@
 
 状态：软件测试执行证据（`software_tester.software_verification`），按 Runtime 逐个指派的队列项追加
 对象：Android App `dengbei_care`（Kotlin / AGP 8.3.2 / Gradle 8.4 / JDK 21）
-本轮项：队列 **ITEM-001**、**ITEM-002**、**ITEM-003**、**ITEM-004**（逐项分节记录）
+本轮项：队列 **ITEM-001**、**ITEM-002**、**ITEM-003**、**ITEM-004**、**ITEM-005**（逐项分节记录）
 依据：`artifacts/software_test_design.md`（TD-SW-002）、`artifacts/software_e2e_plan.md`（E2E-SW-002）、`artifacts/interface_contract.md`（IC-002 §4）、`artifacts/android_architecture.md`（AA-002 §5.1/§10）
 被测代码版本：`3e0ed11`（android_engineer.android_implementation 提交）；改动前基线：`fe9a81c`
 说明：本文件为本能力**独立执行**的记录；实现侧自检（`evidence/android_test.md` AT-001）仅作为被核对对象，不重复引用为通过依据。
@@ -372,3 +372,83 @@ assets/jd-ca.crt: 1512 B, md5 f1a8212e3c690d57894b8a3a5fd901ab（与迁移记录
 2. **运行期连通性/TLS 未在本轮验证**：本能力工具边界内无网络探测；`ssl://8.140.23.253:8883` 的握手/认证与 `http://8.140.23.253:5000` 可达性属 E2E-SW-002 J-5（T-SW-L2-01/L2-12）。本项期望为配置级，已由上述静态与产物级证据充分覆盖；不把静态结论当作链路连通性结论。
 3. **仍引用旧地址的非编译材料**（未改动，属文档/iOS 资料维护或 ITEM-014）：`_REFACTOR_NOTES.md`、`iOS开发所需资料清单.md`、`iOS版功能需求文档.md`、`iOS开发资料/**`。
 4. **本项未涉及**：`/upload_data` 端点与上传编排（ITEM-008/009）、SQLite v3（ITEM-006）、告警时间窗（ITEM-005）、UI（ITEM-011/012）、版本/文档（ITEM-014）。
+
+---
+
+## ST-005 · ITEM-005（告警时间窗纯逻辑 `telemetry/AlarmEvaluator.kt`）
+
+**被测代码版本**：`a6bfa6d`（android_engineer.android_implementation 提交，相对上一提交 `87b80ab`）
+**变更范围**：**仅新增** `telemetry/AlarmEvaluator.kt`（179 行）+ `telemetry/AlarmEvaluatorTest.kt`（308 行）；`git diff --name-only 87b80ab a6bfa6d` 确认**未修改任何现有产品文件**（`MqtttService.kt` 未变）
+**任务期望**：时间窗下降判定（5/10/15 min，基准为不晚于 `now-W` 且不早于 `now-W-回溯容差` 的最新样本）；阈值超限与紧急（>65.0℃）语义保持现状；基准缺失/无历史时下降不成立；恰好等于阈值不触发；不写入任何伪造温度/湿度。
+
+### 1. 适用测试的选择与理由
+
+| TD-SW-002 用例 | 是否适用 | 理由 |
+|---|---|---|
+| T-SW-L0-06（未设置报警） | 适用 | 模块输出契约 |
+| T-SW-L0-07（时间窗下降与边界） | 适用 | 本项核心改动，纯逻辑可直接穷举/属性验证 |
+| T-SW-L0-08（阈值超限保持现状） | 适用 | 严格比较语义 |
+| T-SW-L0-09（优先级与文案保持现状） | 适用 | 两开关都开时的覆盖关系 |
+| T-SW-L0-10（紧急 >65.0） | 适用 | 阈值、级别、每次通知标记 |
+| T-SW-L2-13/L2-14（告警链路与去抖集成） | **本轮不适用** | 本项**未接线**（`MqtttService` 仍用旧内存窗口逻辑，接线属后续队列项）；去抖/通知/落库均在 Service |
+
+### 2. 独立验证方法
+
+新增 `app/src/test/java/com/jinyuni/dengbei_care/verification/AlarmEvaluatorItem005VerificationTest.kt`（10 项），期望值由本文件按 AA-002 §7 / D-04 / D-05 独立重写参考实现得出：
+1. **时间窗边界表**：单一基准位于 `now-35min`（5 min 窗口下界含端点）/`now-36min`/`now-40min`/`now-41min`/`now-45min`（15 min 下界含端点）/`now-46min`（超出回溯）/`now-4min`（过新）/`now`（当前时刻）→ 期望命中窗口或 NONE；
+2. **每窗口取最新合格基准**：`now-35min` 与 `now-12min` 同时存在时命中 5 min 窗口（取最新）；
+3. **无基准/无历史**：空历史、样本全部过新（“最近 3 个样本”旧语义的**负对照**）、温度上升 → 均不报警；
+4. **严格比较**：温度/湿度差恰好等于阈值不触发、再多 0.1 才触发；四个上下限恰好等于不触发、略超才触发；
+5. **开关矩阵 ×4 与优先级**：两关→`未设置报警`；只开一个→只判该项；都开且同时成立→超限文案覆盖下降（与改动前一致）；
+6. **紧急阈值**：`65.0` 不触发、`>65.0` 触发且覆盖一切（含两开关均关），文案/级别/`notifiesImmediately` 断言；
+7. **文案字面值与常量**（兼容面）：五条文案、`DROP_WINDOW_MINUTES=[5,10,15]`、`EMERGENCY_TEMP_C=65.0`、`DEFAULT_LOOKBACK_SLACK_SECONDS=1800`；
+8. **纯函数性与无伪造数值**：同输入结果相同、不修改入参列表（快照比对）、`Result` 无任何测量字段（无 Double/Float、无 temp/humi/reading 命名）；
+9. **随机属性比对**：4000 例（随机参数含开关组合、0–5 个随机时段样本含窗口边界偏移、随机当前读数）逐例与独立参考比较 outcome/message/severity/window；
+10. **异常鲁棒性**：非有限基准不得成为下降依据、非有限当前值不得抛异常。
+
+### 3. 原始结果
+
+```
+$ ./gradlew :app:testDebugUnitTest --offline
+BUILD SUCCESSFUL in 3s
+```
+
+| 套件 | tests | failures | errors | skipped |
+|---|---|---|---|---|
+| `ExampleUnitTest` | 1 | 0 | 0 | 0 |
+| `cloud.CloudConfigTest` | 3 | 0 | 0 | 0 |
+| `protocol.GatewayFrameCodecTest` | 11 | 0 | 0 | 0 |
+| `telemetry.AlarmEvaluatorTest`（实现侧自检） | 23 | 0 | 0 | 0 |
+| `telemetry.ReadingAttributionTest` | 16 | 0 | 0 | 0 |
+| `verification.AlarmEvaluatorItem005VerificationTest`（独立，本轮新增） | 10 | 0 | 0 | 0 |
+| `verification.GatewayFrameCodecItem001LegacyParityTest` | 3 | 0 | 0 | 0 |
+| `verification.GatewayFrameCodecItem001VerificationTest` | 7 | 0 | 0 | 0 |
+| `verification.ReadingAttributionItem003VerificationTest` | 8 | 0 | 0 | 0 |
+| **合计** | **82** | **0** | **0** | **0** |
+
+本轮独立用例：`dropWindowBoundaries_matchSpec`、`latestEligibleSampleIsChosenPerWindow`、`dropRequiresEligibleBaseline`、`strictComparisons_exactEqualityDoesNotTrigger`、`switchMatrix_andPrecedence_matchLegacy`、`emergencyThreshold_isStrictAndHasPriority`、`messageLiterals_areExact`、`evaluate_isPure_andResultCarriesNoMeasurements`、`randomCases_matchIndependentReference`、`nonFiniteInputs_neverThrow_andNonFiniteBaselineDoesNotAlarm` —— **10/10 PASS**。
+
+构建与回归：
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 构建/打包 | `./gradlew :app:assembleDebug --offline` | BUILD SUCCESSFUL；`app-debug.apk` 10,359,236 B；`app/build/tmp/kotlin-classes/debug/.../telemetry/AlarmEvaluator.class` 已产出 |
+| 前项静态口径 | ITEM-002 / ITEM-004 两个独立脚本 | 均 EXIT=0 |
+| 差异范围 | `git diff --name-only 87b80ab a6bfa6d` | 仅新增模块 + 测试 + 文档/清单；**`MqtttService.kt` 等生产文件未被修改** |
+
+### 4. 判定
+
+1. **时间窗判定**：基准选取区间 `[now-W-slack, now-W]`（两端含）、每窗口取最新合格样本、窗口按 5→10→15 升序首个成立者命中；边界逐一验证并与独立参考在 4000 随机例上完全一致。**通过**
+2. **无基准不成立**：空历史/样本全过新/超出回溯均不报警；“最近 3 个样本近 1 分钟”负对照不报警（证明已不再按样本序号）。**通过**
+3. **阈值与紧急保持现状**：严格比较（恰好等于阈值、恰好 65.0 均不触发）、紧急覆盖一切且与开关无关、>65 每次通知标记正确；文案字面值精确。**通过**
+4. **不写入伪造数值**：纯函数、不改入参、`Result` 不含任何测量字段。**通过**
+5. **接入与运行行为未变**：`AlarmEvaluator` 被生产代码引用次数 = **0**（除自身文件），`MqtttService` 未改，故本项**不改变现有运行行为**（接线属后续队列项）。**通过**
+
+结论：**TEST_PASS**（本项为模块级交付；不断言“告警链路已改造”）。
+
+### 5. 交接与观察
+
+1. **`matchedWindowMinutes` 语义**：因回溯容差（30 min）远大于窗口差（5 min），同一基准可同时满足多个窗口；模块返回升序首个成立窗口。已实测 `now-35min→5`、`now-36min→10`、`now-41min→15`、`now-46min→null`（与实现记录一致），该字段仅用于日志/证据，不影响报警与否。
+2. **`Outcome.NONE` 文案为 `无报警`**（区别于“两开关都关”的 `未设置报警`）：与已批准设计 AA-002 §7 列出的四种结论一致；两者严重级别均为 NORMAL，卡片不展示、不落 `alarm_events`，因此**生产可见行为不变**；具体落库分支需在接线后按 ITEM-010 复核。
+3. **接线与基准来源属后续项**：① `processTemperatureHumidityData` 改用本模块（含 `Severity` 映射）与 900 s 去抖/通知保留 → 后续队列项；② 基准样本是否来自本地库（设计 D-05，支持进程重启后仍可判定）→ 库 API 与接线项；TD-SW-002 §8-G4 已登记。
+4. **本项不涉及**：SQLite v3 与真实时间戳（ITEM-006/007）、云上传（ITEM-008/009）、UI 呈现（ITEM-011/012）、通知去抖（900 s，仍在 Service）。
