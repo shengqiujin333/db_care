@@ -346,6 +346,36 @@ class TemperatureDatabaseHelper(context: Context, name: String, factory: SQLiteD
     }
 
     /**
+     * 取某设备在时间范围内的温湿度样本（时间升序），供告警判定的时间窗基准使用（AA-002 D-05）。
+     * 时间参数均为 Unix 秒。
+     */
+    fun getSamplesInRange(devId: String, fromTime: Long, toTime: Long): List<HumidityTemperatureData> {
+        val result = ArrayList<HumidityTemperatureData>()
+        val db = this.readableDatabase
+        val query = "SELECT $COLUMN_TIME, $COLUMN_TEMPERATURE, $COLUMN_HUMIDITY FROM $TABLE_TEMPERATURE " +
+            "WHERE $COLUMN_DEVICE_ID = ? AND $COLUMN_TIME BETWEEN ? AND ? " +
+            "ORDER BY $COLUMN_TIME ASC"
+        val cursor = db.rawQuery(query, arrayOf(devId, fromTime.toString(), toTime.toString()))
+        cursor.use { c ->
+            val timeIdx = c.getColumnIndex(COLUMN_TIME)
+            val tempIdx = c.getColumnIndex(COLUMN_TEMPERATURE)
+            val humiIdx = c.getColumnIndex(COLUMN_HUMIDITY)
+            if (timeIdx >= 0 && tempIdx >= 0 && humiIdx >= 0 && c.moveToFirst()) {
+                do {
+                    result.add(
+                        HumidityTemperatureData(
+                            timestamp = c.getLong(timeIdx),
+                            temperature = c.getDouble(tempIdx),
+                            humidity = c.getDouble(humiIdx)
+                        )
+                    )
+                } while (c.moveToNext())
+            }
+        }
+        return result
+    }
+
+    /**
      * 取某设备的最近 N 条温度数据(给卡片 sparkline 用)
      * 返回时间正序的 Entry 列表
      */

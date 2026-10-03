@@ -517,3 +517,89 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 4. **达到 `maxAttempts` 的数据保留但不自动重试**（设计 §5.5），目前无手动清理入口；若需要清理策略（如保留 N 天）属新需求。
 5. **`testOptions.isReturnDefaultValues` 为构建脚本改动**：仅为让宿主机单测能加载含 `android.util.Log` 的类；生产行为不变（仅影响 unit test 的 android.jar 桩）。
 6. **本项不涉及**：Service 接线（ITEM-010）、UI（ITEM-011/012）、版本/文档（ITEM-014）。
+
+---
+
+# 任务项 ITEM-010（本轮完成）
+
+**ITEM-010（队列第 10 项）**：在 `MqtttService` 中完成编排接入：① 设备读取周期常量与传感器 3 分钟采样节拍对齐（保留手动立即读取）；② `processTemperatureHumidityData` 改用 `AlarmEvaluator` 的判定结果；③ 使用真实采样时间戳入库；④ 入库成功后按待发箱与上传编排触发云上传；同时保留 900 秒报警去抖、>65℃ 每次通知、报警事件落库与既有报警文案字面值。
+期望行为：一次 BLE 或 MQTT 读数依次完成归因、告警判定、去重落库与上传触发；任何一步失败都不影响其他步骤与后台循环；上报失败不产生用户可见的阻塞或崩溃。
+
+设计映射：AA-002 §4.1（数据流与状态归属）、§5.1–§5.5、§6（四个上传触发点）、§7（告警展示）、D-04/D-05（时间窗 + 库基准）、D-07/D-09（待发箱/门控）、D-11（读取周期对齐）、§4.2（Service 编排）；TD-SW-002 §8-G3/G4。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt` | 新增 | 采样节拍常量（180 s / 180000 ms），供 BLE 读取周期与后续界面文案共用，避免多处魔数 |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt` | 修改 | ① `READ_INTERVAL_MS = SensorCadence.SAMPLE_PERIOD_MS`（原 5 分钟；手动 `wakeReadNow` 通道保留）；② `processTemperatureHumidityData` 的整个 if/else 下降/超限判定与紧急块改为调用 `AlarmEvaluator.evaluate` + 枚举映射；③ 下降基准改为 `loadBaselineSamples`（本地库 `[now-15min-回溯容差, now]`，D-05）；④ `DeviceHistory` 仅保留 `lastAlarmTime`（删除第 1/2/3 个样本窗口字段）；⑤ 入库后 `uploadRepository.enqueueAndUpload`；⑥ 四个上传触发点：入队后、每轮 BLE 开始、broker 连接成功（网络恢复）、`onCreate`（冷启动）；⑦ 新增 `uploadRepository`（`RetrofitUploadApi` + `SqliteUploadOutboxStore` + `PrefsUploadGate`） |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt` | 修改 | 新增 `getSamplesInRange(devId, fromTime, toTime)`（时间升序，供告警时间窗基准，关闭 G4 的查询 API 缺口） |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt` | 新增 | 宿主机 JUnit4 自检 2 项（节拍常量） |
+
+编排后的单次读数流程（顺序与任务描述一致）：
+
+```text
+读入(BLE 解密→GatewayFrameCodec / MQTT→ReadingAttribution 严格归因)
+  → loadDeviceParams(devId)                        每设备报警参数
+  → loadBaselineSamples(devId, now)                本地库基准样本（D-05；失败→空列表）
+  → AlarmEvaluator.evaluate(...)                    时间窗下降 / 阈值超限 / 紧急 >65.0℃
+  → updateDeviceAlarm + 报警事件落库（三个字面值映射）
+  → 紧急？直接震动/铃声/通知（每次，不受去抖）
+  → storeTemperatureReading(devId, now, t, h, guard)   真实采样时间、幂等
+  → 守护中？uploadRepository.enqueueAndUpload(...)     幂等入队 + 异步上传
+  → updateDeviceReading（卡片）
+  → 900 s 去抖后震动/铃声/通知（仅下降/超限，且守护中）
+```
+
+保留的兼容面：三个报警文案字面值、`ALARM_TYPE_*` 常量、`>65℃` 阈值、`900 * 1000` 去抖、`homeViewModel.startData` 守护门控、`updateDeviceAlarm`/`updateDeviceReading` 调用、`AlarmEmergent` 字段、`_bkp_all_time`。
+
+行为差异（均为有意且有依据）：
+
+| 项 | 改动前 | 改动后 | 依据 |
+|---|---|---|---|
+| 下降基准 | 内存“最近第 1/2/3 个样本” + 30 min 过期 | 本地库 `[now-W-slack, now-W]` 最新样本 | D-04/D-05（样本间隔不再固定；重启后可判定） |
+| “无参照点则清屏” | 内存 5/10/15 均为空时清 sparkline | 库中窗口内无任何样本时清 sparkline | 语义平移（原判定依据已被替换） |
+| 紧急报警与下降同时成立 | 可能“直接触发一次 + 去抖再触发一次” | 紧急走直接通道，不再进入去抖通道 | 与 T-SW-L2-14“紧急不受去抖限制”一致，避免双次动作 |
+| 触发上报的前提 | — | 仅守护中（`startData == 1`）才入队；无手机号由门控拦住 | D-09 |
+
+## 2. 预期行为（本轮交付）
+
+1. BLE 轮询周期为 3 分钟（与传感器采样节拍一致），手动“立即读取”仍可用。
+2. 告警判定结果（文案 + 级别）与 `AlarmEvaluator` 一致；阈值/紧急语义、优先级与字面值不变；无基准不产生下降报警。
+3. 入库行的 `time` 为真实采样时间；守护关闭不写入、不入队、不上传。
+4. 入库成功后读数幂等入队并异步上传；四个触发点覆盖冷启动/每轮 BLE/网络恢复/入队后；上传失败不抛异常、不阻塞读数处理与后台循环。
+5. 900 s 去抖、`>65℃` 每次通知、报警事件落库均保持。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；全部套件共 **146 项、0 失败 0 跳过**（新增 `SensorCadenceTest` 2 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,360,647 B |
+| 全量重编译告警 | `./gradlew :app:compileDebugKotlin --offline --rerun` | 11 条（与 ITEM-009 同一集合），无新增 |
+| 接线静态核查 | `grep -n`（见下表） | 全部命中 |
+| 旧窗口残留 | `grep -n "data5MinAgo\|data10MinAgo\|data15MinAgo\|isSignificantChange"` | 0 命中 |
+| 兼容面字面值 | `grep -c "温度湿度下降报警\|温湿度超限报警\|紧急报警，温度超过65度，谨防火灾"` | 3（`when` 映射处，逐字保留） |
+
+| 核查点 | 命中 |
+|---|---|
+| 读取周期对齐 | `MqtttService.kt:253 READ_INTERVAL_MS = SensorCadence.SAMPLE_PERIOD_MS` |
+| 判定接入 | `840 val verdict = AlarmEvaluator.evaluate(` |
+| 基准来自库 | `950 loadBaselineSamples` / `955 getSamplesInRange` |
+| 真实时间戳入库 | `901 storeTemperatureReading(... currentTime ...)` |
+| 上传触发（入队后） | `911 uploadRepository.enqueueAndUpload(...)` |
+| 上传触发（每轮 BLE） | `388 uploadRepository.triggerUpload()` |
+| 上传触发（网络恢复） | `1244 uploadRepository.triggerUpload()`（`connectToBroker.onSuccess`） |
+| 上传触发（冷启动） | `369 uploadRepository.triggerUpload()`（`onCreate`） |
+| 900 s 去抖 | `925 if (now - history.lastAlarmTime > (900 * 1000))` |
+
+原始输出见 `evidence/android_test.md`（AT-010）。
+
+## 4. 观察与交接
+
+1. **真机行为未在本轮验证**：BLE/MQTT 链路、卡片/通知/报告展示、待发箱补传与 HTTP 观测需设备与网络，属测试能力（TD-SW-002 T-SW-L2-13/14/15、L3-01..03、E2E J-1）。本项只提供接线静态证据 + 构建/回归。
+2. **基准查询在回调线程执行**：`loadBaselineSamples` 是单条带索引查询（与既有 `MacIdBook.all()`/入库写在同一线程），未引入新的阻塞类别；若后续需要把整段处理移入 IO 调度器，属性能优化项。
+3. **G4 已关闭**：设计 D-05 要求的“按 devId + 时间范围查样本”查询 API 已由 `TemperatureDatabaseHelper.getSamplesInRange` 提供并被判定链路使用（重启后可判定）。
+4. **G3 已确认**：四个上传触发点均已在代码中就位（入队后/每轮 BLE/网络恢复/冷启动），可供测试能力逐点验证。
+5. **sparkline 清屏语义平移**：由“内存窗口为空”改为“库中窗口内无样本”；若产品要求保留原频率的清屏行为，属新需求。
+6. **本项不涉及**：UI 卡片/详情/报告文案（ITEM-011/012/013）、版本与文档（ITEM-014）。

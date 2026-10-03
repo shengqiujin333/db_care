@@ -30,8 +30,15 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.github.mikephil.charting.data.Entry
 import com.jinyuni.dengbei_care.cloud.CloudConfig
+import com.jinyuni.dengbei_care.cloud.CloudUploadRepository
+import com.jinyuni.dengbei_care.cloud.PrefsUploadGate
+import com.jinyuni.dengbei_care.cloud.RetrofitUploadApi
+import com.jinyuni.dengbei_care.cloud.SqliteUploadOutboxStore
+import com.jinyuni.dengbei_care.cloud.UploadOutbox
 import com.jinyuni.dengbei_care.protocol.GatewayFrameCodec
+import com.jinyuni.dengbei_care.telemetry.AlarmEvaluator
 import com.jinyuni.dengbei_care.telemetry.ReadingAttribution
+import com.jinyuni.dengbei_care.telemetry.SensorCadence
 import com.jinyuni.dengbei_care.ui.home.HomeViewModel
 import com.jinyuni.dengbei_care.ui.notifications.NotificationsViewModel
 import kotlinx.coroutines.CompletableDeferred
@@ -128,12 +135,20 @@ class MqtttService : MqttService() {
     // 单设备的历史读数 + 上次报警时间(替代老 dataA/B/C 5/10/15MinutesAgo 9 个变量 + 全局 timeAlarmBkp)
     // 多设备场景下每个设备需要独立的历史和报警节流
     data class DeviceHistory(
-        var data5MinAgo: HumidityTemperatureData? = null,
-        var data10MinAgo: HumidityTemperatureData? = null,
-        var data15MinAgo: HumidityTemperatureData? = null,
         var lastAlarmTime: Long = 0L   // 上次触发报警的时间(毫秒),用于 900 秒节流
     )
     private val deviceHistory = mutableMapOf<String, DeviceHistory>()
+
+    // 云上传编排(待发箱 + 上传):门控/幂等/退避/独立作用域均在其内部,失败不影响 BLE/MQTT 主链路
+    private val uploadRepository: CloudUploadRepository by lazy {
+        CloudUploadRepository(
+            api = RetrofitUploadApi(),
+            outbox = UploadOutbox(
+                SqliteUploadOutboxStore(DatabaseHelperInstance.getDatabaseHelper(applicationContext))
+            ),
+            gate = PrefsUploadGate(prefs)
+        )
+    }
 
     /**
      * 单设备的报警参数快照。processTemperatureHumidityData 每次调用时从
@@ -234,7 +249,8 @@ class MqtttService : MqttService() {
     var bleHumiData: List<Double>? = null
     var bletime:Long? = null
     var bletimebkp:Long? = null
-    private val READ_INTERVAL_MS = 5 * 60 * 1000L
+    // BLE 读取周期与传感器 3 分钟采样节拍对齐（readme 修改点 3）；手动立即读取通道 wakeReadNow 保留
+    private val READ_INTERVAL_MS = SensorCadence.SAMPLE_PERIOD_MS
     private val wakeReadNow = Channel<Unit>(Channel.CONFLATED) // 触发“立刻读”的信号（合并最新）
     private var bleZeroCount = 0  // 连续0值的次数
 
@@ -349,7 +365,8 @@ class MqtttService : MqttService() {
         }
         //startBluetoothTask()
 
-
+        // 冷启动补传：把待发箱里未完成的读数尝试上传一次（门控在 repository 内；失败不阻塞启动）
+        uploadRepository.triggerUpload()
     }
 
     private fun startBluetoothTask() {
@@ -367,6 +384,8 @@ class MqtttService : MqttService() {
                 }
                 // 执行至少一次读取；如果在执行期间又来了触发，读完后立刻再来一轮（不等待）
                 do {
+                    // 每轮 BLE 开始：补传待发箱（网络恢复/上次失败的重试由此推进）
+                    uploadRepository.triggerUpload()
                     connectToBluetoothDevice()
                     // 尝试“吃掉”在执行期间累积的触发；只要还有就继续读，不走 delay
                     val more = wakeReadNow.tryReceive().isSuccess
@@ -806,95 +825,53 @@ class MqtttService : MqttService() {
 
             val history = deviceHistory.getOrPut(devId) { DeviceHistory() }
 
-            // 30 分钟过期检查(老逻辑保留)
-            if (history.data5MinAgo != null && currentTime - history.data5MinAgo!!.timestamp > 30 * 60) {
-                history.data5MinAgo = null
-            }
-            if (history.data10MinAgo != null && currentTime - history.data10MinAgo!!.timestamp > 30 * 60) {
-                history.data10MinAgo = null
-            }
-            if (history.data15MinAgo != null && currentTime - history.data15MinAgo!!.timestamp > 30 * 60) {
-                history.data15MinAgo = null
-            }
-
-            // 清屏:5/10/15 历史都为空(无参照点)时,清掉这个设备的 sparkline
-            if (history.data5MinAgo == null && history.data10MinAgo == null && history.data15MinAgo == null) {
-                homeViewModel.clearDevice(devId)
-            }
-
-            val newData = HumidityTemperatureData(currentTime, temperature, humidity)
-
             // 每设备独立报警参数(未设置的字段 fallback 到 DashboardFragment 全局默认值)
             val params = loadDeviceParams(devId)
 
-            // 报警逻辑
-            vibrationAlarmFlag = 0
-            voiceAlarmFlag = 0
-            var alarmMessage = "未设置报警"
-            var alarmSeverity = Severity.NORMAL
-
-            if ((params.humitempDrop == 0) && (params.thresholdBeyond == 0)) {
-                alarmMessage = "未设置报警"
-                alarmSeverity = Severity.NORMAL
-            } else if ((params.humitempDrop == 1) && (params.thresholdBeyond == 0)) {
-                val isSignificantChange5MinAgo = history.data5MinAgo?.let {
-                    it.temperature - newData.temperature > params.tempDrop && it.humidity - newData.humidity > params.humiDrop
-                } ?: false
-                val isSignificantChange10MinAgo = history.data10MinAgo?.let {
-                    it.temperature - newData.temperature > params.tempDrop && it.humidity - newData.humidity > params.humiDrop
-                } ?: false
-                val isSignificantChange15MinAgo = history.data15MinAgo?.let {
-                    it.temperature - newData.temperature > params.tempDrop && it.humidity - newData.humidity > params.humiDrop
-                } ?: false
-                if (isSignificantChange5MinAgo || isSignificantChange10MinAgo || isSignificantChange15MinAgo) {
-                    alarmMessage = "温度湿度下降报警"
-                    alarmSeverity = Severity.WARNING
-                    if (params.voiceAlarmEnable == 1) voiceAlarmFlag = 1
-                    if (params.vibrationAlarmEnable == 1) vibrationAlarmFlag = 1
-                }
-            } else if ((params.humitempDrop == 0) && (params.thresholdBeyond == 1)) {
-                if (newData.temperature > params.tempmax || newData.temperature < params.tempmin
-                    || newData.humidity > params.humimax || newData.humidity < params.humimin) {
-                    alarmMessage = "温湿度超限报警"
-                    alarmSeverity = Severity.WARNING
-                    if (params.voiceAlarmEnable == 1) voiceAlarmFlag = 1
-                    if (params.vibrationAlarmEnable == 1) vibrationAlarmFlag = 1
-                }
-            } else {
-                // 两种报警都启用
-                val isSignificantChange5MinAgo = history.data5MinAgo?.let {
-                    it.temperature - newData.temperature > params.tempDrop && it.humidity - newData.humidity > params.humiDrop
-                } ?: false
-                val isSignificantChange10MinAgo = history.data10MinAgo?.let {
-                    it.temperature - newData.temperature > params.tempDrop && it.humidity - newData.humidity > params.humiDrop
-                } ?: false
-                val isSignificantChange15MinAgo = history.data15MinAgo?.let {
-                    it.temperature - newData.temperature > params.tempDrop && it.humidity - newData.humidity > params.humiDrop
-                } ?: false
-                if (isSignificantChange5MinAgo || isSignificantChange10MinAgo || isSignificantChange15MinAgo) {
-                    alarmMessage = "温度湿度下降报警"
-                    alarmSeverity = Severity.WARNING
-                    if (params.voiceAlarmEnable == 1) voiceAlarmFlag = 1
-                    if (params.vibrationAlarmEnable == 1) vibrationAlarmFlag = 1
-                }
-                if (newData.temperature > params.tempmax || newData.temperature < params.tempmin
-                    || newData.humidity > params.humimax || newData.humidity < params.humimin) {
-                    alarmMessage = "温湿度超限报警"
-                    alarmSeverity = Severity.WARNING
-                    if (params.voiceAlarmEnable == 1) voiceAlarmFlag = 1
-                    if (params.vibrationAlarmEnable == 1) vibrationAlarmFlag = 1
-                }
+            // 下降判定基准来自本地库(AA-002 D-05:进程重启后仍可判定);
+            // 取 [now-45min, now] 的样本交给 AlarmEvaluator,由它按 5/10/15 分钟时间窗各取最新合格样本。
+            val baselines = loadBaselineSamples(devId, currentTime)
+            // 无参照点(时间窗内没有任何历史样本)时清掉该设备的 sparkline(沿用旧“无参照点则清屏”语义)
+            if (baselines.isEmpty()) {
+                homeViewModel.clearDevice(devId)
             }
 
-            // 紧急报警(温度 > 65°C 火灾预警)
-            AlarmEmergent = false
-            if (newData.temperature > 65f) {
-                AlarmEmergent = true
-                alarmMessage = "紧急报警，温度超过65度，谨防火灾"
-                alarmSeverity = Severity.ALARM
+            // 报警判定(纯逻辑模块:时间窗下降 + 阈值超限 + 紧急 >65.0℃,文案/优先级与改动前一致)
+            val verdict = AlarmEvaluator.evaluate(
+                now = currentTime,
+                temperature = temperature,
+                humidity = humidity,
+                parameters = AlarmEvaluator.Parameters(
+                    tempDrop = params.tempDrop,
+                    humiDrop = params.humiDrop,
+                    tempMax = params.tempmax,
+                    tempMin = params.tempmin,
+                    humiMax = params.humimax,
+                    humiMin = params.humimin,
+                    dropEnabled = params.humitempDrop == 1,
+                    thresholdEnabled = params.thresholdBeyond == 1
+                ),
+                history = baselines
+            )
+
+            val alarmMessage = verdict.message
+            val alarmSeverity = verdict.severity.toAppSeverity()
+
+            // 震动/铃声开关:仅下降/超限走 900 秒节流通道;紧急报警在下方直接触发(不受节流限制)
+            vibrationAlarmFlag = 0
+            voiceAlarmFlag = 0
+            if (verdict.outcome == AlarmEvaluator.Outcome.DROP ||
+                verdict.outcome == AlarmEvaluator.Outcome.THRESHOLD
+            ) {
+                if (params.voiceAlarmEnable == 1) voiceAlarmFlag = 1
+                if (params.vibrationAlarmEnable == 1) vibrationAlarmFlag = 1
+            }
+
+            // 紧急报警(温度 > 65.0℃ 火灾预警):每次都通知,不受 900 秒节流限制
+            AlarmEmergent = verdict.outcome == AlarmEvaluator.Outcome.EMERGENCY
+            if (AlarmEmergent) {
                 VibrationPlayer.vibratePhone(this@MqtttService, 300 * 1000, true)
                 RingtonePlayer.startAlarm(this@MqtttService)
-                // 紧急报警每次都发通知(不受节流限制)
                 val emergentDeviceName = MacIdBook.all(applicationContext).find { it.first == devId }?.second ?: devId
                 sendAlarmNotification(devId, emergentDeviceName, alarmMessage, alarmSeverity)
             }
@@ -929,20 +906,16 @@ class MqtttService : MqttService() {
                     humidity,
                     humistartflag
                 )
+                // 入库成功后触发云上传:入队按 (dev_id, time) 幂等,门控/退避/独立作用域在 repository 内
+                if (humistartflag == 1) {
+                    uploadRepository.enqueueAndUpload(devId, currentTime, temperature, humidity)
+                }
             }
 
             // 显示逻辑:推送给新的 _devices Map
             val deviceName = MacIdBook.all(applicationContext).find { it.first == devId }?.second ?: ""
             homeViewModel.updateDeviceReading(devId, deviceName, temperature, humidity, currentTime)
 
-            // 数据更新(滑动历史窗口)
-            if (history.data10MinAgo != null) {
-                history.data15MinAgo = history.data10MinAgo
-            }
-            if (history.data5MinAgo != null) {
-                history.data10MinAgo = history.data5MinAgo
-            }
-            history.data5MinAgo = newData
             _bkp_all_time = currentTime
 
             // 报警处理:震动 + 铃声 + 系统通知,按设备节流(900 秒)
@@ -967,6 +940,31 @@ class MqtttService : MqttService() {
         } catch (e: Exception) {
             Log.e("DataProcessor", "Error processing data", e)
         }
+    }
+
+    /**
+     * 取告警判定的时间窗基准样本（AA-002 D-05：基准来自本地库，进程重启后仍可判定）。
+     * 范围 = `[now - 15min - 回溯容差, now]`（覆盖 5/10/15 三个窗口的上界）。
+     * 查询失败时返回空列表（视为无基准，不报警、不伪造数据）。
+     */
+    private fun loadBaselineSamples(devId: String, now: Long): List<AlarmEvaluator.Sample> {
+        val widestWindow = AlarmEvaluator.DROP_WINDOW_MINUTES.maxOrNull() ?: 15
+        val from = now - widestWindow * 60L - AlarmEvaluator.DEFAULT_LOOKBACK_SLACK_SECONDS
+        return try {
+            DatabaseHelperInstance.getDatabaseHelper(applicationContext)
+                .getSamplesInRange(devId, from, now)
+                .map { AlarmEvaluator.Sample(it.timestamp, it.temperature, it.humidity) }
+        } catch (e: Exception) {
+            Log.w("DataProcessor", "baseline query failed: ${e.message}")
+            emptyList()
+        }
+    }
+
+    /** 判定级别 → 应用级别（枚举值同名，仅做类型映射） */
+    private fun AlarmEvaluator.Severity.toAppSeverity(): Severity = when (this) {
+        AlarmEvaluator.Severity.NORMAL -> Severity.NORMAL
+        AlarmEvaluator.Severity.WARNING -> Severity.WARNING
+        AlarmEvaluator.Severity.ALARM -> Severity.ALARM
     }
 
     private fun processMacAddr(macAddr: String) {
@@ -1241,6 +1239,9 @@ class MqtttService : MqttService() {
                     override fun onSuccess(asyncActionToken: IMqttToken) {
                         // 连接成功
                         Log.d("MqttService", "Connected to broker")
+
+                        // 网络恢复：触发一次待发箱补传（不阻塞连接回调）
+                        uploadRepository.triggerUpload()
 
                         if((device_mac != "") &&(!device_mac.startsWith("1010"))){
                             if(bletime != bletimebkp){

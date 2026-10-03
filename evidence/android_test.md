@@ -647,3 +647,66 @@ ITEM-009 的期望行为成立：入队按 `(dev_id, time)` 幂等；成功即�
 未覆盖（需设备/网络，属测试能力）：断网→恢复的真实补传与 HTTP 观测（TD-SW-002 T-SW-L2-09/10/11）、服务端 `inserted` 幂等计数（T-SW-L2-12）、真机待发箱行数（T-SW-L0d-05）。本项不声称链路已验证。
 
 另：触发点接线（每轮 BLE 开始/网络恢复/冷启动）属 ITEM-010（TD-SW-002 §8-G3）；本项已提供 `enqueueAndUpload` 与 `triggerUpload()` 供其调用。
+
+---
+
+## AT-010 · ITEM-010（Service 编排接入）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`./gradlew :app:compileDebugKotlin --offline --rerun`、`grep -n` |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：`MqtttService.kt`（读取周期/告警判定/基准查询/上传触发四处）、`TemperatureDatabaseHelper.kt`（新增 `getSamplesInRange`）；新增 `telemetry/SensorCadence.kt` 与 `test/.../telemetry/SensorCadenceTest.kt` |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 3s
+```
+
+| 汇总 | 值 |
+|---|---|
+| 套件数 | 15（含实现侧自检与软件测试能力独立验证） |
+| 合计 | **146 tests / 0 failures / 0 errors / 0 skipped** |
+| 本项新增 | `SensorCadenceTest` 2 项（180 s / 180000 ms 一致；非旧 5 分钟/1 分钟） |
+
+回归意义：本项改动了 Service 的判定/存储/上传编排，所有既有模块级用例（帧解码/归因/告警判定/载荷/待发箱/存储 schema）均继续通过。
+
+### 3. 构建与告警
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,360,647 B |
+
+全量重编译（`--rerun`）共 11 条 warning，与 ITEM-009 同一集合，无新增。
+
+### 4. 接线与兼容面静态核查（独立读取源码）
+
+| 检查 | 结果 |
+|---|---|
+| 读取周期 = 3 分钟节拍 | `MqtttService.kt:253 READ_INTERVAL_MS = SensorCadence.SAMPLE_PERIOD_MS`；`SensorCadence.SAMPLE_PERIOD_MS == 180000` |
+| 手动立即读取保留 | `wakeReadNow` 通道与 `select { onTimeout(...); wakeReadNow.onReceiveCatching }` 未改动 |
+| 判定接入 | `840 val verdict = AlarmEvaluator.evaluate(...)`；`Severity` 枚举映射函数 `toAppSeverity()` |
+| 基准来自本地库 | `950 loadBaselineSamples` → `955 getSamplesInRange(devId, from, now)`；查询失败→空列表（不报警、不伪造） |
+| 真实采样时间戳入库 | `901 storeTemperatureReading(..., currentTime, ...)`（BLE=接收时刻、MQTT=payload 首段，ITEM-007） |
+| 上传触发点（4） | 入队后 `911 enqueueAndUpload`；每轮 BLE `388 triggerUpload`；网络恢复 `1244 triggerUpload`（`connectToBroker.onSuccess`）；冷启动 `369 triggerUpload`（`onCreate`） |
+| 900 s 去抖保留 | `925 if (now - history.lastAlarmTime > (900 * 1000))` |
+| >65℃ 每次通知保留 | `AlarmEmergent` 分支直接震动/铃声/通知（不进去抖通道）；阈值 `AlarmEvaluator.EMERGENCY_TEMP_C = 65.0` |
+| 报警文案字面值 | `grep -c "温度湿度下降报警\|温湿度超限报警\|紧急报警，温度超过65度，谨防火灾"` = 3（`when` 映射处逐字保留） |
+| 报警事件落库 | `storeAlarmEvent` + `ALARM_TYPE_DROP/THRESHOLD/EMERGENCY` 未变 |
+| 旧“第 N 个样本”窗口残留 | `grep -n "data5MinAgo\|data10MinAgo\|data15MinAgo\|isSignificantChange"` = 0 命中 |
+
+### 5. 判定
+
+ITEM-010 的期望行为在代码层面成立：读取周期与 3 分钟采样节拍对齐（手动立即读取保留）；告警判定改由 `AlarmEvaluator`（基准来自本地库，重启后可判定）；入库使用真实采样时间戳；入库成功后幂等入队并异步上传，四个触发点齐备；900 s 去抖、>65℃ 每次通知、报警事件落库与字面值均保留；旧窗口逻辑无残留；全量 146 项宿主机用例通过、构建成功。
+
+未覆盖（需设备/网络，属测试能力）：真机 BLE/MQTT 读数全链路与卡片/通知展示（T-SW-L2-13/14/15、L3-01..03）、断网补传与 HTTP 观测（L2-09..12）、真机待发箱行数（L0d-05）、端到端（E2E J-1/J-5）。本项不声称真机链路已验证。
