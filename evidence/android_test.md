@@ -1001,3 +1001,44 @@ ITEM-014 的期望行为成立：版本号已递增并已落入构建产物（AP
 未覆盖：真机安装/升级验证（需设备且启动 debug 包会连生产 broker/服务器）；文档中的“无光”措辞口径与 ITEM-012 一致（规则忠于 readme，不展示环境光状态/照度）。
 
 至此队列 `android_engineer.android_implementation` 的 14 项均已执行完毕（含 ITEM-010 的 D-010-1 修复）；后续路由与项目完成判定由 Runtime 负责。
+
+---
+
+## AT-014R · ITEM-014 修复（缺陷 D-014-1）
+
+### 1. 背景与修复范围
+
+软件测试能力 ST-014 判 **TEST_FAIL**（缺陷 D-014-1：`file_manifest.txt` 中一条 `active` 条目的路径是 git 八进制转义未还原的 `用户使用说明书.md`，磁盘上不存在）。
+
+| 文件 | 改动 |
+|---|---|
+| `file_manifest.txt` | 删除 1 行无效条目（`dengbei_care//347/224/250/.../344/271/246.md`）；保留真实条目 `dengbei_care/用户使用说明书.md`；其余未动 |
+
+来源：该行由**自动化清单同步**写入（`git` 在 `core.quotepath=true` 下输出的转义路径被直接粘贴），不对应任何真实文件；`git log -S` 定位到 ITEM-014 提交 `de8c4cb`。
+
+### 2. 原始结果
+
+```
+# 全清单 active 条目逐条 os.path.exists（复现测试能力 D3 口径，取工作区）
+修复前: 1 条无效 → 修复后: (none)
+
+# 本项改动清单条目（BASELINE→工作区）中路径不存在的 active 条目
+added manifest lines: 210
+bogus after fix (working tree): (none) -> D3 would PASS once committed
+
+./gradlew :app:testDebugUnitTest --offline  => BUILD SUCCESSFUL ; 188 tests / 0 failures / 0 errors / 0 skipped
+./gradlew :app:assembleDebug --offline       => BUILD SUCCESSFUL
+
+git diff --stat  => file_manifest.txt | 1 deletion(-)
+```
+
+测试能力门禁 `python evidence/software_verify_release_item014.py` 的 A/B/C/D 四项已全 PASS；其 D3 子项基于 `git diff <BASELINE> HEAD` 的**已提交历史**，故在 Runtime 提交本次修复后重跑即为 EXIT=0（本能力已按工作区口径复现同一逻辑，结果 0 条无效）。
+
+### 3. 判定
+
+D-014-1 已按要求修复：仅删除 1 行无效清单条目，真实条目与清单其余内容不变；全清单 `active` 条目路径均真实存在（工作区口径 0 无效）；版本/文档/构建/188 项宿主机用例均无回归。
+
+### 4. 交接与观察
+
+1. **根因在流程工具侧**：自动化清单同步应以 `git -c core.quotepath=false` 取路径（或先还原转义）再写入，否则非 ASCII 路径会被写成转义串并产生假记录（属 Runtime/流程改进项，不在本能力范围）。
+2. **真机安装/升级路径**仍未执行（需设备且 debug 包会连生产 broker/服务器），与 ST-014 §4 一致。

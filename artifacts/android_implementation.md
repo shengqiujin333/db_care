@@ -869,3 +869,41 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 2. **文档中的“无光”措辞**：与 ITEM-012 同一口径——规则必须忠于 readme，故用户说明书与详情页规则说明均保留“且无光”条件；App 不展示环境光状态或照度数值（详见 ITEM-012 §1 的口径说明）。
 3. **本轮无新增/删除文件**，故 `file_manifest.txt` 只更新既有条目用途/内容，未新增行。
 4. **队列完成**：`artifacts/android_tasks.yaml` 的 14 项已全部执行（ITEM-001…ITEM-014，含 ITEM-010 的 D-010-1 修复）。后续路由/完成判定由 Runtime 负责。
+
+---
+
+# 任务项 ITEM-014 修复（缺陷 D-014-1，本轮完成）
+
+**来源**：软件测试能力独立验证（`evidence/software_test.md` ST-014，结论 **TEST_FAIL**）——缺陷 **D-014-1**：`file_manifest.txt` 中有一条路径为 git 八进制转义未还原的 `active` 条目（转义后的 `用户使用说明书.md` 路径），该路径在磁盘上不存在，会误导后续 Agent/工具解析清单。
+
+**修复要求（测试能力给出，属实现范围）**：删除该行（1 行）；保留真实条目（`dengbei_care/用户使用说明书.md`）；清单其余内容不动。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `file_manifest.txt` | 修改 | 删除 1 行无效 `active` 条目：`dengbei_care//347/224/250/.../344/271/246.md | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件`；保留第 179 行真实条目 `dengbei_care/用户使用说明书.md`；其余行未动 |
+
+来源核查（`git log -S` / `git show de8c4cb`）：该行是**自动化清单同步**将 `git`（`core.quotepath=true`）输出的八进制转义路径直接写入所致（同一提交的“主要输出”列表也含该转义路径），**不对应任何真实产品文件**；本能力未创建过该文件。
+
+## 2. 预期行为（修复后）
+
+1. `file_manifest.txt` 中所有 `active` 条目路径均真实存在（或为粗粒度父目录/通配形式），无假记录。
+2. 本项新增/修改的清单条目（`app/build.gradle.kts`/`readme.txt`/`用户使用说明书.md`）仍正确更新。
+3. 清单行数减 1，其余内容与 ITEM-014 首轮一致。
+
+## 3. 本轮验证
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 全清单 active 条目存在性 | 逐行 `os.path.exists`（本地复现测试能力 D3 口径） | 修复前 1 条无效 → 修复后 **0 条无效** |
+| 测试能力门禁（缺陷项） | `python evidence/software_verify_release_item014.py` | A/B/C/D 全 PASS；D3 仍报旧路径，因该脚本对 `BASELINE→HEAD` 的**已提交历史**取差（修复尚未提交）；以工作区口径复现同一逻辑 → **0 条无效**，提交后即 EXIT=0 |
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；**188 项、0 失败 0 跳过** |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL` |
+| 差异范围 | `git diff --stat` | `file_manifest.txt | 1 deletion(-)`（仅删除该行） |
+
+## 4. 观察与交接
+
+1. **门禁时序**：测试能力的 D3 检查基于 `git diff <BASELINE> HEAD`，故修复必须在提交后才可见绿；本能力已完成修复并验证工作区口径为 0 无效条目，Runtime 提交后重跑该脚本即为 EXIT=0。
+2. **根因属流程工具侧**：自动化清单同步应使用 `git -c core.quotepath=false`（或先还原转义）再写入清单，否则非 ASCII 路径会被写成转义串。该行为不在本能力范围，已登记为交接/流程改进项。
+3. **本项无新增/删除产品文件**，清单仅 1 行删除。

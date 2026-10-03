@@ -106,7 +106,6 @@ artifacts/software_e2e_plan.md | active | 软件端到端测试计划 E2E-SW-002
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-002（Android App 本次改动的分层测试设计：as-built 基线、覆盖 readme 点 1-6 与云上传的行为 S1..S13、L0 宿主机纯逻辑/L0d 设备存储/L1 构建静态/L2 链路集成/L3 展示文案/REG 回归的用例明细、证据规范、前置交接、覆盖性检查与 7 项非阻塞缺口 G1..G7；只做设计不执行）
 artifacts/test_design.md | active | 嵌入式测试设计 TD-002（GXHT40 采集、光敏判据、3 分钟节拍、条件上报、失败路径、端到端与功耗的测试范围/环境仪器/数据采集/判定方法；只做设计不执行）
 dengbei_care/ | active | Android App 工程根（本次需同步修改；iOS 本轮不改）
-dengbei_care//347/224/250/346/210/267/344/275/277/347/224/250/350/257/264/346/230/216/344/271/246.md | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
 dengbei_care/app/build.gradle.kts | active | App 模块 Gradle 构建脚本；ITEM-009 新增 testOptions.unitTests.isReturnDefaultValues=true（宿主机单测可加载含 android.util.Log 的云上传类）；ITEM-014 versionCode 8→9、versionName 1.7→1.8
 dengbei_care/app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-006 真机 Android SQLite 独立验证（用独立构造的 v2/v1 库与数据打开被测 helper 触发 onUpgrade；v2→v3 历史数据保真与原始 SQL/既有查询 API 双视角、pending_uploads 列/复合主键/索引/默认值/幂等入队与重复键拒绝、重复打开、v1→v3 不崩溃、同名 VIEW 冲突回退不崩溃；已编译打包，设备执行因 Gradle UTP 依赖缺失+无外网而阻塞）
