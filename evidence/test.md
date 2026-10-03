@@ -527,3 +527,90 @@ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
 四个纯逻辑均已在 `fw_core.c` 实现且不依赖 MCU 寄存器/头文件，经**独立参考穷举**逐位一致；重构后驱动与光照行为无回归（独立 harness 42/42、45/45），GNU 与 AC5 均 0 error。
 
 **判定：TEST_PASS**（F.1 为需需求方确认的边界语义分歧，实现侧与已验证契约 IC-002/FWR-104 一致）。
+
+---
+
+# ITEM-006 验证（`measure.c` 采样流程改造）
+
+验证对象：任务项 **ITEM-006**（每个周期先光照后温湿度；GXHT40 读 NACK/CRC 错按配置上限有界重试；整周期失败不上报、不更新前一有效温度、不构造 0 值；成功后更新前一有效温度与最近有效湿度）
+被测提交：`1a0ba51`；源码基线：`9de0946`
+结论：**TEST_PASS**
+
+## A. 选测说明与变更范围
+
+| 选测项 | 理由 |
+|---|---|
+| 变更范围审查 | `measure.c` **+154/−249**（重写采样部分）、`measure.h` −3（删 `samples_since_report`/`first_sample_reported` 声明）、`fw_core.c` +2（`SENSOR_CONFIG_NO_MCU` 改为可外部预定义，供宿主机 harness 使用）、新增 `host_measure_flow_check.c` + `mock_measure_mcu/` |
+| **独立仿真 MCU 层流程验证** | ITEM-006 的新逻辑就是“周期流程 + 状态推进/不推进”；用自研阴影头编译**真实 `measure.c`**，把光/温湿度原语脚本化，用**参考模型逐步比对** |
+| 旧序列/旧调度清理检查 | 确认 AHT21 序列与旧上报调度已移除且无残留引用 |
+| 构建 + 回归 | GNU/AC5 可编译，既有 harness 无回归 |
+
+不适用（后续 ITEM）：3 分钟节拍（ITEM-007，当前仍为 RTC 1 分钟一拍）、上报发送路径对齐（ITEM-008）、旧通路退役（ITEM-009）、板级时序/上报矩阵（TD-002 T-L2/L3/L5，需仪器）。
+
+## B. 独立仿真 MCU 层流程验证（通过，核心）
+
+自研阴影头（`test/mock_measure_ev/cw32l010_{gpio,adc,sysctrl,uart}.h` + `mock_measure_hw.h`）置于 include 路径最前，编译**真实 `measure.c`**；`light_sample`/`gxht40_measure` 脚本化（含 `ERR_IO`/`ERR_CRC`/`ERR_RANGE`），并链接真实 `fw_core.c`（`sensor_decide_report`）、`sf_i2c.c`、`encrytogate.c`。
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+<mingw64 gcc> -std=c11 -Wall -Wextra -Wno-unused-function -I test/mock_measure_ev \
+  -I USER/inc -I UM2005C -I COMMON test/host_measure_flow_verify_ev.c USER/src/measure.c \
+  USER/src/fw_core.c USER/src/sf_i2c.c USER/src/encrytogate.c -lm -o measure_verify && ./measure_verify
+=> ==== result: 79 passed, 0 failed ====
+```
+
+方法：harness 内维护一个**参考模型**（与 measure.c 无关的流程重述），逐周期比对 `tempvalue`、`huminityvalue`、`report_req` 与“本周期是否新置上报”。14 个脚本周期：`(dark, gxht, temp, hum)` =
+`(0,OK,250,500) (0,OK,240,510) (1,OK,220,600) (1,ERR_IO,-,-) (1,OK,210,610) (1,ERR_CRC,-,-) [待上报中失败] (0,OK,351,700) (0,OK,350,710) (1,OK,340,720) (0,OK,330,730) (1,OK,300,740) (1,ERR_CRC,-,-) (0,OK,280,750)`。
+
+| 组 | 独立断言 | 结果 |
+|---|---|---|
+| 逐周期状态（14 周期×4） | `tempvalue`/`huminityvalue` 等于最近一次成功值；`report_req` 与参考模型一致；“新置上报”与参考判定逐周期一致；`sample_flag` 被消费 | PASS ×56 |
+| 惰性初始化 | `light_init`/`gxht40_init`/I2C 物理层各只初始化 1 次；`i2c_obj_find("i2c0")` 绑定成功 | PASS ×3 |
+| 采样顺序 | 每周期恰好 1 次 light + 1 次 gxht，且**恒为 light 先于 gxht**（含失败周期） | PASS ×3 |
+| 失败不构造 0 值 | 4 个失败周期后 `tempvalue`=280（最后一次成功值）、`huminityvalue`=750，从未变为 0 | PASS ×3 |
+| **失败不推进前值** | 周期 3（ERR_IO，前值 240）失败后，周期 4 测 210（降 30>9，暗）→ **必须上报**；若失败污染前值（如置 0）则降为负、不会上报 | PASS ×2 |
+| 失败不清除待上报 | 周期 6 前手动置 `report_req=1`，失败后仍为 1，且状态不变 | PASS ×2 |
+| 当前周期光照不泄露 | 周期 11（暗+降温）上报；周期 12（暗但失败）不上报；周期 13（亮+降温）不上报 | PASS ×3 |
+| 35.0 ℃ 边界（与 ITEM-005 一致） | 周期 7（351，亮）上报；周期 8（350，亮）不上报 | 已由逐周期判定覆盖 |
+| 休眠门控 | 待上报/待采样时**不**进深睡；空闲时进深睡 1 次 | PASS ×3 |
+| 节拍门控 | `sample_flag==0` 时无 light/gxht 调用、无状态变化 | PASS ×2 |
+| 低功耗 | 采样路径不配置调试 UART（`UART_Init` 调用数 = 0） | PASS |
+
+实现者自带 harness 也被独立执行确认：`host_measure_flow_check.c`（按其在文件头记录的 `-DSENSOR_CONFIG_NO_MCU -Imock_measure_mcu` 命令）→ **15 passed, 0 failed**。
+
+## C. 需求逐条对照
+
+| ITEM-006 声明 | 实现位置 | 独立证据 |
+|---|---|---|
+| 每周期先取光照再取温湿度 | `measure_sample()`：`light_sample()` → `gxht40_measure()` | B.S2（逐周期调用顺序） |
+| 读 NACK / CRC 错按配置上限有界重试 | `gxht40_measure()` 内部（ITEM-003 已验证）；流程每周期只调一次 | B.S1（每周期 gxht 调用数 = 1） |
+| 整周期失败不上报/不更新前值/不构造 0 值 | `measure_sample()` 失败即返回，不写 `tempvalue`/`huminityvalue`；`temperature_process()` 仅成功分支判定与推进 | B.S3/S4/S5 |
+| 成功后更新前一有效温度与最近有效湿度 | `s_prev_temp_x10`/`s_have_prev`/`s_last_hum_x10` 仅成功分支更新；判定用**更新前**的前值 | B 逐周期比对（含降 1.0/3.0 ℃ 正确触发） |
+
+补充确认：AHT21 序列（`0x70/0xAC/0x71/0x33`）已从 `measure.c` 完全移除（仅注释提到“不再使用 AHT21”）；`first_sample_reported`/`samples_since_report` 已无任何代码引用（仅 `main.c` 一处旧注释提到该名字，属文档残留）；首周期无前值时不上报（符合 FWR-108）。
+
+## D. 回归与构建（通过）
+
+| 项 | 结果 |
+|---|---|
+| 既有独立 harness | `host_fw_core_verify_ev` 53/53；`host_gxht40_verify_ev` 42/42；`host_light_verify_ev` 45/45 |
+| 宿主机 L0 | `test/build_test.sh` 56/56 |
+| GNU 交叉编译 | 0 error；28 warning（比上一版少 1 条，无一条指向 `measure.c`） |
+| AC5（`--c99`，CMSIS 5.9.0） | `measure.c` **0 error / 1 warning**；`main.c`/`gxht40.c`/`light.c`/`fw_core.c`/`sf_i2c.c` 均 0 error |
+| 接线 | `measure.o` 引用 `light_init/light_sample/gxht40_init/gxht40_measure/sensor_decide_report`；三者在 `sensor_fw.elf` 中均已被链接（模块首次真正进入固件） |
+| 资源 | FLASH 34,352→**35,884 B**（+1,532，模块接入）；RAM 1,960→**1,896 B**（−64，旧测量缓冲/参数结构体删除） |
+| 镜像 | `sensor_fw.bin` MD5 `fff8aa9c…`（较 ITEM-005 变化，因驱动/光照模块接入，符合预期） |
+
+## E. 观察与交接
+
+1. **`s_last_hum_x10` 赋值后从未被读（AC5 `#550-D`）**：当前 `send_data_to_gateway()` 直接用 `huminityvalue` 组帧，未用该变量。任务要求“成功后更新最近有效湿度”，所以赋值本身是合规的；但**ITEM-008 应对齐发送路径（使用该变量或删除）**，以免遗留死存储与告警。
+2. **发送路径与睡眠门控仍依赖旧模块**：`send_data_to_gateway()` 仍走 `optcfg_window_active()`/旧有界重试，`go_to_sleep()` 仍查 `hall_event_pending()`——属 ITEM-008（发送对齐）/ITEM-009（旧通路退役），本项未越界。
+3. **`main.c` 旧注释**仍提到已删除的 `samples_since_report`（纯注释）；建议 ITEM-007 一并清理。
+4. **上电即采一次**：`sample_flag` 初值为 1，故上电后立即执行一个采样周期；无前值时不强制上报（已验）。若产品不希望上电立即测量，属需求变更（FWR-108 仅约束“不强制上报首样本”）。
+5. **3 分钟节拍未在本项**（当前 `RTC_IRQHandlerCallBack` 仍为 1 分钟一拍），属 ITEM-007；本项不做判定。
+
+## F. ITEM-006 判定
+
+“先光照后温湿度”“失败不上报/不推进前值/不构造 0 值/不清除待上报”“成功推进前值与最近有效湿度”“每周期一次有界重试调用”均经**真实 `measure.c` + 独立仿真 MCU 层与参考模型**逐周期复现成立；旧 AHT21 序列已清除；GNU 与 AC5 均可编译，既有回归全部通过。
+
+**判定：TEST_PASS**。
