@@ -69,3 +69,69 @@ Kotlin 编译仅输出改动前既有的 warning（`ExperimentalCoroutinesApi` o
 ITEM-001 的宿主机检查全部通过：帧长规则（含 `devCount == 0` 与截断拒绝且无读数）、字段偏移/字节序/符号/单位、多设备归属、与改动前实现的逐位一致、构建与资源合并均成立。
 
 未覆盖（属后续能力）：真机 BLE GATT 读取与真实网关帧（TD-SW-002 §4.6 REG-02 / §6-5）、MQTT 链路、SQLite、UI 展示——这些既有本项未改动的部分，也有后续队列项与独立测试能力承接。
+
+---
+
+## AT-002 · ITEM-002（移除小端解析入口）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `grep -rn`（静态）、`./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline` |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：仅 `MqtttService.kt` 修改（5 insertions / 36 deletions，删除 `parseHexData` 与其注释残留） |
+
+### 2. 静态核查（小端入口清零）
+
+```
+$ grep -rn "parseHexData" dengbei_care/app/src
+(无输出，退出码 1)
+$ grep -rn "parseHexData" dengbei_care/app/src/main
+(无输出，退出码 1)
+```
+
+| 项 | 删除前 | 删除后 |
+|---|---|---|
+| `MqtttService.kt` 定义 | `fun parseHexData(...)`（小端 `humidity|temperature`） | 已删除 |
+| `MqtttService.kt` 注释残留 | `onCharacteristicRead` 内注释掉的旧替代解析路径（引用该入口） | 已删除，改为一行退役说明（不含该标识符） |
+| `app/src` 命中数 | 2 | **0** |
+
+补充：仓库全量 grep 仍会命中 `dengbei_care/iOS开发资料/`（旧快照副本与 README 的旧行号描述）——非编译的 iOS 参考材料，不在 Android 源码范围且 readme 点 6 明确本轮不改 iOS，故未改动（已在 `artifacts/android_implementation.md` ITEM-002 §4.1 登记交接）。
+
+### 3. 宿主机单元测试（回归）
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 5s
+```
+
+| 套件 | 项数 | 失败 | 归属 |
+|---|---|---|---|
+| `com.jinyuni.dengbei_care.protocol.GatewayFrameCodecTest` | 11 | 0 | 实现侧自检（ITEM-001） |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001VerificationTest` | 7 | 0 | 软件测试能力独立验证（上一提交） |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001LegacyParityTest` | 3 | 0 | 软件测试能力独立验证（上一提交） |
+| `com.jinyuni.dengbei_care.ExampleUnitTest` | 1 | 0 | 既有 |
+| **合计** | **22** | **0（0 errors、0 skipped）** | — |
+
+删除死代码后既有验证全部继续通过 ⇒ ITEM-001 的帧长规则、`devCount == 0` 拒绝、字段/符号/单位与逐位一致行为未受影响。
+
+### 4. 构建
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL in 1s
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,285,626 B（与 ITEM-001 同尺寸） |
+
+Kotlin 编译告警与改动前一致（5 条既有：`ExperimentalCoroutinesApi` opt-in、`_name` 未使用、`closed` 未使用、`negotiatedMtu` 冗余初值、deprecated override），无新增告警。
+
+### 5. 判定
+
+ITEM-002 的期望行为成立：Android 源码内不存在小端 `parseHexData` 入口及其注释残留；二进制聚合帧解析的唯一实现为 `protocol/GatewayFrameCodec`（BLE 路径经 `decryptAndParseEcbFrame` 到达；MQTT 路径解析文本载荷，无第二套二进制解析）；构建与全部 22 项宿主机用例通过。
+
+未覆盖（属后续能力）：真机 BLE/网关联调、MQTT/broker/云上传链路、SQLite、UI 展示。

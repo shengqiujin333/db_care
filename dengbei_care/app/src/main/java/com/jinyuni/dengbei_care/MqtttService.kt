@@ -703,21 +703,9 @@ class MqtttService : MqttService() {
                     ) {
                         if (status == BluetoothGatt.GATT_SUCCESS) {
                             val value = characteristic.value
-//                            val hexString =
-//                                value.joinToString(separator = " ") { String.format("%02X", it) }
-////                            val (humidityList, temperatureList) = parseHexData(hexString)
-////                            processTemperatureHumidityData(temperatureList, humidityList)
-//                            Log.i("MqttService", "Received data in hex: $hexString")
-//
-//                            val parsed = parseUnencryptedFrame(value)
-//                            Log.i("MqttService", "GwID=${parsed.gatewayIdHex}, devCount=${parsed.devCount}")
-//
-//                            // 2) 如果你的 8B 就是 devId/温度/湿度 这个布局：
-//                            parsed.payloadsRaw8.forEachIndexed { idx, p8 ->
-//                                val r = interpretPayloadV3(p8, tempSigned = true) // 温度需要负值就 true
-//                                Log.i("MqttService", "dev#$idx id=${r.devIdHex}, H=${"%.1f".format(r.humidityPct)}%, T=${"%.1f".format(r.temperatureC)}°C")
-//                                processTemperatureHumidityData(r.temperatureC, r.humidityPct)
-//                            }
+                            // 注：旧的"HEX 字符串小端解析"与"未加密帧解析"替代路径已退役
+                            // （其 humidity|temperature 小端解释与 IC-002 §4 的 id|hum_be|temp_be 布局冲突）。
+                            // BLE 聚合帧的唯一解析入口是 decryptAndParseEcbFrame -> GatewayFrameCodec。
                             try {
                                 when (val parsed = decryptAndParseEcbFrame(value)) {
                                     is GatewayFrameCodec.Result.Rejected -> {
@@ -807,27 +795,8 @@ class MqtttService : MqttService() {
     }
 
 
-    fun parseHexData(hexData: String): Pair<List<Int>, List<Int>> {
-        val humidityList = mutableListOf<Int>()
-        val temperatureList = mutableListOf<Int>()
-
-        // 将 16 进制字符串分割为字节对
-        val bytes = hexData.split(" ").map { it.toInt(16) }
-
-        for (i in bytes.indices step 4) {
-            if (i + 3 < bytes.size) {
-                // 湿度数据
-                val humidity = bytes[i] or (bytes[i + 1] shl 8)
-                // 温度数据
-                val temperature = bytes[i + 2] or (bytes[i + 3] shl 8)
-
-                humidityList.add(humidity)
-                temperatureList.add(temperature)
-            }
-        }
-
-        return Pair(humidityList, temperatureList)
-    }
+    // 注：旧的小端 HEX 字符串解析入口已移除（其 humidity|temperature 小端解释与 IC-002 §4 冲突）；
+    // BLE 聚合帧解析统一由 protocol/GatewayFrameCodec 提供。
 
     // 处理温度湿度数据,包括报警逻辑。每个设备独立调用。
     // devId 必须是 8 位 HEX 大写无分隔(与 MacIdBook 一致)。

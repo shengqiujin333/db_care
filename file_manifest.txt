@@ -125,7 +125,7 @@ dengbei_care/gradle/libs.versions.toml | active | Gradle 依赖版本目录
 dengbei_care/gradle/wrapper/ | active | Gradle wrapper（粗路径）
 dengbei_care/gradlew | active | Gradle 启动脚本
 dengbei_care/iOS开发所需资料清单.md | active | iOS 资料清单（间接参考）
-dengbei_care/iOS开发资料/ | active | iOS 开发资料包（需求/行为对齐/UI/资源；本轮不改 iOS，间接参考；粗路径）
+dengbei_care/iOS开发资料/ | active | iOS 开发资料包（需求/行为对齐/UI/资源；本轮不改 iOS，间接参考；粗路径）；其中 `02_Tier1_硬前置/MqtttService.kt` 为旧版 Android 源码快照、`README.md` 按旧行号描述小端解析入口，二者均非 Android 编译源码，不随 Android 改动同步（ITEM-002 交接项）
 dengbei_care/iOS版功能需求文档.md | active | iOS 功能需求文档（间接参考）
 dengbei_care/play_store_512.png | active | 应用商店图标
 dengbei_care/readme.txt | active | Android 版本变更记录

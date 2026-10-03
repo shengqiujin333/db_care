@@ -61,6 +61,47 @@
 
 1. **`devCount == 0` 的行为变化属有意为之**（本项要求"明确拒绝"）：改动前是"静默空帧"。网关 `memset(sensorres,0,...)` 的超时路径会发布全 0 记录——按 IC-002 §4/§5，`devCount` 仍为真实设备数，故该变化不影响合法遥测；真实 BLE 联调由后续测试能力确认（TD-SW-002 §6-5）。
 2. **`DeviceReadingV3` / `parseUnencryptedFrame` / `interpretPayloadV3` 仍保留**：当前无有效调用点（仅注释残留），但属旧帧解析族的清理范围，未在本项任务描述内，未改动，避免越权扩大 diff。
-3. **`parseHexData`（小端）仍在**：由队列下一项 ITEM-002 处理（TD-SW-002 §4.3 T-SW-L1-03 判定口径为"无功能入口"）。
+3. **`parseHexData`（小端）**：已在队列下一项 ITEM-002 中移除（见下节），本项记录保留以说明当时状态。
 4. **未修改**：服务器常量、SQLite、告警、UI、`/upload_data`、依赖与 `build.gradle.kts` 均属后续队列项，本轮未动。
 5. 本项不涉及真机 BLE 读取行为；BLE 与真实网关的联调属后续测试能力（AA-002 §10、TD-SW-002 §4.6 REG-02）。
+
+---
+
+# 任务项 ITEM-002（本轮完成）
+
+**ITEM-002（队列第 2 项）**：移除 `MqtttService` 中无调用点且与接口契约冲突的小端解析入口 `parseHexData`（`humidity|temperature` 小端解释）。
+期望行为：工程内不再存在该小端解释入口与相关注释残留，且 BLE/MQTT 两条入口的解析均只经过 `GatewayFrameCodec` 的唯一实现。
+
+设计映射：AA-002 §4.2/§5.1、D-01（唯一解析实现）、§10（静态检查：不再存在该入口）；TD-SW-002 §2.1-S2、§4.3 T-SW-L1-03。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt` | 修改 | ① 删除 `fun parseHexData(hexData: String): Pair<List<Int>, List<Int>>`（按 4 字节分组做 `humidity = b0 or b1<<8`、`temperature = b2 or b3<<8` 的小端解释）；② 删除 `onCharacteristicRead` 中引用它的那段注释掉的旧替代解析路径（HEX 字符串 + 未加密帧 + `payloadsRaw8` 循环），替换为一行退役说明；③ 在原位置留一行说明：该小端入口已移除、BLE 聚合帧解析统一由 `protocol/GatewayFrameCodec` 提供 |
+
+改动仅限删除死代码与注释：**无行为变化**，未触碰任何在用代码路径、常量、协议或兼容面（`parseUnencryptedFrame`/`interpretPayloadV3`/`ParsedFrameRaw`/`DeviceReadingV3` 声明未在本次任务描述范围内，未改动）。
+
+## 2. 预期行为（本轮交付）
+
+1. `dengbei_care/app/src`（含 `app/src/main`）中不存在 `parseHexData` 的定义、调用点或注释残留——即工程内不存在"小端 `humidity|temperature`"这一与 IC-002 §4 的 `id|hum_be|temp_be` 布局冲突的解释入口。
+2. 二进制聚合帧解析只有一处实现：`GatewayFrameCodec`，且 BLE 路径只能经 `decryptAndParseEcbFrame` 到达；MQTT 路径解析的是文本载荷（`time:temp1,...:humi1,...`），不解析二进制帧，因此不存在第二套二进制解析实现。
+3. 合法帧的解码结果、`devCount==0`/帧长不足的拒绝行为与 ITEM-001 交付完全一致（回归无变化）。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 入口与注释清零 | `grep -rn "parseHexData" dengbei_care/app/src`、`.../app/src/main` | **0 命中**（删除前：1 处定义 + 1 处注释） |
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；4 个套件共 22 项、0 失败 0 跳过（含软件测试能力独立编写的 `verification/GatewayFrameCodecItem001*` 10 项与实现侧自检 11 项、`ExampleUnitTest` 1 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app/build/outputs/apk/debug/app-debug.apk` 10,285,626 B（与上一项同尺寸，无新增/删除类） |
+| 编译告警 | Kotlin 编译输出 | 仍为改动前既有的 5 条（opt-in/未使用变量/deprecated override），无新增告警 |
+| 差异范围 | `git diff --stat` | 仅 `MqtttService.kt`：5 insertions / 36 deletions，全部为死代码与注释 |
+
+原始输出见 `evidence/android_test.md`（AT-002）。
+
+## 4. 观察与交接
+
+1. **仓库全量 grep 仍会命中非编译的参考材料**：`dengbei_care/iOS开发资料/02_Tier1_硬前置/MqtttService.kt`（旧快照副本，第 725/817 行）与 `dengbei_care/iOS开发资料/README.md`（第 67/152 行按旧行号描述该入口）。这两处属 iOS 参考文档包（readme 点 6：本轮不改 iOS；且不属 Android 源码），**有意未改动**；静态核查（TD-SW-002 T-SW-L1-03）应以 Android 源码 `app/src/main` 为范围，或显式排除 `iOS开发资料/`。已在 file_manifest 中登记该目录用途为间接参考。
+2. **仍无调用点的声明（本项范围外，未改动）**：`ParsedFrameRaw`、`parseUnencryptedFrame`、`DeviceReadingV3`、`interpretPayloadV3`，以及私有扩展 `ByteArray.toHex`（其唯一引用原先只存在于本次删除的注释中，现已零引用；Kotlin 未报新增告警）。是否清理属后续队列项/维护决定，本能力不越权扩大 diff。
+3. ITEM-001 已验证行为（`devCount==0` 拒绝、长度规则、逐位一致）在本项后未变，软件测试能力此前独立编写的验证用例全部继续通过。
