@@ -809,3 +809,63 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 2. **低条数建议阈值仍为 `< 24`**：阈值未变（保持结构），但在条件上报下会较频繁触发；因文案已明确“偏少不一定异常”，不再误导。若产品希望改为按“多日无上报”判定，属新需求。
 3. **摘要措辞由“共采集”改为“共上报”**：与 readme/IC-002 “条件上报”语义一致；统计数值与报警次数不变。
 4. **本项不涉及**：版本与文档（ITEM-014）。
+
+---
+
+# 任务项 ITEM-014（本轮完成）
+
+**ITEM-014（队列第 14 项）**：收尾：递增 `app/build.gradle.kts` 的 `versionCode` 与 `versionName`；更新 `dengbei_care/readme.txt` 变更记录与 `dengbei_care/用户使用说明书.md`，说明 3 分钟采集与条件上报规则及云同步行为。
+期望行为：Gradle 构建与宿主机单元测试通过；文档描述与实现行为一致；同步维护仓库根目录 `file_manifest.txt` 的新增/修改记录。
+
+设计映射：AA-002 §4.2（版本/文档）、§5.3/§5.5（规则与云上传的用户可见描述）；TD-SW-002 §4.3 T-SW-L1-09。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/build.gradle.kts` | 修改 | `versionCode 8 → 9`、`versionName "1.7" → "1.8"` |
+| `dengbei_care/readme.txt` | 修改（追加） | 新增“2026-09 升级为1.8”条目，8 条：GXHT40/光敏（App 侧布局未变）、3 分钟采样 + 条件上报（长时间无数据属正常）、卡片不再“离线”、时间窗下降报警、详情规则/24h/高温强调、云同步与待发箱幂等、服务器新地址、早报文案 |
+| `dengbei_care/用户使用说明书.md` | 修改 | ① 版本头 1.7→**1.8**；② 历史查询 50 分钟→**24 小时**；③ 卡片状态：删除“离线”分支，改为“最近上报时间 + 上报规则提示”，并新增解释段落；④ sparkline 描述改为“最近 30 条上报”；⑤ 详情页新增规则说明/最新读数高温强调/24h；⑥ 下降报警补充“App 自己的报警 + 基于时间戳”说明；⑦ 早报内容新增“按条件上报/非等间隔”“昨日无上报”；⑧ Q2 重写（长时间无数据≠离线）、Q3 重写（数量不一致→拒绝整批，不错配）、Q4 24 小时；⑨ §11 数据与隐私：新增 `pending_uploads` 表与 **11.2 数据上传（云端同步）**（守护中 + 已注册手机号才上传、断网进待发箱、恢复后补传、(设备,时间) 幂等、关闭守护不上传），§11.3 清空数据补充云端历史说明；⑩ 联系信息版本 1.8 |
+| `file_manifest.txt` | 修改 | 同步 `app/build.gradle.kts`（版本递增）、`dengbei_care/readme.txt`、`用户使用说明书.md` 的用途/内容变更；本项无新增文件 |
+
+文档与实现的一致性对照（逐项核对）：
+
+| 文档描述 | 实现事实（对应任务项） |
+|---|---|
+| 卡片不显示“离线”，显示最近上报相对时间 + 条件上报提示 | ITEM-011（`DeviceState.lastReportAgeLabel` / `DeviceCardAdapter.reportHint`） |
+| 详情页只读规则说明（3 分钟 + 条件上报） | ITEM-012（`DetailPresentation.REPORT_RULE_TEXT`） |
+| 图表范围 ≤ 24 小时 | ITEM-012（`DetailPresentation.MAX_CHART_RANGE_MS`） |
+| >35.0℃ 高温强调、=35.0℃ 不强调 | ITEM-012（`isHighTemperature`） |
+| 下降报警基于时间戳 5/10/15 分钟、基准来自本地 | ITEM-005/010（`AlarmEvaluator` + `getSamplesInRange`） |
+| 900 秒节流、>65℃ 不节流 | ITEM-010（保留） |
+| 云同步 `/upload_data`、待发箱、幂等、关闭守护不上传 | ITEM-004/008/009（`CloudConfig`/`ApiService`/`UploadOutbox`/`CloudUploadRepository`） |
+| 写入时间为真实采样时间、不按固定间隔补点 | ITEM-007（`storeTemperatureReading`） |
+| 早报“按条件上报/非等间隔”“昨日无上报” | ITEM-013（`ReportGenerator`） |
+| 服务器 `8.140.23.253`（8883/5000） | ITEM-004（`CloudConfig`） |
+
+## 2. 预期行为（本轮交付）
+
+1. 构建产物的 `versionCode = 9`、`versionName = 1.8`（已在 APK 的二进制清单中核实）。
+2. App 变更记录与用户说明书描述与实现行为一致；用户可从中理解“3 分钟采样 ≠ 每 3 分钟一条”“长时间无数据属正常”“数据会上传到云端且断网不丢”。
+3. `file_manifest.txt` 已同步本项涉及的文件变更（无新增/删除/重命名）。
+4. 构建与宿主机单测全部通过。
+
+## 3. 本轮验证
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；全部套件共 **188 项、0 失败 0 跳过** |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,313,613 B |
+| 版本落地 | 直接读 APK 内 `AndroidManifest.xml`（AXML） | `versionName "1.8"` 与 `versionCode 9` 均存在；关键类（AlarmEvaluator/CloudUploadRepository/DetailPresentation/GatewayFrameCodec/ReportGenerator）均在 dex 中 |
+| 文档旧口径清零 | `grep -n "50 分钟\|1\.7\|不上传到云端\|错位" 用户使用说明书.md` | 0 命中（“离线”仅出现在“不再显示离线”的说明句中） |
+| 变更记录 | `tail -12 readme.txt` | V1.8 条目 8 条齐备 |
+| 七个独立门禁 | `python evidence/software_verify_*.py`、`static_check_*.py` | 全部 **EXIT=0** |
+
+原始输出见 `evidence/android_test.md`（AT-014）。
+
+## 4. 观察与交接
+
+1. **真机安装/升级验证未在本轮执行**（需设备，且启动 debug 包会连生产 broker/服务器）：版本号递增已在构建产物中核实；安装/升级路径由测试能力按需确认。
+2. **文档中的“无光”措辞**：与 ITEM-012 同一口径——规则必须忠于 readme，故用户说明书与详情页规则说明均保留“且无光”条件；App 不展示环境光状态或照度数值（详见 ITEM-012 §1 的口径说明）。
+3. **本轮无新增/删除文件**，故 `file_manifest.txt` 只更新既有条目用途/内容，未新增行。
+4. **队列完成**：`artifacts/android_tasks.yaml` 的 14 项已全部执行（ITEM-001…ITEM-014，含 ITEM-010 的 D-010-1 修复）。后续路由/完成判定由 Runtime 负责。

@@ -956,3 +956,48 @@ ITEM-012 可在宿主机确定断言的部分全部成立：规则文案与 read
 ITEM-013 可在宿主机确定断言的部分全部成立：零样本显示“昨日无上报”；报告说明按条件上报且条数非等间隔；同一批数据的统计数值与逐行格式逐字不变；低条数建议不再暗示固定节拍或推断离线；全量 181 项宿主机用例通过、构建成功；七个独立门禁无回归。
 
 未覆盖（需设备，属测试能力）：报告页/通知实际展示与截图 —— TD-SW-002 T-SW-L3-07。
+
+---
+
+## AT-014 · ITEM-014（版本与文档收尾）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP`（`dengbei_care/`） |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`grep`、APK 二进制清单核对 |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码/文档状态 | 相对上一提交：`app/build.gradle.kts`（versionCode 8→9、versionName 1.7→1.8）、`readme.txt`（追加 V1.8 变更记录 8 条）、`用户使用说明书.md`（版本头/卡片状态/详情规则/24h/早报/FAQ/云同步等 11 处）、`file_manifest.txt`（同步既有条目）；**无新增文件** |
+
+### 2. 构建与单元测试
+
+```
+./gradlew :app:testDebugUnitTest :app:assembleDebug --offline
+=> BUILD SUCCESSFUL
+```
+
+| 汇总 | 值 |
+|---|---|
+| 宿主机测试 | **188 tests / 0 failures / 0 errors / 0 skipped**（19 个套件） |
+| 产物 | `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` 10,313,613 B |
+
+### 3. 产物级与文档级核查
+
+| 检查 | 方法 | 结果 |
+|---|---|---|
+| 版本落地 | 直接读 APK 内 `AndroidManifest.xml`（AXML）字符串池 | `versionName "1.8"` = True；`versionCode 9` = True |
+| 关键类打包 | 读 APK 多 dex 字节流 | `AlarmEvaluator`/`CloudUploadRepository`/`DetailPresentation`/`GatewayFrameCodec`/`ReportGenerator` 均在 |
+| 变更记录 | `tail -12 dengbei_care/readme.txt` | “2026-09 升级为1.8”条目 8 条（GXHT40/光敏、3 分钟+条件上报、卡片不“离线”、时间窗报警、详情/24h/高温、云同步与待发箱、服务器新地址、早报） |
+| 说明书旧口径 | `grep -n "50 分钟\|1\.7\|不上传到云端\|错位" 用户使用说明书.md` | 0 命中；“离线”仅出现在“不再显示离线”的说明句中 |
+| 说明书新内容 | `grep -n "24 小时\|3 分钟\|按条件上报\|待发箱\|昨日无上报\|1.8"` | 命中卡片提示、详情规则、下降报警时间窗、早报、§11.2 云同步、版本 1.8 |
+| 清单同步 | `grep -n "ITEM-014" file_manifest.txt` | `app/build.gradle.kts`、`readme.txt`、`用户使用说明书.md` 三条均已更新 |
+| 七个独立门禁 | `python evidence/*.py` | 全部 **EXIT=0** |
+
+### 4. 判定
+
+ITEM-014 的期望行为成立：版本号已递增并已落入构建产物（APK 二进制清单核实）；`readme.txt` 与用户说明书描述与实现行为逐项一致（3 分钟采样与条件上报、卡片不再“离线”、24h 范围、高温强调、下降报警时间窗、云同步与待发箱幂等、服务器新地址、早报文案）；`file_manifest.txt` 已同步；构建与 188 项宿主机用例全部通过；七个独立门禁无回归。
+
+未覆盖：真机安装/升级验证（需设备且启动 debug 包会连生产 broker/服务器）；文档中的“无光”措辞口径与 ITEM-012 一致（规则忠于 readme，不展示环境光状态/照度）。
+
+至此队列 `android_engineer.android_implementation` 的 14 项均已执行完毕（含 ITEM-010 的 D-010-1 修复）；后续路由与项目完成判定由 Runtime 负责。

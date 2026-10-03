@@ -106,8 +106,9 @@ artifacts/software_e2e_plan.md | active | 软件端到端测试计划 E2E-SW-002
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-002（Android App 本次改动的分层测试设计：as-built 基线、覆盖 readme 点 1-6 与云上传的行为 S1..S13、L0 宿主机纯逻辑/L0d 设备存储/L1 构建静态/L2 链路集成/L3 展示文案/REG 回归的用例明细、证据规范、前置交接、覆盖性检查与 7 项非阻塞缺口 G1..G7；只做设计不执行）
 artifacts/test_design.md | active | 嵌入式测试设计 TD-002（GXHT40 采集、光敏判据、3 分钟节拍、条件上报、失败路径、端到端与功耗的测试范围/环境仪器/数据采集/判定方法；只做设计不执行）
 dengbei_care/ | active | Android App 工程根（本次需同步修改；iOS 本轮不改）
+dengbei_care//347/224/250/346/210/267/344/275/277/347/224/250/350/257/264/346/230/216/344/271/246.md | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
-dengbei_care/app/build.gradle.kts | active | App 模块 Gradle 构建脚本；ITEM-009 新增 testOptions.unitTests.isReturnDefaultValues=true（宿主机单测可加载含 android.util.Log 的云上传类）
+dengbei_care/app/build.gradle.kts | active | App 模块 Gradle 构建脚本；ITEM-009 新增 testOptions.unitTests.isReturnDefaultValues=true（宿主机单测可加载含 android.util.Log 的云上传类）；ITEM-014 versionCode 8→9、versionName 1.7→1.8
 dengbei_care/app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-006 真机 Android SQLite 独立验证（用独立构造的 v2/v1 库与数据打开被测 helper 触发 onUpgrade；v2→v3 历史数据保真与原始 SQL/既有查询 API 双视角、pending_uploads 列/复合主键/索引/默认值/幂等入队与重复键拒绝、重复打开、v1→v3 不崩溃、同名 VIEW 冲突回退不崩溃；已编译打包，设备执行因 Gradle UTP 依赖缺失+无外网而阻塞）
 dengbei_care/app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-007 真机 Android SQLite 独立验证（写入行 time 恰为传入采样时间并显式排除 ±60/±120 s 偏移、值不串位；同 (dev,time) 重复写入不增行；storeflag 0/2/−1 写 0 行且返回 −1）；已编译并打入测试 APK，设备执行受同一环境阻塞
 dengbei_care/app/src/androidTest/java/com/jinyuni/dengbei_care/verification/UploadOutboxItem009VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-009 真机 Android SQLite 独立验证（SqliteUploadOutboxStore 幂等插入、到期过滤/排序/LIMIT、重试与删除只影响目标行、策略+SQL 端到端幂等/ack、表缺失降级不崩溃）；已编译，设备执行受同一环境阻塞
@@ -173,10 +174,10 @@ dengbei_care/iOS开发所需资料清单.md | active | iOS 资料清单（间接
 dengbei_care/iOS开发资料/ | active | iOS 开发资料包（需求/行为对齐/UI/资源；本轮不改 iOS，间接参考；粗路径）；其中 `02_Tier1_硬前置/MqtttService.kt` 为旧版 Android 源码快照、`README.md` 按旧行号描述小端解析入口，二者均非 Android 编译源码，不随 Android 改动同步（ITEM-002 交接项）
 dengbei_care/iOS版功能需求文档.md | active | iOS 功能需求文档（间接参考）
 dengbei_care/play_store_512.png | active | 应用商店图标
-dengbei_care/readme.txt | active | Android 版本变更记录
+dengbei_care/readme.txt | active | Android 版本变更记录；ITEM-014 追加 V1.8 条目（GXHT40/光敏、3 分钟采样与条件上报、卡片不再“离线”、时间窗下降报警、详情规则/24h/高温强调、云同步与待发箱、服务器新地址、早报文案）
 dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
-dengbei_care/用户使用说明书.md | active | Android 用户使用说明书
+dengbei_care/用户使用说明书.md | active | Android 用户使用说明书；ITEM-014 升至 1.8：卡片不再显示“离线”（改为最近上报时间 + 条件上报提示）、图表范围 24h、详情规则说明与高温强调、下降报警时间窗口径、早报“昨日无上报”、新增云同步/待发箱/幂等说明
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002（AT-001：ITEM-001 宿主机单测 12 项 0 失败、assembleDebug 成功、与改动前 parsePlainFrame 逐位一致用例；android_engineer.android_implementation）
 evidence/build.md | active | 传感器固件构建证据（交叉编译结果与内存占用、sensor_config.h 编译期断言、宿主机 L0 回归；逐任务项追加：ITEM-001/ITEM-002；BUILD-002）
 evidence/codegraph_validation.md | active | 三个代码根的 CodeGraph status 与 explore 最小可用性查询记录
