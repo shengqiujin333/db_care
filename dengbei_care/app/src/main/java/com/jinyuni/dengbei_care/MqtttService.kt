@@ -833,7 +833,11 @@ class MqtttService : MqttService() {
             val baselines = loadBaselineSamples(devId, currentTime)
             // 无参照点(时间窗内没有任何历史样本)时清掉该设备的 sparkline(沿用旧“无参照点则清屏”语义)
             if (baselines.isEmpty()) {
-                homeViewModel.clearDevice(devId)
+                try {
+                    homeViewModel.clearDevice(devId)
+                } catch (e: Exception) {
+                    Log.w("DataProcessor", "clearDevice failed: ${e.message}")
+                }
             }
 
             // 报警判定(纯逻辑模块:时间窗下降 + 阈值超限 + 紧急 >65.0℃,文案/优先级与改动前一致)
@@ -867,72 +871,102 @@ class MqtttService : MqttService() {
                 if (params.vibrationAlarmEnable == 1) vibrationAlarmFlag = 1
             }
 
-            // 紧急报警(温度 > 65.0℃ 火灾预警):每次都通知,不受 900 秒节流限制
+            // 紧急报警(温度超过 65 度,火灾预警):每次都通知,不受 900 秒节流限制。
+            // 本块整体独立保护:震动/铃声/通知任一失败都不得跳过入库与上传触发(步骤隔离)。
             AlarmEmergent = verdict.outcome == AlarmEvaluator.Outcome.EMERGENCY
             if (AlarmEmergent) {
-                VibrationPlayer.vibratePhone(this@MqtttService, 300 * 1000, true)
-                RingtonePlayer.startAlarm(this@MqtttService)
-                val emergentDeviceName = MacIdBook.all(applicationContext).find { it.first == devId }?.second ?: devId
-                sendAlarmNotification(devId, emergentDeviceName, alarmMessage, alarmSeverity)
-            }
-
-            // 推送给 UI(更新 _devices Map,卡片墙 observe)
-            homeViewModel.updateDeviceAlarm(devId, alarmMessage, alarmSeverity)
-
-            // 报警事件落库(只记 WARNING/ALARM,NORMAL 不记)
-            when (alarmMessage) {
-                "温度湿度下降报警" -> storeAlarmEvent(
-                    this@MqtttService, devId,
-                    TemperatureDatabaseHelper.ALARM_TYPE_DROP, alarmMessage, currentTime
-                )
-                "温湿度超限报警" -> storeAlarmEvent(
-                    this@MqtttService, devId,
-                    TemperatureDatabaseHelper.ALARM_TYPE_THRESHOLD, alarmMessage, currentTime
-                )
-                "紧急报警，温度超过65度，谨防火灾" -> storeAlarmEvent(
-                    this@MqtttService, devId,
-                    TemperatureDatabaseHelper.ALARM_TYPE_EMERGENCY, alarmMessage, currentTime
-                )
-            }
-
-            // 存储逻辑:单条读数 + 真实采样时间(BLE=接收时刻 / MQTT=payload 首段);守护关闭时不写入
-            val humistartflag = homeViewModel.startData.value
-            if (humistartflag != null) {
-                storeTemperatureReading(
-                    this@MqtttService,
-                    devId,
-                    currentTime,
-                    temperature,
-                    humidity,
-                    humistartflag
-                )
-                // 入库成功后触发云上传:入队按 (dev_id, time) 幂等,门控/退避/独立作用域在 repository 内
-                if (humistartflag == 1) {
-                    uploadRepository.enqueueAndUpload(devId, currentTime, temperature, humidity)
+                try {
+                    VibrationPlayer.vibratePhone(this@MqtttService, 300 * 1000, true)
+                    RingtonePlayer.startAlarm(this@MqtttService)
+                    val emergentDeviceName = MacIdBook.all(applicationContext).find { it.first == devId }?.second ?: devId
+                    sendAlarmNotification(devId, emergentDeviceName, alarmMessage, alarmSeverity)
+                } catch (e: Exception) {
+                    Log.w("DataProcessor", "emergency alert side effects failed: ${e.message}")
                 }
             }
 
-            // 显示逻辑:推送给新的 _devices Map
+            // 推送给 UI(更新 _devices Map,卡片墙 observe);独立保护
+            try {
+                homeViewModel.updateDeviceAlarm(devId, alarmMessage, alarmSeverity)
+            } catch (e: Exception) {
+                Log.w("DataProcessor", "updateDeviceAlarm failed: ${e.message}")
+            }
+
+            // 报警事件落库(只记 WARNING/ALARM,NORMAL 不记);独立保护:落库失败不影响入库/上传
+            try {
+                when (alarmMessage) {
+                    "温度湿度下降报警" -> storeAlarmEvent(
+                        this@MqtttService, devId,
+                        TemperatureDatabaseHelper.ALARM_TYPE_DROP, alarmMessage, currentTime
+                    )
+                    "温湿度超限报警" -> storeAlarmEvent(
+                        this@MqtttService, devId,
+                        TemperatureDatabaseHelper.ALARM_TYPE_THRESHOLD, alarmMessage, currentTime
+                    )
+                    "紧急报警，温度超过65度，谨防火灾" -> storeAlarmEvent(
+                        this@MqtttService, devId,
+                        TemperatureDatabaseHelper.ALARM_TYPE_EMERGENCY, alarmMessage, currentTime
+                    )
+                }
+            } catch (e: Exception) {
+                Log.w("DataProcessor", "storeAlarmEvent failed: ${e.message}")
+            }
+
+            // 存储逻辑:单条读数 + 真实采样时间(BLE=接收时刻 / MQTT=payload 首段);守护关闭时不写入。
+            // 入库与上传触发各自独立保护:任一步失败不得影响其它步骤。
+            val humistartflag = homeViewModel.startData.value
+            if (humistartflag != null) {
+                try {
+                    storeTemperatureReading(
+                        this@MqtttService,
+                        devId,
+                        currentTime,
+                        temperature,
+                        humidity,
+                        humistartflag
+                    )
+                } catch (e: Exception) {
+                    Log.e("DataProcessor", "storeTemperatureReading failed: ${e.message}")
+                }
+                // 入库成功后触发云上传:入队按 (dev_id, time) 幂等,门控/退避/独立作用域在 repository 内
+                if (humistartflag == 1) {
+                    try {
+                        uploadRepository.enqueueAndUpload(devId, currentTime, temperature, humidity)
+                    } catch (e: Exception) {
+                        Log.w("DataProcessor", "enqueue upload failed: ${e.message}")
+                    }
+                }
+            }
+
+            // 显示逻辑:推送给新的 _devices Map;独立保护
             val deviceName = MacIdBook.all(applicationContext).find { it.first == devId }?.second ?: ""
-            homeViewModel.updateDeviceReading(devId, deviceName, temperature, humidity, currentTime)
+            try {
+                homeViewModel.updateDeviceReading(devId, deviceName, temperature, humidity, currentTime)
+            } catch (e: Exception) {
+                Log.w("DataProcessor", "updateDeviceReading failed: ${e.message}")
+            }
 
             _bkp_all_time = currentTime
 
-            // 报警处理:震动 + 铃声 + 系统通知,按设备节流(900 秒)
+            // 报警处理:震动 + 铃声 + 系统通知,按设备节流(900 秒);独立保护
             if (homeViewModel.startData.value == 1) {
                 if (vibrationAlarmFlag == 1 || voiceAlarmFlag == 1) {
                     val now = System.currentTimeMillis()
                     if (now - history.lastAlarmTime > (900 * 1000)) {
                         history.lastAlarmTime = now
-                        if (vibrationAlarmFlag == 1) {
-                            VibrationPlayer.vibratePhone(this@MqtttService, 300 * 1000, true)
+                        try {
+                            if (vibrationAlarmFlag == 1) {
+                                VibrationPlayer.vibratePhone(this@MqtttService, 300 * 1000, true)
+                            }
+                            if (voiceAlarmFlag == 1) {
+                                RingtonePlayer.startAlarm(this@MqtttService)
+                            }
+                            // 节流期内只发一次通知:告诉用户是哪个设备在报警
+                            val throttledDeviceName = MacIdBook.all(applicationContext).find { it.first == devId }?.second ?: devId
+                            sendAlarmNotification(devId, throttledDeviceName, alarmMessage, alarmSeverity)
+                        } catch (e: Exception) {
+                            Log.w("DataProcessor", "debounced alert side effects failed: ${e.message}")
                         }
-                        if (voiceAlarmFlag == 1) {
-                            RingtonePlayer.startAlarm(this@MqtttService)
-                        }
-                        // 节流期内只发一次通知:告诉用户是哪个设备在报警
-                        val throttledDeviceName = MacIdBook.all(applicationContext).find { it.first == devId }?.second ?: devId
-                        sendAlarmNotification(devId, throttledDeviceName, alarmMessage, alarmSeverity)
                     }
                 }
             }

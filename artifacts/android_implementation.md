@@ -603,3 +603,44 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 4. **G3 已确认**：四个上传触发点均已在代码中就位（入队后/每轮 BLE/网络恢复/冷启动），可供测试能力逐点验证。
 5. **sparkline 清屏语义平移**：由“内存窗口为空”改为“库中窗口内无样本”；若产品要求保留原频率的清屏行为，属新需求。
 6. **本项不涉及**：UI 卡片/详情/报告文案（ITEM-011/012/013）、版本与文档（ITEM-014）。
+
+---
+
+# 任务项 ITEM-010 修复（缺陷 D-010-1，本轮完成）
+
+**来源**：软件测试能力独立验证（`evidence/software_test.md` ST-010，结论 **TEST_FAIL**）——缺陷 **D-010-1**：`processTemperatureHumidityData` 全函数只有一层 try/catch，紧急通知块（震动/铃声/通知）与报警事件落库位于单条入库/上传触发**之前**且无独立保护，因此这些步骤抛异常时会跳过**入库、入队上传、卡片更新**（涉及 >65℃ 紧急路径的数据保留，安全相关）。
+
+**修复要求（测试能力给出，属实现范围）**：① 各步各自保护（推荐顺序：先入库→入队上传→再告警副作用；**或**保持顺序但逐步 try/catch）；② `RingtonePlayer.startAlarm` 与 `VibrationPlayer.vibratePhone` 内部降级，不得向外抛；③ 不得改变：三条文案字面值、`ALARM_TYPE_*`、`>65℃` 语义、900 s 去抖、守护门控、真实采样时间戳与上传触发语义、周期 180 s。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt` | 修改 | 保留已验证的 12 步编排顺序（测试门禁 B 逐项断言），为**每一步副作用加独立 `try/catch`**：清 sparkline、紧急通知块、卡片告警、报警事件落库、单条入库、入队+上传触发、卡片读数、900 s 去抖；函数内 `try` 块由 1 → 9 |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt` | 修改 | `startAlarm`：URI 为空 / `MediaPlayer.create` 返回 null / `start()` 抛错 → 记日志并降级（失败时释放并置空）；`stopAlarm`：异常不外抛，始终释放并置空 |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt` | 修改 | `vibratePhone`：系统服务用 `as?` 判空、`vibrate()` 异常记日志降级；`stopVibration`：异常不外抛并置空 |
+
+选择“保持顺序 + 逐步保护”而非重排顺序：测试门禁 B 对 12 步顺序逐项断言（当前 12/12 PASS），而验收缺陷的本体是**步骤隔离**（任一步失败不影响其它步骤）——逐步 try/catch 已完整满足，且不引入新的顺序变更风险。
+
+## 2. 预期行为（修复后）
+
+1. 铃声/震动/通知（紧急或去抖通道）任何失败都**不再跳过**入库、入队上传与卡片更新；反之，入库/上传/落库失败也不跳过告警呈现。
+2. `RingtonePlayer`/`VibrationPlayer` 自身不向外抛异常（null 媒体播放器、缺失系统服务、`start`/`vibrate` 异常均降级）。
+3. 兼容面不变：三条文案字面值、`ALARM_TYPE_*`、`>65℃` 仅由 `AlarmEvaluator` 比较、900 s 去抖、守护门控、真实采样时间戳、四个上传触发点、周期 180 s。
+
+## 3. 本轮验证
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 测试能力门禁（缺陷项） | `python evidence/software_verify_orchestration_item010.py` | **EXIT=0**：A1–A5、B 顺序 12/12、C1–C11、D1–D5、E（含宿主 SQLite 执行）、F（函数内 try=9；通知块↔入库独立保护=True；落库↔入库独立保护=True）全 PASS |
+| 其余 6 个独立门禁 | `python evidence/software_verify_{timestamp_write_item007,cloud_upload_item009,upload_payload_item008,db_migration_item006,static_check_no_little_endian_parser,static_check_server_migration}.py` | 全部 **EXIT=0**（无回归） |
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；**146 项、0 失败 0 跳过** |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,361,755 B |
+| 全量重编译告警 | `./gradlew :app:compileDebugKotlin --offline --rerun` | 11 条（与修复前同一集合），无新增 |
+| 差异范围 | `git diff --stat` | `MqtttService.kt` / `RingtonePlayer.kt` / `VibrationPlayer.kt` 三个文件，未触碰其它产品文件 |
+
+## 4. 观察与交接
+
+1. **真机层仍未执行**（测试能力已登记）：BLE/MQTT 链路、通知/卡片、待发箱补传、`/upload_data` 需设备与网络；且启动 debug 包会连生产 broker/服务器（无隔离测试环境），属 E2E-SW-002。
+2. **修复未改变**任何告警文案/阈值/去抖/门控/上传语义（测试门禁 C/D/E 全 PASS 可证）。
+3. `stopAlarm`/`stopVibration` 现总释放资源并置空引用（原仅在播放中释放）：属健壮性改进，行为对用户可见面不变。

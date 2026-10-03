@@ -710,3 +710,54 @@ ITEM-009 的期望行为成立：入队按 `(dev_id, time)` 幂等；成功即�
 ITEM-010 的期望行为在代码层面成立：读取周期与 3 分钟采样节拍对齐（手动立即读取保留）；告警判定改由 `AlarmEvaluator`（基准来自本地库，重启后可判定）；入库使用真实采样时间戳；入库成功后幂等入队并异步上传，四个触发点齐备；900 s 去抖、>65℃ 每次通知、报警事件落库与字面值均保留；旧窗口逻辑无残留；全量 146 项宿主机用例通过、构建成功。
 
 未覆盖（需设备/网络，属测试能力）：真机 BLE/MQTT 读数全链路与卡片/通知展示（T-SW-L2-13/14/15、L3-01..03）、断网补传与 HTTP 观测（L2-09..12）、真机待发箱行数（L0d-05）、端到端（E2E J-1/J-5）。本项不声称真机链路已验证。
+
+---
+
+## AT-010R · ITEM-010 修复（缺陷 D-010-1）
+
+### 1. 背景与修复范围
+
+软件测试能力 ST-010 判 **TEST_FAIL**（缺陷 D-010-1：单层 try 覆盖全函数，告警副作用异常会跳过入库/入队上传/卡片更新，涉及 >65℃ 紧急路径）。本轮按修复要求完成：逐步独立保护 + 两个播放器内部降级；**不改变**文案/阈值/去抖/门控/时间戳/上传触发/180 s 周期，也不改变已验证的 12 步编排顺序。
+
+| 文件 | 改动 |
+|---|---|
+| `MqtttService.kt` | 各副作用步骤加独立 `try/catch`（清 sparkline、紧急通知块、卡片告警、事件落库、入库、入队+上传、卡片读数、去抖告警）；函数内 `try` 块 1 → 9 |
+| `RingtonePlayer.kt` | `startAlarm`/`stopAlarm` 不向外抛（URI 为空、`create` 返回 null、`start()`/`stop()` 异常均降级并释放） |
+| `VibrationPlayer.kt` | `vibratePhone`/`stopVibration` 不向外抛（服务缺失用 `as?`、`vibrate`/`cancel` 异常降级） |
+
+### 2. 原始结果
+
+```
+$ python evidence/software_verify_orchestration_item010.py
+...
+== F 步骤隔离 ==
+  INFO  函数内 try 块数 = 9
+  PASS  单一全函数 try=False；通知块与入库之间独立保护=True
+  PASS  报警事件落库与入库之间独立保护=True
+== RESULT ==
+  OK
+EXIT=0
+```
+
+| 检查 | 结果 |
+|---|---|
+| A1–A5（周期对齐/手动读取保留） | PASS |
+| B 编排顺序 12 项 | PASS（12/12，顺序未变） |
+| C1–C11（文案/类型/去抖/门控/旧窗口清零/阈值只在 evaluator） | PASS |
+| D1–D5（四个触发点 + 仅守护中入队，triggerUpload 计数 3） | PASS |
+| E（库基准范围/降级/SQL 语义 + 宿主 SQLite 执行） | PASS |
+| F（步骤隔离） | PASS |
+
+```
+./gradlew :app:testDebugUnitTest --offline  => BUILD SUCCESSFUL ; 146 tests / 0 failures / 0 errors / 0 skipped
+./gradlew :app:assembleDebug --offline       => BUILD SUCCESSFUL ; app-debug.apk 10,361,755 B
+./gradlew :app:compileDebugKotlin --offline --rerun => 11 warnings（与修复前同一集合）
+```
+
+其余独立门禁回归（均 **EXIT=0**）：`software_verify_timestamp_write_item007.py`、`software_verify_cloud_upload_item009.py`、`software_verify_upload_payload_item008.py`、`software_verify_db_migration_item006.py`、`software_static_check_no_little_endian_parser.py`、`software_static_check_server_migration.py`。
+
+### 3. 判定
+
+D-010-1 的两条修复要求均已满足：① 每一步副作用独立保护（通知/震动/铃声失败不再跳过入库、入队上传与卡片更新；反之亦然）；② 两个播放器内部降级不向外抛。兼容面与编排顺序未变（测试门禁 A–F 全 PASS），构建与 146 项宿主机用例无回归。
+
+未覆盖：真机链路/通知/待发箱/HTTP（属 E2E-SW-002，需与生产隔离的测试环境）。
