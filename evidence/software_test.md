@@ -2,7 +2,7 @@
 
 状态：软件测试执行证据（`software_tester.software_verification`），按 Runtime 逐个指派的队列项追加
 对象：Android App `dengbei_care`（Kotlin / AGP 8.3.2 / Gradle 8.4 / JDK 21）
-本轮项：队列 **ITEM-001**、**ITEM-002**（逐项分节记录）
+本轮项：队列 **ITEM-001**、**ITEM-002**、**ITEM-003**（逐项分节记录）
 依据：`artifacts/software_test_design.md`（TD-SW-002）、`artifacts/software_e2e_plan.md`（E2E-SW-002）、`artifacts/interface_contract.md`（IC-002 §4）、`artifacts/android_architecture.md`（AA-002 §5.1/§10）
 被测代码版本：`3e0ed11`（android_engineer.android_implementation 提交）；改动前基线：`fe9a81c`
 说明：本文件为本能力**独立执行**的记录；实现侧自检（`evidence/android_test.md` AT-001）仅作为被核对对象，不重复引用为通过依据。
@@ -221,3 +221,79 @@ $ python evidence/software_static_check_no_little_endian_parser.py   # EXIT=0
 1. **遗留无调用点的大端解析族**：`ParsedFrameRaw`、`DeviceReadingV3`、`parseUnencryptedFrame`、`interpretPayloadV3` 仍在 `MqtttService.kt` 中存在（`app/src/main` 内零外部调用点；其内部使用 `u16be/s16be/toHexSep`，均为**大端**，与 IC-002 §4 不冲突），也因此使遗留私有助手 `u16be/s16be/toHexSep` 仍被引用（无 unused 告警）。它们是"潜在重复实现"而非"在用入口"，清理属后续队列项/维护决定；本条已在 ITEM-001 证据中登记，此处延续。
 2. **`ByteArray.toHex`（第 480 行）现为零引用**（其唯一引用原先只在被删注释中）；属可选清理项，不属本项描述范围。
 3. 若后续能力/评审把"工程内"理解为"整个仓库字面清零"，则 §4 中的 iOS 参考快照与 README 描述需由文档维护方更新；本能力不越权改动 iOS 参考资料。
+
+---
+
+## ST-003 · ITEM-003（MQTT 批量载荷严格归因 `telemetry/ReadingAttribution.kt`）
+
+**被测代码版本**：`b96df49`（android_engineer.android_implementation 提交，相对上一提交 `15af1d9`）
+**变更范围**：新增 `telemetry/ReadingAttribution.kt` + `telemetry/ReadingAttributionTest.kt`；`MqtttService.kt` **21 insertions / 64 deletions**（删除 `minOf` 静默截断循环、重复载荷分段与孤立字段 `readBackTemperature`/`readBackHuminity`/`currentTime`，改为调用归因模块）
+**任务期望**：设备数/温度个数/湿度个数三者不一致或任一为空/含非法数值时拒绝整批（不落库、不上传、不报警）；一致时按 `MacIdBook` 顺序得到 `(devId, temperature, humidity)` 列表，且 `devId` 随读数向下传递而不再依赖下标。
+
+### 1. 适用测试的选择与理由
+
+| TD-SW-002 用例 | 是否适用 | 理由 |
+|---|---|---|
+| T-SW-L0-04（归因：数目一致） | 适用 | 本项核心期望之一（严格映射与 devId 下沉） |
+| T-SW-L0-05（归因：拒绝整批，6 类情形） | 适用 | 本项核心期望之二 |
+| T-SW-L1-01/L1-02（构建、宿主机单测） | 适用 | 新增模块接入后的编译与回归 |
+| T-SW-L2-03/L2-04（MQTT 数目不一致/非法数值注入） | **本轮不适用** | 需真实 broker/设备链路；其“拒绝整批→不落库/不上传/不报警”的下游后果已由调用点静态核查覆盖（§4），真机链路由后续 E2E（E2E-SW-002 J-1）承接 |
+| T-SW-L2-05/L2-06（0 值/越界物理量程） | 不适用 | 量程校验明确不属本项（AA-002 §8 / TD-SW-002 §8-G2） |
+
+### 2. 独立验证方法
+
+新增 `app/src/test/java/com/jinyuni/dengbei_care/verification/ReadingAttributionItem003VerificationTest.kt`（8 项），期望值由本文件按 IC-002 §5 重新推导（独立解析 + 独立分类），不复用被测代码或其自检：
+1. **穷举计数矩阵**：id 数 0..4 × 温度个数 0..4 × 湿度个数 0..4 = 125 组，逐组与独立参考比对“接受/拒绝”以及接受时的**逐条映射**；
+2. **数值 token 分类**：接受类（`24.5`/`-3.2`/`0`/`0.0`/`125.0`/带空格/`1e2`/`.5`）与拒绝类（`abc`/空/空白/`1.5.5`/`0x10`/`NaN`/`Infinity`/`-Infinity`/`1,`/`,1`/`1,,2`/`--1`/`1e`）；
+3. **时间与分段数分类**：合法/带空格时间接受；`0`/负/非数字/空/小数/分段不足拒绝；
+4. **拒绝结果不携带读数**（反射：无 reading/batch 字段、无返回 List 的方法）**且绝不部分成功**；
+5. **与改动前截断实现对照**：一致输入映射逐条相同（回归安全）；不一致输入旧实现“静默丢值/部分处理”，新实现必须 `COUNT_MISMATCH` 拒绝；
+6. **devId 随读数下沉**：同一批值配不同绑定顺序 → 归属随之改变（证明归属来自映射表而非“下标即身份”）；
+7. **无状态性**：合法→非法→合法 三次调用结果不变（不沿用上一条消息的时间/数值）；
+8. **模糊测试**：3000 例（30% 纯随机字符 + 70% 结构化 `time:temps:humis`，含非法 token 与错位计数），要求**不得抛异常**且每例与独立参考一致。
+
+### 3. 原始结果
+
+```
+$ ./gradlew :app:testDebugUnitTest --offline
+BUILD SUCCESSFUL in 3s
+```
+
+| 套件 | tests | failures | errors | skipped |
+|---|---|---|---|---|
+| `ExampleUnitTest` | 1 | 0 | 0 | 0 |
+| `protocol.GatewayFrameCodecTest`（实现侧自检） | 11 | 0 | 0 | 0 |
+| `telemetry.ReadingAttributionTest`（实现侧自检） | 16 | 0 | 0 | 0 |
+| `verification.GatewayFrameCodecItem001LegacyParityTest`（独立） | 3 | 0 | 0 | 0 |
+| `verification.GatewayFrameCodecItem001VerificationTest`（独立） | 7 | 0 | 0 | 0 |
+| `verification.ReadingAttributionItem003VerificationTest`（独立，本轮新增） | 8 | 0 | 0 | 0 |
+| **合计** | **46** | **0** | **0** | **0** |
+
+本轮新增独立用例：`countMatrix_matchesIndependentReference`、`numericTokenClasses_matchSpec`、`timeAndSegmentClasses_matchSpec`、`rejectedResult_carriesNoReadings_andNeverPartiallySucceeds`、`legacyComparison_consistentIdentical_inconsistentDiverges`、`mappingFollowsSavedIdOrder_andDevIdIsCarried`、`attribute_isStateless_acrossCalls`、`fuzz_neverThrows_andAgreesWithReference` —— **8/8 PASS**。
+
+构建：`./gradlew :app:assembleDebug --offline` → BUILD SUCCESSFUL；`app-debug.apk` **10,359,240 B**（较上项 +73,614 B，为新增模块与接入代码；与实现侧记录一致）。
+
+### 4. 接入点与下游后果的静态核查（独立读取被测源码）
+
+| 检查 | 证据 | 判定 |
+|---|---|---|
+| 旧截断路径清零 | `grep -n "minOf(savedIds\|doubles0\|doubles1\|tempDoubles0\|readBackTemperature\|readBackHuminity\|using first" MqtttService.kt` → **0 命中** | 通过 |
+| 归因入口与顺序来源 | `MqtttService.kt:1360` `val savedIds = MacIdBook.all(applicationContext).map { it.first }`；`1361` 调用 `ReadingAttribution.attribute(temppayload, savedIds)` | 通过（与网关 `0xA1` 配置包 `394: MacIdBook.all().map{...}.take(maxCount)` 同源顺序） |
+| 拒绝整批 → 不落库/不上传/不报警 | `1362-1367` `Rejected` 分支仅 `Log.w(...)`；不调用 `processTemperatureHumidityData`（落库/告警/后续上传的唯一入口） | 通过 |
+| 成功 → 逐条带 devId 下沉 | `1368-1377` `Success` 分支 `batch.readings.forEach { processTemperatureHumidityData(r.devId, r.temperature, r.humidity, batch.timeSeconds) }` | 通过 |
+| 去重键仅在成功后推进 | `1370-1371` `_bkp_temp_time` 赋值位于 `Success` 分支内（拒绝批不会污染去重状态，后续同时间合法批仍可处理） | 通过 |
+| 前项静态口径未破坏 | `python evidence/software_static_check_no_little_endian_parser.py` → `EXIT=0`（A1/A2=0，B1a–B1d、B2 全 PASS） | 通过 |
+
+### 5. 判定
+
+1. **严格映射**：计数一致时按 `MacIdBook.all()` 顺序得到 `(devId, temperature, humidity)`，`devId` 随读数下沉；同值集不同绑定顺序归属随之变化（穷举矩阵 125 组 + 随机/模糊比对与独立参考完全一致）。**通过**
+2. **拒绝整批**：计数不一致、序列为空、含非法/非有限数值、时间非法或缺失、无绑定设备 —— 均返回 `Rejected` 且结构上不携带读数；调用点不进入落库/告警/上传。一致性输入与改动前映射逐条相同，不一致输入由“静默丢值/部分处理”变为整批拒绝。**通过**
+3. **无行为回归**：46 项用例全绿、构建成功、前两项静态口径未破坏。**通过**
+
+结论：**TEST_PASS**。
+
+### 6. 交接与观察（本项范围外，不构成失败）
+
+1. **绑定设备 > 50 时的拒绝风险**：网关 `0xA1` 配置包取 `MacIdBook.all()` 的**前 50 个**（`take(maxCount=50)`），而归因比较对象是**全部**已绑定 ID；若绑定数 >50，数量不等将导致**每批都被拒绝**（安全优先，符合 D-08“拒绝而非错归因”）。这是实现侧已登记的观察项；是否改为“只比对前 50 个”或限制绑定上限，属产品/协议决定，需需求方确认，不在本能力内自行改判。
+2. **拒绝后不再提前 `return`**：旧代码仅在“空序列/无绑定设备”两种情形提前 return（“数目不一致”情形本就继续），新代码统一继续到后续时间校准发布块。行为差异仅出现在旧代码的两种提前返回情形；若产品要求“拒绝即不发布校准”，属新行为需另行确认。
+3. **本项未涉及**：告警时间窗（ITEM-005）、入库真实时间戳（ITEM-007）、云上传与待发箱（ITEM-008/009）、UI（ITEM-011/012）；真机 MQTT 链路的“拒绝整批”端到端确认留在 E2E-SW-002 J-1。
