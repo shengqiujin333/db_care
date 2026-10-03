@@ -22,14 +22,6 @@ void light_init(void);
 void light_reset_state(void);
 
 /*
- * 纯滞回判定 (无硬件依赖, 可宿主机直测; FD-002 §6.3):
- *   prev_dark == true : code <= LIGHT_DARK_EXIT 才转 LIT, 否则维持 DARK;
- *   prev_dark == false: code >= LIGHT_DARK_ENTER 才转 DARK, 否则维持 LIT。
- * 语义: 无光 = code >= LIGHT_DARK_ENTER。
- */
-bool light_code_is_dark(uint16_t code, bool prev_dark);
-
-/*
  * 一次光照采样:
  *   PB05 输出高 -> 稳定延时 -> PB04/AIN11 取样 LIGHT_ADC_SAMPLES 次求均值 -> PB05 置低;
  *   用均值做滞回判定并更新内部状态。

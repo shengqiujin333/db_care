@@ -141,7 +141,7 @@
 
 ---
 
-# 任务项 ITEM-004（本轮）
+# 任务项 ITEM-004（已完成，独立验证 TEST_PASS）
 
 **ITEM-004**：实现光照通路 `light.c/.h`：采样时 PB05 输出高、稳定延时后用 PB04/AIN11 多次取样求均值，按配置阈值与滞回输出 DARK/LIT（无光=读数≥进入阈值），采样结束 PB05 置低。
 
@@ -182,9 +182,64 @@
 
 ---
 
+# 任务项 ITEM-005（本轮）
+
+**ITEM-005**：在 `fw_core.c` 中实现并保持不依赖 MCU 寄存器的纯逻辑：`fw_crc8_gxht`（参考向量 CRC(0xBEEF)=0x92）、GXHT40 原始字到 x10 的整数换算（含负温与 0-100%RH 截断）、`light_code_is_dark` 滞回判定、`sensor_decide_report` 判定 `((prev-cur)>9 且 DARK) 或 (cur>350)`（无前值时下降分支恒假）。
+
+设计映射：FD-002 §3.2（fw_core 纯逻辑）、§6.1/§6.2/§6.3/§6.4（算法）、§11.1（单一配置点）。测试映射：TD-002 T-L0-01…T-L0-05。
+
+## 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `.../USER/inc/fw_core.h` | 修改 | 新增 7 个纯函数声明（CRC-8、温度/湿度换算、量程判定、组合换算、光照滞回、上报判定） |
+| `.../USER/src/fw_core.c` | 修改 | 实现上述纯函数；仅依赖 `sensor_config.h` 的纯数值段（定义 `SENSOR_CONFIG_NO_MCU`，不引 MCU 头） |
+| `.../USER/inc/sensor_config.h` | 修改 | 拆为「纯数值段」+ `#ifndef SENSOR_CONFIG_NO_MCU` 的「MCU 引脚/外设段」；数值不变，仅重排 |
+| `.../USER/src/gxht40.c` | 修改 | 删除内置 `gxht40_crc8`/`gxht40_conv_*`，改用 `fw_crc8_gxht`/`gxht40_raw_to_x10`（消除双份实现，落实 ITEM-003 观察项 F1） |
+| `.../USER/inc/light.h`、`.../USER/src/light.c` | 修改 | `light_code_is_dark` 移入 `fw_core.c`；`light.c` 改为包含 `fw_core.h` 调用（消除双份实现） |
+| `.../test/host_fw_core_pure_check.c` | 新增（测试载体） | 宿主机纯逻辑自检 36 项 |
+| `.../test/host_gxht40_check.c`、`host_light_check.c` | 修改 | 链接新增 `fw_core.c`（驱动/光照已改为调用纯函数） |
+
+### 接口（fw_core.h）
+
+```c
+uint8_t  fw_crc8_gxht(const uint8_t *p, uint16_t n);          /* poly 0x31, init 0xFF, 空长度 0xFF */
+int16_t  gxht40_temp_raw_to_x10(uint16_t raw);                 /* -450 + round(1750*S/65536) */
+uint16_t gxht40_hum_raw_to_x10(uint16_t raw);                  /* -60 + round(1250*S/65536), 截断 0..1000 */
+bool     gxht40_temp_x10_valid(int16_t temp_x10);              /* -400..1250 */
+bool     gxht40_raw_to_x10(uint16_t rt, uint16_t rh, int16_t *t, uint16_t *h);  /* 有效才写输出 */
+bool     light_code_is_dark(uint16_t code, bool prev_dark);    /* ≥ENTER 转暗, ≤EXIT 转明 */
+bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool dark);
+```
+
+### 行为要点
+
+1. **无 MCU 依赖**：`fw_core.c` 只包含 `fw_core.h`/`params.h` 与 `sensor_config.h`（纯数值段），因此 `test/build_test.sh` 的 `gcc -I../USER/inc` 无需追加 MCU 头路径仍可编译（已回归 56/56）。
+2. **上报判定**：`cur > 350` 优先返回 true；`cur == 350` 返回 false（IC-002 §2 的 `T<35` 与 `T>35` 在恰好 35.0 ℃ 均不成立）；无前值或非 DARK 返回 false；否则 `(prev-cur) > 9`。
+3. **温度有效域**：`gxht40_raw_to_x10` 在温度超 -40.0..125.0 ℃ 时返回 false 且不写输出；`gxht40.c` 据此返回 `GXHT40_ERR_RANGE`（行为与 ITEM-003 一致，重测逻辑不变）。
+4. **单一配置点保持**：阈值仍只在 `sensor_config.h` 定义；新增的 `SENSOR_CONFIG_NO_MCU` 只控制是否引入 MCU 头。
+
+**本项不包含**：退役 OPTCFG/params/history 纯逻辑与其测试用例（ITEM-009/ITEM-010）、采样流程接线（ITEM-006）、工程文件注册（ITEM-011）。
+
+## 验证（本轮实际执行）
+
+- 交叉编译：`gcc/build.sh` → **0 错误、29 条告警（与基线同数）**；FLASH 34,352 B（较 ITEM-004 **+292 B**：新增纯函数已随 `fw_core.o` 入镜像）、RAM 1,960 B（不变）。
+- 纯逻辑自检：`test/host_fw_core_pure_check.c` → **36 passed / 0 failed**，逐条覆盖 TD-002 T-L0-01…T-L0-05（含 T-L0-02 的 S=0/0xFFFF 无效域、T-L0-03 的 0..1000 截断、T-L0-05 的 35.0 ℃ 边界）。详见 `evidence/driver_test.md`。
+- 回归自检：`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15（后两者已改为链接 `fw_core.c`）。
+- 既有宿主机 L0 测试：`test/build_test.sh` → 56 passed / 0 failed（未改动被测算例；退役与新增用例属 ITEM-010）。
+
+## 交接与依赖
+
+- **T-L0-05 用例数值与规则不一致（需测试侧确认）**：TD-002 第②行写作 `prev=300,cur=290`（下降 10 = 1.0 ℃）期望 **false**，但同一行又要求「与 FD-002 §6.4 逐条一致」；按任务书/FD-002/IC-002 的 `(prev-cur)>9`，下降 10 应触发。实现按 `>9`（下降 9 不触发、下降 10 触发），即「恰好 0.9 ℃」对应 `cur=291`；已在自检中同时固定 9/10/11 三个边界。请测试侧在 T-L0-05 中校正该行数值。
+- ITEM-006 采样流程将调用 `sensor_decide_report()`；`prev_temp_x10` 由测量成功后更新，失败不更新（ITEM-006 实现）。
+- ITEM-009/010 将移除 `fw_core.c` 中的 OPTCFG/params 纯逻辑与 `host_sensor_core_test.c` 对应用例，并把本项纯逻辑用例并入 `host_sensor_core_test.c`/`build_test.sh`。
+- **跨角色交接（embedded_verification）**：本项把 `light_code_is_dark` 移入 `fw_core.c`、并让 `gxht40.c`/`light.c` 依赖 `fw_core.c`。因此 `test/host_light_verify_ev.c` 与 `host_gxht40_verify_ev.c`（嵌入式测试的 ITEM-004/ITEM-003 独立 harness）需在链接目标中补上 `USER/src/fw_core.c`（`host_light_verify_ev.c` 还需包含 `fw_core.h`）；本能力未修改这两个跨角色验证文件，仅登记交接。
+
+---
+
 # 后续任务项状态
 
-`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001、ITEM-002、ITEM-003（均独立验证 TEST_PASS）与 ITEM-004（本轮）。其余 8 项由 Runtime 后续指派，未指派项不在本轮产出。
+`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-005（前四项独立验证 TEST_PASS，ITEM-005 本轮）。其余 7 项由 Runtime 后续指派，未指派项不在本轮产出。
 
 # 交接与依赖（累计）
 

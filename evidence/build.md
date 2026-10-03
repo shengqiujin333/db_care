@@ -1,7 +1,7 @@
 # 构建证据（BUILD-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）、ITEM-003（GXHT40 驱动 `gxht40.c/.h`）、ITEM-004（光照通路 `light.c/.h`）
+本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）、ITEM-003（GXHT40 驱动 `gxht40.c/.h`）、ITEM-004（光照通路 `light.c/.h`）、ITEM-005（`fw_core.c` 纯逻辑）
 
 ## 1. 环境
 
@@ -136,7 +136,27 @@ arm-none-eabi-nm   obj/light.o : T light_code_is_dark / light_init / light_last_
 - 宿主机 L0 回归：`test/build_test.sh` → 56 passed / 0 failed。
 - 工程文件注册（MDK/IAR 源列表加入 `light.c`）属 ITEM-011；`gcc/build.sh` 通过通配自动包含。
 
-## 8. 限制与交接
+## 8. ITEM-005 增量（fw_core.c 纯逻辑）
+
+改动：`USER/inc/fw_core.h`、`USER/src/fw_core.c` 新增 7 个纯函数；`USER/inc/sensor_config.h` 拆为纯数值段 + `SENSOR_CONFIG_NO_MCU` 守卫的 MCU 段；`gxht40.c`/`light.c`/`light.h` 改为复用纯函数；新增 `test/host_fw_core_pure_check.c`。
+
+```
+== compile ==  全部翻译单元
+== link ==
+Memory region   Used Size   Region Size   %age Used
+FLASH:          34,352 B    64 KB         52.42%
+RAM:             1,960 B     4 KB         47.85%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+```
+
+- **0 错误；告警 29 条，与基线同数**（初版曾因注释内 `/*` 产生 17 条 `-Wcomment`，已修正注释文本）。
+- 工程 FLASH 34,352 B（较 ITEM-004 **+292 B**）：`fw_core.o` 原本已随 `params.c` 入镜像，新增纯函数随之被链接；RAM 不变。`gxht40.o`/`light.o` 仍未被引用（接线属 ITEM-006）。
+- `fw_core.c` 仍**不依赖 MCU 头**：仅含 `fw_core.h`/`params.h` 与 `sensor_config.h`（定义 `SENSOR_CONFIG_NO_MCU`），因此 `test/build_test.sh` 的 `-I../USER/inc` 无需追加 MCU/CMSIS 路径。
+- 纯逻辑自检：`test/host_fw_core_pure_check.c` → **36 passed / 0 failed**（详见 `evidence/driver_test.md`）。
+- 回归自检：`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15。
+- 既有宿主机 L0：`test/build_test.sh` → 56 passed / 0 failed。
+
+## 9. 限制与交接
 
 - 本证据为 GNU 交叉编译 + 宿主机回归；量产构建走 Keil MDK / IAR EWARM（既有工程，`USER/inc` 已在两者 include 路径中，故新头文件无需改工程文件列表），未在本环境复编译 MDK/IAR。
 - 网关（CH592 beiwov2）需 WCH 工具链，本轮未涉及。

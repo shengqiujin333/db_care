@@ -1,9 +1,9 @@
 # 驱动测试证据（DRV-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）、**ITEM-004**（光照通路）
-被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）
-测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（宿主机 mock 总线）、`.../test/host_light_check.c`（宿主机纯逻辑 + 硬件桩）
+本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）、**ITEM-004**（光照通路）、**ITEM-005**（`fw_core.c` 纯逻辑）
+被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）；`USER/src/fw_core.c` / `USER/inc/fw_core.h`（ITEM-005）
+测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（宿主机 mock 总线）、`.../test/host_light_check.c`（宿主机纯逻辑 + 硬件桩）、`.../test/host_fw_core_pure_check.c`（纯逻辑）
 
 ## 1. 环境与运行
 
@@ -144,3 +144,43 @@ gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast \
 ## 4. 结论
 
 光照滞回判定与 FD-002 §6.3 及任务项 ITEM-004 的声明一致（无光 = code ≥ 进入阈值，滞回带 250..349 不抖动）；采样序列与引脚所有权经编译与源码核对。实板光照阈值与极性交接给嵌入式测试（TD-002 T-L3）。
+
+---
+
+# ITEM-005：fw_core.c 纯逻辑自检
+
+被测实现：`USER/src/fw_core.c` / `USER/inc/fw_core.h`（新增 7 个纯函数）
+测试载体：`.../test/host_fw_core_pure_check.c`（宿主机，仅 `-I../USER/inc`，不需 MCU/CMSIS 头）
+
+## 1. 运行
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+gcc -std=c11 -Wall -Wextra -I../USER/inc host_fw_core_pure_check.c \
+    ../USER/src/fw_core.c -lm -o host_fw_core_pure_check.exe \
+    && ./host_fw_core_pure_check.exe
+```
+
+结果：**36 passed, 0 failed**（harness 与 fw_core.c 新增部分 0 告警）。
+
+## 2. 检查明细（逐条对应 TD-002 T-L0-01…05）
+
+| 用例 | 检查 | 结果 |
+|---|---|---|
+| T-L0-01 | `fw_crc8_gxht`：`{0xBE,0xEF}→0x92`（手册参考）、`{0x00}→0xAC`（init 0xFF 移位链）、空长度 → `0xFF` | PASS ×3 |
+| T-L0-02 | 温度：S=1872→-400；16855→0；26214→250；63664→1250；纯换算 S=0→-450、S=0xFFFF→1300；有效域 -400/1250 合法、-450/1251/1300 无效 | PASS ×8 |
+| T-L0-03 | 湿度：S=0→0；2247→0；29360→500；55575→1000；0xFFFF→1000（截断） | PASS ×5 |
+| 组合 | `gxht40_raw_to_x10` 有效→true 并写输出；无效→false 且输出保持 | PASS ×4 |
+| T-L0-04 | 滞回：已明 349→LIT/350→DARK；已暗 251→DARK/250→LIT；0→LIT；4095→DARK；带内 300 保持原态 | PASS ×7 |
+| T-L0-05 | 无前值+200→false；无前值+351→true；下降 9→false；下降 10→true；下降 11→true；下降满足但非 DARK→false；cur=350→false；cur=351→true；prev==cur→false | PASS ×9 |
+
+## 3. 覆盖边界与不一致记录
+
+- 本证据为**纯逻辑**级别（无 MCU 寄存器/实板）；`fw_core.c` 以 `SENSOR_CONFIG_NO_MCU` 只取 `sensor_config.h` 的纯数值段，因此宿主机仅需 `-I../USER/inc`。
+- **TD-002 T-L0-05 第②行数值与规则不一致**：该行写作 `prev=300,cur=290`（下降 10 = 1.0 ℃）期望 **false**，但同一行要求「与 FD-002 §6.4 逐条一致」；按任务书/FD-002/IC-002 的 `(prev-cur)>9`，下降 10 应触发。实现按 `>9`（下降 9 不触发、下降 10 触发），即「恰好 0.9 ℃」对应 `cur=291`；自检已同时固定 9/10/11 三个边界值。请测试侧校正该行。
+- 其余测试计划期望（含 35.0 ℃ 边界、无前值、需 DARK）均逐条一致；`cur=350` 采用 IC-002 的 `T<35` 守卫（恰好 35.0 ℃ 两分支均不成立）。
+- 退役 OPTCFG/params 纯逻辑与其测试用例属 ITEM-009/ITEM-010；本项未删除既有纯函数，`test/build_test.sh` 仍 56/56。
+
+## 4. 结论
+
+`fw_crc8_gxht`、GXHT40 整数换算（含负温/有效域/0..1000 截断）、`light_code_is_dark` 滞回、`sensor_decide_report` 判定均与 FD-002 §6 及任务项 ITEM-005 一致，且不依赖 MCU 寄存器；`gxht40.c`/`light.c` 已改为复用本纯逻辑（消除双份实现）。

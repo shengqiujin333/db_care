@@ -7,20 +7,21 @@
  *   - 端点: 0 -> LIT; 4095 -> DARK; 阈值上下逐点
  *   - 配置关系: LIGHT_DARK_EXIT < LIGHT_DARK_ENTER, 差 = LIGHT_DARK_HYSTERESIS_STEP
  *
- * light.c 的 ADC/GPIO 部分直接操作寄存器, 本测试只调用纯函数 light_code_is_dark,
- * 其余被引用函数以下方宿主机桩满足链接 (不被执行)。
+ * light.c 的 ADC/GPIO 部分直接操作寄存器, 本测试只调用纯函数 light_code_is_dark
+ * (现位于 fw_core.c), 其余被引用函数以下方宿主机桩满足链接 (不被执行)。
  *
  * 编译(在本目录):
  *   gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast \
  *       -I../USER/inc -I../COMMON -I../../../../Libraries/inc \
  *       -I<CMSIS 5.9.0 Core Include> \
- *       host_light_check.c ../USER/src/light.c -o host_light_check.exe \
- *       && ./host_light_check.exe
+ *       host_light_check.c ../USER/src/light.c ../USER/src/fw_core.c -lm \
+ *       -o host_light_check.exe && ./host_light_check.exe
  */
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include "light.h"
+#include "fw_core.h"
 #include "sensor_config.h"
 #include "delay.h"
 

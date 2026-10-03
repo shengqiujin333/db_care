@@ -8,6 +8,7 @@
  */
 #include "light.h"
 #include "sensor_config.h"
+#include "fw_core.h"      /* 纯滞回判定 light_code_is_dark (ITEM-005) */
 #include "delay.h"
 
 #include "cw32l010_gpio.h"
@@ -21,17 +22,6 @@ void light_reset_state(void)
 {
     s_dark_state = false;
     s_last_code  = 0u;
-}
-
-/* ------------------------------------------------------------------ */
-/* 纯滞回判定 (ITEM-005 将抽取到 fw_core.c 供宿主机直测)                 */
-/* ------------------------------------------------------------------ */
-bool light_code_is_dark(uint16_t code, bool prev_dark)
-{
-    if (prev_dark) {
-        return !(code <= LIGHT_DARK_EXIT);   /* 已暗: 低于退出阈值才转明 */
-    }
-    return (code >= LIGHT_DARK_ENTER);       /* 已明: 达到进入阈值才转暗 */
 }
 
 /* ------------------------------------------------------------------ */

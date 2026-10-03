@@ -14,7 +14,8 @@
  *       -I../USER/inc -I../COMMON -I../../../../Libraries/inc \
  *       -I<CMSIS 5.9.0 Core Include> \
  *       host_gxht40_check.c ../USER/src/gxht40.c ../USER/src/sf_i2c.c \
- *       -o host_gxht40_check.exe && ./host_gxht40_check.exe
+ *       ../USER/src/fw_core.c -lm -o host_gxht40_check.exe \
+ *       && ./host_gxht40_check.exe
  *
  * 说明: mock 从机按 I²C 位时序重建; 板上电气/时序与真实器件交互仍由嵌入式测试
  *       按 TD-002 T-L2 用逻辑分析仪验证。

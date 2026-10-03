@@ -6,6 +6,7 @@
  */
 #include "gxht40.h"
 #include "sensor_config.h"
+#include "fw_core.h"      /* 纯逻辑: fw_crc8_gxht / gxht40_raw_to_x10 (ITEM-005) */
 #include "delay.h"
 
 /* 绑定总线与地址探测缓存 */
@@ -26,43 +27,6 @@ uint8_t gxht40_detected_addr7(void)
 /* ------------------------------------------------------------------ */
 /* 纯计算 (整数, 无浮点; FD-002 §6.1/§6.2)                             */
 /* ------------------------------------------------------------------ */
-
-/* CRC-8: poly 0x31, init 0xFF, 无反转, xorout 0x00; 参考 CRC(0xBEEF)=0x92 */
-static uint8_t gxht40_crc8(const uint8_t *p, uint8_t n)
-{
-    uint8_t crc = GXHT40_CRC8_INIT;
-    uint8_t i;
-
-    while (n-- != 0u) {
-        crc ^= *p++;
-        for (i = 0u; i < 8u; i++) {
-            crc = (crc & 0x80u) ? (uint8_t)((crc << 1) ^ GXHT40_CRC8_POLY)
-                                : (uint8_t)(crc << 1);
-        }
-    }
-    return crc;
-}
-
-/* T[0.1C] = -450 + round(1750*S_T/65536) */
-static int16_t gxht40_conv_temp_x10(uint16_t raw)
-{
-    int32_t v = (int32_t)GXHT40_TEMP_OFFSET_X10
-              + (int32_t)(((uint32_t)GXHT40_TEMP_SCALE_NUM * (uint32_t)raw
-                           + GXHT40_RAW_ROUND) >> 16);
-    return (int16_t)v;
-}
-
-/* RH[0.1%] = -60 + round(1250*S_RH/65536), 截断 0..1000 (手册 §7.5 越界无物理意义) */
-static uint16_t gxht40_conv_hum_x10(uint16_t raw)
-{
-    int32_t v = (int32_t)GXHT40_HUM_OFFSET_X10
-              + (int32_t)(((uint32_t)GXHT40_HUM_SCALE_NUM * (uint32_t)raw
-                           + GXHT40_RAW_ROUND) >> 16);
-
-    if (v < (int32_t)GXHT40_HUM_X10_MIN) return (uint16_t)GXHT40_HUM_X10_MIN;
-    if (v > (int32_t)GXHT40_HUM_X10_MAX) return (uint16_t)GXHT40_HUM_X10_MAX;
-    return (uint16_t)v;
-}
 
 /* ------------------------------------------------------------------ */
 /* 总线时序                                                            */
@@ -157,18 +121,17 @@ gxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10)
         }
 
         /* 温度字 (buf[0..1]) 与湿度字 (buf[3..4]) 各带一个 CRC */
-        if ((gxht40_crc8(&buf[0], 2u) != buf[2]) ||
-            (gxht40_crc8(&buf[3], 2u) != buf[5])) {
+        if ((fw_crc8_gxht(&buf[0], 2u) != buf[2]) ||
+            (fw_crc8_gxht(&buf[3], 2u) != buf[5])) {
             last = GXHT40_ERR_CRC;
             continue;               /* 丢弃整帧, 重测 */
         }
 
         raw_t = (uint16_t)(((uint16_t)buf[0] << 8) | (uint16_t)buf[1]);
         raw_h = (uint16_t)(((uint16_t)buf[3] << 8) | (uint16_t)buf[4]);
-        t = gxht40_conv_temp_x10(raw_t);
-        h = gxht40_conv_hum_x10(raw_h);
 
-        if ((t < GXHT40_TEMP_X10_MIN) || (t > GXHT40_TEMP_X10_MAX)) {
+        /* 整数换算 + 有效域判定 (纯逻辑在 fw_core.c; 无效时不写输出) */
+        if (!gxht40_raw_to_x10(raw_t, raw_h, &t, &h)) {
             last = GXHT40_ERR_RANGE;
             continue;               /* 超出 -40.0..125.0 C: 视为无效测量 */
         }
