@@ -788,3 +788,89 @@ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
 “条件上报（`report_req` 门控）”“`encode_frame10` 组 10 字节帧 + 有界发送”“帧布局/字节序/Feistel 不变”“仅成功后清除待上报”“失败按上限重试后放弃本轮”均经**真实 `measure.c` 发送路径**与**真实编码器↔真实网关解码器互操作**独立验证；AC5 告警消除，既有回归全部通过。
 
 **判定：TEST_PASS**。
+
+---
+
+# ITEM-009 验证（旧通路退役：hall / OPTCFG / params / history）
+
+验证对象：任务项 **ITEM-009**（从工程与构建中移除 hall/OPTCFG/params/history 及其对 PB04/PB05/PB06 的初始化；移除 GPIOB 霍尔 EXTI 分支与 LPTIM 中 OPTCFG 分支；PB04 仅作 AIN11 模拟输入、PB05 仅作光照供电输出、PB06 不外驱动）
+被测提交：`fef788f`；源码基线：`c556196`
+结论：**TEST_PASS**
+
+## A. 变更范围
+
+| 类别 | 内容 |
+|---|---|
+| 删除 | `USER/src/{hall,optcfg,params,history}.c`、`USER/inc/{hall,optcfg,params,history}.h`（共 8 个文件全部删除） |
+| 头文件 | `main.h` 移除 4 个 include；`fw_core.h` 移除 params/OPTCFG 声明与常量（保留 `fw_crc16_ccitt`） |
+| 源码 | `main.c` 移除 4 个 `*_init()` 与 hall/optcfg 主循环分支；`interrupts_cw32l010.c` 移除 GPIOB 霍尔分支与 LPTIM OPTCFG 分支；`measure.c` 移除 optcfg/hall 依赖（`send_data_to_gateway` 不再延后，`go_to_sleep` 仅看 report/sample）；`fw_core.c` 移除退役纯逻辑 |
+| 测试 | `host_sensor_core_test.c` 删除退役用例（−278/+10）、`build_test.sh` 不再链接 `history.c`、`host_measure_flow_check.c` 调整 |
+
+## B. 退役完整性（静态，通过）
+
+- `USER/src`、`USER/inc` 目录中已无任何退役文件（现仅 encrytogate/fw_core/gxht40/interrupts/light/main/measure/sf_i2c）。
+- 全树检索 `hall_/optcfg_/OPTCFG/params_/history_/HALL_/OPT_IN_PIN/F2_PWR_EN`：**无任何代码引用**，仅 3 处注释说明“已随 ITEM-009 退役”。
+- 工程文件（`MDK/Project.uvprojx`、`EWARM/*.ewp`、`gcc/build.sh`）中退役源文件引用数为 0；`gcc/build.sh` 以通配符编译 `USER/src/*.c`，退役后不再产生对应目标文件。
+- ELF 中无 `hall_*`/`optcfg_*`/`params_*`/`history_*` 符号；`fw_core.o` 仅剩 `fw_crc16_ccitt` + 本次需求新增的 7 个纯函数（params/OPTCFG 纯逻辑已消失）。
+
+## C. 中断分支移除（机器级，通过）
+
+对编译产物反汇编核对（比源码审阅更硬）：
+
+```
+GPIOB_IRQHandler:
+  38c2:  4770   bx lr            <-- 空处理，霍尔 EXTI 分支已彻底移除
+LPTIM_IRQHandler 调用的函数集合:
+  bl  <app_gtimer_count_irq>     <-- 仅 433 位时钟，OPTCFG 采样分支已移除
+```
+
+另外：全树已无 `GPIO_IT_FALLING/RISING/BOTH` 等 EXTI 配置（仅 `GPIO_IT_NONE`），也无 GPIOB 的 NVIC 使能。
+
+## D. 整机引脚所有权唯一（通过）
+
+逐条列出 USER/src 中**全部** GPIO 配置/驱动调用点：
+
+| 端口 | 引脚 | 模块 | 用途 |
+|---|---|---|---|
+| GPIOB | PB05 | `light.c` | `GPIO_Init(OUTPUT_PP)` + `GPIO_WritePin`（采样高/空闲低） |
+| GPIOB | PB04 | `light.c` | `GPIO_Init(ANALOG)`（AIN11） |
+| GPIOA | PA03/PA04 | `measure.c` | 软 I²C SCL/SDA |
+| GPIOA | PA05/PA06 | `measure.c` | 调试 UART（采样路径不配置，已由 ITEM-006/008 harness 验证 `UART_Init` 调用数 = 0） |
+
+即：**PB04 仅作 AIN11 模拟输入、PB05 仅作光照供电输出、PB06 全树无任何引用（不驱动）**；除 light.c 外无任何模块碰触端口 B。此结果同时解除了 ITEM-004 登记的“整机引脚冲突”依赖（当时 hall/optcfg 仍会重配 PB04/PB05/PB06）。
+
+## E. 构建与资源（通过）
+
+| 项 | 结果 |
+|---|---|
+| GNU 交叉编译 | 0 error；28 warning（无新增） |
+| 退役目标文件 | `gcc/obj` 中无 hall/optcfg/params/history 目标文件 |
+| 资源 | FLASH 35,856→**32,208 B**（−3,648）；RAM 1,896→**1,712 B**（−184）；`.bin` MD5 `47abc6df…` |
+| AC5（`--c99`，CMSIS 5.9.0） | `main.c`/`interrupts_cw32l010.c`/`measure.c`/`fw_core.c`/`gxht40.c`/`light.c`/`sf_i2c.c` 均 **0 error / 0 warning**；`encrytogate.c` 0 error（3 条既有未用静态量告警） |
+
+## F. 回归（通过）
+
+| 独立 harness | 结果 |
+|---|---|
+| `host_fw_core_verify_ev`（纯逻辑穷举） | 53/53 |
+| `host_gxht40_verify_ev` | 42/42 |
+| `host_light_verify_ev` | 45/45 |
+| `host_measure_flow_verify_ev` | 79/79 |
+| `host_rf_report_verify_ev` | 30/30（T6 已按退役更新） |
+| `host_rf_frame_verify_ev`（传感器编码器↔网关解码器） | 10/10 |
+| `host_rtc_cadence_verify_ev` | 17/17 |
+| 实现者 `host_measure_flow_check.c` | 24/24 |
+| 工程自带 `test/build_test.sh` | 2/2（见 G.1） |
+
+## G. 观察与交接
+
+1. **【交 ITEM-010】`test/build_test.sh` 目前只跑 2 项**（`host_sensor_core_test.c` 保留的 CRC16 回归）：退役时删除了 278 行旧用例，而本次需求新增的纯逻辑用例位于单独的 `host_fw_core_pure_check.c`（36 项）**未并入脚本**。任务清单已把“更新 `host_sensor_core_test.c` 与 `build_test.sh` 覆盖 CRC-8/换算/滞回/上报判定”列为 **ITEM-010**，故本轮不判缺陷；但需注意：TD-002 T-L1-01 对 `build_test.sh` 的覆盖期望要等 ITEM-010 完成后才成立。**本轮验证强度不受影响**：我自己的 `host_fw_core_verify_ev` 已对相同纯逻辑做了穷举比对（53 项）。
+2. **【交 ITEM-011】MDK/IAR 源文件列表仍不完整**：`Project.uvprojx` 仅列 `main.c/interrupts_cw32l010.c/sf_i2c.c/measure.c/encrytogate.c`（缺 `fw_core.c`/`gxht40.c`/`light.c`），IAR 仅列 `main.c/interrupts_cw32l010.c`。因此**生产工具链链接会因缺符号失败**（`measure.c` 现在引用 `light_*`/`gxht40_*`/`sensor_decide_report`）。这属 ITEM-011 明确范围；退役文件本来就不在列表中，故 ITEM-009 未引入新缺口。本环境 Keil 另受 CMSIS 6.3.0/AC5 不兼容影响（ITEM-001 已登记），因此本轮以 GNU 交叉编译 + AC5 逐文件编译为构建证据。
+3. **测试侧适配（非产品改动）**：为反映退役，我更新了 3 个自有 harness —— `host_rf_report_verify_ev` 的 T6 由“配置窗口延后发送”改为“无遗留窗口延后 + 休眠门控仅看 report/sample”；`host_measure_flow_verify_ev`/`host_rtc_cadence_verify_ev` 删除已不再被引用的退役桩。
+4. **板级回归未做**：TD-002 T-L9-02（磁铁不产生唤醒、PB06 无输出）需实板 + 示波器；本轮无仪器，仅以源码/机器码证明 EXTI 与 PB06 驱动已不存在。
+
+## H. ITEM-009 判定
+
+hall/OPTCFG/params/history 已从源码、头文件、构建与工程引用中彻底退役；GPIOB 霍尔 EXTI 分支与 LPTIM OPTCFG 分支在**机器码层面**消失（空处理 / 仅 433 位时钟）；整机引脚所有权变为唯一（PB04 仅 AIN11、PB05 仅光照供电、PB06 不驱动）；资源明显下降且既有功能回归全部通过。
+
+**判定：TEST_PASS**。

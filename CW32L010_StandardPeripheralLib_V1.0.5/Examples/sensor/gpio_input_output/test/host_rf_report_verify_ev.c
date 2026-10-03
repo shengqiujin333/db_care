@@ -6,7 +6,8 @@
  * an emulated MCU layer (test/mock_measure_ev shadows the vendor headers) and scripts:
  *   - the light/GXHT40 primitives, so a report can be produced by a real sampling cycle
  *   - app_um2005C_send_data_timeout(), so success / failure / retry-exhaustion can be driven
- *   - optcfg_window_active(), so the deferred-send branch can be driven
+ *   - SYSCTRL_GotoDeepSleep(), so the sleep gate can be observed
+ * (ITEM-009 retired the legacy hall/OPTCFG window gates, so those stubs are gone.)
  * It then checks:
  *   - no send without report_req
  *   - the sender receives encode_frame10(mcu_uid, prev_temp, last_hum) with len=10 and the
@@ -47,7 +48,8 @@ void SYSCTRL_AHBPeriphReset(uint32_t p, FunctionalState s) { (void)p; (void)s; }
 void SYSCTRL_APBPeriphReset1(uint32_t p, FunctionalState s) { (void)p; (void)s; }
 void SYSCTRL_AHBPeriphClk_Enable(uint32_t p, FunctionalState s) { (void)p; (void)s; }
 void SYSCTRL_APBPeriphClk_Enable1(uint32_t p, FunctionalState s) { (void)p; (void)s; }
-void SYSCTRL_GotoDeepSleep(void) { }
+static int deep_sleep_calls;
+void SYSCTRL_GotoDeepSleep(void) { deep_sleep_calls++; }
 void UART_Init(uint32_t u, UART_InitTypeDef *c) { (void)u; (void)c; }
 
 /* ---------------- scripted primitives ---------------- */
@@ -55,7 +57,6 @@ static int      light_ret;                 /* 1 = dark */
 static gxht40_status_t gxht_ret;
 static int16_t  gxht_t;
 static uint16_t gxht_h;
-static int      window_active;
 
 void light_init(void) { }
 bool light_sample(void) { return light_ret != 0; }
@@ -66,8 +67,6 @@ gxht40_status_t gxht40_measure(int16_t *t, uint16_t *h)
     return gxht_ret;
 }
 uint8_t gxht40_detected_addr7(void) { return 0x44u; }
-bool optcfg_window_active(void) { return window_active != 0; }
-bool hall_event_pending(void) { return false; }
 
 /* ---------------- scripted sender ---------------- */
 static int      send_script[16];           /* 1 = success, 0 = failure */
@@ -175,17 +174,20 @@ int main(void)
     send_data_to_gateway();                  /* succeeds */
     CHECK(send_calls == 2 && report_req == 0u, "second attempt succeeded (retry counter restarted at 0 for the new round)");
 
-    printf("[T6] configuration window defers the send and preserves the report\n");
+    printf("[T6] legacy hall/OPTCFG gates retired; sleep gate is report/sample only\n");
     cycle(1, 220, 550);
     CHECK(report_req == 1u, "report pending");
-    window_active = 1;
     reset_send_log();
-    send_data_to_gateway();
-    CHECK(send_calls == 0 && report_req == 1u, "window active -> no transmission, report preserved");
-    window_active = 0;
-    { const int s[2] = {1, 1}; script_send(s, 2); }
-    send_data_to_gateway();
-    CHECK(send_calls == 1 && report_req == 0u, "after the window closes the report is sent");
+    { const int s[1] = {1}; script_send(s, 1); }
+    { int before = deep_sleep_calls; go_to_sleep();
+      CHECK(deep_sleep_calls == before, "pending report blocks deep sleep"); }
+    send_data_to_gateway();                  /* no deferral path exists any more */
+    CHECK(send_calls == 1 && report_req == 0u, "pending report is sent on the first call (no legacy window deferral)");
+    { int before = deep_sleep_calls; sample_flag = 1u; go_to_sleep();
+      CHECK(deep_sleep_calls == before, "pending sample blocks deep sleep"); }
+    sample_flag = 0u;
+    { int before = deep_sleep_calls; go_to_sleep();
+      CHECK(deep_sleep_calls == before + 1, "idle state (no report, no sample) enters deep sleep"); }
 
     printf("[T7] failed measurements never produce a report or a transmission\n");
     light_ret = 1; gxht_ret = GXHT40_ERR_CRC; sample_flag = 1u;

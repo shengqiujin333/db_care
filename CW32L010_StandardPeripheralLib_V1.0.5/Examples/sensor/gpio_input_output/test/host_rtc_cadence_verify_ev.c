@@ -34,15 +34,8 @@ void RTC_IRQHandlerCallBack(void);
 void RTC_Configuration(void);
 
 /* stubs for the rest of main()'s dependencies (not exercised by this harness) */
-void     params_init(void) { }
-void     history_init(void) { }
-void     optcfg_init(void) { }
-void     hall_init(void) { }
-bool     hall_event_pending(void) { return false; }
-void     hall_event_clear(void) { }
-bool     hall_debounced_active(void) { return false; }
-void     optcfg_window_start(void) { }
-void     optcfg_process(void) { }
+/* ITEM-009 retired hall/OPTCFG/params/history: main.c no longer calls their init/process
+   functions, so only the sampling entry points need stubs here. */
 uint16_t temperature_process(void) { return 0u; }
 void     send_data_to_gateway(void) { }
 void     go_to_sleep(void) { }

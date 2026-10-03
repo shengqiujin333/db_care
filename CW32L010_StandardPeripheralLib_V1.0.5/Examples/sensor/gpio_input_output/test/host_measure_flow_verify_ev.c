@@ -89,8 +89,7 @@ gxht40_status_t gxht40_measure(int16_t *t, uint16_t *h)
     return st;
 }
 uint8_t gxht40_detected_addr7(void) { return 0x44u; }
-bool optcfg_window_active(void) { return false; }
-bool hall_event_pending(void) { return false; }
+/* ITEM-009 retired hall/OPTCFG: measure.c no longer references these, so no stubs needed. */
 uint8_t app_um2005C_send_data_timeout(uint8_t *d, uint16_t n, uint32_t to) { (void)d; (void)n; (void)to; send_calls++; return 1u; }
 
 /* ---------------- reference model of the intended flow ---------------- */
