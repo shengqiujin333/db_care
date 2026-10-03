@@ -29,6 +29,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.github.mikephil.charting.data.Entry
+import com.jinyuni.dengbei_care.protocol.GatewayFrameCodec
 import com.jinyuni.dengbei_care.ui.home.HomeViewModel
 import com.jinyuni.dengbei_care.ui.notifications.NotificationsViewModel
 import kotlinx.coroutines.CompletableDeferred
@@ -85,17 +86,8 @@ data class DeviceReadingV3(
     val temperatureC: Double     // 温度（×0.1），如需有符号可改成 s16be
 )
 
-data class DeviceReading(
-    val devIdBytes: ByteArray,  // 4B（大端）
-    val devIdHex: String,
-    val humidityPct: Double,    // ×0.1 %RH
-    val temperatureC: Double    // ×0.1 °C（带符号）
-)
-data class ParsedFrame(
-    val gatewayIdHex: String,   // 6B 大端
-    val devCount: Int,
-    val readings: List<DeviceReading>
-)
+// 注：BLE 聚合帧的读数类型与解码已由 protocol/GatewayFrameCodec 提供
+//（GatewayFrameCodec.Result / GatewayFrameCodec.SensorSample），此处不再保留第二套定义。
 
 
 class MqtttService : MqttService() {
@@ -459,39 +451,30 @@ class MqtttService : MqttService() {
     }
 
 
-    fun parsePlainFrame(plain: ByteArray): ParsedFrame {
-        require(plain.size >= 16) { "plain too short" }
-        val gwid6 = plain.copyOfRange(0, 6)
-        val devCount = plain[6].toInt() and 0xFF
-        val expected = 16 * (1 + devCount)
-        require(plain.size >= expected) { "plain length ${plain.size} < expected $expected" }
-
-        val readings = ArrayList<DeviceReading>(devCount)
-        var off = 16
-        repeat(devCount) {
-            val block = plain.copyOfRange(off, off + 16)
-            val p8 = block.copyOfRange(0, 8)
-
-            val devIdBytes = p8.copyOfRange(0, 4)             // 大端原样
-            val devIdHex   = devIdBytes.toHexSep()
-            val humi       = u16be(p8, 4) / 10.0
-            val temp       = s16be(p8, 6) / 10.0
-
-            readings += DeviceReading(devIdBytes, devIdHex, humi, temp)
-            off += 16
+    /**
+     * 解密 BLE 聚合帧并交给 [GatewayFrameCodec] 解码。
+     * 帧长不足/无设备/密文未对齐/解密失败一律返回 Rejected，不抛异常、不产生读数。
+     * 注：明文中多出的尾部填充（协议栈读满）由 codec 按 devCount 截断，与改动前一致。
+     */
+    fun decryptAndParseEcbFrame(
+        value: ByteArray,
+        key16: ByteArray = APP_AES_KEY16
+    ): GatewayFrameCodec.Result {
+        if (value.isEmpty() || value.size % 16 != 0) {
+            return GatewayFrameCodec.Result.Rejected(
+                GatewayFrameCodec.RejectionReason.CIPHERTEXT_NOT_ALIGNED,
+                "cipher=${value.size}B"
+            )
         }
-        return ParsedFrame(gwid6.toHexSep(), devCount, readings)
-    }
-
-    fun decryptAndParseEcbFrame(value: ByteArray, key16: ByteArray = APP_AES_KEY16): ParsedFrame {
-        // 如果你的特征值比实际帧更长（以前尾部是 0），加密后这些 0 也会被加密成非 0。
-        // 推荐 MCU 端只发送“恰好等于帧长度”的字节数；若无法控制，可在解密后按 devCount 截断。
-        //Log.i("MqttService", "cipher hex (first 256B)=${value.take(256).toByteArray().toHex()}")
-        val plain = aesEcbDecrypt(value, key16)
-
-        //Log.i("MqttService", "plain hex (first 256B) = ${plain.take(256).toByteArray().toHex()}")
-        // 若解密后仍多出块（例如协议栈固定长度），会被 parsePlainFrame 里的 expected 截断检查拦到
-        return parsePlainFrame(plain)
+        val plain = try {
+            aesEcbDecrypt(value, key16)
+        } catch (e: Exception) {
+            return GatewayFrameCodec.Result.Rejected(
+                GatewayFrameCodec.RejectionReason.DECRYPT_FAILED,
+                e.message ?: e.javaClass.simpleName
+            )
+        }
+        return GatewayFrameCodec.decodeAggregatedFrame(plain)
     }
 
     private fun ByteArray.toHex(sep: String = " ") =
@@ -736,32 +719,42 @@ class MqtttService : MqttService() {
 //                                processTemperatureHumidityData(r.temperatureC, r.humidityPct)
 //                            }
                             try {
-                                val parsed = decryptAndParseEcbFrame(value)
-                                Log.i("MqttService", "GwID=${parsed.gatewayIdHex}, dev=${parsed.devCount}")
-                                parsed.readings.forEach { r ->
-                                    Log.i("MqttService", " id=${r.devIdHex}, H=${"%.1f".format(r.humidityPct)}%, T=${"%.1f".format(r.temperatureC)}°C")
+                                when (val parsed = decryptAndParseEcbFrame(value)) {
+                                    is GatewayFrameCodec.Result.Rejected -> {
+                                        // 帧长不足/无设备/密文未对齐/解密失败：明确拒绝，不产生读数
+                                        Log.w(
+                                            "MqttService",
+                                            "BLE frame rejected: ${parsed.reason} (${parsed.detail})"
+                                        )
+                                    }
+                                    is GatewayFrameCodec.Result.Success -> {
+                                        Log.i("MqttService", "GwID=${parsed.gatewayIdHex}, dev=${parsed.devCount}")
+                                        parsed.samples.forEach { r ->
+                                            Log.i("MqttService", " id=${r.devIdHex}, H=${"%.1f".format(r.humidityPct)}%, T=${"%.1f".format(r.temperatureC)}°C")
 
-                                    val temperature = r.temperatureC
-                                    val humidity = r.humidityPct
-                                    val isZeroValue = temperature == 0.0 && humidity == 0.0
+                                            val temperature = r.temperatureC
+                                            val humidity = r.humidityPct
+                                            val isZeroValue = temperature == 0.0 && humidity == 0.0
 
-                                    // devId 从 4 字节原始值转 8 位 HEX 大写无分隔(匹配 MacIdBook)
-                                    val devId = r.devIdHex.replace(":", "")
+                                            // devId 由 4 字节原始值转 8 位 HEX 大写无分隔(匹配 MacIdBook)
+                                            val devId = r.devIdCompact
 
-                                    // BLE publish 用:记录最后一次读数(老行为,多设备时只发最后一个)
-                                    // connectToBroker 里会读取这 3 个变量把 BLE 数据转 MQTT
-                                    bletime = System.currentTimeMillis() / 1000
-                                    bleTempData = listOf(temperature)
-                                    bleHumiData = listOf(humidity)
+                                            // BLE publish 用:记录最后一次读数(老行为,多设备时只发最后一个)
+                                            // connectToBroker 里会读取这 3 个变量把 BLE 数据转 MQTT
+                                            bletime = System.currentTimeMillis() / 1000
+                                            bleTempData = listOf(temperature)
+                                            bleHumiData = listOf(humidity)
 
-                                    if (isZeroValue) {
-                                        bleZeroCount++
-                                        if (bleZeroCount >= 3) {
-                                            processTemperatureHumidityData(devId, r.temperatureC, r.humidityPct)
+                                            if (isZeroValue) {
+                                                bleZeroCount++
+                                                if (bleZeroCount >= 3) {
+                                                    processTemperatureHumidityData(devId, r.temperatureC, r.humidityPct)
+                                                }
+                                            } else {
+                                                bleZeroCount = 0
+                                                processTemperatureHumidityData(devId, r.temperatureC, r.humidityPct)
+                                            }
                                         }
-                                    } else {
-                                        bleZeroCount = 0
-                                        processTemperatureHumidityData(devId, r.temperatureC, r.humidityPct)
                                     }
                                 }
                             } catch (e: Exception) {
