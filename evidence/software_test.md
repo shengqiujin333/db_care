@@ -2,7 +2,7 @@
 
 状态：软件测试执行证据（`software_tester.software_verification`），按 Runtime 逐个指派的队列项追加
 对象：Android App `dengbei_care`（Kotlin / AGP 8.3.2 / Gradle 8.4 / JDK 21）
-本轮项：队列 **ITEM-001**…**ITEM-008**（逐项分节记录）
+本轮项：队列 **ITEM-001**…**ITEM-009**（逐项分节记录）
 依据：`artifacts/software_test_design.md`（TD-SW-002）、`artifacts/software_e2e_plan.md`（E2E-SW-002）、`artifacts/interface_contract.md`（IC-002 §4）、`artifacts/android_architecture.md`（AA-002 §5.1/§10）
 被测代码版本：`3e0ed11`（android_engineer.android_implementation 提交）；改动前基线：`fe9a81c`
 说明：本文件为本能力**独立执行**的记录；实现侧自检（`evidence/android_test.md` AT-001）仅作为被核对对象，不重复引用为通过依据。
@@ -694,3 +694,89 @@ BUILD SUCCESSFUL in 3s
 3. **手机号/守护门控**（空手机号不入队、守护关闭不入队）属后续队列项（ITEM-009/D-09）；`UploadPayload` 只做结构组装，不读 `SharedPreferences`（已静态核查）。
 4. **旧解析族的重复换算**：`MqtttService.interpretPayloadV3`（无调用点）内仍有 2 处 `/10.0`，与存活路径无关（已核实调用点=0）；清理属后续维护项，已在脚本中固化该例外以便回归。
 5. **本项不涉及**：待发箱 DAO/重试与上传编排（ITEM-009）、Service 接线（ITEM-010）、UI（ITEM-011/012）。
+
+---
+
+## ST-009 · ITEM-009（待发箱与上传编排 `UploadOutbox.kt` / `CloudUploadRepository.kt`）
+
+**被测代码版本**：`0951920`（android_engineer.android_implementation 提交，相对上一提交 `e155553`）
+**变更范围**：新增 `cloud/UploadOutbox.kt`、`cloud/CloudUploadRepository.kt`；`app/build.gradle.kts` +5（`testOptions.unitTests.isReturnDefaultValues`，仅影响宿主机单测的 android.jar 桩）；实现侧宿主机测试。
+**任务期望**：入队按 `(dev_id, time)` 幂等；成功（HTTP 2xx）即删除；失败保留并按有界次数与退避重试（单批/退避上下限/最大次数集中于一处常量）；上传在独立作用域、不阻塞 BLE 与 MQTT 主链路；断网期间不丢、恢复后不重复；守护关闭或未注册手机号时不入队也不发请求。
+
+### 1. 适用测试的选择与理由
+
+| TD-SW-002 用例 | 是否适用 | 本轮结果 |
+|---|---|---|
+| T-SW-L0-12 ①–⑧（成功删除/失败退避/上限/分批/门控×2/幂等/串行） | 适用 | **宿主纯逻辑层已执行**（独立替身 11 项）；**SQLite 适配器经验层未执行**（同 ST-006/007 环境阻塞） |
+| T-SW-L0-11（载荷与逐行时间/单位联通） | 适用 | 已执行（载荷逐行映射与负温） |
+| T-SW-L0d-03-邻域（表缺失降级不崩溃） | 适用 | 静态核查 `runCatching`×5 + 真机测试类（已编译待跑） |
+| T-SW-L1-01/L1-02（构建、宿主机单测） | 适用 | 已执行（144 项 0 失败） |
+| T-SW-L2-09/10（真机断网累积→恢复补传与退避时序） | **本轮不适用** | 需真实设备/网络与 ITEM-010 接线；属 E2E-SW-002 J-1/J-3 |
+
+### 2. 独立验证方法
+
+1. 宿主机独立单测 `verification/CloudUploadItem009VerificationTest.kt`（11 项，**自带**内存待发箱/伪 Api/伪门控）：常量与退避曲线、门控三态、幂等入队、成功删除+载荷逐行映射、失败退避+到期重试、`maxAttempts` 保留不重试、单批上限分批、Api 异常不抛出、并发串行、**入队不阻塞调用方**（`@Test(timeout)` + 阻塞式 Api：若同步等待则测试超时）、`dueBatch` 过滤排序。
+2. 独立脚本 `evidence/software_verify_cloud_upload_item009.py`（A–F）：参数集中与无散落魔数；SQL 适配器语义（`INSERT OR IGNORE`、到期过滤 `next_attempt_at<=? AND attempts<?`、排序 `next_attempt_at,time,device_id`、`LIMIT`、按 `(device_id,time)` 删除/更新、`runCatching` 降级）；门控顺序与 `isGateOpen` 语义；失败/并发控制（try-catch、`tryLock`+`finally unlock`、独立 `SupervisorJob+IO` 作用域）；生产接线尚未启用（`MqtttService` 引用=0）；生产客户端与门控键。
+3. 真机 instrumented 独立验证 `androidTest/.../UploadOutboxItem009VerificationTest.kt`（5 项）：真实 SQLite 上的幂等插入、到期过滤/排序/LIMIT、重试与删除只影响目标行、策略+SQL 端到端幂等/ack、表缺失降级不崩溃。
+
+### 3. 原始结果
+
+**独立脚本（EXIT=0）**：
+
+```
+== A 参数集中 ==  PASS batch 50 / backoff 60→1800 / maxAttempts 20；业务逻辑无散落魔数
+== B SQLite 适配器 ==  PASS INSERT OR IGNORE；WHERE next_attempt_at<=? AND attempts<?；ORDER BY next_attempt_at,time,device_id；LIMIT ?；按 (dev,time) 删除/更新；先查后插（事务）；runCatching×5+getOrElse 降级
+== C 门控顺序 ==  PASS enqueueAndUpload：门控→入队→触发；uploadPendingOnce：门控→tryLock→取批；isGateOpen=守护中&&手机号非空
+== D 失败与并发 ==  PASS api.upload 包 try/catch；Mutex.tryLock；finally unlock；CoroutineScope(SupervisorJob()+Dispatchers.IO)；scope.launch 触发；逐行 markFailed(backoffSeconds(attempts+1))；成功逐行 ack
+== E 生产接线 ==  PASS MqtttService 引用数 = 0（本项不改变运行行为）
+== F 客户端与门控键 ==  PASS CloudConfig.HTTP_BASE_URL；uploadData(...).isSuccessful；measure_state==stopping/registerphone/mac_addr
+== RESULT ==  OK
+```
+
+**宿主机独立单测（11/11）**：
+
+| 用例 | 断言要点 | 结果 |
+|---|---|---|
+| `configDefaults_andBackoffCurve_areBounded` | 50/60/1800/20；退避序列 `60,120,240,480,960,1800,1800,1800`；单调不减且 ≤1800 | PASS |
+| `gateClosed_neverEnqueuesNorRequests` | 守护关闭 / 手机号空 / 全空白 → 不入队、0 行、不发请求、`gate_closed` | PASS |
+| `enqueue_isIdempotentByDevIdAndTime` | 同 `(devId,time)` 第二次 false 且不覆写既有值 | PASS |
+| `success_deletesRows_andPayloadCarriesRowValues` | 2 行→删除；一次请求；`phone/mac` 正确；`devId/time/temperature`（含负温）逐行映射不串位 | PASS |
+| `failure_retainsRowWithBackoff_thenSucceedsWhenDue` | attempts=1、next=now+60、数据不丢；未到期不再请求；到期后重试成功并删除 | PASS |
+| `maxAttempts_stopsAutoRetry_butKeepsRow` | 达 2 次后第三次 `empty`、行保留 attempts=2 | PASS |
+| `batchLimit_splitsRequests_andProcessesAllRows` | 5 行 / 上限 2 → 请求大小 `[2,2,1]`、最终清空 | PASS |
+| `apiException_isTreatedAsFailure_withoutThrowing` | IOException → `upload_failed`、attempts=1、无异常抛出 | PASS |
+| `concurrentUploads_areSerialized` | 第一次挂起时第二次 `busy`，仅 1 次 HTTP | PASS |
+| `enqueueAndUpload_returnsWithoutWaitingForHttp` | 阻塞式 Api 下调用立即返回（同步实现会超时失败），随后异步完成并清空 | PASS |
+| `dueBatch_filtersByAttemptsAndDueTime_andOrders` | 到期/attempts 过滤与 `(next,time,dev)` 排序、LIMIT | PASS |
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单测（15 套件） | `./gradlew :app:testDebugUnitTest --offline` | BUILD SUCCESSFUL；**144 tests / 0 failures / 0 errors / 0 skipped** |
+| 构建 | `./gradlew :app:assembleDebug --offline` | BUILD SUCCESSFUL；`app-debug.apk` 10,359,866 B（与实现侧一致） |
+| 真机测试可编译 | `./gradlew :app:compileDebugAndroidTestKotlin --offline` | BUILD SUCCESSFUL（新增 ITEM-009 验证类） |
+| 前项独立脚本 | ITEM-002/004/006/007/008 | 均 EXIT=0 |
+
+### 4. Android SQLite 经验层：未执行 —— 环境阻塞（同 ST-006/007）
+
+`./gradlew :app:connectedDebugAndroidTest --offline` 仍失败：`Could not download kotlinx-coroutines-core-jvm-1.6.4.jar … No cached version available for offline mode`；无外网且工具边界不含直接 `am instrument`，故不绕过。**SQL 语句语义已由独立脚本静态核实（§3-B），行级行为待后续环境补跑。**
+
+### 5. 判定
+
+1. **幂等入队**：`(dev_id, time)` 同键只一行且不覆写（策略层执行 + SQL `INSERT OR IGNORE`/先查后插静态核实 + 真机测试类待跑）——**通过**
+2. **成功删除 / 失败保留+有界退避**：2xx 逐行 ack；失败逐行 `attempts+1` 且 `next = now + backoff(attempts+1)`；未到期不再请求；达 `maxAttempts` 保留但不重试——**通过**
+3. **参数集中**：50 / 60→1800 / 20 仅在 `Config` 常量声明处，业务逻辑无散落魔数——**通过**
+4. **门控**：守护关闭或无手机号时 `enqueueAndUpload` 不入队、`uploadPendingOnce` 不发请求（`gate_closed`）——**通过**
+5. **不阻塞与串行**：上传在独立作用域 `scope.launch`（阻塞式 Api 下调用方仍立即返回）；`Mutex.tryLock` 保证同一时刻单请求（第二次 `busy`）——**通过**
+6. **异常不崩溃**：Api 异常按失败记账不抛出；SQLite 适配器全操作 `runCatching` 降级——**通过**（适配器真机层待跑）
+7. **未改变现有运行行为**：`MqtttService` 未引用新模块（触发点接线属后续队列项）——**通过**
+
+结论：**TEST_PASS**（范围：队列/编排/门控/退避/并发/异常处理的宿主执行与静态核查 + 构建回归；**不含**真机 SQLite 行级与真机断网补传时序，已登记）。
+
+### 6. 交接与观察
+
+1. **触发点接线属后续队列项**：`enqueueAndUpload`/`triggerUpload` 的四个触发点（入队后、每轮 BLE、网络恢复、冷启动）未接入，本项不改变运行行为；TD-SW-002 §8-G3 已登记。真机断网累积→恢复补传属 E2E-SW-002 J-1/J-3。
+2. **`measure_state` 语义依赖 as-built 约定**：`"stopping"` = 守护运行中、`"starting"` = 已停止（`HomeFragment.restoreGuardState`）。若后续改用 `homeViewModel.startData.value`，需同步核对（语义等价由接线项确认）。
+3. **整批记账**：一次请求失败整批 `attempts+1`；因服务端 `UNIQUE(dev_id,time)` + `INSERT IGNORE`，重试不产生重复；部分成功粒度属新需求。
+4. **达 `maxAttempts` 的数据保留但无自动清理/手动入口**；如需保留期策略属新需求。
+5. **`app/build.gradle.kts` 的 `testOptions` 改动仅影响宿主机单测的 android.jar 桩**，不改变生产行为（已核查差异范围）。
+6. **真实 HTTP 未执行**：本次未授权 `api_client` 且无外网，`inserted` 幂等核对归 E2E。
