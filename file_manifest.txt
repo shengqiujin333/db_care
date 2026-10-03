@@ -107,7 +107,7 @@ artifacts/software_test_design.md | active | 软件测试设计 TD-SW-002（Andr
 artifacts/test_design.md | active | 嵌入式测试设计 TD-002（GXHT40 采集、光敏判据、3 分钟节拍、条件上报、失败路径、端到端与功耗的测试范围/环境仪器/数据采集/判定方法；只做设计不执行）
 dengbei_care/ | active | Android App 工程根（本次需同步修改；iOS 本轮不改）
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
-dengbei_care/app/build.gradle.kts | active | App 模块 Gradle 构建脚本
+dengbei_care/app/build.gradle.kts | active | App 模块 Gradle 构建脚本；ITEM-009 新增 testOptions.unitTests.isReturnDefaultValues=true（宿主机单测可加载含 android.util.Log 的云上传类）
 dengbei_care/app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-006 真机 Android SQLite 独立验证（用独立构造的 v2/v1 库与数据打开被测 helper 触发 onUpgrade；v2→v3 历史数据保真与原始 SQL/既有查询 API 双视角、pending_uploads 列/复合主键/索引/默认值/幂等入队与重复键拒绝、重复打开、v1→v3 不崩溃、同名 VIEW 冲突回退不崩溃；已编译打包，设备执行因 Gradle UTP 依赖缺失+无外网而阻塞）
 dengbei_care/app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-007 真机 Android SQLite 独立验证（写入行 time 恰为传入采样时间并显式排除 ±60/±120 s 偏移、值不串位；同 (dev,time) 重复写入不增行；storeflag 0/2/−1 写 0 行且返回 −1）；已编译并打入测试 APK，设备执行受同一环境阻塞
 dengbei_care/app/src/main/AndroidManifest.xml | active | Android 应用清单
@@ -116,6 +116,8 @@ dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ | active | Android 业�
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt | active | 本地 SQLite（bwtemperature_database1）：ITEM-006 升至 DATABASE_VERSION=3 并新增 pending_uploads 表/索引（v2→v3 只新建新对象）；ITEM-007 将列表式写入改为单条读数写入 storeTemperatureReading(devId, time, temperature, humidity, storeflag)（INSERT OR REPLACE + PK(time,device_id) 幂等、写入行 time = 真实采样时间、storeflag!=1 不写），删除旧的 60 秒回填路径
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt | active | 平台服务器常量唯一来源（SERVER_HOST=8.140.23.253、MQTT_BROKER_URI=ssl://…:8883、HTTP_BASE_URL=http://…:5000；旧京东云主机退役；TLS 信任锚/认证不在此处；ITEM-004）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt | active | 云上传编排（UploadApi/UploadGate 抽象、Config 常量集中（单批 50/退避 60s→1800s/最多 20 次）、门控（守护+手机号）→幂等入队→独立作用域取批上传→成功删除/失败退避、Mutex 串行；含 PrefsUploadGate/CloudApiClient/RetrofitUploadApi 生产适配；ITEM-009）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt | active | 云上传待发箱（UploadOutboxRow/UploadOutboxStore/UploadOutbox 策略：幂等入队、到期取批、ack 删除、失败记账；SqliteUploadOutboxStore 适配 v3 pending_uploads 表，表缺失/异常降级不崩溃；ITEM-009）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt | active | `/upload_data` 请求体构造纯逻辑（fromAttributed：已归因读数 + 批时间；build：待发箱逐行时间；空读数集不产生请求；℃/%RH 不再二次换算；ITEM-008）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt | active | BLE 聚合帧解码纯逻辑模块（16B 头块=gwId6+devCount@6；每设备 16B 块取前 8B=id4B 原序|hum u16be@4|temp s16be@6 有符号；Result.Success/Rejected 显式拒绝帧长不足/devCount=0/密文未对齐/解密失败；ITEM-001）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt | active | 报警判定纯逻辑模块（时间窗下降 5/10/15min、基准=窗口内最新样本含 30min 回溯容差；阈值超限/紧急 >65.0℃ 语义保持现状；四类文案+Severity；纯函数且输出不含温湿度数值；ITEM-005）
@@ -126,6 +128,7 @@ dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | active | 内�
 dengbei_care/app/src/main/res/ | active | Android 资源（layout/values/navigation/drawable/mipmap/xml；粗路径）；xml/network_security_config.xml 于 ITEM-004 追加放行 8.140.23.253（保留既有两项，未新增其它主机）
 dengbei_care/app/src/main/res/xml/network_security_config.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt | active | CloudConfig 常量与 network_security_config 明文放行自检 3 项（新主机 8883/5000、旧主机不再作为连接目标、明文放行仍为 3 个且未新增其它主机；ITEM-004）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt | active | 待发箱与上传编排自检 14 项（内存 Outbox + 伪 Api：成功删除/失败退避/重试到期/达上限停止/单批上限/门控/幂等入队/串行 busy/退避曲线/排序/空队列/载荷内容/异步触发；ITEM-009）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadPayloadTest.kt | active | `/upload_data` 载荷与端点兼容面自检 11 项（Gson 序列化字段名与单位、归属来自记录、批时间/逐行时间、空集不产生请求、DTO 字段名、既有 5 端点与数据类不变、JSON Content-Type；ITEM-008）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt | active | SQLite v3 schema 宿主机自检 9 项（版本号/待发箱表列与复合主键/索引/既有 temperature 与 alarm_events DDL 逐字未变/迁移步骤只新建新对象；ITEM-006）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/db/TemperatureWriteItem007Test.kt | active | 单条读数写入自检 4 项（INSERT OR REPLACE + 4 列绑定、幂等键、写入 time 为调用方真实采样时间无偏移回填、守护门控仅 storeflag==1 可写；ITEM-007）

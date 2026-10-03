@@ -452,3 +452,68 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 2. **手机号/守护门控不在本项**：`phone` 与 `mac` 由调用方（ITEM-009 编排）从 `registerphone`/`mac_addr` 取值；空手机号不入队属 ITEM-009（D-09）。本模块只做结构组装（不读 SharedPreferences）。
 3. **`UploadPayload` 依赖 `ui.zhuce` 的 DTO**：因任务要求数据类放在 `ApiService.kt`，模块引用该 DTO 属于可接受的单向依赖（DTO 无 Android 依赖）；若后续将 DTO 下沉到 `cloud/`，属结构优化，需同步 `ApiService` 导入。
 4. **本项不涉及**：待发箱 DAO/重试与上传编排（ITEM-009）、Service 接线（ITEM-010）、UI（ITEM-011/012）、版本/文档（ITEM-014）。
+
+---
+
+# 任务项 ITEM-009（本轮完成）
+
+**ITEM-009（队列第 9 项）**：新增 `cloud/UploadOutbox.kt` 与 `cloud/CloudUploadRepository.kt` 实现待发箱与上传编排：入队按 `(dev_id, time)` 幂等，成功（HTTP 成功）即删除，失败保留并按有界次数与退避重试（单批条数、退避上下限、最大尝试次数集中于一处常量），上传在独立作用域执行不阻塞 BLE 与 MQTT 主链路。
+期望行为：断网期间读数进入待发箱且不丢失；网络恢复后按 `(dev_id, time)` 不重复地补传；重复上传由服务端唯一键与本地待发箱双重去重；守护关闭或本机未注册手机号时不入队也不发起请求。
+
+设计映射：AA-002 §5.5（上传编排/重试/幂等/门控）、§6（独立作用域与触发点）、D-07（待发箱幂等）、D-09（守护/手机号门控）、§4.2；TD-SW-002 §4.1 T-SW-L0-12（①–⑧）、§8-G3。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt` | 新增 | `UploadOutboxRow`、`UploadOutboxStore` 接口、`UploadOutbox` 策略（幂等入队/到期取批/ack 删除/失败记账）；`SqliteUploadOutboxStore` 适配 ITEM-006 的 `pending_uploads` 表（表缺失或数据库异常时降级为空操作并记日志，不崩溃） |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt` | 新增 | 编排：`UploadApi`/`UploadGate` 抽象、`Config`（**单批 50 / 退避 60s→1800s / 最多 20 次**集中一处）、`isGateOpen()`、`enqueueAndUpload()`、`triggerUpload()`（独立 `CoroutineScope`）、`suspend uploadPendingOnce()`（`Mutex.tryLock` 串行）；生产适配 `PrefsUploadGate`（`MyPrefs`）、`CloudApiClient`（基址取自 `CloudConfig`）、`RetrofitUploadApi`（`POST /upload_data`，2xx = 成功） |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt` | 新增 | 宿主机 JUnit4 自检 14 项（内存 Outbox + 伪 Api，见 §3） |
+| `dengbei_care/app/build.gradle.kts` | 修改 | 新增 `testOptions { unitTests.isReturnDefaultValues = true }`，使宿主机单测可加载含 `android.util.Log` 的云上传类（AGP 标准做法，仅影响单元测试） |
+
+行为与判定点：
+
+| 判定点（T-SW-L0-12） | 实现 |
+|---|---|
+| ① 成功（2xx）→ 删除 | `uploadPendingOnce` 成功后逐行 `outbox.ack`（DELETE） |
+| ② 失败（超时/5xx）→ 保留 + `attempts+1` + `next_attempt_at` 退避 | 失败逐行 `markFailed`，退避 = `Config.backoffSeconds(attempts)` |
+| ③ 达最大尝试次数后不再自动重试 | 取批条件 `attempts < maxAttempts`；行保留在待发箱 |
+| ④ 单批条数上限（50）分批 | `Config.batchLimit` + `LIMIT ?` |
+| ⑤ 守护关闭 → 不入队不发请求 | `isGateOpen()`（`measure_state == "stopping"`） |
+| ⑥ 手机号为空 → 不入队不发请求 | `isGateOpen()` 要求 `registerphone` 非空 |
+| ⑦ 同 `(dev_id,time)` 重复入队只保留一条 | `UploadOutboxStore.insertIfAbsent`（先查后 `INSERT OR IGNORE`，事务内） |
+| ⑧ 串行：不产生并发重复请求 | `Mutex.tryLock()`，重入返回 `skipped="busy"` |
+| 失败不抛异常到调用方 | `api.upload` 包 try/catch；上传在 `scope` 上执行（不阻塞 BLE/MQTT 循环） |
+
+幂等与补传：本地待发箱 `(dev_id, time)` 去重 + 服务端 `UNIQUE(dev_id, time)` + `INSERT IGNORE`；因此“请求超时但服务端已入库”的重试也不会产生重复数据。断网期间读数先入库入队，网络恢复后由后续触发点补传（触发点接线见 ITEM-010，TD-SW-002 §8-G3）。
+
+## 2. 预期行为（本轮交付）
+
+1. 门控关闭（守护关闭或无手机号）时 `enqueueAndUpload` 返回 false 且不入队；`uploadPendingOnce` 返回 `skipped="gate_closed"` 且不产生请求。
+2. 门控开启时读数幂等入队并异步触发上传；上传在独立作用域，不阻塞调用方。
+3. 成功即删除；失败保留并推后退避；到 `maxAttempts` 后不再自动重试但数据不丢。
+4. 同一时刻只有一个上传在飞（串行）；批量受 `batchLimit` 限制。
+5. 待发箱表缺失/异常时降级为空操作，App 不崩溃（与 ITEM-006 的迁移回退衔接）。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；14 套件共 **133 项、0 失败 0 跳过**（新增 `CloudUploadRepositoryTest` 14 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,359,866 B |
+| 全量重编译告警 | `./gradlew :app:compileDebugKotlin --offline --rerun` | 11 条（与 ITEM-008 同一集合），无新增 |
+| 打包核查 | 直接读 APK 多 dex | `UploadOutbox`/`CloudUploadRepository`/`SqliteUploadOutboxStore`/`PrefsUploadGate`/`RetrofitUploadApi` 均已打包 |
+| 差异范围 | `git status --short` | 新增 2 个模块 + 1 个测试文件；`app/build.gradle.kts` +5 行（testOptions） |
+
+新增 14 项用例：`success_deletesRows_andReportsOutcome`（①）、`failure_keepsRows_andSchedulesBackoff`（②）、`retryBecomesDue_afterBackoffElapses_andSucceeds`（②）、`maxAttempts_stopsAutoRetry_butKeepsRow`（③）、`batchLimit_splitsIntoMultipleBatches`（④）、`guardClosed_noEnqueue_andNoRequest`（⑤）、`noRegisteredPhone_noEnqueue_andNoRequest`（⑥）、`duplicateEnqueue_keepsSingleRow_andSecondReturnsFalse`（⑦）、`concurrentUploads_areSerialized_secondIsBusy`（⑧）、`backoff_growsExponentially_andCapsAtMaximum`、`dueBatch_ordersByNextAttemptAt_thenTime`、`emptyOutbox_producesNoRequest`、`payloadFromOutbox_carriesDevIdPerRowTimeAndUnits`、`enqueueAndUpload_enqueuesAndTriggersAsyncUpload` —— **14/14 PASS**。
+
+原始输出见 `evidence/android_test.md`（AT-009）。
+
+## 4. 观察与交接
+
+1. **触发点接线属 ITEM-010**：本项提供 `enqueueAndUpload`（入队后触发）与 `triggerUpload()`（供“每轮 BLE 开始/网络恢复/冷启动”调用），四个触发点的实际接入、以及把 `processTemperatureHumidityData` 的落库结果接到上传，由 ITEM-010 完成（TD-SW-002 §8-G3）。
+2. **`measure_state` 语义**：as-built 约定为 `"stopping"` = 守护运行中、`"starting"` = 已停止（`HomeFragment.restoreGuardState`）；`PrefsUploadGate` 按此实现。ITEM-010 若改用内存中的 `homeViewModel.startData.value`，语义等价（`startData == 1`）。
+3. **失败整批记账**：一次 HTTP 请求对应一批，失败时整批 `attempts+1`；因服务端幂等，重试不会重复入库；若后续需要“部分成功”粒度，属新需求。
+4. **达到 `maxAttempts` 的数据保留但不自动重试**（设计 §5.5），目前无手动清理入口；若需要清理策略（如保留 N 天）属新需求。
+5. **`testOptions.isReturnDefaultValues` 为构建脚本改动**：仅为让宿主机单测能加载含 `android.util.Log` 的类；生产行为不变（仅影响 unit test 的 android.jar 桩）。
+6. **本项不涉及**：Service 接线（ITEM-010）、UI（ITEM-011/012）、版本/文档（ITEM-014）。

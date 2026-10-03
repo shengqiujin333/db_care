@@ -51,6 +51,11 @@ android {
             )
         }
     }
+    testOptions {
+        // 宿主机单测（:app:testDebugUnitTest）中加载含 android.util.Log 的云上传类时，
+        // 让 android.jar 桩返回默认值而非抛 “not mocked”（AGP 标准做法，仅影响单元测试）。
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {

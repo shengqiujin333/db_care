@@ -565,3 +565,85 @@ ITEM-008 的期望行为成立：`POST /upload_data` 接口与 `SensorReading`/`
 未覆盖（需真实服务器/网络，属测试能力）：`/upload_data` 实际可达性与服务端 `inserted` 幂等计数（TD-SW-002 T-SW-L2-12）、端到端上传链路（E2E-SW-002）。本项不声称云端落库已验证。
 
 另：本项不含上传编排/待发箱/门控（ITEM-009）与 Service 接线（ITEM-010）。
+
+---
+
+## AT-009 · ITEM-009（待发箱与上传编排）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`./gradlew :app:compileDebugKotlin --offline --rerun` |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：新增 `cloud/UploadOutbox.kt`、`cloud/CloudUploadRepository.kt`、`test/.../cloud/CloudUploadRepositoryTest.kt`；`app/build.gradle.kts` +5 行（`testOptions.unitTests.isReturnDefaultValues = true`） |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 6s
+```
+
+| 套件 | 项数 | 失败 | 跳过 |
+|---|---|---|---|
+| `com.jinyuni.dengbei_care.telemetry.AlarmEvaluatorTest` | 23 | 0 | 0 |
+| `com.jinyuni.dengbei_care.telemetry.ReadingAttributionTest` | 16 | 0 | 0 |
+| `com.jinyuni.dengbei_care.cloud.CloudUploadRepositoryTest`（本项新增） | 14 | 0 | 0 |
+| `com.jinyuni.dengbei_care.protocol.GatewayFrameCodecTest` | 11 | 0 | 0 |
+| `com.jinyuni.dengbei_care.cloud.UploadPayloadTest` | 11 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.AlarmEvaluatorItem005VerificationTest` | 10 | 0 | 0 |
+| `com.jinyuni.dengbei_care.db.DatabaseSchemaV3Test` | 9 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.UploadPayloadItem008VerificationTest` | 9 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.ReadingAttributionItem003VerificationTest` | 8 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001VerificationTest` | 7 | 0 | 0 |
+| `com.jinyuni.dengbei_care.db.TemperatureWriteItem007Test` | 4 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.TemperatureWriteItem007VerificationTest` | 4 | 0 | 0 |
+| `com.jinyuni.dengbei_care.cloud.CloudConfigTest` | 3 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001LegacyParityTest` | 3 | 0 | 0 |
+| `com.jinyuni.dengbei_care.ExampleUnitTest` | 1 | 0 | 0 |
+| **合计** | **133** | **0（0 errors、0 skipped）** | 0 |
+
+新增 14 项用例（TD-SW-002 T-SW-L0-12 ①–⑧ + 策略细节）：
+
+| 用例 | 覆盖 | 结果 |
+|---|---|---|
+| `success_deletesRows_andReportsOutcome` | ① 成功即删除 | PASS |
+| `failure_keepsRows_andSchedulesBackoff` | ② 失败保留 + `attempts=1` + `next_attempt_at = now+60` | PASS |
+| `retryBecomesDue_afterBackoffElapses_andSucceeds` | ② 退避期内不可取，到期后补传成功 | PASS |
+| `maxAttempts_stopsAutoRetry_butKeepsRow` | ③ 达上限后不再自动重试（行保留、请求数停在 3） | PASS |
+| `batchLimit_splitsIntoMultipleBatches` | ④ 60 条 → 50 + 10 两批 | PASS |
+| `guardClosed_noEnqueue_andNoRequest` | ⑤ 守护关闭：不入队、`gate_closed`、无请求 | PASS |
+| `noRegisteredPhone_noEnqueue_andNoRequest` | ⑥ 无手机号：同上 | PASS |
+| `duplicateEnqueue_keepsSingleRow_andSecondReturnsFalse` | ⑦ 同 `(devId,time)` 只一行且不改旧值 | PASS |
+| `concurrentUploads_areSerialized_secondIsBusy` | ⑧ 并发触发时第二次 `busy`，只 1 次请求 | PASS |
+| `backoff_growsExponentially_andCapsAtMaximum` | 退避 60/120/240/480/960/1800 且封顶 | PASS |
+| `dueBatch_ordersByNextAttemptAt_thenTime` | 取批排序（next_attempt_at, time, devId） | PASS |
+| `emptyOutbox_producesNoRequest` | 空队列 `empty`、无请求 | PASS |
+| `payloadFromOutbox_carriesDevIdPerRowTimeAndUnits` | 载荷逐行 devId/time 与单位（含负温） | PASS |
+| `enqueueAndUpload_enqueuesAndTriggersAsyncUpload` | 入队 + 异步触发（不阻塞调用方） | PASS |
+
+### 3. 构建与打包
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,359,866 B |
+
+| 检查 | 结果 |
+|---|---|
+| 打包核查（读 APK 多 dex） | `UploadOutbox`、`CloudUploadRepository`、`SqliteUploadOutboxStore`、`PrefsUploadGate`、`RetrofitUploadApi` 均已打包 |
+| 全量重编译告警（`--rerun`） | 11 条，与 ITEM-008 同一集合，无新增 |
+
+### 4. 判定
+
+ITEM-009 的期望行为成立：入队按 `(dev_id, time)` 幂等；成功即删除；失败保留并按 `attempts`/`next_attempt_at` 有界退避（参数集中于 `Config`）；达上限不再自动重试但数据保留；单批 50；守护关闭或无手机号不入队不请求；同一时刻串行不重复请求；上传在独立作用域、异常不抛到调用方；待发箱表缺失时降级不崩溃；全量 133 项宿主机用例通过、构建与打包成功。
+
+未覆盖（需设备/网络，属测试能力）：断网→恢复的真实补传与 HTTP 观测（TD-SW-002 T-SW-L2-09/10/11）、服务端 `inserted` 幂等计数（T-SW-L2-12）、真机待发箱行数（T-SW-L0d-05）。本项不声称链路已验证。
+
+另：触发点接线（每轮 BLE 开始/网络恢复/冷启动）属 ITEM-010（TD-SW-002 §8-G3）；本项已提供 `enqueueAndUpload` 与 `triggerUpload()` 供其调用。
