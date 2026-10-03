@@ -275,7 +275,22 @@ sensor_fw.hex MD5 = ddf2e2e7bac47a80ea00177cb104afc9
 - 宿主机测试：`test/build_test.sh` 38/38 + 24/24，退出码 0。
 - MDK/IAR 实机构建未执行（环境：Keil CMSIS 6.3.0 与 AC5 不兼容，IAR 不可用）。
 
-## 15. 限制与交接
+## 15. ITEM-012 增量（网关兼容性核对，无固件改动）
+
+改动：仅扩展测试 `test/host_rf_frame_check.c`（新增第 [6] 组映射检查）；**传感器/网关/Android 产品代码 0 改动**（`git status -- CH592EVT/ dengbei_care/` 为空）。
+
+```
+== gcc/build.sh ==  0 error / 28 warning
+FLASH: 32,208 B (49.15%) / RAM: 1,712 B (41.80%)   (与 ITEM-011 相同)
+== test/build_test.sh ==  exit 0, 38/38 + 24/24
+== host_rf_frame_check.c (真实传感器编码器 + 真实网关解码器/帧构造器) ==
+   result: 22 passed, 0 failed
+```
+
+- 核对结论：网关 `decode_frame10`（temp=p[4..5]、hum=p[6..7]）、每设备 8 B 记录 `id|hum_be|temp_be`（`build_device_block` 前 8 B 直拷）与 Android `parsePlainFrame`（`u16be@4`/`s16be@6`）逐位一致，**无需对齐修改**。
+- 详见 `evidence/protocol_test.md`（ITEM-012 节）。
+
+## 16. 限制与交接
 
 - 本证据为 GNU 交叉编译 + 宿主机回归；量产构建走 Keil MDK / IAR EWARM（既有工程，`USER/inc` 已在两者 include 路径中，故新头文件无需改工程文件列表），未在本环境复编译 MDK/IAR。
 - 网关（CH592 beiwov2）需 WCH 工具链，本轮未涉及。

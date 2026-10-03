@@ -449,7 +449,7 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
-# 任务项 ITEM-011（本轮）
+# 任务项 ITEM-011（已完成，独立验证 TEST_PASS）
 
 **ITEM-011**：交叉编译验证传感器工程：执行 `gcc/build.sh` 完成编译与链接并生成 elf/hex/bin，RAM 与 Flash 占用不超过 4KB/64KB，且 MDK/IAR 工程源文件列表与新增、移除的源文件保持一致。
 
@@ -491,9 +491,51 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
+# 任务项 ITEM-012（本轮，末项）
+
+**ITEM-012**：核查网关固件（CH592 beiwov2）兼容性：确认 `decode_frame10` 取 `temp=p[4..5]`、`hum=p[6..7]`，BLE 每设备 8 字节记录为 `id|hum_be|temp_be` 且与 Android `parsePlainFrame` 的 `u16be@4`/`s16be@6` 一致；一致则不改代码并记录核对结论，不一致才按接口契约对齐。
+
+设计映射：IC-002 §3/§4；FD-002 §8/§9。
+
+## 核对结论：**一致，未修改任何网关代码**
+
+（`git status -- CH592EVT/` 为空）
+
+| 环节 | 源码位置 | 实际行为 | 与契约 |
+|---|---|---|---|
+| 433 解密 | `APP/feistel_al.c: decode_frame10()` | `temp = p[4] \| p[5]<<8`（小端）；`hum = p[6] \| p[7]<<8`（小端）；CRC16 校验 `p[8..9]` 小端 | ✅ 与 IC-002 §3 及传感器 `encode_frame10` 一致 |
+| 记录组装 | `APP/app_um2006A.c` | `resbf[4..5]=temp_be`、`resbf[6..7]=hum_be`；`sensorres[i*8+4..5]=resbf[6..7]`（湿度大端）、`[6..7]=resbf[4..5]`（温度大端） | ✅ 每设备 8 B = `id(4) \| hum_be(2) \| temp_be(2)` |
+| 帧构造 | `APP/bleencrypt.c: build_device_block()` | `memcpy(out16, payload8, 8)`：设备块前 8 B 直拷，`[8..15]` 为 pad；`build_padded_frame_blocks()` = Header(16) + DeviceBlock(16)×N | ✅ 记录原样上 BLE |
+| BLE 下发 | `APP/app_um2006A.c` → `encrypt_frame_ecb_inplace()` → `SimpleProfile_SetParameter(CHAR2)` | AES-128-ECB 加密后写 FFE2 | ✅ 不改变记录布局 |
+| Android 解析 | `dengbei_care/.../MqtttService.kt: parsePlainFrame()` | `p8 = block[0..8)`；`humi = u16be(p8,4)/10`；`temp = s16be(p8,6)/10` | ✅ 与网关记录逐位一致（含负温符号） |
+
+结论：传感器→433→网关→BLE→Android 的字段位置与字节序**已一致**，本次改动（GXHT40 不影响帧布局/单位）无需网关固件变更；网关也不应再按自身温度历史二次过滤（IC-002 §3，源码中未发现此类过滤）。
+
+## 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `.../test/host_rf_frame_check.c` | 扩展（仅测试） | 新增第 [6] 组：真实传感器编码器 → 真实网关 `decode_frame10` → 真实 `build_device_block`/`build_padded_frame_blocks` → 按 Android `u16be@4`/`s16be@6` 解析；22 项 |
+
+**未修改**：`CH592EVT/EVT/EXAM/BLE/beiwov2/**`（网关固件）、`dengbei_care/**`（Android）。
+
+## 验证（本轮实际执行）
+
+- 空口→BLE→Android 映射自检：`test/host_rf_frame_check.c` → **22 passed / 0 failed**（含 1 设备整帧 32 B、Header `gwid6+devCount@6`、offset 16 起解析）。详见 `evidence/protocol_test.md`。
+- 回归：`gcc/build.sh` 0 错误/28 告警（FLASH 32,208 B / RAM 1,712 B 不变）；`test/build_test.sh` 38/38 + 24/24。
+- 变更范围：`git status` 仅 `host_rf_frame_check.c` 一个测试文件；网关与 Android 源码 0 改动。
+
+## 交接与依赖
+
+- **网关实机构建未执行**：CH592 beiwov2 需 WCH 工具链（MounRiver，`config.h` 由 IDE 生成），本环境不具备；本轮以真实网关解码器/帧构造器的宿主机编译与逐位映射验证代替（网关源码未改）。
+- **板级端到端**（真实 433 发射/接收 + BLE + App 消费）属嵌入式测试（TD-002 T-L2/T-L7）。
+- Android 侧是否需改动由 Android 能力判定（readme 修改点 6）；固件侧已保证空口/BLE 布局不变（FWR-OPEN-5）。
+
+---
+
 # 后续任务项状态
 
-`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-011（前十项独立验证 TEST_PASS，ITEM-011 本轮）。其余 1 项（ITEM-012，网关固件兼容性核查）由 Runtime 后续指派。
+`artifacts/firmware_tasks.yaml` 共 12 项；**ITEM-001…ITEM-012 全部完成**（前十一项独立验证 TEST_PASS，ITEM-012 本轮）。任务队列已到末项，后续路由由 Runtime 决定。
 
 # 交接与依赖（累计）
 
