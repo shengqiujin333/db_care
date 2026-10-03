@@ -2,7 +2,7 @@
 
 状态：软件测试执行证据（`software_tester.software_verification`），按 Runtime 逐个指派的队列项追加
 对象：Android App `dengbei_care`（Kotlin / AGP 8.3.2 / Gradle 8.4 / JDK 21）
-本轮项：队列 **ITEM-001**、**ITEM-002**、**ITEM-003**、**ITEM-004**、**ITEM-005**、**ITEM-006**（逐项分节记录）
+本轮项：队列 **ITEM-001**…**ITEM-007**（逐项分节记录）
 依据：`artifacts/software_test_design.md`（TD-SW-002）、`artifacts/software_e2e_plan.md`（E2E-SW-002）、`artifacts/interface_contract.md`（IC-002 §4）、`artifacts/android_architecture.md`（AA-002 §5.1/§10）
 被测代码版本：`3e0ed11`（android_engineer.android_implementation 提交）；改动前基线：`fe9a81c`
 说明：本文件为本能力**独立执行**的记录；实现侧自检（`evidence/android_test.md` AT-001）仅作为被核对对象，不重复引用为通过依据。
@@ -547,3 +547,76 @@ BUILD SUCCESSFUL in 3s
 3. **v1→v3 的 device_id 回填值**：沿用既有 v1→v2 策略（`MacIdBook` 第一条，否则 `UNKNOWN`）；本项未改该策略。
 4. **待发箱读写 API 不在本项**：`enqueue/peekBatch/ack/markFailed` 属后续队列项；若迁移最终失败导致表缺失，待发箱访问需容忍（实现侧已登记）。
 5. **本项不涉及**：入库真实时间戳与单条写入（ITEM-007）、上传编排（ITEM-009）、Service 接线（ITEM-010）、UI（ITEM-011/012）。
+
+---
+
+## ST-007 · ITEM-007（真实采样时间戳与单条写入 API）
+
+**被测代码版本**：`886dbd1`（android_engineer.android_implementation 提交，相对上一提交 `0bebe43`）
+**变更范围**：`TemperatureDatabaseHelper.kt`（列表式 `storeTemperatureData` → 单条 `storeTemperatureReading`，新增 `SQL_INSERT_TEMPERATURE_READING` 与 `isGuardActive`，顶层包装同步）+ `MqtttService.kt`（存储段改调单条 API，+4/−4）+ 实现侧宿主机测试
+**任务期望**：新增单条读数写入 API（devId、真实采样时间戳、温度、湿度、守护标志）；BLE 路径用接收时刻、MQTT 路径用 payload 首段时间；不再按 60 s 回填；写入行 `time` 等于真实采样时间；同 `(dev_id, time)` 不产生重复行；`storeflag != 1` 不写入任何行。
+
+### 1. 适用测试的选择与理由
+
+| TD-SW-002 用例 | 是否适用 | 本轮结果 |
+|---|---|---|
+| T-SW-L0d-04（单条写入真实时间戳/幂等/门控） | 适用 | **语句级与门控级已执行**（源码抽取 + 宿主 SQLite）；**Android 行级经验层未执行**（同 ST-006 环境阻塞） |
+| T-SW-L1-04（无 60 s 回填残留） | 适用 | 已执行（静态分布核查） |
+| T-SW-L1-01/L1-02（构建、宿主机单测） | 适用 | 已执行（99 项 0 失败） |
+| T-SW-L2-*（MQTT/BLE 链路时间语义端到端） | 本轮不适用 | 需真实 broker/网关；入口时间语义已由静态调用点核查覆盖，端到端属 E2E-SW-002 J-1/J-2 |
+
+### 2. 独立验证方法
+
+1. 独立脚本 `evidence/software_verify_timestamp_write_item007.py`：从源码**抽取** `SQL_INSERT_TEMPERATURE_READING`/`CREATE TABLE temperature`/`isGuardActive` 与两大调用点形状，断言门控在打开数据库之前、列序=绑定顺序、旧列表式 API 清零、`60L` 仅存于 `AlarmEvaluator` 时间窗口算术；再在**宿主 SQLite** 执行抽取出的插入语句验证时间/幂等/值位置。
+2. 宿主机独立单测 `verification/TemperatureWriteItem007VerificationTest.kt`（4 项）：插入语句逐字期望、`isGuardActive` 在 −1000..1000 上仅 1 为真、单条 API 反射形状（5 参数返回 Long）且旧列表式方法不存在、顶层包装仅暴露单条写入。
+3. 真机 instrumented 独立验证 `androidTest/.../TemperatureWriteItem007VerificationTest.kt`（3 项）：真实写入行 `time` 恰为传入值且显式排除 ±60/±120 s、值不串位；同 `(dev,time)` 重复写入不增行；`storeflag ∈ {0,2,−1}` 写 0 行且返回 −1。
+
+### 3. 原始结果
+
+**独立脚本（EXIT=0）**：
+
+```
+== A 源码事实 ==
+  PASS  storeTemperatureReading 参数 = [devId: String, time: Long, temperature: Double, humidity: Double, storeflag: Int]
+  PASS  门控位于打开数据库之前（gate@9 < db@80）
+  PASS  isGuardActive = storeflag == 1
+  PASS  插入语句 = 'INSERT OR REPLACE INTO temperature (time, device_id, temperature, humidity) VALUES (?, ?, ?, ?)'，列序 = [time, device_id, temperature, humidity]
+  PASS  旧列表式 API 清除（storeTemperatureData / averageList0 / averageList1 残留=[]）
+  PASS  含 60L 的 main Kotlin 文件 = [telemetry/AlarmEvaluator.kt]（仅时间窗口算术）
+  PASS  currentTime = timeOverride ?: 接收时刻；BLE 调用不传 timeOverride（2 处）；MQTT 传 batch.timeSeconds；存储调用实参顺序正确
+== B 宿主 SQLite 执行抽取出的语句 ==
+  PASS  B1/B2 写入行 = [(1700000123, 'A1B2C3D4', 25.5, 60.0)]（time 无偏移、列不串位）
+  PASS  B3 同 (time, device_id) 重复写入 → [(1, 26.5, 61.5)]（1 行且为新值）
+  PASS  B4 不同 time → 两行
+== RESULT ==  OK
+```
+
+**宿主机回归与构建**：
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单测（12 套件） | `./gradlew :app:testDebugUnitTest --offline` | BUILD SUCCESSFUL；**99 tests / 0 failures / 0 errors / 0 skipped**（含本轮新增独立 4 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | BUILD SUCCESSFUL；`app-debug.apk` 10,359,865 B（与实现侧记录一致） |
+| 真机测试可编译可打包 | `./gradlew :app:compileDebugAndroidTestKotlin --offline` | BUILD SUCCESSFUL；APK 含 `TemperatureWriteItem007VerificationTest` 与 ITEM-006 验证类（dex 字符串核查） |
+| 前项独立脚本 | ITEM-002 / ITEM-004 / ITEM-006 脚本 | 均 EXIT=0 |
+
+### 4. Android 行级经验层：未执行 —— 环境阻塞（同 ST-006）
+
+`./gradlew :app:connectedDebugAndroidTest --offline` 再次失败：`Could not download kotlinx-coroutines-core-jvm-1.6.4.jar … No cached version available for offline mode`（AGP UTP 设备提供者依赖；无外网且缓存缺失）；本能力工具边界不含直接 `am instrument`，故不绕过。**不得将 §3 的宿主 SQL/门控证据解读为“已在设备上写入验证”。**
+
+### 5. 判定
+
+1. **单条 API 与门控**：`storeTemperatureReading(devId, time, temperature, humidity, storeflag): Long` 存在；门控在访问数据库**之前**（`storeflag != 1` 直接返回 −1）；`isGuardActive` 在 −1000..1000 上仅 1 为真；旧列表式 API/临时列表已从 main 清除（含顶层包装）。**通过**
+2. **真实时间戳与无回填**：写入行 `time` 恰为传入值；插入语句列序=绑定顺序，宿主执行后值不串位；入库路径无 `60L`（全 main 仅 AlarmEvaluator 时间窗口算术）；BLE 调用不传 `timeOverride`（→接收时刻），MQTT 调用传 `batch.timeSeconds`（payload 首段）。**通过**
+3. **幂等**：同 `(time, device_id)`（即 `(dev_id, time)`）重复写入 → 1 行且为新值（`INSERT OR REPLACE` + 复合主键）；不同 time 新增行。**通过**
+4. **回归**：99 项宿主机用例全绿、构建成功、前项独立脚本均通过。**通过**
+
+结论：**TEST_PASS**（范围：单条写入 API/门控/幂等/时间语义的语句级与入口级验证 + 宿主机回归与构建；**不含**设备端行级经验层，该层因环境阻塞未执行）。
+
+### 6. 交接与观察
+
+1. **设备端行级层待补**：上文 instrumented 测试已就绪且已打包进测试 APK；具备 Gradle 缓存依赖或外网的环境执行 `./gradlew :app:connectedDebugAndroidTest` 即可补齐 T-SW-L0d-04 设备证据（与 ST-006 同一阻塞）。
+2. **`INSERT OR REPLACE` 语义**：同键重复写入会替换原行（rowId 可能变化），满足“不产生重复行”；若后续需要“保留首次值”属新需求。
+3. **`60L` 静态口径**：全仓字面清零需显式排除 `AlarmEvaluator` 的时间窗口算术（本项已在脚本中固化该例外）。
+4. **iOS 参考快照**仍含旧列表式 API 与 60 s 回填（非编译、不参与构建，readme 点 6 本轮不改 iOS），属文档/iOS 资料维护交接项。
+5. **本项不涉及**：待发箱 DAO 与上传编排（ITEM-009）、Service 接入 `AlarmEvaluator`（ITEM-010）、UI（ITEM-011/012）。
