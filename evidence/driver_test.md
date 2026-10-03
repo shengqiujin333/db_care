@@ -1,7 +1,7 @@
 # 驱动测试证据（DRV-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）、**ITEM-004**（光照通路）、**ITEM-005**（`fw_core.c` 纯逻辑）、**ITEM-006**（`measure.c` 采样流程）、**ITEM-007**（3 分钟节拍）
+本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）、**ITEM-004**（光照通路）、**ITEM-005**（`fw_core.c` 纯逻辑）、**ITEM-006**（`measure.c` 采样流程）、**ITEM-007**（3 分钟节拍）、**ITEM-008**（条件上报发送路径）
 被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）；`USER/src/fw_core.c` / `USER/inc/fw_core.h`（ITEM-005）；`USER/src/measure.c` / `USER/inc/measure.h`（ITEM-006）
 测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（mock 总线）、`.../test/host_light_check.c`（纯逻辑 + 硬件桩）、`.../test/host_fw_core_pure_check.c`（纯逻辑）、`.../test/host_measure_flow_check.c` + `.../test/mock_measure_mcu/`（mock MCU 影子头）
 
@@ -278,3 +278,46 @@ grep -n "SENSOR_RTC_TICK_PERIOD_MIN\|SENSOR_SAMPLE_TICKS" USER/inc/sensor_config
 ## 4. 结论
 
 采样节拍为 1 分钟 RTC 中断累计 3 拍置位，一周期一次测量；旧小时/首样本强制上报逻辑已完全移除。板级长时基验证交接嵌入式测试。
+
+---
+
+# ITEM-008：条件上报发送路径自检
+
+被测实现：`USER/src/measure.c` 的 `send_data_to_gateway()`
+测试载体：`.../test/host_measure_flow_check.c`（同一 mock MCU 影子头 + 可控 GXHT40/光照/发送桩）
+
+## 1. 运行
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+gcc -std=c11 -Wall -Wextra -DSENSOR_CONFIG_NO_MCU -Imock_measure_mcu \
+    -I../USER/inc -I../COMMON -I../UM2005C \
+    host_measure_flow_check.c ../USER/src/measure.c ../USER/src/sf_i2c.c \
+    ../USER/src/fw_core.c -lm -o host_measure_flow_check.exe \
+    && ./host_measure_flow_check.exe
+```
+
+结果：**24 passed, 0 failed**（ITEM-006 的 15 项 + 本项新增 9 项发送路径）。
+
+## 2. 新增检查明细（第 [9] 组）
+
+| 检查 | 期望 | 结果 |
+|---|---|---|
+| `report_req == 0` | 不调 `encode_frame10`、不调发送 | PASS |
+| `report_req == 1` | 编码 1 次 + 发送 1 次 | PASS |
+| 组帧样本 | 使用最近一次有效样本 (351/505)，非 0/脏值 | PASS |
+| 发送长度 | `SENSOR_RF_FRAME_LEN`（10） | PASS |
+| 发送成功 | 清除 `report_req` | PASS |
+| 发送失败 | 保留 `report_req`（重试） | PASS |
+| 连续失败 | 达 `SENSOR_RF_TX_RETRY`(3) 后清除 `report_req` 放弃本轮 | PASS |
+| 重试计数复位 | 放弃后下一轮 1 次即成功 | PASS |
+
+## 3. 覆盖边界
+
+- `encode_frame10` / `app_um2005C_send_data_timeout` 为可控桩，验证的是**调用门控、参数、重试/清除语义**；组帧内容与加密的正确性由 `evidence/protocol_test.md`（真实编解码器往返 14/14）单独验证。
+- 真实 433 发射与发送失败上限（TD-002 T-L6-03）需在真实硬件完成。
+- `send_data_to_gateway()` 中遗留的 `optcfg_window_active()` 延后门属 ITEM-009（硬件已无 OPTCFG，恒为 false）。
+
+## 4. 结论
+
+`send_data_to_gateway()` 满足 ITEM-008：仅在 `report_req`（由 `sensor_decide_report` 置位）为真时组帧发送，使用最近有效样本与 `SENSOR_RF_FRAME_LEN`，成功清除待上报、失败按上限重试后放弃；帧布局/字节序/加密未变。

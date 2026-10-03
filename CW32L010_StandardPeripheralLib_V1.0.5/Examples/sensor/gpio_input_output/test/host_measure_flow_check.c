@@ -48,10 +48,31 @@ void          SYSCTRL_GotoDeepSleep(void) { }
 /* ==================================================================== */
 /* 同级模块桩                                                            */
 /* ==================================================================== */
-uint8_t app_um2005C_send_data_timeout(uint8_t *d, uint16_t l, uint32_t t) { (void)d; (void)l; (void)t; return 1u; }
-void    encode_frame10(uint8_t u[10], int16_t t, uint16_t h, uint8_t o[10]) { (void)u; (void)t; (void)h; (void)o; }
-bool    optcfg_window_active(void) { return false; }
-bool    hall_event_pending(void) { return false; }
+static int      g_enc_calls = 0;
+static int16_t  g_enc_temp  = 0;
+static uint16_t g_enc_hum   = 0;
+static uint16_t g_enc_len   = 0;
+static uint8_t  g_tx_ok     = 1u;   /* 1=发送成功, 0=失败 */
+static int      g_tx_calls  = 0;
+
+uint8_t app_um2005C_send_data_timeout(uint8_t *d, uint16_t l, uint32_t t)
+{
+    (void)d; (void)t;
+    g_tx_calls++;
+    g_enc_len = l;
+    return g_tx_ok;
+}
+
+void encode_frame10(uint8_t u[10], int16_t t, uint16_t h, uint8_t o[10])
+{
+    (void)u; (void)o;
+    g_enc_calls++;
+    g_enc_temp = t;
+    g_enc_hum  = h;
+}
+
+bool optcfg_window_active(void) { return false; }
+bool hall_event_pending(void) { return false; }
 
 /* ==================================================================== */
 /* 可控的 GXHT40 / 光照桩 + 调用顺序记录                                  */
@@ -148,6 +169,35 @@ int main(void)
     g_ordn = 0; g_order[0] = '\0';
     (void)temperature_process();
     CHECK(g_order[0] == '\0', "无采样动作 (未调用 light/temp)");
+
+    printf("[9] 条件上报发送路径 (ITEM-008)\n");
+    /* 当前最近有效样本 = (351,505) (周期 7) */
+    report_req = 0u;
+    g_enc_calls = 0; g_tx_calls = 0;
+    send_data_to_gateway();
+    CHECK(g_enc_calls == 0 && g_tx_calls == 0, "report_req=0 -> 不编码不发送");
+
+    report_req = 1u;
+    g_enc_calls = 0; g_tx_calls = 0; g_tx_ok = 1u;
+    send_data_to_gateway();
+    CHECK(g_enc_calls == 1 && g_tx_calls == 1, "report_req=1 -> 编码并发送一次");
+    CHECK(g_enc_temp == 351 && g_enc_hum == 505, "编码使用最近一次有效样本 (351/505)");
+    CHECK(g_enc_len == SENSOR_RF_FRAME_LEN, "发送长度为 SENSOR_RF_FRAME_LEN(10)");
+    CHECK(report_req == 0u, "发送成功后清除待上报状态");
+
+    report_req = 1u;
+    g_tx_ok = 0u; g_tx_calls = 0; g_enc_calls = 0;
+    send_data_to_gateway();
+    CHECK(g_tx_calls == 1 && report_req == 1u, "发送失败: 保留待上报 (重试)");
+    send_data_to_gateway();
+    CHECK(g_tx_calls == 2 && report_req == 1u, "第二次失败: 仍保留待上报");
+    send_data_to_gateway();
+    CHECK(g_tx_calls == 3 && report_req == 0u, "达到 SENSOR_RF_TX_RETRY(3) 后放弃本轮");
+    g_tx_ok = 1u;
+    report_req = 1u;
+    g_tx_calls = 0;
+    send_data_to_gateway();
+    CHECK(g_tx_calls == 1 && report_req == 0u, "放弃后下一轮重试计数已复位 (1 次即成功)");
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

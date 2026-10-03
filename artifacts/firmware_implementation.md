@@ -278,7 +278,7 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
-# 任务项 ITEM-007（本轮）
+# 任务项 ITEM-007（已完成，独立验证 TEST_PASS）
 
 **ITEM-007**：将采样节拍改为 3 分钟：RTC 1 分钟中断累计到配置的 3 次才置采样标志，一个采样周期内只执行一次测量，并移除原小时上报与首样本强制上报逻辑。
 
@@ -315,9 +315,49 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
+# 任务项 ITEM-008（本轮）
+
+**ITEM-008**：实现条件上报：满足 `sensor_decide_report` 时调用 `encode_frame10(uid, temp_x10, hum_x10)` 组 10 字节帧并经 `app_um2005C_send_data_timeout` 有界发送，帧布局、字节序与 Feistel 加密保持不变，仅在发送成功后清除待上报状态，发送失败按上限重试后放弃本轮。
+
+设计映射：readme 修改点 4；IC-002 §2/§3；FD-002 §6.4/§8.1/§10。测试映射：TD-002 T-L0i-01（空口往返）、T-L5/T-L6-03（板级上报/发送失败）。
+
+## 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `.../USER/src/measure.c` | 修改 `send_data_to_gateway()` | 删除被 `encode_frame10()` 覆盖的冗余 `send_data[0..7]` 手写组帧；改用**最近一次有效样本** `s_prev_temp_x10`/`s_last_hum_x10`（同时消除 ITEM-006 遗留的 `s_last_hum_x10` 只写不读）；长度改用 `SENSOR_RF_FRAME_LEN` |
+| `.../USER/src/main.c` | 注释修正 | 主循环调用处陈旧注释（“1 min 采样”“立即/小时/首样本上报”）改为“3 分钟一拍”“条件上报: sensor_decide_report 门控” |
+| `.../test/host_rf_frame_check.c` | 新增（测试载体） | 传感器 `encrytogate.c` ↔ 网关 `feistel_al.c` 往返互操作 14 项 |
+| `.../test/host_measure_flow_check.c` | 扩展 | 新增发送路径 9 项（门控/样本选择/长度/成功清除/失败重试/放弃） |
+
+### 行为要点
+
+1. **门控**：`report_req == 0` 直接返回（不上报）；`report_req` 由 `temperature_process()` 按 `sensor_decide_report()` 置位。
+2. **组帧**：完全由 `encode_frame10()` 完成：`uid_pick(4) | temp_x10_LE(2) | hum_x10_LE(2) | crc16_LE(2)` 后 8 轮 Feistel；本次未修改 `encrytogate.c`，帧布局/字节序/加密不变。
+3. **发送**：`app_um2005C_send_data_timeout(send_data, SENSOR_RF_FRAME_LEN, SENSOR_RF_TX_TIMEOUT_MS)`（有界）。
+4. **成功**：`report_req = 0` 并复位重试计数；**失败**：`report_retry++`，达到 `SENSOR_RF_TX_RETRY`（3）后清除 `report_req` 放弃本轮（下个 3 分钟周期自然重试）。
+5. **样本一致性**：发送最近一次有效样本（与触发判定的样本一致）；失败周期不会用 0/脏值覆盖它。
+
+**本项不包含**：旧 `hall/OPTCFG/params/history` 退役（ITEM-009，包括 `send_data_to_gateway()` 中遗留的 `optcfg_window_active()` 延后门与 `go_to_sleep()` 的旧门控）、宿主机测试合并（ITEM-010）、工程文件注册（ITEM-011）。
+
+## 验证（本轮实际执行）
+
+- 交叉编译：`gcc/build.sh` → **0 错误、28 条告警**（与 ITEM-007 同数；`measure.c` 0 告警，`main.c` 仅既有 4 条）；FLASH **35,856 B**（较 ITEM-007 −28 B，删除冗余组帧代码）、RAM 1,896 B（不变）。
+- 空口往返（协议级）：`test/host_rf_frame_check.c`（传感器 encode ↔ 网关 decode）→ **14 passed / 0 failed**：T-L0i-01 向量、128 组随机、负温/极值、字段位置与小端序、密文篡改必拒、编码确定性。详见 `evidence/protocol_test.md`。
+- 发送路径（流程级）：`test/host_measure_flow_check.c` → **24 passed / 0 failed**（含 9 项发送路径）。详见 `evidence/driver_test.md`。
+- 回归：`host_fw_core_pure_check.c` 36/36、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`test/build_test.sh` 56/56。
+
+## 交接与依赖
+
+- **板级上报链路**：真实 433 发射/网关接收、发送失败重试上限（TD-002 T-L6-03）与端到端时间戳需嵌入式测试在真实硬件完成；且 ITEM-009 退役 `hall/OPTCFG` 前，PB04/PB05 引脚所有权冲突使实板采样/上报验证不具备有效前提。
+- **`optcfg_window_active()` 遗留门**：`send_data_to_gateway()` 仍会在配置窗口内延后上报；因硬件已无 OPTCFG，该门恒为 false，不影响行为；完整移除属 ITEM-009。
+- `SENSOR_TEST_TRACE` 观测钩子仍未接入（TD-002 §2 交接项）。
+
+---
+
 # 后续任务项状态
 
-`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-007（前六项独立验证 TEST_PASS，ITEM-007 本轮）。其余 5 项由 Runtime 后续指派，未指派项不在本轮产出。
+`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-008（前七项独立验证 TEST_PASS，ITEM-008 本轮）。其余 4 项由 Runtime 后续指派，未指派项不在本轮产出。
 
 # 交接与依赖（累计）
 

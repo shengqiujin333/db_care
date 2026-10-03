@@ -256,8 +256,8 @@ int32_t main(void)
 				}
 			}
 			optcfg_process();       /* 配置窗口生命周期/提交 (FR-101..108) */
-			temperature_process(); /* 1 min 采样 */
-			send_data_to_gateway();/* 立即/小时/首样本上报 (FR-203) */
+			temperature_process(); /* 采样节拍: 3 分钟一拍 (ITEM-007) */
+			send_data_to_gateway();/* 条件上报: sensor_decide_report 门控 (ITEM-008) */
 			go_to_sleep();
 //			printf("helllo world\r\n");
 //			delay(3000);

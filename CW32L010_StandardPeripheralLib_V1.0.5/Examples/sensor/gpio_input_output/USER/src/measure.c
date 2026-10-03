@@ -236,38 +236,31 @@ uint8_t mcu_uid[10];
 uint8_t send_data[10];
 
 /* ==================================================================== */
-/* 上报发送 (ITEM-008 将对齐本路径; 本项不改动帧布局/加密)                 */
+/* 条件上报 (readme 修改点 4; IC-002 §2; FD-002 §6.4/§8.1)                */
+/* report_req 由 temperature_process() 按 sensor_decide_report 置位。    */
+/* 帧布局/字节序/Feistel 加密均由 encode_frame10() 决定, 本项不变。        */
 /* ==================================================================== */
 void send_data_to_gateway(void)
 {
-    uint8_t *ptr = &mcu_uid[1];
-
     if (report_req == 0) {
+        return;                        /* 不满足判据: 不上报 */
+    }
+    if (optcfg_window_active()) {      /* 配置窗口内延后上报 (ITEM-009 退役) */
         return;
     }
-    if (optcfg_window_active()) {   /* 配置窗口内延后上报 (ITEM-009 退役) */
-        return;
-    }
 
-    send_data[0] = ptr[0];
-    send_data[1] = ptr[3];
-    send_data[2] = ptr[6];
-    send_data[3] = ptr[8];
+    /* 发送最近一次有效样本 (与触发上报的样本一致): encode_frame10 内部组装
+     * uid_pick(4) | temp_x10_LE(2) | hum_x10_LE(2) | crc16_LE(2) 并加密 */
+    encode_frame10(mcu_uid, s_prev_temp_x10, s_last_hum_x10, send_data);
 
-    send_data[4] = (tempvalue >> 8) & 0xff;       /* 温度 int16 小端 */
-    send_data[5] = tempvalue & 0xff;
-
-    send_data[6] = (huminityvalue >> 8) & 0xff;   /* 湿度 uint16 小端 */
-    send_data[7] = huminityvalue & 0xff;
-
-    encode_frame10(mcu_uid, tempvalue, huminityvalue, send_data);
-    if (app_um2005C_send_data_timeout(send_data, 10, SENSOR_RF_TX_TIMEOUT_MS)) {
-        report_req  = 0;               /* 仅成功后清除待上报状态 */
+    if (app_um2005C_send_data_timeout(send_data, SENSOR_RF_FRAME_LEN,
+                                      SENSOR_RF_TX_TIMEOUT_MS)) {
+        report_req   = 0;              /* 仅在发送成功后清除待上报状态 */
         report_retry = 0;
     } else {
         report_retry++;                /* 失败不记成功 */
         if (report_retry >= SENSOR_RF_TX_RETRY) {
-            report_req  = 0;           /* 本轮放弃; 下次 3 分钟周期自然重试 */
+            report_req   = 0;          /* 按上限重试用尽, 放弃本轮; 下个周期自然重试 */
             report_retry = 0;
         }
     }

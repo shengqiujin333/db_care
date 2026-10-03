@@ -1,7 +1,7 @@
 # 构建证据（BUILD-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）、ITEM-003（GXHT40 驱动 `gxht40.c/.h`）、ITEM-004（光照通路 `light.c/.h`）、ITEM-005（`fw_core.c` 纯逻辑）、ITEM-006（`measure.c` 采样流程）、ITEM-007（3 分钟节拍）
+本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）、ITEM-003（GXHT40 驱动 `gxht40.c/.h`）、ITEM-004（光照通路 `light.c/.h`）、ITEM-005（`fw_core.c` 纯逻辑）、ITEM-006（`measure.c` 采样流程）、ITEM-007（3 分钟节拍）、ITEM-008（条件上报发送路径）
 
 ## 1. 环境
 
@@ -195,7 +195,25 @@ RAM:             1,896 B     4 KB         46.29%
 - 回归：`host_fw_core_pure_check.c` 36/36、`host_measure_flow_check.c` 15/15、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`test/build_test.sh` 56/56。
 - 板级 3 分钟长时基（含 LSI 容差）属 TD-002 T-L4-01，需嵌入式测试；本环境无硬件。
 
-## 11. 限制与交接
+## 11. ITEM-008 增量（条件上报发送路径）
+
+改动：`USER/src/measure.c` `send_data_to_gateway()`（删除被 `encode_frame10` 覆盖的冗余组帧、改用最近有效样本、长度用 `SENSOR_RF_FRAME_LEN`）；`USER/src/main.c` 陈旧注释；新增 `test/host_rf_frame_check.c`；扩展 `test/host_measure_flow_check.c`（发送路径 9 项）。
+
+```
+== compile ==  全部翻译单元
+== link ==
+Memory region   Used Size   Region Size   %age Used
+FLASH:          35,856 B    64 KB         54.71%
+RAM:             1,896 B     4 KB         46.29%
+```
+
+- **0 错误；告警 28 条**（与 ITEM-007 同数；`measure.c` 0 告警，`main.c` 仅既有 4 条）。FLASH 35,884 → **35,856 B**（−28 B，删除冗余组帧代码）；RAM 不变。
+- 空口往返（协议级）：`test/host_rf_frame_check.c`（真实传感器 `encrytogate.c` ↔ 真实网关 `feistel_al.c`）→ **14 passed / 0 failed**（详见 `evidence/protocol_test.md`）。
+- 发送路径（流程级）：`test/host_measure_flow_check.c` → **24 passed / 0 failed**（含门控/样本/长度/成功清除/失败重试/放弃）。
+- 回归：`host_fw_core_pure_check.c` 36/36、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`test/build_test.sh` 56/56。
+- 板级 433 发射/接收与发送失败上限属 TD-002 T-L6-03，需嵌入式测试。
+
+## 12. 限制与交接
 
 - 本证据为 GNU 交叉编译 + 宿主机回归；量产构建走 Keil MDK / IAR EWARM（既有工程，`USER/inc` 已在两者 include 路径中，故新头文件无需改工程文件列表），未在本环境复编译 MDK/IAR。
 - 网关（CH592 beiwov2）需 WCH 工具链，本轮未涉及。
