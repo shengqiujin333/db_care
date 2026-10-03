@@ -30,6 +30,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.github.mikephil.charting.data.Entry
 import com.jinyuni.dengbei_care.protocol.GatewayFrameCodec
+import com.jinyuni.dengbei_care.telemetry.ReadingAttribution
 import com.jinyuni.dengbei_care.ui.home.HomeViewModel
 import com.jinyuni.dengbei_care.ui.notifications.NotificationsViewModel
 import kotlinx.coroutines.CompletableDeferred
@@ -115,9 +116,6 @@ class MqtttService : MqttService() {
     private lateinit var readbackdata:String
     private lateinit var readbacktopic:String
 
-    private lateinit var readBackTemperature:String
-    private lateinit var readBackHuminity:String
-
     val APP_AES_KEY16 = byteArrayOf(
         0x91.toByte(), 0x4E.toByte(), 0x03.toByte(), 0xB7.toByte(),
         0xC2.toByte(), 0x5A.toByte(), 0x88.toByte(), 0x1D.toByte(),
@@ -187,7 +185,6 @@ class MqtttService : MqttService() {
     private var time_before15:Long = 0
     private var time_before10:Long = 0
     private var time_before5:Long = 0
-    private var currentTime:Long = 0
     //    用来判断数据有没有重复
     private var _bkp_temp_time:Long = 0
     private var _bkp_humi_timme:Long = 0
@@ -1354,70 +1351,30 @@ class MqtttService : MqttService() {
                     val temppayload: String = String(message.payload)
                     val temptopic: String = topic
 
-                    try {
-                        val parts = temppayload.split(":")
-
-                        if(parts.size >= 3) {
-                            val tempCurrentTime = parts[0].toLongOrNull()
-                            if (tempCurrentTime != null) {
-                                currentTime = tempCurrentTime
-                            }
-                            if (parts[1].isNotBlank()) {
-                                readBackTemperature = parts[1]
-                            }
-
-                            if (parts[2].isNotBlank()) {
-                                readBackHuminity = parts[2]
-                            }
-                        }
-                    }catch (e: Exception) {
-                        Log.e("MqttService", "Error processing payload: $temppayload", e)
-                    }
-
                     readbacktopic = temptopic
                     val device_nu = isSecondSlashFollowedByA(readbacktopic)
                     if (device_nu == 'a') {
-                        if (_bkp_temp_time != currentTime) {
-                            _bkp_temp_time = currentTime
-
-                            // 解析温度列表(payload 格式 time:temp1,temp2,...:humi1,humi2,...)
-                            val tempDoubles0: List<Double>? = try {
-                                readBackTemperature.split(",").map { it.toDouble() }
-                            } catch (e: Exception) {
-                                Log.e("MqttService", "Error converting temperature data", e)
-                                null
+                        // MQTT 批量载荷严格归因（payload 不带 devId，只能按 MacIdBook.all() 顺序映射，
+                        // 与写入网关 0xA1 配置包的顺序同源）。设备数/温度数/湿度数不一致，或任一为空/
+                        // 含非法数值/时间非法 → 拒绝整批（不落库、不上传、不报警）；成功时 devId 随读数下沉。
+                        val savedIds = MacIdBook.all(applicationContext).map { it.first }
+                        when (val attributed = ReadingAttribution.attribute(temppayload, savedIds)) {
+                            is ReadingAttribution.Result.Rejected -> {
+                                Log.w(
+                                    "MqttService",
+                                    "MQTT batch rejected: ${attributed.reason} (${attributed.detail})"
+                                )
                             }
-                            val doubles0 = tempDoubles0 ?: emptyList()
-
-                            val tempDoubles1: List<Double>? = try {
-                                readBackHuminity.split(",").map { it.toDouble() }
-                            } catch (e: Exception) {
-                                Log.e("MqttService", "Error converting humidity data", e)
-                                null
-                            }
-                            val doubles1 = tempDoubles1 ?: emptyList()
-
-                            if (tempDoubles0.isNullOrEmpty() || tempDoubles1.isNullOrEmpty()) {
-                                Log.e("MqttService", "receive Error data")
-                                return
-                            }
-
-                            // 多设备路由:按 MacIdBook.all() 顺序位置匹配
-                            // payload 格式不带 devId,假设网关按 saved IDs 顺序回传
-                            val savedIds = MacIdBook.all(applicationContext)
-                            if (savedIds.isEmpty()) {
-                                Log.w("MqttService", "MQTT payload received but no saved device IDs - dropping")
-                                return
-                            }
-
-                            val count = minOf(savedIds.size, doubles0.size, doubles1.size)
-                            if (savedIds.size != doubles0.size || doubles0.size != doubles1.size) {
-                                Log.w("MqttService", "MQTT device count mismatch: saved=${savedIds.size}, temps=${doubles0.size}, humis=${doubles1.size} - using first $count")
-                            }
-
-                            for (i in 0 until count) {
-                                val devId = savedIds[i].first
-                                processTemperatureHumidityData(devId, doubles0[i], doubles1[i], currentTime)
+                            is ReadingAttribution.Result.Success -> {
+                                val batch = attributed.batch
+                                if (_bkp_temp_time != batch.timeSeconds) {
+                                    _bkp_temp_time = batch.timeSeconds
+                                    batch.readings.forEach { r ->
+                                        processTemperatureHumidityData(
+                                            r.devId, r.temperature, r.humidity, batch.timeSeconds
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

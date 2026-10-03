@@ -105,3 +105,61 @@
 1. **仓库全量 grep 仍会命中非编译的参考材料**：`dengbei_care/iOS开发资料/02_Tier1_硬前置/MqtttService.kt`（旧快照副本，第 725/817 行）与 `dengbei_care/iOS开发资料/README.md`（第 67/152 行按旧行号描述该入口）。这两处属 iOS 参考文档包（readme 点 6：本轮不改 iOS；且不属 Android 源码），**有意未改动**；静态核查（TD-SW-002 T-SW-L1-03）应以 Android 源码 `app/src/main` 为范围，或显式排除 `iOS开发资料/`。已在 file_manifest 中登记该目录用途为间接参考。
 2. **仍无调用点的声明（本项范围外，未改动）**：`ParsedFrameRaw`、`parseUnencryptedFrame`、`DeviceReadingV3`、`interpretPayloadV3`，以及私有扩展 `ByteArray.toHex`（其唯一引用原先只存在于本次删除的注释中，现已零引用；Kotlin 未报新增告警）。是否清理属后续队列项/维护决定，本能力不越权扩大 diff。
 3. ITEM-001 已验证行为（`devCount==0` 拒绝、长度规则、逐位一致）在本项后未变，软件测试能力此前独立编写的验证用例全部继续通过。
+
+---
+
+# 任务项 ITEM-003（本轮完成）
+
+**ITEM-003（队列第 3 项）**：新增纯逻辑模块 `telemetry/ReadingAttribution.kt`，把 MQTT 批量载荷 `time:temp1,...:humi1,...` 的归因从位置截断改为严格映射。
+期望行为：设备数、温度个数、湿度个数三者不一致，或任一为空/含非法数值时拒绝整批（不落库、不上传、不报警）；一致时按 `MacIdBook` 顺序得到 `(devId, temperature, humidity)` 列表，且 `devId` 随读数向下游传递而不再依赖下标。
+
+设计映射：AA-002 §5.2（MQTT 归因严格化）、D-08（禁止用列表顺序替代 ID、禁止静默错归因）、§4.2（新增 `telemetry/ReadingAttribution.kt`）；IC-002 §5；TD-SW-002 §2.1-S3、§4.1 T-SW-L0-04/05。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt` | 新增 | 纯 Kotlin（无 Android 依赖）：`attribute(payload, savedIds)` 解析 `time:temps:humis` 并严格归因；`Reading`/`Batch`/`Result.Success|Rejected`/`RejectionReason`；逗号后空格容忍；非有限值（NaN/±Infinity）视为非法 |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt` | 修改 | `messageArrived` 的 MQTT 归因改为调用 `ReadingAttribution.attribute(temppayload, MacIdBook.all().map{it.first})`，按 `Success`/`Rejected` 分支；删除 `minOf(...)` 静默截断与按下标处理的循环；删除仅为旧截断路径服务的重复载荷分段及其孤立字段 `readBackTemperature`/`readBackHuminity`/`currentTime` |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt` | 新增 | 宿主机 JUnit4 自检 16 项（数目一致归因、负数/0 值、绑定顺序无关性、单设备、空格容忍、数目不一致×3、空序列×2、非法数值、非有限值、时间非法/缺失、无绑定设备、多余段兼容、拒绝结果不携带读数） |
+
+关键实现要点：
+
+| 项 | 改动前 | 改动后 |
+|---|---|---|
+| 数目不一致 | `minOf(saved, temps, humis)` 静默截断，仅打 warning，然后按下标处理 → **可能把 A 的读数记到 B** | `Rejected(COUNT_MISMATCH)`，整批不处理 |
+| 空序列 / 非法数值 | `map { it.toDouble() }` 抛错被 catch → 空列表 → 早退（非法项被静默丢弃） | `Rejected(EMPTY_SERIES / INVALID_NUMBER)`，整批不处理（含 NaN/±Infinity） |
+| 时间非法/缺失 | `toLongOrNull()` 失败则**沿用上一条消息的旧 `currentTime`**（旧值可能被当作本条时间写入） | `Rejected(INVALID_TIME)`（含非正时间），不落库、不上传、不报警 |
+| 无绑定设备 | 日志后 `return`（跳过时间校准发布） | `Rejected(NO_BOUND_DEVICE)`，不提前 return（流程继续，与旧代码在“数目不一致”情形下的流程一致） |
+| 归因载体 | 循环内 `val devId = savedIds[i].first` + 并列的 `doubles0[i]`/`doubles1[i]` | `Reading(devId, temperature, humidity)`，`devId` 随读数一起下沉 |
+| 去重键 | `_bkp_temp_time != currentTime`（旧 `currentTime` 字段） | `_bkp_temp_time != batch.timeSeconds`（载荷首段，同一语义，仅在成功后推进） |
+
+`MacIdBook.all()` 仍是唯一顺序真相源：网关 `0xA1` 配置包（`buildAllSavedIdsA1SinglePacket`）与 MQTT 归因现在取自同一个调用（此前归因也是 `MacIdBook.all()`，未改变顺序来源）。
+
+## 2. 预期行为（本轮交付）
+
+1. 设备数、温度个数、湿度个数三者一致且每项均为有限数值、时间为正的长整数时：得到按 `MacIdBook.all()` 顺序的 `(devId, temperature, humidity)` 列表，并逐条交给 `processTemperatureHumidityData(devId, t, h, 载荷时间)`。
+2. 任一不一致/为空/非法/时间非法 → **整批拒绝**：不调用 `processTemperatureHumidityData`，因此不落库、不上传、不报警，仅记一条 `Log.w` 携带具体原因与计数。
+3. 拒绝结果类型本身不携带任何读数，调用方无法误用部分结果。
+4. 数值物理量程校验（>125.0℃、<0 %RH 等）不属本项（AA-002 §8 / TD-SW-002 §8-G2）。
+5. 本项不改变告警判定、存储时间戳、上传、UI、服务器常量（属后续队列项）。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；5 套件共 **38 项、0 失败 0 跳过**（新增 `ReadingAttributionTest` 16 项；实现侧 `GatewayFrameCodecTest` 11 项；软件测试能力独立验证 3+7 项；`ExampleUnitTest` 1 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,359,240 B（较上项 +73,614 B，为新增归因模块与其接入代码） |
+| 编译告警 | `./gradlew :app:compileDebugKotlin --offline` | 仍为改动前既有的 5 条（opt-in/未使用变量/deprecated override），无新增 |
+| 旧截断路径清零 | `grep -n "minOf(savedIds\|using first\|doubles0\|doubles1\|tempDoubles0" MqtttService.kt` | 0 命中 |
+| 未破坏前项静态口径 | `python evidence/software_static_check_no_little_endian_parser.py`（软件测试能力的独立脚本） | `RESULT: OK`（A1/A2 = 0；B1a–B1d 与 B2 均 PASS） |
+| 差异范围 | `git diff --stat` | 仅 `MqtttService.kt`：21 insertions / 64 deletions；新增 1 个模块 + 1 个测试文件 |
+
+原始输出见 `evidence/android_test.md`（AT-003）。
+
+## 4. 观察与交接
+
+1. **删除重复分段与孤立字段属本项直接后果**：`readBackTemperature`/`readBackHuminity`/`currentTime` 三个字段的唯一读取点就是被替换的截断式解析，替换后它们成为只写死状态，故一并移除（与其一同被移除的重复 `split(":")` 也消除了“同一载荷两处解析”）。未触碰 `readbackdata`（改动前即无使用）等无关遗留。
+2. **不再提前 `return`**：拒绝整批时流程继续到时间校准发布块（旧代码仅在“空序列/无绑定设备”两种情形下提前 return；在“数目不一致”情形下本就继续）。若后续希望严格保持“拒绝即不发布校准”，属新行为需另行确认。
+3. **设备数 > 50 的边界**：写入网关的 `0xA1` 包最多 50 个 ID（`take(maxCount)`），而归因比较对象是全部已绑定 ID；设备超过 50 时两者数量不等 → 按本项设计**拒绝整批**（安全优先，不错归因）。是否应改为“只比对前 50 个”属产品/协议决定，登记为后续观察项。
+4. **本项不涉及**：告警时间窗（ITEM-005）、存储真实时间戳（ITEM-007）、云上传（ITEM-008/009）、UI（ITEM-011/012）。

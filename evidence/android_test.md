@@ -135,3 +135,74 @@ Kotlin 编译告警与改动前一致（5 条既有：`ExperimentalCoroutinesApi
 ITEM-002 的期望行为成立：Android 源码内不存在小端 `parseHexData` 入口及其注释残留；二进制聚合帧解析的唯一实现为 `protocol/GatewayFrameCodec`（BLE 路径经 `decryptAndParseEcbFrame` 到达；MQTT 路径解析文本载荷，无第二套二进制解析）；构建与全部 22 项宿主机用例通过。
 
 未覆盖（属后续能力）：真机 BLE/网关联调、MQTT/broker/云上传链路、SQLite、UI 展示。
+
+---
+
+## AT-003 · ITEM-003（MQTT 批量载荷严格归因）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`python evidence/software_static_check_no_little_endian_parser.py` |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：新增 `telemetry/ReadingAttribution.kt`、`test/.../telemetry/ReadingAttributionTest.kt`；`MqtttService.kt` 修改 21 insertions / 64 deletions |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 2s
+```
+
+| 套件 | 项数 | 失败 | 跳过 | 归属 |
+|---|---|---|---|---|
+| `com.jinyuni.dengbei_care.telemetry.ReadingAttributionTest` | 16 | 0 | 0 | 本项实现侧自检（新增） |
+| `com.jinyuni.dengbei_care.protocol.GatewayFrameCodecTest` | 11 | 0 | 0 | ITEM-001 实现侧自检 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001VerificationTest` | 7 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001LegacyParityTest` | 3 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.ExampleUnitTest` | 1 | 0 | 0 | 既有 |
+| **合计** | **38** | **0（0 errors、0 skipped）** | 0 | — |
+
+新增 16 项用例（TD-SW-002 对应）：
+
+| 用例 | 覆盖 | 结果 |
+|---|---|---|
+| `consistentBatch_isAttributedInSavedIdOrder` | L0-04 数目一致 + 顺序 | PASS |
+| `negativeAndZeroValues_areAccepted` | L0-04 负温/0 值 | PASS |
+| `devIdTravelsWithReading_notWithIndex` | L0-04 devId 随读数下沉 | PASS |
+| `singleDevice_isAccepted` | L0-04 单设备 | PASS |
+| `spacedSeparators_areTolerated` | 逗号后空格容忍（App 自发布格式） | PASS |
+| `extraTemperature_rejectsWholeBatch` / `missingHumidity_rejectsWholeBatch` / `deviceCountDiffersFromSeries_rejectsWholeBatch` | L0-05 数目不一致→拒绝整批 | PASS |
+| `emptyTemperatureSeries_rejectsWholeBatch` / `emptyHumiditySeries_rejectsWholeBatch` | L0-05 空序列→拒绝整批 | PASS |
+| `nonNumericToken_rejectsWholeBatch`（abc / 空项 / 尾部逗号） | L0-05 非法数值→拒绝整批 | PASS |
+| `nonFiniteValue_rejectsWholeBatch`（NaN / ±Infinity） | 非法数值口径 | PASS |
+| `invalidOrMissingTime_rejectsWholeBatch`（abc / 空 / 0 / 负 / 仅两段） | L0-05 ⑥ 时间非法或缺失→拒绝整批 | PASS |
+| `noBoundDevice_rejectsWholeBatch` | 无绑定设备→拒绝整批 | PASS |
+| `extraColonSegments_areIgnored_likeBefore` | 与旧实现一致的多余段口径 | PASS |
+| `rejectedResult_neverCarriesReadings` | 拒绝结果不携带部分读数 | PASS |
+
+### 3. 构建与静态核查
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL in 1s
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,359,240 B（较 ITEM-002 的 10,285,626 B 增加 73,614 B，为新增归因模块与其接入） |
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 旧截断路径清零 | `grep -n "minOf(savedIds\|using first\|doubles0\|doubles1\|tempDoubles0" MqtttService.kt` | 0 命中 |
+| 编译告警 | `./gradlew :app:compileDebugKotlin --offline` | 仍为既有 5 条，无新增 |
+| 前项静态口径回归 | `python evidence/software_static_check_no_little_endian_parser.py` | `RESULT: OK`（A1=0、A2=0、B1a–B1d/B2 均 PASS）——新模块未引入小端写法，也未新增 `decodeAggregatedFrame` 调用点 |
+| 差异范围 | `git diff --stat` | 仅 `MqtttService.kt`（21/64），加 2 个新文件 |
+
+### 4. 判定
+
+ITEM-003 的期望行为成立：MQTT 批量载荷不再按位置截断；数目不一致/空序列/非法数值/时间非法时整批拒绝（不落库、不上传、不报警，仅 `Log.w`）；一致时按 `MacIdBook.all()` 顺序产出携带 `devId` 的读数并交给下游。构建成功、全量 38 项宿主机用例通过、前项静态口径未回归。
+
+未覆盖（属后续能力/队列项）：真机 MQTT 注入与 broker 链路（TD-SW-002 T-SW-L2-03/04）、告警时间窗、存储时间戳、云上传、UI。
