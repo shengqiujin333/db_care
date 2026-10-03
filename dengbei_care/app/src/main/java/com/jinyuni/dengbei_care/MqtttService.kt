@@ -918,17 +918,15 @@ class MqtttService : MqttService() {
                 )
             }
 
-            // 存储逻辑
-            val averageList0 = mutableListOf(temperature)
-            val averageList1 = mutableListOf(humidity)
+            // 存储逻辑:单条读数 + 真实采样时间(BLE=接收时刻 / MQTT=payload 首段);守护关闭时不写入
             val humistartflag = homeViewModel.startData.value
             if (humistartflag != null) {
-                storeTemperatureData(
+                storeTemperatureReading(
                     this@MqtttService,
-                    averageList0,
-                    averageList1,
-                    currentTime,
                     devId,
+                    currentTime,
+                    temperature,
+                    humidity,
                     humistartflag
                 )
             }

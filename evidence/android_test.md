@@ -420,3 +420,74 @@ ITEM-006 可在宿主机确定断言的部分全部成立：`DATABASE_VERSION = 
 未覆盖（需 Android 运行时，属软件测试能力）：v2→v3 真实升级后历史行可查、v1→v3 路径、冲突对象导致的异常回退实测、既有查询 API 结果一致 —— TD-SW-002 §4.2 T-SW-L0d-01/02/03/06。本项不声称设备侧迁移已验证。
 
 另：待发箱 DAO 与上传编排（`enqueue/peekBatch/ack/markFailed`）属 ITEM-009；入库真实时间戳属 ITEM-007。
+
+---
+
+## AT-007 · ITEM-007（单条读数写入与真实采样时间）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`./gradlew :app:compileDebugKotlin --offline --rerun`、`grep -rn` |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：`TemperatureDatabaseHelper.kt`（删列表式写入 + 新增单条 API/常量/门控纯函数）、`MqtttService.kt`（存储段改调新 API）；新增 `test/.../db/TemperatureWriteItem007Test.kt` |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 3s
+```
+
+| 套件 | 项数 | 失败 | 跳过 | 归属 |
+|---|---|---|---|---|
+| `com.jinyuni.dengbei_care.telemetry.AlarmEvaluatorTest` | 23 | 0 | 0 | ITEM-005 |
+| `com.jinyuni.dengbei_care.telemetry.ReadingAttributionTest` | 16 | 0 | 0 | ITEM-003 |
+| `com.jinyuni.dengbei_care.protocol.GatewayFrameCodecTest` | 11 | 0 | 0 | ITEM-001 |
+| `com.jinyuni.dengbei_care.verification.AlarmEvaluatorItem005VerificationTest` | 10 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.db.DatabaseSchemaV3Test` | 9 | 0 | 0 | ITEM-006 |
+| `com.jinyuni.dengbei_care.verification.ReadingAttributionItem003VerificationTest` | 8 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001VerificationTest` | 7 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.db.TemperatureWriteItem007Test` | 4 | 0 | 0 | 本项实现侧自检（新增） |
+| `com.jinyuni.dengbei_care.cloud.CloudConfigTest` | 3 | 0 | 0 | ITEM-004 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001LegacyParityTest` | 3 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.ExampleUnitTest` | 1 | 0 | 0 | 既有 |
+| **合计** | **95** | **0（0 errors、0 skipped）** | 0 | — |
+
+新增 4 项用例（TD-SW-002 对应）：
+
+| 用例 | 覆盖 | 结果 |
+|---|---|---|
+| `insertStatement_isReplaceInto_withFourBoundColumns` | 写入语句 = `INSERT OR REPLACE INTO temperature (time, device_id, temperature, humidity) VALUES (?, ?, ?, ?)`（列序即绑定序） | PASS |
+| `idempotency_isGuaranteedByCompositePrimaryKeyAndReplace` | `INSERT OR REPLACE` + `PRIMARY KEY(time, device_id)` ⇒ 同 `(dev_id,time)` 不产生重复行 | PASS |
+| `writtenTimeIsTheCallerProvidedSampleTime_noOffsetBackfill` | 语句内无任何偏移/回填表达式（无 `60`/`+ `/`- `） | PASS |
+| `guardGate_onlyStoreflagOneAllowsWriting` | `isGuardActive(1)=true`，0/-1/2 均为 false ⇒ 守护关闭不写任何行 | PASS |
+
+### 3. 构建与静态核查
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,359,865 B（较 ITEM-006 的 10,360,124 B 减少 259 B，为删除列表式写入） |
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 入库路径 60 s 回填清零 | `grep -rn "60L" app/src/main --include=*.kt` | 仅 `telemetry/AlarmEvaluator.kt`（时间窗换算，非入库路径）；**入库路径 0 命中** |
+| 旧列表式 API 清零 | `grep -rn "storeTemperatureData\|averageList0\|averageList1" app/src/main --include=*.kt` | 0 命中 |
+| 调用点时间语义 | 读 `MqtttService.processTemperatureHumidityData` | `storeTemperatureReading(this, devId, currentTime, temperature, humidity, humistartflag)`；`currentTime = timeOverride ?: 系统时刻`，MQTT 调用传入 `batch.timeSeconds`（payload 首段） |
+| 全量重编译告警 | `./gradlew :app:compileDebugKotlin --offline --rerun` | 11 条，与 ITEM-006 同一集合，无新增 |
+| 差异范围 | `git status --short` | 2 个产品文件修改 + 1 个新增测试文件 |
+
+### 4. 判定
+
+ITEM-007 可在宿主机确定断言的部分全部成立：写入语句为 `INSERT OR REPLACE` 且以 `(time, device_id)` 为幂等键；写入行的 `time` 直接来自调用方传入的真实采样时间，语句内无偏移/回填；守护门控仅 `storeflag == 1` 可写；BLE/MQTT 两条入口的时间来源已固定到调用点（BLE=接收时刻、MQTT=payload 首段）；入库路径无 60 s 回填与旧列表式 API 残留；全量 95 项宿主机用例通过、构建成功。
+
+未覆盖（需 Android 运行时，属软件测试能力）：真实写入行的 `time` 值、重复写入后行数、守护关闭时 0 行 —— TD-SW-002 §4.2 T-SW-L0d-04。本项不声称设备侧行级结果已验证。
+
+另：非编译的 iOS 参考快照仍含旧列表式 API（本轮不改 iOS）；`AlarmEvaluator` 的 `60L` 为窗口换算，与入库无关。

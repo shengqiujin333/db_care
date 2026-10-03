@@ -333,3 +333,62 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 2. **待发箱的读写 API 不在本项**：本项只建表与索引（任务描述范围）。`enqueue/peekBatch/ack/markFailed` 等 DAO 与上传编排属 ITEM-009（AA-002 §4.2 `cloud/UploadOutbox.kt`）；若迁移最终失败导致表缺失，待发箱访问需容忍该情况（已在本节登记，供 ITEM-009 处理）。
 3. **入库真实时间戳与单条写入 API**属 ITEM-007（本项未改 `storeTemperatureData` 的 60 s 回填行为）。
 4. **本项不涉及**：上传编排（ITEM-009）、Service 接线（ITEM-010）、UI（ITEM-011/012）、版本/文档（ITEM-014）。
+
+---
+
+# 任务项 ITEM-007（本轮完成）
+
+**ITEM-007（队列第 7 项）**：修正本地入库时间戳：新增单条读数写入 API（devId、真实采样时间戳、温度、湿度、守护标志），BLE 路径使用接收时刻、MQTT 路径使用 payload 首段网关时间，并让现有调用点不再按 60 秒间隔回填历史时间戳。
+期望行为：写入行的 `time` 等于该读数的真实采样时间；同一 `(dev_id, time)` 重复写入不产生重复行；守护关闭（`storeflag != 1`）时不写入任何行。
+
+设计映射：AA-002 §5.4（写入：单条读数使用真实采样时间；`INSERT OR REPLACE` 幂等）、D-06（移除 60 s 回填）、§4.2；TD-SW-002 §4.2 T-SW-L0d-04、§4.3 T-SW-L1-04。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt` | 修改 | ① 删除列表式 `storeTemperatureData(temperatureData, humidityData, timenow, devId, storeflag)`（内含 `time = timenow - ((size-1-i) * 60L)` 回填）；② 新增 `storeTemperatureReading(devId, time, temperature, humidity, storeflag): Long`（单条、真实时间戳、`INSERT OR REPLACE` 幂等、门控返回 -1）；③ 新增公开常量 `SQL_INSERT_TEMPERATURE_READING` 与纯函数 `isGuardActive(storeflag)`；④ 顶层包装函数改为 `storeTemperatureReading(...)` |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt` | 修改 | `processTemperatureHumidityData` 的存储段：删除 `averageList0/averageList1` 临时列表，改调 `storeTemperatureReading(this, devId, currentTime, temperature, humidity, humistartflag)`；`currentTime` 即真实采样时间（BLE 无 `timeOverride` → 接收时刻；MQTT 传 `batch.timeSeconds` = payload 首段） |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/db/TemperatureWriteItem007Test.kt` | 新增 | 宿主机 JUnit4 自检 4 项（见 §3） |
+
+关键点：
+
+| 项 | 改动前 | 改动后 |
+|---|---|---|
+| 写入形态 | 列表 + `for` 循环，按 `60L` 倒推历史时间戳 | 单条 + 显式 `time` 参数（调用方传入真实采样时间） |
+| 时间戳来源 | `timenow - (size-1-i)*60`（列表长度 >1 时产生虚假采样时刻） | BLE：接收时刻；MQTT：payload 首段（网关时间）——与 AA-002 §8 一致 |
+| 幂等 | `INSERT OR REPLACE` + `PK(time, device_id)`（保留） | 同（现由 `SQL_INSERT_TEMPERATURE_READING` 常量承载） |
+| 守护门控 | `if (storeflag != 1) return` | `if (!isGuardActive(storeflag)) return -1L`（语义不变，纯函数可独立断言） |
+
+注：实际调用点在 `processTemperatureHumidityData` 中本就只传单个元素列表，因此**生产行为等价**；本项消除的是“列表式 API 潜在回填 + 两条入口时间语义不明”的隐患，并把时间语义固定到调用点。
+
+## 2. 预期行为（本轮交付）
+
+1. `storeTemperatureReading` 写入行的 `time` 就是传入的 `time`（真实采样时间），不存在 `time-60`/`time-120` 类偏移。
+2. 同一 `(dev_id, time)` 重复写入由 `INSERT OR REPLACE` + 复合主键 `(time, device_id)` 幂等，行数不增加。
+3. `storeflag != 1`（守护关闭）时**不写入任何行**并返回 -1。
+4. BLE 与 MQTT 两条入口的时间语义：BLE = 接收时刻，MQTT = payload 首段网关时间（由调用点传入，无额外改写）。
+5. 既有查询 API（图表范围/最新值/sparkline/日报/报警）未变。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；11 套件共 **95 项、0 失败 0 跳过**（新增 `TemperatureWriteItem007Test` 4 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,359,865 B（较 ITEM-006 的 10,360,124 B 减少 259 B，为删除列表式写入） |
+| 60 s 回填清零 | `grep -rn "60L" app/src/main --include=*.kt` | 仅 `telemetry/AlarmEvaluator.kt`（时间窗算术，非入库路径）；**入库路径 0 命中** |
+| 旧 API 清零 | `grep -rn "storeTemperatureData\|averageList0\|averageList1" app/src/main --include=*.kt` | 0 命中 |
+| 全量重编译告警 | `./gradlew :app:compileDebugKotlin --offline --rerun` | 11 条，与 ITEM-006 同一集合（无新增；`TemperatureDatabaseHelper` 仅 `storeAlarmEvent` 的既有 `rowId` 冗余初值） |
+| 差异范围 | `git status --short` | 仅 `TemperatureDatabaseHelper.kt`、`MqtttService.kt` 修改 + 1 个新增测试文件 |
+
+新增 4 项用例：`insertStatement_isReplaceInto_withFourBoundColumns`、`idempotency_isGuaranteedByCompositePrimaryKeyAndReplace`、`writtenTimeIsTheCallerProvidedSampleTime_noOffsetBackfill`、`guardGate_onlyStoreflagOneAllowsWriting` —— **4/4 PASS**。
+
+原始输出见 `evidence/android_test.md`（AT-007）。
+
+## 4. 观察与交接
+
+1. **设备侧行级验证未在本轮执行**：真实写入行的时间值、重复写入后行数、守护关闭时 0 行 —— 需 Android 运行时，属软件测试能力 T-SW-L0d-04 范围；本项提供语句级/门控级确定性证据。
+2. **`INSERT OR REPLACE` 的语义**：同 `(time, device_id)` 重复写入会替换原行（行 id 可能变化），满足“不产生重复行”；若后续需要“保留首次值”，属新需求需另行确认。
+3. **`AlarmEvaluator` 中的 `60L`** 为时间窗分钟→秒换算，与入库回填无关；若后续静态门禁采用全仓 `60L` 字面清零，需显式排除该处。
+4. **iOS 参考快照**（`dengbei_care/iOS开发资料/03_Tier2_行为对齐/TemperatureDatabaseHelper.kt` 等）仍含旧列表式 API 与 60 s 回填：非编译、不参与构建，本轮不改 iOS（readme 点 6），登记为交接项。
+5. **本项不涉及**：待发箱 DAO 与上传编排（ITEM-009）、`processTemperatureHumidityData` 接入 `AlarmEvaluator`（ITEM-010）、UI（ITEM-011/012）。

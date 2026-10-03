@@ -106,6 +106,15 @@ class TemperatureDatabaseHelper(context: Context, name: String, factory: SQLiteD
             SQL_CREATE_TABLE_PENDING_UPLOADS,
             SQL_CREATE_INDEX_PENDING_UPLOADS_NEXT
         )
+
+        /** 单条读数写入（列序与绑定参数顺序一致：time, device_id, temperature, humidity） */
+        const val SQL_INSERT_TEMPERATURE_READING =
+            "INSERT OR REPLACE INTO $TABLE_TEMPERATURE " +
+                    "($COLUMN_TIME, $COLUMN_DEVICE_ID, $COLUMN_TEMPERATURE, $COLUMN_HUMIDITY) " +
+                    "VALUES (?, ?, ?, ?)"
+
+        /** 守护门控：仅 `storeflag == 1` 时允许写入任何行 */
+        fun isGuardActive(storeflag: Int): Boolean = storeflag == 1
     }
 
     override fun onCreate(db: SQLiteDatabase) {
@@ -191,39 +200,39 @@ class TemperatureDatabaseHelper(context: Context, name: String, factory: SQLiteD
     // ===== 写入 =====
 
     /**
-     * 存储温湿度数据(每个设备一条记录)
-     * @param timenow 当前时间戳(Unix 秒)
-     * @param devId 8 位 HEX 设备 ID(与 MacIdBook 一致)
-     * @param storeflag 1=守护中才存,0=不存
+     * 存储**单条**温湿度读数（每设备每采样时刻一条记录）。
+     *
+     * 时间戳必须是该读数的**真实采样时间**：BLE 路径用接收时刻、MQTT 路径用 payload 首段网关时间；
+     * 不再按固定间隔回填历史时间戳（3 分钟采样 + 条件上报下样本间隔不固定，回填会产生虚假采样时刻）。
+     * 同 `(time, device_id)` 重复写入由 `INSERT OR REPLACE` + 复合主键幂等，不产生重复行。
+     *
+     * @param devId 8 位 HEX 设备 ID（与 MacIdBook 一致）
+     * @param time 真实采样时间（Unix 秒）
+     * @param storeflag 1=守护中才存；其它值不写入任何行
+     * @return 写入行的 rowId；守护关闭时为 -1
      */
-    fun storeTemperatureData(
-        temperatureData: List<Double>,
-        humidityData: List<Double>,
-        timenow: Long,
+    fun storeTemperatureReading(
         devId: String,
+        time: Long,
+        temperature: Double,
+        humidity: Double,
         storeflag: Int
-    ) {
-        if (storeflag != 1) return
+    ): Long {
+        if (!isGuardActive(storeflag)) return -1L
 
         val database = this.writableDatabase
         database.beginTransaction()
         try {
-            val sql = """INSERT OR REPLACE INTO $TABLE_TEMPERATURE
-                ($COLUMN_TIME, $COLUMN_DEVICE_ID, $COLUMN_TEMPERATURE, $COLUMN_HUMIDITY)
-                VALUES (?, ?, ?, ?)"""
-            val statement = database.compileStatement(sql)
-            val dataSize = temperatureData.size
-            for (i in temperatureData.indices) {
-                val time = timenow - ((dataSize - 1 - i) * 60L)  // 60 秒间隔
-                statement.bindLong(1, time)
-                statement.bindString(2, devId)
-                statement.bindDouble(3, temperatureData[i].toDouble())
-                statement.bindDouble(4, humidityData[i].toDouble())
-                statement.executeInsert()
-                statement.clearBindings()
-            }
+            val statement = database.compileStatement(SQL_INSERT_TEMPERATURE_READING)
+            statement.bindLong(1, time)
+            statement.bindString(2, devId)
+            statement.bindDouble(3, temperature)
+            statement.bindDouble(4, humidity)
+            val rowId = statement.executeInsert()
+            statement.clearBindings()
             database.setTransactionSuccessful()
-            Log.i("TempDb", "Save finished devId=$devId count=$dataSize")
+            Log.i("TempDb", "Save reading devId=$devId time=$time")
+            return rowId
         } finally {
             database.endTransaction()
         }
@@ -482,19 +491,16 @@ object DatabaseHelperInstance {
     }
 }
 
-// 顶层 storeTemperatureData 函数(保持与老调用方式兼容)
-// 老的 dataBaseFlag 参数被 devId 替代;1.4 阶段 MqtttService 会传真实 devId,1.1 阶段临时传 "UNKNOWN"
-fun storeTemperatureData(
+// 顶层单条读数写入函数（ITEM-007 起替代旧的列表式写入；旧的 60 秒回填已移除）
+fun storeTemperatureReading(
     context: Context,
-    temperatureData: List<Double>,
-    humidityData: List<Double>,
-    timenow: Long,
     devId: String,
+    time: Long,
+    temperature: Double,
+    humidity: Double,
     storeflag: Int
-) {
-    DatabaseHelperInstance.getDatabaseHelper(context)
-        .storeTemperatureData(temperatureData, humidityData, timenow, devId, storeflag)
-}
+): Long = DatabaseHelperInstance.getDatabaseHelper(context)
+    .storeTemperatureReading(devId, time, temperature, humidity, storeflag)
 
 // 顶层存报警事件函数
 fun storeAlarmEvent(
