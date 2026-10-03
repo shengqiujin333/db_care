@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
+    <!-- 阿里云平台服务器（注册/上传 abr.py，明文 HTTP；见 cloud/CloudConfig） -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">8.140.23.253</domain>
+    </domain-config>
+    <!-- 旧京东云主机（已退役，按设计“追加”保留既有放行，不新增其它主机） -->
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">117.72.84.210</domain>
     </domain-config>
+    <!-- 传感器/网关本地配网热点 -->
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">192.168.4.1</domain>
     </domain-config>

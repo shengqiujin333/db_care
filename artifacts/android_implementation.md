@@ -163,3 +163,54 @@
 2. **不再提前 `return`**：拒绝整批时流程继续到时间校准发布块（旧代码仅在“空序列/无绑定设备”两种情形下提前 return；在“数目不一致”情形下本就继续）。若后续希望严格保持“拒绝即不发布校准”，属新行为需另行确认。
 3. **设备数 > 50 的边界**：写入网关的 `0xA1` 包最多 50 个 ID（`take(maxCount)`），而归因比较对象是全部已绑定 ID；设备超过 50 时两者数量不等 → 按本项设计**拒绝整批**（安全优先，不错归因）。是否应改为“只比对前 50 个”属产品/协议决定，登记为后续观察项。
 4. **本项不涉及**：告警时间窗（ITEM-005）、存储真实时间戳（ITEM-007）、云上传（ITEM-008/009）、UI（ITEM-011/012）。
+
+---
+
+# 任务项 ITEM-004（本轮完成）
+
+**ITEM-004（队列第 4 项）**：新增 `cloud/CloudConfig.kt` 集中服务器常量，并把 `MqtttService` 的 MQTT broker 地址改为 `ssl://8.140.23.253:8883`、注册/上传 HTTP 基址改为 `http://8.140.23.253:5000`，同时在 `res/xml/network_security_config.xml` 追加放行 `8.140.23.253` 明文。
+期望行为：App 内不再出现 `117.72.84.210`，TLS 信任锚仍为 `assets/jd-ca.crt`、`TLSv1.2`、用户名=MAC、密码=MAC+`&^!A:z?` 全部保持原样，资源合并与构建通过。
+
+设计映射：AA-002 §5.6（服务器迁移表）、D-13（地址集中单一常量对象）；readme 修改点 5；`服务器迁移记录.md` §二/§三/§五/§八；TD-SW-002 §2.1-S4、§4.1 T-SW-L0-13、§4.3 T-SW-L1-05/L1-06。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt` | 新增 | 平台服务器唯一常量来源：`SERVER_HOST="8.140.23.253"`、`MQTT_BROKER_PORT=8883`、`HTTP_PORT=5000`、`MQTT_BROKER_URI="ssl://…:8883"`、`HTTP_BASE_URL="http://…:5000"`；注明信任锚/认证/旧主机退役 |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt` | 修改 | `serverUri` 由硬编码旧地址改为 `CloudConfig.MQTT_BROKER_URI`（+ import；`setupSSL()` 未改） |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt` | 修改 | Retrofit `baseUrl` 由硬编码旧地址改为 `CloudConfig.HTTP_BASE_URL`（+ import） |
+| `dengbei_care/app/src/main/res/xml/network_security_config.xml` | 修改 | **追加** `8.140.23.253` 明文放行块（保留既有 `117.72.84.210`、`192.168.4.1` 两块，未新增其它主机；补上文件末尾换行） |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt` | 新增 | 宿主机 JUnit4 自检 3 项：常量值/组合关系；明文放行含新主机且域名集合仍为 3 个（无其它主机）、三个 `domain-config` 均显式允许明文 |
+
+兼容面核查（均未改动，逐项 grep 确认）：`assets/jd-ca.crt`（md5 `f1a8212e3c690d57894b8a3a5fd901ab`，与迁移记录 §三 一致）、`SSLContext.getInstance("TLSv1.2")`、`options.userName = MAC` / `options.password = MAC + "&^!A:z?"`、`AES/ECB/NoPadding` 与 `APP_AES_KEY16`、`requestMtu(240)`、`keepAliveInterval = 20`、topic 规则、`ApiService` 既有 5 个端点。
+
+旧地址字面量的最终分布（`app/src/**`）：**Kotlin 源码（main+test）0 处**；仅 `network_security_config.xml` 保留 1 处——该处是设计明确要求的“追加而非替换”（AA-002 §5.6 / T-SW-L1-06），不属连接目标。
+
+## 2. 预期行为（本轮交付）
+
+1. MQTT 客户端连接 `ssl://8.140.23.253:8883`；TLS 握手仍用 `assets/jd-ca.crt` 作信任锚、`TLSv1.2`、用户名=网关 MAC、密码=MAC+`&^!A:z?`（仅 IP 变化，认证与证书不变）。
+2. 注册/登录/后续 `/upload_data` 的 Retrofit 基址为 `http://8.140.23.253:5000`，并已在网络安全配置中允许该主机明文（Android 9+ 默认禁明文）。
+3. 服务器地址只在 `CloudConfig` 一处定义；其余代码引用常量，避免“记录说改了、代码没改”的漂移。
+4. 旧主机不再作为任何连接目标；明文放行集合不扩大（仍为 3 个主机）。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；7 套件共 **49 项、0 失败 0 跳过**（新增 `CloudConfigTest` 3 项） |
+| 构建/资源合并 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,359,236 B（资源 XML 被正常合并） |
+| 旧 IP 清零（Kotlin） | `grep -rn "117.72.84.210" --include=*.kt app/src` | **0 命中**（修改前：`MqtttService.kt:98`、`ZhuCeViewModel.kt:11` 两处硬编码连接地址） |
+| 旧 IP 分布（全 `app/src`） | `grep -rn "117.72.84.210" app/src` | 1 命中，仅 `res/xml/network_security_config.xml`（设计要求的追加保留项） |
+| 新 IP 集中性 | `grep -rn "8.140.23.253" app/src/main --include=*.kt` | 仅 `cloud/CloudConfig.kt:18` |
+| 编译告警 | `./gradlew :app:compileDebugKotlin --offline` | 仍为既有 5 条，无新增 |
+| 差异范围 | `git diff --stat` | `MqtttService.kt` +4/−1、`ZhuCeViewModel.kt` +2/−1、`network_security_config.xml` +8/−1，加 2 个新文件 |
+
+原始输出见 `evidence/android_test.md`（AT-004）。
+
+## 4. 观察与交接
+
+1. **旧主机明文放行保留**：按设计与测试设计的“追加”口径保留，代价是全仓字面 grep 仍有 1 处命中（仅 XML）。若项目要求“全仓字面清零”，则需把该条目删除（属于设计变更，需上游确认），本能力未自行改判。
+2. **真机连通性未验证**（本能力工具边界无网络探测）：`ssl://8.140.23.253:8883` 的 TLS/认证与 `/upload_data` 可达性由测试能力按 TD-SW-002 T-SW-L2-01/L2-12 执行；证书链已由迁移记录 §四 实测（`Verify return code: 0`）。未产生 connectivity 证据。
+3. **仍引用旧地址的非编译材料**（未改动，登记交接）：`dengbei_care/_REFACTOR_NOTES.md:39`（描述旧常量）、`dengbei_care/iOS开发所需资料清单.md:16`、`dengbei_care/iOS版功能需求文档.md:157/399/580`、`dengbei_care/iOS开发资料/**`（iOS 参考快照与 README）。文档更新属队列 ITEM-014（`readme.txt`/用户说明书）或 iOS 资料维护方，不在本项。
+4. **本项不涉及**：`/upload_data` 端点与上传编排（ITEM-008/009）、SQLite v3（ITEM-006）、告警时间窗（ITEM-005）、UI（ITEM-011/012）、版本/文档（ITEM-014）。

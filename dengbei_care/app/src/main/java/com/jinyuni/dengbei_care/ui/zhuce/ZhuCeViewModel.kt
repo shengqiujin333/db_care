@@ -3,12 +3,13 @@ package com.jinyuni.dengbei_care.ui.zhuce
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
+import com.jinyuni.dengbei_care.cloud.CloudConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ZhuCeViewModel: ViewModel() {
     private val apiService = Retrofit.Builder()
-        .baseUrl("http://117.72.84.210:5000")  // 替换为服务器地址
+        .baseUrl(CloudConfig.HTTP_BASE_URL)  // 服务器地址集中于 cloud/CloudConfig
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(ApiService::class.java)

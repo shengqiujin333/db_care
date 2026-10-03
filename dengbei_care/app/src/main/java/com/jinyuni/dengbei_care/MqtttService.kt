@@ -29,6 +29,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.github.mikephil.charting.data.Entry
+import com.jinyuni.dengbei_care.cloud.CloudConfig
 import com.jinyuni.dengbei_care.protocol.GatewayFrameCodec
 import com.jinyuni.dengbei_care.telemetry.ReadingAttribution
 import com.jinyuni.dengbei_care.ui.home.HomeViewModel
@@ -95,7 +96,8 @@ class MqtttService : MqttService() {
     private lateinit var mqttClient: MqttAndroidClient
     private val NOTIFICATION_ID = 1
     private val CHANNEL_ID = "MqttServiceChannel"
-    private val serverUri = "ssl://117.72.84.210:8883"
+    // 平台 broker 地址集中于 cloud/CloudConfig（阿里云；旧京东云主机已退役）
+    private val serverUri = CloudConfig.MQTT_BROKER_URI
     private val clientId = "android_client"
     private var rtopic0 = "/topic/get_0123"
     private var rtopic1 = "/topic/get_01234"

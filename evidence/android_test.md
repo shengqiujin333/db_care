@@ -206,3 +206,70 @@ ITEM-002 的期望行为成立：Android 源码内不存在小端 `parseHexData`
 ITEM-003 的期望行为成立：MQTT 批量载荷不再按位置截断；数目不一致/空序列/非法数值/时间非法时整批拒绝（不落库、不上传、不报警，仅 `Log.w`）；一致时按 `MacIdBook.all()` 顺序产出携带 `devId` 的读数并交给下游。构建成功、全量 38 项宿主机用例通过、前项静态口径未回归。
 
 未覆盖（属后续能力/队列项）：真机 MQTT 注入与 broker 链路（TD-SW-002 T-SW-L2-03/04）、告警时间窗、存储时间戳、云上传、UI。
+
+---
+
+## AT-004 · ITEM-004（服务器常量集中与明文放行）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`grep -rn`、`md5sum` |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：新增 `cloud/CloudConfig.kt`、`test/.../cloud/CloudConfigTest.kt`；修改 `MqtttService.kt`（+4/−1）、`ZhuCeViewModel.kt`（+2/−1）、`res/xml/network_security_config.xml`（+8/−1） |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 4s
+```
+
+| 套件 | 项数 | 失败 | 跳过 | 归属 |
+|---|---|---|---|---|
+| `com.jinyuni.dengbei_care.cloud.CloudConfigTest` | 3 | 0 | 0 | 本项实现侧自检（新增） |
+| `com.jinyuni.dengbei_care.telemetry.ReadingAttributionTest` | 16 | 0 | 0 | ITEM-003 实现侧自检 |
+| `com.jinyuni.dengbei_care.protocol.GatewayFrameCodecTest` | 11 | 0 | 0 | ITEM-001 实现侧自检 |
+| `com.jinyuni.dengbei_care.verification.ReadingAttributionItem003VerificationTest` | 8 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001VerificationTest` | 7 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001LegacyParityTest` | 3 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.ExampleUnitTest` | 1 | 0 | 0 | 既有 |
+| **合计** | **49** | **0（0 errors、0 skipped）** | 0 | — |
+
+新增 3 项用例（TD-SW-002 对应）：
+
+| 用例 | 覆盖 | 结果 |
+|---|---|---|
+| `brokerUri_andHttpBaseUrl_pointToNewServer` | L0-13 常量值（`ssl://8.140.23.253:8883`、`http://8.140.23.253:5000`、主机/端口） | PASS |
+| `constants_areComposedFromSingleHostAndPorts` | 常量由单一主机+端口组合（避免多处硬编码） | PASS |
+| `networkSecurityConfig_permitsNewHost_andKeepsExistingOnes_only` | L1-06 明文放行：含新主机、仍保留既有条目（域名集合仍为 3 个，无其它主机）、三个 `domain-config` 均显式 `cleartextTrafficPermitted="true"` | PASS |
+
+### 3. 构建与静态核查
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL in 1s
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,359,236 B（资源 XML 已成功合并） |
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 旧 IP 清零（Kotlin 源码，含测试） | `grep -rn "117.72.84.210" --include=*.kt app/src` | **0 命中**（修改前 2 处硬编码连接地址） |
+| 旧 IP 分布（全 `app/src`） | `grep -rn "117.72.84.210" app/src` | 1 命中：`res/xml/network_security_config.xml:9`（设计“追加而非替换”保留项，非连接目标） |
+| 新 IP 集中性 | `grep -rn "8.140.23.253" app/src/main --include=*.kt` | 仅 `cloud/CloudConfig.kt:18` |
+| 明文放行主机集合 | 读取 XML | `8.140.23.253`、`117.72.84.210`、`192.168.4.1`（共 3，无其它） |
+| TLS 信任锚未变 | `md5sum app/src/main/assets/jd-ca.crt` | `f1a8212e3c690d57894b8a3a5fd901ab`（与 `服务器迁移记录.md` §三 记录一致） |
+| 认证/加密/参数未变 | `grep -n "TLSv1.2\|jd-ca.crt\|&^!A:z?\|AES/ECB/NoPadding\|APP_AES_KEY16\|requestMtu(240)\|keepAliveInterval = 20" MqtttService.kt` | 均仍存在且与基线一致（`setupSSL()` 未进入 diff） |
+| 编译告警 | `./gradlew :app:compileDebugKotlin --offline` | 仍为既有 5 条，无新增 |
+| 差异范围 | `git diff --stat` | 3 个修改文件（共 +14/−3）+ 2 个新增文件；未触碰 `assets/`、`AndroidManifest.xml`、`build.gradle.kts`、`ApiService.kt` |
+
+### 4. 判定
+
+ITEM-004 的期望行为成立：MQTT broker 与 HTTP 基址指向 `8.140.23.253`（8883/5000）且集中于 `cloud/CloudConfig.kt`；明文放行追加新主机且未扩大其它主机；Kotlin 源码中旧地址清零（仅 XML 按设计保留 1 处）；TLS 信任锚、TLS 版本、用户名/密码规则、AES 密钥与模式、MTU、keepAlive 均未变；资源合并与构建通过、全量 49 项宿主机用例通过。
+
+未覆盖（属后续能力/队列项）：真机 MQTT TLS 连接与认证、`/upload_data` 可达性（TD-SW-002 T-SW-L2-01/L2-12，需真实网络）、`/upload_data` 端点与上传编排、SQLite、告警、UI。
