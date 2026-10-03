@@ -237,7 +237,7 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
-# 任务项 ITEM-006（本轮）
+# 任务项 ITEM-006（已完成，独立验证 TEST_PASS）
 
 **ITEM-006**：改造 `measure.c` 采样流程：每个采样周期先取光照再取温湿度；GXHT40 读 NACK 与 CRC 错按配置上限有界重试；整周期失败时不上报、不更新前一有效温度、不构造 0 值；成功后更新前一有效温度与最近有效湿度。
 
@@ -278,9 +278,46 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
+# 任务项 ITEM-007（本轮）
+
+**ITEM-007**：将采样节拍改为 3 分钟：RTC 1 分钟中断累计到配置的 3 次才置采样标志，一个采样周期内只执行一次测量，并移除原小时上报与首样本强制上报逻辑。
+
+设计映射：readme 修改点 3；FD-002 §5.1/§5.2（采样周期与 RTC 节拍）；RTA-002 §1.2（T_TICK）。测试映射：TD-002 T-L4-01（板级长时基）。
+
+## 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `.../USER/src/main.c` | 修改 | `RTC_IRQHandlerCallBack()` 阈值 `rtc_set_cnt >= 1` → `>= SENSOR_SAMPLE_TICKS`（=3）；删除未使用的 `temp_cnt`/`work_period_flag`；更新陈旧注释（原“每拍一次采样/小时上报由 samples_since_report 计数”）与 `RTC_SetInterval` 的“1s”注释 |
+
+`measure.c` 的小时/首样本上报逻辑已在 ITEM-006 移除（`first_sample_reported`/`samples_since_report` 均无引用）。本项未再改 `measure.c`。
+
+### 行为要点
+
+1. **3 分钟节拍**：RTC 仍为 `RTC_INTERVAL_EVERY_1M`（1 分钟/拍）；`RTC_IRQHandlerCallBack()` 每拍 `rtc_set_cnt++`，达到 `SENSOR_SAMPLE_TICKS`（`sensor_config.h` = 3）时置 `sample_flag = 1` 并清零计数。
+2. **一个周期一次测量**：`temperature_process()` 在 `sample_flag != 0` 时执行一次 `measure_sample()`，随后 `sample_flag = 0`；下一次置位需再累计 3 拍。
+3. **无强制上报**：上报完全由 `sensor_decide_report` 条件门控；无小时上报、无首样本强制上报。
+4. **上电即采一次**：`sample_flag` 初值为 1，上电后立即执行一个采样周期；因无前值，首样本不会触发下降分支（与 FWR-108 一致），超温分支仍可上报。
+
+**本项不包含**：发送路径对齐（ITEM-008）、旧 `hall/OPTCFG/params/history` 退役（ITEM-009）、板级 3 分钟长时基测量（TD-002 T-L4-01，需嵌入式测试）。
+
+## 验证（本轮实际执行）
+
+- 交叉编译：`gcc/build.sh` → **0 错误、28 条告警**（与 ITEM-006 同数；`main.c` 仅有改动前既有的 4 条：未用参数 `handle`/`file`/`line`、`main` 返回类型）；FLASH 35,884 B、RAM 1,896 B（不变，节拍常量不产生代码）。
+- 源码结构确定性检查（命令与输出见 `evidence/driver_test.md`）：`main.c` 阈值 = `SENSOR_SAMPLE_TICKS`；全工程无 `rtc_set_cnt >= 1`/`first_sample_reported`/`samples_since_report` 残留；`measure.c` 消费标志（`sample_flag = 0`）；配置值 1 min × 3 = 3 min。
+- 回归：`host_fw_core_pure_check.c` 36/36、`host_measure_flow_check.c` 15/15、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`test/build_test.sh` 56/56。
+
+## 交接与依赖
+
+- **板级节拍**：3 分钟实际间隔（含 LSI 容差与离散度）需 TD-002 T-L4-01 用长时基/电流波形在真实板记录；本能力无硬件，未做实测。
+- **引脚所有权冲突仍未消除**：`main.c` 仍调用 `optcfg_init()`/`hall_init()`（PB05/PB04/PB06），完整退役属 ITEM-009。
+- 观测钩子 `SENSOR_TEST_TRACE` 仍未接入打印点（TD-002 §2 交接项）；可随后续采样/上报任务或测试需求接入。
+
+---
+
 # 后续任务项状态
 
-`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-006（前五项独立验证 TEST_PASS，ITEM-006 本轮）。其余 6 项由 Runtime 后续指派，未指派项不在本轮产出。
+`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-007（前六项独立验证 TEST_PASS，ITEM-007 本轮）。其余 5 项由 Runtime 后续指派，未指派项不在本轮产出。
 
 # 交接与依赖（累计）
 

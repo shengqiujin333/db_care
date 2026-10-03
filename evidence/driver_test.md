@@ -1,7 +1,7 @@
 # 驱动测试证据（DRV-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）、**ITEM-004**（光照通路）、**ITEM-005**（`fw_core.c` 纯逻辑）、**ITEM-006**（`measure.c` 采样流程）
+本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）、**ITEM-004**（光照通路）、**ITEM-005**（`fw_core.c` 纯逻辑）、**ITEM-006**（`measure.c` 采样流程）、**ITEM-007**（3 分钟节拍）
 被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）；`USER/src/fw_core.c` / `USER/inc/fw_core.h`（ITEM-005）；`USER/src/measure.c` / `USER/inc/measure.h`（ITEM-006）
 测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（mock 总线）、`.../test/host_light_check.c`（纯逻辑 + 硬件桩）、`.../test/host_fw_core_pure_check.c`（纯逻辑）、`.../test/host_measure_flow_check.c` + `.../test/mock_measure_mcu/`（mock MCU 影子头）
 
@@ -228,3 +228,53 @@ gcc -std=c11 -Wall -Wextra -DSENSOR_CONFIG_NO_MCU -Imock_measure_mcu \
 ## 4. 结论
 
 `measure.c` 满足 ITEM-006 声明：先光照后温湿度、依赖驱动的有界重试、失败不上报/不更新前值/不构造 0 值、成功后推进前一有效温度与最近有效湿度，并按 `sensor_decide_report` 置待上报标志。发送路径完整对齐交接 ITEM-008。
+
+---
+
+# ITEM-007：3 分钟采样节拍
+
+被测实现：`USER/src/main.c` 的 `RTC_IRQHandlerCallBack()`（RTC 1 分钟中断 → 累计 3 拍置 `sample_flag`）
+本项为 2 处常量/注释改动（`>= 1` → `>= SENSOR_SAMPLE_TICKS`），采用**源码结构确定性检查**（节拍的权威验证为 TD-002 T-L4-01 板级长时基，需真实硬件，本环境不具备）。
+
+## 1. 检查命令与结果
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+
+grep -n "SENSOR_SAMPLE_TICKS\|rtc_set_cnt\|sample_flag" USER/src/main.c
+  100:uint8_t rtc_set_cnt = 0;
+  111:        rtc_set_cnt++;
+  112:        if (rtc_set_cnt >= SENSOR_SAMPLE_TICKS) {
+  113:            sample_flag = 1;
+  114:            rtc_set_cnt = 0;
+
+grep -rn "rtc_set_cnt >= 1\|first_sample_reported\|samples_since_report" USER/
+  (无输出: 旧 1 拍阈值与小时/首样本上报已无残留)
+
+grep -n "sample_flag = 0" USER/src/measure.c
+  231:    sample_flag = 0u;      (采样函数消费标志 -> 一个周期只测量一次)
+
+grep -n "SENSOR_RTC_TICK_PERIOD_MIN\|SENSOR_SAMPLE_TICKS" USER/inc/sensor_config.h
+  26:#define SENSOR_RTC_TICK_PERIOD_MIN      1u
+  27:#define SENSOR_SAMPLE_TICKS             3u
+```
+
+## 2. 检查项与判定
+
+| 检查 | 期望 | 结果 |
+|---|---|---|
+| RTC 回调阈值 | `>= SENSOR_SAMPLE_TICKS`（配置 3），非硬编码 1 | PASS |
+| 旧 1 拍阈值 | 无 `rtc_set_cnt >= 1` | PASS |
+| 小时/首样本强制上报 | 无 `first_sample_reported`/`samples_since_report` 引用 | PASS |
+| 一周期一次测量 | `temperature_process()` 成功后清 `sample_flag` | PASS |
+| 配置值 | 1 min × 3 = 3 min | PASS |
+
+## 3. 覆盖边界
+
+- 本证据为**静态结构检查 + 编译**；未在宿主机执行 RTC 中断（`main.c` 依赖完整 MCU 层）。
+- 3 分钟实际间隔、LSI 容差与离散度需 TD-002 T-L4-01 在真实板上用长时基/电流波形记录，由嵌入式测试完成。
+- 上电即采一次（`sample_flag` 初值 1）为既有行为；首样本无前值，不触发下降分支，符合 FWR-108。
+
+## 4. 结论
+
+采样节拍为 1 分钟 RTC 中断累计 3 拍置位，一周期一次测量；旧小时/首样本强制上报逻辑已完全移除。板级长时基验证交接嵌入式测试。

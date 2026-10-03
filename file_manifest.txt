@@ -29,6 +29,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c | active | 固件纯逻辑实现（CRC16/参数/OPTCFG 既有；ITEM-005 新增 CRC-8、GXHT40 x10 换算、光照滞回、条件上报判定；定义 SENSOR_CONFIG_NO_MCU 不引 MCU 头）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/gxht40.c | active | GXHT40 温湿度驱动实现（0x44/0x45 探测与缓存、0xFD 测量、6B 读取、双字 CRC-8、整数 x10 换算与量程/重试策略；FD-002/ITEM-003）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c | active | 光照通路实现（PB05 推挽输出、PB04 模拟输入 AIN11、ADC 单次转换多次取样求均值、滞回 DARK/LIT、采样后 PB05 置低；FD-002/ITEM-004）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c | active | 传感器主程序（RTC 配置与中断回调、主循环、睡眠）；ITEM-007 将采样节拍改为 RTC 1 分钟中断累计 SENSOR_SAMPLE_TICKS(=3) 拍置 sample_flag（3 分钟采样）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c | active | 采样流程（ITEM-006 重写：light_sample -> gxht40_measure、失败不上报/不更新前值/不写 0、成功推进前一有效温度与最近有效湿度并按 sensor_decide_report 置 report_req；保留软 I2C 端口与发送/睡眠框架）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/ | active | GNU 交叉编译支持（build.sh、cw32l010.ld、startup；obj/ 为忽略产物）

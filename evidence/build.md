@@ -1,7 +1,7 @@
 # 构建证据（BUILD-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）、ITEM-003（GXHT40 驱动 `gxht40.c/.h`）、ITEM-004（光照通路 `light.c/.h`）、ITEM-005（`fw_core.c` 纯逻辑）、ITEM-006（`measure.c` 采样流程）
+本轮对象：任务项 ITEM-001（新增 `sensor_config.h` 唯一配置点）、ITEM-002（`sf_i2c` 无寄存器地址总线原语）、ITEM-003（GXHT40 驱动 `gxht40.c/.h`）、ITEM-004（光照通路 `light.c/.h`）、ITEM-005（`fw_core.c` 纯逻辑）、ITEM-006（`measure.c` 采样流程）、ITEM-007（3 分钟节拍）
 
 ## 1. 环境
 
@@ -178,7 +178,24 @@ arm-none-eabi-nm obj/sensor_fw.elf :
 - 回归：`host_fw_core_pure_check.c` 36/36、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`test/build_test.sh` 56/56。
 - 工程文件注册（MDK/IAR 源列表）属 ITEM-011；`gcc/build.sh` 通配自动包含。
 
-## 10. 限制与交接
+## 10. ITEM-007 增量（3 分钟节拍）
+
+改动：`USER/src/main.c` 的 `RTC_IRQHandlerCallBack()` 阈值 `rtc_set_cnt >= 1` → `>= SENSOR_SAMPLE_TICKS`（=3）；删除未使用的 `temp_cnt`/`work_period_flag`；修正陈旧注释。
+
+```
+== compile ==  全部翻译单元
+== link ==
+Memory region   Used Size   Region Size   %age Used
+FLASH:          35,884 B    64 KB         54.75%
+RAM:             1,896 B     4 KB         46.29%
+```
+
+- **0 错误；告警 28 条**（与 ITEM-006 同数；`main.c` 仅改动前既有 4 条）。FLASH/RAM 不变（节拍常量不产生代码）。
+- 源码结构确定性检查（见 `evidence/driver_test.md`）：阈值 = `SENSOR_SAMPLE_TICKS`；无 `rtc_set_cnt >= 1`/`first_sample_reported`/`samples_since_report` 残留；`sample_flag = 0` 消费；配置 1 min × 3 = 3 min。
+- 回归：`host_fw_core_pure_check.c` 36/36、`host_measure_flow_check.c` 15/15、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`test/build_test.sh` 56/56。
+- 板级 3 分钟长时基（含 LSI 容差）属 TD-002 T-L4-01，需嵌入式测试；本环境无硬件。
+
+## 11. 限制与交接
 
 - 本证据为 GNU 交叉编译 + 宿主机回归；量产构建走 Keil MDK / IAR EWARM（既有工程，`USER/inc` 已在两者 include 路径中，故新头文件无需改工程文件列表），未在本环境复编译 MDK/IAR。
 - 网关（CH592 beiwov2）需 WCH 工具链，本轮未涉及。

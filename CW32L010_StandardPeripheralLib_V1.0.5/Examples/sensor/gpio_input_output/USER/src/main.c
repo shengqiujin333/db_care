@@ -96,23 +96,24 @@ void delay(uint16_t ms)
     }
 }
 
-uint8_t temp_cnt = 0;
 extern uint8_t sample_flag;
 uint8_t rtc_set_cnt = 0;
 
-uint8_t work_period_flag = 0;
-
-/* RTC 1 min/拍 → 每拍一次采样 (FR-204); 小时上报由 samples_since_report 计数 */
+/*
+ * RTC 1 分钟/拍: 累计 SENSOR_SAMPLE_TICKS(=3) 拍才置一次采样标志 -> 每 3 分钟采样一次
+ * (readme 修改点 3; FD-002 §5.2)。采样函数消费后清 sample_flag, 故一个周期只测量一次。
+ * 上报完全由 sensor_decide_report 条件门控, 无小时上报/首样本强制上报。
+ */
 void RTC_IRQHandlerCallBack(void)
 {
     if (RTC_GetITState(RTC_IT_INTERVAL))
     {
-			rtc_set_cnt++;
-			if(rtc_set_cnt >= 1){
-				sample_flag = 1;
-				rtc_set_cnt = 0;
-			}
-      RTC_ClearITPendingBit(RTC_IT_INTERVAL);
+        rtc_set_cnt++;
+        if (rtc_set_cnt >= SENSOR_SAMPLE_TICKS) {
+            sample_flag = 1;
+            rtc_set_cnt = 0;
+        }
+        RTC_ClearITPendingBit(RTC_IT_INTERVAL);
     }
 }
 
@@ -140,7 +141,7 @@ void RTC_IRQHandlerCallBack(void)
      
      SYSCTRL_LSI_Enable();    // 使用LSI作为RTC的时钟源，必须在配置RTC前准备好时钟     
      RTC_Init(&RTC_InitStruct);
-     RTC_SetInterval(RTC_INTERVAL_EVERY_1M);    // 1s间隔一次产生中断
+     RTC_SetInterval(RTC_INTERVAL_EVERY_1M);    // 1 分钟间隔一次产生中断 (采样节拍 = 3 拍)
      RTC_ITConfig(RTC_IT_INTERVAL, ENABLE);
      RTC_ClearITPendingBit(RTC_IT_ALL);
      
