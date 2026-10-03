@@ -347,6 +347,8 @@
                     <state>$PROJ_DIR$\..\..\..\..\Libraries\inc</state>
                     <state>$PROJ_DIR$\..\..\..\..\IdeSupport\EWARM</state>
                     <state>$PROJ_DIR$\..\..\..\..\Utilities</state>
+                    <state>$PROJ_DIR$\..\UM2005C</state>
+                    <state>$PROJ_DIR$\..\COMMON</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1419,6 +1421,8 @@
                     <state>$PROJ_DIR$\..\USER\inc</state>
                     <state>$PROJ_DIR$\..\..\..\..\Libraries\inc</state>
                     <state>$PROJ_DIR$\..\..\..\..\IdeSupport\EWARM</state>
+                    <state>$PROJ_DIR$\..\UM2005C</state>
+                    <state>$PROJ_DIR$\..\COMMON</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -2155,13 +2159,28 @@
     <group>
         <name>Driver</name>
         <file>
+            <name>$PROJ_DIR$\..\..\..\..\Libraries\src\cw32l010_adc.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Libraries\src\cw32l010_digitalsign.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\..\Libraries\src\cw32l010_flash.c</name>
         </file>
         <file>
             <name>$PROJ_DIR$\..\..\..\..\Libraries\src\cw32l010_gpio.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\..\..\..\Libraries\src\cw32l010_lptim.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Libraries\src\cw32l010_rtc.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\..\..\..\Libraries\src\cw32l010_sysctrl.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\Libraries\src\cw32l010_uart.c</name>
         </file>
     </group>
     <group>
@@ -2176,10 +2195,55 @@
     <group>
         <name>User</name>
         <file>
+            <name>$PROJ_DIR$\..\USER\src\encrytogate.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\USER\src\fw_core.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\USER\src\gxht40.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\USER\src\interrupts_cw32l010.c</name>
         </file>
         <file>
+            <name>$PROJ_DIR$\..\USER\src\light.c</name>
+        </file>
+        <file>
             <name>$PROJ_DIR$\..\USER\src\main.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\USER\src\measure.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\USER\src\sf_i2c.c</name>
+        </file>
+    </group>
+    <group>
+        <name>UM2005C</name>
+        <file>
+            <name>$PROJ_DIR$\..\UM2005C\app_gtimer.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\UM2005C\app_um2005C.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\UM2005C\radio.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\UM2005C\um2005C.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\UM2005C\um2005C_hal.c</name>
+        </file>
+    </group>
+    <group>
+        <name>COMMON</name>
+        <file>
+            <name>$PROJ_DIR$\..\COMMON\convert.c</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\COMMON\delay.c</name>
         </file>
     </group>
 </project>

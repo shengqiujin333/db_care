@@ -1,7 +1,7 @@
 # 构建证据（BUILD-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 ITEM-001…ITEM-009（配置点/总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报/退役旧通路）与 ITEM-010（宿主机测试更新）
+本轮对象：任务项 ITEM-001…ITEM-010（配置点/总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报/退役旧通路/宿主测试）与 ITEM-011（交叉编译与 MDK/IAR 工程列表）
 
 ## 1. 环境
 
@@ -251,7 +251,31 @@ FLASH: 32,208 B / RAM: 1,712 B   (测试不进入固件, 与 ITEM-009 相同)
 - 回归：`host_fw_core_pure_check.c` 36/36、`host_measure_flow_check.c` 24/24、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`host_rf_frame_check.c` 14/14。
 - 本机依赖：MinGW-w64 gcc（PATH 上的 chocolatey shim 损坏，需完整路径 `CC=<full path>`）。
 
-## 14. 限制与交接
+## 14. ITEM-011 增量（交叉编译与 MDK/IAR 工程列表）
+
+改动：`MDK/Project.uvprojx`、`EWARM/project.ewp` 源文件列表补齐/对齐；`.gitignore` 新增 `*.exe`。
+
+```
+== gcc/build.sh ==
+== compile ==  全部翻译单元
+== link ==
+Memory region   Used Size   Region Size   %age Used
+FLASH:          32,208 B    64 KB         49.15%
+RAM:             1,712 B     4 KB         41.80%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+
+arm-none-eabi-size: text 32208 / data 84 / bss 1628
+sensor_fw.bin MD5 = 47abc6dfc798c837b2b68916f29db543
+sensor_fw.hex MD5 = ddf2e2e7bac47a80ea00177cb104afc9
+```
+
+- **0 错误、28 条告警**；FLASH 32,208 B ≤ 64 KB、RAM 1,712 B ≤ 4 KB（均满足）。
+- 生产编译器 AC5（`armcc --cpu=Cortex-M0+ --c99`，CMSIS 5.9.0）：`USER/src` 8 个文件 0 error（`encrytogate.c` 3 条既有告警）。
+- MDK/IAR `USER/src` 列表 == 磁盘 `USER/src/*.c`（8 个）；已删模块不在列表中；两工程均含 `cw32l010_adc.c`、`UM2005C`、`COMMON`；两工程文件 XML 解析通过。
+- 宿主机测试：`test/build_test.sh` 38/38 + 24/24，退出码 0。
+- MDK/IAR 实机构建未执行（环境：Keil CMSIS 6.3.0 与 AC5 不兼容，IAR 不可用）。
+
+## 15. 限制与交接
 
 - 本证据为 GNU 交叉编译 + 宿主机回归；量产构建走 Keil MDK / IAR EWARM（既有工程，`USER/inc` 已在两者 include 路径中，故新头文件无需改工程文件列表），未在本环境复编译 MDK/IAR。
 - 网关（CH592 beiwov2）需 WCH 工具链，本轮未涉及。

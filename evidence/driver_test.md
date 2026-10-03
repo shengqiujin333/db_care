@@ -1,7 +1,7 @@
 # 驱动测试证据（DRV-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 **ITEM-002**…**ITEM-009**（总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报/退役旧通路）与 **ITEM-010**（宿主机测试更新）
+本轮对象：任务项 **ITEM-002**…**ITEM-010**（总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报/退役旧通路/宿主测试）与 **ITEM-011**（交叉编译与工程列表）
 被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）；`USER/src/fw_core.c` / `USER/inc/fw_core.h`（ITEM-005）；`USER/src/measure.c` / `USER/inc/measure.h`（ITEM-006）
 测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（mock 总线）、`.../test/host_light_check.c`（纯逻辑 + 硬件桩）、`.../test/host_fw_core_pure_check.c`（纯逻辑）、`.../test/host_measure_flow_check.c` + `.../test/mock_measure_mcu/`（mock MCU 影子头）
 
@@ -421,3 +421,63 @@ CC=<mingw64 gcc full path> sh build_test.sh
 ## 5. 结论
 
 `test/build_test.sh` 单命令覆盖本次需求新增的全部纯逻辑边界与“失败不更新前值”流程行为，本机运行退出码 0；已退役的 OPTCFG/params/history 用例不再存在。
+
+---
+
+# ITEM-011：交叉编译与工程列表一致性
+
+被测对象：传感器工程构建（GNU 交叉编译 + AC5 单文件）与 MDK/IAR 源文件列表
+
+## 1. 检查命令与结果
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+
+# (1) 交叉编译与产物
+ sh gcc/build.sh                       -> 0 error / 28 warning
+ ls gcc/obj/sensor_fw.{elf,hex,bin}    -> 三个产物均生成
+ arm-none-eabi-size gcc/obj/sensor_fw.elf
+   -> text 32208 / data 84 / bss 1628
+   -> FLASH 32,208 B (49.15% of 64 KB) <= 64 KB
+   -> RAM   1,712 B  (41.80% of 4 KB)  <= 4 KB
+ md5sum: sensor_fw.bin 47abc6df... / sensor_fw.hex ddf2e2e7...
+
+# (2) 生产编译器 AC5 单文件编译
+ armcc --cpu=Cortex-M0+ --c99 -I ../../../Libraries/inc -I USER/inc \
+       -I UM2005C -I COMMON -I ../../IdeSupport/MDK -I <CMSIS 5.9.0> \
+       -c USER/src/<f>.c -o /tmp/ac5/<f>.o
+   -> fw_core/gxht40/light/measure/main/interrupts_cw32l010/sf_i2c : 0 error 0 warning
+      encrytogate : 0 error (3 条既有未用静态量告警)
+
+# (3) MDK/IAR 列表与磁盘一致 (脚本化比对)
+ actual USER/src : [encrytogate, fw_core, gxht40, interrupts_cw32l010, light, main, measure, sf_i2c]
+ MDK list        : 同上  (== actual: True)
+ IAR list        : 同上  (== actual: True)
+ retired hall/optcfg/params/history : MDK=no IAR=no
+ cw32l010_adc.c / app_um2005C.c / delay.c : MDK=yes IAR=yes
+ XML 解析 (ElementTree) : 两个工程文件均 OK
+```
+
+## 2. 检查项与判定
+
+| 检查 | 期望 | 结果 |
+|---|---|---|
+| 交叉编译 | 0 error，生成 elf/hex/bin | PASS |
+| Flash 占用 | ≤ 64 KB | PASS（32,208 B，49.15%） |
+| RAM 占用 | ≤ 4 KB | PASS（1,712 B，41.80%） |
+| AC5 兼容 | 新增/修改源文件 0 error | PASS |
+| MDK 列表 | == 磁盘 `USER/src/*.c` | PASS |
+| IAR 列表 | == 磁盘 `USER/src/*.c` | PASS |
+| 已删模块 | 不在两工程列表中 | PASS |
+| 依赖源/头路径 | adc/UM2005C/COMMON 均在列（IAR 含 include 路径） | PASS |
+| 工程文件合法性 | XML 可解析 | PASS |
+
+## 3. 覆盖边界
+
+- **未执行 MDK/IAR 实机构建**：本环境 Keil 受 CMSIS 6.3.0/AC5 不兼容影响，IAR 工具链不可用；以 GNU 交叉编译（全工程）+ AC5（逐文件）+ XML 解析 + 列表脚本比对代替。
+- 网关（CH592 beiwov2）构建与核对属 ITEM-012；板级实机验证属嵌入式测试。
+- `.gitignore` 新增 `*.exe`（宿主机测试产物）已在仓库验证生效（`git check-ignore`）。
+
+## 4. 结论
+
+传感器工程可交叉编译并生成 elf/hex/bin，Flash/RAM 均远低于 4 KB/64 KB 上限；MDK/IAR 工程源文件列表与新增/删除后的实际源文件逐一一致，工程文件合法可解析。

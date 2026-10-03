@@ -1,6 +1,6 @@
 # Project File Manifest
 # path | status | purpose
-.gitignore | active | 仓库忽略规则（obj/build/Debug/Release、编译产物、.idea/.codegraph 等）
+.gitignore | active | 仓库忽略规则（obj/build/Debug/Release、编译产物含 *.exe、.idea/.codegraph 等）
 CH592EVT/EVT/20240119105503_8338.zip | active | 沁恒官方归档样例（间接参考；粗路径）
 CH592EVT/EVT/EXAM/ | active | 沁恒官方其它示例（ADC/I2C/TMR/FreeRTOS 等，间接参考；粗路径，不逐文件展开）
 CH592EVT/EVT/EXAM/BLE/HAL/ | active | CH592 HAL 驱动（beiwov2 编译依赖；粗路径）
@@ -14,8 +14,9 @@ CH592EVT/EVT/PUB/ | active | 沁恒官方手册/评估板原理图/天线参考�
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/ | active | 官方其它示例（间接参考；粗路径，不展开）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/ | active | 传感器 CW32L010 固件工程根：温湿度采集 + UM2005C 433MHz 发射
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/COMMON/ | active | 通用模块（delay、convert、type）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/EWARM/project.ewp | active | 传感器 IAR 工程文件；ITEM-011 源文件列表对齐（User 8 个 USER/src、Driver 含 adc/rtc/uart/lptim/digitalsign、新增 UM2005C/COMMON 组与 include 路径）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/EWARM/project.eww | active | 传感器 IAR EWARM 工程
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/Project.uvprojx | active | 传感器 Keil MDK 工程
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/Project.uvprojx | active | 传感器 Keil MDK 工程；ITEM-011 源文件列表对齐（User 补 fw_core/gxht40/light，Driver 补 cw32l010_adc）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/UM2005C/ | active | UM2005C 433MHz 发射驱动与收发（radio、app_gtimer、app_um2005C、um2005C 及 HAL）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/ | active | 传感器用户头文件（与 USER/src 对应）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/fw_core.h | active | 固件纯逻辑接口（CRC16-CCITT-FALSE；ITEM-005 新增 fw_crc8_gxht、GXHT40 x10 换算/有效域、light_code_is_dark、sensor_decide_report；ITEM-009 移除参数/OPTCFG 声明；不依赖 MCU 头）

@@ -400,7 +400,7 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
-# 任务项 ITEM-010（本轮）
+# 任务项 ITEM-010（已完成，独立验证 TEST_PASS）
 
 **ITEM-010**：更新宿主机纯逻辑测试 `test/host_sensor_core_test.c` 与 `test/build_test.sh`：覆盖 CRC-8 参考向量、换算边界（负温、0%/100% 截断）、光照阈值与滞回、上报判定边界（恰好 0.9℃、恰好 35.0℃、无前值、非暗、失败不更新），移除已退役的 OPTCFG/params 用例，脚本在本机运行通过。
 
@@ -449,9 +449,51 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
+# 任务项 ITEM-011（本轮）
+
+**ITEM-011**：交叉编译验证传感器工程：执行 `gcc/build.sh` 完成编译与链接并生成 elf/hex/bin，RAM 与 Flash 占用不超过 4KB/64KB，且 MDK/IAR 工程源文件列表与新增、移除的源文件保持一致。
+
+设计映射：FD-002 §3/§11.12；TD-002 T-L1-02（交叉编译与产物）、T-L1-07（工程文件一致性）。
+
+## 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `.../MDK/Project.uvprojx` | 修改 | User 组补 `fw_core.c`/`gxht40.c`/`light.c`；Driver 组补 `cw32l010_adc.c`（light.c 依赖 ADC） |
+| `.../EWARM/project.ewp` | 修改 | User 组补齐 8 个 `USER/src/*.c`；Driver 组补 `cw32l010_adc/digitalsign/lptim/rtc/uart.c`；新增 `UM2005C` 与 `COMMON` 组；Release/Debug 两套 include 路径补 `..\UM2005C`/`..\COMMON` |
+| `.gitignore` | 修改 | 新增 `*.exe`（宿主机测试产物，避免污染 `git status`；ITEM-010 验证提出的卫生项） |
+
+### 一致性结果
+
+- MDK/IAR 的 `USER/src` 列表与磁盘实际 `USER/src/*.c`（8 个）**逐一相等**；已删的 `hall/optcfg/params/history` 在两个工程中均不存在。
+- 两个工程均含 `cw32l010_adc.c`、`UM2005C`（含 `app_um2005C.c`）、`COMMON`（`delay.c`）。
+- 两个工程文件均为合法 XML（`ElementTree` 解析通过）。
+
+### 本项不包含
+
+网关固件（CH592）构建与核对（ITEM-012）、板级实机验证（嵌入式测试）。
+
+## 验证（本轮实际执行）
+
+- **交叉编译**：`gcc/build.sh` → **0 错误、28 条告警**；生成 `gcc/obj/sensor_fw.elf`、`.hex`、`.bin`。
+  - `arm-none-eabi-size`：text 32,208 / data 84 / bss 1,628。
+  - **FLASH 32,208 B / 65,536 B（49.15% ≤ 64 KB）**；**RAM 1,712 B / 4,096 B（41.80% ≤ 4 KB）**。
+  - `.bin` MD5 `47abc6dfc798c837b2b68916f29db543`；`.hex` MD5 `ddf2e2e7bac47a80ea00177cb104afc9`。
+- **生产编译器 AC5**（`armcc --cpu=Cortex-M0+ --c99`，CMSIS 5.9.0）：`USER/src` 8 个源文件均 **0 error / 0 warning**（`encrytogate.c` 3 条既有未用静态量告警）。
+- **工程列表一致性**：脚本化比对 MDK/IAR 与 `ls USER/src/*.c` → 完全相等（见 `evidence/driver_test.md`）。
+- **宿主机测试**：`test/build_test.sh` → 38/38 + 24/24，退出码 0。
+
+## 交接与依赖
+
+- **MDK/IAR 实机构建未执行**：本环境 Keil 受 CMSIS 6.3.0 与 AC5 不兼容影响（ITEM-001 已登记），IAR 工具链不可用；已用 GNU 交叉编译 + AC5 逐文件编译 + XML 合法性 + 列表一致性代替。建议在具备正确 CMSIS 5.9.0 包的 Keil/IAR 环境复编译。
+- 网关固件（CH592 beiwov2）构建与核对属 ITEM-012。
+- 板级实机验证（TD-002 T-L2/T-L3/T-L4/T-L6/T-L8）仍属嵌入式测试。
+
+---
+
 # 后续任务项状态
 
-`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-010（前九项独立验证 TEST_PASS，ITEM-010 本轮）。其余 2 项由 Runtime 后续指派，未指派项不在本轮产出。
+`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-011（前十项独立验证 TEST_PASS，ITEM-011 本轮）。其余 1 项（ITEM-012，网关固件兼容性核查）由 Runtime 后续指派。
 
 # 交接与依赖（累计）
 
