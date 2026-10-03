@@ -21,7 +21,7 @@ class HomeViewModel private constructor(): ViewModel() {
             return instance!!
         }
 
-        // 卡片迷你 sparkline 最多保留的采样数(约 2.5 小时 @ 5 分钟间隔)
+        // 卡片迷你 sparkline 最多保留的采样数(约 1.5 小时 @ 3 分钟采样节拍；实际由条件上报决定)
         private const val MAX_SPARKLINE_SIZE = 30
     }
 

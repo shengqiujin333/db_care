@@ -113,7 +113,8 @@ dengbei_care/app/src/androidTest/java/com/jinyuni/dengbei_care/verification/Temp
 dengbei_care/app/src/androidTest/java/com/jinyuni/dengbei_care/verification/UploadOutboxItem009VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-009 真机 Android SQLite 独立验证（SqliteUploadOutboxStore 幂等插入、到期过滤/排序/LIMIT、重试与删除只影响目标行、策略+SQL 端到端幂等/ack、表缺失降级不崩溃）；已编译，设备执行受同一环境阻塞
 dengbei_care/app/src/main/AndroidManifest.xml | active | Android 应用清单
 dengbei_care/app/src/main/assets/ | active | 内嵌资源（CA 证书、隐私政策/服务条款 HTML）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ | active | Android 业务源码根包（MainActivity、MqtttService、DeviceParamsBook、TemperatureDatabaseHelper、RingtonePlayer、VibrationPlayer、ui/、report/、protocol/、telemetry/、cloud/ 等）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ | active | Android 业务源码根包（MainActivity、MqtttService、DeviceState、DeviceParamsBook、TemperatureDatabaseHelper、RingtonePlayer、VibrationPlayer、ui/、report/、protocol/、telemetry/、cloud/ 等）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt | active | 卡片设备状态：ITEM-011 移除“30 分钟无数据⇒离线”（删 `OFFLINE_THRESHOLD_MS`/`isOnline`），新增 `isNeverReported()` 与 `lastReportAgeLabel()`（刚刚/N 分钟前/N 小时前/N 天前）；连通性不由数据龄推断
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt | active | 前台服务：BLE 轮询（ITEM-010 起周期 = SensorCadence 3 分钟，保留手动立即读取）、GATT 解密→GatewayFrameCodec、MQTT 批量→ReadingAttribution、告警判定→AlarmEvaluator（基准取自库）、单条真实时间戳入库、入库后经待发箱触发云上传（四个触发点：入队后/每轮 BLE/网络恢复/冷启动），保留 900 s 去抖与 >65℃ 每次通知；ITEM-001/002/003/007/010 | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt | active | 报警铃声播放；ITEM-010 修复 D-010-1：改为**不向外抛异常**（铃声 URI 为空/create 返回 null/start 抛错均记日志降级；stopAlarm 始终释放并置空）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt | active | 本地 SQLite（bwtemperature_database1）：ITEM-006 升至 DATABASE_VERSION=3 并新增 pending_uploads 表/索引（v2→v3 只新建新对象）；ITEM-007 单条读数写入 storeTemperatureReading（INSERT OR REPLACE + PK(time,device_id) 幂等、真实采样时间、storeflag!=1 不写），删除 60 秒回填；ITEM-010 新增 getSamplesInRange（时间窗告警基准查询）
@@ -126,10 +127,13 @@ dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCod
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt | active | 报警判定纯逻辑模块（时间窗下降 5/10/15min、基准=窗口内最新样本含 30min 回溯容差；阈值超限/紧急 >65.0℃ 语义保持现状；四类文案+Severity；纯函数且输出不含温湿度数值；ITEM-005）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt | active | MQTT 批量载荷严格归因纯逻辑模块（time:temps:humis；数目不一致/空序列/非法数值含 NaN·Inf/时间非法→拒绝整批；一致时按 MacIdBook 顺序产出携带 devId 的 Reading；ITEM-003）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt | active | 采样节拍常量（SAMPLE_PERIOD_SECONDS=180 / SAMPLE_PERIOD_MS=180000；BLE 读取周期与界面文案共用；ITEM-010）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt | active | 注册/登录 Retrofit 接口（既有 5 个端点不变）+ ITEM-008 新增 `POST /upload_data` 与 `SensorReading`/`SensorUploadData` 请求体数据类
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | active | 内嵌 Paho MQTT Android 客户端（vendor；粗路径）
 dengbei_care/app/src/main/res/ | active | Android 资源（layout/values/navigation/drawable/mipmap/xml；粗路径）；xml/network_security_config.xml 于 ITEM-004 追加放行 8.140.23.253（保留既有两项，未新增其它主机）
+dengbei_care/app/src/main/res/layout/item_device_card.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/xml/network_security_config.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt | active | CloudConfig 常量与 network_security_config 明文放行自检 3 项（新主机 8883/5000、旧主机不再作为连接目标、明文放行仍为 3 个且未新增其它主机；ITEM-004）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt | active | 待发箱与上传编排自检 14 项（内存 Outbox + 伪 Api：成功删除/失败退避/重试到期/达上限停止/单批上限/门控/幂等入队/串行 busy/退避曲线/排序/空队列/载荷内容/异步触发；ITEM-009）
@@ -140,6 +144,7 @@ dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCod
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt | active | AlarmEvaluator 宿主机 JUnit4 自检 23 项（L0-06..L0-10：开关语义/时间窗基准与边界/负对照/阈值与紧急边界/优先级文案/纯函数性与不携带温湿度数值；ITEM-005）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt | active | ReadingAttribution 宿主机 JUnit4 自检 16 项（归因顺序/负温0值/绑定顺序无关/数目不一致/空序列/非法数值/时间非法/无绑定设备/多余段兼容；ITEM-003）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt | active | 采样节拍常量自检 2 项（180s/180000ms 一致、非旧 5 分钟/1 分钟；ITEM-010）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/home/DeviceStateTest.kt | active | DeviceState 卡片状态自检 7 项（未收到语义、相对时间分桶与边界、长时间无数据不得为“离线”、旧 isOnline/离线阈值入口已移除、displayName、严重级透传、空占位；ITEM-011）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/AlarmEvaluatorItem005VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-005 独立验证（独立时间窗参考实现；窗口边界表与每窗口取最新基准、无基准/样本全过新的“第 N 个样本”负对照、严格比较等值不触发、开关矩阵与超限覆盖优先级、紧急 >65 与每次通知标记、文案字面值、纯函数且 Result 无测量字段、4000 例随机属性比对、非有限输入不抛异常；10/10）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-009 宿主机独立验证（自带内存待发箱/伪 Api/伪门控；常量与退避曲线、门控三态、幂等入队、成功删除+载荷逐行映射、失败退避与到期重试、maxAttempts 保留不重试、单批上限、Api 异常不抛、并发串行、入队不阻塞调用方（timeout 保护）、dueBatch 过滤排序）；11/11
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt | active | 由 software_tester.software_verification 新增：ITEM-001 独立验证（内嵌 Git 历史逐字提取的改动前 parsePlainFrame 为基准；1848 组边界 + 600 组随机帧的网关 ID/devCount/devId/湿度/温度 Double toRawBits 逐位一致；拒绝边界差异仅为显式拒绝；3/3）

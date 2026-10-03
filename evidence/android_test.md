@@ -761,3 +761,67 @@ EXIT=0
 D-010-1 的两条修复要求均已满足：① 每一步副作用独立保护（通知/震动/铃声失败不再跳过入库、入队上传与卡片更新；反之亦然）；② 两个播放器内部降级不向外抛。兼容面与编排顺序未变（测试门禁 A–F 全 PASS），构建与 146 项宿主机用例无回归。
 
 未覆盖：真机链路/通知/待发箱/HTTP（属 E2E-SW-002，需与生产隔离的测试环境）。
+
+---
+
+## AT-011 · ITEM-011（卡片状态：去掉“离线”，改为相对时间 + 条件上报提示）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`grep -n` |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：`DeviceState.kt`（删离线判定 + 新增相对时间）、`DeviceCardAdapter.kt`（chip 四态 + `reportHint`）、`item_device_card.xml`（新增提示行）、`HomeViewModel.kt`（仅注释）；新增 `test/.../ui/home/DeviceStateTest.kt` |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 3s
+```
+
+| 汇总 | 值 |
+|---|---|
+| 套件数 | 16 |
+| 合计 | **155 tests / 0 failures / 0 errors / 0 skipped** |
+| 本项新增 | `DeviceStateTest` 7 项 |
+
+新增 7 项用例（TD-SW-002 T-SW-L0-14）：
+
+| 用例 | 覆盖 | 结果 |
+|---|---|---|
+| `neverReported_isNeverReported_andHasNoAgeLabel` | `latestTime == 0` → 未收到语义，无相对时间 | PASS |
+| `ageLabel_buckets` | 刚刚 / 1 分钟前 / 40 分钟前 / 59 分钟前 / 1 小时前 / 23 小时前 / 1 天前 / 3 天前（含 59s/60s/59min/60min/23h/24h 边界） | PASS |
+| `staleDevice_getsRelativeLabel_notOffline` | 40 分钟无数据 → “40 分钟前”，且标签不含“离线” | PASS |
+| `noOnlineOrOfflineThresholdEntryPoints` | 反射：`isOnline` 方法已删、无 OFFLINE 常量 | PASS |
+| `displayName_prefersAlias_thenDevId` | 显示名规则不变 | PASS |
+| `severity_isCarriedThroughUnchanged` | NORMAL/WARNING/ALARM 透传不变 | PASS |
+| `emptyPlaceholder_matchesNeverReportedSemantics` | `empty()` 占位即未收到语义、温湿度 0、sparkline 空 | PASS |
+
+### 3. 构建与静态核查
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,361,689 B |
+
+| 检查 | 结果 |
+|---|---|
+| 旧判定入口 | `grep -rn "isOnline\|OFFLINE_THRESHOLD" DeviceState.kt ui/home/` → 0 命中 |
+| chip 四态文案 | `未收到`/`紧急`/`警告`/`正常` 齐备；无 `chip.text = "离线"` |
+| 配色语义 | 未收到=brand_secondary、紧急=brand_error、警告=brand_warning、正常=brand_ok（与改动前一致） |
+| 温湿度占位 | `isNeverReported()` → `--`（未改） |
+| 提示行接线 | `item_device_card.xml` 含 `reportHint`，sparkline 顶部约束改为 `@id/reportHint` |
+| 编译告警 | 无新增（既有 11 条不变） |
+
+### 4. 判定
+
+ITEM-011 的期望行为成立：长时间无新数据的设备不再显示“离线”，改为相对时间 + “按条件上报，可能长时间无上报”提示；未收到数据的设备仍为“未收到”且温湿度 `--`；报警级别文案与配色不变；旧离线判定入口（`isOnline`/30 min 阈值）已彻底移除；全量 155 项宿主机用例通过、构建成功。
+
+未覆盖（需设备，属测试能力）：卡片实际渲染/配色/截图为 T-SW-L3-01/02/03；`bindStatusChip` 位于 Adapter（需 Android 视图），其分支由静态核查 + 设备侧用例覆盖。

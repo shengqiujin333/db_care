@@ -644,3 +644,64 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 1. **真机层仍未执行**（测试能力已登记）：BLE/MQTT 链路、通知/卡片、待发箱补传、`/upload_data` 需设备与网络；且启动 debug 包会连生产 broker/服务器（无隔离测试环境），属 E2E-SW-002。
 2. **修复未改变**任何告警文案/阈值/去抖/门控/上传语义（测试门禁 C/D/E 全 PASS 可证）。
 3. `stopAlarm`/`stopVibration` 现总释放资源并置空引用（原仅在播放中释放）：属健壮性改进，行为对用户可见面不变。
+
+---
+
+# 任务项 ITEM-011（本轮完成）
+
+**ITEM-011（队列第 11 项）**：调整卡片状态展示：`DeviceState` 与 `ui/home/DeviceCardAdapter.kt` 不再以「30 分钟无数据」判定并显示离线，改为展示最近上报相对时间与按条件上报（可能长时间无上报）的提示；状态 chip 仍区分未收到/正常/警告/紧急。
+期望行为：长时间无新数据的设备不再显示为离线；未收到任何数据的设备仍显示为未收到且温度湿度为 `--`；报警级别配色语义不变。
+
+设计映射：AA-002 §7（卡片展示）、D-10（不再用 30 min 数据龄表示离线，连通性由链路状态表达）、§4.2（`DeviceState.kt`/`DeviceCardAdapter.kt`/`item_device_card.xml`）；IC-002 §5；TD-SW-002 §4.1 T-SW-L0-14、§4.5 T-SW-L3-01/02/03。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt` | 修改 | 删除 `OFFLINE_THRESHOLD_MS`（30 min）与 `isOnline()`；新增 `isNeverReported()` 与 `lastReportAgeLabel(nowMillis)`（刚刚 / N 分钟前 / N 小时前 / N 天前；从未上报返回空串）；保留 `displayName()`、`empty()` 与字段语义 |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt` | 修改 | 状态 chip 去掉 `!isOnline()` → “离线”分支（现仅四种：未收到/紧急/警告/正常，配色与文案不变）；新增 `reportHint` 文本：“尚未收到上报 · 按条件上报，可能长时间无上报”或“最近上报 X · 按条件上报，可能长时间无上报” |
+| `dengbei_care/app/src/main/res/layout/item_device_card.xml` | 修改 | 新增 `reportHint` TextView（全宽、LabelSmall、次要色、最多 2 行）置于数值下方；sparkline 的顶部约束改挂到 `reportHint` 下 |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt` | 修改（仅注释） | sparkline 容量注释由“约 2.5 小时 @ 5 分钟间隔”改为“约 1.5 小时 @ 3 分钟采样节拍；实际由条件上报决定” |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/home/DeviceStateTest.kt` | 新增 | 宿主机 JUnit4 自检 7 项（见 §3） |
+
+状态 chip 的四种情形（与改动前一致，仅删去“离线”）：
+
+| 条件 | 文案 | 配色 |
+|---|---|---|
+| `isNeverReported()` | 未收到 | `brand_secondary` + 黑字 |
+| `alarmSeverity == ALARM` | 紧急 | `brand_error` + 白字 |
+| `alarmSeverity == WARNING` | 警告 | `brand_warning` + 黑字 |
+| 其它 | 正常 | `brand_ok` + 白字 |
+
+温度/湿度仍为：`isNeverReported()` → `--`，否则 `%.1f°C` / `%.0f%%`（未改）。
+
+## 2. 预期行为（本轮交付）
+
+1. 长时间无新数据的设备**不再出现“离线”**；卡片只显示“最近上报 N 分钟/小时/天前”与“按条件上报，可能长时间无上报”提示。
+2. 从未收到数据的设备仍显示“未收到”且温度/湿度为 `--`。
+3. 报警级别（紧急/警告/正常）文案与配色不变；报警文案显示逻辑不变。
+4. 连通性不由数据龄推断（链路状态仍由 `NotificationsViewModel._mqtt_broker_state` 表达，本项未改）。
+5. 相对时间标签分桶：<60 s “刚刚”；<60 min “N 分钟前”；<24 h “N 小时前”；否则“N 天前”。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；全部套件共 **155 项、0 失败 0 跳过**（新增 `DeviceStateTest` 7 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,361,689 B（含新布局） |
+| 编译告警 | `./gradlew :app:compileDebugKotlin --offline` | 无新增（既有 11 条不变） |
+| 旧判定入口清零 | `grep -rn "isOnline\|OFFLINE_THRESHOLD" DeviceState.kt ui/home/` | 0 命中（仅 vendor paho 自身同名方法，与本项无关） |
+| 卡片四状态文案 | `grep -n "未收到\|正常\|警告\|紧急" DeviceCardAdapter.kt` | 四种齐备，无“离线”分支 |
+| 布局接线 | `grep -n "reportHint\|sparkline" item_device_card.xml` | `reportHint` 存在且 sparkline 顶部约束指向它 |
+
+新增 7 项用例：`neverReported_isNeverReported_andHasNoAgeLabel`、`ageLabel_buckets`（含 59s/60s/59min/60min/23h/24h/3d 边界）、`staleDevice_getsRelativeLabel_notOffline`（40 分钟无数据 → “40 分钟前”且不含“离线”）、`noOnlineOrOfflineThresholdEntryPoints`（反射断言 `isOnline` 与 OFFLINE 常量已不存在）、`displayName_prefersAlias_thenDevId`、`severity_isCarriedThroughUnchanged`、`emptyPlaceholder_matchesNeverReportedSemantics` —— **7/7 PASS**。
+
+原始输出见 `evidence/android_test.md`（AT-011）。
+
+## 4. 观察与交接
+
+1. **真机界面未在本轮验证**：卡片截图/配色属测试能力 T-SW-L3-01/02/03（需设备）；本项提供逻辑层断言 + 布局静态核查。
+2. **chip 映射的宿主机可测性**：`bindStatusChip` 位于 Adapter（需 Android 视图），未纳入宿主机测试；其四种分支由上述静态核查 + 设备侧 L3 用例覆盖。
+3. **提示文案为硬编码中文**：与既有卡片文案（“未收到”“正常”等）风格一致；若后续需要本地化，属资源化重构（需同步 `strings.xml`）。
+4. **`HomeViewModel` 仅改注释**：sparkline 容量数值上限（`MAX_SPARKLINE_SIZE = 30`）未改，仅修正节拍说明。
+5. **本项不涉及**：详情页规则说明/图表范围/高温强调（ITEM-012）、早报文案（ITEM-013）、版本与文档（ITEM-014）。

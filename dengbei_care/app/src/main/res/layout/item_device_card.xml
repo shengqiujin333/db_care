@@ -91,12 +91,25 @@
             app:layout_constraintTop_toBottomOf="@id/humiLabel"
             tools:text="65%" />
 
+        <TextView
+            android:id="@+id/reportHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:maxLines="2"
+            app:layout_constraintTop_toBottomOf="@id/tempValue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="最近上报 5 分钟前 · 按条件上报，可能长时间无上报" />
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/sparkline"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_marginTop="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tempValue"
+            app:layout_constraintTop_toBottomOf="@id/reportHint"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

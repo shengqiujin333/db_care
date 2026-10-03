@@ -22,10 +22,7 @@ data class DeviceState(
     val sparkline: List<Entry>       // 最近 N 条温度采样(给卡片迷你图用)
 ) {
     companion object {
-        // 数据过期阈值:30 分钟没收到新数据视为离线
-        const val OFFLINE_THRESHOLD_MS = 30L * 60 * 1000
-
-        // 创建一个空白设备占位
+        /** 创建一个空白设备占位 */
         fun empty(devId: String, name: String = ""): DeviceState = DeviceState(
             devId = devId,
             name = name,
@@ -38,11 +35,28 @@ data class DeviceState(
         )
     }
 
-    // 是否在线(最近 30 分钟有数据)
-    fun isOnline(now: Long = System.currentTimeMillis()): Boolean {
-        if (latestTime == 0L) return false
-        val ageMs = now - latestTime * 1000
-        return ageMs < OFFLINE_THRESHOLD_MS
+    /** 是否从未收到过任何上报（卡片显示 `--`） */
+    fun isNeverReported(): Boolean = latestTime == 0L
+
+    /**
+     * 最近上报的相对时间标签（卡片展示用）。
+     *
+     * 注意：**不用数据龄推断在线/离线**。传感器改为 3 分钟采样 + 条件上报后，长时间无新数据是
+     * 正常产品行为（温度未下降、未超温就不上报，IC-002 §2/§6）；连通性由 MQTT/BLE 链路状态表达，
+     * 不由此处推断。
+     *
+     * @param nowMillis 当前时间（毫秒），默认取系统时间
+     * @return "刚刚" / "N 分钟前" / "N 小时前" / "N 天前"；从未上报时返回空串
+     */
+    fun lastReportAgeLabel(nowMillis: Long = System.currentTimeMillis()): String {
+        if (isNeverReported()) return ""
+        val ageSeconds = (nowMillis / 1000) - latestTime
+        return when {
+            ageSeconds < 60 -> "刚刚"
+            ageSeconds < 60 * 60 -> "${ageSeconds / 60} 分钟前"
+            ageSeconds < 24 * 60 * 60 -> "${ageSeconds / (60 * 60)} 小时前"
+            else -> "${ageSeconds / (24 * 60 * 60)} 天前"
+        }
     }
 
     // 显示名:有别名用别名,否则用 devId

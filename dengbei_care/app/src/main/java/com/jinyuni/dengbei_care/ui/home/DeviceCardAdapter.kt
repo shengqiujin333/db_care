@@ -67,6 +67,13 @@ class DeviceCardAdapter(
 
             bindStatusChip(binding.statusChip, state)
 
+            // 最近上报相对时间 + 条件上报提示（不再用数据龄显示“离线”：长时间无上报是正常产品行为）
+            binding.reportHint.text = if (state.isNeverReported()) {
+                "尚未收到上报 · 按条件上报，可能长时间无上报"
+            } else {
+                "最近上报 ${state.lastReportAgeLabel()} · 按条件上报，可能长时间无上报"
+            }
+
             if (state.alarmMessage.isNotBlank() && state.alarmSeverity != Severity.NORMAL) {
                 binding.alarmMessage.text = state.alarmMessage
                 binding.alarmMessage.visibility = View.VISIBLE
@@ -78,14 +85,10 @@ class DeviceCardAdapter(
         }
 
         private fun bindStatusChip(chip: Chip, state: DeviceState) {
+            // 四种状态：未收到 / 正常 / 警告 / 紧急（不再有“离线”分支）
             when {
-                state.latestTime == 0L -> {
+                state.isNeverReported() -> {
                     chip.text = "未收到"
-                    chip.setChipBackgroundColorResource(R.color.brand_secondary)
-                    chip.setTextColor(Color.BLACK)
-                }
-                !state.isOnline() -> {
-                    chip.text = "离线"
                     chip.setChipBackgroundColorResource(R.color.brand_secondary)
                     chip.setTextColor(Color.BLACK)
                 }
