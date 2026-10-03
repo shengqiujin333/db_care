@@ -2,7 +2,7 @@
 
 状态：软件测试执行证据（`software_tester.software_verification`），按 Runtime 逐个指派的队列项追加
 对象：Android App `dengbei_care`（Kotlin / AGP 8.3.2 / Gradle 8.4 / JDK 21）
-本轮项：队列 **ITEM-001**、**ITEM-002**、**ITEM-003**、**ITEM-004**、**ITEM-005**（逐项分节记录）
+本轮项：队列 **ITEM-001**、**ITEM-002**、**ITEM-003**、**ITEM-004**、**ITEM-005**、**ITEM-006**（逐项分节记录）
 依据：`artifacts/software_test_design.md`（TD-SW-002）、`artifacts/software_e2e_plan.md`（E2E-SW-002）、`artifacts/interface_contract.md`（IC-002 §4）、`artifacts/android_architecture.md`（AA-002 §5.1/§10）
 被测代码版本：`3e0ed11`（android_engineer.android_implementation 提交）；改动前基线：`fe9a81c`
 说明：本文件为本能力**独立执行**的记录；实现侧自检（`evidence/android_test.md` AT-001）仅作为被核对对象，不重复引用为通过依据。
@@ -452,3 +452,98 @@ BUILD SUCCESSFUL in 3s
 2. **`Outcome.NONE` 文案为 `无报警`**（区别于“两开关都关”的 `未设置报警`）：与已批准设计 AA-002 §7 列出的四种结论一致；两者严重级别均为 NORMAL，卡片不展示、不落 `alarm_events`，因此**生产可见行为不变**；具体落库分支需在接线后按 ITEM-010 复核。
 3. **接线与基准来源属后续项**：① `processTemperatureHumidityData` 改用本模块（含 `Severity` 映射）与 900 s 去抖/通知保留 → 后续队列项；② 基准样本是否来自本地库（设计 D-05，支持进程重启后仍可判定）→ 库 API 与接线项；TD-SW-002 §8-G4 已登记。
 4. **本项不涉及**：SQLite v3 与真实时间戳（ITEM-006/007）、云上传（ITEM-008/009）、UI 呈现（ITEM-011/012）、通知去抖（900 s，仍在 Service）。
+
+---
+
+## ST-006 · ITEM-006（SQLite v3：`pending_uploads` 表与迁移 `TemperatureDatabaseHelper.kt`）
+
+**被测代码版本**：`557cf77`（android_engineer.android_implementation 提交，相对上一提交 `c232105`）
+**变更范围**：仅 `app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt`（+62/−5）+ 实现侧宿主机测试；`git diff --name-only c232105 557cf77` 确认无其它产品文件改动
+**任务期望**：`DATABASE_VERSION = 3`；新增 `pending_uploads(dev_id, time, temperature, humidity, attempts, next_attempt_at, PK(dev_id,time))` 与其 `next_attempt_at` 索引；迁移对既有 `temperature`/`alarm_events` 结构与数据不动；v2→v3 后历史可查；重复创建不报错；迁移异常按既有回退策略处理且不崩溃。
+
+### 1. 适用测试的选择与理由
+
+| TD-SW-002 用例 | 是否适用 | 本轮结果 |
+|---|---|---|
+| T-SW-L0d-01（v2→v3 保数据 + 新表/索引/PK） | 适用 | **SQL 语义层已执行**（宿主 SQLite + 从源码抽取的语句）；**Android 运行时经验层未执行**（见 §4 环境阻塞） |
+| T-SW-L0d-02（v1→v3） | 适用 | 同上（v1→v2 既有语句逐字转写 + v2→v3） |
+| T-SW-L0d-03（迁移异常回退不崩溃） | 适用 | 代码路径静态核查 + 宿主 SQLite 回退序列执行 |
+| T-SW-L0d-06（既有查询 API 未破坏） | 适用 | 静态核查 DDL/索引未变（查询实现未改）+ 宿主 SQL 数据保真 |
+| T-SW-L0d-04（真实时间戳单条写入） | **不适用** | 本项未改 `storeTemperatureData`（属 ITEM-007） |
+| T-SW-L1-01/L1-02（构建、宿主机单测） | 适用 | 已执行（91 项 0 失败） |
+
+### 2. 独立验证方法
+
+新增可复跑独立脚本 `evidence/software_verify_db_migration_item006.py`：
+- **语句不手抄**：从被测 Kotlin 源码**抽取** v3 两条 DDL 与 `MIGRATION_V2_TO_V3` 列表（解析 `const val` 拼接与 `$常量` 插值），并与期望形状精确比对；
+- **基线不变**：对改动前提交 `c232105` 抽取同一组 DDL 常量并逐字比对（`temperature`/`alarm_events`/两索引）；
+- **结构分析**：解析 `onCreate` 与 `if (oldVersion < 3)` 分支，断言 v2→v3 仅含 `CREATE`（回退时仅 DROP 新对象），无对既有表的 `DROP/ALTER/UPDATE/DELETE`；
+- **执行语义**：在宿主 SQLite 上以**独立构造的 v2/v1 库与数据**执行抽取出的迁移语句，断言数据保真、表/列/PK/索引、默认值、`OR REPLACE` 幂等、重复键拒绝、重复迁移幂等、冲突对象回退、v1→v3 路径。
+另编写**真机 instrumented 独立验证** `app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt`（5 项：v2→v3 保数据+新 schema、幂等键与默认值、重复打开、v1→v3 不崩溃、同名 VIEW 冲突回退不崩溃），使用测试专用库名，不触碰 App 正式库。
+
+### 3. 原始结果
+
+**独立脚本（EXIT=0）**：
+
+```
+== A 源码事实 ==
+  PASS  DATABASE_VERSION = 3
+  PASS  v3 待发箱 DDL 与期望逐字一致（含 PRIMARY KEY(device_id, time)、attempts/next_attempt_at DEFAULT 0）
+  PASS  v3 索引 DDL 与期望逐字一致
+  PASS  MIGRATION_V2_TO_V3 = ['SQL_CREATE_TABLE_PENDING_UPLOADS', 'SQL_CREATE_INDEX_PENDING_UPLOADS_NEXT']
+  PASS  onCreate 含 v3 新表与索引
+  PASS  v2→v3 分支仅含 CREATE 与（回退时）新对象 DROP；无对既有表的 DROP/ALTER/UPDATE
+== B 既有结构（对照改动前提交 c232105） ==
+  PASS  SQL_CREATE_TABLE_TEMPERATURE / SQL_CREATE_TABLE_ALARM_EVENTS / 两条索引 均逐字未变
+  INFO  基线 DATABASE_VERSION = 2（本项升为 3）
+== C1 v2 + 数据 → 迁移 ==
+  PASS  历史温湿度 3 行保真；历史报警记录保真
+  PASS  pending_uploads=table；列顺序=device_id,time,temperature,humidity,attempts,next_attempt_at
+  PASS  复合主键 = {device_id:1, time:2}；索引 idx_pending_uploads_next(next_attempt_at)
+  PASS  既有索引 idx_temperature_device / idx_alarm_device 保留
+  PASS  同键 OR REPLACE → 1 行且 attempts=0/next_attempt_at=0；普通重复 INSERT 触发主键约束
+== C2 ==  PASS  迁移语句重复执行无报错
+== C3 ==  INFO  首次迁移（存在同名 VIEW）报错 views may not be indexed；PASS 按回退序列后 pending_uploads=table 且历史数据仍 3 行
+== C4 ==  PASS  v1 两行保留且 device_id 回填；v1→v3 后 alarm_events/pending_uploads 齐备
+== RESULT ==  OK
+```
+
+**宿主机回归与构建**：
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单测（10 套件） | `./gradlew :app:testDebugUnitTest --offline` | BUILD SUCCESSFUL；**91 tests / 0 failures / 0 errors / 0 skipped**（含实现侧 `DatabaseSchemaV3Test` 9 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | BUILD SUCCESSFUL；`app-debug.apk` 10,360,124 B |
+| 真机测试可编译可打包 | `./gradlew :app:compileDebugAndroidTestKotlin --offline` | BUILD SUCCESSFUL；`app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk` 686,747 B |
+| 前项静态口径 | ITEM-002 / ITEM-004 脚本 | 均 EXIT=0 |
+
+### 4. Android 运行时（设备）经验层：未执行 —— 环境阻塞（已如实记录）
+
+已尝试在已授权目标设备（`android_test devices` → `fy5tibu88pcambxo device`）上运行 instrumented 测试：
+
+| 尝试 | 结果 |
+|---|---|
+| `./gradlew :app:connectedDebugAndroidTest --offline` | FAILED：`Could not download kotlinx-coroutines-core-jvm-1.6.4.jar … No cached version available for offline mode`（AGP 8.3 unified-test-platform 的 `android-device-provider-ddmlib` 依赖） |
+| 同上（联网） | FAILED：`Connect to 127.0.0.1:10808 failed: Connection refused`（本机代理不可用，无外网） |
+| `-Pandroid.experimental.androidTest.useUnifiedTestPlatform=false` | 仍要求同一依赖，无法绕过 |
+| 本地缓存检查 | `~/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/` 不存在 |
+
+本能力工具边界仅授权 `android_test`（devices/logcat/screenshot/install/launch/tap）与 `usb_list_devices`，**不含直接 `adb shell am instrument`**，因此不以绕过方式执行。
+**结论：设备端经验层（在真实 Android SQLite 上跑 `SQLiteOpenHelper` 升级）本轮未执行**；不得将 §3 的宿主 SQL 语义证据解读为“已在设备上验证”。该层已交接给后续完整回归能力（如具备缓存依赖/网络即可直接跑上述已编译的 instrumented 测试）。
+
+### 5. 判定
+
+1. **版本与新 schema**：`DATABASE_VERSION == 3`；两条新 DDL 与期望逐字一致；`MIGRATION_V2_TO_V3` 恰为这两条；`onCreate` 也建新对象。**通过**
+2. **既有结构不变**：`temperature`/`alarm_events` 与两索引的 DDL 与改动前提交逐字相同（仅 `private const val` → `const val` 可见性变化）；v2→v3 分支无任何针对既有表的 DROP/ALTER/UPDATE/DELETE。**通过**
+3. **迁移语义（宿主 SQLite，执行抽取出的语句）**：v2 历史温湿度与报警行全部保真；新表列/复合主键/索引正确；默认值 0；同键 `OR REPLACE` 幂等、普通重复 INSERT 被主键拒绝；重复迁移不报错；冲突对象经回退序列恢复为表且历史数据不被重建；v1→v3 后历史行保留且三表齐备。**通过**
+4. **不崩溃回退**：v2→v3 分支为 try/catch，首次失败仅清理新同名对象后重试，仍失败只记日志不抛出（静态核查 + 回退序列执行）。**通过**
+
+结论：**TEST_PASS**（范围：schema/迁移语句与既有结构不变、迁移语义的宿主 SQL 执行、宿主机回归与构建；**不含**设备端 Android 运行时经验层——该层因环境阻塞未执行，已登记交接）。
+
+### 6. 交接与观察
+
+1. **设备端经验层待补**：上文 instrumented 测试已就绪且可编译；任何具备 Gradle 缓存依赖或外网的环境执行 `./gradlew :app:connectedDebugAndroidTest` 即可补齐 T-SW-L0d-01/02/03/06 的设备证据。
+2. **冲突回退的行为细节**：宿主 SQLite 下首次迁移报 `views may not be indexed`（首条 `CREATE TABLE IF NOT EXISTS` 同名 VIEW 时不报错，随后建索引才报错），回退序列 `DROP VIEW/TABLE IF EXISTS` + 重试后得到正确的表且历史数据完好；Android SQLite 的错误文本可能不同，但回退结构一致。该场景为人为构造的异常预置，生产路径不会创建同名对象。
+3. **v1→v3 的 device_id 回填值**：沿用既有 v1→v2 策略（`MacIdBook` 第一条，否则 `UNKNOWN`）；本项未改该策略。
+4. **待发箱读写 API 不在本项**：`enqueue/peekBatch/ack/markFailed` 属后续队列项；若迁移最终失败导致表缺失，待发箱访问需容忍（实现侧已登记）。
+5. **本项不涉及**：入库真实时间戳与单条写入（ITEM-007）、上传编排（ITEM-009）、Service 接线（ITEM-010）、UI（ITEM-011/012）。
