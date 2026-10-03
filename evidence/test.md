@@ -698,3 +698,93 @@ RTC_IRQHandlerCallBack:
 “RTC 1 分钟中断累计 3 次才置采样标志”“一个周期只测一次”“移除小时上报与首样本强制上报”均经**真实 `main.c` + 独立仿真 MCU 层**验证，并与基线逐指令比对确认无其它副作用；既有回归全部通过。
 
 **判定：TEST_PASS**。
+
+---
+
+# ITEM-008 验证（条件上报的 433 发送路径）
+
+验证对象：任务项 **ITEM-008**（满足 `sensor_decide_report` 时 `encode_frame10` 组 10 字节帧并经 `app_um2005C_send_data_timeout` 有界发送；帧布局/字节序/Feistel 不变；仅在发送成功后清除待上报；失败按上限重试后放弃本轮）
+被测提交：`6a69601`；源码基线：`cdbc8cb`
+结论：**TEST_PASS**
+
+## A. 选测说明与变更范围
+
+| 选测项 | 理由 |
+|---|---|
+| 变更范围审查 | `measure.c` **+12/−19**：删除手工 `send_data[0..7]` 预组装（`encode_frame10` 会写满 10 字节，属死代码）；改传 `s_prev_temp_x10`/`s_last_hum_x10`（触发上报的样本）；`len` 改用 `SENSOR_RF_FRAME_LEN`；`main.c` 仅注释；**`encrytogate.c`/`feistel_al.c` 未修改** |
+| **发送路径独立验证（真实 `measure.c`）** | 用脚本化发送结果驱动成功/失败/用尽/窗口分支，验证“仅成功后清除”与“有界重试后放弃” |
+| **空口帧互操作（真实编码器 + 真实网关解码器）** | 验证帧布局/字节序/加密不变；并证明被删的手工组帧确为死代码 |
+| 回归与构建 | 既有 harness + GNU/AC5 |
+
+不适用（后续 ITEM）：旧通路退役（ITEM-009）、MDK/IAR 源列表（ITEM-011）、网关兼容性正式核对（ITEM-012）、**真实 433 射频与丢包/失败上限实板验证**（TD-002 T-L6-03/T-L7，需真实射频与仪器）。
+
+## B. 发送路径独立验证（通过，核心）
+
+真实 `measure.c` + 仿真 MCU 层（`test/mock_measure_ev/`），脚本化光/温湿度与 `app_um2005C_send_data_timeout` 返回值，并用**真实采样周期**产生待上报标志。
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+<mingw64 gcc> -std=c11 -Wall -Wextra -Wno-unused-function -Wno-misleading-indentation \
+  -Wno-unused-const-variable -I mock_measure_ev -I ../USER/inc -I ../UM2005C -I ../COMMON \
+  host_rf_report_verify_ev.c ../USER/src/measure.c ../USER/src/fw_core.c \
+  ../USER/src/sf_i2c.c ../USER/src/encrytogate.c -lm -o rf_report_verify && ./rf_report_verify
+=> ==== result: 28 passed, 0 failed ====
+```
+
+| 组 | 独立断言 | 结果 |
+|---|---|---|
+| 无待上报 | `report_req==0` 时不调用发送器 | PASS |
+| 成功路径 | 真实周期（暗+降 2.0 ℃）置起待上报 → 恰好 1 次发送；`len==SENSOR_RF_FRAME_LEN==10`；超时 == `SENSOR_RF_TX_TIMEOUT_MS`；**成功后清除待上报** | PASS ×5 |
+| **发送帧内容** | 交给发送器的 10 字节 == `encode_frame10(uid, 触发样本温度, 触发样本湿度)`；且发送时刻 `tempvalue/huminityvalue` 就是该样本，**与旧代码路径编码逐字节相同**（无帧变化） | PASS ×4 |
+| 失败不假成功 | 连续失败时 `report_req` 保持 1（不提前清除）；第 3 次成功才清除 | PASS ×4 |
+| **有界重试后放弃** | 持续失败 → 恰好 `SENSOR_RF_TX_RETRY`(3) 次尝试后清除待上报并放弃；此后不再发送 | PASS ×3 |
+| 新轮次 | 放弃后新的待上报重新发送，重试计数重置（第 2 次成功） | PASS ×2 |
+| 配置窗口 | `optcfg_window_active()` 为真 → 不发送且保留待上报；窗口关闭后补发 | PASS ×2 |
+| 失败周期 | 测量失败不置待上报、不发送 | PASS ×2 |
+
+## C. 空口帧与网关互操作（通过）
+
+自研 harness 直接链接**真实传感器编码器**（`USER/src/encrytogate.c`）与**真实网关解码器**（`CH592EVT/.../beiwov2/APP/feistel_al.c`）——两份独立实现互证。
+
+```
+<mingw64 gcc> -std=c11 -Wall -Wextra -Wno-unused-function -Wno-unused-const-variable \
+  -Wno-misleading-indentation -I ../USER/inc -I <gateway APP> host_rf_frame_verify_ev.c \
+  ../USER/src/encrytogate.c <gateway APP>/feistel_al.c -o rf_frame_verify && ./rf_frame_verify
+=> ==== result: 10 passed, 0 failed ====
+```
+
+| 组 | 独立断言 | 结果 |
+|---|---|---|
+| 往返 | 12 组向量（含 -100/−400/−450/1250/1300/32767/−32768、湿度 0/1000/65535）逐位往返一致（uid[0..3]、temp、hum） | PASS |
+| 字段/字节序 | 温度在 `p[4..5]` 小端、湿度在 `p[6..7]` 小端、id = `uid[0..3]`；负温符号保留 | PASS ×3 |
+| **全 10 字节写入** | 同一输入写入预填 0xAA 与清零缓冲区结果相同 → **证明 ITEM-008 删除的手工组帧确为死代码** | PASS ×3 |
+| 确定性 | 同输入两次编码逐字节相同 | PASS |
+| 完整性 | 10 个密文字节逐一翻转均被网关 CRC 拒绝 | PASS |
+| 网关→Android 映射 | 解码值按 `id | hum_be | temp_be` 组记录后用 `u16be@4`/`s16be@6` 读回，温度/湿度/id 归属正确（与 `app_um2006A.c` 与 `MqtttService.kt` 源码核对一致） | PASS |
+
+实现者自带 harness 也被独立执行确认：`host_rf_frame_check.c` **14/14**、`host_measure_flow_check.c` **24/24**。
+
+## D. 构建与回归（通过）
+
+| 项 | 结果 |
+|---|---|
+| GNU 交叉编译 | 0 error；28 warning（无一条指向 `measure.c`） |
+| AC5（`--c99`，CMSIS 5.9.0） | `measure.c` **0 诊断**——**ITEM-006 遗留的 `s_last_hum_x10` set-but-unused 告警已消除**（该变量现被 `encode_frame10` 使用） |
+| 资源 | FLASH 35,884→**35,856 B**（−28，删除死代码）；RAM 1,896 B 不变；`.bin` MD5 `9b72933e…` |
+| 符号 | `measure.o` 引用 `encode_frame10` 与 `app_um2005C_send_data_timeout`；`s_last_hum_x10` 已定义并使用 |
+| 既有独立 harness | fw_core 53/53、gxht40 42/42、light 45/45、measure 流程 79/79 |
+| 宿主机 L0 | `test/build_test.sh` 56/56 |
+
+## E. 观察与交接
+
+1. **真实射频未验证**：调制/前导/空中速率/丢包以及“发送失败上限”的实板行为需真实 433 链路与接收机（TD-002 T-L6-03/T-L7）；本轮仅验证软件侧调用、参数与状态机。
+2. **待上报期间主循环空转**：`go_to_sleep()` 在 `report_req!=0` 时不进深睡，故发送失败重试期间 CPU 保持活跃（次数有界：≤3 次 × ≤200 ms 超时）；能量影响属功耗实测（TD-002 T-L8）。
+3. `send_data_to_gateway()` 仍依赖 `optcfg_window_active()`（旧配置窗口），属 ITEM-009 退役范围。
+4. 网关 BLE 记录顺序与 Android 解析本轮已做**源码核对 + 宿主机映射验证**；网关固件正式核对属 ITEM-012。
+5. 本轮顺带清除了 ITEM-007 登记的 `main.c` 陈旧注释（“立即/小时/首样本上报”已改为条件上报）。
+
+## F. ITEM-008 判定
+
+“条件上报（`report_req` 门控）”“`encode_frame10` 组 10 字节帧 + 有界发送”“帧布局/字节序/Feistel 不变”“仅成功后清除待上报”“失败按上限重试后放弃本轮”均经**真实 `measure.c` 发送路径**与**真实编码器↔真实网关解码器互操作**独立验证；AC5 告警消除，既有回归全部通过。
+
+**判定：TEST_PASS**。
