@@ -1035,3 +1035,80 @@ sh gcc/build.sh
 `gcc/build.sh` 编译链接通过并生成 elf/hex/bin，FLASH 32,208 B（≤ 64 KB）与 RAM 1,712 B（≤ 4 KB）均在预算内；MDK 与 IAR 工程源文件列表已补齐新增源文件、无退役残留、路径全部存在、与 `USER/src` 实际集合一致，且两列表均可完整链接（零未定义符号）；`.gitignore` 补齐 `*.exe`。
 
 **判定：TEST_PASS**。
+
+---
+
+# ITEM-012 验证（网关 CH592 beiwov2 兼容性核对）
+
+验证对象：任务项 **ITEM-012**（确认 `decode_frame10` 取 `temp=p[4..5]`、`hum=p[6..7]`；BLE 每设备 8 字节记录为 `id|hum_be|temp_be` 且与 Android `parsePlainFrame` 的 `u16be@4`/`s16be@6` 一致；一致则不改代码并记录结论）
+被测提交：`6769d79`（仅改传感器侧测试与文档；**未改网关/Android**）
+结论：**一致，无需修改；TEST_PASS**
+
+## A. 选测说明
+
+本项是**只读跨组件核对**（网关 CH592 固件 + Android 解析），不属传感器固件改动。本轮采用三种独立手段：
+1. **逐段源码核对**（每个字节操作的出处）；
+2. **独立端到端 harness**：链接**真实传感器编码器**与**真实网关解码器**，并忠实复刻网关的组帧/打包与 Android 的解析代码，跑完整链路；
+3. **变更历史核对**（确认网关/Android 未被本工作流改动）。
+
+## B. 逐段源码核对（通过）
+
+| 环节 | 源码位置 | 实际行为 |
+|---|---|---|
+| 传感器组帧 | `USER/src/encrytogate.c:encode_frame10` | `uid[0..3] | temp_LE(2) | hum_LE(2) | crc16_LE(2)`，8 轮 Feistel |
+| 空口 | 433 MHz 10 B | 不变（IC-002 §3） |
+| 网关解密 | `APP/feistel_al.c:decode_frame10` | `uid=p[0..3]`；**`temp = p[4] | p[5]<<8`（小端 int16）；`hum = p[6] | p[7]<<8`（小端 uint16）**；crc16 校验覆盖 p[0..7] |
+| 网关组 resbf | `APP/app_um2006A.c:169..172` | `resbf[4..5]=temp 大端`、`resbf[6..7]=hum 大端` |
+| **网关记录交换** | `APP/app_um2006A.c:192..195` | `sensorres[4..5]=resbf[6..7]`（湿度大端）、`sensorres[6..7]=resbf[4..5]`（温度大端）→ **每设备 8 B = `id | hum_be | temp_be`** |
+| 设备归因 | `APP/app_um2006A.c:180` | 仅当 `bind_device_id[i][0..3] == resbf[0..3]` 才写入该设备槽 → 按 ID 归因，不靠顺序 |
+| 打包 | `APP/bleencrypt.c` | `FRAME_BLOCK_SIZE=16`、`DEV_PAYLOAD_LEN=8`；头部块 `gwid6[0..5] + devCount[6] + pad9`；设备块 `payload8` 原样置于 `out16[0..7]` + pad8；帧长 `16*(1+devCount)` |
+| BLE 加密 | `APP/app_um2006A.c:71..79, 209` | `encrypt_frame_ecb_inplace(..., APP_AES_KEY16)`，按 16 B 块 `LL_Encrypt`（AES-128 ECB），再 `SimpleProfile_SetParameter(SIMPLEPROFILE_CHAR2,...)` |
+| Android 解密 | `MqtttService.kt:501` | `Cipher.getInstance("AES/ECB/NoPadding")`，要求密文 16 B 对齐 |
+| Android 解析 | `MqtttService.kt:parsePlainFrame` | `gwid6=plain[0..5]`、`devCount=plain[6]`、`expected=16*(1+devCount)`、`off` 从 16 起步进 16、`p8=block[0..7]`、**`humi=u16be(p8,4)`、`temp=s16be(p8,6)`** |
+
+逐段对应：传感器 `temp/hum` 小端 → 网关解密后转大端存入 resbf → 记录内交换为“湿度在前” → Android 按 `u16be@4`（湿度）/`s16be@6`（温度）读取。**全链一致。**
+
+关键常量独立比对：**AES 密钥 16 字节与 Android 逐字节相同**（`91 4E 03 B7 C2 5A 88 1D F4 60 7B 2E A9 17 6C 55`）；帧长规则、记录 8 B、块 16 B 两边一致；网关无对自身温度历史的二次过滤（`tempervalue`/`humivalue` 仅用于组帧）。
+
+## C. 独立端到端 harness（通过）
+
+链接**真实** `encrytogate.c` + **真实** `feistel_al.c`，并**逐字复刻**网关 `bleencrypt.c` 的 `build_header_block`/`build_device_block`/`build_padded_frame_blocks`、`app_um2006A.c` 的记录交换，以及 Android 的 `parsePlainFrame`/`u16be`/`s16be`。
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+<mingw64 gcc> -std=c11 -Wall -Wextra -Wno-unused-function -Wno-unused-const-variable \
+  -Wno-misleading-indentation -I ../USER/inc -I <gateway APP> host_gw_compat_verify_ev.c \
+  ../USER/src/encrytogate.c <gateway APP>/feistel_al.c -o gw_compat_verify && ./gw_compat_verify
+=> ==== result: 11 passed, 0 failed ====
+```
+
+| 组 | 独立断言 | 结果 |
+|---|---|---|
+| 全链向量 | 8 组值（含 −100/−400/1250/351/0/289/350 ℃ 与 0/7/100/500/999/1000 %RH）经“传感器编码 → 网关解密 → 网关记录 → 打包 → Android 解析”后 id/温度/湿度均一致 | PASS |
+| 多设备 | 4 设备一帧：帧长 = 16*(1+devCount)、头部 `gwid6[0..5]`+`devCount[6]`、每设备 id/温/湿归因正确、设备块前 8 B 与记录逐字节相同 | PASS ×5 |
+| **负对照** | 故意按旧顺序 `id|temp_be|hum_be` 组记录 → Android 读出错位值（未通过）→ 证明上述正向结论非空验 | PASS |
+| 帧长规则 | devCount 0..5 时网关 `16*(1+N)` == Android `expected` | PASS |
+| ID 透传 | 空口 4 B == 编码器 `uid[0..3]` == 记录 4 B（网关原样拷贝，不改序） | PASS ×3 |
+
+实现者自带 harness 也被独立执行确认（需额外链接网关 `bleencrypt.c`，见 G.1）：`host_rf_frame_check.c` → **22 passed, 0 failed**。
+
+## D. 变更历史核对（通过）
+
+| 对象 | 结论 |
+|---|---|
+| 网关 `CH592EVT/.../beiwov2/` | 仅 `c3baaaa`（**本工作流基线 `b32ea8a` 之前**）修改过 `app_um2006A.c` 的记录顺序（交换为 `id|hum_be|temp_be`，与 IC-001/IC-002 一致）；自 `b32ea8a` 起的本工作流**未触碰**网关任何文件 |
+| Android `dengbei_care/` | 自基线导入 `cc6c6f7` 以来**零改动** |
+| 本项实现提交 | `6769d79` 仅改传感器侧 `test/host_rf_frame_check.c` 与文档，**无网关/Android 改动**——符合“一致则不改代码”的任务要求 |
+
+## E. 观察与交接
+
+1. **实现者证据的复现命令缺一个源文件**：`evidence/protocol_test.md` 的 ITEM-012 命令未包含网关 `bleencrypt.c`，按原文链接会报 `undefined reference to build_device_block / build_padded_frame_blocks`（我已实测复现）；补上后 22/22 通过。属**证据文档级**问题（非产品缺陷），建议补全命令。
+2. **既有“超时无传感器”路径会发布全 0 记录**：网关在 `timeoutcnt` 用尽后 `memset(sensorres,0,...)` 并发布（`id=00000000`）。这是**基线已有、本工作流未改动**的行为；因零 ID 不匹配任何绑定设备，不会把真实传感器数据错配。但 IC-002 §5 提到“不将未收到数据解释为零值”——建议 App/服务器侧确认对零 ID 记录的现有处理（登记为产品级备注，非本项缺陷）。
+3. **设计文档措辞与实际 ID 取值不同（无功能影响）**：FD-002 §8.1 写“`mcu_uid` 取 `ptr[0],[3],[6],[8]`”，而 `encrytogate.c` 的 `UID_IDX={0,1,2,3}` 使空口 ID 实际为 `uid[0..3]`（`measure.c` 里写入 `send_data[0..3]` 的代码被 `encode_frame10` 覆盖，ITEM-008 已证为死代码）。网关与 Android 均原样透传这 4 字节，**功能一致**；建议更正设计文档措辞。
+4. **真实射频/BLE 空中链路未实测**：本项为软件级一致性核对；调制/前导/空中速率/丢包、BLE 实际收发与 App 读数需真实硬件（TD-002 T-L7、T-L2）。
+
+## F. ITEM-012 判定
+
+`decode_frame10` 的 `temp=p[4..5]`/`hum=p[6..7]` 与 BLE 每设备 `id|hum_be|temp_be`、Android `u16be@4`/`s16be@6` **逐段一致**；AES 密钥与 ECB 块处理一致；网关无二次过滤；网关与 Android 自本工作流基线以来未被修改，且本项实现未改其代码——**符合“一致则不改代码并记录结论”**。
+
+**判定：TEST_PASS**。
