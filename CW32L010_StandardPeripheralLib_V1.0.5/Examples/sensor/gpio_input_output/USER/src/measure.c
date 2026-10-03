@@ -20,8 +20,6 @@
 #include "cw32l010_uart.h"
 #include "app_um2005c.h"
 #include "encrytogate.h"
-#include "optcfg.h"      /* optcfg_window_active(): 配置窗口内延后上报 (ITEM-009 退役) */
-#include "hall.h"        /* hall_event_pending(): 睡眠门控 (ITEM-009 退役) */
 
 /* ==================================================================== */
 /* 软 I2C 端口 (PA04 = SDA, PA03 = SCL)                                  */
@@ -245,9 +243,6 @@ void send_data_to_gateway(void)
     if (report_req == 0) {
         return;                        /* 不满足判据: 不上报 */
     }
-    if (optcfg_window_active()) {      /* 配置窗口内延后上报 (ITEM-009 退役) */
-        return;
-    }
 
     /* 发送最近一次有效样本 (与触发上报的样本一致): encode_frame10 内部组装
      * uid_pick(4) | temp_x10_LE(2) | hum_x10_LE(2) | crc16_LE(2) 并加密 */
@@ -268,8 +263,7 @@ void send_data_to_gateway(void)
 
 void go_to_sleep(void)
 {
-    if ((report_req == 0) && (sample_flag == 0) &&
-        (!hall_event_pending()) && (!optcfg_window_active())) {
+    if ((report_req == 0u) && (sample_flag == 0u)) {
         SYSCTRL_GotoDeepSleep();
     }
 }

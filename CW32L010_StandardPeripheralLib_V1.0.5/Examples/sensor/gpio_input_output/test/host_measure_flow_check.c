@@ -71,9 +71,6 @@ void encode_frame10(uint8_t u[10], int16_t t, uint16_t h, uint8_t o[10])
     g_enc_hum  = h;
 }
 
-bool optcfg_window_active(void) { return false; }
-bool hall_event_pending(void) { return false; }
-
 /* ==================================================================== */
 /* 可控的 GXHT40 / 光照桩 + 调用顺序记录                                  */
 /* ==================================================================== */

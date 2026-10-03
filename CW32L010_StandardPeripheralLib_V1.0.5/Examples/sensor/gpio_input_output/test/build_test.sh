@@ -5,5 +5,5 @@ set -e
 cd "$(dirname "$0")"
 CC=${CC:-gcc}
 $CC -std=c11 -Wall -Wextra -I../USER/inc host_sensor_core_test.c \
-    ../USER/src/fw_core.c ../USER/src/history.c -lm -o host_sensor_core_test.exe
+    ../USER/src/fw_core.c -lm -o host_sensor_core_test.exe
 ./host_sensor_core_test.exe

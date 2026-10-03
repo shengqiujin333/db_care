@@ -315,7 +315,7 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
-# 任务项 ITEM-008（本轮）
+# 任务项 ITEM-008（已完成，独立验证 TEST_PASS）
 
 **ITEM-008**：实现条件上报：满足 `sensor_decide_report` 时调用 `encode_frame10(uid, temp_x10, hum_x10)` 组 10 字节帧并经 `app_um2005C_send_data_timeout` 有界发送，帧布局、字节序与 Feistel 加密保持不变，仅在发送成功后清除待上报状态，发送失败按上限重试后放弃本轮。
 
@@ -355,9 +355,54 @@ bool     sensor_decide_report(int16_t prev, bool have_prev, int16_t cur, bool da
 
 ---
 
+# 任务项 ITEM-009（本轮）
+
+**ITEM-009**：退役与新硬件冲突的旧通路：从工程与构建中移除 hall/OPTCFG/params/history 模块及其对 PB04/PB05/PB06 的初始化，移除 GPIOB 霍尔 EXTI 分支与 LPTIM 中的 OPTCFG 分支；PB04 仅作 AIN11 模拟输入、PB05 仅作光照供电输出、PB06 不外驱动。
+
+设计映射：FWR-111；FD-002 §1.2/§3.3/§11.4；网表（PB04=LIGHT_ADC、PB05=LIGHTPOWER、PB06=NC、无霍尔器件）。测试映射：TD-002 T-L0-06（退役引用为 0）、T-L1-07（工程源文件列表）。
+
+## 实际改动
+
+**删除文件（8 个）**：`USER/src/hall.c`、`USER/inc/hall.h`、`USER/src/optcfg.c`、`USER/inc/optcfg.h`、`USER/src/params.c`、`USER/inc/params.h`、`USER/src/history.c`、`USER/inc/history.h`。
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `.../USER/inc/main.h` | 修改 | 移除 `params.h`/`history.h`/`optcfg.h`/`hall.h` 包含 |
+| `.../USER/src/main.c` | 修改 | 移除 `params_init/history_init/optcfg_init/hall_init` 与主循环内 Hall 去抖/开窗、`optcfg_process()` 分支 |
+| `.../USER/src/interrupts_cw32l010.c` | 修改 | 移除 `hall.h`/`optcfg.h` 包含；`GPIOB_IRQHandler` 删除霍尔 EXTI 分支（PB04 已为模拟输入）；`LPTIM_IRQHandler` 删除 OPTCFG 采样分支，仅保留 433 位时钟 |
+| `.../USER/src/measure.c` | 修改 | 移除 `optcfg.h`/`hall.h` 包含；`send_data_to_gateway()` 删除配置窗口延后门；`go_to_sleep()` 仅按 `report_req`/`sample_flag` 门控 |
+| `.../USER/inc/fw_core.h`、`.../USER/src/fw_core.c` | 修改 | 移除参数(NVM 阈值)纯函数与 OPTCFG/1 解码器/帧解析；**保留** CRC16-CCITT-FALSE（通用纯工具，仍由测试覆盖）与本次新增的 CRC-8/换算/滞回/上报纯逻辑；不再包含 `params.h`/`string.h`/`math.h`（改 `<stddef.h>`） |
+| `.../test/host_sensor_core_test.c`、`test/build_test.sh` | 修改 | 移除已退役的 params/OPTCFG/history 用例与 `history.c` 链接，仅保留 CRC16 回归（新用例属 ITEM-010） |
+| `.../test/host_measure_flow_check.c` | 修改 | 移除不再被引用的 `optcfg_window_active`/`hall_event_pending` 桩 |
+
+### 行为要点
+
+1. **引脚所有权唯一**：PB04 仅由 `light.c` 配为模拟输入（AIN11）；PB05 仅由 `light.c` 配为推挽输出；PB06 无任何代码引用（DEBUG UART 用的是 PA05/PA06）。
+2. **无遗留引用**：全工程源码中已无 hall/OPTCFG/params/history 的代码引用（仅保留说明性注释）；固件镜像中无相关符号。
+3. **构建自动收敛**：`gcc/build.sh` 以 `USER/src/*.c` 通配编译，删除后自动不再编译；MDK/IAR 工程源文件列表本就未登记这些模块（也尚未登记 gxht40.c/light.c/fw_core.c），列表一致性属 ITEM-011。
+4. **功能不变**：采样→判定→上报→深睡主流程不受影响（已由既有 harness 回归）。
+
+**本项不包含**：把 gxht40.c/light.c/fw_core.c 加入 MDK/IAR 源列表（ITEM-011）、新增纯逻辑测试用例（ITEM-010）、网关固件核对（ITEM-012）。
+
+## 验证（本轮实际执行）
+
+- 交叉编译：`gcc/build.sh` → **0 错误、28 条告警**（与 ITEM-008 同数，均为既有模板/库告警）；FLASH 35,856 → **32,208 B**（−3,648 B）、RAM 1,896 → **1,712 B**（−184 B）。`arm-none-eabi-nm` 确认镜像中**无** hall/optcfg/params/history 符号，`gxht40_measure`/`light_sample`/`sensor_decide_report`/`fw_crc8_gxht` 均在。
+- 退役引用检查：`grep -rn "hall|optcfg|params_|history|OPTCFG_|PARAMS_" USER/` → 仅 3 处说明性注释；MDK/IAR 工程文件本就无这些模块条目。
+- 引脚所有权：PB04/PB05 仅出现在 `light.c`/`sensor_config.h`（owner）；PB06 无引用。
+- 回归：`test/build_test.sh`（CRC16）2/2、`host_fw_core_pure_check.c` 36/36、`host_measure_flow_check.c` 24/24、`host_gxht40_check.c` 27/27、`host_light_check.c` 17/17、`host_sf_i2c_bus_check.c` 15/15、`host_rf_frame_check.c` 14/14。
+
+## 交接与依赖
+
+- **跨角色交接（embedded_verification）**：`test/host_measure_flow_verify_ev.c`、`host_rf_report_verify_ev.c`、`host_rtc_cadence_verify_ev.c` 仍引用已退役的 `optcfg.h`/`hall.h`/`params.h`/`history.h` 或其符号；本能力未修改这些跨角色验证文件，需测试侧适配（移除相应桩/包含）。
+- **MDK/IAR 源列表（ITEM-011）**：删除的 8 个文件未在这些工程中登记（无需移除）；但 `gxht40.c`/`light.c`/`fw_core.c` 也未登记，ITEM-011 必须补上，否则 MDK/IAR 链接会缺少驱动/纯逻辑。
+- **新纯逻辑用例（ITEM-010）**：本项已将 `host_sensor_core_test.c` 收敛为 CRC16 回归，ITEM-010 需补充 CRC-8/换算/光照滞回/上报判定用例。
+- 板级引脚/功耗验证（TD-002 T-L3/T-L4）仍需真实硬件；本项完成后 PB04/PB05 引脚冲突已消除，实板验证前提具备。
+
+---
+
 # 后续任务项状态
 
-`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-008（前七项独立验证 TEST_PASS，ITEM-008 本轮）。其余 4 项由 Runtime 后续指派，未指派项不在本轮产出。
+`artifacts/firmware_tasks.yaml` 共 12 项；已完成 ITEM-001…ITEM-009（前八项独立验证 TEST_PASS，ITEM-009 本轮）。其余 3 项由 Runtime 后续指派，未指派项不在本轮产出。
 
 # 交接与依赖（累计）
 

@@ -1,7 +1,7 @@
 # 驱动测试证据（DRV-002）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 **ITEM-002**（`sf_i2c` 无寄存器地址总线原语）、**ITEM-003**（GXHT40 驱动）、**ITEM-004**（光照通路）、**ITEM-005**（`fw_core.c` 纯逻辑）、**ITEM-006**（`measure.c` 采样流程）、**ITEM-007**（3 分钟节拍）、**ITEM-008**（条件上报发送路径）
+本轮对象：任务项 **ITEM-002**…**ITEM-008**（总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报）与 **ITEM-009**（退役 hall/OPTCFG/params/history）
 被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）；`USER/src/fw_core.c` / `USER/inc/fw_core.h`（ITEM-005）；`USER/src/measure.c` / `USER/inc/measure.h`（ITEM-006）
 测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（mock 总线）、`.../test/host_light_check.c`（纯逻辑 + 硬件桩）、`.../test/host_fw_core_pure_check.c`（纯逻辑）、`.../test/host_measure_flow_check.c` + `.../test/mock_measure_mcu/`（mock MCU 影子头）
 
@@ -321,3 +321,62 @@ gcc -std=c11 -Wall -Wextra -DSENSOR_CONFIG_NO_MCU -Imock_measure_mcu \
 ## 4. 结论
 
 `send_data_to_gateway()` 满足 ITEM-008：仅在 `report_req`（由 `sensor_decide_report` 置位）为真时组帧发送，使用最近有效样本与 `SENSOR_RF_FRAME_LEN`，成功清除待上报、失败按上限重试后放弃；帧布局/字节序/加密未变。
+
+---
+
+# ITEM-009：旧通路退役自检
+
+被测对象：删除 hall/OPTCFG/params/history 后的传感器工程（编译、符号、引用、引脚所有权）
+本项为“删除 + 引用清理”，采用**构建/符号/静态引用**三类确定性检查。
+
+## 1. 检查命令与结果
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+
+# (1) 源码引用
+ grep -rn "hall|optcfg|params_|history|OPTCFG_|PARAMS_" USER/
+   -> 仅 3 处说明性注释 (fw_core.h/fw_core.c/measure.c 的退役说明)
+
+# (2) 已删文件不存在
+ ls USER/src USER/inc
+   -> 仅 encrytogate/fw_core/gxht40/interrupts/light/main/measure/sf_i2c (.c)
+      + encrytogate/fw_core/gxht40/interrupts_cw32l010/light/main/measure/sensor_config/sf_i2c (.h)
+
+# (3) 镜像符号
+ arm-none-eabi-nm gcc/obj/sensor_fw.elf | grep -iE "hall|optcfg|params_|history"  -> (无输出)
+ arm-none-eabi-nm gcc/obj/sensor_fw.elf | grep -iE "gxht40_measure|light_sample|sensor_decide_report|fw_crc8_gxht"
+   -> T gxht40_measure / light_sample / sensor_decide_report / fw_crc8_gxht
+
+# (4) 引脚所有权
+ grep -rn "PB04|PB05|PB06|GPIO_PIN_[456]" USER/
+   -> PB04/PB05 仅 light.c/sensor_config.h；PB06 无引用 (GPIO_PIN_6 仅用于 PA06 调试 UART)
+
+# (5) 构建
+ sh gcc/build.sh  -> 0 error / 28 warning; FLASH 32,208 B / RAM 1,712 B
+```
+
+## 2. 检查项与判定
+
+| 检查 | 期望 | 结果 |
+|---|---|---|
+| 8 个模块文件 | 已删除 | PASS |
+| 源码引用 | 无代码引用（仅注释） | PASS |
+| 固件符号 | 无 hall/optcfg/params/history | PASS |
+| 新模块接线 | gxht40/light/fw_core 符号在镜像中 | PASS |
+| PB04 所有权 | 仅 light.c 配为 AIN11 模拟输入 | PASS |
+| PB05 所有权 | 仅 light.c 配为推挽输出 | PASS |
+| PB06 | 无任何配置/驱动 | PASS |
+| 中断 | GPIOB 无霍尔分支；LPTIM 仅 433 位时钟 | PASS |
+| 构建 | 0 error，资源下降 | PASS |
+
+## 3. 覆盖边界
+
+- 未在真实硬件验证引脚电平/功耗；PB04/PB05 所有权已在源码层唯一化，板级验证（TD-002 T-L3/T-L4）前提已具备，由嵌入式测试完成。
+- MDK/IAR 工程源列表一致性属 ITEM-011；本项确认这些工程本就未登记被删模块。
+- `test/build_test.sh` 已收敛为 CRC16 回归（2/2）；新增纯逻辑用例属 ITEM-010。
+- 嵌入式测试的部分 harness（`host_measure_flow_verify_ev.c`/`host_rf_report_verify_ev.c`/`host_rtc_cadence_verify_ev.c`）仍引用已退役头/符号，属跨角色交接。
+
+## 4. 结论
+
+hall/OPTCFG/params/history 及其对 PB04/PB05/PB06 的初始化、GPIOB 霍尔 EXTI 分支与 LPTIM 的 OPTCFG 分支均已从源码、构建与固件镜像中移除；PB04 仅作 AIN11 模拟输入、PB05 仅作光照供电输出、PB06 不外驱动；采样→判定→上报→深睡主流程回归全部通过。

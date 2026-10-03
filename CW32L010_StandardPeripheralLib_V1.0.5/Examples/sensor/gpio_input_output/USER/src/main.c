@@ -240,22 +240,11 @@ int32_t main(void)
 	__SYSCTRL_FLASH_CLK_ENABLE();
 	FLASH_SetReadOutLevel(FLASH_RDLEVEL2);
 	
-	/* --- 新增初始化 (FR-108/204, FD-001 6.3) --- */
-	params_init();       /* 装载 NVM 阈值或默认值 */
-	history_init();      /* 20 项历史环清零 */
-	optcfg_init();       /* PB06 高(F2 断电) + PB05 输入 */
-	hall_init();         /* PB04 输入 + EXTI 唤醒 */
+	/* 传感器初始化 (软 I2C/GXHT40/光照) 在首次采样时惰性完成 (measure.c) */
 	
     while(1)
     {
         //-----------------------------------------------------------------------
-			if(hall_event_pending()){              /* Hall 有效沿 → 去抖 → 开配置窗口 */
-				hall_event_clear();
-				if(hall_debounced_active()){
-					optcfg_window_start();
-				}
-			}
-			optcfg_process();       /* 配置窗口生命周期/提交 (FR-101..108) */
 			temperature_process(); /* 采样节拍: 3 分钟一拍 (ITEM-007) */
 			send_data_to_gateway();/* 条件上报: sensor_decide_report 门控 (ITEM-008) */
 			go_to_sleep();

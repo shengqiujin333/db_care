@@ -18,8 +18,6 @@
 #include "../inc/interrupts_cw32l010.h"
 #include "../inc/main.h"
 #include "app_gtimer.h"
-#include "../inc/hall.h"
-#include "../inc/optcfg.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -185,10 +183,7 @@ void GPIOA_IRQHandler(void)
 void GPIOB_IRQHandler(void)
 {
     /* USER CODE BEGIN */
-    if (CW_GPIOB->ISR & HALL_IN_PIN) {   /* PB04 Hall 有效沿 (FR-101) */
-        CW_GPIOB->ICR = HALL_IN_PIN;
-        hall_isr();
-    }
+    /* PB04 已改为 LIGHT_ADC (AIN11 模拟输入), 不再有霍尔 EXTI; 本中断未使用 */
     /* USER CODE END */
 }
 
@@ -252,11 +247,7 @@ void LPTIM_IRQHandler(void)
     if (CW_LPTIM->ISR & LPTIM_ISR_ARRM_Msk)
     {
         CW_LPTIM->ICR_f.ARRM = 0;
-        if (optcfg_window_active()) {
-            optcfg_lptim_isr();        /* OPTCFG 10ms 采样 (RTA-001 5) */
-        } else {
-            app_gtimer_count_irq();    /* 433 位时钟 */
-        }
+        app_gtimer_count_irq();        /* 433 位时钟 */
     }
     /* USER CODE END */
 }
