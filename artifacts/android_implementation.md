@@ -705,3 +705,59 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 3. **提示文案为硬编码中文**：与既有卡片文案（“未收到”“正常”等）风格一致；若后续需要本地化，属资源化重构（需同步 `strings.xml`）。
 4. **`HomeViewModel` 仅改注释**：sparkline 容量数值上限（`MAX_SPARKLINE_SIZE = 30`）未改，仅修正节拍说明。
 5. **本项不涉及**：详情页规则说明/图表范围/高温强调（ITEM-012）、早报文案（ITEM-013）、版本与文档（ITEM-014）。
+
+---
+
+# 任务项 ITEM-012（本轮完成）
+
+**ITEM-012（队列第 12 项）**：调整设备详情与规则呈现：`fragment_device_detail.xml` 与 `DeviceDetailFragment.kt` 增加采样周期 3 分钟与条件上报规则（温度较上次下降超过 0.9℃且无光，或温度超过 35.0℃）的只读说明文字；图表可查询时间范围上限由 50 分钟放宽到 24 小时；对超过 35.0℃ 的读数做高温样式强调（等于 35.0℃ 不强调）。
+期望行为：界面呈现的规则与 readme 一致；不显示任何环境光/照度信息；不给出 App 推断的上报原因结论。
+
+设计映射：AA-002 §5.3（规则呈现）、§7（详情展示）、D-12（图表范围 50min→24h）、D-14（>35.0℃ 仅做呈现强调）、D-03（不推断光照）；TD-SW-002 §4.5 T-SW-L3-04/05/06。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt` | 新增 | 纯逻辑（无 Android 依赖）：`REPORT_RULE_TEXT`（规则只读文案）、`MAX_CHART_RANGE_HOURS=24`/`MAX_CHART_RANGE_MS`、`HIGH_TEMP_C=35.0` + `isHighTemperature()`（严格大于）、`rangeLimitMessage()`、`highTempSuffix()` |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DeviceDetailFragment.kt` | 修改 | ① 绑定 `reportRuleText` = 规则文案；② 新增 `bindLatestReading(devId)`：最新读数 + 相对时间，`>35.0℃` 时报警红 + “ · 高温”文本强调（未收到显示 `--`，不伪造 0 值）；③ 图表左轴（温度轴）加 35℃ 高温参考线（仅视觉，不参与判定）；④ 范围上限由 `49*60*1000` 改为 `DetailPresentation.MAX_CHART_RANGE_MS`，提示文案同步为“24 小时以内” |
+| `dengbei_care/app/src/main/res/layout/fragment_device_detail.xml` | 修改 | 新增 `reportRuleText`（规则说明，只读、次要色）与 `latestReadingText`（最新读数，高温强调）两个 TextView |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt` | 新增 | 宿主机 JUnit4 自检 8 项（见 §3） |
+
+规则文案（与 readme 修改点 3/4 逐字对应）：
+
+> 采样周期 3 分钟。仅当温度较上次下降超过 0.9℃且无光，或温度超过 35.0℃ 时才上报；未满足条件时不会上报，因此可能长时间没有新数据。
+
+**关于“无光”与“不显示光照信息”的口径（重要，已与上游文本冲突处显式选择）**：任务描述与 TD-SW-002 T-SW-L3-04 同时要求“规则与 readme 一致（含‘且无光’）”与“不出现光照/无光/lux”。二者无法同时字面成立。本实现按**规则原文必须忠于 readme**（首要要求）处理：
+- 规则文案中包含 readme 原文的“无光”条件（不包含“光照”“照度”“lux”等词）；
+- 界面**不显示任何环境光状态或照度数值**，也不显示 App 推断的上报原因（无“因下降 x℃ 上报”类文案）；App 也无光照字段/逻辑（光照不上空口、不上 BLE，IC-002 §2）。
+若上游要求“连规则原文的‘无光’也不得出现”，属产品表述变更，需上游确认后改文案常量（一处）。
+
+## 2. 预期行为（本轮交付）
+
+1. 详情页展示只读规则说明（3 分钟采样 + 条件上报），与 readme 一致，不给推断结论。
+2. 图表可查询时间范围上限 = 24 小时；超限提示“时间范围必须在 24 小时以内”（不再出现 50 分钟）。
+3. 最新读数 `> 35.0℃` → 报警红 + “ · 高温”；`= 35.0℃` 与更低值不强调；未收到数据 → “最新读数：--”。
+4. 温度轴增加 35℃ 参考线，便于识别高温区间（仅视觉，不参与任何判定/门控）。
+5. App 仍不重算传感器门控、不推断光照、不合成样本。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；全部套件共 **168 项、0 失败 0 跳过**（新增 `DetailPresentationTest` 8 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,391,985 B |
+| 旧范围上限清零 | `grep -rn "50 分钟\|49 \* 60" app/src/main` | 0 命中 |
+| 环境光/照度词元 | `grep -rni "lux\|光照\|照度" app/src/main/java/.../ui/detail app/src/main/res/layout/fragment_device_detail.xml` | 0 命中（规则文案保留 readme 原文的“无光”条件） |
+| 七个独立门禁 | `python evidence/software_verify_*.py`、`software_static_check_*.py` | 全部 **EXIT=0**（含 ITEM-007 的 `60L` 分布门禁——新常量改用 `HOUR_MS` 派生，未新增 `60L` 字面量） |
+
+新增 8 项用例：`ruleText_matchesReadme`（3 分钟/0.9/无光/35.0/才上报）、`ruleText_containsNoAmbientLightOrIlluminanceInfo`、`ruleText_givesNoAppInferredReportingReason`、`chartRangeLimit_isTwentyFourHours`（24h = 86,400,000 ms）、`rangeLimitMessage_matchesLimit_andHasNoFiftyMinuteWording`、`highTemp_isStrictlyAbove35`（35.0/34.9/0/-10 不强调；35.1/36/100 强调）、`highTempSuffix_onlyForHighReadings`、`highTempThreshold_equalsReadmeValue` —— **8/8 PASS**。
+
+原始输出见 `evidence/android_test.md`（AT-012）。
+
+## 4. 观察与交接
+
+1. **真机截图未在本轮验证**：规则文案/高温强调/24h 查询属 T-SW-L3-04/05/06（需设备）。
+2. **高温强调的呈现方式**：颜色（报警红）+ 文本后缀（“ · 高温”）+ 图表 35℃ 参考线；`= 35.0℃` 不强调。若产品希望改为图表逐点着色，属新需求（MPAndroidChart 的 `LineDataSet` 不原生支持逐点颜色，需自定义渲染）。
+3. **门禁交互**：新常量原写作 `24 * 60L * 60L * 1000L`，会使 ITEM-007 门禁（限制 `60L` 出现位置）误报；已改为 `MAX_CHART_RANGE_HOURS * HOUR_MS`（`HOUR_MS = 3_600_000L`）以保持该门禁语义有效，未修改测试能力的脚本。
+4. **本项不涉及**：早报文案（ITEM-013）、版本与文档（ITEM-014）。

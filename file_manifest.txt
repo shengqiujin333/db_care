@@ -127,12 +127,15 @@ dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCod
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt | active | 报警判定纯逻辑模块（时间窗下降 5/10/15min、基准=窗口内最新样本含 30min 回溯容差；阈值超限/紧急 >65.0℃ 语义保持现状；四类文案+Severity；纯函数且输出不含温湿度数值；ITEM-005）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt | active | MQTT 批量载荷严格归因纯逻辑模块（time:temps:humis；数目不一致/空序列/非法数值含 NaN·Inf/时间非法→拒绝整批；一致时按 MacIdBook 顺序产出携带 devId 的 Reading；ITEM-003）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt | active | 采样节拍常量（SAMPLE_PERIOD_SECONDS=180 / SAMPLE_PERIOD_MS=180000；BLE 读取周期与界面文案共用；ITEM-010）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt | active | 设备详情页只读呈现常量与判定（纯逻辑）：3 分钟采样 + 条件上报规则文案、图表范围上限 24h、高温强调阈值 35.0℃（严格大于）与提示文案；不显示环境光/照度信息、不给推断结论（ITEM-012）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DeviceDetailFragment.kt | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt | active | 注册/登录 Retrofit 接口（既有 5 个端点不变）+ ITEM-008 新增 `POST /upload_data` 与 `SensorReading`/`SensorUploadData` 请求体数据类
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | active | 内嵌 Paho MQTT Android 客户端（vendor；粗路径）
 dengbei_care/app/src/main/res/ | active | Android 资源（layout/values/navigation/drawable/mipmap/xml；粗路径）；xml/network_security_config.xml 于 ITEM-004 追加放行 8.140.23.253（保留既有两项，未新增其它主机）
+dengbei_care/app/src/main/res/layout/fragment_device_detail.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/layout/item_device_card.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/xml/network_security_config.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt | active | CloudConfig 常量与 network_security_config 明文放行自检 3 项（新主机 8883/5000、旧主机不再作为连接目标、明文放行仍为 3 个且未新增其它主机；ITEM-004）
@@ -144,6 +147,7 @@ dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCod
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt | active | AlarmEvaluator 宿主机 JUnit4 自检 23 项（L0-06..L0-10：开关语义/时间窗基准与边界/负对照/阈值与紧急边界/优先级文案/纯函数性与不携带温湿度数值；ITEM-005）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt | active | ReadingAttribution 宿主机 JUnit4 自检 16 项（归因顺序/负温0值/绑定顺序无关/数目不一致/空序列/非法数值/时间非法/无绑定设备/多余段兼容；ITEM-003）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt | active | 采样节拍常量自检 2 项（180s/180000ms 一致、非旧 5 分钟/1 分钟；ITEM-010）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt | active | 详情页呈现自检 8 项（规则文案与 readme 一致、无环境光/照度信息与推断结论、图表上限 24h、高温强调仅 >35.0℃；ITEM-012）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/home/DeviceStateTest.kt | active | DeviceState 卡片状态自检 7 项（未收到语义、相对时间分桶与边界、长时间无数据不得为“离线”、旧 isOnline/离线阈值入口已移除、displayName、严重级透传、空占位；ITEM-011）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/AlarmEvaluatorItem005VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-005 独立验证（独立时间窗参考实现；窗口边界表与每窗口取最新基准、无基准/样本全过新的“第 N 个样本”负对照、严格比较等值不触发、开关矩阵与超限覆盖优先级、紧急 >65 与每次通知标记、文案字面值、纯函数且 Result 无测量字段、4000 例随机属性比对、非有限输入不抛异常；10/10）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt | active | 由 software_tester.software_verification 新增：ITEM-009 宿主机独立验证（自带内存待发箱/伪 Api/伪门控；常量与退避曲线、门控三态、幂等入队、成功删除+载荷逐行映射、失败退避与到期重试、maxAttempts 保留不重试、单批上限、Api 异常不抛、并发串行、入队不阻塞调用方（timeout 保护）、dueBatch 过滤排序）；11/11

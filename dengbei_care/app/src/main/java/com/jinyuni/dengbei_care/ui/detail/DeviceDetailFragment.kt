@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -23,6 +24,7 @@ import com.jinyuni.dengbei_care.DatabaseHelperInstance
 import com.jinyuni.dengbei_care.MacIdBook
 import com.jinyuni.dengbei_care.TemperatureDatabaseHelper
 import com.jinyuni.dengbei_care.databinding.FragmentDeviceDetailBinding
+import com.jinyuni.dengbei_care.ui.home.HomeViewModel
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -67,6 +69,10 @@ class DeviceDetailFragment : Fragment() {
         lineChart = binding.lineChart
         setupChart()
 
+        // 只读规则说明（采样周期 3 分钟 + 条件上报规则），与 readme 一致；不做任何推断结论
+        binding.reportRuleText.text = DetailPresentation.REPORT_RULE_TEXT
+        bindLatestReading(devId)
+
         binding.startDateText.setOnClickListener { showDateTimePicker(binding.startDateText) }
         binding.endDateText.setOnClickListener { showDateTimePicker(binding.endDateText) }
         binding.searchButton.setOnClickListener { searchTemperature(devId) }
@@ -97,6 +103,16 @@ class DeviceDetailFragment : Fragment() {
         leftAxis.setDrawLabels(true)
         leftAxis.textColor = requireContext().getColor(com.jinyuni.dengbei_care.R.color.brand_error)
         leftAxis.axisLineColor = requireContext().getColor(com.jinyuni.dengbei_care.R.color.brand_error)
+        // 高温参考线（> 35.0℃ 为高温强调阈值；仅作视觉参考，不参与任何判定）
+        leftAxis.removeAllLimitLines()
+        leftAxis.addLimitLine(
+            LimitLine(DetailPresentation.HIGH_TEMP_C.toFloat(), "35℃ 高温").apply {
+                lineColor = requireContext().getColor(com.jinyuni.dengbei_care.R.color.brand_error)
+                textColor = requireContext().getColor(com.jinyuni.dengbei_care.R.color.brand_error)
+                lineWidth = 1f
+                enableDashedLine(10f, 10f, 0f)
+            }
+        )
         leftAxis.valueFormatter = object : ValueFormatter() {
             private val df = DecimalFormat("0.0")
             override fun getFormattedValue(value: Float): String = df.format(value)
@@ -145,6 +161,32 @@ class DeviceDetailFragment : Fragment() {
         lineChart.invalidate()
     }
 
+    /**
+     * 最新读数与高温强调：`> 35.0℃` 用报警红 + “· 高温”文本强调；`= 35.0℃` 不强调。
+     * 未收到任何数据时显示 `--`，不显示伪造的 0℃/0%RH。
+     */
+    private fun bindLatestReading(devId: String) {
+        val state = HomeViewModel.getInstance(requireActivity().application).getDevice(devId)
+        val high = state != null && !state.isNeverReported() && DetailPresentation.isHighTemperature(state.latestTemp)
+
+        binding.latestReadingText.text = if (state == null || state.isNeverReported()) {
+            "最新读数：--"
+        } else {
+            "最新读数：%.1f°C / %.0f%%（%s）%s".format(
+                state.latestTemp,
+                state.latestHumi,
+                state.lastReportAgeLabel(),
+                DetailPresentation.highTempSuffix(high)
+            )
+        }
+        binding.latestReadingText.setTextColor(
+            requireContext().getColor(
+                if (high) com.jinyuni.dengbei_care.R.color.brand_error
+                else com.jinyuni.dengbei_care.R.color.brand_primary
+            )
+        )
+    }
+
     private fun showDateTimePicker(textView: TextView) {
         val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
             calendar.set(Calendar.YEAR, year)
@@ -183,15 +225,15 @@ class DeviceDetailFragment : Fragment() {
 
         val fmt = SimpleDateFormat("yyyy-M-d HH:mm", Locale.getDefault())
         if (!isDateValid(startDate, fmt) || !isDateValid(endDate, fmt)) {
-            Toast.makeText(context, "时间范围必须在 50 分钟以内", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, DetailPresentation.rangeLimitMessage(), Toast.LENGTH_SHORT).show()
             return
         }
 
         val startTime = fmt.parse(startDate)?.time ?: return
         val endTime = fmt.parse(endDate)?.time ?: return
 
-        if (endTime - startTime > 49 * 60 * 1000) {
-            Toast.makeText(context, "时间范围必须在 50 分钟以内", Toast.LENGTH_SHORT).show()
+        if (endTime - startTime > DetailPresentation.MAX_CHART_RANGE_MS) {
+            Toast.makeText(context, DetailPresentation.rangeLimitMessage(), Toast.LENGTH_SHORT).show()
             return
         }
 

@@ -825,3 +825,71 @@ D-010-1 的两条修复要求均已满足：① 每一步副作用独立保护�
 ITEM-011 的期望行为成立：长时间无新数据的设备不再显示“离线”，改为相对时间 + “按条件上报，可能长时间无上报”提示；未收到数据的设备仍为“未收到”且温湿度 `--`；报警级别文案与配色不变；旧离线判定入口（`isOnline`/30 min 阈值）已彻底移除；全量 155 项宿主机用例通过、构建成功。
 
 未覆盖（需设备，属测试能力）：卡片实际渲染/配色/截图为 T-SW-L3-01/02/03；`bindStatusChip` 位于 Adapter（需 Android 视图），其分支由静态核查 + 设备侧用例覆盖。
+
+---
+
+## AT-012 · ITEM-012（详情页规则呈现、24h 范围、高温强调）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`grep -rn`、七个独立门禁脚本 |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：`DeviceDetailFragment.kt`（规则绑定 + 最新读数高温强调 + 35℃ 参考线 + 24h 范围）、`fragment_device_detail.xml`（两个新 TextView）；新增 `ui/detail/DetailPresentation.kt` 与 `test/.../ui/detail/DetailPresentationTest.kt` |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 3s
+```
+
+| 汇总 | 值 |
+|---|---|
+| 套件数 | 17 |
+| 合计 | **168 tests / 0 failures / 0 errors / 0 skipped** |
+| 本项新增 | `DetailPresentationTest` 8 项 |
+
+新增 8 项用例（TD-SW-002 L3-04/05/06）：
+
+| 用例 | 覆盖 | 结果 |
+|---|---|---|
+| `ruleText_matchesReadme` | 规则文案含 3 分钟 / 0.9 / 无光 / 35.0 / 才上报 | PASS |
+| `ruleText_containsNoAmbientLightOrIlluminanceInfo` | 文案不含光照/照度/lux/有光 | PASS |
+| `ruleText_givesNoAppInferredReportingReason` | 无“因下降…”/“上报原因”类推断结论 | PASS |
+| `chartRangeLimit_isTwentyFourHours` | 24h = 86,400,000 ms | PASS |
+| `rangeLimitMessage_matchesLimit_andHasNoFiftyMinuteWording` | 提示文案含“24 小时”，不含“50”/“分钟以内” | PASS |
+| `highTemp_isStrictlyAbove35` | 35.1/36/100 强调；**35.0**/34.9/0/-10 不强调 | PASS |
+| `highTempSuffix_onlyForHighReadings` | 强调后缀 | PASS |
+| `highTempThreshold_equalsReadmeValue` | 阈值 = 35.0 | PASS |
+
+### 3. 构建与静态核查
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,391,985 B |
+
+| 检查 | 结果 |
+|---|---|
+| 旧范围上限清零 | `grep -rn "50 分钟\|49 \* 60" app/src/main` → 0 命中 |
+| 环境光/照度词元 | detail 包 + 详情布局 `grep -rni "lux\|光照\|照度"` → 0 命中（规则文案保留 readme 原文的“无光”条件） |
+| 规则与上限同源 | `DeviceDetailFragment` 引用 `DetailPresentation.REPORT_RULE_TEXT` / `MAX_CHART_RANGE_MS` / `rangeLimitMessage()` / `isHighTemperature()` |
+| 七个独立门禁 | 全部 **EXIT=0**（`software_verify_orchestration_item010` / `timestamp_write_item007` / `cloud_upload_item009` / `upload_payload_item008` / `db_migration_item006` / `static_check_no_little_endian_parser` / `static_check_server_migration`） |
+| 编译告警 | 无新增 |
+
+### 4. 判定
+
+ITEM-012 可在宿主机确定断言的部分全部成立：规则文案与 readme 一致（含“无光”条件、不含环境光/照度信息与推断结论）；图表范围上限 24 小时（旧 50 分钟字面量已清零）；高温强调仅 `>35.0℃`（`=35.0℃` 不强调，未收到显示 `--`）；七个独立门禁无回归；全量 168 项宿主机用例通过、构建成功。
+
+未覆盖（需设备，属测试能力）：详情页截图与文案核对、24h 查询出图、35.0/35.1 强调对比 —— TD-SW-002 T-SW-L3-04/05/06。
+
+### 5. 需上游确认的口径差异
+
+任务描述/TD-SW-L3-04 同时要求“规则含‘且无光’”与“不出现无光”。本实现按“规则忠于 readme”处理（规则文案含“无光”；界面不显示环境光状态/照度，无推断结论）。若上游要求连规则原文也不得出现该词，属文案变更（改一处常量）。
