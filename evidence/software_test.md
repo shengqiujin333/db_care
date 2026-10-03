@@ -891,3 +891,44 @@ $ python evidence/software_verify_orchestration_item010.py        # EXIT=0
 1. **设备端经验层仍未执行**：`connectedDebugAndroidTest` 受 UTP 依赖缺失 + 无外网阻塞；且启动 debug 包会连生产 broker/服务器并可能写入真实数据（无隔离测试环境），故未执行 install/launch。真机 BLE/MQTT 链路、通知/卡片、待发箱补传与 `/upload_data` 属 E2E-SW-002 J-1/J-2/J-3；若需设备验证，请提供隔离的测试账号/环境。
 2. **入库与上传现为“各自保护”而非“入库成功才入队”**：由于选择“保持顺序 + 逐步 try/catch”，当**本地入库**抛出时仍会执行入队上传（两者均以 `(dev_id, time)` 幂等，待发箱是持久队列，服务端 `UNIQUE` 兜底），正常路径顺序仍为“入库 → 入队上传”。若产品要求严格的“入库失败则不上传”，属语义细化，需上游确认（当前实现与验收文字“任一步失败不影响其他步骤”一致）。
 3. `stopAlarm`/`stopVibration` 现在无论是否在播放都会释放资源并置空引用（原仅在播放中释放）；属健壮性改进，用户可见行为不变。
+
+---
+
+## ST-011 · ITEM-011（卡片状态展示：去除 30 分钟“离线”）—— 结论 **TEST_PASS**
+
+**被测代码版本**：`47176a4`（android_engineer.android_implementation 提交，相对上一提交 `6f12fd4`）
+**变更范围**：`DeviceState.kt`（删除 `OFFLINE_THRESHOLD_MS`/`isOnline()`，新增 `isNeverReported()`/`lastReportAgeLabel()`）、`ui/home/DeviceCardAdapter.kt`（chip 去“离线”分支 + `reportHint`）、`res/layout/item_device_card.xml`（新增 `reportHint`，sparkline 约束改挂）、`HomeViewModel.kt`（仅注释）+ 实现侧测试。
+
+### 1. 适用测试与结果
+
+| 验收点 | 方法 | 结果 |
+|---|---|---|
+| 不再存在 30 分钟数据龄判定入口 | 独立脚本 A（**只看代码**，注释中的历史说明不计）+ JVM 反射 | **PASS**（`isOnline`/`OFFLINE_THRESHOLD` 命中 0；卡片/状态文件代码与布局中“离线”命中 0） |
+| chip 仍区分 未收到/正常/警告/紧急 且配色语义不变 | 独立脚本 B（与基线 `6f12fd4` 逐三元组比对） | **PASS**（4 组文案+配色+字色逐字一致；相对基线仅移除“离线”分支） |
+| 长时间无数据不再显示离线，改为相对时间 + 条件上报提示 | 独立脚本 C + JVM 分桶边界 | **PASS**（`最近上报 <label> · 按条件上报，可能长时间无上报`；40 分钟 → `40 分钟前` 且不含“离线”） |
+| 未收到仍为“未收到”且温度/湿度为 `--` | 独立脚本 C4 + JVM `isNeverReported` | **PASS** |
+| 相对时间分桶精确 | JVM 边界：0/59/60 s、59/60 min、23h59m/24h、3d | **PASS**（恰好 60 s、60 min、24 h 均正确跳出上一档） |
+| 布局接线 | 独立脚本 D（reportHint 位于 tempValue 下；sparkline 顶部约束指向 reportHint） | **PASS** |
+| 无关配色资源未被改动 | 独立脚本 E（`colors.xml` 与基线逐字比对） | **PASS** |
+| 连通性不由数据龄推断 | 独立脚本 F | **PASS**（卡片/状态类未引入链路状态推断） |
+| 兼容面：DeviceState 其余字段未变 | JVM 反射（8 字段齐全） | **PASS** |
+| 宿主机回归与构建 | `testDebugUnitTest` / `assembleDebug` | **160 tests / 0 failures**；APK 10,361,689 B（与实现侧一致） |
+| 真机界面截图/配色（TD-SW-002 T-SW-L3-01/02/03） | — | **未执行**（见 §2） |
+
+### 2. 独立验证方法摘要
+
+1. 宿主机独立单测 `verification/DeviceStateItem011VerificationTest.kt`（5 项，期望值自写）：`isNeverReported` 语义与空标签；分桶边界表（含“恰好等于”负向断言）；40 分钟陈旧设备只得相对时间；反射断言 `isOnline` 方法与 `OFFLINE_*` 字段不存在且其余 8 字段齐全；级别与 `displayName` 原样传递。
+2. 独立脚本 `evidence/software_verify_card_status_item011.py`（A–F）：代码层旧判定清零（注释不计，且校验非卡片文件中既有的“离线”文案未新增）；chip 三元组与基线逐项比对 + 仅允许移除“离线”分支；两种提示文案与 `--` 占位；布局约束；`colors.xml` 未变；无连通性推断。
+3. 全量回归：8 个独立门禁（ITEM-002/004/006/007/008/009/010/011）+ 160 项宿主机用例 + 构建。
+
+### 3. 判定
+
+长时间无新数据的设备不再被判定/显示为“离线”，只展示“最近上报 N 分钟/小时/天前”与“按条件上报，可能长时间无上报”提示；从未收到数据的设备仍为“未收到”且数值为 `--`；紧急/警告/正常 三档文案与配色（含字色）与改动前逐字一致；30 分钟数据龄判定入口已彻底移除且未在其它文件新增“离线”文案。结论：**TEST_PASS**。
+
+### 4. 未执行层与交接
+
+1. **真机界面未验证**：卡片截图与配色观感（T-SW-L3-01/02/03）需设备；`connectedDebugAndroidTest` 受 UTP 依赖缺失 + 无外网阻塞，且启动 debug 包会连**生产** broker/服务器（无隔离测试环境），故未执行 install/launch/screenshot。该层属 E2E-SW-002 与后续 L3 设备用例。
+2. **`ReportGenerator` 的既有“设备可能离线过”建议文案**（`ReportGenerator.kt:109`）在本项**未被改动**（已核实为基线既有，非本项新增）。该文案按“预期约 288 条/天”的固定节奏推断，与条件上报语义已不符——属**后续队列项（早报文案）**范围，已交接，本能力不越权修改。
+3. `HomeViewModel` 仅改注释（sparkline 容量 `MAX_SPARKLINE_SIZE = 30` 未变，仅修正 3 分钟节拍说明）。
+4. 提示文案为硬编码中文（与卡片既有“未收到/正常”等风格一致）；本地化属资源化重构。
+5. `bindStatusChip` 位于 Adapter（需 Android 视图）未纳入宿主机测试，其四分支由静态核查（含基线配色比对）与后续设备侧 L3 用例覆盖。
