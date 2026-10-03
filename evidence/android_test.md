@@ -491,3 +491,77 @@ ITEM-007 可在宿主机确定断言的部分全部成立：写入语句为 `INS
 未覆盖（需 Android 运行时，属软件测试能力）：真实写入行的 `time` 值、重复写入后行数、守护关闭时 0 行 —— TD-SW-002 §4.2 T-SW-L0d-04。本项不声称设备侧行级结果已验证。
 
 另：非编译的 iOS 参考快照仍含旧列表式 API（本轮不改 iOS）；`AlarmEvaluator` 的 `60L` 为窗口换算，与入库无关。
+
+---
+
+## AT-008 · ITEM-008（`/upload_data` 接口与请求体构造）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`./gradlew :app:compileDebugKotlin --offline --rerun` |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：`ui/zhuce/ApiService.kt` +24/−1（纯追加端点与 DTO）；新增 `cloud/UploadPayload.kt` 与 `test/.../cloud/UploadPayloadTest.kt` |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 3s
+```
+
+| 套件 | 项数 | 失败 | 跳过 |
+|---|---|---|---|
+| `com.jinyuni.dengbei_care.telemetry.AlarmEvaluatorTest` | 23 | 0 | 0 |
+| `com.jinyuni.dengbei_care.telemetry.ReadingAttributionTest` | 16 | 0 | 0 |
+| `com.jinyuni.dengbei_care.protocol.GatewayFrameCodecTest` | 11 | 0 | 0 |
+| `com.jinyuni.dengbei_care.cloud.UploadPayloadTest`（本项新增） | 11 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.AlarmEvaluatorItem005VerificationTest` | 10 | 0 | 0 |
+| `com.jinyuni.dengbei_care.db.DatabaseSchemaV3Test` | 9 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.ReadingAttributionItem003VerificationTest` | 8 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001VerificationTest` | 7 | 0 | 0 |
+| `com.jinyuni.dengbei_care.db.TemperatureWriteItem007Test` | 4 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.TemperatureWriteItem007VerificationTest` | 4 | 0 | 0 |
+| `com.jinyuni.dengbei_care.cloud.CloudConfigTest` | 3 | 0 | 0 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001LegacyParityTest` | 3 | 0 | 0 |
+| `com.jinyuni.dengbei_care.ExampleUnitTest` | 1 | 0 | 0 |
+| **合计** | **110** | **0（0 errors、0 skipped）** | 0 |
+
+新增 11 项用例（TD-SW-002 对应）：
+
+| 用例 | 覆盖 | 结果 |
+|---|---|---|
+| `serializedJson_hasExactContractFieldNames` | L0-11 逐字 JSON：`{"phone":…,"mac":…,"readings":[{"devId":…,"time":…,"temperature":25.5,"humidity":60.0}]}` | PASS |
+| `unitsAreCelsiusAndPercentRh_notRawX10` | 单位：×10 原始值已换算为 ℃/%RH（不得再缩放），负温保持 | PASS |
+| `timeIsUnixSeconds_passedThroughUnchanged` | `time` 为 Unix 秒整数 | PASS |
+| `devIdComesFromAttributedReading_notFromIndex` | `devId` 来自归因结果而非下标 | PASS |
+| `multipleReadings_shareBatchTime_andKeepOrder` | 多读数共享批时间、顺序保持 | PASS |
+| `emptyReadings_produceNoPayload` | 空读数集不产生请求（两条构造路径均 null） | PASS |
+| `build_keepsPerReadingTimes_forOutboxBackfill` | 待发箱路径逐行时间 | PASS |
+| `dtoFieldNames_matchServerContract` | DTO 字段名集合逐字比对 | PASS |
+| `apiService_keepsFiveExistingEndpoints_andAddsUploadData` | 端点路径集合 = 既有 5 个 + `/upload_data`（无其它变动） | PASS |
+| `existingRequestDataClasses_areUnchanged` | 既有 5 个请求数据类字段未变 | PASS |
+| `uploadDataEndpoint_usesJsonContentType` | `Content-Type: application/json` + 入参为 `SensorUploadData` | PASS |
+
+### 3. 构建与告警
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,359,867 B |
+
+全量重编译（`--rerun`）共 11 条 warning，与 ITEM-007 同一集合，无新增；`ApiService.kt` diff 为纯追加（既有 5 个端点与 6 个数据类逐字未改，仅原文件末尾换行差异）。
+
+### 4. 判定
+
+ITEM-008 的期望行为成立：`POST /upload_data` 接口与 `SensorReading`/`SensorUploadData` 请求体数据类已就位，Gson 序列化结果与服务器契约逐字一致（字段名、℃/%RH、Unix 秒）；`devId` 来自归因结果；空读数集不产生请求；既有 5 个端点与数据类未变；全量 110 项宿主机用例通过、构建成功。
+
+未覆盖（需真实服务器/网络，属测试能力）：`/upload_data` 实际可达性与服务端 `inserted` 幂等计数（TD-SW-002 T-SW-L2-12）、端到端上传链路（E2E-SW-002）。本项不声称云端落库已验证。
+
+另：本项不含上传编排/待发箱/门控（ITEM-009）与 Service 接线（ITEM-010）。

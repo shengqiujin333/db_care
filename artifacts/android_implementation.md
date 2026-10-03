@@ -392,3 +392,63 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 3. **`AlarmEvaluator` 中的 `60L`** 为时间窗分钟→秒换算，与入库回填无关；若后续静态门禁采用全仓 `60L` 字面清零，需显式排除该处。
 4. **iOS 参考快照**（`dengbei_care/iOS开发资料/03_Tier2_行为对齐/TemperatureDatabaseHelper.kt` 等）仍含旧列表式 API 与 60 s 回填：非编译、不参与构建，本轮不改 iOS（readme 点 6），登记为交接项。
 5. **本项不涉及**：待发箱 DAO 与上传编排（ITEM-009）、`processTemperatureHumidityData` 接入 `AlarmEvaluator`（ITEM-010）、UI（ITEM-011/012）。
+
+---
+
+# 任务项 ITEM-008（本轮完成）
+
+**ITEM-008（队列第 8 项）**：在 `ui/zhuce/ApiService.kt` 新增 `POST /upload_data` 接口与对应请求体数据类（`phone`、`mac`、`readings[{devId,time,temperature,humidity}]`），并新增纯逻辑模块 `cloud/UploadPayload.kt` 构造该请求体。
+期望行为：字段名与服务器契约一致；`temperature` 为摄氏度、`humidity` 为 %RH、`time` 为 Unix 秒（由 0.1℃/0.1 %RH 原始值除以 10 得到）；`readings` 中的 `devId` 来自记录自身归因结果；既有 5 个端点签名与数据类字段不变。
+
+设计映射：AA-002 §5.5（`/upload_data` 契约、单位、归属、幂等）、§4.2（新增 `cloud/UploadPayload.kt`）；`服务器迁移记录.md` §八；TD-SW-002 §4.1 T-SW-L0-11、§4.2 T-SW-L0d-07。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt` | 修改（纯追加） | 新增 `@Headers("Content-Type: application/json")` + `@POST("/upload_data")` 的 `suspend fun uploadData(@Body data: SensorUploadData): Response<Void>`；新增 `SensorReading(devId, time, temperature, humidity)` 与 `SensorUploadData(phone, mac, readings)`；**既有 5 个端点与 6 个既有数据类逐字未改** |
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt` | 新增 | 纯 Kotlin（无 Android 依赖）：`fromAttributed(phone, mac, timeSeconds, readings)`（生产路径：已归因读数 + 批时间）与 `build(phone, mac, readings)`（待发箱补传路径：逐行时间）；空读数集返回 null |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadPayloadTest.kt` | 新增 | 宿主机 JUnit4 自检 11 项（见 §3） |
+
+契约与单位：
+
+```json
+{"phone":"13800000000","mac":"1010100000A1",
+ "readings":[{"devId":"A1B2C3D4","time":1699999999,"temperature":25.5,"humidity":60.0}]}
+```
+
+| 项 | 处理 |
+|---|---|
+| 字段名 | DTO 属性名与契约逐字一致（`phone`/`mac`/`readings`；`devId`/`time`/`temperature`/`humidity`），Gson 直接序列化即得契约 JSON（无 `@SerializedName` 需求） |
+| 单位 | `temperature` ℃、`humidity` %RH。线上原始值是 ×10 整数，**除以 10 的换算已在解码/归因阶段完成**（`GatewayFrameCodec` → `ReadingAttribution`）；`UploadPayload` 不做第二次缩放（避免双重换算），负温符号保持 |
+| `time` | Unix 秒；生产路径用批时间（MQTT = payload 首段、BLE = 接收时刻），待发箱路径逐行时间 |
+| `devId` | 来自 `ReadingAttribution.Reading.devId`（即记录自身的 4 B ID），不依赖列表下标 |
+| 幂等 | 服务端 `UNIQUE(dev_id, time)` + `INSERT IGNORE`；App 侧由待发箱 `(dev_id, time)` 去重（ITEM-009 实现） |
+| 空集 | 返回 null ⇒ 不产生请求（与 TD-SW-002 T-SW-L0-11 一致） |
+
+## 2. 预期行为（本轮交付）
+
+1. `uploadData` 以 `application/json` POST 到 `{CloudConfig.HTTP_BASE_URL}/upload_data`，请求体字段名与服务器契约逐字一致。
+2. 载荷中的温度/湿度为 ℃/%RH（不是 ×10 原始值），负温保留符号；`time` 为 Unix 秒整数。
+3. `readings` 的 `devId` 来自归因结果；空读数集不构造请求体。
+4. 既有 5 个端点路径/方法/数据类字段与 `LoginResponse` 未变（纯追加）。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；13 套件共 **110 项、0 失败 0 跳过**（新增 `UploadPayloadTest` 11 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,359,867 B |
+| 全量重编译告警 | `./gradlew :app:compileDebugKotlin --offline --rerun` | 11 条（与 ITEM-007 同一集合），无新增 |
+| 差异范围 | `git diff --stat` | `ApiService.kt` +24/−1（仅末尾换行差异）；新增 2 个文件 |
+
+新增 11 项用例：`serializedJson_hasExactContractFieldNames`（逐字 JSON 断言）、`unitsAreCelsiusAndPercentRh_notRawX10`（含负温）、`timeIsUnixSeconds_passedThroughUnchanged`、`devIdComesFromAttributedReading_notFromIndex`、`multipleReadings_shareBatchTime_andKeepOrder`、`emptyReadings_produceNoPayload`、`build_keepsPerReadingTimes_forOutboxBackfill`、`dtoFieldNames_matchServerContract`、`apiService_keepsFiveExistingEndpoints_andAddsUploadData`、`existingRequestDataClasses_areUnchanged`、`uploadDataEndpoint_usesJsonContentType` —— **11/11 PASS**。
+
+原始输出见 `evidence/android_test.md`（AT-008）。
+
+## 4. 观察与交接
+
+1. **响应体未建模**：接口用 `Response<Void>`（既有风格，仅需 2xx 判定成功）。服务端实际返回 `inserted` 计数（迁移记录 §八）；若后续需在 App 侧读取该计数，属新增需求（一行类型改动），当前 T-SW-L2-12 的 `inserted` 核对由测试能力直接 `curl` 完成。
+2. **手机号/守护门控不在本项**：`phone` 与 `mac` 由调用方（ITEM-009 编排）从 `registerphone`/`mac_addr` 取值；空手机号不入队属 ITEM-009（D-09）。本模块只做结构组装（不读 SharedPreferences）。
+3. **`UploadPayload` 依赖 `ui.zhuce` 的 DTO**：因任务要求数据类放在 `ApiService.kt`，模块引用该 DTO 属于可接受的单向依赖（DTO 无 Android 依赖）；若后续将 DTO 下沉到 `cloud/`，属结构优化，需同步 `ApiService` 导入。
+4. **本项不涉及**：待发箱 DAO/重试与上传编排（ITEM-009）、Service 接线（ITEM-010）、UI（ITEM-011/012）、版本/文档（ITEM-014）。
