@@ -838,3 +838,56 @@ ITEM-010 使两个早先的回归门禁脚本出现“预期变化导致的失�
 | `software_verify_cloud_upload_item009.py` | `MqtttService` 引用 = 0（未接线） | 断言接线**形状**：仅经 `uploadRepository.enqueueAndUpload/triggerUpload`，导入四个生产实现类，**不得**直接 `Retrofit.Builder`/`CloudApiClient`，入队受守护门控 | ITEM-010 按设计完成接线；门禁改判为“接线必须经 repository 且门控” |
 
 校正后各门禁均回到 EXIT=0；与 ITEM-010 无关的断言未被放宽。
+
+---
+
+## ST-010R · ITEM-010 复验（缺陷 D-010-1 修复后）—— 结论 **TEST_PASS**
+
+**复验对象**：`489ed62`（android_engineer.android_implementation 修复提交，相对上一提交 `21f4b53`）
+**上轮结论**：`aba90a9` → `TEST_FAIL`（缺陷 D-010-1：步骤隔离不足）
+**修复差异范围**（`git diff --name-only 21f4b53 489ed62`）：仅 `MqtttService.kt`、`RingtonePlayer.kt`、`VibrationPlayer.kt` 三个产品文件 + 文档/清单。
+
+### 1. 复验方法（独立，较上轮加强）
+
+在上轮门禁基础上**新增 F2**（逐步保护与辅助类不外抛）并新增宿主机可执行用例：
+
+1. `evidence/software_verify_orchestration_item010.py` 的 F/F2：逐步骤断言“该步骤之后出现 `catch`（步骤闭合）”；核对 `RingtonePlayer`/`VibrationPlayer` 的 try/catch、`as?` 判空、`MediaPlayer.create` 判空、stop 系列的 try/catch+finally 置空、两文件无显式 `throw`。
+2. **新增宿主机可执行验证** `verification/PlayerDegradationItem010VerificationTest.kt`（2 项）：`RingtonePlayer.stopAlarm()` 可重复调用不抛；`VibrationPlayer.vibratePhone(...)` 在系统服务不可用（mockable android.jar 下返回默认 null）时静默降级，`stopVibration` 不抛。
+3. 全量回归：7 个独立门禁 + 宿主机单测 + 构建。
+
+### 2. 原始结果
+
+```
+$ python evidence/software_verify_orchestration_item010.py        # EXIT=0
+  A1-A5 PASS（周期 180s 派生、READ_INTERVAL_MS 引用、手动立即读取保留）
+  B  12/12 PASS（编排顺序未因修复而改变）
+  C  C1-C11 PASS（三条文案字面值/ALARM_TYPE_*/900s 去抖仅在守护中/>65℃ 只在 AlarmEvaluator/旧窗口清零）
+  D  D1-D5 PASS（四个触发点 + triggerUpload×3 + 入队受守护门控）
+  E  PASS（库基准范围与失败降级；宿主 SQLite 执行 getSamplesInRange 过滤+升序正确）
+  F  PASS  函数内 try 块数 = 9；通知块↔入库独立保护=True；报警事件落库↔入库独立保护=True
+  F2 PASS  8/8 步骤闭合 + 8/8 辅助类断言（startAlarm/ create 判空 / URI 空降级 / stopAlarm / vibratePhone / as? 判空 / stopVibration / 无 throw）
+  RESULT: OK
+```
+
+| 检查 | 结果 |
+|---|---|
+| ITEM-010 门禁（上轮 EXIT=1） | **EXIT=0** |
+| 其余 6 个独立门禁（ITEM-002/004/006/007/008/009） | 全部 **EXIT=0**（无回归） |
+| 宿主机单测（含本轮新增 2 项） | **148 tests / 0 failures / 0 errors / 0 skipped** |
+| 构建 | BUILD SUCCESSFUL；`app-debug.apk` 10,361,755 B（与修复记录一致） |
+| 辅助类可执行降级 | `PlayerDegradationItem010VerificationTest` 2/2 PASS |
+
+### 3. 判定
+
+1. **步骤隔离（原缺陷）**：函数由 1 个 try 变为 **9 个 try**，8 个副作用步骤（清 sparkline / 紧急通知块 / 卡片告警 / 报警事件落库 / 单条入库 / 入队上传 / 卡片读数 / 900 s 去抖副作用）**各自被 catch 闭合**；紧急通知块与报警事件落库不再可能跳过入库、入队上传与卡片更新。**通过**
+2. **辅助类不外抛**：`RingtonePlayer.startAlarm` 现对 URI 为空与 `MediaPlayer.create` 返回 null 显式降级，并对 `start()` 异常兜底；`VibrationPlayer.vibratePhone` 用 `as?` 判空并对 `vibrate()` 兜底；stop 系列均 try/catch+finally 释放置空；两文件无显式 `throw`；宿主机可执行用例证明服务不可用时静默降级。**通过**
+3. **兼容面未因修复改变**：编排顺序 12/12、三条文案字面值、`ALARM_TYPE_*`、`>65℃` 语义（仍只在 `AlarmEvaluator`）、900 s 去抖且仅守护中、守护门控、真实采样时间戳、四个上传触发点、周期 180 s 全部与上轮一致。**通过**
+4. **无回归**：7 个门禁 + 148 项宿主机用例 + 构建全部通过；修复差异仅 3 个产品文件。**通过**
+
+结论：**TEST_PASS**（缺陷 D-010-1 已修复并经独立复验；设备端经验层仍未执行，见 §4）。
+
+### 4. 仍存在的限制与观察（不构成失败）
+
+1. **设备端经验层仍未执行**：`connectedDebugAndroidTest` 受 UTP 依赖缺失 + 无外网阻塞；且启动 debug 包会连生产 broker/服务器并可能写入真实数据（无隔离测试环境），故未执行 install/launch。真机 BLE/MQTT 链路、通知/卡片、待发箱补传与 `/upload_data` 属 E2E-SW-002 J-1/J-2/J-3；若需设备验证，请提供隔离的测试账号/环境。
+2. **入库与上传现为“各自保护”而非“入库成功才入队”**：由于选择“保持顺序 + 逐步 try/catch”，当**本地入库**抛出时仍会执行入队上传（两者均以 `(dev_id, time)` 幂等，待发箱是持久队列，服务端 `UNIQUE` 兜底），正常路径顺序仍为“入库 → 入队上传”。若产品要求严格的“入库失败则不上传”，属语义细化，需上游确认（当前实现与验收文字“任一步失败不影响其他步骤”一致）。
+3. `stopAlarm`/`stopVibration` 现在无论是否在播放都会释放资源并置空引用（原仅在播放中释放）；属健壮性改进，用户可见行为不变。

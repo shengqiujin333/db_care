@@ -29,6 +29,8 @@ APP = "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care"
 MQTT_REL = f"{APP}/MqtttService.kt"
 CADENCE_REL = f"{APP}/telemetry/SensorCadence.kt"
 HELPER_REL = f"{APP}/TemperatureDatabaseHelper.kt"
+RINGTONE_REL = f"{APP}/RingtonePlayer.kt"
+VIBRATION_REL = f"{APP}/VibrationPlayer.kt"
 
 violations: list[str] = []
 
@@ -194,26 +196,78 @@ def main() -> int:
         # 紧急通知块与入库/上传之间是否存在独立保护（catch 或局部 try）
         segment = body[notify_idx:store_idx] if 0 <= notify_idx < store_idx else ""
         guarded_between = ("catch" in segment) or ("try {" in segment)
-        unguarded_helpers = [
+        helpers_in_segment = [
             name for name, pattern in (
                 ("RingtonePlayer.startAlarm", r"RingtonePlayer\.startAlarm\("),
                 ("VibrationPlayer.vibratePhone", r"VibrationPlayer\.vibratePhone\("),
             ) if re.search(pattern, segment)
         ]
+        # 这些调用是否已被局部 try 覆盖（segment 内出现 try）
+        helpers_guarded = ("try {" in segment)
         ok = not single_try and guarded_between
         print(f"  {'PASS' if ok else 'FAIL'}  单一全函数 try={single_try}；通知块与入库之间独立保护={guarded_between}")
         if not ok:
             violations.append(
-                "F: 步骤隔离不足——函数为单一 try 覆盖，且紧急通知块（" + ", ".join(unguarded_helpers) +
+                "F: 步骤隔离不足——函数为单一 try 覆盖，且紧急通知块（" + ", ".join(helpers_in_segment) +
                 "）与入库/上传之间无独立保护；其中 RingtonePlayer.startAlarm 内部无异常保护（MediaPlayer.create 可能返回 null）"
             )
-        print(f"  INFO  通知块内未加保护的副作用调用：{unguarded_helpers}")
+        print(f"  INFO  通知块内副作用调用 {helpers_in_segment}；已被局部 try 覆盖={helpers_guarded}")
         # 落库失败也不得跳过入库/上传：检查 storeAlarmEvent 是否独立保护
         alarm_store_seg = body[body.find('when (alarmMessage) {'):store_idx] if store_idx > 0 else ""
         ok2 = ("catch" in alarm_store_seg) or ("try {" in alarm_store_seg)
         print(f"  {'PASS' if ok2 else 'FAIL'}  报警事件落库与入库之间独立保护={ok2}")
         if not ok2:
             violations.append("F: 报警事件落库（storeAlarmEvent，内部无 catch）失败会跳过入库与上传触发")
+
+    print("== F2 逐步保护（每个副作用步骤各自 try/catch）与辅助类不外抛 ==")
+    if body is not None:
+        steps = [
+            ("清 sparkline", "homeViewModel.clearDevice(devId)"),
+            ("紧急通知块", "if (AlarmEmergent) {"),
+            ("卡片告警", "homeViewModel.updateDeviceAlarm(devId, alarmMessage, alarmSeverity)"),
+            ("报警事件落库", "when (alarmMessage) {"),
+            ("单条入库", "storeTemperatureReading("),
+            ("入队+上传触发", "uploadRepository.enqueueAndUpload("),
+            ("卡片读数", "homeViewModel.updateDeviceReading("),
+            ("900 s 去抖副作用", "if (now - history.lastAlarmTime > (900 * 1000))"),
+        ]
+        ok_all = True
+        for i, (name, needle) in enumerate(steps):
+            start = body.find(needle)
+            end = body.find(steps[i + 1][1]) if i + 1 < len(steps) else len(body)
+            region = body[start:end] if start >= 0 and end > start else ""
+            guarded = ("catch" in region)
+            print(f"  {'PASS' if guarded else 'FAIL'}  {name} 之后出现 catch（步骤闭合）")
+            if not guarded:
+                ok_all = False
+                violations.append(f"F2: {name} 未被独立保护")
+        n_try = len(re.findall(r"(?<![\w.])try \{", body))
+        print(f"  INFO  函数内 try 块数 = {n_try}")
+        if not ok_all:
+            print("  FAIL  存在未闭合保护的步骤")
+
+        ring = read(RINGTONE_REL)
+        vib = read(VIBRATION_REL)
+        helper_checks = {
+            "RingtonePlayer.startAlarm 有 try/catch": "fun startAlarm(" in ring
+                and ring[ring.find("fun startAlarm("):].count("catch") >= 1,
+            "RingtonePlayer 对 MediaPlayer.create 判空": "MediaPlayer.create(context, alarmUri) ?:" in ring,
+            "RingtonePlayer URI 为空降级": "no default alarm/notification uri available" in ring,
+            "RingtonePlayer.stopAlarm 有 try/catch+finally 置空":
+                "fun stopAlarm()" in ring and "catch (e: Exception)" in ring and "mediaPlayer = null" in ring,
+            "VibrationPlayer.vibratePhone 有 try/catch": "fun vibratePhone(" in vib
+                and vib[vib.find("fun vibratePhone("):].count("catch") >= 1,
+            "VibrationPlayer 用 as? 判空而非强转": "as? VibratorManager" in vib and "as? Vibrator" in vib
+                and "as VibratorManager" not in vib and "as Vibrator" not in vib,
+            "VibrationPlayer.stopVibration 有 try/catch+finally 置空":
+                "fun stopVibration(" in vib and "catch (e: Exception)" in vib and "vibrator = null" in vib,
+            "两个辅助类均不向外抛（无显式 throw）":
+                "throw " not in ring and "throw " not in vib,
+        }
+        for k, v in helper_checks.items():
+            print(f"  {'PASS' if v else 'FAIL'}  {k}")
+            if not v:
+                violations.append(f"F2: {k}")
 
     print("== RESULT ==")
     if violations:
