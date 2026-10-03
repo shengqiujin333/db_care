@@ -104,18 +104,39 @@ def check_source():
     if not ok:
         violations.append(f"A4: 残留 {stale}")
 
-    # A5 入库路径无 60L
+    # A5 入库路径无 60 s 回填：`60L` 只允许出现在时间窗口/退避等非入库语义处
     hits = []
     for base, _dirs, files in os.walk(os.path.join(ROOT, "dengbei_care", "app", "src", "main")):
         for f in files:
             if f.endswith(".kt"):
                 p = os.path.join(base, f)
-                if "60L" in read(p):
-                    hits.append(os.path.relpath(p, ROOT).replace("\\", "/"))
-    ok = hits == ["dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt"]
-    print(f"  {'PASS' if ok else 'FAIL'}  含 60L 的 main Kotlin 文件 = {hits}（期望仅 AlarmEvaluator 时间窗口算术）")
+                rel = os.path.relpath(p, ROOT).replace("\\", "/")
+                for i, line in enumerate(read(p).split("\n"), 1):
+                    if "60L" in line:
+                        hits.append((rel, i, line.strip()))
+
+    def allowed(rel, line):
+        # 时间窗口算术（AlarmEvaluator / MqtttService.loadBaselineSamples）或退避常量（CloudUploadRepository）
+        if rel.endswith("telemetry/AlarmEvaluator.kt"):
+            return True
+        if rel.endswith("cloud/CloudUploadRepository.kt"):
+            return "DEFAULT_INITIAL_BACKOFF_SECONDS" in line
+        if rel.endswith("MqtttService.kt"):
+            return "widestWindow" in line
+        return False
+
+    bad = [(r, i, t[:70]) for (r, i, t) in hits if not allowed(r, t)]
+    ok = not bad
+    print(f"  {'PASS' if ok else 'FAIL'}  60L 分布 = {[(r.split('/')[-1], i) for (r, i, _t) in hits]}")
+    print(f"        （仅允许 AlarmEvaluator 窗口 / CloudUploadRepository 退避常量 / MqtttService 基准窗口算术）")
     if not ok:
-        violations.append(f"A5: 60L 分布异常 {hits}")
+        violations.append(f"A5: 60L 非法使用 {bad}")
+    # 存储路径不得按固定间隔回填历史时间戳
+    helper = read(HELPER)
+    ok2 = ("dataSize" not in helper) and ("size - 1 - i" not in helper) and ("* 60" not in helper)
+    print(f"  {'PASS' if ok2 else 'FAIL'}  数据库辅助类无固定间隔回填（dataSize/(size-1-i)/* 60）")
+    if not ok2:
+        violations.append("A5: 仍存在固定间隔回填")
 
     # A6 入口时间语义
     ok = "val currentTime = timeOverride ?: (System.currentTimeMillis() / 1000)" in mqtt

@@ -129,12 +129,22 @@ def check(repo, outbox, mqtt):
         if not ok:
             violations.append(f"D: {name}")
 
-    print("== E 生产接线未启用（不得改变运行行为） ==")
-    refs = [l for l in mqtt.split("\n") if ("CloudUploadRepository" in l or "UploadOutbox" in l)]
-    ok = not refs
-    print(f"  {'PASS' if ok else 'FAIL'}  MqtttService 引用数 = {len(refs)}（期望 0；接线属后续队列项）")
-    if not ok:
-        violations.append(f"E: MqtttService 已接线 {refs[:2]}")
+    print("== E 生产接线（ITEM-010 后：只允许经 repository 的两个入口） ==")
+    checks_e = {
+        "E1 引用 CloudUploadRepository": "import com.jinyuni.dengbei_care.cloud.CloudUploadRepository" in mqtt,
+        "E2 引用 SqliteUploadOutboxStore": "import com.jinyuni.dengbei_care.cloud.SqliteUploadOutboxStore" in mqtt,
+        "E3 引用 PrefsUploadGate": "import com.jinyuni.dengbei_care.cloud.PrefsUploadGate" in mqtt,
+        "E4 引用 RetrofitUploadApi": "import com.jinyuni.dengbei_care.cloud.RetrofitUploadApi" in mqtt,
+        "E5 仅调用 enqueueAndUpload/triggerUpload": "uploadRepository.enqueueAndUpload(" in mqtt
+            and "uploadRepository.triggerUpload()" in mqtt,
+        "E6 不直接建 Retrofit/HTTP（必须经 repository）":
+            "Retrofit.Builder" not in mqtt and "CloudApiClient" not in mqtt,
+        "E7 入队受守护门控": "if (humistartflag == 1) {" in mqtt,
+    }
+    for name, ok in checks_e.items():
+        print(f"  {'PASS' if ok else 'FAIL'}  {name}")
+        if not ok:
+            violations.append(f"E: {name}")
 
     print("== F 生产客户端与门控键 ==")
     checks3 = {

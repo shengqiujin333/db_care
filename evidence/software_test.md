@@ -2,7 +2,7 @@
 
 状态：软件测试执行证据（`software_tester.software_verification`），按 Runtime 逐个指派的队列项追加
 对象：Android App `dengbei_care`（Kotlin / AGP 8.3.2 / Gradle 8.4 / JDK 21）
-本轮项：队列 **ITEM-001**…**ITEM-009**（逐项分节记录）
+本轮项：队列 **ITEM-001**…**ITEM-010**（逐项分节记录；**ST-010 = TEST_FAIL**）
 依据：`artifacts/software_test_design.md`（TD-SW-002）、`artifacts/software_e2e_plan.md`（E2E-SW-002）、`artifacts/interface_contract.md`（IC-002 §4）、`artifacts/android_architecture.md`（AA-002 §5.1/§10）
 被测代码版本：`3e0ed11`（android_engineer.android_implementation 提交）；改动前基线：`fe9a81c`
 说明：本文件为本能力**独立执行**的记录；实现侧自检（`evidence/android_test.md` AT-001）仅作为被核对对象，不重复引用为通过依据。
@@ -780,3 +780,61 @@ BUILD SUCCESSFUL in 3s
 4. **达 `maxAttempts` 的数据保留但无自动清理/手动入口**；如需保留期策略属新需求。
 5. **`app/build.gradle.kts` 的 `testOptions` 改动仅影响宿主机单测的 android.jar 桩**，不改变生产行为（已核查差异范围）。
 6. **真实 HTTP 未执行**：本次未授权 `api_client` 且无外网，`inserted` 幂等核对归 E2E。
+
+---
+
+## ST-010 · ITEM-010（MqtttService 编排接入）—— 结论 **TEST_FAIL**
+
+**被测代码版本**：`aba90a9`（android_engineer.android_implementation 提交，相对上一提交 `26bc2ff`）
+**变更范围**：`MqtttService.kt`（181 行改动：周期对齐、AlarmEvaluator 接入、库基准、入库后上传触发、四个触发点）；新增 `telemetry/SensorCadence.kt` + 其宿主机测试；`TemperatureDatabaseHelper.kt` 新增 `getSamplesInRange`（关闭 G4）。
+
+### 1. 适用测试与结果汇总
+
+| 验收点 | 方法 | 结果 |
+|---|---|---|
+| 读取周期与 3 分钟采样对齐、手动立即读取保留 | 独立脚本 A1–A5 | **PASS** |
+| 单次读数编排顺序（真实时间→参数→库基准→AlarmEvaluator→级别映射→紧急直接通知→卡片告警→事件落库→真实时间戳入库→入队+上传触发→卡片读数→900 s 去抖） | 独立脚本 B（逐项位置排序） | **PASS**（12/12 顺序正确） |
+| 900 s 去抖、去抖仅守护中、>65℃ 每次通知、三条文案字面值、`ALARM_TYPE_*`、`AlarmEmergent`/`_bkp_all_time`、旧内存窗口清零、Service 侧不再做阈值比较 | 独立脚本 C1–C11 | **PASS**（11/11） |
+| 四个上传触发点（冷启动/每轮 BLE/网络恢复/入库后）与仅守护中入队 | 独立脚本 D1–D5 + 调用计数 | **PASS** |
+| 告警基准来自本地库（D-05/G4）：范围、降级为空表、SQL 语义 | 独立脚本 E + **宿主 SQLite 执行** `getSamplesInRange` 的 SQL | **PASS** |
+| **任何一步失败都不影响其他步骤**（验收文字） | 独立脚本 F（结构分析） | **FAIL → 缺陷 D-010-1** |
+| 宿主机回归与构建 | `testDebugUnitTest` / `assembleDebug` | 146 tests / 0 failures；APK 10,360,647 B（与实现侧一致） |
+| 真机 BLE/MQTT 链路、通知/卡片、待发箱补传与 HTTP | — | **未执行**（环境阻塞 + 为避免生产副作用未安装启动，见 §3） |
+
+### 2. 缺陷 D-010-1（阻断项）
+
+**现象**：`processTemperatureHumidityData` 全函数体只有**一层** try/catch；紧急通知块（`MqtttService.kt:872-874`：`VibrationPlayer.vibratePhone` / `RingtonePlayer.startAlarm`）与报警事件落库（`:883` `storeAlarmEvent`）位于**单条入库（`:901`）与上传触发（`:911`）之前**，且两者之间没有任何独立保护。因此这些步骤抛异常时，同一读数的 **入库、入队与上传触发、卡片更新均被跳过**。
+
+**可抛点（已逐文件核实）**：
+- `RingtonePlayer.kt`：**全文件 0 个 `catch`**；`startAlarm` 中 `MediaPlayer.create(context, alarmUri).apply { … start() }`——`getDefaultUri(TYPE_ALARM)`/`TYPE_NOTIFICATION` 均可能为空且 `create` 失败时返回 null（平台类型），`apply` 于 null 上抛 NPE；`start()` 也可能抛 `IllegalStateException`。
+- `VibrationPlayer.kt`：**全文件 0 个 `catch`**；`vibratePhone` 做服务转换后直接 `vibrate()`。
+- `TemperatureDatabaseHelper.storeAlarmEvent` 与 `storeTemperatureReading`：均仅 `try/finally`、**无 catch**（`catch=0`），数据库异常直接向上抛。
+
+**影响**：最严重的是 **>65℃ 紧急报警路径**（安全相关）：若铃声/震动环节抛出异常，该条超温读数将被“静默丢失”（不入库、不上传、卡片不更新、无报警事件），而外层 catch 只记日志；后台循环与其它读数不受影响（这一点符合设计）。
+
+**依据**：任务验收文字“一次 BLE 或 MQTT 读数会依次完成归因、告警判定、去重落库与上传触发，**任何一步失败都不影响其他步骤**与后台循环”。当前实现只做到“读数级隔离 + 循环存活”，未做到“步骤间隔离”。（对比：已批准设计 AA-002 §8 只明写“上传失败不阻塞 BLE/MQTT 主链路”，已由 repository 内部吞错满足；本项 FAIL 针对的是任务验收文字中更强的步骤隔离要求。）
+
+**修复要求（属实现能力范围，非本能力修改）**：
+1. 把“本地入库 + 入队上传触发”与告警副作用（震动/铃声/通知/事件落库）**各自保护**，推荐顺序：先单条入库 → 入队上传 → 再报警事件落库/通知/震动/铃声（或为每步加 try/catch）；
+2. `RingtonePlayer.startAlarm` 与 `VibrationPlayer.vibratePhone` 内部需对 null/异常降级（不得向外抛）；
+3. **不得改变**：三条报警文案字面值、`ALARM_TYPE_*`、`>65℃` 语义、900 s 去抖、守护门控、真实采样时间戳与上传触发语义、周期 180 s。
+
+### 3. 未执行层（不作为 FAIL 依据，但必须登记）
+
+1. `connectedDebugAndroidTest` 仍因 `kotlinx-coroutines-core-jvm:1.6.4` 缺失且无外网而失败（同 ST-006/007/009）。
+2. 本项的真机链路（BLE 读取、MQTT 消息、通知/卡片、待发箱补传、`/upload_data`）需要设备 + 真实链路；且启动当前 debug 包会连到**生产 broker/服务器并可能写入真实数据**（本机测试账号未与生产隔离），故本能力**未执行 install/launch**，以免产生生产副作用。该层属 E2E-SW-002 J-1/J-2/J-3；若需在设备上完成，请提供与生产隔离的测试环境/账号。
+
+### 4. 结论
+
+除缺陷 D-010-1 外，本项的周期对齐、编排顺序、告警语义与兼容面、四个上传触发点、库基准查询（G4）均已核实通过，且无构建/既有用例回归。因验收文字中的**步骤隔离**未满足（且涉及 >65℃ 紧急路径的数据保留），结论为 **TEST_FAIL**。修复后应重跑：`evidence/software_verify_orchestration_item010.py`（期望 EXIT=0）、`./gradlew :app:testDebugUnitTest --offline` 与 `assembleDebug`。
+
+### 5. 本能力验证资产的同步更新（透明记录）
+
+ITEM-010 使两个早先的回归门禁脚本出现“预期变化导致的失败”，本能力已按新事实**收紧/校正**其断言（仍为可复跑门禁）：
+
+| 脚本 | 原断言（ITEM-007/009 当时） | 现断言（ITEM-010 后） | 理由 |
+|---|---|---|---|
+| `software_verify_timestamp_write_item007.py` | `60L` 仅允许出现在 `AlarmEvaluator.kt` | `60L` 仅允许出现在三处非入库语义（AlarmEvaluator 窗口 / CloudUploadRepository 退避常量 / MqtttService 基准窗口算术），并**新增**“数据库辅助类无 `dataSize`/`(size-1-i)`/`* 60` 固定间隔回填”断言 | ITEM-009 的退避常量与 ITEM-010 的基准窗口算术合法使用 `60L`；入库回填不变量改为直接断言 |
+| `software_verify_cloud_upload_item009.py` | `MqtttService` 引用 = 0（未接线） | 断言接线**形状**：仅经 `uploadRepository.enqueueAndUpload/triggerUpload`，导入四个生产实现类，**不得**直接 `Retrofit.Builder`/`CloudApiClient`，入队受守护门控 | ITEM-010 按设计完成接线；门禁改判为“接线必须经 repository 且门控” |
+
+校正后各门禁均回到 EXIT=0；与 ITEM-010 无关的断言未被放宽。
