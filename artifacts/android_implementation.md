@@ -214,3 +214,59 @@
 2. **真机连通性未验证**（本能力工具边界无网络探测）：`ssl://8.140.23.253:8883` 的 TLS/认证与 `/upload_data` 可达性由测试能力按 TD-SW-002 T-SW-L2-01/L2-12 执行；证书链已由迁移记录 §四 实测（`Verify return code: 0`）。未产生 connectivity 证据。
 3. **仍引用旧地址的非编译材料**（未改动，登记交接）：`dengbei_care/_REFACTOR_NOTES.md:39`（描述旧常量）、`dengbei_care/iOS开发所需资料清单.md:16`、`dengbei_care/iOS版功能需求文档.md:157/399/580`、`dengbei_care/iOS开发资料/**`（iOS 参考快照与 README）。文档更新属队列 ITEM-014（`readme.txt`/用户说明书）或 iOS 资料维护方，不在本项。
 4. **本项不涉及**：`/upload_data` 端点与上传编排（ITEM-008/009）、SQLite v3（ITEM-006）、告警时间窗（ITEM-005）、UI（ITEM-011/012）、版本/文档（ITEM-014）。
+
+---
+
+# 任务项 ITEM-005（本轮完成）
+
+**ITEM-005（队列第 5 项）**：新增纯逻辑模块 `telemetry/AlarmEvaluator.kt`，把温度湿度下降报警从「最近第 N 个样本」改为基于时间戳的时间窗判定（窗口 5/10/15 分钟，基准为不晚于 `now-窗口` 且不早于 `now-窗口-回溯容差` 的最新样本），阈值超限与紧急（>65.0℃）判定语义保持现状。
+期望行为：输入当前读数与候选历史样本即可得到 `未设置报警 / 温度湿度下降报警 / 温湿度超限报警 / 无报警` 与严重级别；基准样本缺失或无历史时下降分支不成立；恰好等于阈值不触发；评估过程不写入任何伪造温度或湿度值。
+
+设计映射：AA-002 §7（告警展示与判定）、D-04（时间窗替代第 N 个样本）、D-05（基准来自库/单一数据源）、§4.2（新增 `telemetry/AlarmEvaluator.kt`）；TD-SW-002 §4.1 T-SW-L0-06..L0-10。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt` | 新增 | 纯 Kotlin（无 Android 依赖）：`evaluate(now, temperature, humidity, parameters, history, lookbackSlackSeconds)` → `Result(outcome, message, severity, matchedWindowMinutes)`；`Parameters`/`Sample`/`Severity`/`Outcome`；常量 `EMERGENCY_TEMP_C=65.0`、`DROP_WINDOW_MINUTES=[5,10,15]`、`DEFAULT_LOOKBACK_SLACK_SECONDS=30min`、五条文案字面值 |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt` | 新增 | 宿主机 JUnit4 自检 23 项（L0-06..L0-10 全覆盖 + 窗口选择/边界/纯函数性） |
+
+判定语义（逐条对照）：
+
+| 项 | 改动前（`MqtttService.processTemperatureHumidityData`） | 本模块 |
+|---|---|---|
+| 下降基准 | 内存 `DeviceHistory.data5MinAgo/data10MinAgo/data15MinAgo`，实为**最近第 1/2/3 个样本** | 每个窗口取 `[now-W-slack, now-W]` 内**时间最新**样本（含两端边界）；无合格基准该窗口不成立 |
+| 下降条件 | `base.temp-cur.temp > tempDrop && base.humi-cur.humi > humiDrop` | 同（严格 `>`、AND、两个窗口任一命中即触发） |
+| 回溯容差 | 无（任何旧样本都可能当基准；仅 30 min 过期清理） | `DEFAULT_LOOKBACK_SLACK_SECONDS = 30 min`，可传入覆盖 |
+| 阈值超限 | `temp>tempmax \|\| temp<tempmin \|\| humi>humimax \|\| humi<humimin` | 同（严格比较） |
+| 开关语义 | 两开关都关→`未设置报警`；只开一个时只判该项；都开时**先下降后超限**，同时成立超限文案覆盖 | 同（`NOT_CONFIGURED` / `DROP` / `THRESHOLD`） |
+| 紧急 | `temperature > 65f` 覆盖前述结果，文案/级别固定，每次通知 | 同（`EMERGENCY`，`notifiesImmediately=true`），且与开关无关（与改动前一致） |
+| “启用但未触发”文案 | 保留变量初值 `未设置报警`（与“两开关都关”同文案） | 按已批准设计/任务描述区分为 `无报警`（`Outcome.NONE`）；两种情形均为 NORMAL，卡片不展示、不落库，**生产可见行为不变** |
+| 伪造数据 | — | 纯函数，不修改入参；`Result` 不携带任何温度/湿度字段 |
+
+**本项仅交付模块与自检**：未修改 `MqtttService`——把 `processTemperatureHumidityData` 改为调用本模块属队列 **ITEM-010**（AA-002 §4.2 的“Service 编排接入”），因此当前生产路径仍用旧的内存窗口逻辑，本项不影响运行行为。
+
+## 2. 预期行为（本轮交付）
+
+1. `evaluate` 的输出是 `Outcome`（`NOT_CONFIGURED`/`NONE`/`DROP`/`THRESHOLD`/`EMERGENCY`）+ 文案 + `Severity`（`NORMAL`/`WARNING`/`ALARM`）+ 命中的下降窗口（分钟，未命中为 `null`）。
+2. 下降仅在存在合格基准且温度与湿度**同时**严格超过阈值时成立；无历史/样本全部过早/样本全部过新均不成立。
+3. 阈值超限与紧急语义与改动前逐字一致；恰好等于阈值/65.0℃ 不触发。
+4. 输出不含任何温度/湿度数值，不产生伪造样本；同一输入多次调用结果相同且不修改入参列表。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；8 套件共 **72 项、0 失败 0 跳过**（新增 `AlarmEvaluatorTest` 23 项） |
+| 构建/打包 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,359,236 B；直接读 APK 多 dex 确认 `AlarmEvaluator`/`ReadingAttribution`/`CloudConfig`/`GatewayFrameCodec` 均已打包 |
+| 编译告警 | `./gradlew :app:compileDebugKotlin --offline` | 仍为既有 5 条，无新增 |
+| 差异范围 | `git status --short` | 仅新增 1 个模块 + 1 个测试文件（未改任何现有产品文件） |
+
+原始输出见 `evidence/android_test.md`（AT-005）。
+
+## 4. 观察与交接
+
+1. **窗口重叠与 `matchedWindowMinutes` 语义**：由于回溯容差 30 min 远大于窗口差（5 min），一个较旧样本可同时满足多个窗口；本模块返回**最先满足**（W 递增）的窗口。判定结果（是否报警）不受影响，该字段仅供日志/证据使用。实测边界：`now-35min` → 5 分钟窗口（下界含边界）、`now-36min` → 10 分钟、`now-41min` → 15 分钟、`now-46min` → 全部不成立。
+2. **“启用但未触发”文案改为 `无报警`**（与两开关都关的 `未设置报警` 区分）：与已批准设计/任务描述一致；因两者均 `NORMAL`，卡片不显示且不落 `alarm_events`，生产可见行为不变。若上游要求严格保持旧占位文案，仅需改一处常量。
+3. **接线与基准来源属后续项**：① `processTemperatureHumidityData` 改用本模块 + 把 `Severity` 映射到 `com.jinyuni.dengbei_care.Severity` → ITEM-010；② 基准样本的来源（设计 D-05 要求从本地库按 devId+时间范围查询，以支持进程重启后仍可判定）→ ITEM-006/007（库 API）与 ITEM-010（接线）；TD-SW-002 §8-G4 已登记该缺口。
+4. **本项不涉及**：SQLite v3 与真实时间戳（ITEM-006/007）、云上传（ITEM-008/009）、UI 呈现（ITEM-011/012）、通知去抖（900 s，仍在 Service，属 ITEM-010 保持不变）。

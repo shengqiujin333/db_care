@@ -273,3 +273,81 @@ ITEM-003 的期望行为成立：MQTT 批量载荷不再按位置截断；数目
 ITEM-004 的期望行为成立：MQTT broker 与 HTTP 基址指向 `8.140.23.253`（8883/5000）且集中于 `cloud/CloudConfig.kt`；明文放行追加新主机且未扩大其它主机；Kotlin 源码中旧地址清零（仅 XML 按设计保留 1 处）；TLS 信任锚、TLS 版本、用户名/密码规则、AES 密钥与模式、MTU、keepAlive 均未变；资源合并与构建通过、全量 49 项宿主机用例通过。
 
 未覆盖（属后续能力/队列项）：真机 MQTT TLS 连接与认证、`/upload_data` 可达性（TD-SW-002 T-SW-L2-01/L2-12，需真实网络）、`/upload_data` 端点与上传编排、SQLite、告警、UI。
+
+---
+
+## AT-005 · ITEM-005（报警判定纯逻辑 `telemetry/AlarmEvaluator.kt`）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline` |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：**仅新增** `telemetry/AlarmEvaluator.kt`（7,375 B）与 `telemetry/AlarmEvaluatorTest.kt`（13,753 B）；未修改任何现有产品文件（生产路径仍用旧内存窗口逻辑，接线属 ITEM-010） |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 3s
+```
+
+| 套件 | 项数 | 失败 | 跳过 | 归属 |
+|---|---|---|---|---|
+| `com.jinyuni.dengbei_care.telemetry.AlarmEvaluatorTest` | 23 | 0 | 0 | 本项实现侧自检（新增） |
+| `com.jinyuni.dengbei_care.telemetry.ReadingAttributionTest` | 16 | 0 | 0 | ITEM-003 实现侧自检 |
+| `com.jinyuni.dengbei_care.protocol.GatewayFrameCodecTest` | 11 | 0 | 0 | ITEM-001 实现侧自检 |
+| `com.jinyuni.dengbei_care.verification.ReadingAttributionItem003VerificationTest` | 8 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001VerificationTest` | 7 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.cloud.CloudConfigTest` | 3 | 0 | 0 | ITEM-004 实现侧自检 |
+| `com.jinyuni.dengbei_care.verification.GatewayFrameCodecItem001LegacyParityTest` | 3 | 0 | 0 | 软件测试能力独立验证 |
+| `com.jinyuni.dengbei_care.ExampleUnitTest` | 1 | 0 | 0 | 既有 |
+| **合计** | **72** | **0（0 errors、0 skipped）** | 0 | — |
+
+新增 23 项用例（TD-SW-002 对应）：
+
+| 用例 | 覆盖 | 结果 |
+|---|---|---|
+| `bothSwitchesOff_isNotConfigured` | L0-06 两开关都关 → `未设置报警`/NORMAL | PASS |
+| `enabledButNothingMatches_isNoAlarm` | 启用但无命中 → `无报警`/NORMAL | PASS |
+| `baselineInsideFiveMinuteWindow_triggersDrop` | L0-07① 5 分钟窗内基准触发（WARNING、窗口=5） | PASS |
+| `baselineInsideWindow_triggersDrop_andSmallestMatchingWindowIsReported` | 窗口选择：`now-5/8/10/15min`→5；`-36min`→10；`-41min`→15；`-46min`→无 | PASS |
+| `exactlyAtDropThreshold_doesNotTrigger` | L0-07② 恰好等于 tempDrop / humiDrop 不触发 | PASS |
+| `dropRequiresBothTemperatureAndHumidity_strictAnd` | L0-07③ 仅温度满足 / 仅湿度满足 / 湿度上升 → 不触发 | PASS |
+| `baselineOlderThanAllWindowSlack_doesNotTrigger` | L0-07④ `now-50min` 超出全部回溯容差；`now-35min` 含边界命中 5 分钟 | PASS |
+| `windowSlackIsInclusiveAtBothBounds` | 窗口上下界含边界 | PASS |
+| `samplesTooRecent_doNotTrigger_negativeControl` | L0-07⑤ 3 个样本但均在 1 分钟内 → 不触发（证明已非“第 N 个样本”） | PASS |
+| `noHistory_doesNotTriggerAndDoesNotThrow` | L0-07⑥ 无历史 → 不触发且不抛错 | PASS |
+| `newestSampleInWindowIsUsedAsBaseline` | 窗口内取时间最新样本作为基准 | PASS |
+| `customSlackNarrowsTheWindow` | 回溯容差可传入覆盖（slack=0 时边界外样本不参与） | PASS |
+| `thresholdExceeded_triggersWithStrictComparison` | L0-08 36 / 28.9 / 76 / 39.9 触发 | PASS |
+| `exactlyAtThreshold_doesNotTrigger` | L0-08 恰好 35.0/29.0/75.0/40.0 与范围内 34.9/74.9 均不触发 | PASS |
+| `thresholdOnlyWhenEnabled` | 只开下降 → 超限不报；只开超限 → 下降条件不报下降 | PASS |
+| `bothEnabled_bothHit_thresholdMessageWins` | L0-09 同时成立 → 超限文案覆盖下降 | PASS |
+| `bothEnabled_dropOnly_dropMessage` / `bothEnabled_thresholdOnly_thresholdMessage` | L0-09 单独成立 → 各自文案 | PASS |
+| `emergencyOnlyAboveSixtyFive` | L0-10 仅 `>65.0` 触发（65.0/64.9 不紧急；65.1/100.0 紧急） | PASS |
+| `emergency_overridesEverything_andNotifiesImmediately` | 紧急覆盖且与开关无关、`notifiesImmediately=true` | PASS |
+| `evaluate_isPure_doesNotMutateHistory_andIsDeterministic` | 纯函数：确定性 + 不修改入参列表 | PASS |
+| `result_carriesNoTemperatureOrHumidityValues` | 输出不携带任何温度/湿度数值 | PASS |
+| `nonFiniteHistorySamples_areIgnored` | NaN/±Infinity 历史样本被忽略，不污染判定 | PASS |
+
+### 3. 构建与打包
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,359,236 B（多 dex） |
+
+产物级核查（直接读 APK 的 dex 字节流）：`AlarmEvaluator`、`ReadingAttribution`、`CloudConfig`、`GatewayFrameCodec` 均已打包。编译告警仍为既有 5 条，无新增。
+
+### 4. 判定
+
+ITEM-005 的期望行为成立：下降判定改为基于时间戳的 5/10/15 分钟窗口（基准取窗口内最新样本，含回溯容差，无基准不成立）；阈值超限与紧急（>65.0℃）语义与改动前一致（严格比较、恰好等于不触发、超限文案优先、紧急覆盖且不受去抖限制）；四类文案与严重级别齐备；纯函数、不修改入参、输出不含温度/湿度数值；全量 72 项宿主机用例通过、构建成功。
+
+未覆盖（属后续能力/队列项）：① 与 `MqtttService.processTemperatureHumidityData` 的接线及基准样本来自本地库（ITEM-010，需 ITEM-006/007 的库查询 API）；② 真机链路与 UI 展示（TD-SW-002 T-SW-L2-13/L2-14/L2-15、T-SW-L3-01..03，需设备）。本项为纯逻辑层，不声称已改变运行行为。
