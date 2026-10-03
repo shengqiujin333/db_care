@@ -92,6 +92,8 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_mcu/cw32l010_sysctrl.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_mcu/cw32l010_uart.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外设库（传感器工程编译依赖；粗路径）
+artifacts/android_architecture.md | active | Android 设计方案 AA-002（需求 6 个修改点在 App 内的落点、as-built 事实、15 项设计决策、分层/模块/接口/状态归属、SQLite v3 与 pending_uploads、/upload_data 归属与幂等、服务器迁移常量、告警时间窗判定、异常边界、兼容面、验证策略、未决项 U-1..U-7；android_engineer.android_design）
+artifacts/android_tasks.yaml | active | Android 实现任务清单（14 项，按前置依赖排序，供 android_engineer.android_implementation 消费；android_engineer.android_design）
 artifacts/codegraph_index.md | active | 当前需求相关三个软件工程的 CodeGraph 本地索引位置与集合描述（数据库保留在被忽略的 .codegraph/）
 artifacts/firmware_design.md | active | 传感器/网关固件设计方案 FD-002（GXHT40 驱动、光敏 PB05/PB04-AIN11 采样、3 分钟节拍、条件上报、模块划分/时序/资源/异常/接口与实现约束）
 artifacts/firmware_implementation.md | active | 固件实现记录（当前任务项实际改动、预期行为与验证结果，逐项推进；FWI-002）
