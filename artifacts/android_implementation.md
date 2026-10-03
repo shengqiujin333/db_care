@@ -761,3 +761,51 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 2. **高温强调的呈现方式**：颜色（报警红）+ 文本后缀（“ · 高温”）+ 图表 35℃ 参考线；`= 35.0℃` 不强调。若产品希望改为图表逐点着色，属新需求（MPAndroidChart 的 `LineDataSet` 不原生支持逐点颜色，需自定义渲染）。
 3. **门禁交互**：新常量原写作 `24 * 60L * 60L * 1000L`，会使 ITEM-007 门禁（限制 `60L` 出现位置）误报；已改为 `MAX_CHART_RANGE_HOURS * HOUR_MS`（`HOUR_MS = 3_600_000L`）以保持该门禁语义有效，未修改测试能力的脚本。
 4. **本项不涉及**：早报文案（ITEM-013）、版本与文档（ITEM-014）。
+
+---
+
+# 任务项 ITEM-013（本轮完成）
+
+**ITEM-013（队列第 13 项）**：调整早起报告文案与零样本表述：`ReportGenerator` 与 `DailyReportWorker` 在报告中说明数据为按条件上报、采样条数非等间隔；某设备当日无上报时显示为「昨日无上报」而非笼统「无数据」；日报的统计字段与报警次数结构保持现状。
+期望行为：报告对同一批数据给出的统计值与改动前一致；文案不暗示固定 3 分钟一条。
+
+设计映射：AA-002 §4.2（报告文案调整）、§7（早报）；IC-002 §5/§6（条件上报、不得合成样本）；TD-SW-002 §4.5 T-SW-L3-07。
+
+## 1. 实际改动
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt` | 修改 | ① 零样本设备行 `"  - 无数据"` → `"  - 昨日无上报"`；② 摘要 `昨日(date)共采集 N 条数据,触发 M 次报警。` → `昨日(date)共上报 N 条数据（按条件上报，条数非等间隔），触发 M 次报警。`；③ 低条数建议 `昨日采样 N 条(预期约 288 条),设备可能离线过` → `昨日上报 N 条；按条件上报且非等间隔，条数偏少不一定异常`（删除固定 288 条预期与离线推断） |
+| `dengbei_care/app/src/main/res/layout/activity_report.xml` | 修改（仅 `tools:text`） | 设计时预览文案同步为“昨日共上报 X 条数据（按条件上报，条数非等间隔）…” |
+| `dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/report/ReportGeneratorTest.kt` | 新增 | 宿主机 JUnit4 自检 8 项（见 §3） |
+
+**`DailyReportWorker` 无需代码改动（已核对）**：它只负责取昨日 `getDailyStats`/`getAlarmEvents` 并调用 `ReportGenerator.build(...).toText()`，通知的 `BigTextStyle` 直接展示该文本——文案随 `ReportGenerator` 一并生效；其统计查询与结构未动。
+
+未改变（统计结构与兼容面）：`DailyStats` 字段、`getDailyStats` 的 MIN/MAX/AVG/COUNT 计算、逐行格式（`采样 N 条`、`温度:最低 x,最高 y,平均 z`、`湿度:…`、`报警 N 次`）、`ALARM_TYPE_*` 建议阈值（紧急>0、下降≥3、超限≥5、条数<24）与措辞、标题、`ReportActivity` 读取缓存逻辑。
+
+## 2. 预期行为（本轮交付）
+
+1. 某设备当日无上报 → 报告显示“昨日无上报”（不再出现“无数据”）。
+2. 摘要明确“按条件上报，条数非等间隔”，全文不暗示固定节拍（无“每 3 分钟”“288 条”“预期”）。
+3. 同一批数据的统计数值与逐行格式与改动前一致（仅措辞变化）。
+4. 低条数建议不再把“条数少”当作离线/异常结论。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单元测试 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；全部套件共 **181 项、0 失败 0 跳过**（新增 `ReportGeneratorTest` 8 项） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；`app-debug.apk` 10,391,985 B（仅文案改动） |
+| 旧文案清零 | `grep -rn "无数据\|288\|共采集\|离线" report/ activity_report.xml` | 0 命中 |
+| 七个独立门禁 | `python evidence/software_verify_*.py`、`static_check_*.py` | 全部 **EXIT=0** |
+
+新增 8 项用例：`deviceWithoutReports_showsNoReportYesterday_notNoData`、`summary_statesConditionalReportingAndNonEqualIntervals`（含不得含“每 3 分钟”/“288”/“共采集”）、`statsLines_andAlarmCountStructure_unchanged`（逐行格式 + 段内顺序 采样→温度→湿度→报警）、`sameInput_producesIdenticalStatistics`（含负温与一位小数格式、两次生成逐字相同）、`lowSampleCountSuggestion_hasNoCadenceOrOfflineInference`、`enoughSamples_producesNoLowCountSuggestion`、`alarmBasedSuggestions_stillEmitted`、`noDevices_showsPlaceholder` —— **8/8 PASS**。
+
+原始输出见 `evidence/android_test.md`（AT-013）。
+
+## 4. 观察与交接
+
+1. **报告截图/通知展示未在本轮验证**：属测试能力 T-SW-L3-07（需设备）；本项已把可确定部分（文案与数值结构）做成宿主机断言。
+2. **低条数建议阈值仍为 `< 24`**：阈值未变（保持结构），但在条件上报下会较频繁触发；因文案已明确“偏少不一定异常”，不再误导。若产品希望改为按“多日无上报”判定，属新需求。
+3. **摘要措辞由“共采集”改为“共上报”**：与 readme/IC-002 “条件上报”语义一致；统计数值与报警次数不变。
+4. **本项不涉及**：版本与文档（ITEM-014）。

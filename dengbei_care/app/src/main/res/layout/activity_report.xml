@@ -52,7 +52,7 @@
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?attr/colorOnSurface"
                 android:lineSpacingExtra="4dp"
-                tools:text="爱守护 - 早起报告\n\n昨日共采集 X 条数据..." />
+                tools:text="爱守护 - 早起报告\n\n昨日共上报 X 条数据（按条件上报，条数非等间隔）..." />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/regenerateButton"

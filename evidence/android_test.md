@@ -893,3 +893,66 @@ ITEM-012 可在宿主机确定断言的部分全部成立：规则文案与 read
 ### 5. 需上游确认的口径差异
 
 任务描述/TD-SW-L3-04 同时要求“规则含‘且无光’”与“不出现无光”。本实现按“规则忠于 readme”处理（规则文案含“无光”；界面不显示环境光状态/照度，无推断结论）。若上游要求连规则原文也不得出现该词，属文案变更（改一处常量）。
+
+---
+
+## AT-013 · ITEM-013（早起报告文案与零样本表述）
+
+### 1. 环境与代码版本
+
+| 项 | 值 |
+|---|---|
+| 工作目录 | `D:\mypro\beiwo2\AIP\dengbei_care` |
+| 命令 | `./gradlew :app:testDebugUnitTest --offline`、`./gradlew :app:assembleDebug --offline`、`grep -rn`、七个独立门禁脚本 |
+| Gradle / AGP / JDK | 8.4（wrapper）/ 8.3.2 / openjdk 21.0.2 |
+| 代码状态 | 相对上一提交：`report/ReportGenerator.kt`（3 处文案：零样本行/摘要/低条数建议）、`res/layout/activity_report.xml`（`tools:text` 预览）；新增 `test/.../report/ReportGeneratorTest.kt` |
+
+### 2. 宿主机单元测试
+
+```
+./gradlew :app:testDebugUnitTest --offline
+=> BUILD SUCCESSFUL in 2s
+```
+
+| 汇总 | 值 |
+|---|---|
+| 套件数 | 18 |
+| 合计 | **181 tests / 0 failures / 0 errors / 0 skipped** |
+| 本项新增 | `ReportGeneratorTest` 8 项 |
+
+新增 8 项用例（TD-SW-002 T-SW-L3-07）：
+
+| 用例 | 覆盖 | 结果 |
+|---|---|---|
+| `deviceWithoutReports_showsNoReportYesterday_notNoData` | 零样本设备 → `  - 昨日无上报`；全文无“无数据” | PASS |
+| `summary_statesConditionalReportingAndNonEqualIntervals` | 摘要含“按条件上报”/“非等间隔”/“共上报 N 条”/“触发 M 次报警”；不含“每 3 分钟”/“288”/“共采集” | PASS |
+| `statsLines_andAlarmCountStructure_unchanged` | 逐行格式不变（采样/温度/湿度/报警），段内顺序不变 | PASS |
+| `sameInput_producesIdenticalStatistics` | 同批数据两次生成逐字相同；负温与一位小数格式保留（`-5.0°C`/`12.3°C`） | PASS |
+| `lowSampleCountSuggestion_hasNoCadenceOrOfflineInference` | 低条数建议含“按条件上报”，不含“离线”/“288”/“预期” | PASS |
+| `enoughSamples_producesNoLowCountSuggestion` | 条数 ≥24 不产生低条数建议 | PASS |
+| `alarmBasedSuggestions_stillEmitted` | 紧急/下降≥3/超限≥5 建议结构不变 | PASS |
+| `noDevices_showsPlaceholder` | 无设备时“暂无设备数据。” | PASS |
+
+### 3. 构建与静态核查
+
+```
+./gradlew :app:assembleDebug --offline
+=> BUILD SUCCESSFUL
+```
+
+| 产物 | 大小 |
+|---|---|
+| `dengbei_care/app/build/outputs/apk/debug/app-debug.apk` | 10,391,985 B（仅文案改动，与上一项同尺寸） |
+
+| 检查 | 结果 |
+|---|---|
+| 旧文案清零 | `grep -rn "无数据\|288\|共采集\|离线" report/ activity_report.xml` → 0 命中 |
+| `DailyReportWorker` | 无代码改动（已核对）：统计查询与通知均委托 `ReportGenerator.build(...).toText()`，文案随之生效 |
+| 七个独立门禁 | 全部 **EXIT=0** |
+| 编译告警 | 无新增 |
+
+### 4. 判定
+
+ITEM-013 可在宿主机确定断言的部分全部成立：零样本显示“昨日无上报”；报告说明按条件上报且条数非等间隔；同一批数据的统计数值与逐行格式逐字不变；低条数建议不再暗示固定节拍或推断离线；全量 181 项宿主机用例通过、构建成功；七个独立门禁无回归。
+
+未覆盖（需设备，属测试能力）：报告页/通知实际展示与截图 —— TD-SW-002 T-SW-L3-07。

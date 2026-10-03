@@ -124,6 +124,7 @@ dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadReposit
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt | active | 云上传待发箱（UploadOutboxRow/UploadOutboxStore/UploadOutbox 策略：幂等入队、到期取批、ack 删除、失败记账；SqliteUploadOutboxStore 适配 v3 pending_uploads 表，表缺失/异常降级不崩溃；ITEM-009）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt | active | `/upload_data` 请求体构造纯逻辑（fromAttributed：已归因读数 + 批时间；build：待发箱逐行时间；空读数集不产生请求；℃/%RH 不再二次换算；ITEM-008）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt | active | BLE 聚合帧解码纯逻辑模块（16B 头块=gwId6+devCount@6；每设备 16B 块取前 8B=id4B 原序|hum u16be@4|temp s16be@6 有符号；Result.Success/Rejected 显式拒绝帧长不足/devCount=0/密文未对齐/解密失败；ITEM-001）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt | active | 早起报告文本生成：ITEM-013 零样本行改为“昨日无上报”、摘要改为“共上报 N 条数据（按条件上报，条数非等间隔）”、低条数建议删除 288 条预期与离线推断；统计字段与逐行格式未变
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt | active | 报警判定纯逻辑模块（时间窗下降 5/10/15min、基准=窗口内最新样本含 30min 回溯容差；阈值超限/紧急 >65.0℃ 语义保持现状；四类文案+Severity；纯函数且输出不含温湿度数值；ITEM-005）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt | active | MQTT 批量载荷严格归因纯逻辑模块（time:temps:humis；数目不一致/空序列/非法数值含 NaN·Inf/时间非法→拒绝整批；一致时按 MacIdBook 顺序产出携带 devId 的 Reading；ITEM-003）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt | active | 采样节拍常量（SAMPLE_PERIOD_SECONDS=180 / SAMPLE_PERIOD_MS=180000；BLE 读取周期与界面文案共用；ITEM-010）
@@ -135,6 +136,7 @@ dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt |
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | active | 内嵌 Paho MQTT Android 客户端（vendor；粗路径）
 dengbei_care/app/src/main/res/ | active | Android 资源（layout/values/navigation/drawable/mipmap/xml；粗路径）；xml/network_security_config.xml 于 ITEM-004 追加放行 8.140.23.253（保留既有两项，未新增其它主机）
+dengbei_care/app/src/main/res/layout/activity_report.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/layout/fragment_device_detail.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/layout/item_device_card.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/xml/network_security_config.xml | active | 由 android_engineer.android_implementation 新增或修改的项目相关文件
@@ -144,6 +146,7 @@ dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadPayloadTest.
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt | active | SQLite v3 schema 宿主机自检 9 项（版本号/待发箱表列与复合主键/索引/既有 temperature 与 alarm_events DDL 逐字未变/迁移步骤只新建新对象；ITEM-006）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/db/TemperatureWriteItem007Test.kt | active | 单条读数写入自检 4 项（INSERT OR REPLACE + 4 列绑定、幂等键、写入 time 为调用方真实采样时间无偏移回填、守护门控仅 storeflag==1 可写；ITEM-007）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt | active | GatewayFrameCodec 宿主机 JUnit4 自检 11 项（帧长规则、温度/湿度向量与符号、devId 格式、多设备归属、与改动前 parsePlainFrame 固定种子随机逐位比对；ITEM-001）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/report/ReportGeneratorTest.kt | active | 早起报告文案自检 8 项（零样本“昨日无上报”、摘要说明按条件上报/非等间隔且不暗示固定节拍、统计与报警结构逐字保持、确定性、低条数建议不再推断离线/不引用固定条数、报警建议结构不变、无设备占位；ITEM-013）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt | active | AlarmEvaluator 宿主机 JUnit4 自检 23 项（L0-06..L0-10：开关语义/时间窗基准与边界/负对照/阈值与紧急边界/优先级文案/纯函数性与不携带温湿度数值；ITEM-005）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt | active | ReadingAttribution 宿主机 JUnit4 自检 16 项（归因顺序/负温0值/绑定顺序无关/数目不一致/空序列/非法数值/时间非法/无绑定设备/多余段兼容；ITEM-003）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt | active | 采样节拍常量自检 2 项（180s/180000ms 一致、非旧 5 分钟/1 分钟；ITEM-010）

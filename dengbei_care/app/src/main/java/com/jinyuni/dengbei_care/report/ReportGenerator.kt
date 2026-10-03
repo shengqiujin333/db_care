@@ -32,7 +32,8 @@ data class DailyReport(
             sb.appendLine("【${section.name.ifBlank { section.devId }}】")
             val s = section.stats
             if (s == null) {
-                sb.appendLine("  - 无数据")
+                // 按条件上报：未满足上报条件时当日没有任何记录，不等于“数据缺失”
+                sb.appendLine("  - 昨日无上报")
             } else {
                 sb.appendLine("  - 采样 ${s.sampleCount} 条")
                 sb.appendLine("  - 温度:最低 ${fmt(s.tempMin)}°C,最高 ${fmt(s.tempMax)}°C,平均 ${fmt(s.tempAvg)}°C")
@@ -69,7 +70,8 @@ object ReportGenerator {
         val dateStr = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
             .format(java.util.Date(System.currentTimeMillis() - 24 * 60 * 60 * 1000))
 
-        val summary = "昨日(${dateStr})共采集 $totalSamples 条数据,触发 $totalAlarms 次报警。"
+        // 按条件上报（3 分钟采样 ≠ 每 3 分钟一条）：条数非等间隔，不得暗示固定节拍
+        val summary = "昨日(${dateStr})共上报 $totalSamples 条数据（按条件上报，条数非等间隔），触发 $totalAlarms 次报警。"
 
         val sections = deviceNames.keys.sorted().map { devId ->
             DeviceReportSection(
@@ -104,9 +106,9 @@ object ReportGenerator {
             if (thresholdCount >= 5) {
                 suggestions.add("[$name] 温湿度超限报警 ${thresholdCount} 次,建议检查是否需要调整报警阈值或环境")
             }
-            // 采样太少 - 设备可能离线
+            // 上报条数偏少：按条件上报（未满足条件不上报），少不一定异常
             if (s.sampleCount < 24) {
-                suggestions.add("[$name] 昨日采样 ${s.sampleCount} 条(预期约 288 条),设备可能离线过")
+                suggestions.add("[$name] 昨日上报 ${s.sampleCount} 条；按条件上报且非等间隔，条数偏少不一定异常")
             }
         }
 
