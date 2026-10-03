@@ -2,7 +2,7 @@
 
 状态：软件测试执行证据（`software_tester.software_verification`），按 Runtime 逐个指派的队列项追加
 对象：Android App `dengbei_care`（Kotlin / AGP 8.3.2 / Gradle 8.4 / JDK 21）
-本轮项：队列 **ITEM-001**（BLE 聚合帧解码抽为纯逻辑模块 `protocol/GatewayFrameCodec.kt` 并接入 `MqtttService`）
+本轮项：队列 **ITEM-001**、**ITEM-002**（逐项分节记录）
 依据：`artifacts/software_test_design.md`（TD-SW-002）、`artifacts/software_e2e_plan.md`（E2E-SW-002）、`artifacts/interface_contract.md`（IC-002 §4）、`artifacts/android_architecture.md`（AA-002 §5.1/§10）
 被测代码版本：`3e0ed11`（android_engineer.android_implementation 提交）；改动前基线：`fe9a81c`
 说明：本文件为本能力**独立执行**的记录；实现侧自检（`evidence/android_test.md` AT-001）仅作为被核对对象，不重复引用为通过依据。
@@ -141,3 +141,83 @@ ITEM-001 的期望行为全部成立：
 1. 本项在 `onCharacteristicRead` 中保留的 `isZeroValue` 连续 3 次门控**未改动**（与改动前相同），其在条件上报下的取舍见 TD-SW-002 §8-G1，仍待实现/需求方确认。
 2. `ParsedFrameRaw`/`parseUnencryptedFrame`/`interpretPayloadV3`/`DeviceReadingV3`/`parseHexData` 仍为无调用点遗留；清理属后续队列项（`parseHexData` 为 ITEM-002 明确范围），本能力不越权改动。
 3. 新增的独立验证测试与参考脚本保留在仓库中，供后续项与本项回归复用；`file_manifest.txt` 已同步登记。
+
+---
+
+## ST-002 · ITEM-002（移除小端解析入口 `parseHexData`）
+
+**被测代码版本**：`d1758ec`（android_engineer.android_implementation 提交，相对上一提交 `0075b09`）；对象文件 `MqtttService.kt`（**5 insertions / 36 deletions**，全部为死代码与注释）
+**任务期望**：工程内不再存在小端 `humidity|temperature` 解释入口 `parseHexData` 及相关注释残留；BLE/MQTT 两条入口的解析均只经 `GatewayFrameCodec` 的唯一实现。
+
+### 1. 适用测试的选择与理由
+
+| TD-SW-002 用例 | 是否适用 | 理由 |
+|---|---|---|
+| T-SW-L1-03（单一解析入口） | 适用 | 本项核心期望；判定口径为"无功能入口与注释残留" |
+| T-SW-L1-01/L1-02（构建、宿主机单测） | 适用 | 删除后须可编译且既有/新增用例不回归 |
+| T-SW-L2/L3（链路、UI） | 不适用（未实现） | 后续队列项范围；本项为纯死代码删除，无行为变化 |
+
+判定范围（A 判定域）：**Android 编译源码 `dengbei_care/app/src/**`**。依据：本项对象是 Android 的 `MqtttService`；`readme.txt` 点 6 明确本轮不改 iOS，`dengbei_care/iOS开发资料/` 在 `file_manifest.txt` 中登记为"间接参考、不参与编译"。全仓其它命中按 §4 记录，不计入判定。
+
+### 2. 独立验证方法
+
+新增可复跑的独立静态核查脚本 `evidence/software_static_check_no_little_endian_parser.py`（不依赖实现侧声明）：
+- A1：`app/src/**` 中 `parseHexData` 出现次数必须为 0（定义、调用、注释一律不允许）；
+- A2：`app/src/**` 中不得存在小端 16 bit 组合写法 `X or (Y shl 8)`（允许大端 `(X shl 8) or Y`）；
+- B1：BLE 在用入口经 `decryptAndParseEcbFrame` 且按 `GatewayFrameCodec.Result.Rejected/Success` 分支、无本地帧解析实现；
+- B2：`decodeAggregatedFrame` 在 `app/src/main` 中只有 `MqtttService` 解密入口一处调用点；
+- C：仓库其它命中仅作信息输出。
+
+### 3. 原始结果
+
+```
+$ python evidence/software_static_check_no_little_endian_parser.py   # EXIT=0
+== A1 parseHexData in app/src (expect 0) ==
+  0 hits
+== A2 little-endian combine `X or (Y shl 8)` in app/src (expect 0) ==
+  0 hits
+== B 在用入口 ==
+  PASS  B1a uses decryptAndParseEcbFrame
+  PASS  B1b handles Result.Rejected
+  PASS  B1c handles Result.Success
+  PASS  B1d no local frame parse implementation
+== B2 decodeAggregatedFrame call sites in app/src/main ==
+  MqtttService.kt:477: return GatewayFrameCodec.decodeAggregatedFrame(plain)
+== RESULT ==
+  OK: 小端解析入口已从 Android 源工程移除；在用入口只经 GatewayFrameCodec
+```
+
+回归与构建（独立重跑）：
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单测（含本能力 ITEM-001 的 10 项独立用例） | `./gradlew :app:testDebugUnitTest --offline` | BUILD SUCCESSFUL；4 套件 **22 tests / 0 failures / 0 errors / 0 skipped**（ExampleUnitTest 1、实现侧自检 11、独立验证 3+7） |
+| 构建 | `./gradlew :app:assembleDebug --offline` | BUILD SUCCESSFUL；`app-debug.apk` 10,285,626 B（与删除前同尺寸） |
+| 全量重编译告警 | `./gradlew :app:compileDebugKotlin --offline --rerun` | BUILD SUCCESSFUL；12 条 warning 全部位于与本项无关的历史位置（MacIdBox/TemperatureDatabaseHelper/VibrationPlayer/UI/opt-in 等），**无一条指向被删代码或其注释**，无新增 error |
+| 差异范围 | `git diff --numstat 0075b09 d1758ec -- .../MqtttService.kt` | `5 insertions / 36 deletions`，仅删除 `parseHexData` 定义、引用它的整段注释旧路径，并留退役说明；无其它产品文件改动 |
+
+删除内容的性质（读取 diff 确认）：被删的 `onCharacteristicRead` 段落原本**整段处于注释状态**（`//` 前缀，含 `parseHexData`、`parseUnencryptedFrame`、`payloadsRaw8` 调用），未参与任何在用路径；被删的 `parseHexData` 定义在删除前已无调用点。因此本项**无行为变化**，与 APK 同尺寸、用例全绿互相印证。
+
+### 4. 全仓残留（不计入 A 判定，如实记录）
+
+| 位置 | 性质 | 处置 |
+|---|---|---|
+| `dengbei_care/iOS开发资料/02_Tier1_硬前置/MqtttService.kt:725,817` | iOS 参考资料包中的**旧快照副本**（非 Android 编译源，不参与构建） | 未改动（readme 点 6：本轮不改 iOS；该目录为间接参考）。若项目要求全仓字面清零，属文档/iOS 资料维护项 |
+| `dengbei_care/iOS开发资料/README.md:67,152` | 对旧行号的描述文字 | 同上 |
+| `dengbei_care/app/build/**`（release 类文件/dex/Kotlin 缓存） | `.gitignore` 覆盖的**陈旧构建产物** | 非交付源；不修改 |
+| `artifacts/`、`evidence/`、`file_manifest.txt` | 本仓库文档对**历史状态/需求/静态检查口径**的描述 | 正常，不需清理 |
+| `dengbei_care/.codegraph/codegraph.db` | 被忽略的本地代码索引 | 非交付源 |
+
+### 5. 判定
+
+1. **小端解析入口已移除**：Android 编译源码中 `parseHexData` 定义/调用/注释均为 0；且不存在任何小端 16 bit 组合写法。**通过**
+2. **BLE/MQTT 两条在用入口**：BLE 读取的唯一二进制解析路径为 `decryptAndParseEcbFrame → GatewayFrameCodec.decodeAggregatedFrame`（`app/src/main` 中唯一调用点）；MQTT 入口解析文本载荷（`time:temp1,...:humi1,...`），不解析二进制帧，不存在第二套二进制解析实现。**通过**
+3. **无行为回归**：删除内容为注释旧路径与无调用点函数；22 项宿主机用例全部通过、构建成功、APK 尺寸不变。**通过**
+
+结论：**TEST_PASS**。
+
+### 6. 交接与观察（本项范围外，不构成本项失败）
+
+1. **遗留无调用点的大端解析族**：`ParsedFrameRaw`、`DeviceReadingV3`、`parseUnencryptedFrame`、`interpretPayloadV3` 仍在 `MqtttService.kt` 中存在（`app/src/main` 内零外部调用点；其内部使用 `u16be/s16be/toHexSep`，均为**大端**，与 IC-002 §4 不冲突），也因此使遗留私有助手 `u16be/s16be/toHexSep` 仍被引用（无 unused 告警）。它们是"潜在重复实现"而非"在用入口"，清理属后续队列项/维护决定；本条已在 ITEM-001 证据中登记，此处延续。
+2. **`ByteArray.toHex`（第 480 行）现为零引用**（其唯一引用原先只在被删注释中）；属可选清理项，不属本项描述范围。
+3. 若后续能力/评审把"工程内"理解为"整个仓库字面清零"，则 §4 中的 iOS 参考快照与 README 描述需由文档维护方更新；本能力不越权改动 iOS 参考资料。
