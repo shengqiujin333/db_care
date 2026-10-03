@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "light.h"
+#include "fw_core.h"      /* light_code_is_dark moved here in ITEM-005 */
 #include "sensor_config.h"
 #include "delay.h"
 #include "mock_cw32.h"

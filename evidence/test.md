@@ -440,3 +440,90 @@ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
 “PB05 输出高 → 稳定延时 → PB04/AIN11 多次取样求均值 → 阈值+滞回输出 DARK/LIT（无光=读数≥进入阈值）→ 采样结束 PB05 置低”以及“转换超时不阻塞、回退满量程（无光）”全部经**真实 `light.c` + 独立仿真 MCU 层**复现成立，既有配置点与现网镜像无回归。
 
 **判定：TEST_PASS**（F.1 的整机引脚冲突为已登记的后续 ITEM 依赖，不影响本项模块级判定）。
+
+---
+
+# ITEM-005 验证（`fw_core.c` 纯逻辑：CRC-8 / 换算 / 滞回 / 上报判定）
+
+验证对象：任务项 **ITEM-005**（不依赖 MCU 寄存器的纯逻辑：`fw_crc8_gxht` 满足 `CRC(0xBEEF)=0x92`；GXHT40 原始字→x10 整数换算含负温与 0–100%RH 截断；`light_code_is_dark` 滞回；`sensor_decide_report`）
+被测提交：`7f8381e`；源码基线：`7342368`
+结论：**TEST_PASS**（含 1 项需需求方确认的 35.0 ℃ 边界语义分歧，见 F.1；实现与已验证上游契约 IC-002 一致）
+
+## A. 选测说明与变更范围
+
+| 选测项 | 理由 |
+|---|---|
+| 变更范围审查 | `fw_core.c` +95/0、`fw_core.h` +26/2、`sensor_config.h` +22/−14（拆出 `SENSOR_CONFIG_NO_MCU` 纯数值段）、`gxht40.c` +5/−42（删本地静态 CRC/换算）、`light.c` +1/−11（删本地滞回）、`light.h` −8（声明移走） |
+| **独立参考穷举校验** | 这是本项目最易穷举的纯逻辑：对**全部 65536 个温度原始字、65536 个湿度原始字、65536 个两字节 CRC、4096×2 滞回输入、572 组上报组合**与独立参考逐位比对 |
+| 重构后行为不变（回归） | 重跑 ITEM-003/ITEM-004 的独立 harness 与实现者 harness，确认删掉本地副本后驱动/光照行为不变 |
+| 依赖检查 | 证明 `fw_core.c` 真不依赖 MCU 头/外设符号；GNU + AC5 可编译 |
+
+不适用（后续 ITEM）：采样节拍接入（ITEM-006）、条件上报接入（ITEM-008）、旧通路退役（ITEM-009）、MDK/IAR 源列表（ITEM-011）、板级时序/电气（TD-002 T-L2/L3 需仪器）。
+
+## B. 独立参考与穷举校验（通过，核心）
+
+期望值由**独立 Python 参考**生成：换算用精确有理数 `-450 + floor(1750·raw/65536 + 1/2)`（round-half-up，与 C 实现不同的写法），CRC 用从零写的位算法，判定用直接按 IC-002 写的布尔式。harness 对结果计算 FNV-1a 32 位哈希并与参考常量比对。
+
+```
+cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+<mingw64 gcc> -std=c11 -Wall -Wextra -I USER/inc -I COMMON \
+  test/host_fw_core_verify_ev.c USER/src/fw_core.c -lm -o fw_core_verify && ./fw_core_verify
+=> ==== result: 53 passed, 0 failed ====   (0 编译告警)
+```
+
+| 穷举域 | 哈希（实测 = 参考） | 结论 |
+|---|---|---|
+| CRC-8：全部 256×256 个两字节输入 | `0x7CC4B9C5` | 65536 个 CRC 全部一致 |
+| 温度换算：全部 65536 个原始字 | `0xBB0C5ABB` | 含舍入方向完全一致 |
+| 湿度换算：全部 65536 个原始字 | `0x5F674BC5` | 含 0..1000 截断一致 |
+| 滞回：全部 4096 个码值 × 2 种前态 | `0x19DB6FE6` | 8192 个判定一致 |
+| 上报：13×11×(have,dark) = 572 组合 | `0xF7D66E3E` | 与 IC-002 布尔式一致 |
+
+向量与边界（期望值均来自独立参考）：
+
+- **CRC-8**：`{0xBE,0xEF}→0x92`（手册参考向量）；`{0x00}→0xAC`；`"123456789"→0xF7`（CRC-8/NRSC-5 标准校验值，独立确认变体）；GXHT40 帧字节 `{0x66,0x66}→0x93`、`{0x72,0xB0}→0xDC`；空长度→`0xFF`。
+- **温度**：`0x0000→-450`；`0x073E→-400`（−40.0 ℃ 域下界）；`0x41C2→0`；`0x6666→250`；`0xF89D→1250`（125.0 ℃ 域上界）；`0xBEEF→855`；`0xF8CA→1251`（域上界外）；`0xFFFF→1300`；**恰好 0.5 的舍入平分点** `0x4000→-12`、`0xC000→863`（round-half-up）。
+- **湿度**：`0x0000→0`（原始 −60 截断）；`0x0C64→1`；`0x1234→29`；`0x72B0→500`；`0xD8FD→1000`；`0xFFFF→1000`（原始 1190 截断）。
+- **组合换算 `gxht40_raw_to_x10`**：有效对→`true` 且写输出；温度越域（−450 / 1251）→`false` **且不写输出**；域端点 −400/1250 接受；`NULL` 输出指针不崩且仍返回有效性。
+- **滞回**：`0/349→LIT`；`350/4095→DARK`；已暗时 `251` 保持、`250→LIT`；带内保持前态（不抖动）。
+- **上报**：无前值 cur=200→false、cur=350→false、cur=351→true；下降恰好 9→false、10→true；下降满足但 LIT→false；prev==cur→false；升温→false；负温（−10.0→−12.0 ℃，降 2.0 ℃）→true；int16 极值不溢出（差值以 32 位算）。
+
+## C. 重构一致性与回归（通过）
+
+- **重复实现已消除**：`fw_crc8_gxht`、`light_code_is_dark` 在源码树中各只有 **1 处定义**（均在 `fw_core.c`）；`gxht40.c` 中已无本地 `gxht40_crc8/conv_*`。
+- 重跑 **ITEM-003 独立 harness**（`host_gxht40_verify_ev.c`，链接重构后 `gxht40.c`+`fw_core.c`）：**42/42**；**ITEM-004 独立 harness**（`host_light_verify_ev.c`）：**45/45**。
+- 实现者 harness：`host_fw_core_pure_check.c` **36/36**、`host_gxht40_check.c` **27/27**、`host_light_check.c` **17/17**；宿主机 L0 回归 `test/build_test.sh` **56/56**。
+- 说明：`light_code_is_dark` 的声明从 `light.h` 移到了 `fw_core.h`；已有调用方（`light.c`）已包含 `fw_core.h`。本轮据此同步更新了我方 ITEM-004 harness 的包含（否则会出现隐式声明告警），属测试侧适配。
+
+## D. 依赖与构建检查（通过）
+
+| 检查 | 结果 |
+|---|---|
+| `fw_core.c` 不依赖 MCU 头 | 预处理输出中 `cw32l010` 匹配数 = **0**（`SENSOR_CONFIG_NO_MCU` 纯数值段生效） |
+| `fw_core.o` 无外设符号 | `nm` 中无 `ADC_*`/`GPIO*`/`CW_*` 引用 |
+| GNU 交叉编译 | 0 error；29 warning（与基线同数，无一条指向 `fw_core.c`/`gxht40.c`/`light.c`） |
+| 镜像 | FLASH 34,060→**34,352 B**（+292 B，为 `fw_core.o` 新增纯逻辑）；RAM 1,960 B 不变；`.bin` 变化（`fw_core.o` 已被引用，符合预期） |
+| AC5（`--c99`，CMSIS 5.9.0） | `fw_core.c` / `gxht40.c` / `light.c` / `main.c` 均 **0 error** |
+| 新增符号 | `fw_crc8_gxht`、`gxht40_temp_raw_to_x10`、`gxht40_hum_raw_to_x10`、`gxht40_temp_x10_valid`、`gxht40_raw_to_x10`、`light_code_is_dark`、`sensor_decide_report`（`fw_core.o` text 1588 B） |
+
+## E. 观测边界
+
+- 本项为纯逻辑，宿主机穷举即完整覆盖其输入域；不涉及板上时序。
+- **未验证**（后续 ITEM）：这些纯函数是否被采样/上报流程正确调用（ITEM-006/008）、真实温度下报行为（TD-002 T-L5 边界矩阵，需实板/温箱）。
+
+## F. 发现与交接
+
+1. **【需需求方确认・非实现缺陷】恰好 35.0 ℃ 的下降分支语义分歧**：
+   - ITEM-005 任务文本与 FD-002 §6.4 的代码片段为 `((prev−cur)>9 且 DARK) 或 (cur>350)`，**无 `cur<350` 条件**；在「`cur` 恰好 =350 且下降 >9 且 DARK」时会判 true。FD-002 §6.4 还注释说 IC-002 的 `T<35` 项“属冗余”。
+   - 已验证上游契约 **IC-002 §2** 写的是 `(T[n] < 35.0) AND (下降) AND DARK OR T[n] > 35.0`；**FWR-104** 的边界行也写“恰好 35.0 ℃ 不触发”。即在该点 IC-002/FWR-104 与任务文本/设计代码不一致（FD-002 的“冗余”判断在恰好 35.0 ℃ 处不成立）。
+   - 实现选择了 **IC-002/FWR-104**（`cur == 350` 直接返回 false），并在代码中以注释标注依据。
+   - 本轮先按任务文本写出参考式，穷举时命中该分歧点；按 IC-002 修正参考式后哈希完全一致（`0xF7D66E3E`）。**精确分歧集仅为**：`have_prev=true, dark=true, cur=350, prev∈{1000,32767}`（共 2 点/572 组合）。
+   - 结论：实现与已验证契约一致，不判实现缺陷；但**任务文本/设计注释需同步澄清**（建议需求方确认“恰好 35.0 ℃ 时下降分支是否允许上报”，并修正 FD-002 §6.4 的“冗余”注释）。此为本能力边界外的文档/需求变更，登记为交接。
+2. **接口位置变更（交下游调用方）**：`light_code_is_dark` 现仅在 `fw_core.h` 声明；后续 ITEM-006/008 接入时应包含 `fw_core.h`。
+3. **MDK/IAR 源列表仍未包含 `gxht40.c`/`light.c`**（匹配数 0），属 ITEM-011；`fw_core.c` 本就在列表中。
+
+## G. ITEM-005 判定
+
+四个纯逻辑均已在 `fw_core.c` 实现且不依赖 MCU 寄存器/头文件，经**独立参考穷举**逐位一致；重构后驱动与光照行为无回归（独立 harness 42/42、45/45），GNU 与 AC5 均 0 error。
+
+**判定：TEST_PASS**（F.1 为需需求方确认的边界语义分歧，实现侧与已验证契约 IC-002/FWR-104 一致）。
