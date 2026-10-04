@@ -1,4 +1,4 @@
-﻿# Build outputs
+# Build outputs
 **/obj/
 **/build/
 **/Debug/
@@ -28,3 +28,12 @@ __pycache__/
 # OS
 Thumbs.db
 .DS_Store
+
+# Keil generated dependencies and per-user UI state
+*.uvguix.*
+**/MDK/output/**/*.d
+**/MDK/output/**/*.crf
+**/MDK/output/**/*.dep
+**/MDK/output/**/*.lnp
+**/MDK/output/**/*.build_log.htm
+**/MDK/output/**/*.iex
