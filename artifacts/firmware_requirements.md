@@ -1,7 +1,7 @@
 # 固件需求（FWR-002）
 
 状态：固件方案设计的伴随需求视图（firmware_engineer.firmware_solution_design）
-版本：1.0
+版本：2.0（与 FD-002 rev 2.0 同步重发）
 范围：本次「GXHT40 替换温湿度传感器 + 光敏分压 + 3 分钟采集 + 条件上报」改动在**固件域**内的需求分解。只覆盖传感器（CW32L010Y8M6）与网关（CH592 beiwov2）固件；Android/iOS/服务器/硬件不在本文。
 输入来源：`readme.txt`（需求方，权威）、接口契约 IC-002（`artifacts/interface_contract.md`，已批准上游产物）、`sensor_hardware/` 网表与 BOM（新硬件事实）、`gxht40.pdf`（器件手册）、既有固件源码（参考输入）。
 

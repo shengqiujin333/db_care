@@ -1,7 +1,7 @@
 # 传感器/网关固件设计方案（FD-002）
 
 状态：固件方案设计（firmware_engineer.firmware_solution_design）
-版本：1.0
+版本：2.0（本次 Workflow 重发；任务清单改为「可独立检查的功能增量」，见 §12）
 范围：本次「GXHT40 替换温湿度传感器、新增光敏分压、采集周期 3 分钟、条件上报」在固件域内的方案。**主要改动在传感器固件（CW32L010Y8M6）**；**网关固件（CH592 beiwov2）经核对无需功能改动**。本方案明确模块/任务划分、数据流、时序、资源预算、接口处理、异常策略与实现约束，**不承担代码实现**（由 `firmware_engineer.firmware_implementation` 承接）。
 
 上游输入：
@@ -346,7 +346,27 @@ bool sensor_decide_report(int16_t prev_temp_x10, bool have_prev,
 
 ---
 
-## 12. 验证与交接
+## 12. 实现增量划分（任务清单来源）
+
+`artifacts/firmware_tasks.yaml` 的条目按「可独立检查的功能增量」划分：每一项都自带必需前置步骤（新增/修改文件、配置、驱动接入、构建）与对应的可观察行为；**文件编辑、配置、驱动接入与构建不作为独立任务项**，而是增量内部的步骤；项目要求的光照阈值标定包含在 T2 增量内。前置顺序 T1 → T2 → T3 → T4 → T5 → T6 → T7，靠前项不依赖靠后项。
+
+| 增量 | 预期行为（可观察） | 主要设计依据 | 本仓可用的观察手段 |
+|---|---|---|---|
+| T1 GXHT40 温湿度采集 | 探测 0x44/0x45、0xFD 高重复率测量、6 B 读取、温度字/湿度字分别 CRC-8、整数 x10 换算与有效域、读 NACK/CRC 错有界重试、失败不修改输出 | §2.2、§6.1、§6.2、§10 | 宿主机 mock 总线 harness（`test/host_gxht40_check.c`、`host_sf_i2c_bus_check.c`）；交叉编译 |
+| T2 光照采集与无光判据 | PB05 供电 → 稳定等待 → PB04/AIN11 多次均值 → 带滞回 DARK/LIT → PB05 断电；ADC 超时有界回退；阈值/滞回单点配置且标定状态显式 | §2.3、§6.3、§11.4/11.5 | 宿主机仿真 MCU harness（`test/host_light_check.c`）；实板标定为外部依赖（FWR-OPEN-1） |
+| T3 3 分钟节拍与采样顺序 | RTC 1 分钟节拍累计 3 次触发；单周期只测一次；光照先于温湿度；整周期失败不推进前值/不构造 0 值 | §4、§5.2、§10 | 宿主机 mock main/measure harness（`test/host_rtc_cadence_verify_ev.c`、`host_measure_flow_check.c`） |
+| T4 条件上报判定 | 下降 >0.9 ℃ 且无光，或 >35.0 ℃ 才置待上报；恰好 0.9 ℃/35.0 ℃、无前值且未超温、有光且未超温均不触发 | §6.4、§10 | 宿主机纯逻辑真值表（`test/host_sensor_core_test.c`） |
+| T5 条件上报发送与空口兼容 | 仅有待上报时组 10 B 帧并 Feistel 加密发送；布局/字节序/加密不变、无光照字段；失败有界重试、用尽放弃本轮、成功才清标志 | §8.1、§10 | 宿主机空口往返 harness（传感器 `encrytogate.c` ↔ 网关 `feistel_al.c`） |
+| T6 旧通路退役与引脚所有权 | hall/OPTCFG/params/history 及其初始化、GPIOB 霍尔中断、LPTIM OPTCFG 分支、NVM 参数写路径移除；PB04 仅 AIN11 模拟输入、PB05 仅光照供电输出、PB06 不外驱动 | §3.3、§11.4 | 静态检查 + 交叉编译（符号/ELF/工程列表） |
+| T7 网关与手机链路兼容核对 | 网关按 `temp=p[4..5]`、`hum=p[6..7]` 解密；BLE 记录 `id|hum_be|temp_be` 与 Android `u16be@4`/`s16be@6` 一致；一致则记录「无需改动网关代码」的核对结论 | §8.2、§9 | 网关源码核对 + 真实编解码器端到端 harness |
+
+标定要求：光照阈值/滞回的实板标定属 T2 增量内的交付内容，不单列任务。当实板标定不可执行时，必须在证据中如实记录 `LIGHT_DARK_CALIBRATED=0`（未标定）并保持未决状态，**不得**宣称「无光判定已验收」。
+
+真实目标观测（逻辑分析仪抓 I²C/引脚时序、串口 9600 日志、供电回路电流）需要实板与仪器授权；本设计不把主机模拟结果标记为实板通过。该类观测项属下游 `embedded_tester` 能力的职责，见 §13 表与 FWR-OPEN-1。
+
+---
+
+## 13. 验证与交接
 
 本能力只做设计；下列为下游能力（`firmware_engineer.firmware_implementation`、嵌入式测试）的验证要点：
 
@@ -367,6 +387,6 @@ bool sensor_decide_report(int16_t prev_temp_x10, bool have_prev,
 
 ---
 
-## 13. 停止条件
+## 14. 停止条件
 
-本能力在以下条件满足时结束：`artifacts/firmware_requirements.md`、`artifacts/firmware_rtos_architecture.md`、`artifacts/firmware_design.md`、任务清单文件已产出并登记 `file_manifest.txt`，返回 `DESIGN_READY`。代码实现、实板标定、网关联调与 Android 改动均不在本能力内。
+本能力在以下条件满足时结束：`artifacts/firmware_requirements.md`、`artifacts/firmware_rtos_architecture.md`、`artifacts/firmware_design.md`、`artifacts/firmware_tasks.yaml`（T1–T7 功能增量）已产出并登记 `file_manifest.txt`，返回 `DESIGN_READY`。代码实现、实板标定、网关联调与 Android 改动均不在本能力内。
