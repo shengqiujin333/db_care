@@ -2,13 +2,15 @@
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
 本轮范围：当前任务队列 **ITEM-001（T1：GXHT40 温湿度采集通路）**
+依据：FD-002 **rev 3.0** `artifacts/firmware_design.md`、FWR-002 rev 3.0、IC-002 v3.0、TD-002 rev 3.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
+受测提交：`85ba302`（工作区干净；本轮无产品源码改动，T1 在 rev 3.0 设计中没有变更项，见 FD-002 §1.1 的偏差表仅涉及 T2/T4/T5）
 受测实现：`USER/src/gxht40.c` + `USER/inc/gxht40.h`、`USER/src/sf_i2c.c` + `USER/inc/sf_i2c.h`、`USER/src/fw_core.c` + `USER/inc/fw_core.h`
 测试载体：`test/host_gxht40_check.c`（mock I²C 从机）、`test/host_sf_i2c_bus_check.c`（mock 总线）、`test/host_sensor_core_test.c`（纯逻辑）
 测试环境：**项目设备工具已禁用**；以下为宿主机 mock/纯逻辑证据，**不代表实板 I²C 电气/时序已通过**（TD-002 §2.2 的 `[实板]` 项 T-L2-01..09 待设备解禁）。
 
-## T1 运行（本轮实际执行）
+## T1 运行（本轮实际执行，HEAD 85ba302）
 
-环境：MinGW-w64 GCC 12.2.0（完整路径）。命令与原始 stdout：
+环境：MinGW-w64 GCC 12.2.0（`C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin/gcc.exe`，PATH 上的 chocolatey shim 解析 libexec/cc1 失败，须用完整路径；shim 偶发 `Device or resource busy` 重试后恢复）。以下命令与 stdout 为本轮复跑结果，与上一轮一致（T1 实现未变更）。命令与原始 stdout：
 
 ```
 $ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test

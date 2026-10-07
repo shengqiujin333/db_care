@@ -2,8 +2,9 @@
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
 本轮范围：当前任务队列 **ITEM-001（T1：GXHT40 温湿度采集通路）**
-受测提交：`dc5980b`（本轮工作区无产品源码改动；`gcc/obj/*` 为 `.gitignore` 忽略的构建产物）
-测试环境：**项目设备工具已禁用**——本文件只含宿主机与交叉编译证据，不含任何实板/联测/功耗结论。
+依据：FD-002 **rev 3.0**、FWR-002 rev 3.0、IC-002 v3.0、TD-002 rev 3.0、`artifacts/firmware_tasks.yaml`
+受测提交：`85ba302`（工作区干净；本轮无产品源码改动，T1 在 rev 3.0 设计中无变更项）
+测试环境：本轮**已授权并可用** `mdk_build`（Keil MDK）；`mdk_flash`/串口/逻辑分析仪等实板工具仍未授权或不具备——本文件只含宿主机、交叉编译与 Keil 量产工具链构建证据，不含任何实板/联测/功耗结论。
 
 ## T1（ITEM-001）：交叉编译与宿主机回归（本轮实际执行）
 
@@ -33,6 +34,17 @@ $ arm-none-eabi-size gcc/obj/sensor_fw.elf
 
 - **0 错误**；告警仅来自既有厂商库（`Libraries/src/*`）与既有代码，无一条指向 T1 的 `gxht40.c`/`sf_i2c.c`/`fw_core.c`。
 - 资源在预算内：FLASH 32,208 B ≤ 64 KB；RAM 1,712 B ≤ 4 KB。
+
+Keil MDK 量产工具链构建（本能力本轮已授权 `mdk_build`）：
+
+```
+$ mdk_build {"action":"build"}      # 工具 CLI / MCP 同名工具，工程由配置决定
+{"tool":"mdk_build","success":true,"exit_code":0,"stdout":"build_log:\n*** Using Compiler 'V6.24', folder: 'C:\\Keil_v5\\ARM\\ARMCLANG\\Bin'\nBuild target 'Project'\n\".\\output\\exe\\Project.axf\" - 0 Error(s), 0 Warning(s).\nBuild Time Elapsed:  00:00:01"}
+```
+
+- 工程 `MDK/Project.uvprojx` 用 ARMCLANG V6.24 构建通过：**0 Error / 0 Warning**，产物 `MDK/output/exe/Project.axf`（构建产物被 `.gitignore` 忽略）。
+- 工具在仓库根产生的 `build.log` 已读入本证据后**删除**，未入库。
+- 说明：下载/回读校验（`mdk_flash`）与烧录后业务观测属 TD-002 `[实板]` 项，本轮未授权、未执行。
 
 浮点依赖核查（区分 T1 路径与既有厂商库）：
 
