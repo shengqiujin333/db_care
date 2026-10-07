@@ -1,7 +1,7 @@
 # 固件运行时与任务架构（RTA-002）
 
 状态：固件方案设计的伴随架构视图（firmware_engineer.firmware_solution_design）
-版本：3.0（替代 rev 2.0；按 IC-002 v3.0 更正判定方向/边界、光照有效性与待上报冻结样本）
+版本：4.0（替代 rev 3.0；本轮 run7 新增 UART1 调试通道的运行时归属与时间预算，其余调度/任务/不变量保持 rev 3.0：升温方向与边界、光照有效性 {valid,samples_ok,mean,min,max,dark}、待上报冻结快照）
 范围：本次需求涉及的传感器（CW32L010Y8M6，裸机）与网关（CH592，TMOS）固件运行时结构。不含 Android/iOS/服务器。
 结论先行：**传感器固件保持既有裸机事件驱动（超级循环 + RTC 唤醒深睡）架构，不引入 RTOS**；网关固件保持既有 TMOS 任务模型，本次**无功能变更**。
 
@@ -23,6 +23,7 @@ RTC 1 分钟中断 ──► rtc_tick_cnt++ ; 到 3 → sample_flag=1
               → [T_DECIDE] report = ((cur-prev)>0.9℃ 且 light_valid 且 DARK) 或 (T>35.0℃)
               → [T_LATCH ] 触发时冻结当次样本 (temp/hum)
               → [T_REPORT] 有待上报才 编码+Feistel+433 有界发送, 成功才清除
+              → [T_TRACE ] SENSOR_DEBUG_UART=1: 初始化 UART1 → 写一行 S 轨迹(≤96B) → 等 TC → 关闭 UART1
               → [T_SLEEP ] 无挂起工作 → 深睡
 ```
 
@@ -39,6 +40,7 @@ RTC 1 分钟中断 ──► rtc_tick_cnt++ ; 到 3 → sample_flag=1
 | T_DECIDE | 主循环 | 纯函数判定（可宿主机测试） | < 1 µs | 无阻塞、无浮点；int32 差值 |
 | T_LATCH | 主循环 | 触发时快照 `{temp,hum}` 到待上报状态 | < 1 µs | 保证重试期间帧内容不变 |
 | T_REPORT | 主循环（待上报标志） | `encode_frame10` + Feistel + UM2005C 发送（发送冻结快照） | 帧长 10 B 明文 → 34 B 空口 @10 kbps ≈ 27 ms；超时上限 200 ms | 主循环；发射期间 CPU 参与位时钟 |
+| T_TRACE | 主循环（采样周期末） | `debug_trace_sample()`：初始化 UART1 → 有界整数格式化写 S 行 → 等 `TC` → 关闭 UART1 | ≤96 B @9600 ≈ 100 ms（阻塞但有界） | 主循环；位于判定/发送之后，不改变任何业务状态；`SENSOR_DEBUG_UART=0` 时为空实现 |
 | T_SLEEP | 主循环末尾 | `SYSCTL_GotoDeepSleep()` | — | 无 `sample_flag` 且无待上报时进入 |
 
 ### 1.3 中断边界与优先级
@@ -49,7 +51,7 @@ RTC 1 分钟中断 ──► rtc_tick_cnt++ ; 到 3 → sample_flag=1
 | `LPTIM_IRQHandler` | 433 位时钟（`app_gtimer_count_irq`） | 仅在发射期间使能；**已移除**原 OPTCFG 采样分支 |
 | `GPIOB_IRQHandler` | 原霍尔 EXTI | **已移除**（PB04 改为模拟输入，不再产生 EXTI） |
 | `ADC_IRQHandler` | 未使用 | 光照采样走查询模式（`ADC_Isr` 不使能），避免与 433 位时钟争用 |
-| `UART1_IRQHandler` | 未使用 | 调试 UART 仅轮询输出，用后关闭 |
+| `UART1_IRQHandler` | 未使用 | 调试 UART 仅轮询输出，不开中断；打印后等 `TC` 再关闭，唤醒后重新初始化（厂商 `PWR_ConsumptionTest` 既有模式）；`debug_trace` 是 PA05/PA06/UART1 的唯一所有者 |
 
 中断嵌套：RTC/LPTIM 均为默认优先级、不嵌套；发射期间 433 位时钟优先，业务在主循环。
 
@@ -73,6 +75,7 @@ REPORT --T_REPORT 成功--> IDLE ; --3 次用尽--> DISCARD(不放行假成功) 
 | `report_req` + `report_temp_x10` + `report_hum_x10` | 1+2+2 B | 待上报标志与冻结样本快照（FWR-114） |
 | `report_retry` | 1 B | 本轮发送重试计数 |
 | `sample_flag` / `rtc_tick_cnt` | 1+1 B | 采样请求与 1 分钟节拍计数 |
+| `debug_uart_ready` | 1 B | 本周期 UART1 是否已初始化（仅在打印窗口保持，深睡期间不保持；不参与判定） |
 
 不新增 NVM 记录；所有状态在深睡期间由 SRAM 保持，复位后回到 `have_prev=false`。光照结果 `{valid,mean,dark}` 为单周期量，不做跨周期状态（**无滞回状态**）。
 
@@ -102,7 +105,8 @@ REPORT --T_REPORT 成功--> IDLE ; --3 次用尽--> DISCARD(不放行假成功) 
 | GXHT40 命令+等待+读取（高重复率） | ~9.3 ms |
 | 判定 + 冻结 | < 0.01 ms |
 | 433 发射（仅满足判据时） | ~27 ms（上限 200 ms 有界） |
-| **合计（不上报 / 上报）** | **≈ 113 ms / ≈ 140 ms** |
+| UART 调试轨迹（`SENSOR_DEBUG_UART=1`，等 TC 后关闭） | ≤100 ms（≤96 B @9600） |
+| **合计（不上报 / 上报）** | **≈ 213 ms / ≈ 240 ms**（调试关闭时仍为 ≈113 ms / ≈140 ms） |
 
 ### 3.3 功耗预算（估算，须实测确认）
 
@@ -126,3 +130,4 @@ REPORT --T_REPORT 成功--> IDLE ; --3 次用尽--> DISCARD(不放行假成功) 
 4. 待上报样本在重试期间必须与冻结快照逐字节一致，不得因新采样被悄然替换。
 5. 深睡是默认态；只有 `sample_flag`、待上报标志或发射挂起时才保持唤醒。
 6. 433 发射必须有界超时，失败不阻塞下一次 3 分钟节拍。
+7. UART1 调试通道不得改变业务：打印位于判定/发送之后，不修改 `report_req`/前值/快照/发送结果；关闭串口只碰 UART1/PA05/PA06，**不得**复位 GPIOA（保护 PA03/PA04 软 I²C 与 PA07/PA08 SWD）；`SENSOR_DEBUG_UART=0` 时为零开销空实现。

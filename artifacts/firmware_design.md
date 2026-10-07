@@ -1,10 +1,11 @@
 # 传感器/网关固件设计方案（FD-002）
 
 状态：固件方案设计（firmware_engineer.firmware_solution_design）
-版本：3.0（替代 rev 2.0；按 IC-002 v3.0 冻结上报方向与边界、光敏 1/3 全暗判据与光照有效性、待上报冻结样本；并登记对既有源码的 D-01/D-02 偏差）
-范围：本次「GXHT40 替换温湿度传感器、新增光敏分压、采集周期 3 分钟、条件上报」在固件域内的方案。**主要改动在传感器固件（CW32L010Y8M6）**；**网关固件（CH592 beiwov2）经核对无需功能改动**。本方案明确模块/任务划分、数据流、时序、资源预算、接口处理、异常策略与实现约束，**不承担代码实现**（由 `firmware_engineer.firmware_implementation` 承接）。
+版本：4.0（替代 rev 3.0；本轮 run7 在基线 `b38c0af` 上重新核对当前实现与最新需求的一致性，新增 readme 修改点 8「UART1 调试串口初始化与必要调试打印」的可观测方案，并按核对结果重排实现增量 T1–T5。rev 3.0 已冻结的上报方向/边界、光敏 1/3 全暗判据、光照有效性、待上报冻结样本语义**保持不变**）
+本轮基线：Git `b38c0afbd36871c708651e5012ba77f66b103e0b`（工作区干净；`main.c` 的 Flash 读保护两行由用户注释，本轮不得恢复）。
+范围：本次「GXHT40 替换温湿度传感器、新增光敏分压、采集周期 3 分钟、条件上报、UART1 调试串口」在固件域内的方案。**主要改动在传感器固件（CW32L010Y8M6）**；**网关固件（CH592 beiwov2）经核对无需功能改动**。本方案明确模块/任务划分、数据流、时序、资源预算、接口处理、异常策略与实现约束，**不承担代码实现**（由 `firmware_engineer.firmware_implementation` 承接）。
 上游输入：
-- 需求：`readme.txt`（权威）
+- 需求：`readme.txt`（权威，含本轮修改点 8）
 - 接口契约：IC-002 `artifacts/interface_contract.md` v3.0（CONTRACT_READY，冻结规范化语义）
 - 硬件事实：`sensor_hardware/pstxnet.dat`、`sensor_hardware/MAIN_BOARD.BOM`、`gateway_board.xml`
 - 器件手册：`gxht40.pdf`（GXHT4x Datasheet V2.6）
@@ -17,15 +18,18 @@
 
 ### 1.1 传感器现状（as-built 源码核定）
 
-前一轮 workflow 已把 AHT21B 替换为 GXHT40 并新增光照通路，旧 hall/OPTCFG/params/history 已退役；**但以下三处与 IC-002 v3.0 不一致**，本设计明确要求修正（D-01/D-02）：
+前一轮 workflow 已把 AHT21B 替换为 GXHT40 并新增光照通路，旧 hall/OPTCFG/params/history 已退役。**run7 在基线 `b38c0af` 上逐文件重新核对当前实现与最新 readme/IC-002 的一致性，结论：以下四处仍不一致**（前三处与 rev 3.0 登记相同，第四处为本轮新增需求），本设计明确要求修正（D-01/D-02/D-04）：
 
-| 偏差 | 位置（当前源码） | IC-002 v3.0 要求 |
+| 偏差 | 位置（基线 `b38c0af` 源码） | 最新需求要求 |
 |---|---|---|
-| 上报方向为「降温」且整体排除 35.0℃ | `USER/src/fw_core.c:105–121`：`(int32)prev-cur > 9`，并对 `cur == 350` 直接 `return false` | 方向为**升温** `(int32)cur-prev > 9`；恰好 35.0℃ 不满足超温分支但**可经升温分支上报**；判定还需 `light_valid` |
-| 光照采用 350/250 滞回、且 ADC 全超时合成满量程暗态 | `USER/src/light.c:93–120`、`USER/src/fw_core.c:94–99`、`USER/inc/sensor_config.h:100–103` | `dark = valid AND 3*mean >= C_dark`（C_dark=全暗基准）；**每笔独立、无滞回**；ADC 全超时 → `valid=false`，**不得**合成满量程暗态 |
-| 待上报帧读取「前值」而非冻结快照 | `USER/src/measure.c:238–262`（`encode_frame10(..., s_prev_temp_x10, s_last_hum_x10, ...)`） | 置待上报时冻结当次 `{temp,hum}` 快照，重试期间帧内容不得改变（FWR-114） |
+| D-01 上报方向为「降温」且整体排除 35.0℃、无光照有效性入参 | `USER/src/fw_core.c`：`sensor_decide_report(prev, have_prev, cur, dark)` 内 `(int32)prev-cur > SENSOR_REPORT_DROP_X10`，并对 `cur == 350` 直接 `return false` | 方向为**升温** `(int32)cur-prev > 9`（readme「本次比上次大于 0.9℃」）；恰好 35.0℃ 不满足超温分支但**可经升温分支上报**；判定需 `light_valid AND dark` |
+| D-02 光照采用 350/250 滞回、无有效性、ADC 全超时合成满量程暗态 | `USER/src/light.c`（`light_sample()` 返回 `bool` 且 `ok==0` 时 `code = LIGHT_ADC_FULL_SCALE`）、`USER/src/fw_core.c`（`light_code_is_dark`）、`USER/inc/sensor_config.h`（`LIGHT_DARK_ENTER/EXIT/HYSTERESIS_STEP`） | readme 修改点 7：无光判据 = 完全无光基准 `C_dark` 的 1/3；`dark = valid AND 3*mean >= C_dark`；**每笔独立、无滞回**；ADC 全部超时 → `valid=false`、`dark=false`，**不得**合成满量程暗态 |
+| D-03 待上报帧读取「前值」而非冻结快照 | `USER/src/measure.c` `send_data_to_gateway()`：`encode_frame10(mcu_uid, s_prev_temp_x10, s_last_hum_x10, send_data)` | 置待上报时冻结当次 `{temp,hum}` 快照；发送失败后跨周期重试期间帧内容不得改变（FWR-114） |
+| D-04 固件无可用调试串口输出 | `USER/src/main.c`（`UART1_Configure()`/`printf` 被注释）、`USER/src/measure.c`（仅保留 `UART1_Configure()`/`DebugUART_Close()` 定义，采样路径不调用）、`SENSOR_TEST_TRACE=0` 且未接入打印点 | readme 修改点 8：传感器用 UART1 作调试串口，需初始化并打印；本轮必须能在真实目标上观测（COM42@9600），不能只以编译/下载成功代替 |
 
-其余（GXHT40 驱动、3 分钟节拍、433 帧布局、网关链路）已与 IC-002 一致，本设计保持并要求回归。
+其余（GXHT40 驱动、3 分钟节拍、433 帧布局、旧通路退役、网关链路）已与需求一致，本设计保持并要求回归。
+
+> D-04 是本轮验证能力的直接前置：run6 的嵌入式验证在真实目标功能观测上判 BLOCKED，原因之一正是「无 UART trace 输出」（`evidence/test.md` EV-005）。本设计把 UART1 调试通道作为**第一个实现增量**，使后续增量与整机核对都能在真实目标上被观测。
 
 ### 1.2 本次硬件事实（网表/BOM 核定，不可改）
 
@@ -58,6 +62,7 @@
 | 传感器节拍 | 1 分钟采样 → **3 分钟采样**——已完成，保持 |
 | 传感器判定 | 温/湿阈值 + 历史下降 + 小时/首样本 → **升温 >0.9℃ 且无光，或 >35.0℃**（方向更正） |
 | 传感器上报 | 触发样本**冻结快照**后发送，成功才清除 |
+| 传感器调试 | **UART1（PA06/PA05）调试串口初始化与每周期轨迹打印**（readme 修改点 8，rev 4.0 新增）；本轮交付件默认开启，量产可关 |
 | 传感器退役 | hall / OPTCFG / params / history 通路移除——已完成，保持 |
 | 网关 | 无功能变更（§9 核对） |
 | 空口/BLE/云端字段 | 不变（§8） |
@@ -108,6 +113,19 @@
 - 建立时间：源阻抗最高 5 MΩ，ADC 采样电容 + 引线电容约数 pF → RC 约数十 µs；光敏器件本身响应为数十 ms 量级。**设计采取 PB05 上电后 ~100 ms 稳定等待 + ADC 390 clk（1 MHz 时钟下 390 µs）采样保持 + 多次取样求均值**。
 - 极性：**无光（DARK） ⟺ code ≥ 阈值**，阈值 = 完全遮光基准码 `C_dark` 的 1/3（readme 修改点 7；IC-002 §3）。
 
+### 2.4 调试串口 UART1（readme 修改点 8；rev 4.0 新增）
+
+| 项 | 值 | 依据 |
+|---|---|---|
+| 控制器/引脚 | `UART1`：PA06 = `UART1_TXD`、PA05 = `UART1_RXD` | 网表 `sensor_hardware/pstxnet.dat`：`UART1_TXD` = U7.PA06 → J3.1；`UART1_RXD` = U7.PA05 → J3.2；J3.3 = GND；3 针排针 J3 可接 USB-TTL |
+| 参数 | 9600 8N1、无流控、PCLK = 8 MHz（HSI `DIV6`）、轮询发送 | 既有 `measure.h` 的 `DEBUG_UART_*` 定义；不改用户已接线（COM42）的串口参数 |
+| 所有权 | UART1 与 PA05/PA06 的**唯一所有者**；其它模块不得配置 UART1 或改写这两个引脚 | 与 PB04/PB05 同类的引脚所有权约束（§11.4） |
+| 生命周期 | 复位后初始化一次并打印启动横幅；每个采样周期打印后 `flush`（等 `UART_FLAG_TC`）再关闭；需要打印前重新初始化 | 厂商 `Examples/PWR/PWR_ConsumptionTest` 的既有模式：`DebugUART_Close()` → `SYSCTL_GotoDeepSleep()` → 唤醒后重新配置串口 |
+| 关闭语义（修正既有缺陷） | 只复位/关闭 UART1 外设与时钟，并把 PA05/PA06 置输入；**不得**调用 `SYSCTRL_AHBPeriphReset(GPIOA)`、**不得**关闭 GPIOA 时钟 | 现有 `DebugUART_Close()` 复位整个 GPIOA，会连带清掉 PA03/PA04（软 I²C）与 PA07/PA08（SWD），并使下一次 I²C 事务失效——必须修正 |
+| 打印预算 | 单行 ≤ 96 B（9600 bps 下 ≈100 ms）、仅整数格式化、不用 `%f`/浮点、无动态内存；可被 RTC 中断抢占 | §7、RTA-002 §3.2 时间预算 |
+| 编译开关 | `SENSOR_DEBUG_UART`：**本轮交付件默认 1**（本轮明确要求真实可观测）；置 0 时全部调试打印编译为空，采样/判定/上报行为不变 | readme 修改点 8；量产可关闭 |
+| 读保护 | 保持 `main.c` 中用户注释的 `__SYSCTRL_FLASH_CLK_ENABLE()` / `FLASH_SetReadOutLevel()` 关闭状态 | run7 明确要求 |
+
 ---
 
 ## 3. 模块划分（传感器工程文件级计划）
@@ -118,18 +136,21 @@
 |---|---|
 | `USER/inc/sensor_config.h` | 单一配置头：引脚宏、GXHT40 命令/地址/重试上限/等待时间、**全暗基准 `C_dark` 与标定标志**、采样节拍计数（3）、上报常量（0.9℃、35.0℃）、光照采样次数 |
 | `USER/inc/gxht40.h` / `USER/src/gxht40.c` | GXHT40 协议驱动：地址探测、发送命令、等待、读 6 B、CRC 校验、整数换算；对上层只暴露「一次测量 → temp_x10/hum_x10/结果码」 |
-| `USER/inc/light.h` / `USER/src/light.c` | 光照通路：PB05 供电、稳定等待、PB04/AIN11 多次采样、均值、**结果 `{valid,mean_adc_code,dark}`** |
+| `USER/inc/light.h` / `USER/src/light.c` | 光照通路：PB05 供电、稳定等待、PB04/AIN11 多次采样、均值/极值、**结果 `{valid,samples_ok,mean_adc_code,code_min,code_max,dark}`** |
+| `USER/inc/debug_trace.h` / `USER/src/debug_trace.c` | UART1 调试通道：初始化/关闭/排空/有界整数打印；`BOOT` 横幅与每周期 `S` 轨迹（§6.5）；唯一拥有 PA05/PA06 与 UART1（rev 4.0 新增） |
 
 ### 3.2 修改（本设计确定的更正点）
 
 | 文件 | 动作 |
 |---|---|
-| `USER/inc/light.h` / `USER/src/light.c` | 采样返回结构化结果 `light_result_t {valid, mean_adc_code, samples_ok, dark}`（替代 `bool light_sample()`）；**ADC 全部超时 → valid=false**，删除满量程回退；删除滞回状态与 `light_reset_state` 的滞回语义 |
+| `USER/inc/light.h` / `USER/src/light.c` | 采样返回结构化结果 `light_result_t {valid, samples_ok, mean_adc_code, code_min, code_max, dark}`（替代 `bool light_sample()`）；**ADC 全部超时 → valid=false**，删除满量程回退；删除滞回状态与 `light_reset_state` 的滞回语义 |
+| `USER/inc/debug_trace.h` / `USER/src/debug_trace.c` | 新增模块（rev 4.0）：UART1 初始化与有界整数打印；`debug_trace_boot()`（启动横幅 + 复位来源）、`debug_trace_sample(...)`（每周期 S 行）、`debug_trace_flush_and_close()`；关闭时只碰 UART1/PA05/PA06（§2.4） |
+| `USER/` 构建工程列表 | `MDK/Project.uvprojx`、`EWARM/project.ewp` 加入 `debug_trace.c`；`gcc/build.sh` 通过通配自动包含 |
 | `USER/inc/fw_core.h` / `USER/src/fw_core.c` | 纯逻辑改为 `light_is_dark(mean, valid, c_dark)`（uint32 乘法）与 `sensor_decide_report(prev, have_prev, cur, light_valid, light_dark)`（升温方向、无 35.0℃ 特例排除）；删除 `light_code_is_dark`、`SENSOR_REPORT_DROP_X10` |
 | `USER/inc/measure.h` / `USER/src/measure.c` | 接入新判定签名；温湿度成功后**先推进前值**（含光照无效/未上报），触发时**冻结快照**；发送路径改为读取冻结快照 |
-| `USER/inc/sensor_config.h` | 删除 `LIGHT_DARK_ENTER/EXIT/HYSTERESIS_STEP`；新增 `LIGHT_DARK_REF_CODE`（C_dark）与 `LIGHT_DARK_CALIBRATED`；上报常量更名 `SENSOR_REPORT_RISE_X10` |
+| `USER/inc/sensor_config.h` | 删除 `LIGHT_DARK_ENTER/EXIT/HYSTERESIS_STEP`；新增 `LIGHT_DARK_REF_CODE`（C_dark）与 `LIGHT_DARK_CALIBRATED`；上报常量更名 `SENSOR_REPORT_RISE_X10`；新增 `SENSOR_DEBUG_UART` 开关与调试常量（波特率/行预算沿用 `measure.h` 定义或迁入本头文件，保持唯一配置点） |
 | `test/*` | 旧 350/250 滞回用例、旧降温方向用例须同步重写（由固件实现/嵌入式测试负责，本能力只登记交接） |
-| `USER/src/main.c`、`USER/src/interrupts_cw32l010.c` | 保持已退役状态（无 hall/OPTCFG 分支）；RTC 3 拍逻辑不变 |
+| `USER/src/main.c`、`USER/src/interrupts_cw32l010.c` | 保持已退役状态（无 hall/OPTCFG 分支）；RTC 3 拍逻辑不变；`main.c` 接入启动横幅与「睡眠前排空并关闭串口」，保持 Flash 读保护为注释状态 |
 
 ### 3.3 已退役（保持移除）
 
@@ -137,7 +158,7 @@
 
 ### 3.4 不动
 
-`encrytogate.c`（Feistel/CRC16）、`UM2005C/*`（433 驱动）、`COMMON/*`、标准外设库、MDK/EWARM 工程文件骨架、网关固件。
+`encrytogate.c`（Feistel/CRC16）、`UM2005C/*`（433 驱动）、`COMMON/*`、标准外设库、网关固件；MDK/EWARM 工程文件仅新增 `debug_trace.c` 源文件条目，其余内容不动。
 
 ---
 
@@ -147,11 +168,11 @@
 [RTC 1min ×3]
       │
       ▼
-light_sample(&light):  PB05=1 → delay ≈100ms → ADC(AIN11) ×8 → 均值/成功数 → PB05=0
+light_sample(&light):  PB05=1 → delay ≈100ms → ADC(AIN11) ×8 → 均值/成功数/极值 → PB05=0
                        adc_ok = (samples_ok > 0)
                        valid  = adc_ok AND LIGHT_DARK_CALIBRATED
                        dark   = valid AND (uint32)3*mean >= C_dark
-      │  {valid, mean_adc_code, samples_ok, dark}
+      │  {valid, samples_ok, mean_adc_code, code_min, code_max, dark}
       ▼
 gxht40_measure(&t,&h): probe 0x44/0x45 → write 0xFD → wait ≥ tMEAS.H.max → read 6B
                        → CRC(T), CRC(RH) → temp_x10, hum_x10        ── ok
@@ -172,6 +193,10 @@ send_data_to_gateway()   [仅 report_req==1]
       → app_um2005C_send_data_timeout(frame10, 10, 200)
       成功 → report_req=0, retry=0
       失败 → retry++; 达到 SENSOR_RF_TX_RETRY → report_req=0（放弃本轮，不伪造成功）
+      │
+      ▼
+debug_trace_sample(...)   [SENSOR_DEBUG_UART=1 且已初始化 UART1]
+      写 S 行(≤96B) → 等 TC → 关闭 UART1 → 深睡（§6.5）
 ```
 
 RAM 状态（深睡保留）：
@@ -183,6 +208,7 @@ report_req    (uint8)   有待上报的冻结样本
 report_temp_x10 (int16) 冻结样本温度
 report_hum_x10  (uint16)冻结样本湿度
 sample_flag / rtc_tick_cnt / report_retry
+debug_uart_ready (bool)  本周期 UART1 是否已初始化（打印后关闭；睡眠期间不保持）
 （不再有 light_dark_state：光照为每笔独立结果，无跨周期滞回状态）
 ```
 
@@ -201,9 +227,12 @@ t=120.1s   ADC ×8 (≈3.2ms), PB05=0 → 光照结果
 t=120.1s   GXHT40: 0xFD, 等待 10ms
 t=120.11s  读 6B (≈1ms) → 判定 → 冻结
 t=120.11s  需要则 433 发射 ≈27ms (有界 200ms, 最多 3 次)
-t≈120.1s   深睡
+t=120.11s  调试打印: 初始化 UART1 -> 写 S 行(≤96B, ≈100ms @9600) -> 等 TC -> 关闭 UART1
+t≈120.2s   深睡
 t=300s     下一轮
 ```
+
+> 调试打印位于判定与发送**之后**，因此 S 行的 `report`/`send`/`retry` 为该周期的最终结果；`SENSOR_DEBUG_UART=0` 时该步骤不执行。
 
 ### 5.2 3 分钟节拍实现
 
@@ -305,13 +334,41 @@ bool sensor_decide_report(int16_t prev_temp_x10, bool have_prev,
 | 独立超温 | 无 / 35.1 | 明或无效 | 否 | 是 |
 | 首笔非超温 | 无 / 35.0 | 暗 | 否 | 否 |
 
+### 6.5 调试轨迹格式（readme 修改点 8；本版冻结）
+
+由 `debug_trace` 输出两类行；字段、顺序与单位固定，便于串口日志自动判定与留证：
+
+```text
+BOOT fw=FD-002r4 uid=%02X%02X%02X%02X rst=%s uart=9600
+S tick=%u prev=%d have=%u light={valid=%u ok=%u min=%u max=%u mean=%u dark=%u} t=%d h=%u report=%u send=%u retry=%u
+```
+
+| 字段 | 含义 |
+|---|---|
+| `BOOT` | 启动横幅：固件标识（用于区分旧镜像）、芯片 UID 前 4 字节、复位来源、串口参数 |
+| `S tick` | 本行对应的 RTC 累计节拍数（达到 `SENSOR_SAMPLE_TICKS` 即一次采样；亦用于核对 3 分钟节拍） |
+| `prev` / `have` | 判定使用的**前一有效**温度 x10 与存在标志（`have=0` 时 `prev` 无意义） |
+| `light` | 本周期光照结果：`valid`、`ok`（成功转换数）、`min`/`max`/`mean`（成功样本的最小/最大/均值码）、`dark` |
+| `t` / `h` | 本周期温度 x10（有符号）/ 湿度 x10 |
+| `report` | `sensor_decide_report` 结果（0/1） |
+| `send` | 本周期 433 发送结果：`0`=未发送（无待上报）、`1`=成功、`2`=失败 |
+| `retry` | 打印时刻的待上报重试计数（跨周期重试时可见其保持的冻结快照语义） |
+
+约束：
+1. 仅整数格式化（`%u/%d/%02X`），不得出现 `%f`/浮点；单行 ≤ 96 B。
+2. 打印在判定与发送之后、深睡之前；打印不得改变 `report_req`、前值、快照或发送结果。
+3. 光照 `min`/`max` 用于 `C_dark` 实板标定的样本分布留证（§6.3 标定方法）。
+4. 上述字段**不进入** 433/BLE/平台任何载荷（§8.1 不变）。
+5. `SENSOR_DEBUG_UART=0` 时两行均不产生，且不初始化 UART1。
+
 ---
 
 ## 7. 资源预算
 
 见 RTA-002 §3。要点：
 - Flash/SRAM 均为**净减少**（退役模块大于新增模块）；无动态内存、无浮点库依赖（换算为整数）。
-- 单周期唤醒活动时间 ≈113 ms（上报时 ≈140 ms），3 分钟占空比 ≈0.06%。
+- 单周期唤醒活动时间 ≈113 ms（上报时 ≈140 ms）；`SENSOR_DEBUG_UART=1` 时另加 ≤100 ms 的串口打印（打印后等 TC 再关闭 UART1），3 分钟占空比仍 <0.15%。
+- 调试模块只增加少量整数格式化代码（无浮点、无动态内存）；UART1 时钟与 PA05/PA06 仅在打印窗口内使能，深睡期间关闭。
 - 估算日均 ≈100 µAh；**必须实测** UM2005C 静态电流、MCU 深睡电流、GXHT40 待机电流后回填。
 
 ---
@@ -378,6 +435,9 @@ bool sensor_decide_report(int16_t prev_temp_x10, bool have_prev,
 | 433 发送超时（200 ms 未完成） | 有界重试 ≤3，**重试期间发送冻结快照**；用尽则放弃本轮（`report_req=0`），不伪造成功；下个 3 分钟周期自然重试 |
 | I²C 总线被从机拉低卡死 | `sf_i2c` 的 ACK 超时路径已发 STOP 释放；上层按失败处理，不无限等待 |
 | 光照无效 + 温湿度有效且 >35.0℃ | **上报**（超温分支独立于光照） |
+| 深睡唤醒后 UART1 未就绪 | 每次打印前重新初始化 UART1（厂商 `PWR_ConsumptionTest` 的 `Close → GotoDeepSleep → 重新配置` 既有模式）；关闭串口只碰 UART1/PA05/PA06 |
+| 关闭串口时的既有缺陷 | 现有 `DebugUART_Close()` 会 `SYSCTRL_AHBPeriphReset(GPIOA)` 并关闭 GPIOA 时钟，连带清掉 PA03/PA04（软 I²C）与 PA07/PA08（SWD）——必须改为只复位/关闭 UART1，不得复位 GPIOA |
+| 无 USB-TTL / 串口未接线 | 打印阻塞时间有界；`SENSOR_DEBUG_UART=0` 可整体关闭；任何情况下打印不改变采样/判定/发送结果 |
 
 ---
 
@@ -396,27 +456,31 @@ bool sensor_decide_report(int16_t prev_temp_x10, bool have_prev,
 11. **不使用 GXHT40 加热器**：`0x39/0x32/…` 命令不得启用。
 12. **不复位从机**：不在每个周期发 `0x94`。
 13. **无新增 NVM 写**：前值/快照仅存 RAM（深睡保持）；标定值以编译期常量回填，不写 Flash。
-14. **构建可复现**：MDK/IAR 工程与 `gcc/build.sh` 均需通过；新增/改名源文件必须同步两个工程文件列表。
+14. **构建可复现**：MDK/IAR 工程与 `gcc/build.sh` 均需通过；新增/改名源文件（含 `debug_trace.c`）必须同步两个工程文件列表。
+15. **调试串口所有权唯一**：UART1 与 PA05/PA06 只允许 `debug_trace.c` 配置；关闭串口**不得**复位 GPIOA、**不得**关闭 GPIOA 时钟、**不得**改动 PA03/PA04/PA07/PA08（保护软 I²C 与 SWD）。
+16. **睡眠前排空**：任何进入 `SYSCTL_GotoDeepSleep()` 的路径必须先等待 UART `TC`（发送完成）再关闭 UART1，避免最后一行被截断。
+17. **打印有界且无副作用**：单行 ≤ 96 B、仅整数格式化、无浮点、无动态内存；打印在判定/发送之后，不得改变 `report_req`/前值/快照/发送结果。
+18. **调试不得妨碍调试**：保持 `main.c` 中 Flash 读保护两行为注释（关闭）状态；不得新增读保护、SWD 锁定或缩短唤醒窗口的逻辑。
 
 ---
 
 ## 12. 实现增量划分（任务清单来源）
 
-`artifacts/firmware_tasks.yaml` 的条目按「可独立检查的功能增量」划分：每一项都自带必需前置步骤（新增/修改文件、配置、驱动接入、构建）与对应的可观察行为；**文件编辑、配置、驱动接入与构建不作为独立任务项**，而是增量内部的步骤；项目要求的全暗标定包含在 T2 增量内。前置顺序 T1 → T2 → T3 → T4 → T5 → T6 → T7，靠前项不依赖靠后项。
+`artifacts/firmware_tasks.yaml` 的条目按「可独立检查的功能增量」划分：每一项都自带必需前置步骤（新增/修改文件、配置、驱动接入、工程列表、构建）与对应的**真实目标可观察行为**；**文件编辑、配置、驱动接入与构建不作为独立任务项**，而是增量内部的步骤。项目要求的全暗标定包含在 T2 增量内，不单列任务。前置顺序 T1 → T2 → T3 → T4 → T5，靠前项不依赖靠后项。
 
-| 增量 | 预期行为（可观察） | 主要设计依据 |
+本轮（run7）与前一轮（run6 T1–T7）的对应关系：run6 的「GXHT40 采集」「3 分钟节拍」「旧通路退役」三项在基线 `b38c0af` 上已实现且经宿主机/交叉编译核验，本轮**不再重复开发**，而是并入 T1 的整机真实目标观测（T1 的启动横幅与周期轨迹同时证明 GXHT40 读数、3 分钟节拍与退役后整机可运行）；run6 的「光照」「判定」「发送与冻结」三项合入本清单 T2/T3/T4（语义不变）；run6 的 T7 对应本清单 T5；本清单**新增 T1（UART1 调试通道）**，它是其余各项在真实目标上可观测的前置（对应 run6 验证 BLOCKED 的根因 D-04）。
+
+| 增量 | 预期行为（真实目标可观察） | 主要设计依据 |
 |---|---|---|
-| T1 GXHT40 温湿度采集 | 探测 0x44/0x45、0xFD 高重复率测量、6 B 读取、温度字/湿度字分别 CRC-8、整数 x10 换算与有效域、读 NACK/CRC 错有界重试、失败不修改输出 | §2.2、§6.1、§6.2、§10 |
-| T2 光照采集与「全暗基准 1/3」无光判据 | PB05 供电 → 稳定等待 → PB04/AIN11 多次均值 → PB05 断电；结果含 valid/mean；`dark = valid && 3*mean >= C_dark`，每笔独立无滞回；ADC 全超时 valid=false；C_dark 由完全遮光实板标定取得并回填，未标定时不得声称无光 | §2.3、§6.3、§11.7 |
-| T3 3 分钟节拍与采样顺序 | RTC 1 分钟节拍累计 3 次触发；单周期只测一次；光照先于温湿度；温湿度失败不推进前值/不冻结/不构造 0 值 | §4、§5.1–5.3、§10 |
-| T4 条件上报判定（升温方向 + 严格边界） | 升温 >0.9℃ 且光照有效且无光，或 >35.0℃ 才置待上报；IC-002 九组向量一致；差值 int32；光照无效只关升温分支 | §6.4 |
-| T5 条件上报发送与冻结样本 | 仅有待上报才组 10 B 帧并 Feistel 加密；触发样本冻结；重试期间帧内容不变；失败有界重试、用尽放弃、成功才清标志；布局/字节序不变、无光照字段 | §4、§8.1、§10、§11.8 |
-| T6 旧通路退役与引脚所有权 | hall/OPTCFG/params/history 及初始化、GPIOB 霍尔中断、LPTIM OPTCFG 分支、NVM 参数写路径移除；PB04 仅 AIN11 模拟输入、PB05 仅光照供电输出、PB06 不外驱动 | §3.3、§11.4 |
-| T7 网关与手机链路兼容核对 | 网关按 `temp=p[4..5]`、`hum=p[6..7]` 解密；BLE 记录 `id|hum_be|temp_be` 与 Android `u16be@4`/`s16be@6` 一致；一致则记录「无需改动网关代码」结论 | §8.2、§9 |
+| T1 UART1 调试通道（本轮新增，其余增量的观测前置） | 上电后初始化 UART1（PA06=`UART1_TXD`/PA05=`UART1_RXD`、9600 8N1）并打印带固件标识/UID/复位来源的启动横幅；每个采样周期在**判定与发送之后**打印一行 ≤96 B 的 S 轨迹（节拍、前一有效温度与存在标志、光照 valid/ok/min/max/mean/dark、温度/湿度 x10、report、send、retry）；打印后等 `TC` 再关闭串口、唤醒后重新初始化；关闭串口只碰 UART1/PA05/PA06，不复位 GPIOA。真实目标：USB-TTL 接 J3、COM42@9600，复位后可见横幅，此后每约 3 分钟出现一条完整 S 行且字段与该周期实际测量/判定一致（同时证明 GXHT40 读数、3 分钟节拍与退役后整机可运行）；Flash 读保护保持注释关闭 | §2.4、§4、§6.5、§11.15–11.18 |
+| T2 光照采集、全暗基准标定与「1/3」无光判据 | 采样返回 `{valid, samples_ok, mean_adc_code, code_min, code_max, dark}`；PB05 供电→稳定等待→PB04/AIN11 多次转换→PB05 断电；`dark = valid && 3*mean >= C_dark`（uint32、边界相等为暗、每笔独立无滞回）；ADC 全部超时 valid=false 且不得合成满量程暗态；`C_dark` 由**完全不透光遮蔽光敏器件**、供电/建立时间/取样次数与量产一致的实板实测取得并回填 `LIGHT_DARK_REF_CODE`、置 `LIGHT_DARK_CALIBRATED=1`，标定记录含板件、供电、遮光方式、原始样本分布（min/max/mean）与配置版本。真实目标：当前有光环境轨迹显示 mean 明显低于 `ceil(C_dark/3)` 且 dark=0；完全遮光后同一周期 dark=1 且 `3*mean >= C_dark`；移开遮蔽恢复 dark=0 | §2.3、§6.3、§11.7 |
+| T3 条件上报判定（升温方向 + 严格边界 + 光照门控） | `report = 温湿度均有效 && ((有前一有效温度 && int32(本次−前次) > 9 && light_valid && dark) || 本次 > 350)`；方向为升温；恰好 +0.9℃、恰好 35.0℃ 不满足超温分支但可满足升温分支；无前值时仅超温分支；光照无效只关升温分支；前值为上一次有效采样，失败周期不推进；IC-002 九组向量一致。真实目标：遮光且本次比上次升温 ≥1.0℃（如放入被窝/贴手保温）时轨迹 report=1 并随后出现发送记录；有光但同样升温时 report=0 且无发送；>35.0℃ 时有光也 report=1 | §6.4、§10 |
+| T4 触发的冻结快照与条件发送 | 置待上报时冻结当次温度/湿度快照；组帧只读快照（uid4 \| 温度 x10 小端 2B \| 湿度 x10 小端 2B \| CRC16-CCITT-FALSE 小端 2B），沿用既有 Feistel 加密与 433 有界超时发送；重试期间（含跨周期）帧内容与快照逐字节一致；仅成功才清除待上报，重试用尽放弃本轮且不伪造成功；布局/字节序/单位不变、不新增光照或原因字段。真实目标：轨迹中的 report/send/retry 与本次触发样本自洽，未满足判据时无发送记录；跨周期重试期间快照不变与用尽放弃在宿主机发送桩上逐次核对 | §4、§8.1、§10、§11.8 |
+| T5 跨链路一致性核对（只读，不改网关） | 核对网关 CH592 `decode_frame10` 取 `temp=p[4..5]`/`hum=p[6..7]`、每设备记录 `id\|hum_be\|temp_be` 与 Android `u16be@4`/`s16be@6`（含负温与单位）一致，记录「无需改动网关代码」结论；用本轮实机轨迹与网关/手机收到的读数比对，确认**同一次上报**的传感器温度/湿度与手机显示一致；如发现不一致，登记为跨链路接口问题交由负责能力按 IC-002 处置（本项不做网关功能改动） | §8.2、§9 |
 
-标定要求：全暗基准 `C_dark` 的实板标定属 T2 增量内的交付内容，不单列任务。当实板标定不可执行时，必须在证据中如实记录 `LIGHT_DARK_CALIBRATED=0`（未标定）并保持未决状态，**不得**宣称「无光判定已验收」。
+标定要求：全暗基准 `C_dark` 的实板标定属 T2 增量内的交付内容，不单列任务。完全遮光用现有条件实现（不透光胶带/遮光罩/厚布完全包住 J4 光敏器件，等待与取样次数与量产一致）；若确实无法在真实目标上取得完全遮光基准，必须在证据中如实记录 `LIGHT_DARK_CALIBRATED=0` 并保持未决，**不得**用满量程、旧默认 350/250 或当前亮态读数冒充 `C_dark`，也不得宣称「无光判定已验收」；该情形应返回 `BLOCKED` 而不是伪造通过。
 
-真实目标观测（逻辑分析仪抓 I²C/引脚时序、串口 9600 日志、供电回路电流）需要实板与仪器授权；本设计不把主机模拟结果标记为实板通过。该类观测项属下游 `embedded_tester` 能力的职责，见 FWR-OPEN-1 与 §13。
+真实目标观测边界：UART 轨迹提供**软件可见状态**（读数、判定、发送、重试、错误码），足以覆盖 run6 被阻塞的多数实板功能观测；但 I²C 位级电气/时序、433 空口波形、供电回路电流仍需要逻辑分析仪/电流表等仪器，当前未提供（run7 明确「不照搬旧方案额外仪器的强制条件」），属下游 `embedded_tester` 能力的职责与未决项（§13）。
 
 ---
 
@@ -430,20 +494,25 @@ bool sensor_decide_report(int16_t prev_temp_x10, bool have_prev,
 | 上报判定真值表（IC-002 §2 九组向量：D=8/9/10、降温、明/无效光照、35.0℃ 升温分支、首笔 35.0/35.1℃） | 宿主机单元测试 |
 | 光照 1/3 判据：`3*mean` 与 `C_dark` 边界、`C_dark=1..4095` 全覆盖、每笔独立（同码不同历史结果相同）、无效不判暗 | 宿主机单元测试 |
 | ADC 全超时 → valid=false（不合成 4095）、部分成功均值与成功数 | 宿主机仿真 MCU harness |
-| 3 分钟节拍、单周期单次测量 | 实板/逻辑分析仪（嵌入式测试） |
-| GXHT40 实读值与参考温湿度计一致性、地址探测（0x44/0x45） | 实板 I²C 抓包（嵌入式测试） |
-| 433 帧布局/加密与网关解析、BLE 记录顺序、冻结样本一致性 | 网关联调（嵌入式测试） |
-| 深睡电流、单周期平均电流、CR2032 寿命 | 实测（硬件/低功耗） |
+| 3 分钟节拍、单周期单次测量 | 真实目标 UART 轨迹（S 行时间戳，嵌入式测试） |
+| GXHT40 实读值与参考温湿度计一致性、地址探测（0x44/0x45） | 实板 I²C 抓包（需逻辑分析仪，当前未提供）；软件侧由 UART 轨迹的 t/h 与重试/错误码覆盖，参考仪器对照项按现有设备重定范围 |
+| 433 帧布局/加密与网关解析、BLE 记录顺序、冻结样本一致性 | 网关联调（嵌入式测试）+ 宿主机协议 harness |
+| **UART1 真实可观测**：勾幅 + 每周期 S 行、字段与当周期实际值一致、行不截断、每约 3 分钟一行 | 真实目标串口（COM42@9600，嵌入式测试） |
+| **Flash 读保护保持关闭**（未恢复用户注释行），且下载/调试不被读保护阻挡 | 源码静态核查 + 真实目标下载/校验 |
+| 深睡电流、单周期平均电流、CR2032 寿命 | 实测（需电流表，当前未提供；不列入本轮强制项，按现有设备重定范围） |
 | 完全遮光基准 `C_dark` 实板标定与回填配置头 | 嵌入式测试 → 实现 |
 
 **跨角色交接（不属于本能力执行）**：
-- **D-01（固件实现）**：`fw_core.c:105–121` 需改为升温方向、移除 35.0℃ 特例排除、增加 `light_valid` 入参；`light_code_is_dark`/`SENSOR_REPORT_DROP_X10` 及其宿主机用例（`test/host_fw_core_pure_check.c`、`host_fw_core_verify_ev.c`、`host_light_check.c`、`host_light_verify_ev.c`、`host_measure_flow_check.c`、`host_rf_report_verify_ev.c` 等）须同步重写。
-- **D-02（固件实现 + 实板标定）**：`light.c` 需返回 `{valid,mean,dark}` 并删除满量程回退；`sensor_config.h` 需以 `LIGHT_DARK_REF_CODE`+`LIGHT_DARK_CALIBRATED` 取代 `LIGHT_DARK_ENTER/EXIT`；取得完全遮光实测值前不得宣称无光已验收。
-- **D-03（Android）**：批次顺序与数量归因、避免 BLE→MQTT 只保留末设备导致错配、同步「升温」规则文案；属 Android 能力，本设计只保证空口/BLE 布局不变。
-- 需求方：FWR-OPEN-1（`C_dark` 标定）、FWR-OPEN-2（0.9℃ 含等于）、FWR-OPEN-3（是否需保活上报）。
+- **D-01（固件实现）**：`fw_core.c` 的 `sensor_decide_report` 需改为升温方向、移除 35.0℃ 特例排除、增加 `light_valid` 入参；`light_code_is_dark`/`SENSOR_REPORT_DROP_X10` 及其宿主机用例（`test/host_fw_core_pure_check.c`、`host_fw_core_verify_ev.c`、`host_light_check.c`、`host_light_verify_ev.c`、`host_measure_flow_check.c`、`host_rf_report_verify_ev.c` 等）须同步重写。
+- **D-02（固件实现 + 实板标定）**：`light.c` 需返回 `{valid,samples_ok,mean,min,max,dark}` 并删除满量程回退与滞回；`sensor_config.h` 需以 `LIGHT_DARK_REF_CODE`+`LIGHT_DARK_CALIBRATED` 取代 `LIGHT_DARK_ENTER/EXIT`；取得完全遮光实测值前不得宣称无光已验收。
+- **D-03（固件实现）**：`measure.c` 需在置待上报时冻结 `{temp,hum}` 快照，`send_data_to_gateway()` 只读快照；跨周期重试期间帧内容不变。
+- **D-04（固件实现）**：新增 `debug_trace` 模块与 `SENSOR_DEBUG_UART` 开关；`main.c` 接入启动勾幅与「睡眠前排空并关闭串口」；修正 `measure.c` 中 `DebugUART_Close()` 复位 GPIOA 的既有缺陷；同步 MDK/IAR 工程文件列表。
+- **D-05（嵌入式测试设计）**：`artifacts/test_design.md`（TD-002）中把逻辑分析仪/参考温湿度计/电流表/暗箱列为强制前置的实板项需按 run7 现有设备重定范围（UART 轨迹可覆盖软件可见状态），否则验证会再次因缺仪器而 BLOCKED；本设计只提供观测能力，不修改测试设计。
+- **D-06（Android）**：批次顺序与数量归因、避免 BLE→MQTT 只保留末设备导致错配、同步「升温」规则文案；属 Android 能力，本设计只保证空口/BLE 布局不变。
+- 需求方：FWR-OPEN-1（`C_dark` 标定）、FWR-OPEN-2（0.9℃ 含等于）、FWR-OPEN-3（是否需保活上报）、FWR-OPEN-4（光敏安装朝向决定 DARK 语义）。
 
 ---
 
 ## 14. 停止条件
 
-本能力在以下条件满足时结束：`artifacts/firmware_requirements.md`、`artifacts/firmware_rtos_architecture.md`、`artifacts/firmware_design.md`、`artifacts/firmware_tasks.yaml`（T1–T7 功能增量）已产出并登记 `file_manifest.txt`，返回 `DESIGN_READY`。代码实现、实板标定、网关联调与 Android 改动均不在本能力内。
+本能力在以下条件满足时结束：`artifacts/firmware_requirements.md`（rev 4.0）、`artifacts/firmware_rtos_architecture.md`（rev 4.0）、`artifacts/firmware_design.md`（rev 4.0）、`artifacts/firmware_tasks.yaml`（T1–T5 功能增量）已产出并登记 `file_manifest.txt`，返回 `DESIGN_READY`。代码实现、实板标定与观测、网关联调与 Android 改动均不在本能力内。
