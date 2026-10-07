@@ -1,5 +1,21 @@
 # CodeGraph Validation
 
+## Latest invocation verification (2026-10-07, HEAD 4220a78)
+
+Read the shared manifest, Project Goal, readme.txt, project entry paths and existing index/evidence artifacts. Git status --porcelain was empty; Git log and git show --stat for the previous indexing commit and updated requirements commit were inspected. The same three product roots remain relevant.
+
+Installed `codegraph --version` returned 1.6.0. All three existing graphs were reused; no installation, init or rebuild was performed. Each `codegraph status --json "<root>"` exited 0: initialized=true, state=complete, pendingRefs=0, pendingChanges={added:0,modified:0,removed:0}, worktreeMismatch=null, reindexRecommended=false. File/node/edge counts remain sensor 76/889/2132, relay 35/509/1066, Android 136/3127/5881.
+
+Each query below exited 0 and returned current numbered source and caller relationships, with no source-drift warning:
+
+| Root | Query (with --max-files 1 -p "<root>") | Result |
+| --- | --- | --- |
+| Sensor | codegraph explore "sensor_decide_report" | 7 symbols; USER/src/fw_core.c:105; measure.c callers and test references |
+| Relay | codegraph explore "decode_frame10" | 9 symbols; APP/feistel_al.c:119; app_um2006A.c caller |
+| Android | codegraph explore "GatewayFrameCodec" | 17 symbols; protocol/GatewayFrameCodec.kt:16; MqtttService.kt callers and test references |
+
+`git check-ignore -v <each root>/.codegraph/index.db` matched .gitignore:20:.codegraph/ for all three roots. `git ls-files '*/.codegraph/*'` returned no tracked files. Existing ignore rules required no changes. Validation is limited to local index usability; no product implementation or functional tests were performed. Runtime owns commit/push.
+
 ## Current invocation verification (2026-10-07, HEAD 5e74c93)
 
 The initial worktree was clean. Read file_manifest.txt, Project Goal, 项目地址.txt, existing index/evidence documents, Git log and relevant commit summaries. The three product roots remain relevant; SDKs, unrelated examples, archives, hardware and iOS references were excluded from separate indexing.
