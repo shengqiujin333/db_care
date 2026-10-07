@@ -1,16 +1,73 @@
-# 固件实现（FWI-002 rev 3.0）
+# 固件实现（FWI-002 rev 4.0）
 
-状态：固件实现（firmware_engineer.firmware_implementation），按当前任务队列 T1–T7 逐项推进
-本轮工作项：Runtime 队列 **ITEM-001 ↔ 任务清单 T1（GXHT40 温湿度采集通路）**
-依据：FD-002 **rev 3.0** `artifacts/firmware_design.md`、FWR-002 rev 3.0 `artifacts/firmware_requirements.md`、IC-002 v3.0、TD-002 rev 3.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
-受测提交：`85ba302`（工作区干净）
-测试环境：本轮 **`mdk_build`（Keil MDK）已授权并可用**；`mdk_flash`、串口、逻辑分析仪、电流表等实板工具仍未授权或不具备。因此本轮运行宿主机 L0/L0i、GNU 交叉编译与 Keil 量产工具链构建；真实目标观测属 TD-002 §2.2 的 `[实板]` 用例，由嵌入式测试能力在设备可用后执行。
+状态：固件实现（firmware_engineer.firmware_implementation）
+本轮工作项：run7 Runtime 队列 **ITEM-001 ↔ 任务清单 T1（UART1 调试串口初始化与可观测打印）**
+依据：FD-002 **rev 4.0** `artifacts/firmware_design.md`、FWR-002 rev 4.0 `artifacts/firmware_requirements.md`、RTA-002 rev 4.0 `artifacts/firmware_rtos_architecture.md`、IC-002 v3.0、TD-002 rev 4.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
+受测提交：`fc53512`（接手时工作区干净；本轮改动见下）
+测试环境：本轮可用 `mdk_build`（Keil MDK / ARMCLANG V6.24）、GNU 交叉编译（`arm-none-eabi-gcc 10.3.1`）与宿主机 MinGW-w64 gcc 12.2.0；`mdk_flash` 与串口采集未在本调用工具列表中，因此本轮**未执行**下载与 COM42 轨迹采集，T-L2-01..T-L2-09 的真实目标观测由嵌入式测试能力执行。
 
-说明：共享仓库当前提交已包含上一轮工作流提交的同一功能实现（旧 12 项编号）。本轮按新任务清单 T1–T7 重新锚定并逐项核验；**本轮章节为当前判定依据**，旧编号记录作为历史保留于文末。
+> 说明：本文件现含 run7 的 T1 记录（当前判定依据）与上一轮工作流的历史记录（T1–T7 / 旧 12 项编号），历史部分仅供参考。
 
 ---
 
-# 本轮（T1–T7 ↔ ITEM-001…ITEM-007）
+# 本轮 run7：T1（UART1 调试串口初始化与可观测打印）
+
+**任务**：固件在上电后初始化 UART1（PA06=`UART1_TXD`、PA05=`UART1_RXD`，对应网表 J3.1/J3.2，9600 8N1、PCLK 8 MHz、轮询发送）并打印启动横幅（固件标识、芯片 UID 前 4 字节、复位来源、串口参数），在每个采样周期于判定与发送之后打印一行不超过 96 字节的整数轨迹；打印后等 TC 再关闭串口、唤醒后重新初始化；关闭只复位/关闭 UART1 与改写 PA05/PA06，不得复位 GPIOA、不得关闭 GPIOA 时钟、不得改动 PA03/PA04 与 PA07/PA08；打印不得改变采样/判定/发送结果与状态快照；Flash 读保护保持注释。
+
+设计映射：FD-002 rev 4.0 §2.4（调试串口）、§4（数据流）、§6.5（轨迹格式）、§11.15–§11.18（约束）；FWR-115；TD-002 §4.4 T-L2-01..10。
+
+### 实际改动（run7 ITEM-001）
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `USER/inc/debug_trace.h` | 新增 | UART1 调试通道接口与 `debug_trace_sample_t {tick,prev_temp_x10,have_prev,light_valid,light_ok,light_min,light_max,light_mean,light_dark,temp_x10,hum_x10,sample_ok,report,send,retry}`；`SENSOR_DEBUG_UART=0` 时提供空操作内联定义 |
+| `USER/src/debug_trace.c` | 新增 | UART1 初始化/关闭/排空与有界整数格式化；`BOOT` 横幅与 `S` 轨迹；UART1 与 PA05/PA06 的唯一所有者 |
+| `USER/inc/sensor_config.h` | 修改 | 新增 `SENSOR_DEBUG_UART`（单一配置点：目标编译器默认 1、宿主机默认 0）与 `SENSOR_DEBUG_UART_MAXLINE=96`；新增 `DEBUG_UART*` 引脚/波特率宏 |
+| `USER/src/main.c` | 修改 | 上电打印启动横幅（`SYSCTRL_GetAllRstFlag()`）；主循环在判定+发送之后发布 S 轨迹并排空/关闭 UART1；新增 `rtc_tick_total` 累计分钟节拍（只读调试计数）；移除已失效的 printf 重定向与旧 UART 时钟使能；Flash 读保护保持注释 |
+| `USER/src/measure.c` | 修改 | 移除 `UART1_Configure`/`UartGPIO_Configuration`/`DebugUART_Close`（旧 `DebugUART_Close` 会复位 GPIOA，损坏 PA03/PA04 软 I²C 与 PA07/PA08 SWD）；新增 `sensor_trace_fetch()`（只读快照，不改变业务状态）；光照结果记录点提前到光采样之后（不影响判定输入） |
+| `USER/src/light.c` / `USER/inc/light.h` | 修改 | 新增原始样本统计（成功数/均值/最小/最大）与只读 getter，供轨迹使用；滞回判定与满量程回退行为**未**改变（属 T2） |
+| `MDK/Project.uvprojx` / `EWARM/project.ewp` | 修改 | User 组加入 `debug_trace.c` |
+| `test/host_debug_trace_check.c`、`test/mock_trace/`、`test/build_test.sh` | 新增/修改 | 实现侧自检：宿主机影子 MCU 层 + 真实 `debug_trace.c`；`build_test.sh` 扩为 3 阶段 |
+
+### 冻结的 S 行格式（实现字面；字段集合/顺序/单位不变，标签压缩以满足 96 B）
+
+```text
+BOOT fw=FD-002r4 uid=<UID前4B hex> rst=<复位标志 hex4> uart=9600
+S k=<tick> p=<prev> H=<have> V=<lvalid> o=<ok> n=<min> x=<max> a=<mean> D=<dark> t=<temp> h=<hum> q=<sample_ok> r=<report> s=<send> y=<retry>
+```
+
+单位：`k`=RTC 累计 1 分钟节拍；`p`/`t`=0.1℃ x10；`H/V/D/q/r`=0/1；`o`=成功样本数；`n/x/a`=ADC 原始码 0..4095；`h`=0.1%RH；`s`=0 未发送/1 成功/2 失败；`y`=重试计数；`q`（本周期温湿度是否有效）是 TD-002 T-L2-05/T-L5-13 辨识失败周期所需的显式标记。
+
+设计偏离登记（不改变字段集合与语义）：FD-002 rev 4.0 §6.5 的示例字面格式在均值/极值为 3–4 位数时已超 96 B；TD-002 §4.4 T-L2-03 要求实现压缩标签且验证方不得放宽上限，因此采用单字符键。另：`tick` 取 RTC 累计分钟计数（任务文本「RTC 累计节拍」），而非恒定的每周期 3。
+
+### 预期行为
+
+1. 上电初始化 UART1 并输出**一条**启动横幅（固件标识/UID 前 4 字节/复位来源/串口参数）；除横幅与 S 行外无其它调试输出。
+2. 每个采样周期在**判定与发送之后**输出**一条** S 行；字段固定、仅整数、含 CRLF、单行 ≤ 96 B（实测最坏 92 B）。
+3. 两次采样之间串口**已关闭**（无任何字节）：S 行打印后等 `TC` 再关闭。
+4. 关闭只碰 UART1 与 PA05/PA06：不复位 GPIOA、不关 GPIOA 时钟；因此后续周期软 I²C 与 SWD 仍可用。
+5. 唤醒后重新初始化 UART1，每个周期都能打印（非仅首条）。
+6. `debug_trace_*` 只读传入快照，不修改 `report_req`/前值/冻结样本/发送结果。
+7. `SENSOR_DEBUG_UART=0` 时全部调用编译为空，采样/判定/上报行为不变；`main.c` 的 Flash 读保护两行仍为注释。
+
+### 验证（本轮实际执行）
+
+- `gcc/build.sh` 交叉编译：0 错误，**FLASH 32,000 B / RAM 1,736 B**；`debug_trace.c` 无浮点引用（`arm-none-eabi-nm` 0 命中）。
+- `mdk_build {action:rebuild}`（Keil ARMCLANG V6.24）：**0 Error / 1 Warning**（既有 `while(k--);` 空循环告警，非新增），`debug_trace.c` 已入构建，产物 `MDK/output/exe/Project.axf` 含 `BOOT fw=FD-002r4 uid=`（证明 Keil 目标构建下 `SENSOR_DEBUG_UART=1`）。
+- `test/build_test.sh`（3 阶段）：38/38 + 24/24 + **22/22**；新增 `host_debug_trace_check.c` 覆盖横幅/S 行最坏 92 B 预算/字段顺序/仅整数/无截断/关闭语义/幂等/唤醒重初始化/无副作用。
+- 既有独立验证 harness 回归（未修改任何 `*_verify_ev.c`）：fw_core 53/53、light 45/45、gxht40 42/42、sf_i2c 35/35、measure 流程 79/79、rf_report 30/30、gw_compat 11/11、rf_frame 10/10、rtc 节拍 17/17。
+
+原始命令与 stdout 见 `evidence/build.md`（T1 节）与 `evidence/driver_test.md`（T1 节）。
+
+### 未执行 / 交接（如实记录，不当作通过）
+
+- **真实目标观测未执行**：本调用工具列表仅含 `mdk_build`，无 `mdk_flash`/串口采集。TD-002 §4.4 T-L2-01..09 的下载-复位-COM42 轨迹采集（横幅、周期 S 行、采样间期 0 字节、二次下载验证 SWD 未被破坏）由嵌入式测试能力执行。
+- **待实现能力（T2/T3/T4）**：`light.c` 仍为旧滞回判定且 ADC 全超时仍回退满量程（D-02）；`fw_core.c` 的 `sensor_decide_report` 仍为旧降温方向与 35.0℃ 特例排除（D-01）。因此本轮 S 行的 `D`（dark）与 `r`（report）反映的是**当前 as-built 判定**，而非 FD-002 rev 4.0 §6.3/§6.4 的目标语义；T-L2-04 的按新公式重算需在 T2/T3 落地后成立。
+- **测试资产依赖**：`host_debug_trace_check.c` 需显式 `-DSENSOR_DEBUG_UART=1`（宿主机默认 0）；TD-002 拟新增的 debug_trace harness 应采用同样方式，否则宿主机编译为空操作。
+
+---
+
+# 历史：上一轮工作流（FWI-002 rev 3.0，T1–T7 / 旧 12 项编号）
 
 ## 任务项 ITEM-001（T1：GXHT40 温湿度采集通路）
 

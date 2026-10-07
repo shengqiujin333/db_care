@@ -28,6 +28,7 @@
  * Include files
  ******************************************************************************/
 #include "../inc/main.h"
+#include "light.h"           /* T1: 光照原始样本统计 (UART1 调试轨迹) */
 
 /******************************************************************************
  * Local pre-processor symbols/macros ('#define')
@@ -75,8 +76,7 @@ void SYSCTRL_Configuration(void)
     SYSCTRL_PCLKPRS_Config(SYSCTRL_PCLK_DIV1);
 	
     SYSCTRL_APBPeriphClk_Enable2(SYSCTRL_APB2_PERIPH_RTC, ENABLE);
-		SYSCTRL_AHBPeriphClk_Enable(DEBUG_UART_GPIO_CLK, ENABLE);
-    DEBUG_UART_APBClkENx(DEBUG_UART_CLK, ENABLE);
+    /* UART1 时钟与 PA05/PA06 由 debug_trace.c 按需开关 (FD-002 rev 4.0 §11.15) */
 	
 		SYSCTRL_APBPeriphClk_Enable2(SYSCTRL_APB2_PERIPH_LPTIM,ENABLE);
 }
@@ -98,16 +98,19 @@ void delay(uint16_t ms)
 
 extern uint8_t sample_flag;
 uint8_t rtc_set_cnt = 0;
+uint32_t rtc_tick_total = 0u;   /* T1: RTC 累计 1 分钟节拍 (调试轨迹) */
 
 /*
  * RTC 1 分钟/拍: 累计 SENSOR_SAMPLE_TICKS(=3) 拍才置一次采样标志 -> 每 3 分钟采样一次
  * (readme 修改点 3; FD-002 §5.2)。采样函数消费后清 sample_flag, 故一个周期只测量一次。
  * 上报完全由 sensor_decide_report 条件门控, 无小时上报/首样本强制上报。
+ * rtc_tick_total 为只读调试计数 (UART1 轨迹), 不参与采样/判定。
  */
 void RTC_IRQHandlerCallBack(void)
 {
     if (RTC_GetITState(RTC_IT_INTERVAL))
     {
+        rtc_tick_total++;
         rtc_set_cnt++;
         if (rtc_set_cnt >= SENSOR_SAMPLE_TICKS) {
             sample_flag = 1;
@@ -152,47 +155,10 @@ void RTC_IRQHandlerCallBack(void)
 
 
 
-#ifdef __GNUC__
-    /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf
-    set to 'Yes') calls __io_putchar() */
-    #define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
-#else
-    #define PUTCHAR_PROTOTYPE int fputc(int ch, FILE *f)
-#endif /* __GNUC__ */
-
-PUTCHAR_PROTOTYPE
-{
-    UART_SendData_8bit(DEBUG_UARTx, (uint8_t)ch);
-
-    while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET);
-
-    return ch;
-}
-
-size_t __write(int handle, const unsigned char * buffer, size_t size)
-{
-    size_t nChars = 0;
-
-    if (buffer == 0)
-    {
-        /*
-         * This means that we should flush internal buffers.  Since we
-         * don't we just return.  (Remember, "handle" == -1 means that all
-         * handles should be flushed.)
-         */
-        return 0;
-    }
-
-
-    for (/* Empty */; size != 0; --size)
-    {
-        UART_SendData_8bit(DEBUG_UARTx, *buffer++);
-        while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET);
-        ++nChars;
-    }
-
-    return nChars;
-}
+/*
+ * printf 重定向已移除 (T1): UART1 的初始化与输出全部由 debug_trace.c 拥有
+ * (FD-002 rev 4.0 §2.4/§11.15)。调试输出必须经 debug_trace_* 接口。
+ */
 
 uint32_t hclk = 0,pclk = 0;
 extern uint8_t mcu_uid[10];
@@ -210,9 +176,9 @@ int32_t main(void)
 
 	uint8_t i = 0;
 	uint32_t k = 0;
-//    RTC_InitTypeDef RTC_InitStruct = {0};
-//    RTC_AlarmTypeDef RTC_AlarmStruct = {0};
-
+#if SENSOR_DEBUG_UART
+	debug_trace_sample_t trace;   /* T1: 本采样周期的调试轨迹快照 (仅目标固件) */
+#endif
     /* System Clocks Configuration */
     SYSCTRL_Configuration();
 	    
@@ -233,11 +199,16 @@ int32_t main(void)
 			go_to_sleep();
 		}
 	}
-	
+
+	/* T1 (readme 修改点 8): UART1 调试串口启动横幅 (固件标识/UID 前 4 字节/复位来源/串口参数) */
+#if SENSOR_DEBUG_UART
+	debug_trace_boot(mcu_uid, SYSCTRL_GetAllRstFlag());
+#endif
+
 	k = 10000;
 	while(k--);
 	
-//	__SYSCTRL_FLASH_CLK_ENABLE();
+//	__SYSCTRL_FLASH_CLK_ENABLE();   /* 用户注释: 本轮调试保持关闭, 不得恢复读保护 */
 //	FLASH_SetReadOutLevel(FLASH_RDLEVEL2);
 	
 	/* 传感器初始化 (软 I2C/GXHT40/光照) 在首次采样时惰性完成 (measure.c) */
@@ -247,15 +218,23 @@ int32_t main(void)
         //-----------------------------------------------------------------------
 			temperature_process(); /* 采样节拍: 3 分钟一拍 (ITEM-007) */
 			send_data_to_gateway();/* 条件上报: sensor_decide_report 门控 (ITEM-008) */
+
+#if SENSOR_DEBUG_UART
+			/* T1: 每个采样周期在判定与发送之后输出一行 S 轨迹 (光照/温度/判定/发送同一周期) */
+			if (sensor_trace_fetch(&trace) != 0u) {
+				trace.tick        = rtc_tick_total;   /* RTC 累计分钟节拍 (本行对应的采样时刻) */
+				trace.light_ok    = light_last_ok();
+				trace.light_valid = (trace.light_ok > 0u) ? 1u : 0u;
+				trace.light_min   = light_last_min();
+				trace.light_max   = light_last_max();
+				trace.light_mean  = light_last_mean();
+				debug_trace_sample(&trace);
+			}
+			/* 幂等: 保证任何深睡路径之前 UART1 已排空(TC)并关闭, 采样间期无输出 */
+			debug_trace_flush_close();
+#endif
+
 			go_to_sleep();
-//			printf("helllo world\r\n");
-//			delay(3000);
-//			bsp_i2c_init();
-//			UART1_Configure();
-//			printf("helllo worldx\r\n");
-//			DebugUART_Close();
-			
-			//SYSCTRL_GotoDeepSleep();
 		}
 
 }

@@ -1,10 +1,74 @@
-# 构建证据（BUILD-002 rev 3.0）
+# 构建证据（BUILD-002 rev 4.0）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：当前任务队列 **ITEM-001（T1：GXHT40 温湿度采集通路）**
-依据：FD-002 **rev 3.0**、FWR-002 rev 3.0、IC-002 v3.0、TD-002 rev 3.0、`artifacts/firmware_tasks.yaml`
-受测提交：`85ba302`（工作区干净；本轮无产品源码改动，T1 在 rev 3.0 设计中无变更项）
-测试环境：本轮**已授权并可用** `mdk_build`（Keil MDK）；`mdk_flash`/串口/逻辑分析仪等实板工具仍未授权或不具备——本文件只含宿主机、交叉编译与 Keil 量产工具链构建证据，不含任何实板/联测/功耗结论。
+本轮范围：run7 任务队列 **ITEM-001（T1：UART1 调试串口初始化与可观测打印）**
+依据：FD-002 **rev 4.0**、FWR-002 rev 4.0、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0、`artifacts/firmware_tasks.yaml`
+受测提交：`fc53512` + 本轮工作区改动（无提交）
+测试环境：本轮执行 GNU 交叉编译（`arm-none-eabi-gcc 10.3.1 20210824`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`）；`mdk_flash` 与串口采集**不在本调用工具列表内**，故不含下载/回读或 COM42 轨迹结论。
+
+---
+
+## T1（run7 ITEM-001）：交叉编译 + Keil MDK 构建（本轮实际执行）
+
+### 1. GNU 交叉编译（`gcc/build.sh`）
+
+```
+$ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+$ sh gcc/build.sh
+== compile ==
+== link ==
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       32000 B        64 KB     48.83%
+             RAM:        1736 B         4 KB     42.38%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+(exit 0)
+
+$ arm-none-eabi-size gcc/obj/sensor_fw.elf
+   text    data     bss     dec     hex filename
+  32000      84    1652   33736    83c8 gcc/obj/sensor_fw.elf
+```
+
+- **0 错误**，共 27 条告警，全部为既有厂商库/既有代码（`cw32l010_iwdt/uart/spi/i2c/gtim/btim`、`COMMON/convert.c`、`UM2005C/app_gtimer.c`、`encrytogate.c`、`sf_i2c.c`、`main.c` 既有 3 条），**无一条指向 `debug_trace.c`/`measure.c`/`light.c`**。
+- 相对 run6 基线（FLASH 32,208 B / RAM 1,712 B）：FLASH −208 B（移除旧 UART 配置与 printf 重定向），RAM +24 B（轨迹快照 20 B + 统计 4 B）。均在预算内。
+- T1 涉及的翻译单元无浮点引用：
+
+```
+$ for o in debug_trace light measure main fw_core gxht40 sf_i2c; do
+    echo -n "$o: "; arm-none-eabi-nm gcc/obj/$o.o | grep -cE "__aeabi_[df]|__float"; done
+debug_trace: 0
+light: 0
+measure: 0
+main: 0
+fw_core: 0
+gxht40: 0
+sf_i2c: 0
+```
+
+### 2. Keil MDK / ARMCLANG（`mdk_build {"action":"rebuild"}`）
+
+```
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Rebuild target 'Project'
+...
+compiling debug_trace.c...
+...
+Program Size: Code=14000 RO-data=620 RW-data=76 ZI-data=1644
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:03
+```
+
+- **0 Error / 1 Warning**：唯一告警为 `main.c:209 while loop has empty body`（既有 `while(k--);`，非本轮新增）。`debug_trace.c` 已纳入构建。
+- 产物 `MDK/output/exe/Project.axf`（md5 `f4aec36c80576958dfbc331c3da350cc`）含字符串 `BOOT fw=FD-002r4 uid=`，证明**Keil 目标构建下 `SENSOR_DEBUG_UART=1`**（宿主机默认 0，需显式 `-DSENSOR_DEBUG_UART=1`）。
+- 工具在仓库根产生的 `build.log` 已读入本证据后删除，未入库。
+
+### 3. 未执行（如实记录，不当作通过）
+
+- `mdk_flash`（编译+下载+回读校验）与 COM42 轨迹采集未在本调用工具列表内 → TD-002 §4.4 T-L2-01..09 的真实目标观测**未执行**，由嵌入式测试能力执行。
+- 下载校验成功也不等于业务功能通过；本轮不以构建/下载代替实板观测。
+
+---
+
+# 历史：上一轮工作流构建证据（BUILD-002 rev 3.0）
 
 ## T1（ITEM-001）：交叉编译与宿主机回归（本轮实际执行）
 

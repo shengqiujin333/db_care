@@ -9,29 +9,7 @@
 #define MEASURE_H_
 
 #include "stdint.h"
-
-	//UARTx
-#define  DEBUG_UARTx                   CW_UART1
-#define  DEBUG_UART_CLK                SYSCTRL_APB1_PERIPH_UART1
-#define  DEBUG_UART_APBClkENx          SYSCTRL_APBPeriphClk_Enable1
-#define  DEBUG_UART_BaudRate           9600
-#define  DEBUG_UART_UclkFreq           8000000
-
-//UARTx GPIO
-#define  DEBUG_UART_GPIO_CLK           (SYSCTRL_AHB_PERIPH_GPIOA)
-#define  DEBUG_UART_TX_GPIO_PORT       CW_GPIOA
-#define  DEBUG_UART_TX_GPIO_PIN        GPIO_PIN_6
-#define  DEBUG_UART_RX_GPIO_PORT       CW_GPIOA
-#define  DEBUG_UART_RX_GPIO_PIN        GPIO_PIN_5
-
-//GPIO AF
-#define  DEBUG_UART_AFTX               PA05_AFx_UART1RXD()
-#define  DEBUG_UART_AFRX               PA06_AFx_UART1TXD()
-
-
-
-
-
+#include "debug_trace.h"   /* debug_trace_sample_t (T1: UART1 调试轨迹状态) */
 
 #define start_measure   (0x0001<<0)
 #define read_value   (0x0001<<1)
@@ -43,11 +21,15 @@ void temperature_task_init( void );
 void bsp_i2c_init(void);
 uint16_t temperature_process( void );
 
-void UART1_Configure(void);
-void DebugUART_Close(void);
-
 void send_data_to_gateway(void);
 void go_to_sleep(void);
+
+/*
+ * 取出本采样周期的调试轨迹状态 (T1; 只读, 不改变任何业务状态)。
+ * 返回 1 = 本周期存在待发布轨迹并已填充/清除 pending; 返回 0 = 无 (不修改 *out)。
+ * 光照统计字段 (light_*) 由调用方从 light 模块补齐 (measure.c 只填采样/判定/发送状态)。
+ */
+uint8_t sensor_trace_fetch(debug_trace_sample_t *out);
 
 /* 上报调度状态 (FD-002 §6.4) */
 extern uint8_t report_req;

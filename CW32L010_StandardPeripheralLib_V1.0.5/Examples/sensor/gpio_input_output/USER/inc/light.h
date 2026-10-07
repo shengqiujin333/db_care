@@ -33,4 +33,13 @@ bool light_sample(void);
 /* 最近一次采样的均值 (0..4095); 供调试跟踪 */
 uint16_t light_last_code(void);
 
+/*
+ * T1 (readme 修改点 8; FD-002 rev 4.0 §6.5): 最近一次采样的原始样本统计, 供 UART1 调试轨迹。
+ * 只读, 不改变判定行为。ok==0 (全部转换超时) 时 mean/min/max 均为 0, 不得冒充暗态。
+ */
+uint8_t  light_last_ok(void);     /* 成功转换样本数 0..LIGHT_ADC_SAMPLES */
+uint16_t light_last_mean(void);   /* 成功样本算术均值 */
+uint16_t light_last_min(void);    /* 成功样本最小值 */
+uint16_t light_last_max(void);    /* 成功样本最大值 */
+
 #endif /* __LIGHT_H */

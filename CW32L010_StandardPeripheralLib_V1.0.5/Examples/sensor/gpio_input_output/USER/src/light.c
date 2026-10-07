@@ -18,6 +18,12 @@
 static bool     s_dark_state = false;   /* 上电默认 LIT; 首个样本按进入阈值判定 */
 static uint16_t s_last_code  = 0u;
 
+/* T1: 最近一次采样的原始样本统计 (供 UART1 调试轨迹; 不参与判定) */
+static uint8_t  s_last_ok   = 0u;
+static uint16_t s_last_mean = 0u;
+static uint16_t s_last_min  = 0u;
+static uint16_t s_last_max  = 0u;
+
 void light_reset_state(void)
 {
     s_dark_state = false;
@@ -89,6 +95,8 @@ bool light_sample(void)
     uint8_t  i;
     uint8_t  ok = 0u;
     uint16_t code;
+    uint16_t vmin = 0u;
+    uint16_t vmax = 0u;
 
     /* 分压供电: PB05 = VDD, 等待 RC 建立与光敏器件响应 */
     GPIO_WritePin(LIGHT_POWER_PORT, LIGHT_POWER_PIN, GPIO_Pin_SET);
@@ -98,6 +106,13 @@ bool light_sample(void)
     for (i = 0u; i < LIGHT_ADC_SAMPLES; i++) {
         uint16_t v = 0u;
         if (light_adc_read_once(&v)) {
+            if (ok == 0u) {
+                vmin = v;
+                vmax = v;
+            } else {
+                if (v < vmin) { vmin = v; }
+                if (v > vmax) { vmax = v; }
+            }
             sum += (uint32_t)v;
             ok++;
         }
@@ -108,11 +123,19 @@ bool light_sample(void)
     GPIO_WritePin(LIGHT_POWER_PORT, LIGHT_POWER_PIN, GPIO_Pin_RESET);   /* 采样结束 PB05 低 */
 #endif
 
+    /* T1: 记录原始样本统计 (只读观测, 不改变判定) */
+    s_last_ok = ok;
     if (ok == 0u) {
-        /* 全部转换超时: 按最坏情况(器件开路 = 满量程 = 无光)处理, 倾向上报且不阻塞 */
+        s_last_mean = 0u;
+        s_last_min  = 0u;
+        s_last_max  = 0u;
+        /* 全部转换超时: 保留既有满量程回退行为 (D-02 由 T2 修正为 valid=false) */
         code = LIGHT_ADC_FULL_SCALE;
     } else {
-        code = (uint16_t)(sum / (uint32_t)ok);
+        s_last_mean = (uint16_t)(sum / (uint32_t)ok);
+        s_last_min  = vmin;
+        s_last_max  = vmax;
+        code = s_last_mean;
     }
 
     s_last_code  = code;
@@ -123,4 +146,24 @@ bool light_sample(void)
 uint16_t light_last_code(void)
 {
     return s_last_code;
+}
+
+uint8_t light_last_ok(void)
+{
+    return s_last_ok;
+}
+
+uint16_t light_last_mean(void)
+{
+    return s_last_mean;
+}
+
+uint16_t light_last_min(void)
+{
+    return s_last_min;
+}
+
+uint16_t light_last_max(void)
+{
+    return s_last_max;
 }

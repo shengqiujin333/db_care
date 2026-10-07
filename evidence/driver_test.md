@@ -1,12 +1,73 @@
-# 驱动测试证据（DRV-002 rev 3.0）
+# 驱动测试证据（DRV-002 rev 4.0）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：当前任务队列 **ITEM-001（T1：GXHT40 温湿度采集通路）**
-依据：FD-002 **rev 3.0** `artifacts/firmware_design.md`、FWR-002 rev 3.0、IC-002 v3.0、TD-002 rev 3.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
-受测提交：`85ba302`（工作区干净；本轮无产品源码改动，T1 在 rev 3.0 设计中没有变更项，见 FD-002 §1.1 的偏差表仅涉及 T2/T4/T5）
-受测实现：`USER/src/gxht40.c` + `USER/inc/gxht40.h`、`USER/src/sf_i2c.c` + `USER/inc/sf_i2c.h`、`USER/src/fw_core.c` + `USER/inc/fw_core.h`
-测试载体：`test/host_gxht40_check.c`（mock I²C 从机）、`test/host_sf_i2c_bus_check.c`（mock 总线）、`test/host_sensor_core_test.c`（纯逻辑）
-测试环境：**项目设备工具已禁用**；以下为宿主机 mock/纯逻辑证据，**不代表实板 I²C 电气/时序已通过**（TD-002 §2.2 的 `[实板]` 项 T-L2-01..09 待设备解禁）。
+本轮范围：run7 任务队列 **ITEM-001（T1：UART1 调试串口初始化与可观测打印）**
+依据：FD-002 rev 4.0、FWR-002 rev 4.0、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0、`artifacts/firmware_tasks.yaml`
+受测实现：`USER/src/debug_trace.c` + `USER/inc/debug_trace.h`、`USER/src/measure.c`（轨迹快照）、`USER/src/light.c`（样本统计）、`USER/src/main.c`（编排）
+测试载体：`test/host_debug_trace_check.c` + `test/mock_trace/`（宿主机影子 MCU 层）
+测试环境：宿主机 MinGW-w64 gcc 12.2.0；`mdk_flash`/串口采集未在本调用工具列表内 → **真实目标 COM42 轨迹未采集**，不代表 T-L2-01..09 已通过。
+
+---
+
+## T1（run7 ITEM-001）：UART1 调试通道自检（本轮实际执行）
+
+环境：MinGW-w64 GCC 12.2.0（`C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin/gcc.exe`；PATH 上的 chocolatey shim 解析 libexec/cc1 失败，需用完整路径）。宿主机无 MCU 串口外设，默认 `SENSOR_DEBUG_UART=0`；本自检显式 `-DSENSOR_DEBUG_UART=1` 并链接真实 `debug_trace.c`。
+
+命令与原始 stdout：
+
+```
+$ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+$ CC=<mingw full path>
+$ $CC -std=c11 -Wall -Wextra -DSENSOR_DEBUG_UART=1 -Itest/mock_trace -IUSER/inc \
+      test/host_debug_trace_check.c USER/src/debug_trace.c -o host_debug_trace_check.exe
+$ ./host_debug_trace_check.exe
+==== T1 UART1 debug trace self-check (firmware_engineer) ====
+[T1] boot banner
+    PASS  banner bytes exactly match the frozen format
+        |BOOT fw=FD-002r4 uid=01020304 rst=0001 uart=9600
+    PASS  UART1 initialised once
+    PASS  baud rate = 9600 (COM42 configuration preserved)
+    PASS  PCLK = 8 MHz (HSI DIV6)
+    PASS  TX mode enabled
+[T2] worst-case S line: keys, integers, <=96 bytes
+    PASS  worst-case line bytes exactly match the frozen format
+        |S k=4294967295 p=-1250 H=1 V=1 o=8 n=4095 x=4095 a=4095 D=1 t=-1250 h=1000 q=0 r=1 s=2 y=2
+    PASS  worst-case line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes
+        len(worst)=92 bytes (budget 96)
+    PASS  S-line key order is the frozen contract order
+    PASS  integers only (no float/percent formatting)
+    PASS  line terminated with CRLF (no truncation)
+[T3] typical S line
+    PASS  typical line bytes exactly match the frozen format
+        |S k=3 p=250 H=1 V=1 o=8 n=12 x=15 a=13 D=0 t=456 h=678 q=1 r=0 s=0 y=0
+[T4] no side effect on the state snapshot
+    PASS  debug_trace_sample does not modify the caller snapshot
+[T5] flush/close semantics (only UART1 + PA05/PA06)
+    PASS  waits for TC (transmit complete) before closing
+    PASS  UART1 peripheral reset asserted then released
+    PASS  UART1 APB clock disabled
+    PASS  PA06 (UART1_TXD) returned to input
+    PASS  PA05 (UART1_RXD) returned to input
+    PASS  GPIOA peripheral is NOT reset (protects PA03/PA04 I2C)
+    PASS  GPIOA clock is NOT disabled (protects I2C/SWD pins)
+[T6] idempotent close
+    PASS  second close is a no-op (no repeated reset/clock traffic)
+[T7] re-init after close (deep-sleep wake path)
+    PASS  sample after close prints a full line again
+    PASS  UART1 re-initialised before printing after close
+==== result: 22 passed, 0 failed ====
+```
+
+覆盖：FD-002 §2.4/§6.5/§11.15–11.18；TD-002 T-L2-01（勾幅字段）、T-L2-03（≤96 B；实测最坏 92 B，含 10 位 tick）、T-L2-06（关闭后无输出）、T-L2-08（不破坏 SWD/GPIOA）、T-L2-09（唤醒后重新初始化）、T-L2-10（打印无副作用）。
+
+`test/build_test.sh`（三阶段）本机复跑：**38/38 + 24/24 + 22/22**，退出码 0。
+
+**未覆盖（如实记录）**：真实目标 COM42 字节流、9600 下无乱码、每约 3 分钟一行、采样间期 0 字节的实板观测（属 TD-002 §4.4 `[实板]`，本调用无串口工具）。
+
+---
+
+# 历史：上一轮工作流驱动测试证据（DRV-002 rev 3.0）
+
 
 ## T1 运行（本轮实际执行，HEAD 85ba302）
 

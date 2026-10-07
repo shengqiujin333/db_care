@@ -126,6 +126,22 @@
 #endif
 
 /* ==================================================================== */
+/* 6b. UART1 调试串口 (readme 修改点 8; FD-002 rev 4.0 §2.4/§6.5)        */
+/*    默认: 目标编译器 (ARM) 置 1, 即交付固件默认开启并可在真实目标观测; */
+/*    宿主机 harness 无 MCU 串口外设, 自动置 0 (调用点编译为空, 不引入    */
+/*    未实现的 UART 符号, 保证既有宿主机验证资产可链接)。                 */
+/*    显式覆盖: -DSENSOR_DEBUG_UART=0/1 (如宿主机格式化 harness 用 1)。   */
+/* ==================================================================== */
+#ifndef SENSOR_DEBUG_UART
+#if defined(__arm__) || defined(__thumb__) || defined(__ARMCC_VERSION) || defined(__ICCARM__)
+#define SENSOR_DEBUG_UART               1
+#else
+#define SENSOR_DEBUG_UART               0
+#endif
+#endif
+#define SENSOR_DEBUG_UART_MAXLINE       96u
+
+/* ==================================================================== */
 /* 7. MCU 相关配置 (引脚/外设宏; 宿主机纯逻辑定义 SENSOR_CONFIG_NO_MCU 跳过) */
 /* ==================================================================== */
 #ifndef SENSOR_CONFIG_NO_MCU
@@ -140,6 +156,21 @@
 /* ADC 配置: ADCCLK = PCLK/8 = 1 MHz; 390 clk = 390 us 采样保持, 适配 5M 源阻抗 */
 #define LIGHT_ADC_CLK_DIV               ADC_Clk_Div8
 #define LIGHT_ADC_SAMPLE_TIME           ADC_SampTime390Clk
+
+/* 调试串口 UART1 (readme 修改点 8; FD-002 §2.4): PA06=TXD -> J3.1, PA05=RXD -> J3.2
+ * 说明: 本组宏只做定义, 引用的 CW_UART1/GPIO_PIN_x/AFx 宏在展开处 (debug_trace.c)
+ *       才需要 MCU 头, 因此不在此处 include 厂商 UART/SYSCTRL 头 (保护宿主机 mock 构建)。 */
+#define DEBUG_UARTx                     CW_UART1
+#define DEBUG_UART_CLK                  SYSCTRL_APB1_PERIPH_UART1
+#define DEBUG_UART_BaudRate             9600u
+#define DEBUG_UART_UclkFreq             8000000u        /* HSI DIV6 = 8 MHz */
+#define DEBUG_UART_GPIO_CLK             (SYSCTRL_AHB_PERIPH_GPIOA)
+#define DEBUG_UART_TX_GPIO_PORT         CW_GPIOA
+#define DEBUG_UART_TX_GPIO_PIN          GPIO_PIN_6      /* PA06 */
+#define DEBUG_UART_RX_GPIO_PORT         CW_GPIOA
+#define DEBUG_UART_RX_GPIO_PIN          GPIO_PIN_5      /* PA05 */
+#define DEBUG_UART_AFTX                 PA05_AFx_UART1RXD()
+#define DEBUG_UART_AFRX                 PA06_AFx_UART1TXD()
 #endif /* SENSOR_CONFIG_NO_MCU */
 
 #endif /* __SENSOR_CONFIG_H */
