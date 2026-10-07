@@ -237,8 +237,8 @@ int32_t main(void)
 	k = 10000;
 	while(k--);
 	
-	__SYSCTRL_FLASH_CLK_ENABLE();
-	FLASH_SetReadOutLevel(FLASH_RDLEVEL2);
+//	__SYSCTRL_FLASH_CLK_ENABLE();
+//	FLASH_SetReadOutLevel(FLASH_RDLEVEL2);
 	
 	/* 传感器初始化 (软 I2C/GXHT40/光照) 在首次采样时惰性完成 (measure.c) */
 	
