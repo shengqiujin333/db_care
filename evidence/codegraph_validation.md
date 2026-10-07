@@ -1,5 +1,29 @@
 # CodeGraph Validation
 
+## Latest verification: run7 baseline b38c0af (2026-10-07)
+
+FULL_HANDOFF read manifest, Project Goal, latest readme, project-entry paths and prior indexing artifacts; inspected clean Git status, five recent commits, and HEAD diff (UART1 requirement added; Flash read-protection calls commented). Installed CLI version 1.6.0; local npm package metadata identifies github.com/colbymchenry/codegraph. No software installed.
+
+Existing graphs reused. Initial status --json succeeded for all roots: sensor pendingChanges={added:0,modified:2,removed:0}; gateway and Android all zero. Initial sensor explore "USER/src/main.c" exited 0 but warned changed-on-disk and omitted source, so it was not accepted as validation.
+
+codegraph sync "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output" exited 0: Synced 2 changed files; Modified: 2 - 72 nodes. No init/full rebuild.
+
+Successful queries (all exit 0, current numbered source, no source-drift warnings; --max-files 1 -p "<root>"):
+
+| Component | codegraph explore query | Result |
+| --- | --- | --- |
+| Sensor | USER/src/main.c (after sync) | 11 symbols, one pinned file; current main:208 and commented Flash calls:240-241 |
+| Sensor | sensor_decide_report gxht40_measure light_sample | 7 symbols; GXHT40 source and measure.c caller relationships; report/light entry points |
+| Sensor | UART1_Configure DebugUART_Close | 12 symbols; current measure.c source, GPIO UART setup and main/interrupt references |
+| Gateway | decode_frame10 | 9 symbols; APP/feistel_al.c:119 and app_um2006A.c caller |
+| Android | GatewayFrameCodec | 17 symbols; codec source, MqtttService callers and existing test references |
+
+Final status checks: sensor 76 files / 889 nodes / 2131 edges, lastIndexed 2026-10-07T14:44:46.119Z; gateway 35 / 509 / 1066; Android 136 / 3127 / 5881. All initialized=true, state=complete, pendingRefs=0, pendingChanges zero, worktreeMismatch=null, reindexRecommended=false.
+
+git check-ignore -v <each root>/.codegraph/index.db matched .gitignore:20:.codegraph/ in all three roots. git ls-files -- ':(glob)**/.codegraph/**' returned no tracked files. No ignore edit needed.
+
+Validation covers index usability only. No product implementation, build, functional test, hardware operation or gateway modification performed. Runtime owns commit/push.
+
 ## Latest invocation verification (2026-10-07, HEAD 4220a78)
 
 Read the shared manifest, Project Goal, readme.txt, project entry paths and existing index/evidence artifacts. Git status --porcelain was empty; Git log and git show --stat for the previous indexing commit and updated requirements commit were inspected. The same three product roots remain relevant.

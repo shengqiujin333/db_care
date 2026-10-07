@@ -95,7 +95,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外�
 artifacts/android_architecture.md | active | Android 设计方案 AA-002（需求 6 个修改点在 App 内的落点、as-built 事实、15 项设计决策、分层/模块/接口/状态归属、SQLite v3 与 pending_uploads、/upload_data 归属与幂等、服务器迁移常量、告警时间窗判定、异常边界、兼容面、验证策略、未决项 U-1..U-7；android_engineer.android_design）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列逐项追加；ITEM-001：BLE 聚合帧解码抽为纯逻辑模块 GatewayFrameCodec 并接入 MqtttService，含实际改动/预期行为/自检/交接；android_engineer.android_implementation）
 artifacts/android_tasks.yaml | active | Android 实现任务清单（14 项，按前置依赖排序，供 android_engineer.android_implementation 消费；android_engineer.android_design）
-artifacts/codegraph_index.md | active | Three existing product CodeGraph roots revalidated at HEAD 4220a78; scope and query handoff; databases remain Git-ignored
+artifacts/codegraph_index.md | active | Three existing product CodeGraph roots revalidated at HEAD b38c0af; sensor incrementally synced; UART1/source query handoff; databases Git-ignored
 artifacts/firmware_design.md | active | 传感器/网关固件设计方案 FD-002 rev 3.0：按 IC-002 v3.0 冻结升温方向上报判据 (cur-prev>9 且光照有效且暗) 或 (cur>350)、35.0℃ 可经升温分支、光敏全暗基准 1/3 (3*mean>=C_dark、每笔独立无滞回、ADC 超时 valid=false)、待上报冻结样本；登记 D-01/D-02 对 fw_core.c/light.c/sensor_config.h/measure.c 的偏差与交接；§12 功能增量 T1–T7（任务清单来源）
 artifacts/firmware_implementation.md | active | 固件实现记录（FWI-002 rev 3.0：按 FD-002 rev 3.0 依据，当前 ITEM-001=T1 GXHT40 采集通路已核验（rev 3.0 未对 T1 提变更）并附宿主机/GNU 交叉编译/Keil MDK 证据；旧 12 项编号记录作历史保留）
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 3.0：更正修改点 4 为升温 >0.9℃ 且无光、严格 >35.0℃；新增 FWR-113 光照有效性/ADC 失败不合成暗态、FWR-114 待上报冻结样本；FWR-110 改为全暗基准 C_dark 参数化；来源 readme + IC-002 v3.0 + 网表
@@ -179,7 +179,7 @@ dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书；ITEM-014 升至 1.8：卡片不再显示“离线”（改为最近上报时间 + 条件上报提示）、图表范围 24h、详情规则说明与高温强调、下降报警时间窗口径、早报“昨日无上报”、新增云同步/待发箱/幂等说明
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002（AT-001：ITEM-001 宿主机单测 12 项 0 失败、assembleDebug 成功、与改动前 parsePlainFrame 逐位一致用例；android_engineer.android_implementation）
 evidence/build.md | active | 传感器固件构建证据（BUILD-002 rev 3.0：HEAD 85ba302 的 T1 构建——GNU 交叉编译 FLASH 32,208 B/RAM 1,712 B、T1 翻译单元无浮点、Keil MDK/ARMCLANG V6.24 0 Error 0 Warning、宿主机 L0 38+24 通过；旧 12 项编号构建证据作历史保留）
-evidence/codegraph_validation.md | active | CodeGraph 1.6.0 current status/explore/Git-ignore validation at HEAD 4220a78 plus prior sync evidence; index usability only
+evidence/codegraph_validation.md | active | CodeGraph 1.6.0 status/explore/sensor incremental sync/Git-ignore evidence at HEAD b38c0af; index usability only; prior evidence retained
 evidence/driver_test.md | active | 驱动/流程测试证据（DRV-002 rev 3.0：HEAD 85ba302 的 T1 原始 stdout——sf_i2c 原语 15/15、GXHT40 驱动 mock 总线 27/27，含参考 CRC 向量/地址探测缓存/读 NACK 重读/CRC 重测上限/失败不改输出/命令白名单；实板 T-L2 未执行；旧编号证据作历史保留）
 evidence/interface_contract_validation.md | active | IC-002 v3.0接口自检：Project Truth与CodeGraph来源、升温真值表、RF/BLE/CRC向量、4095组全暗阈值边界；非下游验收报告
 evidence/protocol_test.md | active | 协议测试证据（PROTO-002：ITEM-008 空口往返——真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c，14/14）
