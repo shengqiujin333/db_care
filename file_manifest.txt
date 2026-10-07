@@ -101,7 +101,7 @@ artifacts/firmware_implementation.md | active | 固件实现记录（FWI-002 rev
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002（本次固件域需求分解、验收行为与未决项；来源 readme + IC-002 + 网表）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002（传感器裸机超级循环 + RTC 深睡与中断边界；网关 TMOS 不变；时间/存储/功耗预算）
 artifacts/firmware_tasks.yaml | active | 固件实现任务清单（rev 2.0：T1–T7 可独立检查的功能增量，按前置依赖排序；含各自前置步骤与可观察行为，光照标定含于 T2，供 firmware_engineer.firmware_implementation 消费）
-artifacts/interface_contract.md | active | 本次 GXHT40/光敏输入、3 分钟条件上报及 433→BLE→Android/MQTT 遥测字段与兼容性接口契约（IC-002）
+artifacts/interface_contract.md | active | IC-002 v2.0 接口候选：核实现有433/BLE/Android/平台布局；0.9℃语义、无光标定/故障策略待决，35℃额外限制与多设备MQTT交接；REPLAN_REQUIRED
 artifacts/software_e2e_plan.md | active | 软件端到端测试计划 E2E-SW-002（只保留必须端到端证明的关键旅程 J-1..J-6：MQTT→归因→入库→/upload_data 幂等、BLE 真实网关链、断网补传、告警与展示、服务器迁移与 TLS 信任链、条件上报语义一致性；含环境前置、步骤、两类以上独立证据与判定/阻塞条件；只做计划不执行）
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-002（Android App 本次改动的分层测试设计：as-built 基线、覆盖 readme 点 1-6 与云上传的行为 S1..S13、L0 宿主机纯逻辑/L0d 设备存储/L1 构建静态/L2 链路集成/L3 展示文案/REG 回归的用例明细、证据规范、前置交接、覆盖性检查与 7 项非阻塞缺口 G1..G7；只做设计不执行）
 artifacts/test_design.md | active | 嵌入式测试设计 TD-002 rev 2.0（与 FD-002 rev 2.0/T1–T7 对齐；行为 B1–B10、用例组 L0/L0i/L1/L2–L9 的范围/适用性/前置资源/方法/证据/判定；新增每增量强制真实目标观测、部署镜像与受测提交一致性 T-L1-12、未标定标志门禁 T-L1-10/T-L3-07、中断边界 T-L1-11、测试资产清单 §3.2、设备工具禁用声明；只做设计不执行）
@@ -181,6 +181,7 @@ evidence/android_test.md | active | Android 实现侧自检证据 AT-002（AT-00
 evidence/build.md | active | 传感器固件构建证据（BUILD-002 rev 3.0：本轮 T1 交叉编译 FLASH 32,208 B/RAM 1,712 B、T1 翻译单元无浮点、宿主机 L0 38+24 通过；旧 12 项编号构建证据作历史保留）
 evidence/codegraph_validation.md | active | CodeGraph 1.6.0 current status/explore/Git-ignore validation at HEAD 5e74c93 plus prior sync evidence; index usability only
 evidence/driver_test.md | active | 驱动/流程测试证据（DRV-002 rev 3.0：本轮 T1 原始 stdout——sf_i2c 原语 15/15、GXHT40 驱动 mock 总线 27/27，含参考 CRC 向量/地址探测缓存/读 NACK 重读/CRC 重测上限/失败不改输出/命令白名单；实板 T-L2 未执行；旧编号证据作历史保留）
+evidence/interface_contract_validation.md | active | IC-002 v2.0 接口自检：CodeGraph/源码来源、负温字节序与CRC向量、歧义对比、未闭合条件及能力边界；非下游测试报告
 evidence/protocol_test.md | active | 协议测试证据（PROTO-002：ITEM-008 空口往返——真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c，14/14）
 evidence/software_reference_frame_codec.py | active | 由 software_tester.software_verification 新增：软件验证用独立 Python 参考（按 IC-002 §4 推导全部 65536 个温度/湿度原始字的期望值与 FNV-1a 表哈希；输出 0x2852B22D36982325 / 0x7E93E747630A2325，与 Kotlin 独立验证测试断言常量一致）
 evidence/software_static_check_no_little_endian_parser.py | active | 由 software_tester.software_verification 新增：可复跑的独立静态核查（ITEM-002/T-SW-L1-03）：A1 app/src 无 parseHexData、A2 无小端组合 `X or (Y shl 8)`、B1 BLE 入口经 decryptAndParseEcbFrame 与 Result 分支、B2 decodeAggregatedFrame 在 app/src/main 仅一个调用点；退出码 0/1；C 段以信息列出仓库其它命中（iOS 参考快照/构建产物/文档）
