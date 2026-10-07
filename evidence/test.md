@@ -1,3 +1,138 @@
+# 嵌入式验证证据（EV-007 / ITEM-001 复验 ↔ UART1 调试串口初始化与调试打印可在真实目标上观测）
+
+状态：embedded_tester.embedded_verification 独立验证证据（**EV-006 TEST_FAIL 后的修复复验轮**；重新部署并重新采集真实目标字节流，不沿用 EV-006 结论）
+本轮验证对象：当前队列项 **ITEM-001**（UART1 调试串口初始化与调试打印可在真实目标上观测）
+受测提交：`da9064a`（HEAD，工作树干净；修复提交 `firmware_engineer.firmware_implementation`，仅改 `debug_trace.c`/`main.c`/自检，未改本项外的业务逻辑）
+验证基线：TD-002 rev 4.0 `artifacts/test_design.md`（§4.3 L1 / §4.4 L2）
+结论：**TEST_PASS** —— EV-006 的两个缺陷均已在真实目标上复验修复，且未发现新缺陷：
+
+| EV-006 缺陷 | 本轮实测结论 | 关键原始证据 |
+|---|---|---|
+| **D-ITEM001-1**（S 行末尾 CR+LF 未发出 → 行粘连/截断） | **已修复**：所有未被烧录过程干扰的 S 行均以 CRLF 正确终止；字节计数与「每行 = 完整字段 + CRLF」逐字节吻合 | §2.2（cap4/cap5/cap6/W1/W7 逐消息字节数与十六进制；cap5 全窗口 `CRLF=4 / 裸LF=0`） |
+| **D-ITEM001-2**（横幅 `rst` 恒为 `0000`） | **已修复**：修复镜像的两次复位分别报 `rst=0040`（PIN）与 `rst=0240`（PIN\|SYSRESETREQ），取值非零且随复位原因变化 | §2.1（cap5 两条横幅）、§2.2（cap4 第二条横幅） |
+
+其余本项验收面（真实可观测、字段完整/顺序冻结、≤96 B、纯整数无乱码、字段与固件实际状态自洽、采样间期零输出、关闭语义不破坏软 I²C 与 SWD、打印无业务副作用、唤醒后重新初始化、Flash 读保护保持注释）均**复验通过**（§2.3–§2.5）。跨项观察 OBS-1（GXHT40 每周期 `q=0`）**仍存在**且不属于本项，保持登记交接（§4）。
+
+---
+
+## 1. 环境、构建与部署
+
+| 工具 | 原始结果（节选） | 结论 |
+|---|---|---|
+| `serial_list_ports` | COM42 = Prolific USB-to-Serial（VID:PID 067B:2303）；COM26 = USB 串行设备（VID:PID C251:F001） | 传感器调试口 COM42 在线 |
+| `usb_list_devices` | 含 `USB\VID_C251&PID_F001`（HND MI_02 + Ports MI_00，SN 8709…，Status OK） | 下载调试探针在线 |
+| `mdk_build rebuild` | `V6.24`；`Program Size: Code=14048 RO-data=620 RW-data=76 ZI-data=1644`；`0 Error(s), 1 Warning(s)`（`main.c(217): while loop has empty body`——与 EV-006 同一行号的**基线既有**空体 `while(k--);`，非本项新增） | 当前提交可构建 |
+| `mdk_flash`（3 次：部署/中间/复现） | 均 `Erase Done.Programming Done.Verify OK.Application running ...` | 受测镜像已下载并回读校验；在已经打印多条轨迹后仍可再次下载 → SWD 未被破坏 |
+| 宿主套件 `test/build_test.sh` | `38/38 + 24/24 + 24/24`，`rc=0`；新自检项 `PASS drains with TXBUSY (vendor UART_SendString pattern), not TC` | 自检期望已随修复更新（本轮为独立复跑，不作为实板证据） |
+
+产物：`MDK/output/exe/Project.axf`，md5 `956dd6790bf11ff8cb584f584bc006d2`（由 HEAD `da9064a` 源码经 `mdk_build rebuild` 0 Error 构建）。
+
+修复源码要点（只读核对，本能力未修改实现）：
+
+```c
+/* debug_trace.c: debug_trace_flush_close() —— D-ITEM001-1 */
+while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET) { }
+while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXBUSY) == SET) { }
+/* 之后才复位/关闭 UART1 与 PA05/PA06 */
+
+/* main.c —— D-ITEM001-2: 在任何系统/RTC 初始化清除标志之前锁存 */
+#if SENSOR_DEBUG_UART
+    rst_flags = SYSCTRL_GetAllRstFlag();
+#endif
+...
+    debug_trace_boot(mcu_uid, rst_flags);
+```
+
+## 2. 真实目标 UART1 观测（COM42 @9600，原始结果）
+
+采集方式同 EV-006：先开一个 300 s 的 `serial_capture` 窗口，再在窗口内执行 `mdk_flash`，使刷新后的启动横幅落在窗口内。时间均为 UTC。
+
+### 2.1 捕获 cap5：窗口 23:07:20.418Z → 23:12:20.617Z，290 字节；窗口内 `mdk_flash`（复位于 23:07:50Z）
+
+```
+50  b'BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600\r\n'      <- 下载序列复位#1: 已运行的修复镜像, rst=PIN
+52  b'S k=0 p=0 H=0 V=1 o=8 n=607 x=609 a=608 D=1 t=0 h=0 '      <- 下载过程中 CPU 被停止造成的行中截断(烧录产物)
+50  b'BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600\r\n'      <- 下载/校验完成后的复位#2: rst=PIN|SYSRESETREQ
+69  b'S k=0 p=0 H=0 V=1 o=8 n=607 x=608 a=607 D=1 t=0 h=0 q=0 r=0 s=0 y=0\r\n'
+69  b'S k=3 p=0 H=0 V=1 o=8 n=569 x=572 a=570 D=1 t=0 h=0 q=0 r=0 s=0 y=0\r\n'
+CRLF count: 4   bare LF: 0
+```
+
+- `rst=0040` = `SYSCTRL_RESETFLAG_PIN`（bv6）；`rst=0240` = PIN|`SYSCTRL_RESETFLAG_SYSRESETREQ`（bv9）→ **非零、可区分、随复位原因变化**（D-ITEM001-2 修好）。
+- 两条完整 S 行各自以 `0d 0a` 结束且字节数 = 67 + 2 = 69（D-ITEM001-1 修好）。
+
+### 2.2 捕获 cap4/cap6 与短窗口 W1/W7（无额外复位 / 无烧录干扰）
+
+| 捕获 | 窗口（UTC） | 字节 | 消息（长度 / 内容） |
+|---|---|---|---|
+| cap4 | 23:01:41.309Z → 23:06:41.510Z（含 `mdk_flash`，复位 23:01:54Z） | 289 | `BOOT … rst=0000`(50) + `S k=0 … t=0 h=0`(51, 烧录截断) + `BOOT … rst=0240`(50) + `S k=0 … y=0\r\n`(69) + `S k=3 … y=0\r\n`(69) |
+| cap6 | 23:13:07.229Z → 23:18:07.447Z（无复位） | **69** | 单条 `S k=9 … y=0\r\n`（69）——窗口内**无任何其它字节** |
+| W1（30 s） | 23:18:50 → 23:19:20 | **70** | 单条 `S k=12 … y=0\r\n`（68+2） |
+| W2–W6、W8–W10（各 30 s） | 23:19:20 → 23:23:56 之间 | **0** | 无任何字节 |
+| W7（30 s） | 23:21:54 → 23:22:24 | **70** | 单条 `S k=15 … y=0\r\n`（68+2） |
+
+- cap4 第一条横幅 `rst=0000` 是**烧录开始前仍在 Flash 中的旧（EV-006 受测）镜像**所打：它紧跟一条被烧录过程中断的行（缺 `q/r/s/y`，共 51 B）；编程/校验完成后的新镜像则报 `rst=0240`。cap5 中“旧镜像”已不存在（已在跑修复镜像），其第一条横幅同样报 `rst=0040`，进一步证明该字段现在反映真实复位来源。
+- **字节账目**：cap6 = 69 B = 恰好「一条字段完整 + CRLF」；W1/W7 = 70 B = 恰好一条；对照 EV-006 修复前 cap1 期望 194 B 实得 190 B（恰差 2×CRLF）——不再出现尾字节丢失。
+- 唯一被截断的行只出现在 `mdk_flash` 下载序列停止 CPU 的瞬间，且截断位置与完整字段无关（EV-006 cap3 与本轮 cap4/cap5 均再现），属**烧录产物**，不计为固件缺陷。
+
+### 2.3 字段完整性、行长与自洽（独立脚本复跑）
+
+```
+$ python evidence/embedded_verify_uart_trace_item001.py <cap4> <cap5> <cap6> <W1> <W7>
+==== result: 74 checks, 10 failed ====
+```
+
+失败项全部为可解释的非缺陷项，逐一归因：
+
+| 失败项 | 次数 | 归因 |
+|---|---|---|
+| `A BANNER rst nonzero` | 1 | cap4 中烧录前旧镜像的横幅（`rst=0000`），非当前受测件 |
+| `A BANNER exists` | 3 | cap6/W1/W7 窗口内无复位，预期无横幅 |
+| `B TERM` + `D FIELDS` + `D ORDER` | 6 | cap4/cap5 中各一条被 `mdk_flash` 停止 CPU 截断的行（烧录产物），每条同时触 TERM/FIELDS/ORDER 三项 |
+
+未被干扰行的通过项（逐条）：`B TERM`（CRLF 终止）、`C LEN`（67–68 B ≤ 96 B）、`D FIELDS`/`D ORDER`（15 字段完整且顺序冻结）、`E RANGES`（`V==(o>0)`、`o<=8`、`n<=a<=x`、ADC 0..4095、枚举域）、`F DARK`（用实现的滞回语义独立重算 `D`，与实测一致）、`G REPORT`（用实现的判定函数重算 `r`，与实测一致）。
+
+### 2.4 节拍回归（T-L4-01）
+
+以修复后复位 T0 = 23:07:50Z（cap5 第二条横幅）为基准，`k` 为 RTC 累计 1 分钟节拍：
+
+| 轨迹行 | 到达窗口 | 距 T0（按 60 s/拍推算） |
+|---|---|---|
+| k=0 | ≈T0（启动采样机会） | 0 |
+| k=3 | cap5 窗口内（≤270 s） | ≈180 s |
+| k=6 | 落在 cap5 结束与 cap6 开始之间的空隙（23:12:20–23:13:07） | ≈360 s |
+| k=9 | cap6 窗口内（23:13:07–23:18:07） | ≈540 s |
+| k=12 | W1（23:18:50–23:19:20） | ≈660 s |
+| k=15 | W7（23:21:54–23:22:24） | ≈840 s |
+
+- 相邻两条 S 行的 `k` 增量**恒为 3**（一采样周期 = 3 个 1 分钟节拍）。
+- 直接测得的样本间隔（k=12→k=15，窗口分辨率 30 s）：**154–214 s**，符合「约 3 分钟」；300 s 窗口内 0–2 条（cap6 为 1 条、W2–W6/W8–W10 为 0 条）排除 1 分钟节拍。
+- 解释性观察（不影响本项判定）：非 POR 复位时 vendor `RTC_Init()` 提前返回（不清除、不重配 RTC），RTC 域跨复位继续计数，因此**调试器复位后首个节拍相位是随机的**，这正是 k=6 落在两次采集窗口之间空隙的原因；样本间隔本身仍为 3 拍。该行为属基线（本项未改），且现场上电（POR）路径不受影响。
+
+### 2.5 关闭语义与副作用（实测部分）
+
+- **采样间期零输出**：cap6 = 69 B（仅一条轨迹）；W2–W6、W8–W10 = 0 B → UART1 在打印后被关闭且无泄漏输出。
+- **唤醒后重新初始化**：跨多个周期的 k=0/k=3/k=9/k=12/k=15 均有完整行输出 → 每次打印前重新打开 UART1。
+- **不破坏软 I²C**：每个周期的光照采样均 `o=8`（PB04/PB05 通路正常）；且 `q=0` 在 k=0（首次关闭之前）即出现，与关闭无关。
+- **不破坏 SWD**：目标已在打印多条轨迹之后再次 `mdk_flash` 成功并 `Verify OK`（本轮共 3 次成功下载）。
+- **静态**：`grep` `USER/src` 无 `SYSCTRL_AHBPeriphReset`/GPIOA 时钟关闭；UART 操作仅 `debug_trace.c`；`debug_trace.c` 不写 `report_req`/前值/快照/`sample_flag`；AF 宏为 `AFRL_f` 位域写（只触发 PA05/PA06）。
+- **Flash 读保护保持注释**：`main.c:219-220` 两行仍为注释。
+
+## 3. 判定与局限
+
+**判定：TEST_PASS（ITEM-001）**
+
+- 本项全部可观测验收点均在真实目标上以原始字节证据复现（§2），EV-006 的两个缺陷已复验修复。
+- 局限（如实记录）：(1) `serial_capture` 原始产物无逐字节时间戳，节拍以窗口边界与 `k` 增量表述（分辨率 30 s）；(2) 未构建 `SENSOR_DEBUG_UART=0` 的 A/B 对照（修复仅影响排空时机与复位标志锁存，无观测接口可用），“打印无副作用”以静态核查 + `G REPORT` 自洽为准；(3) 位级 I²C 时序/空口波形/功耗/绝对精度未测（仪器未提供，TD-002 §4.10 列为可选扩展诊断）。
+
+## 4. 跨项观察（保持登记，不计入本项判定）
+
+**OBS-1（仍存在）**：真实目标上 GXHT40 温湿度测量每个周期均失败——本轮所有 6 条未被干扰的 S 行（cap4 k=0/k=3、cap5 k=0/k=3、cap6 k=9、W1 k=12、W7 k=15）均为 `q=0`、`t=0`、`h=0`。与本项无关的论证同 EV-006 §7（在 k=0、首次关闭之前即失败；AF 配置不触 PA03/PA04；光照通路正常）。需由温湿度采集通路负责能力定位（器件/供电/上拉/驱动/总线）。
+
+---
+
+# 历史记录（EV-006：上一轮同一 ITEM-001；当轮判 TEST_FAIL，发现 D-ITEM001-1/D-ITEM001-2；已提交 ae74cf2）
+
 # 嵌入式验证证据（EV-006 / ITEM-001 ↔ UART1 调试串口初始化与调试打印可在真实目标上观测）
 
 状态：embedded_tester.embedded_verification 独立验证证据（当前队列项执行轮；不沿用历史结论）
