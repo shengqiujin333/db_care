@@ -1,57 +1,53 @@
-﻿# ContractValidationEvidence：IC-002 v2.0
+# ContractValidationEvidence：IC-002 v3.0
 
-范围：system_architect.interface_architecture 自检；不是下游软件/嵌入式测试报告。结论：结构与现有线上字段一致；上报/无光语义未冻结，REPLAN_REQUIRED。
+范围：system_architect.interface_architecture 自检，非下游测试。结论：CONTRACT_READY；实板标定/链路/部署未验收，源码尚有偏差。本版替代旧v2.0证据。
 
-## 接手与来源
+## Project Truth 与来源
 
-- FULL_HANDOFF 已读取完整 file_manifest.txt、git status --short、git log -5、git show --stat -1。接手 HEAD=16c0025，初始 status 无条目。
-- Project Truth current_versions={}、current_verified_baseline=null；interfaces/architecture/requirements/approved_artifacts 目录没有提供可读现行文件。
-- 已验证 CodeGraphIndexArtifact 指向 artifacts/codegraph_index.md，确认三个组件索引。按索引先执行 sensor_decide_report/gxht40_measure/send_data_to_gateway/encode_frame10/light_sample、relay decode_frame10/build_device_block/app_um2006A_run、Android GatewayFrameCodec/UploadPayload/ReadingAttribution/CloudConfig 定向 explore，再读取必要的未展示源码段与网表/BOM。无需索引重建；未修改本地图或产品源码。
-- 名称查询曾包含 iOS开发资料 下的参考副本；正式契约 Android 事实以 app/src/main 路径的 GatewayFrameCodec、ReadingAttribution、CloudConfig 和 MqtttService 为准，没有将参考副本当作活跃实现。
+FULL_HANDOFF 已读取 file_manifest.txt、git status --short、git log -5；初始工作区干净，HEAD=367628c。git show --stat 1120524 与 git show 4220a78 -- readme.txt 核对前一契约和需求更新。Project Truth current_versions={}、current_verified_baseline=null；interfaces/architecture/requirements/approved_artifacts 目录无现行文件。
 
-## 可复核来源定位
+已验证上游索引指向 artifacts/codegraph_index.md。三个子工程已有CodeGraph，先执行对应根的定向explore：sensor_decide_report/light_sample、gxht40_measure/encode_frame10；relay decode_frame10/build_device_block；Android GatewayFrameCodec.kt/CloudConfig.kt/ReadingAttribution.kt/MqtttService.kt。未初始化或重建索引。sensor_config.h定向查询未返回后补读其配置；仅补读必要网表/BOM、服务器迁移段和MqtttService行。Android依据app/src/main，未使用iOS参考副本。
 
-传感器根：CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output。
-中继根：CH592EVT/EVT/EXAM/BLE/beiwov2。
-Android 根：dengbei_care。
+当前UserInput与readme一致：升温严格超过0.9℃且无光，或严格超过35℃；新增全暗阈值1/3。旧“小于”歧义已消除，不用旧降温实现反推需求。
 
-| 事实 | 依据 |
+## 可复核来源
+
+sensor根：CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output。
+relay根：CH592EVT/EVT/EXAM/BLE/beiwov2。
+Android前缀：dengbei_care/app/src/main/java/com/jinyuni/dengbei_care。
+
+| 事实或差距 | 来源 |
 |---|---|
-| 双 CRC/成功才写温湿度 | sensor USER/src/gxht40.c:101–145 |
-| 成功推进前值、首值状态 | sensor USER/src/measure.c:117–125、183–230 |
-| 35℃整体排除、严格下降 >9 | sensor USER/src/fw_core.c:105–121 |
-| UID 前4B、小端 T/RH、前8B CRC、8轮 Feistel | sensor USER/src/encrytogate.c:13、20、119–135 |
-| RF 解密后 CRC及字段读取 | relay APP/feistel_al.c:119–131 |
-| BLE 头和16B设备块 | relay APP/bleencrypt.c:12–89 |
-| RF 温湿度换位组装 | relay APP/app_um2006A.c 的 FR-401 组装段 |
-| hum大端/有符号temp大端、帧长拒绝 | Android app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt:16–145 |
-| MQTT严格数量拒绝 | Android app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt:69–115 |
-| HTTP 单位、time、空集 | Android app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt:9–18、31–59 |
-| 门控、待发箱、2xx成功 | Android app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt:79–142、200–205 |
-| 新端点 | Android app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt:18–30；服务器迁移记录.md |
-| BLE转MQTT只保留末个设备 | Android app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt 中 bleTempData=listOf(temperature)、bleHumiData=listOf(humidity) |
-| 光敏引脚/器件 | sensor_hardware/pstxnet.dat 的 LIGHT_ADC/LIGTHT_POWER；MAIN_BOARD.BOM 的 U9 |
-| 阈值未标定、通道配置 | sensor USER/inc/sensor_config.h LIGHT_DARK_CALIBRATED=0、ENTER=350、EXIT=250、ADC_InputCH11 |
-| ADC超时当暗 | sensor USER/src/light.c:111–120 |
+| 旧降温式及35℃整体排除 | sensor USER/src/fw_core.c:105–121 |
+| 双CRC、成功才写输出 | sensor USER/src/gxht40.c:101–145 |
+| 成功推进前值 | sensor USER/src/measure.c:213–230 |
+| ADC全超时合成暗态 | sensor USER/src/light.c:111–120 |
+| 未标定350/250、PB04 AIN11/PB05 | sensor USER/inc/sensor_config.h |
+| RF字段/CRC/10B | sensor USER/src/encrytogate.c:119–135 |
+| RF接收与BLE设备块 | relay APP/feistel_al.c:119–131、APP/bleencrypt.c:12–89 |
+| BLE负温与大端 | Android protocol/GatewayFrameCodec.kt:134–145 |
+| MQTT顺序、数量检查 | Android telemetry/ReadingAttribution.kt:68–125 |
+| 新端点 | Android cloud/CloudConfig.kt:18–30、服务器迁移记录.md |
+| BLE转MQTT只保留末设备 | Android MqtttService.kt:751–752 |
+| FFE0/FFE2与topic | Android MqtttService.kt:122、683–686、1007–1009 |
+| 光敏拓扑/器件 | sensor_hardware/pstxnet.dat:200–221与GND中J4.2；MAIN_BOARD.BOM R3=5M、J4、U9=GXHT40 |
 
-## 确定性自检结果
+## 确定性自检
 
-已在宿主 Python 运行 struct 解码和独立 CRC16 复算（非硬件运行）：
+宿主Python独立运算通过，非产品运行：
+- RF前8B 01 02 03 04 CE FF 58 02，小端T=-50/RH=600；CRC16=0x2821，完整明文10B尾部21 28。
+- BLE设备前8B 01 02 03 04 02 58 FF CE，大端RH=600/T=-50；单位除10一次，ID保持。
+- 10个上报向量：差值8/9/10、降温、明态、光照无效、35.0℃升温分支、首笔35.0/35.1℃均通过。契约外层温湿度有效性门控始终必需。
+- C_dark=1..4095的4095组整数边界均通过：ceil(C_dark/3)为暗，前一码非暗；4095→1365，4000→1334。这些不是实测标定值。
+- RF字段4+2+2+2=10B；BLE为16+N×16B，温湿换位、字节序转换与负温符号保持，无光照/原因扩展。
+- 最终git diff --check通过；修改范围仅契约、此证据与file_manifest.txt。工具曾因Python管道编码导致替换失败，未写文件；之后以直接补丁写入并检查最终内容。
 
-- RF `01 02 03 04 CE FF 58 02` 解码 T=-50、RH=600；CRC16=0x2821，完整明文 `01 02 03 04 CE FF 58 02 21 28`，长度10。
-- BLE `01 02 03 04 02 58 FF CE` 解码 RH=600、T=-50；ID相同；除10一次为60.0%RH、-5.0℃。
-- 聚合设备数0/1/2对应长度16/32/48；0设备由Android拒绝，长度计算不代表0设备有效遥测。
-- 对比现有上报式与“严格下降且不额外限制35℃”候选：prev=360/cur=350/DARK，现有false，候选true；prev=300/cur=291，两者false；prev=300/cur=290，两者true。该运算仅证明额外35℃限制的差异，不确认0.9℃需求。
-- 工件必需内容检查：R-01..R-04、REPLAN_REQUIRED、433、BLE、180、/upload_data 均存在。
-- git diff --check 通过；仅换行格式提示，无空白错误。
+## 决策与交接
 
-## 未闭合条件与停止理由
+冻结180s采样与条件上报分离，T−P>9且有效暗态或T>350；前值为上次有效采集；全暗码1/3每笔判断，光照失败不合成暗态。兼容RF/BLE及平台schema。
 
-R-01：原始自然语言未唯一规定0.9℃比较式，已有设计/源码的 >9 不是需求批准。
-R-02：LIGHT_DARK_CALIBRATED=0，无物理无光标定证据。
-R-03：光ADC故障是否允许当DARK没有明确产品决策。
-R-04：单笔MQTT转发和多设备绑定归因仍有兼容风险；数量检查不能证明顺序一致。
+契约明确区分用户要求与本能力的生命周期/异常决策：启动采样、RAM前值、失败不污染温湿度保留；光照内部新增valid，不保留绕过1/3边界的旧滞回。
 
-没有运行实板、BLE、broker/HTTP或数据库测试，没有外部连接/部署；没有验证GXHT40手册全部规格、实际TLS主机名或服务器可用性。仅完成本能力工件自检。接口候选已明确来源、稳定布局、未决项和下游交接；不能把局部结构通过报告为CONTRACT_READY。
+D-01交固件修正方向、35℃排除、旧命名和测试；D-02交固件/实板能力获取全暗有效基准、验证当前有光及全暗分类与建立时间，未标定不宣称无光已验收；D-03交Android保证批次顺序与数量、避免末设备单值错配并同步升温规则文案。
 
-本节点只修改 artifacts/interface_contract.md、evidence/interface_contract_validation.md 和清单，不写 Runtime result.yaml，不实现其他能力。由 Runtime 接受 Outcome 后创建并 push 必需提交。
+未执行实板、BLE、broker/HTTP、MySQL或全面器件手册规格验证；TLS主机名/服务在线状态未验证。参数化接口已就绪，实现、标定与集成验收属于后续负责能力。本节点没有修改产品代码、硬件、iOS、服务器或Runtime文件，没有commit/push；由Runtime接受Outcome后执行。
