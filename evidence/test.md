@@ -1,3 +1,183 @@
+# 嵌入式验证证据（EV-003 / ITEM-001 ↔ T1 GXHT40 温湿度采集通路）
+
+状态：embedded_tester.embedded_verification 独立验证证据
+本轮验证对象：任务队列 **ITEM-001（= 任务清单 T1：GXHT40 温湿度采集通路）**
+被测提交：`cbb2b61`（firmware_engineer.firmware_implementation 的 IMPLEMENTED 提交，工作树干净）
+验证基线：`dc5980b`（本能力自己的 TD-002 rev 2.0 测试设计）
+结论：**BLOCKED** —— 宿主机侧独立验证全部通过（可复现、含独立 oracle 与负对照），但本项目 TD-002 §2.2 对 T1 强制要求的**真实目标观测（实板 I²C 抓包 / 参考温湿度计对照 / 真实器件 NACK 与 tMEAS）在设备工具禁用下未执行**。按验证能力约定「required real-target work not performed is BLOCKED, not a pass with a handoff note」，**本项不判 TEST_PASS，也不判 TEST_FAIL（未发现实现缺陷）**，阻塞原因是环境不可用。
+
+上游输入：`artifacts/firmware_implementation.md`（FWI-002 rev 3.0 / T1 声明）、`artifacts/test_design.md`（TD-002 rev 2.0）、`artifacts/firmware_design.md`（FD-002 rev 2.0 §2.2/§6/§10）、`artifacts/firmware_requirements.md`（FWR-101/107）、`gxht40.pdf`、任务队列 ITEM-001 描述。
+本文件新增内容为第 1–9 节；上一轮工作流的 EV-002 原文作为历史记录附于文末（Git 历史同样可追溯）。
+
+---
+
+## 1. 选测项与理由
+
+任务 ITEM-001 的验收文字（队列描述）逐条拆成可观测行为，并按 TD-002 rev 2.0 §2.2 强制真实目标要求选取验证手段：
+
+| 任务验收行为 | TD-002 用例 | 本轮选测（宿主机） | 强制真实目标（未执行） |
+|---|---|---|---|
+| 探测 0x44/0x45 地址（8bit 0x88/0x89/0x8A/0x8B）带缓存 | T-L0-07 / T-L2-01 / T-L2-09 | 位级 mock 总线 + 真实驱动，两地址与缓存路径 | 真实器件变体确认、空闲上拉、每字节 ACK（T-L2-01/09） |
+| 发 0xFD 高重复率命令 | T-L0-07 / T-L2-01 | 命令白名单：全部命令字节必须为 0xFD | 真实线上字节（T-L2-01） |
+| 按 tMEAS 上限等待后读 6 字节 | T-L0-07 / T-L2-02/03 | 断言一次 `GXHT40_MEASURE_WAIT_MS`(=10 ms) 延时；6 字节顺序、前 5 ACK/末 NACK | STOP→读的真实时间差 ≥8.3 ms（T-L2-02） |
+| 温度字/湿度字分别 CRC-8(0x31,init 0xFF) | T-L0-01 | 独立 Python oracle 复算 CRC；mock 帧 CRC 校验路径 | 真实器件 CRC 行为（T-L2-01/03） |
+| 温度 x10 有符号且 -400..1250 | T-L0-02 | oracle 全量边界 + 驱动有效性判定（-40.0/125.0 端点） | 真实读数与参考温湿度计一致（T-L2-04/05） |
+| 湿度 x10 截断 0..1000 | T-L0-03 | raw 0xFFFF→1000、raw 0→0 | 同上（T-L2-04） |
+| 读请求 NACK / CRC 错 / 无器件有界重试 | T-L0-07 / T-L6-06 / T-L2-06/08 | mock 注入 NACK/CRC/无器件，断言上限与有界 | 真实 NACK 时序、故障注入恢复（T-L2-06/07/08） |
+| 整次失败返回失败码且不改输出 | T-L0-07 | 每类失败码 + 输出哨兵值不变 | 实板失败路径（T-L2-06/08） |
+
+**为什么必须在宿主机做**：上述逻辑在真实目标上不可观测（无稳定周期日志，UART 仅活动期打开且无打印），TD-002 §1.2 已把「内部判定」的观测手段定为钩子或 mock；mock 可确定性地覆盖协议分支与边界，是唯一可重复的手段。
+**为什么仍不能判通过**：mock 从机是按手册重建的模型，**不是真实器件**；它只能证明驱动软件逻辑，不能证明真实器件 ACK/NACK、tMEAS、电气时序与实测值。TD-002 §2.2 因此把 B1 的真实目标观测列为强制项。
+
+## 2. 环境与工具（本轮实际调用）
+
+| 工具 | 版本/路径 | 用途 |
+|---|---|---|
+| MinGW-w64 gcc | 12.2.0（`/c/ProgramData/chocolatey/bin/gcc`） | 宿主机编译驱动/harness/oracle 对照 |
+| arm-none-eabi-gcc | 10.3.1 20210824 | 当前交付件交叉编译、浮点引用核查 |
+| python | 3.10.9 | 独立参考 oracle（CRC-8/换算/量程） |
+| git | 仓库版本 | 受测提交/工作树一致性 |
+| SWD/J-Link、串口、逻辑分析仪、示波器、电源/电流表 | **未调用**：设备工具已禁用；宿主机仅暴露 read/bash/write 类能力，无 programmer/jlink/serial/logic_analyzer 工具；环境内也不存在 SEGGER J-Link（`JLink.exe` 为 OpenJDK 的 Java jlink）与逻辑分析仪 CLI | —— |
+
+**结论：本轮不可能执行真实目标验证；未假定任何物理测试已执行。**
+
+## 3. 独立验证方法（不采信 maker 自述）
+
+1. **独立参考 oracle（我自己新写，不复用驱动代码）**：`/tmp/ev003/gxht40_ref.py` 按 gxht40.pdf 事实从头实现 CRC-8(poly 0x31,init 0xFF,MSB-first) 与两条换算公式，用于**独立复算** mock harness 里硬编码的 6 字节期望帧与所有边界值；harness 不参与生成期望。
+2. **位级 mock 总线 + 真实驱动**：编译**真实** `USER/src/gxht40.c` + `USER/src/sf_i2c.c` + `USER/src/fw_core.c`，挂到按 I²C 位时序重建的 mock 从机（`test/host_gxht40_verify_ev.c`，上一轮本能力编写的独立 harness）。
+3. **负对照（变异测试）**：把驱动复制到临时目录做两处定向变异，确认 harness 会失败——证明用例「有牙齿」而非空跑。
+4. **相邻原语独立 harness**：`test/host_sf_i2c_verify_ev.c`（总线原语）、`test/host_fw_core_verify_ev.c`（CRC-8/换算穷举）。
+5. **交叉编译当前交付件**：`gcc/build.sh` + T1 三个翻译单元的浮点符号核查。
+6. **交付件与受测提交一致性**：`git status` / `git diff HEAD` 确认所编源码即 HEAD。
+
+## 4. 结果明细（命令与原始结果）
+
+### 4.1 独立参考 oracle（期望值独立复算）
+```
+$ python /tmp/ev003/gxht40_ref.py
+manual reference CRC(0xBEEF)=0x92 (datasheet expected 0x92)
+F_MANUAL S_T=0xBEEF S_RH=0x1234 T_CRC=0x92 H_CRC=0x37 -> temp=855  hum=29   validT=True
+F_ROOM   S_T=0x6666 S_RH=0x72B0 T_CRC=0x93 H_CRC=0xDC -> temp=250  hum=500  validT=True
+F_NEG    S_T=0x3333 S_RH=0x0000 T_CRC=0x88 H_CRC=0x81 -> temp=-100 hum=0    validT=True
+F_CLAMP  S_T=0x6666 S_RH=0xFFFF T_CRC=0x93 H_CRC=0xAC -> temp=250  hum=1000 validT=True
+F_HUM0   S_T=0x6666 S_RH=0x0000 T_CRC=0x93 H_CRC=0x81 -> temp=250  hum=0    validT=True
+F_RLOW   S_T=0x0000 S_RH=0x72B0 T_CRC=0x81 H_CRC=0xDC -> temp=-450 hum=500  validT=False
+F_RHIGH  S_T=0xF8CA S_RH=0x72B0 T_CRC=0x32 H_CRC=0xDC -> temp=1251 hum=500  validT=False
+valid temp raw range: [0x073E..0xF8C2] -> [-400..1250]
+  OK x11 ; REFERENCE RESULT: PASS ; exit=0
+```
+→ 手册参考向量 `CRC(0xBEEF)=0x92` 复现；harness 内所有期望帧的 CRC/换算全部与独立 oracle 一致；有效域端点为 raw `0x073E`(-40.0 ℃) 与 `0xF8C2`(125.0 ℃)，`raw=0`→-450 与 `0xFFFF`→1300 均无效。
+
+### 4.2 独立驱动 harness（真实驱动 + 位级 mock 总线）
+```
+$ gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast -Itest/mock_mcu -IUSER/inc -ICOMMON \
+      test/host_gxht40_verify_ev.c USER/src/gxht40.c USER/src/sf_i2c.c USER/src/fw_core.c \
+      -o /tmp/ev003/gxht40_verify.exe && /tmp/ev003/gxht40_verify.exe
+[T1] 0xBEEF/0x1234 -> OK, temp=855 hum=29; cmd=0xFD x1; wr 0x88; rd 0x89; cache=0x44; one 10 ms wait
+[T2] 25.0C/50% -> 250/500 ; -10.0C/0% -> -100/0 (sign) ; hum raw 0xFFFF -> 1000 ; hum raw 0 -> 0
+[T3] device only at 0x45: probe 0x88 then 0x8A, read 0x8B, cache=0x45; 2nd measure uses cache (no 0x88)
+[T4] 2x read NACK -> success; command NOT re-sent; 3 read attempts; two 1 ms waits
+[T5] NACK beyond bound -> GXHT40_ERR_IO; outputs untouched; attempts <= MEAS_RETRY / MEAS_RETRY*READ_RETRY
+[T6] temp-word CRC bad -> GXHT40_ERR_CRC; hum-word CRC bad -> GXHT40_ERR_CRC; outputs untouched; re-measured == 3
+[T7] raw 0 (-45.0C) -> GXHT40_ERR_RANGE ; 125.1C -> GXHT40_ERR_RANGE ; outputs untouched
+[T8] no device -> GXHT40_ERR_NO_DEVICE (both 0x88/0x8A probed); outputs untouched; bounded
+[T9] NULL temp / NULL hum / unbound bus -> GXHT40_ERR_PARAM
+[T10] every command byte ever sent was 0xFD (23 total)
+==== result: 42 passed, 0 failed ====   exit=0
+```
+
+### 4.3 负对照（变异测试，证明 harness 有效）
+```
+$ diff USER/src/gxht40.c /tmp/ev003/gxht40_mutA.c   # 湿度字 CRC 比较错字节 buf[5] -> buf[2]
+125c125  < (fw_crc8_gxht(&buf[3], 2u) != buf[5])   > (fw_crc8_gxht(&buf[3], 2u) != buf[2])
+$ /tmp/ev003/mutA.exe ; echo $?          -> ==== result: 27 passed, 15 failed ====   exit=1
+$ diff USER/src/gxht40.c /tmp/ev003/gxht40_mutB.c   # 湿度原始字低字节 buf[4] -> buf[2]
+131c131  < ... | (uint16_t)buf[4]);       > ... | (uint16_t)buf[2]);
+$ /tmp/ev003/mutB.exe ; echo $?          -> ==== result: 39 passed, 3 failed ====    exit=1
+```
+→ 两处定向变异均被 harness 检出（非 0 退出、失败计数 >0），说明 42/42 不是空跑。
+
+### 4.4 相邻原语独立 harness
+```
+$ gcc ... test/host_sf_i2c_verify_ev.c USER/src/sf_i2c.c -o sfi2c_verify.exe && ./sfi2c_verify.exe
+  ... (命令写/连续读线上字节、START/STOP、主机 ACK/NACK 位置、超时释放、既有函数回归)
+==== result: 35 passed, 0 failed ====   exit=0
+$ gcc -DSENSOR_CONFIG_NO_MCU ... test/host_fw_core_verify_ev.c USER/src/fw_core.c -o fwcore_verify.exe && ./fwcore_verify.exe
+  ... (65536 温度字/65536 湿度字/256x256 CRC/滞回/上报组合 与独立 Python 参考哈希比对)
+==== result: 53 passed, 0 failed ====   exit=0
+```
+
+### 4.5 maker 自检 harness（复现，作为交叉确认，不作为独立证据）
+```
+$ ... test/host_gxht40_check.c ... -> ==== result: 27 passed, 0 failed ====   exit=0
+$ sh test/build_test.sh -> [1/2] ==== result: 38 passed, 0 failed ====
+                            [2/2] ==== result: 24 passed, 0 failed ====   exit=0
+```
+
+### 4.6 交叉编译当前交付件 + 浮点核查
+```
+$ sh gcc/build.sh
+== link ==
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       32208 B        64 KB     49.15%
+             RAM:        1712 B         4 KB     41.80%
+== done: obj/sensor_fw.elf/.hex/.bin ==      exit=0
+$ arm-none-eabi-nm obj/gxht40.o obj/sf_i2c.o obj/fw_core.o | grep -iE "float|__aeabi_[fd]|soft"
+(no output)  -> T1 三个翻译单元无浮点/soft-float 引用（换算为整数运算）
+```
+
+### 4.7 交付件与受测提交一致性
+```
+$ git status --short          -> (空)
+$ git diff --stat HEAD -- .../USER/src/gxht40.c .../USER/inc/gxht40.h  -> (空)
+```
+→ 所编译/所测源码即受测提交 `cbb2b61` 的 HEAD 内容，未拿旧镜像或旧包充当当前交付件。
+
+## 5. 覆盖矩阵与剩余缺口
+
+| 验收行为 | 宿主机独立验证 | 真实目标验证 | 判定 |
+|---|---|---|---|
+| 地址探测 0x44/0x45 + 缓存 | 通过（含 0x45 顺序与缓存复用） | **未执行**（真实变体、上拉、ACK） | 部分 |
+| 0xFD 高重复率命令（不发热/不复位） | 通过（白名单：全部发送命令均为 0xFD） | **未执行**（真实线上字节） | 部分 |
+| tMEAS 等待 + 6 字节读取 | 通过（延时调用与字节顺序、ACK/NACK 位置） | **未执行**（真实时间差 ≥8.3 ms） | 部分 |
+| 温度/湿度字 CRC-8 | 通过（独立 oracle + 注入坏 CRC） | **未执行** | 部分 |
+| 温度 x10 有符号 + 量程 | 通过（端点 -400/1250、-450/1300 无效） | **未执行**（与参考温湿度计对照、负温实读） | 部分 |
+| 湿度 x10 截断 0..1000 | 通过（0xFFFF→1000、0→0） | **未执行** | 部分 |
+| 读 NACK / CRC / 无器件有界重试 | 通过（上限、次数、时序延时） | **未执行**（真实 NACK、故障注入恢复） | 部分 |
+| 失败返回失败码且不改输出 | 通过（IO/CRC/RANGE/NO_DEVICE/PARAM 全分支） | **未执行** | 部分 |
+
+## 6. 未执行的真实目标工作与阻塞原因
+
+以下 TD-002 rev 2.0 用例对 T1 为强制项，本轮**均未执行**：
+
+- T-L2-01 真实 I²C 事务抓包（地址字节、0xFD、6 字节、ACK 位置、空闲上拉）
+- T-L2-02 tMEAS 真实时间差（≥8.3 ms，取 10 ms）
+- T-L2-03 连续读时序与主机 ACK/NACK 位置的真实波形
+- T-L2-04 与参考温湿度计的实测值一致性（≥3 温度点 / 2 湿度点）
+- T-L2-05 负温端到端符号
+- T-L2-06/07/08 真实故障注入（CRC 错、总线拉低卡死、无器件）
+- T-L2-09 0x44/0x45 真实器件变体确认
+- T-L1-09/T-L1-12 当前交付件烧录与回读一致性
+
+**阻塞原因（环境不可用）**：项目执行环境声明「设备工具已禁用」；本能力实际可用工具仅 read/bash/write 类，无 programmer/jlink/serial/logic_analyzer/oscilloscope/power_cycle，环境内也没有 SEGGER J-Link 或逻辑分析仪 CLI，且无传感器板/网关板/可控温源/参考温湿度计/433 接收端。故以上必需的真实目标工作无法进行。
+
+## 7. 结论
+
+- **未发现实现缺陷**：宿主机独立验证（真实驱动 + 位级 mock 总线）、独立 oracle 复算与变异负对照全部通过，覆盖任务文字的每一个软件可判分支与边界；`gcc/build.sh` 对当前交付件交叉编译 0 错误、资源在预算内、T1 翻译单元无浮点。
+- **但本项不能判 TEST_PASS**：TD-002 §2.2 对 T1 强制要求的真实目标观测（实板 I²C、真实器件 tMEAS/NACK、参考仪器对照、烧录回读一致性）在设备工具禁用下未执行；按能力约定这属于「required real-target work not performed」，必须返回阻塞类结果，且不得用 mock 成功或「后续再补」的说明替代。
+- **也不判 TEST_FAIL**：阻塞不是实现缺陷；把未执行记成失败会误导后续修复方向。
+- 因此本轮结果：**BLOCKED**（环境不可用，待设备工具解禁后按 TD-002 §4.4/§4.3 补做真实目标用例，并重跑本节宿主机证据）。
+
+## 8. 交接
+
+1. **设备解禁后**：先做 T-L1-09/T-L1-12（烧录当前提交编出的镜像并回读比对），再做 T-L2-01/02/03（I²C 抓包与 tMEAS），随后 T-L2-04/05（参考仪器）与 T-L2-06/07/08/09（故障注入、地址变体）。宿主机证据可用本轮命令原样复跑。
+2. **观测钩子**：`SENSOR_TEST_TRACE` 默认关闭；实板做 T-L2-04 前建议按 TD-002 §6.2 打开以获得内部温湿度/重试计数（功耗用例必须关闭态）。
+3. **不属本能力**：本项未发现需要固件实现修改的问题，故不产生实现侧改单。
+
+---
+
+# 历史记录（上一轮工作流 EV-002，旧 12 项编号；仅供追溯，勿与本轮 ITEM-001..007 混用）
+
 # 嵌入式验证证据（EV-002 / ITEM-001）
 
 状态：embedded_tester.embedded_verification 独立验证证据
