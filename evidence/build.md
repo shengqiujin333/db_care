@@ -3,7 +3,7 @@
 状态：固件实现证据（firmware_engineer.firmware_implementation）
 本轮范围：run7 任务队列 **ITEM-001（T1：UART1 调试串口初始化与可观测打印）**
 依据：FD-002 **rev 4.0**、FWR-002 rev 4.0、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0、`artifacts/firmware_tasks.yaml`
-受测提交：`fc53512` + 本轮工作区改动（无提交）
+受测提交：`ae74cf2`（RESUME_SYNC 接手时工作区干净）+ 本轮修复工作区改动（无提交）；上一轮实现 `fe7acb4` 经 EV-006 判 TEST_FAIL（2 缺陷），本轮修复
 测试环境：本轮执行 GNU 交叉编译（`arm-none-eabi-gcc 10.3.1 20210824`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`）；`mdk_flash` 与串口采集**不在本调用工具列表内**，故不含下载/回读或 COM42 轨迹结论。
 
 ---
@@ -65,6 +65,39 @@ Build Time Elapsed:  00:00:03
 
 - `mdk_flash`（编译+下载+回读校验）与 COM42 轨迹采集未在本调用工具列表内 → TD-002 §4.4 T-L2-01..09 的真实目标观测**未执行**，由嵌入式测试能力执行。
 - 下载校验成功也不等于业务功能通过；本轮不以构建/下载代替实板观测。
+
+### 4. EV-006 缺陷修复后的重建（本轮）
+
+修复点：`debug_trace.c` 排空由 `TC` 改为「等 `TXE` → 等 `TXBUSY` 清零」（D-ITEM001-1）；`main.c` 在 `main()` 首条语句锁存复位标志（D-ITEM001-2）。重建原始结果：
+
+```
+$ sh gcc/build.sh
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       32020 B        64 KB     48.86%
+             RAM:        1736 B         4 KB     42.38%
+(exit 0; 27 warnings, 无一条指向 debug_trace/measure/light/main 新增代码)
+
+$ mdk_build {"action":"rebuild"}
+*** Using Compiler 'V6.24' ...
+compiling debug_trace.c...
+Program Size: Code=14048 RO-data=620 RW-data=76 ZI-data=1644
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+（唯一告警仍为 main.c 既有空体 `while(k--);`）
+
+$ md5sum MDK/output/exe/Project.axf
+956dd6790bf11ff8cb584f584bc006d2  MDK/output/exe/Project.axf
+
+$ arm-none-eabi-objdump -d MDK/output/exe/Project.axf | sed -n '/<debug_trace_flush_close>:/,/^$/p'
+    1aac:  bl  1498 <UART_GetFlagStatus>     <- 等 TXE (最后一字节进入移位器)
+    1ab8:  bl  1498 <UART_GetFlagStatus>     <- 等 TXBUSY 清零 (移位器排空)
+    1ac6:  bl  11ac <SYSCTRL_APBPeriphReset1> <- 排空后才复位 UART1
+    1ace:  bl  11ac <SYSCTRL_APBPeriphReset1>
+    1ad6:  bl  1140 <SYSCTRL_APBPeriphClk_Enable1>
+```
+
+- 交付的 Keil 镜像中确实为「两次状态轮询后再复位 UART1」，即 D-ITEM001-1 修复已进入真实目标产物（不再是单次 `TC` 轮询）。
+- `mdk_flash`/COM42 复验仍未执行（工具不在本调用列表）；复验归嵌入式验证能力。
+- 工具在仓库根产生的 `build.log` 已读入本证据后删除。
 
 ---
 

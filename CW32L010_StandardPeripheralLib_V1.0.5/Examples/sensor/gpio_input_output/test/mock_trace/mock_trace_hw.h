@@ -62,6 +62,7 @@ GPIO_PinState GPIO_ReadPin(GPIO_TypeDef *port, uint16_t pin);
 #define UART_Mode_Tx                  2u
 #define UART_FLAG_TXE                 ((uint16_t)0x0001)
 #define UART_FLAG_TC                  ((uint16_t)0x0002)
+#define UART_FLAG_TXBUSY              ((uint16_t)0x4000)
 
 typedef struct {
     uint32_t UART_BaudRate;

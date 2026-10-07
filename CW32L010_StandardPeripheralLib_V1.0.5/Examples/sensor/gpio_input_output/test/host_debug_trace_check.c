@@ -39,6 +39,9 @@ static int      uart_clk_disable_calls;
 static int      uart_init_calls;
 static int      tc_poll_calls;
 static int      txe_poll_calls;
+static int      txbusy_poll_calls;
+static int      tx_pending;          /* 尚未移出移位寄存器的字节 (mock 每轮询一次移出一字节) */
+static int      pending_at_reset;    /* 复位 UART1 时刻仍在移位的字节数 (必须为 0) */
 static UART_InitTypeDef last_uart_cfg;
 
 static int pin_index(uint16_t pins)
@@ -80,13 +83,22 @@ void UART_SendData_8bit(uint32_t uart, uint8_t data)
     (void)uart;
     if (cap_n < (CAP_MAX - 1u)) cap[cap_n++] = (char)data;
     cap[cap_n] = '\0';
+    tx_pending++;                       /* 写入即进入发送队列, 需由 TXBUSY 排空 */
 }
 
 FlagStatus UART_GetFlagStatus(uint32_t uart, uint16_t flag)
 {
     (void)uart;
-    if (flag == UART_FLAG_TC) tc_poll_calls++;
-    if (flag == UART_FLAG_TXE) txe_poll_calls++;
+    if (flag == UART_FLAG_TC)     tc_poll_calls++;
+    if (flag == UART_FLAG_TXE)    txe_poll_calls++;
+    if (flag == UART_FLAG_TXBUSY) {
+        txbusy_poll_calls++;
+        if (tx_pending > 0) {
+            tx_pending--;               /* 每次轮询移出一字节 */
+            return SET;                 /* 仍在移位 -> 忙 */
+        }
+        return RESET;
+    }
     return SET;
 }
 
@@ -100,6 +112,7 @@ void SYSCTRL_APBPeriphClk_Enable1(uint32_t periph, FunctionalState st)
 void SYSCTRL_APBPeriphReset1(uint32_t periph, FunctionalState st)
 {
     (void)periph; (void)st;
+    if (pending_at_reset == 0) pending_at_reset = tx_pending;
     uart_reset_calls++;
 }
 
@@ -200,11 +213,15 @@ int main(void)
     CHECK(memcmp(&ref, &s, sizeof(ref)) == 0, "debug_trace_sample does not modify the caller snapshot");
 
     printf("[T5] flush/close semantics (only UART1 + PA05/PA06)\n");
+    CHECK(tx_pending > 0, "mock models in-flight bytes (last bytes not yet shifted out)");
     gpioa_reset_calls = 0; gpioa_clk_disable_calls = 0;
     uart_reset_calls = 0; uart_clk_disable_calls = 0; tc_poll_calls = 0;
+    txbusy_poll_calls = 0; pending_at_reset = 0;
     pin_mode[5] = 0xFFFFu; pin_mode[6] = 0xFFFFu;
     debug_trace_flush_close();
-    CHECK(tc_poll_calls > 0, "waits for TC (transmit complete) before closing");
+    CHECK(txbusy_poll_calls > 0, "drains with TXBUSY (vendor UART_SendString pattern), not TC");
+    CHECK(pending_at_reset == 0,
+          "D-ITEM001-1 guard: UART1 is NOT reset while bytes are still shifting (would drop trailing CR/LF)");
     CHECK(uart_reset_calls == 2, "UART1 peripheral reset asserted then released");
     CHECK(uart_clk_disable_calls == 1, "UART1 APB clock disabled");
     CHECK(pin_mode[6] == GPIO_MODE_INPUT, "PA06 (UART1_TXD) returned to input");

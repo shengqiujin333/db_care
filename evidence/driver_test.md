@@ -5,7 +5,7 @@
 依据：FD-002 rev 4.0、FWR-002 rev 4.0、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0、`artifacts/firmware_tasks.yaml`
 受测实现：`USER/src/debug_trace.c` + `USER/inc/debug_trace.h`、`USER/src/measure.c`（轨迹快照）、`USER/src/light.c`（样本统计）、`USER/src/main.c`（编排）
 测试载体：`test/host_debug_trace_check.c` + `test/mock_trace/`（宿主机影子 MCU 层）
-测试环境：宿主机 MinGW-w64 gcc 12.2.0；`mdk_flash`/串口采集未在本调用工具列表内 → **真实目标 COM42 轨迹未采集**，不代表 T-L2-01..09 已通过。
+测试环境：宿主机 MinGW-w64 gcc 12.2.0；`mdk_flash`/串口采集未在本调用工具列表内 → **真实目标 COM42 轨迹未采集**，不代表 T-L2-01..09 已通过。本轮为 **EV-006 TEST_FAIL 后的修复轮**（修复 D-ITEM001-1 排空、D-ITEM001-2 复位标志锁存）。
 
 ---
 
@@ -60,9 +60,39 @@ $ ./host_debug_trace_check.exe
 
 覆盖：FD-002 §2.4/§6.5/§11.15–11.18；TD-002 T-L2-01（勾幅字段）、T-L2-03（≤96 B；实测最坏 92 B，含 10 位 tick）、T-L2-06（关闭后无输出）、T-L2-08（不破坏 SWD/GPIOA）、T-L2-09（唤醒后重新初始化）、T-L2-10（打印无副作用）。
 
-`test/build_test.sh`（三阶段）本机复跑：**38/38 + 24/24 + 22/22**，退出码 0。
+`test/build_test.sh`（三阶段）本机复跑：**38/38 + 24/24 + 24/24**，退出码 0。
 
-**未覆盖（如实记录）**：真实目标 COM42 字节流、9600 下无乱码、每约 3 分钟一行、采样间期 0 字节的实板观测（属 TD-002 §4.4 `[实板]`，本调用无串口工具）。
+### EV-006 缺陷修复后的自检加强（本轮）
+
+针对 EV-006 的 **D-ITEM001-1**（S 行末尾 CR+LF 未发出）：`test/mock_trace/` 新增 `UART_FLAG_TXBUSY` 并建模“移位中字节数”；`host_debug_trace_check.c` 新增两项检查（共 **24 项**）：
+
+```
+[T5] flush/close semantics (only UART1 + PA05/PA06)
+    PASS  mock models in-flight bytes (last bytes not yet shifted out)
+    PASS  drains with TXBUSY (vendor UART_SendString pattern), not TC
+    PASS  D-ITEM001-1 guard: UART1 is NOT reset while bytes are still shifting (would drop trailing CR/LF)
+    PASS  UART1 peripheral reset asserted then released
+    PASS  UART1 APB clock disabled
+    PASS  PA06 (UART1_TXD) returned to input
+    PASS  PA05 (UART1_RXD) returned to input
+    PASS  GPIOA peripheral is NOT reset (protects PA03/PA04 I2C)
+    PASS  GPIOA clock is NOT disabled (protects I2C/SWD pins)
+[T6] idempotent close
+[T7] re-init after close (deep-sleep wake path)
+==== result: 24 passed, 0 failed ====
+```
+
+**负对照（证明该回归检查不是空验证）**：将排空改回旧 `TC` 写法（`sed 's/UART_FLAG_TXBUSY) == SET/UART_FLAG_TC) == RESET/'` 生成副本编译）：
+
+```
+==== result: 22 passed, 2 failed ====   exit=1
+    FAIL  drains with TXBUSY (vendor UART_SendString pattern), not TC (line 222)
+    FAIL  D-ITEM001-1 guard: UART1 is NOT reset while bytes are still shifting (would drop trailing CR/LF) (line 223)
+```
+
+保留的完整 24 项 stdout（修复后）见上；回归：`test/build_test.sh` 38+24+24，既有 `*_verify_ev.c` 独立 harness 全部保持通过（fw_core 53、light 45、gxht40 42、sf_i2c 35、measure 79、rf_report 30、gw_compat 11、rf_frame 10、rtc 17）。
+
+**未覆盖（如实记录）**：真实目标 COM42 字节流、9600 下无乱码、每约 3 分钟一行、采样间期 0 字节、修复后横幅 `rst` 非零的实板观测（属 TD-002 §4.4 `[实板]`，本调用无串口/烧录工具）。
 
 ---
 

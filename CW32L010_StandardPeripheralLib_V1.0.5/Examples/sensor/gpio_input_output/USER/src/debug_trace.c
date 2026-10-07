@@ -140,8 +140,17 @@ void debug_trace_flush_close(void)
         return;
     }
 
-    /* 等最后一字节移出移位寄存器 */
-    while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TC) == RESET) {
+    /*
+     * 等发送器完全排空后再关闭 (D-ITEM001-1 修复):
+     *   1) 先等 TXE: 确认最后一字节已从发送数据寄存器进入移位寄存器;
+     *   2) 再等 TXBUSY 清零: 确认移位寄存器已排空。
+     * 不能只用 TC: TC 是可清除标志, 上一帧完成后可能保持置位, 使等待成为空操作,
+     * 随后的 UART1 复位会截断仍在移位的尾字节 (实测丢失 S 行末尾 CR+LF)。
+     * vendor UART_SendString() 同样以 TXBUSY 排空。
+     */
+    while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET) {
+    }
+    while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXBUSY) == SET) {
     }
 
     /* 只复位/关闭 UART1 外设与时钟; 绝不动 GPIOA 复位或 GPIOA 时钟 */

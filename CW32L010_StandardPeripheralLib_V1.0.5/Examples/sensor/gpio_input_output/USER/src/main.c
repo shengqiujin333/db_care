@@ -178,7 +178,15 @@ int32_t main(void)
 	uint32_t k = 0;
 #if SENSOR_DEBUG_UART
 	debug_trace_sample_t trace;   /* T1: 本采样周期的调试轨迹快照 (仅目标固件) */
+	uint32_t rst_flags = 0u;	     /* T1: 复位来源 (在外设/RTC 初始化清除前锁存) */
 #endif
+
+#if SENSOR_DEBUG_UART
+	/* T1 (D-ITEM001-2 修复): 在任何系统/RTC 初始化清除复位标志之前锁存复位来源
+	 * (vendor RTC_Init() 会调用 SYSCTRL_ClearRstFlag(SYSCTRL_RESETFLAG_ALL), 否则 rst 恒为 0000)。 */
+	rst_flags = SYSCTRL_GetAllRstFlag();
+#endif
+
     /* System Clocks Configuration */
     SYSCTRL_Configuration();
 	    
@@ -202,7 +210,7 @@ int32_t main(void)
 
 	/* T1 (readme 修改点 8): UART1 调试串口启动横幅 (固件标识/UID 前 4 字节/复位来源/串口参数) */
 #if SENSOR_DEBUG_UART
-	debug_trace_boot(mcu_uid, SYSCTRL_GetAllRstFlag());
+	debug_trace_boot(mcu_uid, rst_flags);
 #endif
 
 	k = 10000;

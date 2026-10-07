@@ -3,7 +3,7 @@
 状态：固件实现（firmware_engineer.firmware_implementation）
 本轮工作项：run7 Runtime 队列 **ITEM-001 ↔ 任务清单 T1（UART1 调试串口初始化与可观测打印）**
 依据：FD-002 **rev 4.0** `artifacts/firmware_design.md`、FWR-002 rev 4.0 `artifacts/firmware_requirements.md`、RTA-002 rev 4.0 `artifacts/firmware_rtos_architecture.md`、IC-002 v3.0、TD-002 rev 4.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
-受测提交：`fc53512`（接手时工作区干净；本轮改动见下）
+受测提交：`ae74cf2`（RESUME_SYNC 接手时工作区干净；本轮改动见下）。上一轮实现提交 `fe7acb4` 经 EV-006 独立验证判 **TEST_FAIL**（2 个缺陷），本轮完成修复（见下「EV-006 缺陷修复」）。
 测试环境：本轮可用 `mdk_build`（Keil MDK / ARMCLANG V6.24）、GNU 交叉编译（`arm-none-eabi-gcc 10.3.1`）与宿主机 MinGW-w64 gcc 12.2.0；`mdk_flash` 与串口采集未在本调用工具列表中，因此本轮**未执行**下载与 COM42 轨迹采集，T-L2-01..T-L2-09 的真实目标观测由嵌入式测试能力执行。
 
 > 说明：本文件现含 run7 的 T1 记录（当前判定依据）与上一轮工作流的历史记录（T1–T7 / 旧 12 项编号），历史部分仅供参考。
@@ -52,17 +52,33 @@ S k=<tick> p=<prev> H=<have> V=<lvalid> o=<ok> n=<min> x=<max> a=<mean> D=<dark>
 
 ### 验证（本轮实际执行）
 
-- `gcc/build.sh` 交叉编译：0 错误，**FLASH 32,000 B / RAM 1,736 B**；`debug_trace.c` 无浮点引用（`arm-none-eabi-nm` 0 命中）。
+- `gcc/build.sh` 交叉编译：0 错误，**FLASH 32,020 B / RAM 1,736 B**；`debug_trace.c` 无浮点引用（`arm-none-eabi-nm` 0 命中）。
 - `mdk_build {action:rebuild}`（Keil ARMCLANG V6.24）：**0 Error / 1 Warning**（既有 `while(k--);` 空循环告警，非新增），`debug_trace.c` 已入构建，产物 `MDK/output/exe/Project.axf` 含 `BOOT fw=FD-002r4 uid=`（证明 Keil 目标构建下 `SENSOR_DEBUG_UART=1`）。
-- `test/build_test.sh`（3 阶段）：38/38 + 24/24 + **22/22**；新增 `host_debug_trace_check.c` 覆盖横幅/S 行最坏 92 B 预算/字段顺序/仅整数/无截断/关闭语义/幂等/唤醒重初始化/无副作用。
+- `test/build_test.sh`（3 阶段）：38/38 + 24/24 + **24/24**；新增 `host_debug_trace_check.c` 覆盖横幅/S 行最坏 92 B 预算/字段顺序/仅整数/无截断/关闭语义（含排空）/幂等/唤醒重初始化/无副作用。
 - 既有独立验证 harness 回归（未修改任何 `*_verify_ev.c`）：fw_core 53/53、light 45/45、gxht40 42/42、sf_i2c 35/35、measure 流程 79/79、rf_report 30/30、gw_compat 11/11、rf_frame 10/10、rtc 节拍 17/17。
 
 原始命令与 stdout 见 `evidence/build.md`（T1 节）与 `evidence/driver_test.md`（T1 节）。
+
+### EV-006 缺陷修复（本轮，针对 `evidence/test.md` TEST_FAIL）
+
+| 缺陷 | 根因 | 修复 |
+|---|---|---|
+| **D-ITEM001-1** S 行末尾 CR+LF 未发出（行粘连/截断） | `debug_trace_flush_close()` 用 `UART_FLAG_TC` 排空：TC 是可清除标志，上一帧完成后可能保持置位 → 等待成为空操作，紧接着的 UART1 复位截断了仍在移位的尾字节；横幅因后面有较长间隔而幸免 | `debug_trace.c`：改为**先等 `TXE`**（确认最后一字节已进入移位器）**再等 `TXBUSY` 清零**（厂商 `UART_SendString()` 同款排空）后才复位/关闭 |
+| **D-ITEM001-2** 横幅 `rst=` 恒为 `0000` | `main.c` 在 `RTC_Configuration()` **之后**才 `SYSCTRL_GetAllRstFlag()`，而 vendor `RTC_Init()` 会 `SYSCTRL_ClearRstFlag(SYSCTRL_RESETFLAG_ALL)` | `main.c`：在 `main()` 首条语句（任何初始化之前）锁存 `rst_flags`，横幅改用锁存值；锁存与使用均在 `#if SENSOR_DEBUG_UART` 内（不破坏宿主机 harness 链接） |
+
+修复附带加强了实现侧自检（防止回归）：
+
+- `test/mock_trace/` 新增 `UART_FLAG_TXBUSY` 并建模“移位中字节数”（`UART_SendData_8bit` 入队、TXBUSY 轮询逐字节移出）。
+- `test/host_debug_trace_check.c` 新增两项检查：`drains with TXBUSY ... not TC` 与 `D-ITEM001-1 guard: UART1 is NOT reset while bytes are still shifting`（共 24 项）。
+- **负对照**：把排空改回旧 `TC` 写法的副本编译运行 → `22 passed, 2 failed`、退出码 1（证明该回归拦截有效，且不是空验证）。
+
+**真实目标复验归属**：本调用工具列表仍只有 `mdk_build`，无 `mdk_flash`/串口 → 修复后的 COM42 复验（横幅 `rst` 非零、每条 S 行以 CRLF 结束、字节数与期望一致）由嵌入式验证能力按 `evidence/test.md` §4/§5 方法复跑（脚本 `evidence/embedded_verify_uart_trace_item001.py` 可直接使用）。修复后的 Keil 产物 md5 `956dd6790bf11ff8cb584f584bc006d2`，已在反汇编中确认 `debug_trace_flush_close` 含 TXE + TXBUSY 两次轮询后再复位 UART1。
 
 ### 未执行 / 交接（如实记录，不当作通过）
 
 - **真实目标观测未执行**：本调用工具列表仅含 `mdk_build`，无 `mdk_flash`/串口采集。TD-002 §4.4 T-L2-01..09 的下载-复位-COM42 轨迹采集（横幅、周期 S 行、采样间期 0 字节、二次下载验证 SWD 未被破坏）由嵌入式测试能力执行。
 - **待实现能力（T2/T3/T4）**：`light.c` 仍为旧滞回判定且 ADC 全超时仍回退满量程（D-02）；`fw_core.c` 的 `sensor_decide_report` 仍为旧降温方向与 35.0℃ 特例排除（D-01）。因此本轮 S 行的 `D`（dark）与 `r`（report）反映的是**当前 as-built 判定**，而非 FD-002 rev 4.0 §6.3/§6.4 的目标语义；T-L2-04 的按新公式重算需在 T2/T3 落地后成立。
+- **跨项观察 OBS-1（EV-006 登记，不在本项范围）**：真实目标上 GXHT40 温湿度测量每个周期均失败（轨迹 `q=0`/`t=0`/`h=0`，含上电 k=0 且发生在首次 UART 关闭之前）。本轮未修改 `gxht40.c`/`sf_i2c.c`，且 UART1 AF 配置仅写 `AFRL_f.AFR5/AFR6`（不碰 PA03/PA04）——属温湿度采集通路（驱动/器件/供电/上拉）问题，交接给该项负责能力与独立验证；本轮不据它改变本项边界。
 - **测试资产依赖**：`host_debug_trace_check.c` 需显式 `-DSENSOR_DEBUG_UART=1`（宿主机默认 0）；TD-002 拟新增的 debug_trace harness 应采用同样方式，否则宿主机编译为空操作。
 
 ---
