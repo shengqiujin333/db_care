@@ -97,7 +97,7 @@ artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（
 artifacts/android_tasks.yaml | active | Android 实现任务清单（14 项，按前置依赖排序，供 android_engineer.android_implementation 消费；android_engineer.android_design）
 artifacts/codegraph_index.md | active | Three relevant local CodeGraph roots, scope, incremental-sync handoff and final status; databases remain Git-ignored
 artifacts/firmware_design.md | active | 传感器/网关固件设计方案 FD-002（GXHT40 驱动、光敏 PB05/PB04-AIN11 采样、3 分钟节拍、条件上报、模块划分/时序/资源/异常/接口与实现约束）；rev 2.0 新增 §12 功能增量划分 T1–T7（任务清单来源）
-artifacts/firmware_implementation.md | active | 固件实现记录（当前任务项实际改动、预期行为与验证结果，逐项推进；FWI-002）
+artifacts/firmware_implementation.md | active | 固件实现记录（FWI-002 rev 3.0：本轮按 T1–T7/ITEM-001..007 逐项推进；当前 ITEM-001=T1 GXHT40 采集通路已核验并附宿主机/交叉编译证据；旧 12 项编号记录作历史保留）
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002（本次固件域需求分解、验收行为与未决项；来源 readme + IC-002 + 网表）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002（传感器裸机超级循环 + RTC 深睡与中断边界；网关 TMOS 不变；时间/存储/功耗预算）
 artifacts/firmware_tasks.yaml | active | 固件实现任务清单（rev 2.0：T1–T7 可独立检查的功能增量，按前置依赖排序；含各自前置步骤与可观察行为，光照标定含于 T2，供 firmware_engineer.firmware_implementation 消费）
@@ -178,9 +178,9 @@ dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书；ITEM-014 升至 1.8：卡片不再显示“离线”（改为最近上报时间 + 条件上报提示）、图表范围 24h、详情规则说明与高温强调、下降报警时间窗口径、早报“昨日无上报”、新增云同步/待发箱/幂等说明
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002（AT-001：ITEM-001 宿主机单测 12 项 0 失败、assembleDebug 成功、与改动前 parsePlainFrame 逐位一致用例；android_engineer.android_implementation）
-evidence/build.md | active | 传感器固件构建证据（交叉编译结果与内存占用、sensor_config.h 编译期断言、宿主机 L0 回归；逐任务项追加：ITEM-001/ITEM-002；BUILD-002）
+evidence/build.md | active | 传感器固件构建证据（BUILD-002 rev 3.0：本轮 T1 交叉编译 FLASH 32,208 B/RAM 1,712 B、T1 翻译单元无浮点、宿主机 L0 38+24 通过；旧 12 项编号构建证据作历史保留）
 evidence/codegraph_validation.md | active | CodeGraph 1.6.0 incremental sync, explore/status and Git-ignore validation evidence; index usability only
-evidence/driver_test.md | active | 驱动/流程测试证据（DRV-002：sf_i2c 原语、GXHT40 驱动、光照滞回、fw_core 纯逻辑、measure 采样流程与发送路径；逐任务项追加）
+evidence/driver_test.md | active | 驱动/流程测试证据（DRV-002 rev 3.0：本轮 T1 原始 stdout——sf_i2c 原语 15/15、GXHT40 驱动 mock 总线 27/27，含参考 CRC 向量/地址探测缓存/读 NACK 重读/CRC 重测上限/失败不改输出/命令白名单；实板 T-L2 未执行；旧编号证据作历史保留）
 evidence/protocol_test.md | active | 协议测试证据（PROTO-002：ITEM-008 空口往返——真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c，14/14）
 evidence/software_reference_frame_codec.py | active | 由 software_tester.software_verification 新增：软件验证用独立 Python 参考（按 IC-002 §4 推导全部 65536 个温度/湿度原始字的期望值与 FNV-1a 表哈希；输出 0x2852B22D36982325 / 0x7E93E747630A2325，与 Kotlin 独立验证测试断言常量一致）
 evidence/software_static_check_no_little_endian_parser.py | active | 由 software_tester.software_verification 新增：可复跑的独立静态核查（ITEM-002/T-SW-L1-03）：A1 app/src 无 parseHexData、A2 无小端组合 `X or (Y shl 8)`、B1 BLE 入口经 decryptAndParseEcbFrame 与 Result 分支、B2 decodeAggregatedFrame 在 app/src/main 仅一个调用点；退出码 0/1；C 段以信息列出仓库其它命中（iOS 参考快照/构建产物/文档）

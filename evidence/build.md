@@ -1,7 +1,67 @@
-# 构建证据（BUILD-002）
+# 构建证据（BUILD-002 rev 3.0）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 ITEM-001…ITEM-010（配置点/总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报/退役旧通路/宿主测试）与 ITEM-011（交叉编译与 MDK/IAR 工程列表）
+本轮范围：当前任务队列 **ITEM-001（T1：GXHT40 温湿度采集通路）**
+受测提交：`dc5980b`（本轮工作区无产品源码改动；`gcc/obj/*` 为 `.gitignore` 忽略的构建产物）
+测试环境：**项目设备工具已禁用**——本文件只含宿主机与交叉编译证据，不含任何实板/联测/功耗结论。
+
+## T1（ITEM-001）：交叉编译与宿主机回归（本轮实际执行）
+
+环境：
+- 交叉编译器：`arm-none-eabi-gcc 10.3.1 20210824`（GNU Arm Embedded Toolchain，Cortex-M0+）
+- CMSIS-Core：ARM CMSIS 5.9.0（本机 Arm Packs）
+- 宿主机编译器：MinGW-w64 GCC 12.2.0（`C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin/gcc.exe`，需用完整路径）
+- 构建脚本：`CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh`
+
+命令与原始结果：
+
+```
+$ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+$ sh gcc/build.sh
+== compile ==
+...
+== link ==
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       32208 B        64 KB     49.15%
+             RAM:        1712 B         4 KB     41.80%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+
+$ arm-none-eabi-size gcc/obj/sensor_fw.elf
+   text    data     bss     dec     hex filename
+  32208      84    1628   33920    8480 gcc/obj/sensor_fw.elf
+```
+
+- **0 错误**；告警仅来自既有厂商库（`Libraries/src/*`）与既有代码，无一条指向 T1 的 `gxht40.c`/`sf_i2c.c`/`fw_core.c`。
+- 资源在预算内：FLASH 32,208 B ≤ 64 KB；RAM 1,712 B ≤ 4 KB。
+
+浮点依赖核查（区分 T1 路径与既有厂商库）：
+
+```
+$ for o in gxht40 sf_i2c fw_core; do arm-none-eabi-nm gcc/obj/$o.o | grep -E "__aeabi_[df]|__float"; done
+(no float/soft-float references)          # T1 三个翻译单元均无浮点引用
+
+$ arm-none-eabi-nm gcc/obj/sensor_fw.elf | grep -E "__aeabi_[df]" | head
+__aeabi_d2f / __aeabi_dadd / __aeabi_dmul / ...   # soft-double 符号
+```
+
+- T1 翻译单元（`gxht40.o`、`sf_i2c.o`、`fw_core.o`）**无**浮点/soft-float 引用（换算为整数运算）。
+- 链接后的 ELF 仍含 soft-double 符号，来源为既有厂商对象 `cw32l010_adc.o`、`cw32l010_uart.o`、`um2005C.o`，属**改动前既有**依赖，不由 T1 引入。TD-002 T-L1-03 针对「换算/判定路径」，T1 已满足；若要求全镜像无浮点，属独立整改项（交接给后续轮次/需求方，不在 T1 范围）。
+
+宿主机回归（T1 相关）：
+
+```
+$ CC=<mingw full path> sh test/build_test.sh
+== [1/2] fw_core pure logic: CRC16/CRC-8/convert/light/report ==
+==== result: 38 passed, 0 failed ====
+== [2/2] measure flow (mock MCU): sample/report/prev-not-updated-on-failure ==
+==== result: 24 passed, 0 failed ====
+```
+
+T1 专项 harness 的原始输出见 `evidence/driver_test.md`（T1 节）。
+
+---
+
+> 以下为**上一轮工作流（旧 12 项编号）**的构建证据，仅供追溯；其 ITEM 编号与本轮 T1–T7 / ITEM-001..007 不对应。
 
 ## 1. 环境
 

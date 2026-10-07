@@ -1,9 +1,96 @@
-# 驱动测试证据（DRV-002）
+# 驱动测试证据（DRV-002 rev 3.0）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮对象：任务项 **ITEM-002**…**ITEM-010**（总线原语/GXHT40 驱动/光照/纯逻辑/采样流程/3 分钟节拍/条件上报/退役旧通路/宿主测试）与 **ITEM-011**（交叉编译与工程列表）
-被测实现：`USER/src/sf_i2c.c` / `USER/inc/sf_i2c.h`（ITEM-002）；`USER/src/gxht40.c` / `USER/inc/gxht40.h`（ITEM-003）；`USER/src/light.c` / `USER/inc/light.h`（ITEM-004）；`USER/src/fw_core.c` / `USER/inc/fw_core.h`（ITEM-005）；`USER/src/measure.c` / `USER/inc/measure.h`（ITEM-006）
-测试载体：`.../test/host_sf_i2c_bus_check.c`、`.../test/host_gxht40_check.c`（mock 总线）、`.../test/host_light_check.c`（纯逻辑 + 硬件桩）、`.../test/host_fw_core_pure_check.c`（纯逻辑）、`.../test/host_measure_flow_check.c` + `.../test/mock_measure_mcu/`（mock MCU 影子头）
+本轮范围：当前任务队列 **ITEM-001（T1：GXHT40 温湿度采集通路）**
+受测实现：`USER/src/gxht40.c` + `USER/inc/gxht40.h`、`USER/src/sf_i2c.c` + `USER/inc/sf_i2c.h`、`USER/src/fw_core.c` + `USER/inc/fw_core.h`
+测试载体：`test/host_gxht40_check.c`（mock I²C 从机）、`test/host_sf_i2c_bus_check.c`（mock 总线）、`test/host_sensor_core_test.c`（纯逻辑）
+测试环境：**项目设备工具已禁用**；以下为宿主机 mock/纯逻辑证据，**不代表实板 I²C 电气/时序已通过**（TD-002 §2.2 的 `[实板]` 项 T-L2-01..09 待设备解禁）。
+
+## T1 运行（本轮实际执行）
+
+环境：MinGW-w64 GCC 12.2.0（完整路径）。命令与原始 stdout：
+
+```
+$ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+$ CC=<mingw full path>
+$ $CC -std=c11 -Wall -Wextra -I../USER/inc host_sf_i2c_bus_check.c \
+      ../USER/src/sf_i2c.c -o host_sf_i2c_bus_check.exe && ./host_sf_i2c_bus_check.exe
+[1] i2c_write_cmd: START -> 0x88 -> 0xFD -> STOP
+  PASS  返回 SF_I2C_SUCCESS (命令被 ACK)
+  PASS  恰好 1 个 START 与 1 个 STOP
+  PASS  线上字节为 地址+W(0x88) 后接 命令(0xFD), 无寄存器地址
+  PASS  总线空闲释放(SCL/SDA 均为高)
+[2] i2c_read_bytes: START -> 0x89 -> 6B(ACKx5,NACK) -> STOP
+  PASS  返回 SF_I2C_SUCCESS
+  PASS  恰好 1 个 START 与 1 个 STOP
+  PASS  仅先发读地址字节 0x89
+  PASS  读回 6 字节与从机数据逐字节一致
+  PASS  前 5 字节主机 ACK、第 6 字节主机 NACK
+[3] 从机不响应: ACK 失败作为返回值
+  PASS  i2c_write_cmd 返回 SF_I2C_TIMEOUT
+  PASS  超时路径已发出 STOP 释放总线
+  PASS  i2c_read_bytes 返回 SF_I2C_TIMEOUT (读地址未 ACK)
+  PASS  超时路径已发出 STOP 释放总线
+[4] length==0: 无总线动作
+  PASS  返回 SF_I2C_SUCCESS
+  PASS  未产生任何 START/STOP
+
+==== result: 15 passed, 0 failed ====
+EXIT=0
+```
+
+```
+$ $CC -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast -I../USER/inc -I../COMMON \
+      -I../../../../Libraries/inc -I<CMSIS 5.9.0 Core Include> \
+      host_gxht40_check.c ../USER/src/gxht40.c ../USER/src/sf_i2c.c ../USER/src/fw_core.c \
+      -lm -o host_gxht40_check.exe && ./host_gxht40_check.exe
+[1] 手册参考向量: T=0xBEEF(CRC 0x92) / RH=0x1234
+  PASS  返回 GXHT40_OK
+  PASS  temp_x10 == 855
+  PASS  hum_x10 == 29
+  PASS  发送命令 0xFD 一次
+  PASS  地址字节 0x88(命令) + 0x89(读)
+  PASS  缓存地址 = 0x44
+  PASS  命令与读取各一次 START/STOP
+[2] 25.0C / 50.0%RH
+  PASS  temp_x10=250, hum_x10=500
+[3] 负温 -10.0C / 0.0%RH
+  PASS  temp_x10=-100 (保留符号), hum_x10=0
+[4] 地址探测与缓存: 器件仅在 0x45
+  PASS  在 0x45 上测量成功
+  PASS  依次 0x88 -> 0x8A -> 0x8B
+  PASS  缓存地址 = 0x45
+  PASS  第二次直接使用缓存 0x8A/0x8B (不再探测 0x88)
+[5] 读 NACK(转换未完成) 有界重读
+  PASS  重读后成功 (2 次 NACK 被容忍)
+  PASS  读 NACK 不重发命令 (仅 1 次 0xFD, 同一次测量内重读)
+[6] CRC 错误: 重测用尽后返回失败且不改输出
+  PASS  返回 GXHT40_ERR_CRC
+  PASS  输出未被修改
+  PASS  整帧重测次数 == GXHT40_MEAS_RETRY
+[7] 无器件: 返回 NO_DEVICE 且不改输出
+  PASS  返回 GXHT40_ERR_NO_DEVICE
+  PASS  输出未被修改
+  PASS  两个候选地址 0x88/0x8A 都被探测过
+[8] 换算超范围: -45.0C 与 125.1C 视为无效
+  PASS  T=-45.0C -> GXHT40_ERR_RANGE
+  PASS  输出未被修改
+  PASS  T=125.1C -> GXHT40_ERR_RANGE
+[9] 入参非法: 未绑定总线
+  PASS  返回 GXHT40_ERR_PARAM
+  PASS  输出未被修改
+[10] 周期路径命令白名单: 只允许 0xFD
+  PASS  所有已发命令均为 0xFD (无 0x94 软复位/加热器命令)
+
+==== result: 27 passed, 0 failed ====
+EXIT=0
+```
+
+覆盖边界：mock 从机按 I²C 位时序重建，只验证**软件侧协议序列、CRC/换算与返回值**；不验证真实器件的电气特性、tMEAS 实际等待、地址变体实装。这些属 TD-002 T-L2-01..09，需实板与逻辑分析仪（设备工具已禁用，未执行）。
+
+---
+
+> 以下为**上一轮工作流（旧 12 项编号）**的驱动测试证据，仅供追溯。
 
 ## 1. 环境与运行
 

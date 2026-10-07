@@ -1,10 +1,72 @@
-# 固件实现（FWI-002）
+# 固件实现（FWI-002 rev 3.0）
 
-状态：固件实现（firmware_engineer.firmware_implementation），按任务队列逐项推进
-依据：FD-002 `artifacts/firmware_design.md`、FWR-002 `artifacts/firmware_requirements.md`、IC-002、`artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
-范围：仅 Runtime 逐次指派的当前任务项；未指派的后续项不在本轮实现。
+状态：固件实现（firmware_engineer.firmware_implementation），按当前任务队列 T1–T7 逐项推进
+本轮工作项：Runtime 队列 **ITEM-001 ↔ 任务清单 T1（GXHT40 温湿度采集通路）**
+依据：FD-002 rev 2.0 `artifacts/firmware_design.md`、FWR-002 rev 2.0、IC-002、TD-002 rev 2.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
+测试环境：**项目设备工具已禁用**——本轮不执行、不假定任何实板/联测/功耗测试；只运行宿主机 L0/L0i 与交叉编译。真实目标观测属 TD-002 §2.2 的 `[实板]` 用例，由嵌入式测试能力在设备解禁后执行。
+
+说明：共享仓库当前提交已包含上一轮工作流提交的同一功能实现（旧 12 项编号）。本轮按新任务清单 T1–T7 重新锚定并逐项核验；**本轮章节为当前判定依据**，旧编号记录作为历史保留于文末。
 
 ---
+
+# 本轮（T1–T7 ↔ ITEM-001…ITEM-007）
+
+## 任务项 ITEM-001（T1：GXHT40 温湿度采集通路）
+
+**任务**：每次采样触发后，驱动能探测 0x44/0x45 地址、发送 0xFD 高重复率测量命令、按 tMEAS 上限等待并读回 6 字节，温度字与湿度字分别通过 CRC-8（poly 0x31、init 0xFF）校验，输出带符号温度 x10（0.1℃，-400..1250）与湿度 x10（0.1%RH，截断 0..1000）；读请求 NACK、CRC 错或无器件时按上限有界重试，整次失败返回失败码且不修改传入的输出。
+
+设计映射：FD-002 §2.2（GXHT40 电气/协议）、§3.1（模块划分）、§6.1/§6.2（CRC-8/换算）、§10（异常策略）、§11（实现约束）。
+
+### 实际改动（本轮）
+
+本轮核对确认：共享仓库当前提交已包含 T1 所需的全部实现（上一轮工作流实现，源码与本轮 FD-002 rev 2.0 一致），故本轮**无需修改产品源码**；本轮完成的是核验与证据复现。T1 实现由以下既有文件构成：
+
+| 文件 | 角色 | 关键点 |
+|---|---|---|
+| `USER/inc/sensor_config.h` | 唯一配置点 | GXHT40 地址 0x44/0x45→0x88/0x89/0x8A/0x8B、命令 0xFD、等待 10 ms、读重试 5、重测 3、CRC-8 poly 0x31/init 0xFF、换算常量与量程 |
+| `USER/inc/sf_i2c.h` / `USER/src/sf_i2c.c` | 总线原语 | `i2c_write_cmd`（START→addr+W→cmd→STOP，无寄存器地址）、`i2c_read_bytes`（START→addr+R→N 字节，末字节 NACK→STOP）；ACK 失败返回 `SF_I2C_TIMEOUT` |
+| `USER/inc/gxht40.h` / `USER/src/gxht40.c` | 驱动 | 地址探测+缓存、0xFD、等待 tMEAS、读 6B、温度字/湿度字分别 CRC-8、整数 x10 换算与量程判定、读 NACK 有界重读、CRC/IO 有界重测、失败不写输出 |
+| `USER/inc/fw_core.h` / `USER/src/fw_core.c` | 纯逻辑（宿主机可测） | `fw_crc8_gxht`、`gxht40_temp_raw_to_x10`、`gxht40_hum_raw_to_x10`（截断 0..1000）、`gxht40_temp_x10_valid`、`gxht40_raw_to_x10` |
+
+### 预期行为
+
+1. 地址探测：先试缓存 7bit 地址；未缓存或地址失配时依次试 0x44、0x45，成功后缓存，避免每周期重复扫描。
+2. 命令：周期路径只发 0xFD（高重复率）；不发软复位 0x94 与加热器命令。
+3. 时序：0xFD STOP 后等待 `GXHT40_MEASURE_WAIT_MS`=10 ms（覆盖 tMEAS.H max 8.3 ms）。
+4. 读取：一次连续读 6 字节，顺序 `T_MSB,T_LSB,T_CRC,RH_MSB,RH_LSB,RH_CRC`；前 5 字节主机 ACK、末字节 NACK。
+5. 校验：`buf[0..1]` 与 `buf[3..4]` 分别以 CRC-8(0x31, init 0xFF) 与 `buf[2]`/`buf[5]` 比对；任一不符即丢整帧重测。
+6. 换算：`temp_x10 = -450 + round(1750*S_T/65536)`；`hum_x10 = -60 + round(1250*S_RH/65536)` 截断到 0..1000；温度超出 -40.0..125.0 ℃ 判无效。
+7. 有界失败：读 NACK ≤ `GXHT40_READ_RETRY`(5) 次、间隔 1 ms；整帧重测 ≤ `GXHT40_MEAS_RETRY`(3) 次；用尽返回 `GXHT40_ERR_NO_DEVICE` / `_IO` / `_CRC` / `_RANGE` / `_PARAM`。
+8. 失败不写输出：仅完全成功时写 `*temp_x10`/`*hum_x10`。
+
+### 验证（本轮实际执行）
+
+命令与原始结果见 `evidence/driver_test.md`（T1 节）与 `evidence/build.md`（T1 节）：
+
+- `test/host_sf_i2c_bus_check.c`：**15 passed, 0 failed**（exit 0）
+- `test/host_gxht40_check.c`：**27 passed, 0 failed**（exit 0）
+- `test/build_test.sh`（L0 综合 + 采样流程）：**38 + 24 passed, 0 failed**（exit 0）
+- `gcc/build.sh` 交叉编译：0 错误，**FLASH 32,208 B / RAM 1,712 B**，生成 elf/hex/bin；T1 翻译单元（gxht40/sf_i2c/fw_core）无浮点引用
+
+**未执行（如实记录，不视为通过）**：TD-002 §2.2 要求的 `[实板]` 真实 I²C 抓包（T-L2-01/02/03）、参考温湿度计对照（T-L2-04/05）、故障注入（T-L2-06/07/08/09）——项目设备工具已禁用，属嵌入式测试能力在设备解禁后执行。
+
+---
+
+# 任务项状态（本轮）
+
+| 队列项 | 任务清单 | 状态 |
+|---|---|---|
+| ITEM-001 | T1 GXHT40 温湿度采集通路 | 本轮完成（宿主机 + 交叉编译证据；实板观测待设备解禁） |
+| ITEM-002 | T2 光照采集与无光判据 | 未在本轮处理 |
+| ITEM-003 | T3 3 分钟采样节拍与采样顺序 | 未在本轮处理 |
+| ITEM-004 | T4 条件上报判定 | 未在本轮处理 |
+| ITEM-005 | T5 条件上报发送与空口兼容 | 未在本轮处理 |
+| ITEM-006 | T6 旧通路退役与引脚所有权 | 未在本轮处理 |
+| ITEM-007 | T7 网关与手机链路兼容核对 | 未在本轮处理 |
+
+---
+
+# 历史记录（上一轮工作流，旧 12 项编号；仅供追溯，勿与本轮 ITEM 编号混用）
 
 # 任务项 ITEM-001（已完成，独立验证 TEST_PASS）
 
