@@ -1,3 +1,104 @@
+# 嵌入式验证证据（EV-005 / ITEM-001 ↔ T1 GXHT40 温湿度采集通路）
+
+状态：embedded_tester.embedded_verification 独立验证证据（同一任务的**重新执行轮**：本轮环境新增了调试探针，按要求重新核查前置条件，未沿用上一轮结论）
+本轮验证对象：任务队列 **ITEM-001（= 任务清单 T1：GXHT40 温湿度采集通路）**
+受测提交：`f59b656`（工作树干净；上一轮 EV-004 的提交为 `c8200cf`）
+验证基线：TD-002 **rev 3.0** `artifacts/test_design.md`
+结论：**BLOCKED** —— 本轮新增并完成了**真实目标部署验证**（`mdk_flash`：Erase Done / Programming Done / **Verify OK** / Application running，当前交付件已下载并校验），宿主侧独立验证全部复现通过（含定向变异负对照）；但 T1 的**强制真实目标功能观测**（TD-002 §2.2：真实 I²C 事务抓包 T-L2-01/02/03、与参考温湿度计对照 T-L2-04/05、故障注入 T-L2-06/07/08/09）仍**不可执行**：探针只能由 Keil 的 ULINK2 驱动（`UL2CM3.DLL`）访问，OpenOCD/pyocd 均无法读 DP，且固件无 UART trace 输出（`SENSOR_TEST_TRACE=0` 且未接入打印点），无逻辑分析仪/参考温度源。故不判 TEST_PASS（未发现实现缺陷，也不判 TEST_FAIL）。
+
+## 1. 环境（本轮实际重新核查，原始输出）
+
+| 工具 | 原始结果（节选） | 结论 |
+|---|---|---|
+| `serial_list_ports` | `[{"port":"COM26","description":"USB 串行设备 (COM26)","vid":49745,"pid":61441,"serial_number":"87094109484987710672FF50"},{"port":"COM42","description":"Prolific USB-to-Serial Comm Port (COM42)","vid":1659,"pid":8963}]` | 与上一轮（`[]`）**已不同**：现有两个串口 |
+| `usb_list_devices` | 含 `USB\VID_C251&PID_F001`（HID MI_02 + Ports MI_00，SN 8709…）、Prolific `VID_067B&PID_2303` | 新增调试探针 + USB-TTL |
+| `pyocd list` | `0  P&S CW-DAPLINK(CMSIS-DAP)  87094109484987710672FF50  n/a` | 探针身份确认（CW-DAPLINK / CMSIS-DAP） |
+| Keil 工程调试配置 | `Flash2 = BIN\UL2CM3.DLL`、`FlashDriverDll = UL2CM3(...)`、`DriverSelection=4096` | Keil 实际使用 **ULINK2 驱动**（不是 CMSIS-DAP 通路） |
+
+## 2. 本轮完成的真实目标动作：部署 + 校验（T-L1-09）
+
+```
+$ mdk_flash {}          # 工具 CLI（先 build 再 download，使用工程保存的调试器/Flash 算法）
+{"tool":"mdk_flash","success":true,"exit_code":0,"stdout":
+ "build_log:\n*** Using Compiler 'V6.24' ... Build target 'Project' ... 0 Error(s), 0 Warning(s).\n
+  flash_log:\nLoad \"...\\MDK\\output\\exe\\Project.axf\" \n
+  Erase Done.Programming Done.Verify OK.Application running ...\nFlash Load finished at 21:45:49"}
+```
+
+- 当前交付件（`MDK/output/exe/Project.axf`，md5 `c4861a3158a88f225d27ad915a27d918`；由 HEAD `f59b656` 源码经 `mdk_build rebuild` 0 Error/0 Warning 构建）已**下载并 Verify OK**，随后应用运行。
+- 该证据只证明“当前镜像被下载且回读校验一致”（T-L1-09；T-L1-12 的“部署件=受测提交”由源码树干净 + axf 来源提交支撑）；**下载校验成功不等于业务功能通过**（能力约定）。
+
+## 3. 真实目标**功能**观测尝试（均未成功，故不能证明 T1 行为）
+
+### 3.1 串口（固件无 trace 输出）
+
+```
+# PowerShell System.IO.Ports 直接采集（不依赖 pyserial；install_python_package 本轮返回 "Python package installation is disabled"）
+PORT=COM42 BAUD=9600 BYTES=0        # 12 s
+PORT=COM26 BAUD=9600 BYTES=0        # 12 s
+```
+
+源码核对：`measure.c` 仅定义 `UART1_Configure()`/`DebugUART_Close()`，无活动发送调用；`main.c` 中的 `UART1_Configure()/printf` 均为注释；`sensor_config.h` `SENSOR_TEST_TRACE=0` 且未接入打印点。**结论：串口不能观测 GXHT40 内部结果。**
+
+### 3.2 调试探针读内存（读驱动结果/探测地址）
+
+计划：读 `tempvalue`(0x2000049c)、`huminityvalue`(0x20000468)、`report_req`(0x20000478)、`s_addr7`(0x2000047b)、`s_prev_temp_x10`(0x2000048a)。
+
+```
+$ pyocd commander -t cortex_m --elf MDK/output/exe/Project.axf -M attach --no-config -c "read16 0x2000049c"
+0001146 E Error while initing target: No ACK received [commander]
+# connect=attach / pre-reset / under-reset / halt、-f 500k、-O cmsis_dap.prefer_v1=True 均同样报错
+
+$ openocd -f interface/cmsis-dap.cfg -f <自定义 cortex-m SWD 目标> -c "init" -c "halt" -c "reg pc"
+Info : CMSIS-DAP: FW Version = 1.0 ; Interface Initialised (SWD)
+Error: Error connecting DP: cannot read IDR
+# 100/500/1000/2000/5000 kHz、hid 后端、connect_assert_srst 均同样报错
+```
+
+原因：Keil 工程用 `UL2CM3.DLL`（ULINK2 驱动）访问该探针；本能力可用的 OpenOCD 0.12.0（cmsis-dap）与 pyocd 0.36.0 只能走 CMSIS-DAP 通路，读 DP 即失败。因此**无法在真实目标上读取驱动输出、探测地址或设置断点**。
+
+## 4. TD-002 §2.2 T1 强制真实目标项状态
+
+| 用例 | 所需资源 | 本轮状态 | 依据 |
+|---|---|---|---|
+| T-L2-01 地址/0xFD/6B 线上时序 | 逻辑分析仪 | **未执行** | 无逻辑分析仪工具/仪器 |
+| T-L2-02 tMEAS 下界 | 逻辑分析仪 | **未执行** | 同上 |
+| T-L2-03 6 字节 ACK/NACK 时序 | 逻辑分析仪 | **未执行** | 同上 |
+| T-L2-04 参考温湿度计对照 | 可控温源+参考仪器+可观测读数 | **未执行** | 无可控温源/参考仪；串口无输出、调试读内存不可用 |
+| T-L2-05 负温端到端 | 冷箱+网关/手机 | **未执行** | 同上 |
+| T-L2-06/07 CRC 错与总线卡死恢复 | 故障注入+逻辑分析仪 | **未执行** | 无仪器，且不可操作探头 |
+| T-L2-08 无器件 | 取下器件+电流表 | **未执行** | 无电流表；不可观测 |
+| T-L2-09 地址变体 | 两种变体实物 | **未执行** | 无实物 |
+
+## 5. 宿主机独立验证复现（本轮重新运行，当前交付件）
+
+```
+$ gcc ... test/host_gxht40_verify_ev.c USER/src/gxht40.c USER/src/sf_i2c.c USER/src/fw_core.c -o gxht40_verify.exe && ./gxht40_verify.exe
+==== result: 42 passed, 0 failed ====   exit=0
+$ sed 's/...buf\[5\]/...buf\[2\]/' USER/src/gxht40.c > mutA.c   # 湿度字 CRC 比较字节定向变异
+$ ./mutA.exe ; echo exit=$?
+==== result: 27 passed, 15 failed ====   exit=1        # 负对照：用例有效
+$ ./host_sf_i2c_verify_ev.exe   -> 35 passed, 0 failed   exit=0
+$ ./host_fw_core_verify_ev.exe  -> 53 passed, 0 failed   exit=0   （T1 相关：CRC-8/换算/量程子集）
+$ ./host_gxht40_check.exe       -> 27 passed, 0 failed
+$ sh test/build_test.sh         -> 38 passed, 0 failed ; 24 passed, 0 failed
+$ sh gcc/build.sh               -> FLASH 32208 B / 64 KB (49.15%) ; RAM 1712 B / 4 KB (41.80%)
+```
+
+T1 三个翻译单元（`gxht40`/`sf_i2c`/`fw_core`）浮点引用为 0（全 ELF 的浮点符号仅来自 `um2005C.o`/`cw32l010_uart.o`/`cw32l010_adc.o` 等既有代码）。
+
+## 6. 判定与局限
+
+1. **判定**：T1 可宿主机验证的行为（地址探测与缓存、0xFD、10 ms 等待、6 字节顺序、双字 CRC-8、x10 换算/截断/量程、读 NACK/CRC/无器件有界重试、失败不改输出、命令白名单）**未发现实现缺陷**；当前交付件已真实下载并 Verify OK。但 T1 的**真实目标功能观测**因仪器/工具条件不足未执行，故结果为 **BLOCKED**。
+2. **新获得的可复现证据**：`mdk_flash` 部署 + Verify OK；探针身份与失败模式（pyocd/OpenOCD 无法读 DP，原因是工程使用 ULINK2 驱动）。
+3. **可执行但未采用的手段（属于其它能力/需要改实现，未做）**：给固件接入 UART trace（`SENSOR_TEST_TRACE` 打印点）或做带串口输出的验证固件，均会改动产品实现/交付件，属固件实现能力，超出本能力边界。
+4. **若要解锁本项**：需提供以下至少一项——逻辑分析仪（抓 PA03/PA04 I²C）或可被 OpenOCD/pyocd/GDB 驱动的调试通道（SWD DP 可读）或固件侧已被授权接入的调试输出；以及参考温湿度计/可控温源与（故障注入用例的）可操作夹具。
+5. **后续任务项交接（不属本项）**：FD-002 rev 3.0 的 D-01/D-02/D-03（光照 1/3 判据与有效性、升温方向上报、待上报冻结）仍未实现，属任务项 ITEM-002/004/005；T1 本身无变更。
+
+---
+
+# 历史记录（EV-004：上一轮工作流同一 ITEM-001；当轮无探针，环境为空；已提交 c8200cf）
+
 # 嵌入式验证证据（EV-004 / ITEM-001 ↔ T1 GXHT40 温湿度采集通路）
 
 状态：embedded_tester.embedded_verification 独立验证证据
