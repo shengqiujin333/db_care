@@ -1,5 +1,23 @@
 # CodeGraph Validation
 
+## Current invocation verification (2026-10-07, HEAD 5e74c93)
+
+The initial worktree was clean. Read file_manifest.txt, Project Goal, 项目地址.txt, existing index/evidence documents, Git log and relevant commit summaries. The three product roots remain relevant; SDKs, unrelated examples, archives, hardware and iOS references were excluded from separate indexing.
+
+Installed CLI `codegraph --version` returned 1.6.0. All three existing `.codegraph/` directories were reused. Initial `codegraph status --json "<root>"` commands exited 0 and reported the same file/node/edge counts and lastIndexed values as the table below; initialized=true, state=complete, pendingRefs=0, pendingChanges all zero, worktreeMismatch=null and reindexRecommended=false. No initialization or synchronization was necessary.
+
+Each current query exited 0 and returned numbered on-disk source and caller relationships without source-drift warnings:
+
+| Root | Query (with `--max-files 1 -p "<root>"`) | Result |
+| --- | --- | --- |
+| Sensor | `codegraph explore "sensor_decide_report"` | 7 symbols; USER/src/fw_core.c:105; caller relationships in USER/src/measure.c and test references |
+| Relay | `codegraph explore "decode_frame10"` | 9 symbols; APP/feistel_al.c:119; caller in APP/app_um2006A.c |
+| Android | `codegraph explore "GatewayFrameCodec"` | 17 symbols; protocol/GatewayFrameCodec.kt:16; callers in MqtttService.kt and test references |
+
+`git check-ignore -v <each root>/.codegraph/index.db` matched .gitignore:20:.codegraph/ for all three roots. `git ls-files -- ':(glob)**/.codegraph/**'` returned no tracked files. No ignore change was needed. This validates local index usability only; no product functional tests or implementation were performed. Runtime owns commit/push.
+
+## Previous invocation evidence
+
 Engine: installed @colbymchenry/codegraph CLI 1.6.0. All commands below exited 0. These are index usability checks, not product functional tests.
 
 Initial pendingChanges (added / modified / removed): sensor 44 / 10 / 8; Android 35 / 12 / 0; relay 0 / 0 / 0. The first sensor explore reported stale symbols and source drift, so normal incremental sync was used:
