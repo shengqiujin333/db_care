@@ -14,10 +14,15 @@
  * delay_ms is a counting stub (timing primitive test double), so the requested
  * tMEAS wait can be asserted.
  *
- * Build (from gpio_input_output/):
+ * Build (from gpio_input_output/, host gcc; verified EV-004 on HEAD f59b656):
  *   gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast \
- *       -I USER/inc -I COMMON -I ../../../Libraries/inc -I <CMSIS 5.9.0 Core Include> \
- *       test/host_gxht40_verify_ev.c USER/src/gxht40.c USER/src/sf_i2c.c -o gxht40_verify
+ *       -I test/mock_mcu -I USER/inc -I COMMON \
+ *       test/host_gxht40_verify_ev.c USER/src/gxht40.c USER/src/sf_i2c.c \
+ *       USER/src/fw_core.c -o gxht40_verify
+ *
+ * NOTE (EV-004): since the implementation moved CRC-8 / raw->x10 conversion into
+ * fw_core.c and gxht40.c now calls those pure functions, USER/src/fw_core.c must be
+ * linked. test/mock_mcu supplies the MCU shadow headers used by sf_i2c.c.
  */
 #include <stdio.h>
 #include <string.h>

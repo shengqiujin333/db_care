@@ -1,4 +1,176 @@
-# 嵌入式验证证据（EV-003 / ITEM-001 ↔ T1 GXHT40 温湿度采集通路）
+# 嵌入式验证证据（EV-004 / ITEM-001 ↔ T1 GXHT40 温湿度采集通路）
+
+状态：embedded_tester.embedded_verification 独立验证证据
+本轮验证对象：任务队列 **ITEM-001（= 任务清单 T1：GXHT40 温湿度采集通路）**
+受测提交：`f59b656`（firmware_engineer.firmware_implementation 的 IMPLEMENTED 提交；本轮开始时 tracked 工作树干净，仅有无意落盘的 MDK 构建日志，已在记录原始输出后删除）
+验证基线：TD-002 **rev 3.0** `artifacts/test_design.md`（本能力设计，`n004`）
+上游输入：`artifacts/firmware_implementation.md`（FWI-002 rev 3.0 / ITEM-001 节）、`artifacts/firmware_design.md`（FD-002 rev 3.0 §2.2/§6.1/§6.2/§10）、`artifacts/firmware_requirements.md`（FWR-101/107）、`artifacts/interface_contract.md`（IC-002 v3.0 §3）、`gxht40.pdf`
+结论：**BLOCKED** —— 宿主机侧独立验证全部通过（含独立参考帧与定向变异负对照，未发现实现缺陷），但 TD-002 rev 3.0 §2.2 对 B1/T1 **强制要求**的真实目标观测（T-L2-01/02/03 实板 I²C 抓包；T-L2-04/05 参考温湿度计对照；T-L2-06/07/08/09 真实故障注入与地址变体）在本环境**不可执行**：无调试探针、无串口、无逻辑分析仪。按能力约定「required real-target work not performed is BLOCKED, not a pass with a handoff note」，本项不判 TEST_PASS，也不判 TEST_FAIL（未发现缺陷）。
+
+> 说明：本能力工具面本轮新增 `mdk_build`/`mdk_flash`/`serial_*`。已按要求**重新核查**环境（不沿用上一轮的失败结论），核查结果见 §1：仍无探针/串口。
+
+---
+
+## 1. 环境与工具（本轮实际调用，原始输出）
+
+| 工具调用 | 原始结果（节选） | 结论 |
+|---|---|---|
+| `serial_list_ports {}` | `{"tool":"serial_list_ports","success":true,"exit_code":0,"stdout":"[]", ...}` | **无任何串口**（配置候选 `COM43` 不在位） |
+| `usb_list_devices {}` | `Chicony USB2.0 Camera`、`Logitech HID VID_046D:PID_C52F`、USB3 根集线器、`Intel Bluetooth VID_8087:PID_0033` | **无 SWD/调试探针**（无 CMSIS-DAP/J-Link/WCH-Link）、无 USB-TTL |
+| `serial_capture {port:COM43,baudrate:9600,duration_sec:3}` | `RuntimeError: pyserial is required for serial_capture` | 串口采集不可用（双前置缺失：无端口 + 运行时缺 pyserial） |
+| `mdk_build {action:build}` | `Using Compiler 'V6.24' ... 0 Error(s), 0 Warning(s)` | 工程可构建；但 `.axf` mtime=Oct 3（源码自 Oct 3 未变），需强制 rebuild 才有编译证据 |
+| `mdk_build {action:rebuild}` | `Rebuild target 'Project' ... compiling gxht40.c ... compiling fw_core.c ... linking ... Program Size: Code=8498 RO-data=598 RW-data=76 ZI-data=1620 ... 0 Error(s), 0 Warning(s)` | **当前源码在 ARMCLANG V6.24 下全量重编译 0 错 0 警** |
+| `mdk_flash {}` | `Load "...Project.axf"` → `Internal DLL Error` / `Error: Flash Download failed  -  Target DLL has been cancelled`（`success:false, exit_code:2, error_code:FLASH_LOG_ERROR`） | **无调试器，无法下载/回读校验**（T-L1-09/T-L1-12 BLOCKED） |
+
+工具副作用：`mdk_build`/`mdk_flash` 在仓库根产生 `build.log`/`build_*.log`，已读入本证据后删除，未入库。
+
+---
+
+## 2. 选测项与理由
+
+任务 ITEM-001 验收文字逐条拆成可观测行为，并按 TD-002 rev 3.0 选取手段。
+
+| 任务验收行为 | TD-002 rev 3.0 用例 | 本轮实际执行（宿主机） | 强制真实目标（未执行） |
+|---|---|---|---|
+| 探测 0x44/0x45（8bit 0x88/0x89/0x8A/0x8B）带缓存 | T-L0-07 / T-L2-01 / T-L2-09 | 位级 mock 总线 + 真实驱动：两地址、探测顺序、缓存后不再重扫 | 真实器件变体、上拉、每字节 ACK（T-L2-01/09） |
+| 发 0xFD 高重复率命令 | T-L0-07 / T-L2-01 | 命令白名单：历史全部命令字节必须为 0xFD | 真实线上字节（T-L2-01） |
+| 按 tMEAS 上限等待后读 6 字节 | T-L0-07 / T-L2-02/03 | 断言一次 `GXHT40_MEASURE_WAIT_MS`(10 ms)；6 字节顺序、前 5 ACK/末 NACK | STOP→读真实时间差 ≥8.3 ms（T-L2-02） |
+| 温度字/湿度字分别 CRC-8(0x31,init 0xFF) | T-L0-01 | 独立 Python oracle 复算 + mock 帧双字 CRC 校验路径 | 真实器件 CRC 行为（T-L2-01/03） |
+| 温度 x10 有符号 −400..1250 | T-L0-02 | oracle 全量边界 + 驱动有效性端点（−40.0/125.0 ℃） | 与参考温湿度计一致（T-L2-04/05） |
+| 湿度 x10 截断 0..1000 | T-L0-03 | raw 0xFFFF→1000、raw 0→0 | 同上（T-L2-04） |
+| 读 NACK / CRC 错 / 无器件有界重试 | T-L0-07 / T-L6-06 / T-L2-06/08 | mock 注入 NACK/CRC/无器件，断言上限与有界 | 真实 NACK 时序、故障注入恢复（T-L2-06/07/08） |
+| 整次失败返回失败码且不改输出 | T-L0-07 | 每类失败码 + 输出哨兵值不变 | 实板失败路径（T-L2-06/08） |
+
+**为何宿主机仍不可替代真实目标**：mock 从机是按手册重建的模型，只能证明驱动软件逻辑；真实器件 ACK/NACK、tMEAS、电气时序与实测值只有实板能证。TD-002 §2.2 因此把 B1 的真实目标观测列为强制项。
+
+---
+
+## 3. 宿主机独立验证结果（命令与原始结果）
+
+### 3.1 独立驱动 harness（真实驱动 + 位级 mock 总线）
+
+```
+$ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output
+$ gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast -Itest/mock_mcu -IUSER/inc -ICOMMON \
+      test/host_gxht40_verify_ev.c USER/src/gxht40.c USER/src/sf_i2c.c USER/src/fw_core.c \
+      -o /tmp/ev004/gxht40_verify.exe && /tmp/ev004/gxht40_verify.exe
+[T1] manual reference frame 0xBEEF/0x1234
+    PASS  returns GXHT40_OK / temp_x10=855, hum_x10=29 (manual vector)
+    PASS  exactly one command byte 0xFD / write 0x88 / read 0x89 / cache=0x44
+    PASS  one tMEAS wait of the configured 10 ms
+[T2] 25.0C/50%->250/500 ; -10.0C/0%->-100/0 (sign) ; hum 0xFFFF->1000 ; hum 0->0
+[T3] device only at 0x45: probe 0x88 then 0x8A, read 0x8B, cache=0x45; 2nd measure uses cache
+[T4] 2x read NACK -> success; command NOT re-sent; 3 read attempts; two 1 ms waits
+[T5] NACK beyond bound -> GXHT40_ERR_IO; outputs untouched; attempts bounded by MEAS_RETRY / MEAS_RETRY*READ_RETRY
+[T6] temp-word CRC bad -> GXHT40_ERR_CRC; hum-word CRC bad -> GXHT40_ERR_CRC; outputs untouched; re-measured==3
+[T7] raw 0 (-45.0C) -> GXHT40_ERR_RANGE ; 125.1C -> GXHT40_ERR_RANGE ; outputs untouched
+[T8] no device -> GXHT40_ERR_NO_DEVICE (both 0x88/0x8A probed); outputs untouched; bounded
+[T9] NULL temp / NULL hum / unbound bus -> GXHT40_ERR_PARAM
+[T10] every command byte ever sent was 0xFD (23 total)
+==== result: 42 passed, 0 failed ====   exit=0
+```
+
+说明：实现 ITEM-005 之后 `gxht40.c` 改为调用 `fw_core.c` 的 `fw_crc8_gxht`/`gxht40_raw_to_x10`，故本 harness 链接目标必须补 `USER/src/fw_core.c`（缺少时链接器报 `undefined reference to fw_crc8_gxht/gxht40_raw_to_x10`）。已据此更新 harness 头部注释中的可复现构建命令。
+
+### 3.2 负对照（定向变异，证明用例不是空跑）
+
+```
+$ sed 's/fw_crc8_gxht(&buf\[3\], 2u) != buf\[5\]/fw_crc8_gxht(&buf[3], 2u) != buf[2]/' USER/src/gxht40.c > /tmp/ev004/gxht40_mutA.c
+$ diff USER/src/gxht40.c /tmp/ev004/gxht40_mutA.c
+125c125
+<             (fw_crc8_gxht(&buf[3], 2u) != buf[5])) {
+---
+>             (fw_crc8_gxht(&buf[3], 2u) != buf[2])) {
+$ gcc ... test/host_gxht40_verify_ev.c /tmp/ev004/gxht40_mutA.c USER/src/sf_i2c.c USER/src/fw_core.c -o /tmp/ev004/mutA.exe
+$ /tmp/ev004/mutA.exe ; echo exit=$?
+==== result: 27 passed, 15 failed ====   exit=1
+```
+→ 湿度字 CRC 比较字节被定向改错后 harness 失败 15 项且退出码 1，说明 42/42 的通过不是空跑。
+
+### 3.3 相邻独立 harness（T1 相关软件面）
+
+```
+$ gcc ... test/host_sf_i2c_verify_ev.c USER/src/sf_i2c.c -o sfi2c_verify.exe && ./sfi2c_verify.exe
+==== result: 35 passed, 0 failed ====   exit=0   （命令写/连续读线上字节、START/STOP、主机 ACK/NACK 位置、超时释放、既有函数回归）
+
+$ gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast -Itest/mock_mcu -IUSER/inc -ICOMMON \
+      test/host_fw_core_verify_ev.c USER/src/fw_core.c -o fwcore_verify.exe && ./fwcore_verify.exe
+==== result: 53 passed, 0 failed ====   exit=0   （其中 T1 相关：65536 温度字/65536 湿度字换算与量程、256x256 双字节 CRC-8 与独立 Python 参考哈希比对）
+```
+
+注：该 fw_core harness 的光照/上报用例当前仍按**rev 2.0 语义**（滞回、降温方向）断言，对应当前实现的 T2/T4 行为；本项只取其中的 **CRC-8/换算/量程** 作为 T1 证据，光照与上报留待 ITEM-002/ITEM-004 验证。
+
+### 3.4 maker 自检复跑（交叉确认，不作为独立证据）
+
+```
+$ gcc ... test/host_gxht40_check.c USER/src/gxht40.c USER/src/sf_i2c.c USER/src/fw_core.c -o gxht40_check.exe && ./gxht40_check.exe
+==== result: 27 passed, 0 failed ====
+$ gcc ... test/host_sf_i2c_bus_check.c USER/src/sf_i2c.c -o sfi2c_check.exe && ./sfi2c_check.exe
+==== result: 15 passed, 0 failed ====
+$ sh test/build_test.sh
+== [1/2] fw_core pure logic ==== result: 38 passed, 0 failed ====
+== [2/2] measure flow (mock MCU) ==== result: 24 passed, 0 failed ====   exit=0
+```
+
+---
+
+## 4. 当前交付件构建与静态核查
+
+```
+$ sh gcc/build.sh        -> 0 errors ; FLASH 32208 B / 64 KB (49.15%) ; RAM 1712 B / 4 KB (41.80%) ; elf/hex/bin 生成
+$ arm-none-eabi-size gcc/obj/sensor_fw.elf
+   text    data     bss     dec     hex filename
+  32208      84    1628   33920    8480 gcc/obj/sensor_fw.elf
+$ md5sum gcc/obj/sensor_fw.elf gcc/obj/sensor_fw.hex gcc/obj/sensor_fw.bin
+24425d8d0f593ae3846fa9164c65c716 *sensor_fw.elf
+ddf2e2e7bac47a80ea00177cb104afc9 *sensor_fw.hex
+47abc6dfc798c837b2b68916f29db543 *sensor_fw.bin
+
+$ arm-none-eabi-nm gcc/obj/{gxht40,sf_i2c,fw_core}.o | grep -cE '__aeabi_f|__aeabi_d|__float'
+gxht40: 0 ; sf_i2c: 0 ; fw_core: 0        （T1 三个翻译单元无浮点依赖）
+# 全 ELF 仍有浮点符号，按对象归因仅来自：um2005C.o(12)、cw32l010_uart.o(7)、cw32l010_adc.o(6)（既有厂商/驱动代码，非 T1）
+
+$ mdk_build {action:rebuild}  -> Rebuild target 'Project' ... 0 Error(s), 0 Warning(s)
+   Program Size: Code=8498 RO-data=598 RW-data=76 ZI-data=1620
+$ md5sum MDK/output/exe/Project.axf -> c4861a3158a88f225d27ad915a27d918
+$ arm-none-eabi-nm MDK/output/exe/Project.axf | grep -E 'gxht40_measure|fw_crc8_gxht|light_sample|i2c_read_bytes'
+00001370 T fw_crc8_gxht ; 000013dc T gxht40_measure ; 000017ae T i2c_read_bytes ; 00001a68 T light_sample
+```
+
+交付件一致性：`git rev-parse HEAD` = `f59b656eb7d2f3f1b9719397869e726b3e28cbb1`；`git status --porcelain` 对 tracked 源码为空（仅本能力自己的 harness 注释修改），即被编译/验证的源码就是受测提交。
+
+---
+
+## 5. 强制真实目标项（本轮未执行，均为 BLOCKED）
+
+| TD-002 用例 | 所需资源 | 本轮状态 | 阻塞证据 |
+|---|---|---|---|
+| T-L2-01 地址/0xFD/6B 线上时序 | 逻辑分析仪（PA03/PA04）| 未执行 | 无逻辑分析仪工具/仪器；无探针 |
+| T-L2-02 tMEAS 下界 | 逻辑分析仪 | 未执行 | 同上 |
+| T-L2-03 6 字节 ACK/NACK 时序 | 逻辑分析仪 | 未执行 | 同上 |
+| T-L2-04 与参考温湿度计对照 | 可控温源 + 参考仪器 + 串口/钩子 | 未执行 | 无串口（`[]`）、无温源、钩子未接入 |
+| T-L2-05 负温端到端 | 冷箱 + 网关/手机 | 未执行 | 同上 + 无网关/手机确认 |
+| T-L2-06 CRC 错误路径 | 故障注入 + 逻辑分析仪 | 未执行 | 无仪器 |
+| T-L2-07 总线卡死恢复 | 故障注入 | 未执行 | 无仪器 |
+| T-L2-08 无器件 | 取下器件 + 电流表 | 未执行 | 无仪器；无法下载镜像 |
+| T-L2-09 地址变体 | 两种变体实物 | 未执行 | 无实物 |
+| T-L1-09 量产工具链下载回读 | 调试探针 | 未执行 | `mdk_flash` = `Flash Download failed - Target DLL has been cancelled` |
+| T-L1-12 部署镜像=受测提交 | 调试探针 | 未执行 | 无法下载/回读 |
+
+---
+
+## 6. 判定、局限与交接
+
+1. **判定**：T1 的宿主机可验证行为（地址探测与缓存、0xFD、tMEAS 等待、6 字节读取、双字 CRC-8、x10 换算与量程、读 NACK/CRC/无器件有界重试、失败不改输出、命令白名单）**未发现实现缺陷**；真实目标强制项不可执行，故本轮结果为 **BLOCKED**（不是 TEST_FAIL，也不是 TEST_PASS）。
+2. **真实目标前置**（供后续执行）：调试探针 + 可下载环境（当前 `Target DLL cancelled`）、`COM43` 串口或等效、逻辑分析仪、可控温源/参考温湿度计、GXHT40 地址变体实物；另 `serial_capture` 仍需在配置运行时安装 `pyserial`（本轮报 `pyserial is required`）。
+3. **观测钩子**：TD-002 §2 期望的 `SENSOR_TEST_TRACE` 打印点仍未接入；当前 T-L2-04/05 的内部读数只能靠空口/钩子，建议在具备实板时先接入观测点。
+4. **后续任务项交接（不属本项）**：FD-002 rev 3.0 §1.1 的 D-01/D-02/D-03 仍未实现（光照 1/3 判据与有效性、升温方向上报、待上报冻结样本），对应任务项 ITEM-002/004/005；本项 T1 不受其影响（FD-002 rev 3.0 明确 T1 无变更）。
+5. **跨项 harness 维护交接（后续 ITEM-003/004/005 验证时）**：`test/host_light_verify_ev.c`（需补 `fw_core.h`）、`test/host_measure_flow_verify_ev.c`、`test/host_rf_report_verify_ev.c`、`test/host_rtc_cadence_verify_ev.c` 仍引用已退役的 `optcfg.h`/`hall.h`/`params.h`/`history.h` 或旧语义；本轮属 T1，未改动它们。
+
+---
+
+# 历史记录（EV-003：上一轮工作流 WF-d5575697，基线 TD-002 rev 2.0；仅供追溯，勿与本轮混用）
+
 
 状态：embedded_tester.embedded_verification 独立验证证据
 本轮验证对象：任务队列 **ITEM-001（= 任务清单 T1：GXHT40 温湿度采集通路）**
