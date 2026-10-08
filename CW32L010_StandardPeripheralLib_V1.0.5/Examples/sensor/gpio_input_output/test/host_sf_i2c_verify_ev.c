@@ -56,7 +56,29 @@ static void slave_stop(void) { st = ST_IDLE; }
 
 /* ---------------- mock bus ---------------- */
 static int scl = 1, m_sda = 1, m_drive = 1, slave_sda = 1;
-static int bus(void) { return m_drive ? m_sda : (slave_sda ? 1 : 0); }
+
+/* ---- stuck-bus model (FWR-118 / FD-002 §6.6.3) ----------------------------
+ * Independent model of the abnormal hold state the bounded recovery targets: the
+ * slave was reset mid-byte and keeps pulling SDA low, so the line reads 0 no
+ * matter what the master drives (open-drain OR).  The slave lets go only after it
+ * has shifted out the remainder, which this model accounts as N SCL pulses that
+ * the master emits with SDA released and no transfer in progress -- i.e. exactly
+ * the signature of a bus-recovery sequence, not of a transaction.  The model
+ * never inspects a driver symbol; it only watches the wires. */
+static int stuck_sda = 0;
+static int stuck_release_after = 0;
+static int stuck_pulses = 0;
+static int scl_rise_n = 0;   /* every SCL rising edge on the wire */
+static int idle_rise_n = 0;  /* SCL rising edges issued with SDA released and st == IDLE */
+
+static void arm_stuck(int release_after_pulses)
+{
+    stuck_sda = 1;
+    stuck_release_after = release_after_pulses;
+    stuck_pulses = 0;
+}
+
+static int bus(void) { if (stuck_sda) return 0; return m_drive ? m_sda : (slave_sda ? 1 : 0); }
 
 static void set_master_sda(int v)
 {
@@ -133,7 +155,22 @@ static void slave_on_rise(void)
     }
 }
 static void scl_low_(void)  { if (scl == 1) { scl = 0; if (st != ST_IDLE) slave_on_fall(); } }
-static void scl_high_(void) { if (scl == 0) { scl = 1; if (st != ST_IDLE) slave_on_rise(); } }
+static void scl_high_(void)
+{
+    if (scl == 0) {
+        scl = 1;
+        scl_rise_n++;
+        if (st != ST_IDLE) slave_on_rise();
+        /* a rise with SDA released and no transfer running = recovery clocking */
+        if (stuck_sda && m_drive && m_sda && st == ST_IDLE) {
+            idle_rise_n++;
+            stuck_pulses++;
+            if (stuck_release_after > 0 && stuck_pulses >= stuck_release_after) {
+                stuck_sda = 0;      /* slave finally released SDA */
+            }
+        }
+    }
+}
 
 static i2c_dev dev = {
     .name = "mock", .speed = 1,
@@ -149,6 +186,8 @@ static void bus_reset(void)
     scl = 1; m_sda = 1; m_drive = 1; slave_sda = 1;
     st = ST_IDLE; bitcnt = 0; pending_ack = 0; addr_byte = 0; sh = 0;
     rd_len = rd_idx_sh = wr_len = 0; saw_bad_addr = -1; wr_idx_n = 0; nack_nth_wr = -1;
+    stuck_sda = 0; stuck_release_after = 0; stuck_pulses = 0;
+    scl_rise_n = 0; idle_rise_n = 0;
 }
 
 static int pass, fail;
@@ -261,6 +300,47 @@ int main(void)
           "legacy sequence write-addr|reg then read-addr");
     CHECK(memcmp(rb, rd_data, 5)==0, "legacy read data unchanged");
     CHECK(ev_get(EV_RXMACK,5)==1, "legacy read NACKs the last byte");
+
+    /* ---- T9: bounded bus recovery on an idle bus must be a no-op on the wires ---- */
+    printf("[T9] i2c_bus_recover on an idle (released) bus\n");
+    /* NOTE: no slave_start_reset() here. On the real path the recovery is entered right
+     * after a transaction whose STOP already returned the mock FSM to ST_IDLE; parking it
+     * in ST_ADDR_BITS would make the mock shift the held-low line into a phantom byte. */
+    bus_reset(); slave_present = 1;
+    r = i2c_bus_recover(&dev);
+    ev_dump("T9");
+    CHECK(r == SF_I2C_SUCCESS, "returns SF_I2C_SUCCESS when the bus is already idle");
+    CHECK(scl_rise_n == 0, "zero SCL rising edges: no clocking injected into a healthy bus");
+    CHECK(idle_rise_n == 0, "zero recovery pulses counted");
+    CHECK(ev_n == 0, "no START/STOP/byte activity at all on the healthy-bus path");
+
+    /* ---- T10: SDA held low forever -> bounded 9 pulses + one legal STOP ---- */
+    printf("[T10] i2c_bus_recover with SDA held low (slave never releases)\n");
+    bus_reset(); slave_present = 1; arm_stuck(1000);
+    r = i2c_bus_recover(&dev);
+    ev_dump("T10");
+    CHECK(r == SF_I2C_TIMEOUT, "returns SF_I2C_TIMEOUT while SDA is still held low");
+    CHECK(idle_rise_n == 9, "exactly 9 recovery SCL pulses (the configured bound), not unbounded");
+    CHECK(scl_rise_n == 10, "10 SCL rising edges total = 9 recovery pulses + the STOP edge");
+    CHECK(ev_count(EV_START) == 0, "no START was emitted by the recovery sequence");
+    CHECK(ev_count(EV_STOP) == 1, "exactly one legal STOP emitted");
+    CHECK(ev_count(EV_TX) == 0, "no device address/command byte was written by the recovery");
+
+    /* ---- T11: slave releases early -> recovery stops clocking immediately ---- */
+    printf("[T11] i2c_bus_recover: slave releases SDA on the 3rd pulse\n");
+    bus_reset(); slave_present = 1; arm_stuck(3);
+    r = i2c_bus_recover(&dev);
+    ev_dump("T11");
+    CHECK(r == SF_I2C_SUCCESS, "returns SF_I2C_SUCCESS once SDA is released");
+    CHECK(idle_rise_n == 3, "clocking stops as soon as the slave releases (3 pulses, not 9)");
+    CHECK(scl_rise_n == 4, "4 SCL rising edges total = 3 recovery pulses + the STOP edge");
+    CHECK(ev_count(EV_START) == 0 && ev_count(EV_STOP) == 1, "one STOP, no START");
+    CHECK(ev_count(EV_TX) == 0, "no device address/command byte was written by the recovery");
+
+    /* ---- T11b: recovery must not fabricate a transfer (no ACK/read on the wires) ---- */
+    printf("[T11b] recovery sequence contains no address byte and no read\n");
+    CHECK(ev_count(EV_TXACK) == 0 && ev_count(EV_RX) == 0 && ev_count(EV_RXMACK) == 0,
+          "no ACK slot, no read byte, no master response bit during recovery");
 
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

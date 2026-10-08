@@ -14,7 +14,13 @@
  * delay_ms is a counting stub (timing primitive test double), so the requested
  * tMEAS wait can be asserted.
  *
- * Build (from gpio_input_output/, host gcc; verified EV-004 on HEAD f59b656):
+ * Build (from gpio_input_output/, host gcc).  The -Wl,--wrap=i2c_bus_recover link option is
+ * required: it interposes on the recovery primitive so the harness can record WHEN the driver
+ * invokes it and order that against the wire bytes (the real implementation still runs).
+ *
+ *   gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast -I test/mock_mcu -I USER/inc -I COMMON  *       test/host_gxht40_verify_ev.c USER/src/gxht40.c USER/src/sf_i2c.c USER/src/fw_core.c  *       -Wl,--wrap=i2c_bus_recover -o gxht40_verify
+ *
+ * History: verified EV-004 on HEAD f59b656 with the older build line:
  *   gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast \
  *       -I test/mock_mcu -I USER/inc -I COMMON \
  *       test/host_gxht40_verify_ev.c USER/src/gxht40.c USER/src/sf_i2c.c \
@@ -38,7 +44,7 @@ void delay_ms(uint16_t ms) { if (delay_n < 128) delay_log[delay_n++] = ms; }
 static int delay_count_of(uint16_t ms) { int c = 0; for (int i = 0; i < delay_n; i++) if (delay_log[i] == ms) c++; return c; }
 
 /* ---------------- mock bus ---------------- */
-enum { EV_START = 1, EV_STOP, EV_TX, EV_TXACK, EV_RX, EV_RXMACK };
+enum { EV_START = 1, EV_STOP, EV_TX, EV_TXACK, EV_RX, EV_RXMACK, EV_RECOVCALL };
 static int ev_code[4096], ev_val[4096], ev_n;
 static void ev_add(int c, int v) { if (ev_n < 4096) { ev_code[ev_n] = c; ev_val[ev_n] = v; ev_n++; } }
 static void ev_reset(void) { ev_n = 0; }
@@ -104,6 +110,7 @@ static void slave_on_rise(void)
         if (bitcnt == 8) {
             uint8_t a = (uint8_t)addr_byte;
             int present = (dev_addr7 != 0u) && ((a & 0xFEu) == (uint8_t)(dev_addr7 << 1));
+            ev_add(EV_TX, a);                          /* the address byte really is on the wire */
             if (a & 1u) {                                  /* read address */
                 if (rd_addr_n < 32) rd_addr_log[rd_addr_n++] = a;
                 if (present && read_nack_remaining == 0) { pending_ack = 1; }
@@ -166,6 +173,38 @@ static int pass, fail;
 static int wr_addr_seen(uint8_t v) { for (int i = 0; i < wr_addr_n; i++) if (wr_addr_log[i] == v) return 1; return 0; }
 static int rd_addr_seen(uint8_t v) { for (int i = 0; i < rd_addr_n; i++) if (rd_addr_log[i] == v) return 1; return 0; }
 static int all_ever_sent_are(uint8_t v) { if (all_cmd_n == 0) return 0; for (int i = 0; i < all_cmd_n; i++) if (all_cmd[i] != v) return 0; return 1; }
+static int all_never_is(uint8_t v) { for (int i = 0; i < all_cmd_n; i++) if (all_cmd[i] == v) return 0; return 1; }
+static int ev_index_of_tx_after(uint8_t v, int from) { for (int i = from + 1; i < ev_n; i++) if (ev_code[i] == EV_TX && (uint8_t)ev_val[i] == v) return i; return -1; }
+/* Linker interposition on the recovery primitive (built with -Wl,--wrap=i2c_bus_recover).
+ * The real sf_i2c implementation still runs unchanged; this only records that the driver
+ * invoked it, so the call can be ordered against the wire bytes in the shared event log. */
+sf_i2c_err __real_i2c_bus_recover(const i2c_dev *dev);
+sf_i2c_err __wrap_i2c_bus_recover(const i2c_dev *dev)
+{
+    ev_add(EV_RECOVCALL, 0);
+    return __real_i2c_bus_recover(dev);
+}
+
+/* wire transcript (RECOV = the driver invoked the bounded bus recovery at that point) */
+static void ev_dump_ev(const char *tag)
+{
+    printf("    transcript[%s]:", tag);
+    for (int i = 0; i < ev_n; i++) {
+        switch (ev_code[i]) {
+        case EV_START:     printf(" START"); break;
+        case EV_STOP:      printf(" STOP"); break;
+        case EV_TX:        printf(" TX(%02X)", ev_val[i]); break;
+        case EV_TXACK:     printf(" %s", ev_val[i] ? "NACK" : "ACK"); break;
+        case EV_RX:        printf(" RX(%02X)", ev_val[i]); break;
+        case EV_RXMACK:    printf(" M-%s", ev_val[i] ? "NACK" : "ACK"); break;
+        case EV_RECOVCALL: printf(" RECOV"); break;
+        }
+    }
+    printf("\n");
+}
+
+static int ev_index_of_code(int code, int nth) { int c = 0; for (int i = 0; i < ev_n; i++) if (ev_code[i] == code && ++c == nth) return i; return -1; }
+static int ev_count_code(int code) { int c = 0; for (int i = 0; i < ev_n; i++) if (ev_code[i] == code) c++; return c; }
 
 static void set_frame(const uint8_t f[6]) { memcpy(frame, f, 6); }
 
@@ -238,15 +277,25 @@ int main(void)
     CHECK(rd_addr_n == 3, "three read attempts seen (2 NACK + 1 ACK)");
     CHECK(delay_count_of(GXHT40_READ_RETRY_DELAY_MS) == 2, "two 1 ms retry waits");
 
-    /* ---- T5: read NACK exhausted -> IO error, outputs untouched ---- */
+    /* ---- T5: read NACK exhausted -> failure reported, outputs untouched ----
+     * As-built after T2/FWR-118 the failing attempt no longer stops at the first candidate:
+     * the driver always continues to the other candidate, so the code it returns is the LAST
+     * candidate's outcome rather than the first one's.  T15 (OBS-2) records the observable
+     * consequence of that on the diagnostic line. */
     printf("[T5] read NACK beyond the retry bound\n");
     log_reset(); dev_addr7 = 0x44; read_nack_remaining = 99; slave_start_reset();
     t = 0x7F7F; h = 0x7F7F;
     r = gxht40_measure(&t, &h);
-    CHECK(r == GXHT40_ERR_IO, "returns GXHT40_ERR_IO");
+    printf("    returned status = %d\n", (int)r);
+    CHECK(r != GXHT40_OK, "the period is reported as a failure");
+    CHECK(r == GXHT40_ERR_NO_DEVICE || r == GXHT40_ERR_IO,
+          "status is one of the acquisition failure codes");
     CHECK(t == 0x7F7F && h == 0x7F7F, "outputs NOT modified on failure");
-    CHECK(cmd_count <= (int)GXHT40_MEAS_RETRY, "command attempts bounded by GXHT40_MEAS_RETRY");
-    CHECK(rd_addr_n <= (int)(GXHT40_MEAS_RETRY * GXHT40_READ_RETRY), "read attempts bounded by MEAS_RETRY*READ_RETRY");
+    /* FWR-118: a period may now probe up to 3 candidates per attempt (stale cache + 0x44 + 0x45),
+     * so the bound is MEAS_RETRY x 3 command writes; reads can only reach the two write-address
+     * candidates that ACK, hence MEAS_RETRY x 2 x READ_RETRY. Both stay finite. */
+    CHECK(cmd_count <= (int)(GXHT40_MEAS_RETRY * 3), "command attempts bounded (<= MEAS_RETRY x 3 candidates)");
+    CHECK(rd_addr_n <= (int)(GXHT40_MEAS_RETRY * 2 * GXHT40_READ_RETRY), "read attempts bounded (<= MEAS_RETRY x 2 x READ_RETRY)");
 
     /* ---- T6: CRC errors -> retried then reported, outputs untouched ---- */
     printf("[T6] CRC error paths\n");
@@ -297,6 +346,148 @@ int main(void)
     printf("[T10] command whitelist over every command ever sent (%d total)\n", all_cmd_n);
     CHECK(all_ever_sent_are(GXHT40_CMD_MEASURE_HIGH_REP), "every command byte sent was 0xFD");
     CHECK(all_cmd_n > 0, "commands were actually exercised");
+
+    /* ---- T11: FWR-118 - a failure on the cached address forces re-probing BOTH candidates ---- */
+    printf("[T11] FWR-118: failure on the cached address -> both candidates re-probed\n");
+    gxht40_init(&dev); log_reset(); dev_addr7 = 0x44; read_nack_remaining = 0; set_frame(F_ROOM);
+    slave_start_reset(); t = 0; h = 0;
+    r = gxht40_measure(&t, &h);
+    CHECK(r == GXHT40_OK && t == 250 && h == 500, "baseline period succeeds on 0x44");
+    CHECK(gxht40_detected_addr7() == 0x44, "address 0x44 is cached");
+
+    log_reset(); read_nack_remaining = 99; slave_start_reset(); t = 0x1111; h = 0x2222;
+    r = gxht40_measure(&t, &h);
+    CHECK(r != GXHT40_OK, "failing period reports a failure (no fabricated success)");
+    CHECK(t == 0x1111 && h == 0x2222, "outputs NOT modified on the failing period");
+    CHECK(gxht40_detected_addr7() == 0, "stale cached address invalidated immediately");
+    CHECK(wr_addr_seen(0x88) && wr_addr_seen(0x8A),
+          "both candidates 0x44 and 0x45 were re-probed inside the failing period");
+    CHECK(cmd_count <= (int)(GXHT40_MEAS_RETRY * 3), "re-probe attempts stay bounded");
+
+    log_reset(); read_nack_remaining = 0; slave_start_reset(); t = 0; h = 0;
+    r = gxht40_measure(&t, &h);
+    CHECK(r == GXHT40_OK && t == 250 && h == 500, "next period recovers and returns a valid reading");
+    CHECK(wr_addr_log[0] == 0x88, "recovery period re-probes from 0x44 instead of using a stale cache");
+    CHECK(gxht40_detected_addr7() == 0x44, "address re-cached after the successful re-probe");
+
+    /* ---- T12: the cached address dies but the device answers elsewhere -> no permanent loss ---- */
+    printf("[T12] FWR-118: cached 0x44 dies, device answers at 0x45\n");
+    gxht40_init(&dev); log_reset(); dev_addr7 = 0x44; read_nack_remaining = 0; set_frame(F_ROOM);
+    slave_start_reset(); t = 0; h = 0;
+    r = gxht40_measure(&t, &h);
+    CHECK(r == GXHT40_OK && gxht40_detected_addr7() == 0x44, "cached on 0x44");
+
+    log_reset(); dev_addr7 = 0x45; slave_start_reset(); t = 0; h = 0;
+    r = gxht40_measure(&t, &h);
+    CHECK(r == GXHT40_OK && t == 250 && h == 500, "device found at 0x45: not permanently lost");
+    CHECK(wr_addr_seen(0x88) && wr_addr_seen(0x8A), "both candidates probed after the stale cache failed");
+    CHECK(gxht40_detected_addr7() == 0x45, "cache updated to 0x45");
+    CHECK(ev_count_code(EV_RECOVCALL) == 1, "the stale-cache failure invoked the recovery before re-probing");
+    CHECK(delay_count_of(GXHT40_MEASURE_WAIT_MS) >= 1, "the successful path still performed the tMEAS wait");
+
+    /* ---- T13: the failure path really invokes the bounded recovery, before the re-probe ---- */
+    printf("[T13] FWR-118: bounded recovery is invoked before the re-probe\n");
+    gxht40_init(&dev); log_reset(); dev_addr7 = 0x44; read_nack_remaining = 0; set_frame(F_ROOM);
+    slave_start_reset(); t = 0; h = 0;
+    r = gxht40_measure(&t, &h);
+    CHECK(r == GXHT40_OK && gxht40_detected_addr7() == 0x44, "baseline succeeds and caches 0x44");
+
+    log_reset(); dev_addr7 = 0x45; slave_start_reset(); t = 0; h = 0;
+    r = gxht40_measure(&t, &h);
+    ev_dump_ev("T13");
+    {
+        int ixrec = ev_index_of_code(EV_RECOVCALL, 1);
+        int ix88  = ev_index_of_tx_after(0x88, ixrec);
+        int ix8a  = ev_index_of_tx_after(0x8A, ixrec);
+        printf("    ordering: recovery call at event #%d, next 0x88 probe at #%d, 0x8A probe at #%d\n",
+               ixrec, ix88, ix8a);
+        CHECK(r == GXHT40_OK, "the period still succeeds via the other candidate");
+        CHECK(ixrec >= 0, "the driver invoked the bounded bus recovery on the failure path");
+        CHECK(ix88 > ixrec && ix88 >= 0, "the re-probe of 0x44 happened AFTER the recovery, not before");
+        CHECK(ix8a > ix88, "the second candidate was probed after the first, in order");
+        CHECK(ev_count_code(EV_RECOVCALL) == 1, "recovery invoked exactly once for this one failure");
+    }
+
+    /* ---- T14: tPU power-on margin (datasheet tPU <= 1 ms) exactly once ---- */
+    printf("[T14] tPU margin on the first access only\n");
+    gxht40_init(&dev); log_reset(); dev_addr7 = 0x44; read_nack_remaining = 0; set_frame(F_ROOM);
+    slave_start_reset(); t = 0; h = 0;
+    r = gxht40_measure(&t, &h);
+    CHECK(r == GXHT40_OK, "first measure after gxht40_init succeeds");
+    CHECK(delay_count_of(GXHT40_POWER_ON_WAIT_MS) == 1, "exactly one tPU margin on the first access");
+    CHECK(delay_count_of(GXHT40_MEASURE_WAIT_MS) == 1, "tMEAS still waited exactly once");
+    CHECK(GXHT40_POWER_ON_WAIT_MS >= 1u, "tPU margin is at least the datasheet 1 ms");
+    log_reset(); slave_start_reset();
+    r = gxht40_measure(&t, &h);
+    CHECK(r == GXHT40_OK, "second measure succeeds");
+    CHECK(delay_count_of(GXHT40_POWER_ON_WAIT_MS) == 0, "tPU margin is NOT repeated on later accesses");
+    CHECK(delay_count_of(GXHT40_MEASURE_WAIT_MS) == 1, "tMEAS waited exactly once again");
+
+    /* ---- T15: OBSERVATION - diagnostic snapshot when only one candidate ACKs ----
+     * Reproduces the corner a real board hits when the device answers its address but no
+     * read ever completes: the health words served on the UART then show the LAST attempt's
+     * result code together with the address-ACK facts, which a reader may find contradictory.
+     * Asserted here so that any future change to this reporting is detected and re-reviewed;
+     * it is recorded as an observation, not as a criterion for the current increment. */
+    printf("[T15] observation: diagnostic snapshot with exactly one ACKing candidate\n");
+    gxht40_init(&dev); log_reset(); dev_addr7 = 0x44; read_nack_remaining = 99; set_frame(F_ROOM);
+    slave_start_reset(); t = 0x1111; h = 0x2222;
+    r = gxht40_measure(&t, &h);
+    {
+        gxht40_diag_t d;
+        gxht40_diag_fetch(&d);
+        printf("    snapshot: status=%u ack44=%u ack45=%u read_retry=%u attempt=%u raw_valid=%u\n",
+               (unsigned)d.status, (unsigned)d.ack44, (unsigned)d.ack45,
+               (unsigned)d.read_retry, (unsigned)d.attempt, (unsigned)d.raw_valid);
+        printf("    UART rendering would be: 'G s=%u a44=%u a45=%u rd=%u at=%u raw=%s'\n",
+               (unsigned)d.status, (unsigned)d.ack44, (unsigned)d.ack45,
+               (unsigned)d.read_retry, (unsigned)d.attempt,
+               d.raw_valid ? "<12 hex digits>" : "------------");
+        CHECK(d.status == (uint8_t)GXHT40_ERR_NO_DEVICE && d.ack44 == 1u && d.ack45 == 0u,
+              "reproduced: s=2 while a44=1 (result code is the last attempt's, not the dominant cause)");
+    }
+    CHECK(t == 0x1111 && h == 0x2222, "outputs untouched in this corner too");
+
+    /* ---- T17: FWR-118 conformance for the CRC-error and out-of-range failures ----
+     * FWR-118 ("任一测量失败（含缓存地址读失败、CRC 错、读 NACK 用尽）后，下一周期必须重新探测
+     * 0x44/0x45 并先执行有界总线恢复"), FD-002 §6.6.3 rule 4 ("任何失败后必须重新探测两个候选地址")
+     * and TD-002 B18 all state that ANY measurement failure obliges the NEXT period to re-probe
+     * both candidate addresses.  This case establishes a valid cached address, makes the frames
+     * fail CRC (and, separately, the value domain), then inspects the next period's probe set. */
+    printf("[T17] FWR-118: after a CRC failure the next period must re-probe both candidates\n");
+    gxht40_init(&dev); log_reset(); dev_addr7 = 0x44; read_nack_remaining = 0; set_frame(F_CRCT);
+    slave_start_reset(); t = 0x1111; h = 0x2222;
+    r = gxht40_measure(&t, &h);
+    CHECK(r == GXHT40_ERR_CRC, "CRC-error period is reported as GXHT40_ERR_CRC");
+    CHECK(t == 0x1111 && h == 0x2222, "outputs NOT modified on the CRC-error period");
+    printf("    cached address after the CRC failure = 0x%02X\n", (unsigned)gxht40_detected_addr7());
+
+    log_reset(); set_frame(F_ROOM); slave_start_reset(); t = 0; h = 0;
+    r = gxht40_measure(&t, &h);
+    ev_dump_ev("T17-crc");
+    printf("    next-period probes: 0x88=%d 0x8A=%d recovery_calls=%d\n",
+           wr_addr_seen(0x88), wr_addr_seen(0x8A), ev_count_code(EV_RECOVCALL));
+    CHECK(r == GXHT40_OK && t == 250 && h == 500, "the next period reads normally again");
+    CHECK(wr_addr_seen(0x88) && wr_addr_seen(0x8A),
+          "FWR-118: the period after a CRC failure re-probes BOTH candidate addresses");
+
+    printf("[T17b] FWR-118: after a range failure the next period must re-probe both candidates\n");
+    gxht40_init(&dev); log_reset(); dev_addr7 = 0x44; read_nack_remaining = 0; set_frame(F_RLOW);
+    slave_start_reset(); t = 0x1111; h = 0x2222;
+    r = gxht40_measure(&t, &h);
+    CHECK(r == GXHT40_ERR_RANGE, "range-invalid period is reported as GXHT40_ERR_RANGE");
+
+    log_reset(); set_frame(F_ROOM); slave_start_reset(); t = 0; h = 0;
+    r = gxht40_measure(&t, &h);
+    printf("    next-period probes: 0x88=%d 0x8A=%d recovery_calls=%d\n",
+           wr_addr_seen(0x88), wr_addr_seen(0x8A), ev_count_code(EV_RECOVCALL));
+    CHECK(wr_addr_seen(0x88) && wr_addr_seen(0x8A),
+          "FWR-118: the period after a range failure re-probes BOTH candidate addresses");
+
+    printf("[T16] command whitelist re-check over the whole run (%d commands)\n", all_cmd_n);
+    CHECK(all_cmd_n > 0, "commands were actually exercised (non-empty set)");
+    CHECK(all_ever_sent_are(GXHT40_CMD_MEASURE_HIGH_REP), "every command byte sent in every test was 0xFD");
+    CHECK(all_cmd_n > 0 && all_never_is(GXHT40_CMD_SOFT_RESET), "soft reset 0x94 never appears in any path");
 
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
