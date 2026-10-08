@@ -18,6 +18,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "sf_i2c.h"
+#include "sensor_config.h"   /* GXHT40_RESULT_LEN 等数值常量 (唯一配置点) */
 
 /* 测量结果码 */
 typedef enum
@@ -44,5 +45,24 @@ gxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10);
 
 /* 已探测到的 7bit 地址 (0 = 尚未探测到); 供调试跟踪使用 */
 uint8_t gxht40_detected_addr7(void);
+
+/* ------------------------------------------------------------------ */
+/* 诊断快照 (FWR-116; FD-002 rev 5.0 §6.6.1)                            */
+/*   只读观测: 只记录本轮测量的失败环节事实, 不改变失败语义 (仍然不修改   */
+/*   输出参数、仍然返回既有结果码)。raw[] 为最近一次成功读回的 6 字节。  */
+/* ------------------------------------------------------------------ */
+typedef struct
+{
+    uint8_t status;      /* 本轮最终结果码 (gxht40_status_t) */
+    uint8_t ack44;       /* 本轮 0x44 是否收到地址 ACK (0/1) */
+    uint8_t ack45;       /* 本轮 0x45 是否收到地址 ACK (0/1) */
+    uint8_t read_retry;  /* 最近一次读事务消耗的失败重读次数 0..GXHT40_READ_RETRY */
+    uint8_t attempt;     /* 本轮消耗的整帧重测次数 1..GXHT40_MEAS_RETRY */
+    uint8_t raw_valid;   /* raw[] 是否来自一次成功读 (0/1) */
+    uint8_t raw[GXHT40_RESULT_LEN];   /* 最近一次成功读回的 6 字节 */
+} gxht40_diag_t;
+
+/* 取最近一次 gxht40_measure() 的诊断快照 (只读, 不改变驱动状态) */
+void gxht40_diag_fetch(gxht40_diag_t *out);
 
 #endif /* __GXHT40_H */

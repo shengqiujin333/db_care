@@ -190,6 +190,22 @@ int main(void)
     CHECK(e == SF_I2C_SUCCESS, "返回 SF_I2C_SUCCESS");
     CHECK(n_start == 0 && n_stop == 0, "未产生任何 START/STOP");
 
+    printf("[5] i2c_probe_addr: 只发地址字节的有界探测 (FWR-116)" "\n");
+    reset_slave(); n_rx = 0; n_start = 0; n_stop = 0; slave_present = 1;
+    e = i2c_probe_addr(&dev, 0x88);
+    CHECK(e == SF_I2C_SUCCESS, "器件在 0x44: 返回 SF_I2C_SUCCESS (地址被 ACK)");
+    CHECK(n_start == 1 && n_stop == 1, "恰好 1 个 START 与 1 个 STOP");
+    CHECK(n_rx == 1 && rx_bytes[0] == 0x88, "线上只有地址写字节 0x88 (无命令字节/无数据)");
+    CHECK(m_sda_read() == 1 && scl == 1, "探测后总线释放(SCL/SDA 均为高)");
+
+    printf("[6] i2c_probe_addr: 无器件地址返回超时且释放总线\n");
+    reset_slave(); n_rx = 0; n_start = 0; n_stop = 0; slave_present = 1;
+    e = i2c_probe_addr(&dev, 0x8A);
+    CHECK(e == SF_I2C_TIMEOUT, "0x45 无器件: 返回 SF_I2C_TIMEOUT");
+    CHECK(n_stop >= 1, "NACK 后已发出 STOP 释放总线");
+    CHECK(n_rx == 1 && rx_bytes[0] == 0x8A, "线上只有地址写字节 0x8A, 未继续写命令");
+    CHECK(m_sda_read() == 1 && scl == 1, "超时后总线仍释放");
+
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
 }

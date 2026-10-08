@@ -31,6 +31,15 @@ void go_to_sleep(void);
  */
 uint8_t sensor_trace_fetch(debug_trace_sample_t *out);
 
+/*
+ * 上电总线身份诊断 (FWR-116; 只观测)。
+ *   读取 PA03(SCL)/PA04(SDA) 在**任何 I2C 事务之前**的空闲电平, 然后对
+ *   SENSOR_BUS_DIAG_FIRST_ADDR7..LAST_ADDR7 逐地址发地址字节探测 (不写命令/不读数据),
+ *   把结果填入 *out。内部调用幂等的 bsp_i2c_init(); 不改变采样/判定/上报/冻结状态。
+ * 返回 1 = 已填充; 0 = 无法进行 (out 为空或未绑定总线, *out 未填充)。
+ */
+uint8_t sensor_bus_diag_scan(debug_trace_bus_t *out);
+
 /* 上报调度状态 (FD-002 §6.4) */
 extern uint8_t report_req;
 #endif /* MEASURE_H_ */

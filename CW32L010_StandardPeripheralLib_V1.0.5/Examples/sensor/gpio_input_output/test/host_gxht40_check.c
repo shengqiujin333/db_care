@@ -192,6 +192,7 @@ static const uint8_t F_BAD_CRC[6]   = {0x66,0x66,0x00,0x72,0xB0,0xDC}; /* 温度
 int main(void)
 {
     gxht40_status_t st;
+    gxht40_diag_t   d;
     int16_t t;
     uint16_t h;
 
@@ -210,6 +211,12 @@ int main(void)
           && addr_w_seen[1] == GXHT40_ADDR_READ_A, "地址字节 0x88(命令) + 0x89(读)");
     CHECK(gxht40_detected_addr7() == 0x44, "缓存地址 = 0x44");
     CHECK(n_start == 2 && n_stop == 2, "命令与读取各一次 START/STOP");
+    gxht40_diag_fetch(&d);
+    CHECK(d.status == GXHT40_OK && d.attempt == 1 && d.read_retry == 0,
+          "诊断: 成功轮 status=OK/attempt=1/read_retry=0");
+    CHECK(d.ack44 == 1 && d.ack45 == 0, "诊断: 0x44 收到地址 ACK, 0x45 未被探测到 ACK");
+    CHECK(d.raw_valid == 1 && memcmp(d.raw, F_DATASHEET, 6) == 0,
+          "诊断: raw 为最近一次成功读回的 6 字节");
 
     printf("[2] 25.0C / 50.0%%RH\n");
     set_frame(F_25C_50RH); obs_reset();
@@ -251,6 +258,9 @@ int main(void)
     st = gxht40_measure(&t, &h);
     CHECK(st == GXHT40_OK && t == 250 && h == 500, "重读后成功 (2 次 NACK 被容忍)");
     CHECK(cmd_count == 1, "读 NACK 不重发命令 (仅 1 次 0xFD, 同一次测量内重读)");
+    gxht40_diag_fetch(&d);
+    CHECK(d.read_retry == 2 && d.status == GXHT40_OK,
+          "诊断: 读事务消耗的失败重读次数 = 2 (前 2 次 NACK)");
     mock_read_nack = 0;
 
     printf("[6] CRC 错误: 重测用尽后返回失败且不改输出\n");
@@ -260,6 +270,11 @@ int main(void)
     CHECK(st == GXHT40_ERR_CRC, "返回 GXHT40_ERR_CRC");
     CHECK(t == 1234 && h == 4321, "输出未被修改");
     CHECK(cmd_count == GXHT40_MEAS_RETRY, "整帧重测次数 == GXHT40_MEAS_RETRY");
+    gxht40_diag_fetch(&d);
+    CHECK(d.status == (uint8_t)GXHT40_ERR_CRC && d.attempt == (uint8_t)GXHT40_MEAS_RETRY,
+          "诊断: CRC 错 - status=4 且 attempt=GXHT40_MEAS_RETRY");
+    CHECK(d.ack44 == 1 && d.raw_valid == 1 && memcmp(d.raw, F_BAD_CRC, 6) == 0,
+          "诊断: 保留最近一次成功读回的原始 6 字节 (供独立 CRC-8 复算)");
 
     printf("[7] 无器件: 返回 NO_DEVICE 且不改输出\n");
     mock_addr7 = 0; gxht40_init(&dev); obs_reset();
@@ -275,6 +290,10 @@ int main(void)
         }
         CHECK(saw_a && saw_b, "两个候选地址 0x88/0x8A 都被探测过");
     }
+    gxht40_diag_fetch(&d);
+    CHECK(d.status == (uint8_t)GXHT40_ERR_NO_DEVICE && d.ack44 == 0 && d.ack45 == 0,
+          "诊断: 无器件 - status=2 且两候选地址 ACK 均为 0");
+    CHECK(d.raw_valid == 0, "诊断: 未读成功时 raw_valid=0 (打印时用占位)");
 
     printf("[8] 换算超范围: -45.0C 与 125.1C 视为无效\n");
     mock_addr7 = 0x44; gxht40_init(&dev);
@@ -286,6 +305,9 @@ int main(void)
     set_frame(F_RANGE_HI); obs_reset();
     st = gxht40_measure(&t, &h);
     CHECK(st == GXHT40_ERR_RANGE, "T=125.1C -> GXHT40_ERR_RANGE");
+    gxht40_diag_fetch(&d);
+    CHECK(d.status == (uint8_t)GXHT40_ERR_RANGE && d.raw_valid == 1,
+          "诊断: 量程无效 - status=5 且保留原始 6 字节");
 
     printf("[9] 入参非法: 未绑定总线\n");
     gxht40_init(NULL);

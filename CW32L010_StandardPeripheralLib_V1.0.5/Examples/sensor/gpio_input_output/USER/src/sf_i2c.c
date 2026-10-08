@@ -389,6 +389,26 @@ sf_i2c_err i2c_read_bytes(const i2c_dev *dev, uint8_t slave_addr, void *pbuf, ui
 }
 
 /**
+ * @brief  Probe a single 7-bit address on the bus without touching any device
+ *         register (START -> slave+W -> ACK check -> STOP).
+ *         Used by the power-on bus identity diagnostic (FWR-116).
+ * @param  dev        : Pointer to iic structure
+ * @param  slave_addr : Device address bytes (8bit form, 7bit<<1, e.g. 0x88)
+ * @return SF_I2C_SUCCESS : Address acknowledged (device present)
+ *         SF_I2C_TIMEOUT : Address not acknowledged (bus released by
+ *                          i2c_wait_ack, and an explicit STOP is issued here)
+ */
+sf_i2c_err i2c_probe_addr(const i2c_dev *dev, uint8_t slave_addr)
+{
+    sf_i2c_err err;
+
+    i2c_start(dev);
+    err = i2c_write_byte(dev, I2C_WRITE(slave_addr));   /* 只发地址写字节 */
+    i2c_stop(dev);                                     /* 无论 ACK/NACK 都释放总线 */
+    return err;
+}
+
+/**
  * @brief  i2c writes multiple bytes to a register consecutively
  * @param  dev Pointer : to iic structure
  * @param  slave_addr  : Device address

@@ -13,10 +13,57 @@
 static i2c_dev *s_dev = NULL;
 static uint8_t  s_addr7 = 0u;   /* 0 = 未探测到 */
 
+/* 诊断快照 (FWR-116): 只读观测, 不参与判定/重试/输出写入 */
+static gxht40_diag_t s_diag;
+
+static void gxht40_diag_clear(void)
+{
+    uint8_t i;
+
+    s_diag.status     = (uint8_t)GXHT40_ERR_IO;   /* 尚未被填入时的占位 */
+    s_diag.ack44      = 0u;
+    s_diag.ack45      = 0u;
+    s_diag.read_retry = 0u;
+    s_diag.attempt    = 0u;
+    s_diag.raw_valid  = 0u;
+    for (i = 0u; i < (uint8_t)GXHT40_RESULT_LEN; i++) {
+        s_diag.raw[i] = 0u;
+    }
+}
+
+static void gxht40_diag_note_ack(uint8_t addr7)
+{
+    if (addr7 == (uint8_t)GXHT40_ADDR_7BIT_A) {
+        s_diag.ack44 = 1u;
+    } else if (addr7 == (uint8_t)GXHT40_ADDR_7BIT_B) {
+        s_diag.ack45 = 1u;
+    }
+}
+
+static void gxht40_diag_note_read(const uint8_t *buf, uint8_t failed_reads)
+{
+    uint8_t i;
+
+    s_diag.read_retry = failed_reads;
+    s_diag.raw_valid  = 1u;
+    for (i = 0u; i < (uint8_t)GXHT40_RESULT_LEN; i++) {
+        s_diag.raw[i] = buf[i];
+    }
+}
+
+void gxht40_diag_fetch(gxht40_diag_t *out)
+{
+    if (out == NULL) {
+        return;
+    }
+    *out = s_diag;
+}
+
 void gxht40_init(i2c_dev *dev)
 {
     s_dev = dev;
     s_addr7 = 0u;
+    gxht40_diag_clear();
 }
 
 uint8_t gxht40_detected_addr7(void)
@@ -45,6 +92,7 @@ static gxht40_status_t gxht40_start_and_read(uint8_t addr7, uint8_t *buf)
     if (e != SF_I2C_SUCCESS) {
         return GXHT40_ERR_NO_DEVICE;    /* 地址/命令未被 ACK: 该地址无器件 */
     }
+    gxht40_diag_note_ack(addr7);        /* 诊断: 该候选地址本轮收到地址 ACK */
 
     delay_ms(GXHT40_MEASURE_WAIT_MS);   /* tMEAS.H max 8.3 ms (VDD=1.6V) -> 10 ms */
 
@@ -52,6 +100,7 @@ static gxht40_status_t gxht40_start_and_read(uint8_t addr7, uint8_t *buf)
         e = i2c_read_bytes(s_dev, (uint8_t)((addr7 << 1) | 0x01u),
                            buf, GXHT40_RESULT_LEN);
         if (e == SF_I2C_SUCCESS) {
+            gxht40_diag_note_read(buf, r);   /* 诊断: 重读次数 + 原始 6 字节 */
             return GXHT40_OK;
         }
         /* 读地址 NACK = 转换未完成 (手册 §7.1); 等待后重读 */
@@ -59,6 +108,7 @@ static gxht40_status_t gxht40_start_and_read(uint8_t addr7, uint8_t *buf)
             delay_ms(GXHT40_READ_RETRY_DELAY_MS);
         }
     }
+    s_diag.read_retry = (uint8_t)GXHT40_READ_RETRY;   /* 诊断: 读重试用尽 */
     return GXHT40_ERR_IO;
 }
 
@@ -108,11 +158,15 @@ gxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10)
         return GXHT40_ERR_PARAM;
     }
 
+    gxht40_diag_clear();      /* 诊断快照只服务本轮; 不改变失败语义 */
+
     for (attempt = 0u; attempt < GXHT40_MEAS_RETRY; attempt++) {
         gxht40_status_t st;
         uint16_t raw_t, raw_h;
         int16_t t;
         uint16_t h;
+
+        s_diag.attempt = (uint8_t)(attempt + 1u);
 
         st = gxht40_acquire(buf);
         if (st != GXHT40_OK) {
@@ -139,8 +193,10 @@ gxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10)
         /* 仅在完全成功时写输出 (失败不修改输出) */
         *temp_x10 = t;
         *hum_x10  = h;
+        s_diag.status = (uint8_t)GXHT40_OK;
         return GXHT40_OK;
     }
 
+    s_diag.status = (uint8_t)last;
     return last;
 }

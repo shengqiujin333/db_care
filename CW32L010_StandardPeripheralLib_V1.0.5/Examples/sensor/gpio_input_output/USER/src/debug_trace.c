@@ -197,8 +197,54 @@ void debug_trace_boot(const uint8_t *uid, uint32_t reset_flags)
     trace_puts("\r\n");
 }
 
+void debug_trace_bus(const debug_trace_bus_t *b)
+{
+    uint8_t i;
+
+    if (b == NULL) {
+        return;
+    }
+    if (s_uart_open == 0u) {
+        trace_uart_open();
+    }
+    if (s_uart_open == 0u) {
+        return;
+    }
+
+    /*
+     * 上电总线诊断行 (FWR-116; 字段固定):
+     *   BUS idle=<0..3> scl=<0|1> sda=<0|1> ack=<addr7[,addr7...]|none[+]>
+     * 单位/编码: idle 为位掩码 (bit0=SCL, bit1=SDA, 1=高), scl/sda 为同一位的展开;
+     *           ack 为 7bit 地址的 2 位大写十六进制列表, 最多 SENSOR_BUS_DIAG_MAX_ACK 个,
+     *           超出以 '+' 结尾, 无地址应答时为 none。
+     * 只报告软件读到的事实, 不代表位级电气/时序结论。
+     */
+    trace_puts("BUS idle=");
+    trace_u32((uint32_t)b->idle, 1u);
+    trace_puts(" scl=");
+    trace_u32((uint32_t)(((b->idle & 0x01u) != 0u) ? 1u : 0u), 1u);
+    trace_puts(" sda=");
+    trace_u32((uint32_t)(((b->idle & 0x02u) != 0u) ? 1u : 0u), 1u);
+    trace_puts(" ack=");
+    if (b->ack_count == 0u) {
+        trace_puts("none");
+    } else {
+        for (i = 0u; i < b->ack_count; i++) {
+            if (i != 0u) {
+                trace_putc(',');
+            }
+            trace_hex((uint32_t)b->ack_addr[i], 2u);
+        }
+    }
+    if (b->ack_truncated != 0u) {
+        trace_putc('+');
+    }
+    trace_puts("\r\n");
+}
+
 void debug_trace_sample(const debug_trace_sample_t *s)
 {
+    uint8_t i;
     if (s == NULL) {
         return;
     }
@@ -233,16 +279,50 @@ void debug_trace_sample(const debug_trace_sample_t *s)
     trace_puts(" s=");  trace_u32((uint32_t)s->send, 1u);
     trace_puts(" y=");  trace_u32((uint32_t)s->retry, 1u);
     trace_puts("\r\n");
+
+    /*
+     * 失败周期诊断行 (FWR-116; 仅 s->diag_valid != 0 时追加):
+     *   G s=<1..5> a44=<0|1> a45=<0|1> rd=<0..5> at=<1..3> raw=<12 位大写十六进制 | ------------>
+     * 只报告本轮驱动观测到的事实 (结果码/两候选地址 ACK/重读重测次数/最近一次成功读回的 6 字节);
+     * raw 未读成功时用 12 个 '-' 占位; 不改变任何业务状态。
+     */
+    if (s->diag_valid != 0u) {
+        trace_putc('G');
+        trace_puts(" s=");    trace_u32((uint32_t)s->diag_status, 1u);
+        trace_puts(" a44=");  trace_u32((uint32_t)((s->diag_ack44 != 0u) ? 1u : 0u), 1u);
+        trace_puts(" a45=");  trace_u32((uint32_t)((s->diag_ack45 != 0u) ? 1u : 0u), 1u);
+        trace_puts(" rd=");   trace_u32((uint32_t)s->diag_read_retry, 1u);
+        trace_puts(" at=");   trace_u32((uint32_t)s->diag_attempt, 1u);
+        trace_puts(" raw=");
+        if (s->diag_raw_valid != 0u) {
+            for (i = 0u; i < (uint8_t)GXHT40_RESULT_LEN; i++) {
+                trace_hex((uint32_t)s->diag_raw[i], 2u);
+            }
+        } else {
+            /* 12 个 '-' 与 6 字节 hex 位宽一致 (每个字节 2 个十六进制位) */
+            for (i = 0u; i < (uint8_t)(GXHT40_RESULT_LEN * 2u); i++) {
+                trace_putc('-');
+            }
+        }
+        trace_puts("\r\n");
+    }
 }
 
 #endif /* SENSOR_DEBUG_UART */
 
 /* ==================================================================== *
- * S 行最坏宽度核算 (键名 1 字符 + '=' + 值, 字段间 1 空格, 行尾 CRLF):
+ * 行最坏宽度核算 (键名 1 字符 + '=' + 值, 字段间 1 空格, 行尾 CRLF):
+ *   S 行:
  *   "S"=1  " k=4294967295"=13  " p=-1250"=8  " H=1"=4  " V=1"=4  " o=8"=4
  *   " n=4095"=7  " x=4095"=7  " a=4095"=7  " D=1"=4  " t=-1250"=8
  *   " h=1000"=7  " q=0"=4  " r=1"=4  " s=2"=4  " y=3"=4      => 90
  *   行尾 "\r\n" = 2                                          => 92
- *   上限仍 < SENSOR_DEBUG_UART_MAXLINE (96)。
- *   (宿主机自检 host_debug_trace_check.c 用最坏值实测 92 字节。)
+ *   BUS 行:
+ *   "BUS"=3 " idle=3"=7 " scl=1"=6 " sda=1"=6 " ack="=5
+ *   + 8 × "XX," = 24 (+ 截断标记 '+') + CRLF 2                      => 54
+ *   G 行:
+ *   "G"=1 " s=2"=4 " a44=0"=6 " a45=0"=6 " rd=5"=5 " at=3"=5
+ *   " raw="=5 + 12 位 hex + CRLF 2                                   => 46
+ *   每行均 < SENSOR_DEBUG_UART_MAXLINE (96)。
+ *   (宿主机自检 host_debug_trace_check.c 用最坏值实测各行字节数。)
  * ==================================================================== */

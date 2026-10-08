@@ -1,15 +1,139 @@
-# 驱动测试证据（DRV-002 rev 4.1）
+# 驱动测试证据（DRV-002 rev 5.0）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run7 **ITEM-002（T2：光照采集—完全无光基准 1/3 判据与有效性）**；前一项 ITEM-001（UART1）已 TEST_PASS
-依据：FD-002 rev 4.0、FWR-002 rev 4.0、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0、`artifacts/firmware_tasks.yaml`
-受测实现：`USER/src/light.c` + `USER/inc/light.h`、`USER/src/fw_core.c` + `USER/inc/fw_core.h`（`light_is_dark`）、`USER/src/measure.c`（`s_light` 单一来源）、`USER/inc/sensor_config.h`（无光基准配置点）
-测试载体：`test/host_light_check.c` + `test/mock_light/`（新）、`test/host_sensor_core_test.c`、`test/host_fw_core_pure_check.c`、`test/host_measure_flow_check.c`、`test/build_test.sh`
-测试环境：宿主机 MinGW-w64 gcc 12.2.0；**`mdk_flash`/串口未在本调用工具列表内** → 全暗基准 `C_dark` 实板标定与三态实板观测未执行（本项返回 BLOCKED 的原因）。
+本轮范围：run8 **ITEM-001（T1：GXHT40 温湿度采集失败在真实目标上可诊断）**
+依据：FD-002 rev 5.0、FWR-002 rev 5.0、RTA-002 rev 5.0、IC-002 v3.0、TD-002 rev 5.0、`artifacts/firmware_tasks.yaml`
+受测实现：`USER/src/gxht40.c`/`USER/inc/gxht40.h`（诊断快照 getter）、`USER/src/debug_trace.c`/`USER/inc/debug_trace.h`（`BUS`/`G` 行）、`USER/src/measure.c`/`USER/inc/measure.h`（有界地址扫描、幂等 `bsp_i2c_init`、失败快照传递）、`USER/src/sf_i2c.c`/`USER/inc/sf_i2c.h`（`i2c_probe_addr`）、`USER/src/main.c`（上电接线）、`USER/inc/sensor_config.h`（诊断常量）
+测试载体：`test/build_test.sh`（5 个可执行产物）+ `test/host_debug_trace_check.c`、`test/host_gxht40_check.c`、`test/host_sf_i2c_bus_check.c`、`test/host_measure_flow_check.c`
+测试环境：宿主机 MinGW-w64 gcc 12.2.0（mock UART / 位级 mock I2C 总线 / mock MCU 影子头）；**`mdk_flash`/串口不在本调用工具列表内** → 实板 `BUS`/`G` 观测由嵌入式测试能力执行。
 
 ---
 
-## T2（run7 ITEM-002）：光照通路自检（本轮实际执行）
+## T1（run8 ITEM-001）：诊断实现侧自检（本轮实际执行）
+
+### 1. `test/build_test.sh` 原始 stdout 摘要
+
+```
+$ sh test/build_test.sh
+== [1/4] fw_core pure logic: CRC16/CRC-8/convert/light(1/3)/report ==
+==== result: 40 passed, 0 failed ====
+== [2/4] measure flow (mock MCU): sample/report/prev-not-updated-on-failure ==
+==== result: 34 passed, 0 failed ====
+== [3/4] UART1 debug trace (mock UART): banner/S-line budget/close semantics ==
+==== T1 UART1 debug trace self-check (firmware_engineer) ====
+==== result: 33 passed, 0 failed ====
+== [4/4a] light channel (mock ADC, uncalibrated delivery default) ==
+==== result: 19 passed, 0 failed ====
+== [4/4b] light channel (calibrated variant) ====
+==== result: 20 passed, 0 failed ====
+(exit 0；合计 146 项，0 失败)
+```
+
+### 2. `host_debug_trace_check.c`（新增 T8/T9/T10；共 33 项 0 失败）节选原文
+
+```
+[T8] BUS 上电总线诊断行 (FWR-116): 格式/条件/预算
+    PASS  无地址 ACK 时打印 ack=none (空闲电平位展开一致)
+        |BUS idle=3 scl=1 sda=1 ack=none
+    PASS  ACK 地址以 2 位大写十六进制逗号分隔列出
+        |BUS idle=3 scl=1 sda=1 ack=44,45
+    PASS  最坏 BUS 行字节精确匹配 (idle=0 -> scl/sda=0; 超出上限加 '+')
+        |BUS idle=0 scl=0 sda=0 ack=08,09,0A,0B,0C,0D,0E,0F+
+    PASS  worst-case BUS line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes
+        len(worst BUS)=53 bytes
+    PASS  BUS line uses uppercase hex only (no lowercase/float)
+[T9] G 失败周期诊断行 (FWR-116): 仅 diag_valid 时出现且 <=96 B
+    PASS  失败周期 = S 行 (逐字节不变) 后紧跟最宽 G 行 (12 位大写 hex)
+        |S k=3 p=0 H=0 V=0 o=0 n=0 x=0 a=0 D=0 t=456 h=678 q=0 r=0 s=0 y=0
+        G s=5 a44=1 a45=1 rd=5 at=3 raw=ABACADAEAFB0
+    PASS  worst-case S 行与 G 行各自 <= SENSOR_DEBUG_UART_MAXLINE (96) bytes
+        len(worst S)=67 bytes, len(worst G)=46 bytes
+    PASS  未读成功时 raw 用 12 个 '-' 占位
+[T10] 成功周期不得出现 G 行
+    PASS  diag_valid=0 -> 只打印 S 行, 无 G 行
+```
+
+仍有断言保证 `S` 行向后兼容（未改动）：`EXPECT_WORST`/`EXPECT_TYPICAL` 逐字节比对继续通过（最坏 S 行 92 B）。
+
+### 3. `host_sf_i2c_bus_check.c`（新增 [5]/[6]；共 23 项 0 失败）节选原文
+
+```
+[5] i2c_probe_addr: 只发地址字节的有界探测 (FWR-116)
+  PASS  器件在 0x44: 返回 SF_I2C_SUCCESS (地址被 ACK)
+  PASS  恰好 1 个 START 与 1 个 STOP
+  PASS  线上只有地址写字节 0x88 (无命令字节/无数据)
+  PASS  探测后总线释放(SCL/SDA 均为高)
+[6] i2c_probe_addr: 无器件地址返回超时且释放总线
+  PASS  0x45 无器件: 返回 SF_I2C_TIMEOUT
+  PASS  NACK 后已发出 STOP 释放总线
+  PASS  线上只有地址写字节 0x8A, 未继续写命令
+  PASS  超时后总线仍释放
+```
+
+既有 [1]–[4]（`i2c_write_cmd`/`i2c_read_bytes` 语义与长度 0 行为）不变且全部通过。
+
+### 4. `host_gxht40_check.c`（新增诊断断言；共 36 项 0 失败）节选原文
+
+```
+[1] 手册参考向量 ...
+  PASS  诊断: 成功轮 status=OK/attempt=1/read_retry=0
+  PASS  诊断: 0x44 收到地址 ACK, 0x45 未被探测到 ACK
+  PASS  诊断: raw 为最近一次成功读回的 6 字节
+[5] 读 NACK 有界重读
+  PASS  诊断: 读事务消耗的失败重读次数 = 2 (前 2 次 NACK)
+[6] CRC 错误: 重测用尽后返回失败且不改输出
+  PASS  诊断: CRC 错 - status=4 且 attempt=GXHT40_MEAS_RETRY
+  PASS  诊断: 保留最近一次成功读回的原始 6 字节 (供独立 CRC-8 复算)
+[7] 无器件
+  PASS  诊断: 无器件 - status=2 且两候选地址 ACK 均为 0
+  PASS  诊断: 未读成功时 raw_valid=0 (打印时用占位)
+[8] 换算超范围
+  PASS  诊断: 量程无效 - status=5 且保留原始 6 字节
+```
+
+既有断言全部保留（双字 CRC-8、地址探测与缓存、失败不改输出、命令白名单无 0x94/加热器）。
+
+### 5. `host_measure_flow_check.c`（新增 [10]/[11]；共 34 项 0 失败）节选原文
+
+```
+[10] T1 诊断快照集成: 失败周期带 G 行数据 / 成功周期不带 (FWR-116)
+  PASS  失败周期有轨迹快照
+  PASS  失败周期 diag_valid=1 且结果码来自驱动诊断快照
+  PASS  失败周期诊断字段 (地址 ACK/重读/重测/原始字节) 逐项传递到轨迹
+  PASS  失败周期 sample_ok=0 (与 G 行出现条件一致)
+  PASS  成功周期有轨迹快照
+  PASS  成功周期 sample_ok=1 且 diag_valid=0 (不打印 G 行)
+[11] T1 上电总线诊断扫描 (只观测; 不写命令/不改业务状态)
+  PASS  扫描完成并填充结果
+  PASS  主机 mock 总线两线均高 (idle=3), 无器件应答 (ack_count=0)
+  PASS  可重复调用 (bsp_i2c_init 幂等, 不重复注册对象)
+  PASS  幂等初始化后仍能按名找到同一 I2C 对象
+```
+
+### 6. 自检发现并修复的实现缺陷
+
+| 缺陷 | 发现方式 | 修复 |
+|---|---|---|
+| `G raw=` 未读成功时只打印 6 个 `-`（与 6 字节 hex 的 12 位宽不一致，破坏定宽解析） | `host_debug_trace_check.c` 新增的 `raw=------------` 断言（首轮 FAIL） | `debug_trace.c` 改为 `GXHT40_RESULT_LEN * 2`（12 个 `-`），重跑 PASS |
+
+### 7. 环境记录（不掩盖）
+
+- 宿主杀毒/EDR 按文件名拦截新建 exe：`test/build_test.sh` 原产物名 `_hostbin/s2_flow.exe` 持续报
+  `ld.exe: cannot open output file ...: Permission denied`（重试两次均失败）；同一编译命令换名（`flow_measure.exe`）立即成功。
+  因此将 `_hostbin/` 产物名改为描述性名称（`core_check.exe`/`measure_flow_check.exe`/`debug_trace_check.exe`/`light_check.exe`/`light_check_cal.exe`），
+  编译参数与用例不变，并在脚本头部注明原因；改名后 5 个阶段全部可运行。
+- 宿主机自检结论仅证明**软件可见行为**；`BUS ack=` 只证明地址级应答，不代表位级电气/时序合格（与 TD-002 §4.4 边界一致）。
+
+### 8. 未执行（交接，不当作通过）
+
+- `mdk_flash` 部署与 COM42 采集：本调用工具列表仅 `mdk_build`。真实目标上的上电 `BUS` 行（空闲电平 + ACK 集合）、
+  失败周期 `S`+`G` 行（结果码/地址 ACK/重读重测/原始 6 字节）及与 `S` 行 `q=0` 的自洽性由嵌入式测试能力按
+  TD-002 §4.4 T-L2-11/12 采集并判定；本轮不声称已观测。
+- 全暗基准 `C_dark` 仍为未标定（`LIGHT_DARK_CALIBRATED=0`），不在本项范围（后续增量）。
+
+---
+
+# 历史：本轮 run7 T2（光照采集—完全无光基准 1/3 判据与有效性）
 
 ### 1. `test/build_test.sh`（4 阶段）原始 stdout 节选
 

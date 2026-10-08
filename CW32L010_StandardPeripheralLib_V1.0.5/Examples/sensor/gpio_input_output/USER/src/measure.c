@@ -19,6 +19,7 @@
 #include "cw32l010_sysctrl.h"
 #include "app_um2005c.h"
 #include "encrytogate.h"
+#include "delay.h"
 
 /* ==================================================================== */
 /* 软 I2C 端口 (PA04 = SDA, PA03 = SCL)                                  */
@@ -47,6 +48,14 @@ uint8_t i2c0_sda_pin_read_level(void)
 {
     return GPIO_ReadPin(CW_GPIOA, GPIO_PIN_4) ? 1u : 0u;
 }
+
+/* SCL 空闲电平 (仅总线诊断读取; 不改变引脚所有权: PA03 仍只由本文件配置) */
+#if SENSOR_DEBUG_UART
+static uint8_t i2c0_scl_pin_read_level(void)
+{
+    return GPIO_ReadPin(CW_GPIOA, GPIO_PIN_3) ? 1u : 0u;
+}
+#endif
 
 void i2c0_sda_pin_dir_input(void)
 {
@@ -100,12 +109,76 @@ static void i2c0_phy_init(void)
 
 i2c_dev *temp_ptr = NULL;
 
+/* 物理层与对象注册只允许发生一次 (FWR-116: 上电总线诊断与采样共用) */
+static uint8_t s_i2c_inited = 0u;
+
 void bsp_i2c_init(void)
 {
+    if (s_i2c_inited != 0u) {
+        return;
+    }
+    s_i2c_inited = 1u;
+
     i2c0_phy_init();
     i2c_init(&i2c0_dev);
     temp_ptr = i2c_obj_find("i2c0");
 }
+
+/*
+ * 上电总线身份诊断 (FWR-116; 只观测): 空闲电平 + 0x08..0x77 有界地址探测。
+ * 只发地址写字节 (i2c_probe_addr), 不写任何器件命令、不读数据; 每个地址后释放总线。
+ * 不修改采样/判定/上报/冻结状态。SENSOR_DEBUG_UART=0 时无扫描、无 I2C 探测依赖。
+ */
+#if SENSOR_DEBUG_UART
+uint8_t sensor_bus_diag_scan(debug_trace_bus_t *out)
+{
+    uint16_t addr;
+
+    if (out == NULL) {
+        return 0u;
+    }
+
+    bsp_i2c_init();                 /* 幂等: 只注册一次物理层/对象 */
+    if (temp_ptr == NULL) {
+        return 0u;
+    }
+
+    /* 释放两条线 (开漏输出高 = 高阻), 等外部上拉建立后读取空闲电平 */
+    i2c0_sda_pin_out_high();
+    i2c0_scl_pin_out_high();
+    delay_ms(SENSOR_BUS_DIAG_IDLE_SETTLE_MS);
+
+    out->idle = 0u;
+    if (i2c0_scl_pin_read_level() != 0u) {
+        out->idle |= 0x01u;
+    }
+    if (i2c0_sda_pin_read_level() != 0u) {
+        out->idle |= 0x02u;
+    }
+
+    out->ack_count     = 0u;
+    out->ack_truncated = 0u;
+    for (addr = (uint16_t)SENSOR_BUS_DIAG_FIRST_ADDR7;
+         addr <= (uint16_t)SENSOR_BUS_DIAG_LAST_ADDR7; addr++) {
+        if (i2c_probe_addr(temp_ptr, (uint8_t)(addr << 1)) == SF_I2C_SUCCESS) {
+            if (out->ack_count < (uint8_t)SENSOR_BUS_DIAG_MAX_ACK) {
+                out->ack_addr[out->ack_count] = (uint8_t)addr;
+                out->ack_count++;
+            } else {
+                out->ack_truncated = 1u;
+            }
+        }
+    }
+    return 1u;
+}
+#else
+/* 调试关闭: 不扫描、不读取引脚、不发起任何 I2C 探测 */
+uint8_t sensor_bus_diag_scan(debug_trace_bus_t *out)
+{
+    (void)out;
+    return 0u;
+}
+#endif /* SENSOR_DEBUG_UART */
 
 /* ==================================================================== */
 /* 采样状态 (深睡保持)                                                    */
@@ -122,6 +195,10 @@ static bool     s_have_prev     = false;/* 是否已有前一有效样本 */
 static uint16_t s_last_hum_x10  = 0;    /* 最近有效湿度 */
 static light_result_t s_light;          /* 本周期光照结构化结果 (判定与轨迹的唯一来源; T2) */
 static bool     s_sensor_ready  = false;/* 驱动/光照是否已初始化 */
+
+/* T1: 本周期温湿度失败的诊断快照 (FWR-116; 只读观测, 不参与判定/上报) */
+static uint8_t       s_trace_diag_valid = 0u;
+static gxht40_diag_t s_trace_diag;
 
 /* T1: UART1 调试轨迹状态 (只读快照, 不参与判定/发送) */
 static uint8_t  s_trace_pending = 0u;   /* 本周期存在待发布轨迹 */
@@ -183,6 +260,7 @@ uint16_t temperature_process(void)
 
     s_trace_sample_ok = 0u;
     s_trace_report    = 0u;
+    s_trace_diag_valid = 0u;
 
     if (measure_sample()) {
         uint8_t rep = sensor_decide_report(s_prev_temp_x10, s_have_prev,
@@ -195,6 +273,10 @@ uint16_t temperature_process(void)
         s_last_hum_x10  = huminityvalue;
         s_trace_sample_ok = 1u;
         s_trace_report    = rep;
+    } else {
+        /* T1 (FWR-116): 失败周期取驱动诊断快照 (只读, 不改变失败路径语义) */
+        gxht40_diag_fetch(&s_trace_diag);
+        s_trace_diag_valid = 1u;
     }
 
     /* 调试轨迹取本周期快照: 失败周期 temp/hum 保持最近有效值, 由 sample_ok=0 标记 */
@@ -212,6 +294,8 @@ uint16_t temperature_process(void)
  */
 uint8_t sensor_trace_fetch(debug_trace_sample_t *out)
 {
+    uint8_t i;
+
     if ((out == NULL) || (s_trace_pending == 0u)) {
         return 0u;
     }
@@ -232,6 +316,18 @@ uint8_t sensor_trace_fetch(debug_trace_sample_t *out)
     out->report        = s_trace_report;
     out->send          = s_last_send_result;
     out->retry         = report_retry;
+
+    /* T1 (FWR-116): 失败周期诊断快照 (成功周期 diag_valid=0 -> 不打印 G 行) */
+    out->diag_valid     = s_trace_diag_valid;
+    out->diag_status    = s_trace_diag.status;
+    out->diag_ack44     = s_trace_diag.ack44;
+    out->diag_ack45     = s_trace_diag.ack45;
+    out->diag_read_retry= s_trace_diag.read_retry;
+    out->diag_attempt   = s_trace_diag.attempt;
+    out->diag_raw_valid = s_trace_diag.raw_valid;
+    for (i = 0u; i < (uint8_t)GXHT40_RESULT_LEN; i++) {
+        out->diag_raw[i] = s_trace_diag.raw[i];
+    }
     return 1u;
 }
 

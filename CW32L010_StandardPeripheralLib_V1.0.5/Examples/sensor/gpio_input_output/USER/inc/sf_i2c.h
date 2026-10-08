@@ -82,6 +82,12 @@ void        i2c_read_multi_byte(const i2c_dev *dev, uint8_t slave_addr,
  * 既有函数语义与调用方式不变。 */
 sf_i2c_err  i2c_write_cmd(const i2c_dev *dev, uint8_t slave_addr, uint8_t cmd);
 sf_i2c_err  i2c_read_bytes(const i2c_dev *dev, uint8_t slave_addr, void *pbuf, uint16_t length);
+
+/* 地址探测原语 (FWR-116; FD-002 rev 5.0 §6.6.1): 只发地址写字节, 用于上电总线身份诊断。
+ *   i2c_probe_addr : START -> 地址字节(8bit 写形式, 7bit<<1) -> ACK 判定 -> STOP
+ * 返回 SF_I2C_SUCCESS = 该地址收到 ACK; SF_I2C_TIMEOUT = 无 ACK (总线已释放)。
+ * 不写命令、不读数据; 无器件应答时也会发 STOP 释放总线; 既有函数语义不变。 */
+sf_i2c_err  i2c_probe_addr(const i2c_dev *dev, uint8_t slave_addr);
 sf_i2c_err  i2c_write_multi_byte_16bit(const i2c_dev *dev, uint8_t slave_addr, 
                                        uint16_t reg_addr, void *pbuf, uint16_t length);
 void        i2c_read_multi_byte_16bit(const i2c_dev *dev, uint8_t slave_addr, 

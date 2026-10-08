@@ -1,14 +1,64 @@
-# 构建证据（BUILD-002 rev 4.1）
+# 构建证据（BUILD-002 rev 5.0）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run7 **ITEM-002（T2：光照采集—完全无光基准 1/3 判据与有效性）**；前一项 ITEM-001（UART1 调试串口）已 TEST_PASS
-依据：FD-002 rev 4.0、FWR-002 rev 4.0、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0、`artifacts/firmware_tasks.yaml`
-受测提交：`2c0da5f` + 本轮 T2 改动（无提交）
-测试环境：GNU 交叉编译（`arm-none-eabi-gcc 10.3.1`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`）；`mdk_flash`/串口**不在本调用工具列表内** → 不含部署/回读与实际光线标定结论（见文末阻塞说明）。
+本轮范围：run8 **ITEM-001（T1：GXHT40 温湿度采集失败在真实目标上可诊断）**；已完成项（run7 T1 UART1 调试通道、T2 光照 1/3 判据）保持回归
+依据：FD-002 rev 5.0、FWR-002 rev 5.0、RTA-002 rev 5.0、IC-002 v3.0、TD-002 rev 5.0、`artifacts/firmware_tasks.yaml`
+受测提交：`1dd8e4b`（RESUME_SYNC 接手时工作区干净）+ 本轮 T1 改动（无提交）
+测试环境：GNU 交叉编译（`arm-none-eabi-gcc`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`，本调用唯一设备工具授权）；`mdk_flash`/串口**不在本调用工具列表内** → 不含部署与实际目标观测（见文末交接）。
 
 ---
 
-## T2（run7 ITEM-002）：交叉编译 + Keil MDK 构建（本轮实际执行）
+## T1（run8 ITEM-001）：GXHT40 失败诊断可观测 — 交叉编译 + Keil MDK 构建（本轮实际执行）
+
+```
+$ sh gcc/build.sh
+(编译全部 USER/COMMON/UM2005C/Libraries 源 + 链接)
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       32840 B        64 KB     50.11%
+             RAM:        1768 B         4 KB     43.16%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+(exit 0；告警 27 条，均为既有类别：main.c 既有 `int32_t main`/未用形参/空体 while、sf_i2c 既有
+ `i2c_write_multi_byte*` 的 `err may be used uninitialized`、COMMON/convert.c、UM2005C/app_gtimer.c；
+ **无一条指向本轮新增的 gxht40.c 诊断/getter、debug_trace.c BUS/G 行、measure.c 扫描与幂等初始化**)
+
+$ md5sum gcc/obj/sensor_fw.elf gcc/obj/sensor_fw.bin
+5020cba32f64df4299a9879224752651  gcc/obj/sensor_fw.elf
+4ef1675d725ae1ffab189e49e052b2c4  gcc/obj/sensor_fw.bin   (32,924 B)
+
+$ mdk_build {"action":"rebuild"}   (授权工具，经 hardware-verification MCP/CLI)
+*** Using Compiler 'V6.24' ...
+compiling measure.c / debug_trace.c / gxht40.c / sf_i2c.c / main.c ...
+../USER/src/main.c(224): warning: while loop has empty body [-Wempty-body]   (既有 `while(k--);`)
+Program Size: Code=16316 RO-data=624 RW-data=76 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+
+$ md5sum MDK/output/exe/Project.axf
+c39bf314851a0988a5f347c73604d105  MDK/output/exe/Project.axf
+```
+
+- 相对本轮基线 `1dd8e4b` 的 run7 T2 快照（GNU FLASH 31,952 B / RAM 1,736 B；Keil Code=13,976 ZI=1,652）：
+  GNU **+888 B / +32 B**，Keil **Code +2,340 B / ZI +24 B**。增量来自新增地址探测原语、有界地址扫描、BUS/G 行格式化、
+  GXHT40 诊断快照与 getter（Keil 侧优化等级较 GNU 保守，故增量更大）；仍远在 64 KB/4 KB 预算内（Code+RO ≈ 16.9 KB，RAM 43%）。
+- 目标镜像字符串核验（证明诊断行确实编入**本轮交付件**，而非宿主自检）：
+
+```
+$ arm-none-eabi-strings MDK/output/exe/Project.axf | grep -E "BOOT|BUS idle| ack=| raw=|"
+@BOOT fw=FD-002r4 uid=
+@BUS idle=
+ ack=
+ raw=
+```
+
+- **`SENSOR_DEBUG_UART=0` 编译路径复核**（逐个编译本轮触碰的 TU，`-mcpu=cortex-m0plus -O1 -Wall -Wextra -DSENSOR_DEBUG_UART=0`）：
+  `measure.c` / `debug_trace.c` / `gxht40.c` **0 告警 0 错误**（扫描实现被 `#if SENSOR_DEBUG_UART` 编译为空实现，无 UART/I2C 探测依赖）；
+  `main.c` 与 `sf_i2c.c` 仅上文既有告警。ARM 默认（不传宏 → `__arm__` 判为 1）：`measure.c` / `debug_trace.c` 0 告警。
+- **未执行**：`mdk_flash`（部署/回读校验）与 COM42 采集 —— 本调用工具列表仅含 `mdk_build`。真实目标上的
+  `BUS` 行、失败周期 `S`+`G` 行观测与总线身份核对由嵌入式测试能力执行（`evidence/test.md` / TD-002 §4.4 T-L2-11/12）。
+- 工具在仓库根产生的 `build.log` 已读入本证据后删除；本轮已将 `/build.log` 加入 `.gitignore`（避免后续构建工具在共享仓库根留下未跟踪文件）。
+
+---
+
+# 历史：本轮 run7 T2（ITEM-002 光照 1/3 判据）
 
 ```
 $ sh gcc/build.sh

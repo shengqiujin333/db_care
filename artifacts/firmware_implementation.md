@@ -1,16 +1,70 @@
-# 固件实现（FWI-002 rev 4.1）
+# 固件实现（FWI-002 rev 5.0）
 
 状态：固件实现（firmware_engineer.firmware_implementation）
-本轮工作项：run7 Runtime 队列 **ITEM-002 ↔ 任务清单 T2（光照采集：完全无光基准 1/3 判据与有效性 + 实板标定）**；前一项 **ITEM-001（T1 UART1 调试串口）已 IMPLEMENTED 并经 EV-007 独立验证 TEST_PASS**
-依据：FD-002 **rev 4.0** `artifacts/firmware_design.md`、FWR-002 rev 4.0 `artifacts/firmware_requirements.md`、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
-受测提交：`2c0da5f`（RESUME_SYNC 接手时工作区干净）+ 本轮 T2 改动（见下）
-本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口采集不在本调用工具列表内** → 全暗基准 `C_dark` 的实板标定无法在本轮完成，结果见下「T2 未完成部分与阻塞」。
+本轮工作项：run8 Runtime 队列 **ITEM-001 ↔ 任务清单 T1（GXHT40 温湿度采集失败在真实目标上可诊断）**；前置（FD-002 rev 5.0 设计）已完成，run7 的 UART1 调试通道与光照 1/3 判据实现保持回归
+依据：FD-002 rev 5.0 `artifacts/firmware_design.md`、FWR-002 rev 5.0 `artifacts/firmware_requirements.md`、RTA-002 rev 5.0、IC-002 v3.0、TD-002 rev 5.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
+受测提交：`1dd8e4b`（RESUME_SYNC 接手时工作区干净；中间提交 `239ad6c` 设计 / `4c5f0ab` 测试设计已读）+ 本轮 T1 改动（见下）
+本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口采集不在本调用工具列表内** → 真实目标上的 `BUS`/`G` 观测由嵌入式测试能力执行（本文件不声称已观测）
 
-> 说明：本文件含 run7 的 T2（当前，**部分交付/阻塞**）与 T1（已验证）记录，以及上一轮工作流的历史记录。
+> 说明：本文件含 run8 的 T1（当前）与 run7 的 T2/T1（历史）记录。
 
 ---
 
-# 本轮 run7：T2（光照采集：完全无光基准 1/3 判据与有效性）
+# 本轮 run8：ITEM-001（T1：GXHT40 采集失败可诊断）
+
+**任务**：上电横幅之后、任何 I²C 事务之前，读 PA03(SCL)/PA04(SDA) 空闲电平并对 0x08..0x77 逐地址做有界探测
+（START + 地址写字节 + ACK 判定 + STOP，只发地址、不写命令、不读数据、NACK 后释放总线），打印一条 `BUS` 行
+（空闲电平位掩码 + ACK 地址集合，无则 `none`，最多 8 个，超出加 `+`）；温湿度失败的周期在该周期 `S` 行之后追加一条 `G` 行
+（结果码/0x44·0x45 地址 ACK/读重读次数/整帧重测次数/最近一次成功读回的 6 字节或 12 个 `-`）；每行 ≤96 B、仅整数与大写十六进制；
+成功周期输出与既有 `S` 行逐字节相同；新增探测原语不改既有软 I²C 语义；诊断不改采样/判定/上报/冻结；`SENSOR_DEBUG_UART=0` 全部为空实现。
+
+设计映射：FD-002 rev 5.0 §5.2（上电一次性扫描时序）/§6.6.1（诊断数据与判别）/§6.7（行格式与预算）/§11.4–§11.5/§11.9；
+FWR-116；RTA-002 rev 5.0 §1.2（T_DIAG/T_TRACE）与 §4 不变量；TD-002 rev 5.0 §4.1 T-L0-11、§4.3 T-L1-14、§4.4 T-L2-11/12。
+
+## 实际改动（本轮）
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `USER/inc/sensor_config.h` | 修改 | 新增单一配置点常量：`SENSOR_BUS_DIAG_FIRST_ADDR7=0x08`、`SENSOR_BUS_DIAG_LAST_ADDR7=0x77`、`SENSOR_BUS_DIAG_MAX_ACK=8`、`SENSOR_BUS_DIAG_IDLE_SETTLE_MS=1`；诊断行共用既有 `SENSOR_DEBUG_UART_MAXLINE=96` |
+| `USER/inc/sf_i2c.h` / `USER/src/sf_i2c.c` | 新增（加法） | `i2c_probe_addr(dev, slave8)`：START → 地址写字节 → ACK 判定 → STOP；无器件时也发 STOP 释放总线；**未修改既有函数** |
+| `USER/inc/gxht40.h` / `USER/src/gxht40.c` | 修改 | `gxht40_diag_t {status, ack44, ack45, read_retry, attempt, raw_valid, raw[6]}` + 只读 getter `gxht40_diag_fetch()`；在既有探测/读循环内记录（地址 ACK 在命令被 ACK 时记录；读重读次数与原始 6 字节在读成功时记录；用尽时 `read_retry=GXHT40_READ_RETRY`）；`gxht40_init()` 清快照；**失败语义、重试上限、输出写入规则、命令白名单均不变** |
+| `USER/inc/debug_trace.h` / `USER/src/debug_trace.c` | 修改 | `debug_trace_bus_t` + `debug_trace_bus()`（`BUS idle= scl= sda= ack=`）；`debug_trace_sample_t` 增加 `diag_*` 字段，`diag_valid=1` 时在 `S` 行之后追加 `G` 行；`S` 行字面与字段顺序**未改**；关闭态提供空内联 |
+| `USER/inc/measure.h` / `USER/src/measure.c` | 修改 | `bsp_i2c_init()` 幂等化（一次性物理层/对象注册，供上电诊断与采样共用）；新增 `sensor_bus_diag_scan()`（读空闲电平 + 有界地址扫描，`SENSOR_DEBUG_UART=0` 时为空实现，不读引脚/不发探测）；`temperature_process()` 在失败分支取 `gxht40_diag_fetch()` 到本周期快照，`sensor_trace_fetch()` 传递 `diag_*`（成功周期 `diag_valid=0`） |
+| `USER/src/main.c` | 修改 | 横幅之后调用 `sensor_bus_diag_scan()` 并打印一条 `BUS` 行（仅 `SENSOR_DEBUG_UART=1`；一次） |
+| `test/host_debug_trace_check.c` | 扩展 | T8 `BUS` 行（`none`/地址列表/截断 `+`/最坏 53 B/仅大写十六进制）；T9 `G` 行（最宽 46 B、`raw` 12 位 hex、`raw` 占位 12 个 `-`）；T10 成功周期无 `G` 行；既有 `S` 行逐字节断言保持不变 |
+| `test/host_sf_i2c_bus_check.c` | 扩展 | `i2c_probe_addr` 线上字节（仅 1 个地址字节，无命令）、ACK/NACK 返回值、NACK 后 STOP 释放 |
+| `test/host_gxht40_check.c` | 扩展 | 成功/读 NACK/CRC 错/无器件/量程无效五种情形的诊断快照断言 |
+| `test/host_measure_flow_check.c` | 扩展 | 失败周期 `diag_valid=1` 且字段逐项传递、成功周期 `diag_valid=0`；总线扫描（`idle=3`/`ack_count=0`）与 `bsp_i2c_init` 幂等 |
+| `test/build_test.sh` | 修改 | 第 2 阶段补 `-DSENSOR_DEBUG_UART=1`（扫描为真实实现）；`_hostbin/` 产物改名以绕过宿主 EDR 按文件名拦截新建 exe（原因见头部注释，编译参数与用例不变） |
+| `.gitignore` | 修改 | 新增 `/build.log`（`mdk_build` 会在仓库根生成该工具日志） |
+
+**未改动**：`USER/src/fw_core.c`（判定方向/边界属后续增量 T4）、光线标定（T3）、发送冻结（T5）、433/BLE 布局、网关与 Android、MDK/IAR 工程文件列表（未新增源文件）。
+
+## 预期行为（真实目标可观察；本轮未执行，交嵌入式测试）
+
+1. COM42@9600 上电（捕获窗口内复位）：横幅之后恰出现**一条** `BUS` 行，`idle` 与 `scl`/`sda` 位一致，`ack` 为 `none` 或合法 7bit 地址集合（最多 8 个，含 `+` 即被截断），且与随后周期的 `G a44/a45` 不矛盾；后续周期不再出现 `BUS`。
+2. 温湿度失败周期（`S` 行 `q=0`）：紧随一条 `G` 行；结果码取驱动结果码（1=入参/2=无器件/3=读失败/4=CRC 错/5=量程无效），`a44`/`a45`、`rd∈0..5`、`at∈1..3`、`raw` 为 12 位大写 hex 或 12 个 `-`，可直接用独立 CRC-8 复算 `raw` 的两个字。
+3. 成功且未上报周期：输出与既有 15 字段 `S` 行逐字节相同（仅一行），采样间期仍无任何字节。
+4. 诊断不改变采样/判定/上报/冻结状态；关闭串口只碰 UART1/PA05/PA06，不复位 GPIOA。
+
+## 验证（本轮实际执行）
+
+- **宿主自检 `test/build_test.sh`：146 项 0 失败**（40 + 34 + 33 + 19 + 20）；新增用例覆盖 `BUS`/`G` 格式与预算、条件出现、探测原语语义、诊断快照传递与幂等初始化。
+- **自检发现并修复 1 处实现缺陷**：`G raw=` 占位原为 6 个 `-`（与 6 字节 hex 的 12 位宽不一致），改为 12 个 `-` 后复测通过（见 `evidence/driver_test.md` §6）。
+- **GNU 交叉编译**：0 错误；FLASH **32,840 B** / RAM **1,768 B**（较基线 31,952/1,736 为 +888/+32 B）；27 条告警均为既有类别，无一条指向本轮新增代码。
+- **Keil MDK `mdk_build rebuild`（授权工具）**：0 Error / 1 Warning（既有 `main.c(224) while(k--);` 空体）；`Code=16316 RO-data=624 RW-data=76 ZI-data=1676`；`Project.axf` md5 `c39bf314851a0988a5f347c73604d105`；镜像内含 `BOOT fw=FD-002r4 uid=`、`BUS idle=`、` ack=`、` raw=` 字符串（证明诊断行已编入交付件）。
+- **`SENSOR_DEBUG_UART=0` 复核**：`measure.c`/`debug_trace.c`/`gxht40.c` 0 告警 0 错误（扫描为空实现、无 UART/I2C 探测依赖）。
+- 原始命令与 stdout：`evidence/build.md`（本轮 T1 节）、`evidence/driver_test.md`（本轮 T1 节）。
+
+## 未执行与交接（如实记录，不当作通过）
+
+- **真实目标观测未执行**：本调用工具列表仅含 `mdk_build`；`mdk_flash` 部署与 COM42 采集、`BUS`/`G` 行实板核对与 OBS-1 定位由嵌入式测试能力执行（TD-002 §4.4 T-L2-11/12；`evidence/test.md`）。本项只交付**可供独立验证**的诊断接口与构建。
+- **测试方自有资产需同步**（属嵌入式测试执行能力，本能力只登记、未修改）：`evidence/embedded_verify_uart_trace_item001.py` 增加 `BUS`/`G` 行解析（`S` 行不变）；测试方可新增地址扫描原语/失败后重探/`G raw` 独立 CRC 复算与 `bsp_i2c_init` 幂等的独立 harness（TD-002 §3.2 已登记）。
+- **后续增量（非本项）**：T2 依实板 `BUS`/`G` 数据修复采集（含失败后重探与有界总线恢复）；T3 全暗基准回填；T4 判定升方向与严格边界；T5 待上报冻结快照。本轮**未**改动 `fw_core.c` 判定与发送路径。
+
+---
+
+# 历史：本轮 run7 T2（光照采集：完全无光基准 1/3 判据与有效性）
 
 **任务**：每次采样在 PB05 输出供电、稳定等待后用 PB04/AIN11 多次转换，采样结束把 PB05 置低；输出结构化结果 `{valid, samples_ok, mean_adc_code, code_min, code_max, dark}`（均值只取成功样本，全部转换超时为 valid=false）；无光判定 `dark = valid 且 3*mean_adc_code >= C_dark`（uint32 乘法、边界相等为暗），每笔独立、不使用旧 350/250 滞回或历史暗态；ADC 全部转换超时不得用满量程合成暗态；`C_dark` 在实板上完全遮光实测后回填 `LIGHT_DARK_REF_CODE` 并置 `LIGHT_DARK_CALIBRATED=1`，标定记录含板件/供电/遮光方式/原始样本分布/取样次数/配置版本。
 

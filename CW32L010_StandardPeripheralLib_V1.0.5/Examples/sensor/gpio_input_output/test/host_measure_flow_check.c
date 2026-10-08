@@ -32,6 +32,7 @@
 extern int16_t  tempvalue;
 extern uint16_t huminityvalue;
 extern uint8_t  sample_flag;
+extern i2c_dev *temp_ptr;      /* T1: 总线诊断与采样共用的 I2C 对象 (幂等注册) */
 
 /* ==================================================================== */
 /* MCU 层桩 (影子头声明的函数)                                            */
@@ -93,6 +94,18 @@ gxht40_status_t gxht40_measure(int16_t *t, uint16_t *h)
     *h = g_h;
     return GXHT40_OK;
 }
+
+/* T1 (FWR-116): 诊断快照桩 (真实驱动为只读 getter) */
+static gxht40_diag_t g_diag;
+
+void gxht40_diag_fetch(gxht40_diag_t *out)
+{
+    if (out != NULL) {
+        *out = g_diag;
+    }
+}
+
+void delay_ms(uint16_t ms) { (void)ms; }   /* 测试桩: 不真正等待 */
 
 void gxht40_init(i2c_dev *dev) { (void)dev; }
 
@@ -204,6 +217,44 @@ int main(void)
     g_tx_calls = 0;
     send_data_to_gateway();
     CHECK(g_tx_calls == 1 && report_req == 0u, "放弃后下一轮重试计数已复位 (1 次即成功)");
+
+    printf("[10] T1 诊断快照集成: 失败周期带 G 行数据 / 成功周期不带 (FWR-116)\n");
+    report_req = 0u;
+    memset(&g_diag, 0, sizeof(g_diag));
+    g_diag.status = (uint8_t)GXHT40_ERR_CRC;
+    g_diag.ack44 = 1u; g_diag.read_retry = 2u; g_diag.attempt = (uint8_t)GXHT40_MEAS_RETRY;
+    g_diag.raw_valid = 1u; g_diag.raw[0] = 0x66u; g_diag.raw[1] = 0x66u; g_diag.raw[2] = 0x00u;
+    cycle(GXHT40_ERR_CRC, 50, 999, true);
+    {
+        debug_trace_sample_t tr;
+        CHECK(sensor_trace_fetch(&tr) == 1u, "失败周期有轨迹快照");
+        CHECK(tr.diag_valid == 1u && tr.diag_status == (uint8_t)GXHT40_ERR_CRC,
+              "失败周期 diag_valid=1 且结果码来自驱动诊断快照");
+        CHECK(tr.diag_ack44 == 1u && tr.diag_ack45 == 0u && tr.diag_read_retry == 2u &&
+              tr.diag_attempt == (uint8_t)GXHT40_MEAS_RETRY && tr.diag_raw_valid == 1u &&
+              tr.diag_raw[0] == 0x66u && tr.diag_raw[2] == 0x00u,
+              "失败周期诊断字段 (地址 ACK/重读/重测/原始字节) 逐项传递到轨迹");
+        CHECK(tr.sample_ok == 0u, "失败周期 sample_ok=0 (与 G 行出现条件一致)");
+    }
+    cycle(GXHT40_OK, 160, 504, true);
+    {
+        debug_trace_sample_t tr;
+        CHECK(sensor_trace_fetch(&tr) == 1u, "成功周期有轨迹快照");
+        CHECK(tr.sample_ok == 1u && tr.diag_valid == 0u,
+              "成功周期 sample_ok=1 且 diag_valid=0 (不打印 G 行)");
+    }
+    report_req = 0u;
+
+    printf("[11] T1 上电总线诊断扫描 (只观测; 不写命令/不改业务状态)\n");
+    {
+        debug_trace_bus_t bus;
+        memset(&bus, 0xFF, sizeof(bus));
+        CHECK(sensor_bus_diag_scan(&bus) == 1u, "扫描完成并填充结果");
+        CHECK(bus.idle == 0x03u && bus.ack_count == 0u && bus.ack_truncated == 0u,
+              "主机 mock 总线两线均高 (idle=3), 无器件应答 (ack_count=0)");
+        CHECK(sensor_bus_diag_scan(&bus) == 1u, "可重复调用 (bsp_i2c_init 幂等, 不重复注册对象)");
+        CHECK(temp_ptr == i2c_obj_find("i2c0"), "幂等初始化后仍能按名找到同一 I2C 对象");
+    }
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

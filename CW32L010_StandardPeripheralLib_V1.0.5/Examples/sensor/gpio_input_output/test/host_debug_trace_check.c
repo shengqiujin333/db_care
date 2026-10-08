@@ -163,6 +163,7 @@ int main(void)
     uint8_t  uid[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
     debug_trace_sample_t s;
     debug_trace_sample_t ref;
+    debug_trace_bus_t    b;
 
     printf("==== T1 UART1 debug trace self-check (firmware_engineer) ====\n");
 
@@ -242,6 +243,83 @@ int main(void)
     CHECK(strcmp(cap, EXPECT_TYPICAL) == 0, "sample after close prints a full line again");
     CHECK(uart_init_calls == 1 && uart_clk_enable_calls == 1,
           "UART1 re-initialised before printing after close");
+
+    printf("[T8] BUS 上电总线诊断行 (FWR-116): 格式/条件/预算\n");
+    cap_reset();
+    memset(&b, 0, sizeof(b));
+    b.idle = 0x03u;
+    b.ack_count = 0u;
+    debug_trace_bus(&b);
+    CHECK(strcmp(cap, "BUS idle=3 scl=1 sda=1 ack=none\r\n") == 0,
+          "无地址 ACK 时打印 ack=none (空闲电平位展开一致)");
+    printf("        |%s", cap);
+
+    cap_reset();
+    memset(&b, 0, sizeof(b));
+    b.idle = 0x03u; b.ack_count = 2u; b.ack_addr[0] = 0x44u; b.ack_addr[1] = 0x45u;
+    debug_trace_bus(&b);
+    CHECK(strcmp(cap, "BUS idle=3 scl=1 sda=1 ack=44,45\r\n") == 0,
+          "ACK 地址以 2 位大写十六进制逗号分隔列出");
+    printf("        |%s", cap);
+
+    cap_reset();
+    memset(&b, 0, sizeof(b));
+    b.idle = 0x00u; b.ack_count = (uint8_t)SENSOR_BUS_DIAG_MAX_ACK; b.ack_truncated = 1u;
+    {
+        uint8_t k;
+        for (k = 0u; k < (uint8_t)SENSOR_BUS_DIAG_MAX_ACK; k++) b.ack_addr[k] = (uint8_t)(0x08u + k);
+    }
+    debug_trace_bus(&b);
+    CHECK(strcmp(cap, "BUS idle=0 scl=0 sda=0 ack=08,09,0A,0B,0C,0D,0E,0F+\r\n") == 0,
+          "最坏 BUS 行字节精确匹配 (idle=0 -> scl/sda=0; 超出上限加 '+')");
+    printf("        |%s", cap);
+    CHECK(strlen(cap) <= (size_t)SENSOR_DEBUG_UART_MAXLINE,
+          "worst-case BUS line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");
+    printf("        len(worst BUS)=%u bytes\n", (unsigned)strlen(cap));
+    CHECK(strchr(cap, 'x') == NULL && strchr(cap, '.') == NULL && strchr(cap, 'f') == NULL,
+          "BUS line uses uppercase hex only (no lowercase/float)");
+
+    printf("[T9] G 失败周期诊断行 (FWR-116): 仅 diag_valid 时出现且 <=96 B\n");
+    cap_reset();
+    memset(&s, 0, sizeof(s));
+    s.tick = 3u; s.temp_x10 = 456; s.hum_x10 = 678u; s.sample_ok = 0u;
+    s.diag_valid = 1u; s.diag_status = (uint8_t)5u;
+    s.diag_ack44 = 1u; s.diag_ack45 = 1u; s.diag_read_retry = (uint8_t)GXHT40_READ_RETRY;
+    s.diag_attempt = (uint8_t)GXHT40_MEAS_RETRY; s.diag_raw_valid = 1u;
+    {
+        uint8_t k;
+        for (k = 0u; k < (uint8_t)GXHT40_RESULT_LEN; k++) s.diag_raw[k] = (uint8_t)(0xABu + k);
+    }
+    debug_trace_sample(&s);
+    CHECK(strcmp(cap,
+                 "S k=3 p=0 H=0 V=0 o=0 n=0 x=0 a=0 D=0 t=456 h=678 q=0 r=0 s=0 y=0\r\n"
+                 "G s=5 a44=1 a45=1 rd=5 at=3 raw=ABACADAEAFB0\r\n") == 0,
+          "失败周期 = S 行 (逐字节不变) 后紧跟最宽 G 行 (12 位大写 hex)");
+    printf("        |%s", cap);
+    {
+        const char *g   = strstr(cap, "\r\nG ");
+        size_t      slen = (size_t)(g - cap) + 2u;   /* S 行含 CRLF */
+        size_t      glen = strlen(g + 2);            /* G 行含 CRLF */
+        CHECK(slen <= (size_t)SENSOR_DEBUG_UART_MAXLINE &&
+              glen <= (size_t)SENSOR_DEBUG_UART_MAXLINE,
+              "worst-case S 行与 G 行各自 <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");
+        printf("        len(worst S)=%u bytes, len(worst G)=%u bytes\n",
+               (unsigned)slen, (unsigned)glen);
+    }
+
+    cap_reset();
+    memset(&s, 0, sizeof(s));
+    s.sample_ok = 0u; s.diag_valid = 1u; s.diag_status = (uint8_t)2u;
+    debug_trace_sample(&s);
+    CHECK(strstr(cap, "G s=2 a44=0 a45=0 rd=0 at=0 raw=------------\r\n") != NULL,
+          "未读成功时 raw 用 12 个 '-' 占位");
+
+    printf("[T10] 成功周期不得出现 G 行\n");
+    cap_reset();
+    memset(&s, 0, sizeof(s));
+    s.sample_ok = 1u; s.diag_valid = 0u; s.diag_status = (uint8_t)4u;
+    debug_trace_sample(&s);
+    CHECK(strchr(cap, 'G') == NULL, "diag_valid=0 -> 只打印 S 行, 无 G 行");
 
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

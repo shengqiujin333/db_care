@@ -40,14 +40,36 @@ typedef struct {
     uint8_t  report;        /* 本周期条件上报判定结果 (0/1) */
     uint8_t  send;          /* 433 发送结果: 0=未发送 1=成功 2=失败 */
     uint8_t  retry;         /* 待上报重试计数 */
+
+    /* ---- T1 (FWR-116): 温湿度失败的诊断快照; 仅 diag_valid=1 时追加 G 行 ---- */
+    uint8_t  diag_valid;    /* 1 = 本周期温湿度失败且下列字段来自驱动诊断快照 */
+    uint8_t  diag_status;   /* gxht40_status_t (1=入参/2=无器件/3=读失败/4=CRC 错/5=量程无效) */
+    uint8_t  diag_ack44;    /* 本轮 0x44 是否收到地址 ACK (0/1) */
+    uint8_t  diag_ack45;    /* 本轮 0x45 是否收到地址 ACK (0/1) */
+    uint8_t  diag_read_retry;/* 最近一次读事务消耗的失败重读次数 (0..GXHT40_READ_RETRY) */
+    uint8_t  diag_attempt;  /* 本轮整帧重测次数 (1..GXHT40_MEAS_RETRY) */
+    uint8_t  diag_raw_valid;/* diag_raw[] 是否来自一次成功读 (0/1) */
+    uint8_t  diag_raw[GXHT40_RESULT_LEN]; /* 最近一次成功读回的 6 字节 */
 } debug_trace_sample_t;
+
+/* 上电总线身份诊断 (FWR-116): 空闲电平位掩码 + 有界地址扫描的 ACK 集合 */
+typedef struct {
+    uint8_t idle;           /* bit0 = SCL, bit1 = SDA (1 = 高); 任何 I2C 事务之前读到 */
+    uint8_t ack_count;      /* 已记录的 ACK 地址数 (<= SENSOR_BUS_DIAG_MAX_ACK) */
+    uint8_t ack_truncated;  /* 1 = ACK 地址数超出上限被截断 (行尾加 '+') */
+    uint8_t ack_addr[SENSOR_BUS_DIAG_MAX_ACK]; /* 收到 ACK 的 7bit 地址 */
+} debug_trace_bus_t;
 
 #if SENSOR_DEBUG_UART
 
 /* 上电横幅: 固件标识 + 芯片 UID 前 4 字节 + 复位来源 + 串口参数, 并打开 UART1 */
 void debug_trace_boot(const uint8_t *uid, uint32_t reset_flags);
 
-/* 打印一个采样周期的 S 轨迹行 (要求 UART1 已由 debug_trace_boot 打开) */
+/* 打印一条 BUS 上电总线诊断行 (仅在上电扫描完成后调用一次) */
+void debug_trace_bus(const debug_trace_bus_t *b);
+
+/* 打印一个采样周期的 S 轨迹行 (要求 UART1 已由 debug_trace_boot 打开);
+ * 当 s->diag_valid != 0 时在 S 行之后追加一行 G 失败诊断行 */
 void debug_trace_sample(const debug_trace_sample_t *s);
 
 /* 等待发送完成(TC)后关闭 UART1; 幂等, 可在任意深睡路径前重复调用 */
@@ -64,6 +86,11 @@ static inline void debug_trace_boot(const uint8_t *uid, uint32_t reset_flags)
 {
     (void)uid;
     (void)reset_flags;
+}
+
+static inline void debug_trace_bus(const debug_trace_bus_t *b)
+{
+    (void)b;
 }
 
 static inline void debug_trace_sample(const debug_trace_sample_t *s)
