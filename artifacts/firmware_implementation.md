@@ -1,16 +1,55 @@
-# 固件实现（FWI-002 rev 5.1）
+# 固件实现（FWI-002 rev 5.2）
 
 状态：固件实现（firmware_engineer.firmware_implementation）
-本轮工作项：run8 Runtime 队列 **ITEM-002 ↔ 任务清单 T2（GXHT40 温湿度采集在真实目标上恢复有效）**；前一项 ITEM-001（T1 失败诊断可观测）已 IMPLEMENTED 并经独立验证 TEST_PASS（`evidence/test.md` EV-008）
-依据：FD-002 rev 5.0 `artifacts/firmware_design.md`（§6.6.2 候选原因矩阵 / §6.6.3 修复边界）、FWR-002 rev 5.0（FWR-101/107/118）、RTA-002 rev 5.0、IC-002 v3.0、TD-002 rev 5.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
-受测提交：`eac43eb`（RESUME_SYNC 接手时工作区干净）+ 本轮 T2 改动（见下）
-本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口采集不在本调用工具列表内** → 真实目标 `q=1` 的复测由嵌入式测试能力执行（本文件**不声称**已取得）
-
-> 说明：本文件含 run8 的 ITEM-002（当前）、ITEM-001（已验证）与 run7 记录。
+本轮工作项：run8 Runtime 队列 **ITEM-002 复验修复**（T2：GXHT40 采集恢复 —— 修复 EV-009 判定的 FWR-118 重探义务不符，并裁决 OBS-2 结果码语义）；ITEM-001 已 TEST_PASS
+依据：FD-002 rev 5.0（§6.6.3 规则 4、§6.7）、FWR-002 rev 5.0（FWR-101/107/118）、TD-002 rev 5.0（B18/T-L0-13）、IC-002 v3.0；触发证据 `evidence/test.md` EV-009（TEST_FAIL）
+受测提交：`3305b68`（RESUME_SYNC 接手时工作区干净）+ 本轮修复改动
+本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口不在本调用工具列表内** → 实板 `q=1` 复测仍由嵌入式测试能力执行（不声称已取得）
 
 ---
 
-# 本轮 run8：ITEM-002（T2：GXHT40 采集失败定位与按证据修复）
+# 本轮 run8：ITEM-002 复验修复（FWR-118 重探义务 + OBS-2 结果码一致性）
+
+**触发**：独立验证 EV-009 判 **TEST_FAIL**，两条事实中的**事实 2（可实现缺陷）**：FWR-118 / FD-002 §6.6.3(4) / TD-002 B18 要求在**任何**测量失败（含 CRC 错、量程无效）后，下一周期必须重探 0x44/0x45 **两个**候选地址并先做有界总线恢复；实测在**缓存地址 CRC 错**与**量程无效**后缓存地址仍被保留、下一周期只探 `0x88`（`0x8A=0`）且未调用恢复。同时 EV-009 §4.3 将 **OBS-2**（“恰好一个候选 ACK 而读不通”时 `s=2` 与 `a44=1` 互相矛盾）交本能力裁决。（事实 1：器件地址级不应答，属现场条件，非固件可修。）
+
+## 1. 本轮修复（均在 `USER/src/gxht40.c`）
+
+| # | 修复 | 内容 |
+|---|---|---|
+| 1 | **FWR-118 字面符合** | `gxht40_measure()` 在 **CRC 错**与**量程无效**分支也清 `s_addr7=0`（原来只有读事务失败才清）；循环以失败退出时再清一次（覆盖所有失败路径）。`gxht40_acquire()` 的完整重探分支**依次探完 0x44 与 0x45 两个候选**（即使 0x44 已成功也把 0x45 探完），并在重探前调用 `i2c_bus_recover()`；0x45 的帧先读入局部缓冲，仅当 0x44 未成功时才拷回，不破坏 0x44 的结果。稳态快路径仍仅在“有缓存地址且上轮未失败”时使用 |
+| 2 | **OBS-2 结果码一致性（本能力裁决）** | 两个候选都失败后，若本轮**有任一候选地址 ACK 过**（器件在总线上），则把 `GXHT40_ERR_NO_DEVICE` 收紧为 `GXHT40_ERR_IO`（“器件在但读不通”），使 `G` 行的 `s=` 与 `a44/a45` 不再矛盾；确实无任何 ACK 时仍报 `2` |
+
+OBS-2 裁决依据：① EV-009 §4.3 明确将“结果码语义 vs 脚本规则哪一侧修正”交设计/实现；② 测试方**自己**在 ITEM-001 的脚本里有规则「`s=2` 时两地址 ACK 均应为 0」；③ 测试方 T1 轮 harness `host_diag_probe_verify_ev.c` 的 D6 本就期望「地址 ACK 但读用尽 ⇒ `ERR_IO`」——该期望在本轮修复后恢复通过。
+
+**未改动**：双字 CRC-8、整数 x10 换算与有效域、读重读(5)/整帧重测(3)、命令白名单（仅 `0xFD`，无 `0x94`/加热器）、失败不写输出、`i2c_bus_recover` 原语本身、433/BLE 布局、引脚归属；`sensor_config.h` 无改动。
+
+## 2. 预期行为（可供独立复验）
+
+1. 上轮**任一**失败（`NO_DEVICE`/`IO`/`CRC`/`RANGE`）后，下一周期先有界恢复、再**完整重探 0x44→0x45**；稳态周期仍只走缓存快路径（每周期 1 次命令+读取，无额外开销）。
+2. 失败周期仍不上报/不推进前值/不构造 0 值；输出不被修改。
+3. 若器件 ACK 地址但读不通，`G` 行呈现 `s=3 a44=1 …`（不再是 `s=2 a44=1`）；`s=2` 仅在两地址均无 ACK 时出现。
+4. 有界性不变：单轮测量最多 `GXHT40_MEAS_RETRY` 轮 × 2 候选探测；恢复仅在重探分支调用一次（总线空闲时不产时钟）。
+
+## 3. 验证（本轮实际执行）
+
+- **实现侧自检全部通过**：`test/build_test.sh` **146/146**（40+34+33+19+20）；`test/host_sf_i2c_bus_check.c` **35/35**；`test/host_gxht40_check.c` **60/60**：新增 [13] CRC 错后缓存失效 + 下一轮完整重探两候选、[14] 量程无效同样处理；[1] 期望更新为「首次访问完整重探：`0x88`+`0x89` 后仍探 `0x8A`」。
+- **独立资产复跑**（仅编译运行，未修改 tester 任何文件；结论权归 tester）：
+  - `test/host_gxht40_verify_ev.c`：**82/83**，唯一失败为 T15 的 OBS-2 *观察*断言（其目的就是复现旧语义 `status==2 && ack44==1`），按本轮 OBS-2 裁决需 tester 更新为新语义 `status==3 && ack44==1`；**T11/T12/T13/T14/T17/T17b 全部通过**（T17/T17b 现为 `0x88=1 0x8A=1 recovery_calls=1`，即 FWR-118 字面符合）。
+  - `test/host_diag_probe_verify_ev.c`：**85/85**（D6「读 NACK 用尽 ⇒ `ERR_IO`」恢复通过）。
+  - `test/host_sf_i2c_verify_ev.c`：51/51；`test/host_diag_line_verify_ev.c`：36/36。
+  - `test/host_measure_flow_verify_ev.c` 仍无法编译（期望旧 `bool light_sample()`，自 run7 T2 起即如此，tester 已用 `host_diag_probe_verify_ev.c` 取代）——**与本轮改动无关**，登记供 tester 清理。
+- **构建**：GNU 交叉编译 0 错误，FLASH **33,076 B** / RAM **1,768 B**（较上轮 33,016 为 +60 B；27 条告警均为既有类别）；Keil `mdk_build rebuild` **0 Error / 1 既有告警**，`Code=16572 RO-data=624 RW-data=76 ZI-data=1676`，axf md5 **`e309bac2a34fd210ee966d6da9001625`**；`SENSOR_DEBUG_UART=0` 下 `gxht40.c` 0 告警。
+- 原始命令与 stdout：`evidence/build.md`、`evidence/driver_test.md`（本轮修复节）。
+
+## 4. 交接（不当作通过）
+
+- **tester 需更新**：`test/host_gxht40_verify_ev.c` 的 T15 观察断言（旧 `s=2` → 新 `s=3`）；`evidence/test.md` EV-009 §4.3 的文字与（若有关）`evidence/embedded_verify_gxht40_item002.py` 中 `s=2` 相关规则现在与实现**一致**，无需放宽。
+- **实板 `q=1` 仍未取得**：器件在地址级完全不应答（EV-009 §3.1），本修复不改变也无法改变该事实；EV-009 §5 的现场动作（目视/万用表核对 U9 贴装与连通、一次真实掉电重启、必要时换件）是唯一前行路径，现场动作前后**不需要**再改代码。
+- **测试资产清理（可选）**：`test/host_measure_flow_verify_ev.c` 旧签名（tester 自有资产）。
+
+---
+
+# 本轮 run8：ITEM-002（T2：GXHT40 采集失败定位与按证据修复；已实现，复验后修复见上节）
 
 **任务**：依据上一增量在实板上取得的 `BUS`/`G` 原始数据定位失败环节（器件不应答/地址变体/读 NACK/CRC/量程/总线卡死）并在驱动/总线层按证据修复；保留双字 CRC-8、整数 x10 换算与有效域、有界读重读与有界整帧重测；周期路径不得用软复位 0x94/加热命令；任一失败周期仍不上报/不推进前一有效温度/不构造 0 值；**任何失败（含缓存地址读失败）后下一周期必须重新探测 0x44/0x45，并在重探前做有界总线恢复（9 个 SCL 脉冲 + STOP）**；等待与重试不低于手册；可观察：实板每周期 `q=1`、`t/h` 在有效域且与环境相符。
 

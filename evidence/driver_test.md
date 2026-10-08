@@ -1,15 +1,75 @@
-# 驱动测试证据（DRV-002 rev 5.1）
+# 驱动测试证据（DRV-002 rev 5.2）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002（T2：GXHT40 采集失败定位与按证据修复）**
-依据：FD-002 rev 5.0（§6.6.2/§6.6.3）、FWR-002 rev 5.0（FWR-101/107/118）、TD-002 rev 5.0、`artifacts/firmware_tasks.yaml`；一手输入 `evidence/test.md` EV-008（ITEM-001 实板 `BUS`/`G`）
-受测实现：`USER/src/sf_i2c.c`/`USER/inc/sf_i2c.h`（新增 `i2c_bus_recover`）、`USER/src/gxht40.c`（失败失效缓存 + 重探前有界恢复 + 双地址强制重探 + 首访 tPU 余量）
-测试载体：`test/host_sf_i2c_bus_check.c`（35 项）、`test/host_gxht40_check.c`（48 项）、`test/build_test.sh`（146 项，回归）
-测试环境：宿主机 MinGW-w64 gcc 12.2.0（位级 mock I2C 总线/从机、mock MCU 影子头）；**`mdk_flash`/串口不在本调用工具列表内** → 实板 `q=1` 复测由嵌入式测试能力执行。
+本轮范围：run8 **ITEM-002 复验修复**（FWR-118 任何失败后完整重探两候选地址 + OBS-2 结果码一致性）
+依据：FD-002 rev 5.0（§6.6.3）、FWR-002 rev 5.0（FWR-118）、TD-002 rev 5.0（B18）；触发 `evidence/test.md` EV-009（TEST_FAIL 事实 2 与 OBS-2）
+受测实现：`USER/src/gxht40.c`（`gxht40_acquire` 双候选完整重探 + `gxht40_measure` 失败即清缓存 + 结果码一致性）
+测试载体：`test/host_gxht40_check.c`（60 项）、`test/build_test.sh`（146 项）、`test/host_sf_i2c_bus_check.c`（35 项）；另**只读复跑** tester 自有 harness 作信息性对照
+测试环境：宿主机 MinGW-w64 gcc 12.2.0（位级 mock I2C 总线/从机、mock MCU 影子头）；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## T2（run8 ITEM-002）：总线恢复与失败后强制重探的自检（本轮实际执行）
+## ITEM-002 复验修复：自检与独立资产对照（本轮实际执行）
+
+### 1. 修复内容（对应 EV-009 事实 2 与 OBS-2）
+
+| 项 | 修复前（EV-009 实测） | 修复后（本轮） |
+|---|---|---|
+| 缓存地址 CRC 错后的下一周期 | `0x88=1 0x8A=0`、`recovery_calls=0` | `0x88=1 0x8A=1`、`recovery_calls=1` |
+| 缓存地址量程无效后的下一周期 | `0x88=1 0x8A=0`、`recovery_calls=0` | `0x88=1 0x8A=1`、`recovery_calls=1` |
+| “地址 ACK 但读不通”的结果码 | `s=2`（无器件）而 `a44=1`（自相矛盾） | `s=3`（读失败）与 `a44=1` 自洽；`s=2` 仅在两地址均无 ACK 时出现 |
+
+### 2. 实现侧自检原始 stdout（节选）
+
+```
+$ sh test/build_test.sh   ->  40 + 34 + 33 + 19 + 20 = 146 passed, 0 failed
+$ ./host_sf_i2c_bus_check ->  35 passed / 0 failed
+$ ./host_gxht40_check     ->  60 passed / 0 failed
+```
+
+`host_gxht40_check.c` 新增/更新的用例（原文）：
+
+```
+[1] 手册参考向量 ...
+  PASS  首次访问完整重探: 0x88(命令) + 0x89(读) 后仍探 0x8A (FWR-118)
+  PASS  三次事务各一次 START; 4 次 STOP = A 命令 1 + A 读取 1 + B 探测 2 (NACK 路径先发 STOP 再补 STOP, 既有写法)
+[13] FWR-118/TD-002 B18: CRC 失败后下一轮完整重探两候选地址
+  PASS  基线: 缓存地址 0x44 测量成功
+  PASS  CRC 错周期返回 GXHT40_ERR_CRC
+  PASS  CRC 错周期不修改输出
+  PASS  CRC 错后缓存地址失效 (不再保留 0x44)
+  PASS  下一轮恢复正常读数
+  PASS  CRC 失败后的下一轮重探了 0x44 与 0x45 两个候选地址
+[14] FWR-118/TD-002 B18: 量程无效后下一轮完整重探两候选地址
+  PASS  基线: 缓存地址 0x44 测量成功
+  PASS  量程无效周期返回 GXHT40_ERR_RANGE
+  PASS  量程无效后缓存地址失效
+  PASS  下一轮恢复正常读数
+  PASS  量程无效后的下一轮重探了 0x44 与 0x45 两个候选地址
+```
+
+### 3. tester 自有 harness 只读复跑（未修改其文件；结论权归 tester）
+
+| 资产 | 结果 | 说明 |
+|---|---|---|
+| `test/host_gxht40_verify_ev.c`（`-Wl,--wrap=i2c_bus_recover`） | **82 passed / 1 failed** | 唯一失败 = T15 的 OBS-2 *观察*断言（其目的为复现旧语义 `status==2 && ack44==1`）；按本轮 OBS-2 裁决需 tester 更新为 `status==3 && ack44==1`。**T11/T12/T13/T14/T17/T17b 全部通过**；T17/T17b 现输出 `next-period probes: 0x88=1 0x8A=1 recovery_calls=1`（FWR-118 字面符合） |
+| `test/host_diag_probe_verify_ev.c` | **85 passed / 0 failed** | 含 D6「读 NACK 用尽 ⇒ `GXHT40_ERR_IO`」与 D7 只读 getter |
+| `test/host_sf_i2c_verify_ev.c` | **51 passed / 0 failed** | 位级 mock 总线：既有原语回归 + 地址探测/恢复 |
+| `test/host_diag_line_verify_ev.c` | **36 passed / 0 failed** | BUS/S/G 行逐字节渲染（含 12 个 `-` 占位） |
+| `test/host_measure_flow_verify_ev.c` | **无法编译** | 期望旧的 `bool light_sample()`（自 run7 T2 起即如此，tester 已用 `host_diag_probe_verify_ev.c` 取代）——**与本轮改动无关**，登记供 tester 清理 |
+
+### 4. 未改变的不变量（回归确认）
+
+- 双字 CRC-8、整数 x10 换算与有效域、读重读(5)/整帧重测(3)、命令白名单（仅 `0xFD`；`0x94`/加热器从不出现）、失败不写输出、失败不上报/不推进前值——全部未改且逐项断言通过。
+- 稳态快路径不变：正常设备下每周期仍只 1 次命令 + 1 次读取（新增的双候选重探仅发生在首次访问或失败后的周期）。
+
+### 5. 未取得 / 不声称
+
+- 实板 `q=1` **本轮仍未取得**（本调用无 `mdk_flash`/串口；且器件在地址级完全不应答——EV-009 §3.1/§5）。本修复只确保“失败后完整重探 + 结果码自洽”这一可由实现交付的义务。
+
+---
+
+# 历史：ITEM-002 首轮（FE 实现记录，已按 EV-009 修复）
 
 ### 1. 一手输入（来自 ITEM-001 独立验证，决定本轮修复方向）
 

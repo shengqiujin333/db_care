@@ -115,40 +115,53 @@ static gxht40_status_t gxht40_start_and_read(uint8_t addr7, uint8_t *buf)
 }
 
 /*
- * 地址探测(带缓存) + FWR-118 失败后强制重探:
- *   - 缓存地址成功: 直接返回 (周期稳定时的快路径)。
- *   - 缓存地址**任一失败** (含读失败 ERR_IO / CRC / 量程): 失效缓存,
- *     不得因缓存地址让器件永久失联。
- *   - 重探前执行有界总线恢复 (i2c_bus_recover): 总线已空闲时立即返回(不产时钟),
- *     仅当从机仍握住 SDA 时才补 <=9 个 SCL 脉冲 + STOP。
- *   - 依次探测 0x44 -> 0x45; 0x44 读失败时仍重探 0x45 (不再提前返回)。
+ * 地址探测:
+ *   - 稳态快路径 (有缓存地址 且 上轮未失败): 只试缓存地址; 失败则转入完整重探。
+ *   - 完整重探 (首次访问 / 上轮失败): 先做有界总线恢复, 再**依次探测 0x44 与 0x45 两个候选**;
+ *     即使 0x44 已成功也要把 0x45 探完 (FWR-118 / TD-002 B18: 任一失败后的下一周期必须重探两地址)。
+ *   - 两候选均失败时返回最后一次探测的结果码 (既有语义, 与地址 ACK 诊断字段一致)。
  */
 static gxht40_status_t gxht40_acquire(uint8_t *buf)
 {
     gxht40_status_t st;
+    gxht40_status_t st_b;
+    uint8_t buf_b[GXHT40_RESULT_LEN];
+    uint8_t have_a = 0u;
 
+    /* 1) 稳态快路径 (仅当缓存有效且上一轮未失败) */
     if (s_addr7 != 0u) {
         st = gxht40_start_and_read(s_addr7, buf);
         if (st == GXHT40_OK) {
             return GXHT40_OK;
         }
-        s_addr7 = 0u;                   /* FWR-118: 任一失败都使缓存地址失效 */
+        s_addr7 = 0u;               /* 缓存地址失败: 本轮转入完整重探 */
     }
 
-    (void)i2c_bus_recover(s_dev);       /* FWR-118: 重探前的有界总线恢复 */
+    /* 2) 完整重探: 重探前先做有界总线恢复, 再依次探测 0x44 -> 0x45 */
+    (void)i2c_bus_recover(s_dev);
 
     st = gxht40_start_and_read(GXHT40_ADDR_7BIT_A, buf);
     if (st == GXHT40_OK) {
         s_addr7 = GXHT40_ADDR_7BIT_A;
+        have_a = 1u;
+    }
+
+    st_b = gxht40_start_and_read(GXHT40_ADDR_7BIT_B, buf_b);
+    if (st_b == GXHT40_OK) {
+        if (have_a == 0u) {
+            uint8_t i;
+            for (i = 0u; i < (uint8_t)GXHT40_RESULT_LEN; i++) {
+                buf[i] = buf_b[i];  /* 用 B 的帧 (不直接读入 buf, 避免破坏 A 的结果) */
+            }
+            s_addr7 = GXHT40_ADDR_7BIT_B;
+        }
         return GXHT40_OK;
     }
 
-    st = gxht40_start_and_read(GXHT40_ADDR_7BIT_B, buf);
-    if (st == GXHT40_OK) {
-        s_addr7 = GXHT40_ADDR_7BIT_B;
-        return GXHT40_OK;
+    if (have_a != 0u) {
+        return GXHT40_OK;           /* A 成功且 B 未应答: A 的帧仍然有效 */
     }
-    return st;
+    return st_b;                    /* 两候选均失败: 沿用“最后一次探测结果码”语义 */
 }
 
 /* ------------------------------------------------------------------ */
@@ -190,6 +203,7 @@ gxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10)
         if ((fw_crc8_gxht(&buf[0], 2u) != buf[2]) ||
             (fw_crc8_gxht(&buf[3], 2u) != buf[5])) {
             last = GXHT40_ERR_CRC;
+            s_addr7 = 0u;           /* FWR-118: 任一测量失败都失效缓存地址 */
             continue;               /* 丢弃整帧, 重测 */
         }
 
@@ -199,6 +213,7 @@ gxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10)
         /* 整数换算 + 有效域判定 (纯逻辑在 fw_core.c; 无效时不写输出) */
         if (!gxht40_raw_to_x10(raw_t, raw_h, &t, &h)) {
             last = GXHT40_ERR_RANGE;
+            s_addr7 = 0u;           /* FWR-118: 任一测量失败都失效缓存地址 */
             continue;               /* 超出 -40.0..125.0 C: 视为无效测量 */
         }
 
@@ -209,6 +224,18 @@ gxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10)
         return GXHT40_OK;
     }
 
+    /*
+     * 结果码与地址 ACK 事实自洽 (OBS-2, 由本能力决定): 两个候选都探完后, 若本轮
+     * 有任一候选地址应答过(器件在总线上)则不得报“无器件”; 此时更准确的码是
+     * “器件在但读不通”(ERR_IO)。这样 G 行的 s= 与 a44/a45 不会再互相矛盾。
+     */
+    if ((last == GXHT40_ERR_NO_DEVICE) &&
+        ((s_diag.ack44 != 0u) || (s_diag.ack45 != 0u))) {
+        last = GXHT40_ERR_IO;
+    }
+
+    /* FWR-118: 本轮测量失败 -> 下一轮必须重新探测 0x44/0x45 (重探前做有界总线恢复) */
+    s_addr7 = 0u;
     s_diag.status = (uint8_t)last;
     return last;
 }

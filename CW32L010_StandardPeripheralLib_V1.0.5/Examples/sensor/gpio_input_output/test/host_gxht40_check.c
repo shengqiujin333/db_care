@@ -215,10 +215,13 @@ int main(void)
     CHECK(t == 855, "temp_x10 == 855");
     CHECK(h == 29, "hum_x10 == 29");
     CHECK(cmd_count == 1 && cmd_seen[0] == GXHT40_CMD_MEASURE_HIGH_REP, "发送命令 0xFD 一次");
-    CHECK(addr_w_count == 2 && addr_w_seen[0] == GXHT40_ADDR_WRITE_A
-          && addr_w_seen[1] == GXHT40_ADDR_READ_A, "地址字节 0x88(命令) + 0x89(读)");
+    CHECK(addr_w_count == 3 && addr_w_seen[0] == GXHT40_ADDR_WRITE_A
+          && addr_w_seen[1] == GXHT40_ADDR_READ_A && addr_w_seen[2] == GXHT40_ADDR_WRITE_B,
+          "首次访问完整重探: 0x88(命令) + 0x89(读) 后仍探 0x8A (FWR-118)");
     CHECK(gxht40_detected_addr7() == 0x44, "缓存地址 = 0x44");
-    CHECK(n_start == 2 && n_stop == 2, "命令与读取各一次 START/STOP");
+    CHECK(cmd_count == 1, "只有被 ACK 的 0xFD 计入命令 (B 候选未被 ACK)");
+    CHECK(n_start == 3 && n_stop == 4,
+          "三次事务各一次 START; 4 次 STOP = A 命令 1 + A 读取 1 + B 探测 2 (NACK 路径先发 STOP 再补 STOP, 既有写法)");
     gxht40_diag_fetch(&d);
     CHECK(d.status == GXHT40_OK && d.attempt == 1 && d.read_retry == 0,
           "诊断: 成功轮 status=OK/attempt=1/read_retry=0");
@@ -361,8 +364,9 @@ int main(void)
     st = gxht40_measure(&t, &h);                       /* 下一轮: 重新探测两个候选地址 */
     CHECK(st == GXHT40_OK && t == 250 && h == 500, "下一轮重新探测后测量成功");
     CHECK(gxht40_detected_addr7() == 0x44, "重新探测后缓存更新为 0x44");
-    CHECK(addr_w_count == 2 && addr_w_seen[0] == GXHT40_ADDR_WRITE_A,
-          "重探从 0x44 开始且仅一次命令+读取");
+    CHECK(addr_w_count == 3 && addr_w_seen[0] == GXHT40_ADDR_WRITE_A
+          && addr_w_seen[1] == GXHT40_ADDR_READ_A && addr_w_seen[2] == GXHT40_ADDR_WRITE_B,
+          "重探从 0x44 开始 (0x88/0x89) 并把 0x45 也探完 (0x8A, FWR-118)");
     mock_addr7 = 0x44;
 
     printf("[12] 首次访问前 tPU 上电余量 (只一次, 不进周期路径)\n");
@@ -378,6 +382,49 @@ int main(void)
     st = gxht40_measure(&t, &h);
     CHECK(st == GXHT40_OK && delay_power_on_calls == 0,
           "后续测量不再重复上电余量 (仅首访)");
+
+    printf("[13] FWR-118/TD-002 B18: CRC 失败后下一轮完整重探两候选地址\n");
+    mock_addr7 = 0x44; mock_read_nack = 0; gxht40_init(&dev); set_frame(F_25C_50RH);
+    obs_reset(); t = 0; h = 0;
+    st = gxht40_measure(&t, &h);
+    CHECK(st == GXHT40_OK && gxht40_detected_addr7() == 0x44, "基线: 缓存地址 0x44 测量成功");
+    set_frame(F_BAD_CRC); obs_reset(); t = 0x1111; h = 0x2222;
+    st = gxht40_measure(&t, &h);
+    CHECK(st == GXHT40_ERR_CRC, "CRC 错周期返回 GXHT40_ERR_CRC");
+    CHECK(t == 0x1111 && h == 0x2222, "CRC 错周期不修改输出");
+    CHECK(gxht40_detected_addr7() == 0u, "CRC 错后缓存地址失效 (不再保留 0x44)");
+    set_frame(F_25C_50RH); obs_reset(); t = 0; h = 0;
+    st = gxht40_measure(&t, &h);
+    CHECK(st == GXHT40_OK && t == 250 && h == 500, "下一轮恢复正常读数");
+    {
+        int i, saw_a = 0, saw_b = 0;
+        for (i = 0; i < addr_w_count; i++) {
+            if (addr_w_seen[i] == GXHT40_ADDR_WRITE_A) saw_a = 1;
+            if (addr_w_seen[i] == GXHT40_ADDR_WRITE_B) saw_b = 1;
+        }
+        CHECK(saw_a && saw_b, "CRC 失败后的下一轮重探了 0x44 与 0x45 两个候选地址");
+    }
+
+    printf("[14] FWR-118/TD-002 B18: 量程无效后下一轮完整重探两候选地址\n");
+    mock_addr7 = 0x44; gxht40_init(&dev); set_frame(F_25C_50RH);
+    obs_reset(); t = 0; h = 0;
+    st = gxht40_measure(&t, &h);
+    CHECK(st == GXHT40_OK && gxht40_detected_addr7() == 0x44, "基线: 缓存地址 0x44 测量成功");
+    set_frame(F_RANGE_LO); obs_reset(); t = 0x1111; h = 0x2222;
+    st = gxht40_measure(&t, &h);
+    CHECK(st == GXHT40_ERR_RANGE, "量程无效周期返回 GXHT40_ERR_RANGE");
+    CHECK(gxht40_detected_addr7() == 0u, "量程无效后缓存地址失效");
+    set_frame(F_25C_50RH); obs_reset(); t = 0; h = 0;
+    st = gxht40_measure(&t, &h);
+    CHECK(st == GXHT40_OK && t == 250 && h == 500, "下一轮恢复正常读数");
+    {
+        int i, saw_a = 0, saw_b = 0;
+        for (i = 0; i < addr_w_count; i++) {
+            if (addr_w_seen[i] == GXHT40_ADDR_WRITE_A) saw_a = 1;
+            if (addr_w_seen[i] == GXHT40_ADDR_WRITE_B) saw_b = 1;
+        }
+        CHECK(saw_a && saw_b, "量程无效后的下一轮重探了 0x44 与 0x45 两个候选地址");
+    }
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
