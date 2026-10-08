@@ -66,6 +66,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/hos
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c | active | 宿主机纯逻辑综合套件：CRC16 回归 + CRC-8/温湿度换算与有效域 + T2 light_is_dark 1/3 判据边界 + sensor_decide_report 边界（40 项）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_bus_check.c | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_verify_ev.c | active | 由 embedded_tester.embedded_verification 新增：ITEM-002 独立验证 harness（位级 mock 总线/从机，校验命令写与连续读的线上字节、START/STOP、主机 ACK/NACK 位置、ACK 失败返回值，并回归既有 i2c 函数）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_light/ | active | 由 firmware_engineer.firmware_implementation 新增（粗路径）：T2 宿主机影子 MCU 层（mock_light_hw.h + cw32l010_{gpio,adc,sysctrl}.h），供真实 light.c 在宿主机编译自检（可脚本化 ADC 结果/超时与 PB05 状态）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_main_ev/ | active | 由 embedded_tester.embedded_verification 新增：main.c RTC 节拍独立验证用的仿真 MCU 阴影头（cw32l010.h + gpio/adc/sysctrl/systick/rtc/uart/digitalsign/flash + interrupts/system 阴影头 + mock_main_hw.h）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_main_ev/cw32l010.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_main_ev/cw32l010_adc.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
@@ -95,7 +96,6 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_mcu/cw32l010_sysctrl.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_mcu/cw32l010_uart.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/ | active | 由 firmware_engineer.firmware_implementation 新增（粗路径）：T1 宿主机影子 MCU 层（mock_trace_hw.h 含 UART_FLAG_TXBUSY 与移位中字节数建模 + cw32l010_{gpio,adc,uart,sysctrl}.h），供真实 debug_trace.c 在宿主机编译自检
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_light/ | active | 由 firmware_engineer.firmware_implementation 新增（粗路径）：T2 宿主机影子 MCU 层（mock_light_hw.h + cw32l010_{gpio,adc,sysctrl}.h），供真实 light.c 在宿主机编译自检（可脚本化 ADC 结果/超时与 PB05 状态）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/cw32l010_adc.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/cw32l010_gpio.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/cw32l010_sysctrl.h | active | 由 firmware_engineer.firmware_implementation 新增或修改的项目相关文件
@@ -105,7 +105,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Libraries/ | active | CW32L010 标准外�
 artifacts/android_architecture.md | active | Android 设计方案 AA-002（需求 6 个修改点在 App 内的落点、as-built 事实、15 项设计决策、分层/模块/接口/状态归属、SQLite v3 与 pending_uploads、/upload_data 归属与幂等、服务器迁移常量、告警时间窗判定、异常边界、兼容面、验证策略、未决项 U-1..U-7；android_engineer.android_design）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列逐项追加；ITEM-001：BLE 聚合帧解码抽为纯逻辑模块 GatewayFrameCodec 并接入 MqtttService，含实际改动/预期行为/自检/交接；android_engineer.android_implementation）
 artifacts/android_tasks.yaml | active | Android 实现任务清单（14 项，按前置依赖排序，供 android_engineer.android_implementation 消费；android_engineer.android_design）
-artifacts/codegraph_index.md | active | Three existing product CodeGraph roots revalidated at HEAD b38c0af; sensor incrementally synced; UART1/source query handoff; databases Git-ignored
+artifacts/codegraph_index.md | active | 三个产品 CodeGraph 根在 run8 基线 1dd8e4b 验证；传感器增量同步，关键入口查询交接，本地数据库 Git 忽略
 artifacts/firmware_design.md | active | 传感器/网关固件设计方案 FD-002 rev 4.0（run7 基线 b38c0af）：rev 3.0 冻结的升温方向判据 (cur-prev>9 且光照有效且暗) 或 (cur>350)、光敏全暗基准 1/3 (3*mean>=C_dark、每笔独立无滞回、ADC 超时 valid=false)、待上报冻结样本保持不变；新增 readme 修改点 8 的 UART1 调试通道设计（PA06/PA05、9600 8N1、启动横幅 + 每周期 S 轨迹、睡眠前排空 TC 后关闭、关闭不得复位 GPIOA、SENSOR_DEBUG_UART 默认 1、Flash 读保护保持注释）；§12 功能增量改为 T1–T5（任务清单来源）并登记 D-01..D-06 交接
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 4.1：run7 T2（光照采集—完全无光基准 1/3 判据与有效性）代码已完成（light_result_t、light_is_dark、删除滞回与满量程回退、valid=adc_ok&&已标定、单一配置点）+ 宿主/构建证据；**返回 BLOCKED**：全暗基准 C_dark 实板标定未完成（无 mdk_flash/串口）、已如实记录 LIGHT_DARK_CALIBRATED=0，附完成后闭环步骤与 tester harness 交接；T1（已 TEST_PASS）与旧记录作历史保留
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 4.0：新增 FWR-115 UART1 调试串口初始化与真实目标可观测打印；保留升温 >0.9℃ 且无光、严格 >35.0℃、FWR-110/113 全暗基准与光照有效性、FWR-114 待上报冻结样本；readme 修改点 1–8 对应表
@@ -189,7 +189,7 @@ dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书；ITEM-014 升至 1.8：卡片不再显示“离线”（改为最近上报时间 + 条件上报提示）、图表范围 24h、详情规则说明与高温强调、下降报警时间窗口径、早报“昨日无上报”、新增云同步/待发箱/幂等说明
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002（AT-001：ITEM-001 宿主机单测 12 项 0 失败、assembleDebug 成功、与改动前 parsePlainFrame 逐位一致用例；android_engineer.android_implementation）
 evidence/build.md | active | 构建证据 BUILD-002 rev 4.1：run7 T2 的 GNU 交叉编译（FLASH 31,952 B / RAM 1,736 B，无新增告警）与 Keil ARMCLANG V6.24 rebuild（0 Error/1 既有告警，Code=13976，axf md5 3ee3830814ec61384785998556a4461e）；明确本提交未标定且 mdk_flash/串口未授权故未部署/未标定；T1 记录作历史保留
-evidence/codegraph_validation.md | active | CodeGraph 1.6.0 status/explore/sensor incremental sync/Git-ignore evidence at HEAD b38c0af; index usability only; prior evidence retained
+evidence/codegraph_validation.md | active | CodeGraph 1.6.0 当前基线 status/explore/传感器24文件增量同步与 Git 忽略证据；三个索引 complete、无 pending/drift，仅验证索引可用性
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 4.1：run7 T2 的 test/build_test.sh 四阶段原始 stdout（40+24+24+19+20）与 host_light_check 明细（PB05 供电窗口/均值极值仅取成功样本/全超时 valid=false 无 4095 合成/未标定门禁/标定后 1/3 判据）及 C_dark=1..4095 全量扫描；如实记录全暗标定未执行；T1 记录作历史保留
 evidence/embedded_verify_uart_trace_item001.py | active | 由 embedded_tester.embedded_verification 新增：ITEM-001 独立验证脚本（解析真实目标 COM42@9600 原始采集字节流；检查启动横幅字段/波特率、S 行 CRLF 终止、行长 ≤96B、15 个冻结字段与顺序、取值范围与内部关系 V==(o>0)/n<=a<=x、D 与实现光照滞回语义重算一致、r 与实现判定函数重算一致、成功推进前一有效温度；退出码 0/1。EV-006 运行：57 项检查 13 项失败，全部归因 D-ITEM001-1/D-ITEM001-2 与烧录产物行中截断）
 evidence/interface_contract_validation.md | active | IC-002 v3.0接口自检：Project Truth与CodeGraph来源、升温真值表、RF/BLE/CRC向量、4095组全暗阈值边界；非下游验收报告
