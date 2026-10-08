@@ -17,8 +17,9 @@ evidence/embedded_verify_gxht40_item002.py
     python embedded_verify_gxht40_item002.py <capture1.bin> [capture2.bin ...]
 
 检查项 (逐项 PASS/FAIL; 退出码 0=无 FAIL):
-    A STRUCT   每行 <=96 B、以 CRLF 终止 (采集窗口边缘的截断只记 FRAG); 行首仅 BOOT/BUS/S/G
-    B FIELDS   S 行 15 个冻结字段齐全且顺序正确; BUS/G 行字段齐全
+    A STRUCT   每行 <=96 B、以 CRLF 终止 (采集窗口边缘的截断只记 FRAG);
+               行首仅 BOOT/IOTEST/BUS/S/G
+    B FIELDS   S 行 15 个冻结字段齐全且顺序正确; BUS/G/IOTEST 行字段齐全
     C DOMAIN   q==1 => t in [-400,1250] 且 h in [0,1000]; q in {0,1}; H,V,D,r in {0,1}; s in {0,1,2}
     D GLINE    q==0 的 S 行之后紧随且仅有 1 条 G 行; q==1 的 S 行之后不得有 G 行
     E GCONS    G 行字段自洽: s in 1..5; a44/a45 in {0,1}; rd in 0..5; at in 1..3;
@@ -30,12 +31,17 @@ evidence/embedded_verify_gxht40_item002.py
     H ACCEPT   本项核心: 统计连续 q==1 的周期数; 连续 >=3 记为 ACCEPT 达成
     I OBS      登记性观察 (不作通过门槛): 采集内 G 行的结果码分布、BUS 行 ack 集合与
                G 行 a44/a45 的一致性
+    J IOTEST   上电 I/O 自检行 (EV-011 §5 E1 交回实现的判别观测量):
+               域 sda_lo/scl_lo in {0,1}、idle in 0..3、swap in {none, 合法 7bit 地址列表};
+               每次复位段内恰 1 条, 位于横幅之后、BUS 之前; 并与该复位段的 BUS 行
+               idle 位掩码一致 (两者都读同一对引脚, 不得互相矛盾)
 """
 import re
 import sys
 
 KEY_ORDER = ["k", "p", "H", "V", "o", "n", "x", "a", "D", "t", "h", "q", "r", "s", "y"]
 GKEY_ORDER = ["s", "a44", "a45", "rd", "at", "raw"]
+IOKEY_ORDER = ["sda_lo", "scl_lo", "idle", "swap"]
 MAXLINE = 96
 T_MIN, T_MAX = -400, 1250      # -40.0 .. 125.0 C  (x10), readme 点 1 + FD-002 §6.1
 H_MIN, H_MAX = 0, 1000         # 0.0 .. 100.0 %RH (x10)
@@ -60,14 +66,16 @@ def crc8_gxht(data: bytes) -> int:
 
 def split_messages(raw: bytes):
     """按行首标记切分; 返回 [(kind, payload, terminated, offset)]。"""
-    starts = [(m.start(), m.group(0)) for m in re.finditer(rb"BOOT |BUS |S k=|G s=", raw)]
+    starts = [(m.start(), m.group(0))
+              for m in re.finditer(rb"BOOT |IOTEST |BUS |S k=|G s=", raw)]
     out = []
     for i, (start, marker) in enumerate(starts):
         end = starts[i + 1][0] if i + 1 < len(starts) else len(raw)
         blk = raw[start:end]
         terminated = blk.endswith(b"\r\n")
         payload = blk[:-2] if terminated else blk
-        kind = {b"BOOT ": "BOOT", b"BUS ": "BUS", b"S k=": "S", b"G s=": "G"}[marker]
+        kind = {b"BOOT ": "BOOT", b"IOTEST ": "IOTEST", b"BUS ": "BUS",
+                b"S k=": "S", b"G s=": "G"}[marker]
         out.append((kind, payload, terminated, start))
     return out
 
@@ -75,10 +83,13 @@ def split_messages(raw: bytes):
 def parse_kv(payload: bytes, first_key: str):
     text = payload.decode("ascii", errors="replace")
     text = text.lstrip()
+    # every diagnostic line starts with its fixed label token; drop it before splitting
     if first_key == "S":
-        text = text[1:].strip()          # 去掉行首 'S'
+        text = text[1:].strip()               # 去掉行首 'S'
     elif first_key == "G":
-        text = text[1:].strip()          # 去掉行首 'G'
+        text = text[1:].strip()               # 去掉行首 'G'
+    elif first_key in ("IOTEST", "BUS", "BOOT"):
+        text = text[len(first_key):].strip()  # 去掉行首标签
     parts = text.split()
     kv, order = {}, []
     for p in parts:
@@ -118,7 +129,7 @@ def check_file(path):
     add("A CRLF %s all complete lines CRLF-terminated" % tag,
         all(t for _, _, t, _ in msgs[:-1]) if len(msgs) > 1 else True, "")
 
-    periods, g_lines = [], []
+    periods, g_lines, io_lines, bus_lines = [], [], [], []
     for i, (kind, payload, terminated, off) in enumerate(msgs):
         if kind == "S":
             kv, order, err = parse_kv(payload, "S")
@@ -143,6 +154,83 @@ def check_file(path):
             g_lines.append({"after": i, "_msg": payload.decode("ascii", "replace"),
                             "raw": kv.get("raw", ""),
                             "nums": {k: kv.get(k) for k in ("s", "a44", "a45", "rd", "at")}})
+        elif kind == "IOTEST":
+            kv, order, err = parse_kv(payload, "IOTEST")
+            if err or order != IOKEY_ORDER:
+                add("B FIELDS %s IOTEST@%d" % (tag, off), False,
+                    "err=%s order=%s" % (err, order))
+                continue
+            io_lines.append({"after": i, "_msg": payload.decode("ascii", "replace"),
+                             "kv": kv})
+        elif kind == "BUS":
+            kv, _order, _err = parse_kv(payload, "BUS")
+            bus_lines.append({"after": i, "_msg": payload.decode("ascii", "replace"),
+                              "kv": kv})
+
+    # ---- J: power-up I/O self-check line (EV-011 §5 E1) ----
+    io_idx = [i for i, (k, _, _, _) in enumerate(msgs) if k == "IOTEST"]
+    boot_idx = [i for i, (k, _, _, _) in enumerate(msgs) if k == "BOOT"]
+    bus_idx = [i for i, (k, _, _, _) in enumerate(msgs) if k == "BUS"]
+    for io in io_lines:
+        kv = io["kv"]
+        msg = io["_msg"]
+        ok_dom = True
+        for f in ("sda_lo", "scl_lo"):
+            if kv.get(f) not in ("0", "1"):
+                ok_dom = False
+        if kv.get("idle") not in ("0", "1", "2", "3"):
+            ok_dom = False
+        sw = kv.get("swap", "")
+        if sw == "none":
+            pass
+        elif re.fullmatch(r"[0-9A-F]{2}(,[0-9A-F]{2})*", sw or ""):
+            for a in sw.split(","):
+                if not (0x08 <= int(a, 16) <= 0x77):
+                    ok_dom = False
+        else:
+            ok_dom = False
+        add("J IOTEST %s @%d field domain (sda_lo/scl_lo in {0,1}, idle in 0..3, "
+            "swap in {none|7bit addr list})" % (tag, io["after"]), ok_dom, msg)
+    # exactly one IOTEST per reset segment (between a BOOT and the next BOOT),
+    # placed after its BOOT banner and before that segment's BUS line
+    # A reset segment (BOOT .. next BOOT) that *completed* its power-up print run is the
+    # one carrying a BUS line: main() prints BOOT -> IOTEST -> BUS with nothing in between.
+    # The flash sequence may halt the target mid-boot (erase/program), so an earlier
+    # segment may legitimately carry a BOOT banner with neither IOTEST nor BUS; that is
+    # recorded as a note, never as a pass for the missing lines.
+    if boot_idx:
+        bounds = boot_idx + [len(msgs)]
+        completed = 0
+        for n, (b0, b1) in enumerate(zip(bounds, bounds[1:])):
+            seg_io = [i for i in io_idx if b0 < i < b1]
+            seg_bus = [i for i in bus_idx if b0 < i < b1]
+            if not seg_bus:
+                add("J IOTEST %s reset#%d no BUS -> boot print run interrupted "
+                    "(allowed: debugger halted target); IOTEST count=%d"
+                    % (tag, n + 1, len(seg_io)), len(seg_io) <= 1, "io=%s" % seg_io)
+                continue
+            completed += 1
+            add("J IOTEST %s reset#%d exactly one IOTEST in the completed boot run"
+                % (tag, n + 1), len(seg_io) == 1, "found=%d" % len(seg_io))
+            if len(seg_io) == 1:
+                add("J IOTEST %s reset#%d order BOOT<IOTEST<BUS and IOTEST immediately "
+                    "precedes BUS" % (tag, n + 1),
+                    b0 < seg_io[0] < min(seg_bus) and seg_io[0] == min(seg_bus) - 1,
+                    "boot=%d io=%d bus=%s" % (b0, seg_io[0], seg_bus))
+            # same pin pair read twice: IOTEST idle and BUS idle must agree
+            io_row = next((io for io in io_lines if io["after"] in seg_io), None)
+            bus_row = next((b for b in bus_lines if b["after"] in seg_bus), None)
+            if io_row and bus_row and bus_row["kv"].get("idle") is not None:
+                add("J IOTEST %s reset#%d idle == BUS idle (%s vs %s)"
+                    % (tag, n + 1, io_row["kv"].get("idle"), bus_row["kv"].get("idle")),
+                    io_row["kv"].get("idle") == bus_row["kv"].get("idle"),
+                    "IOTEST %r / BUS %r" % (io_row["_msg"], bus_row["_msg"]))
+        if completed == 0 and boot_idx:
+            add("J IOTEST %s no completed boot run in this window (nothing to check)" % tag,
+                True, "note only: %d BOOT banner(s), 0 BUS" % len(boot_idx))
+    elif io_lines:
+        add("J IOTEST %s every IOTEST has a preceding BOOT banner" % tag, False,
+            "%d IOTEST without any BOOT in window" % len(io_lines))
 
     # ---- C: value domain ----
     for r in periods:
@@ -227,6 +315,10 @@ def check_file(path):
                  r["n"], r["x"], r["a"], r["D"], r["r"], r["s"], r["y"]))
     for g in g_lines:
         print("    %s" % g["_msg"])
+    for io in io_lines:
+        print("    %s" % io["_msg"])
+    for b in bus_lines:
+        print("    %s" % b["_msg"])
     return periods, g_lines
 
 
@@ -263,6 +355,34 @@ def main():
         print("      %s k=%-4s q=%s t=%s h=%s" % (r["_tag"], r["k"], r["q"], r["t"], r["h"]))
     add("H ACCEPT >=3 consecutive q=1 periods with t/h in domain", best >= 3,
         "longest run = %d (needed >= 3)" % best)
+
+    # ---- K: registration of the E1 self-check readings across all resets ----
+    print("\n===== IOTEST READINGS (E1) =====")
+    seen = []
+    for path in sys.argv[1:]:
+        data = open(path, "rb").read()
+        for m in re.finditer(rb"IOTEST [^\r\n]*", data):
+            line = m.group(0).decode("ascii", "replace")
+            seen.append(line)
+            print("    %s" % line)
+    if seen:
+        uniq = sorted(set(seen))
+        print("    distinct readings: %d of %d occurrences" % (len(uniq), len(seen)))
+        for u in uniq:
+            print("      x%d  %s" % (seen.count(u), u))
+        # classification of the self-check (the tester does not decide the physical cause;
+        # it records which branches the reading is compatible with)
+        can_low = all(("sda_lo=0" in u) and ("scl_lo=0" in u) for u in uniq)
+        rel_hi = all("idle=3" in u for u in uniq)
+        no_swap = all("swap=none" in u for u in uniq)
+        add("K IOTEST all readings: host drives BOTH lines low and reads them back low",
+            can_low, "%d distinct reading(s)" % len(uniq))
+        add("K IOTEST all readings: both lines read high after release (idle=3)",
+            rel_hi, "%d distinct reading(s)" % len(uniq))
+        add("K IOTEST all readings: no SDA/SCL role swap detected (swap=none)",
+            no_swap, "%d distinct reading(s)" % len(uniq))
+    else:
+        add("K IOTEST at least one IOTEST reading observed", False, "no IOTEST line captured")
 
     npass = sum(1 for _, ok, _ in results if ok)
     nfail = sum(1 for _, ok, _ in results if not ok)

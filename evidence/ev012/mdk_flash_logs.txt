@@ -1,0 +1,33 @@
+### b1  (mdk_flash {} = build + download, project saved debugger/Flash algo)
+started_at=2026-10-08T10:09:30.955020+00:00  finished_at=2026-10-08T10:09:40.035736+00:00  success=True  exit_code=0
+build_log:
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Build target 'Project'
+".\output\exe\Project.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:00
+flash_log:
+Load "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\MDK\\output\\exe\\Project.axf" 
+Erase Done.Programming Done.Verify OK.Application running ...
+Flash Load finished at 18:09:39
+### b2  (mdk_flash {} = build + download, project saved debugger/Flash algo)
+started_at=2026-10-08T10:17:07.493895+00:00  finished_at=2026-10-08T10:17:16.633563+00:00  success=True  exit_code=0
+build_log:
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Build target 'Project'
+".\output\exe\Project.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:00
+flash_log:
+Load "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\MDK\\output\\exe\\Project.axf" 
+Erase Done.Programming Done.Verify OK.Application running ...
+Flash Load finished at 18:17:16
+### b3  (mdk_flash {} = build + download, project saved debugger/Flash algo)
+started_at=2026-10-08T10:22:08.176895+00:00  finished_at=2026-10-08T10:22:17.433667+00:00  success=True  exit_code=0
+build_log:
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Build target 'Project'
+".\output\exe\Project.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:01
+flash_log:
+Load "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\MDK\\output\\exe\\Project.axf" 
+Erase Done.Programming Done.Verify OK.Application running ...
+Flash Load finished at 18:22:17
