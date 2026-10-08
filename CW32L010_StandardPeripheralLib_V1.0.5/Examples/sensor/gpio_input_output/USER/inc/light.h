@@ -1,5 +1,5 @@
 /*
- * light.h - 光照通路 (readme 修改点 2; FD-002 §2.3/§3.1/§6.3/§10)
+ * light.h - 光照通路 (readme 修改点 2/7; FD-002 rev 4.0 §2.3/§3.1/§6.3/§10)
  *
  * 拓扑 (sensor_hardware 网表核定):
  *   PB05(LIGTHT_POWER, 输出) -- R3 5M -- LIGHT_ADC(PB04/AIN11) -- 光敏电阻 -- GND
@@ -15,31 +15,32 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/*
+ * 一次光照采样的结构化结果 (FD-002 rev 4.0 §6.3; T2):
+ *   valid  = adc_ok && LIGHT_DARK_CALIBRATED     (未标定/全部转换超时 -> false)
+ *   dark   = valid && (uint32)3*mean_adc_code >= C_dark   (边界相等为暗, 每笔独立无滞回)
+ * 全部转换超时: adc_ok=false、mean/min/max=0、valid=false、dark=false,
+ * 不得用满量程合成暗态。
+ */
+typedef struct {
+    bool     valid;          /* 光照是否可证明无光 (adc_ok 且已标定) */
+    bool     adc_ok;         /* samples_ok > 0 */
+    uint8_t  samples_ok;     /* 成功转换样本数 0..LIGHT_ADC_SAMPLES */
+    uint16_t mean_adc_code;  /* 成功样本算术均值 (adc_ok==false 时为 0) */
+    uint16_t code_min;       /* 成功样本最小值 (adc_ok==false 时为 0) */
+    uint16_t code_max;       /* 成功样本最大值 (adc_ok==false 时为 0) */
+    bool     dark;           /* 无光判定结果 */
+} light_result_t;
+
 /* 配置 PB05 为推挽输出(低)、PB04 为模拟输入(AIN11) 并配置 ADC (ADC 保持关闭, 采样时打开) */
 void light_init(void);
-
-/* 复位滞回状态与最近读数 (上电/标定后) */
-void light_reset_state(void);
 
 /*
  * 一次光照采样:
  *   PB05 输出高 -> 稳定延时 -> PB04/AIN11 取样 LIGHT_ADC_SAMPLES 次求均值 -> PB05 置低;
- *   用均值做滞回判定并更新内部状态。
- * 返回 true = 无光(DARK)。
- * 异常: 单次 ADC 转换超时被丢弃; 全部超时按满量程(器件开路/无光)处理, 不阻塞、不无限等待。
+ *   均值只取成功样本; 全部转换超时 -> adc_ok=false/valid=false (不合成暗态)。
+ * 无跨周期状态 (无滞回)。
  */
-bool light_sample(void);
-
-/* 最近一次采样的均值 (0..4095); 供调试跟踪 */
-uint16_t light_last_code(void);
-
-/*
- * T1 (readme 修改点 8; FD-002 rev 4.0 §6.5): 最近一次采样的原始样本统计, 供 UART1 调试轨迹。
- * 只读, 不改变判定行为。ok==0 (全部转换超时) 时 mean/min/max 均为 0, 不得冒充暗态。
- */
-uint8_t  light_last_ok(void);     /* 成功转换样本数 0..LIGHT_ADC_SAMPLES */
-uint16_t light_last_mean(void);   /* 成功样本算术均值 */
-uint16_t light_last_min(void);    /* 成功样本最小值 */
-uint16_t light_last_max(void);    /* 成功样本最大值 */
+light_result_t light_sample(void);
 
 #endif /* __LIGHT_H */

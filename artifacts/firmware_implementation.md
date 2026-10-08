@@ -1,12 +1,67 @@
-# 固件实现（FWI-002 rev 4.0）
+# 固件实现（FWI-002 rev 4.1）
 
 状态：固件实现（firmware_engineer.firmware_implementation）
-本轮工作项：run7 Runtime 队列 **ITEM-001 ↔ 任务清单 T1（UART1 调试串口初始化与可观测打印）**
-依据：FD-002 **rev 4.0** `artifacts/firmware_design.md`、FWR-002 rev 4.0 `artifacts/firmware_requirements.md`、RTA-002 rev 4.0 `artifacts/firmware_rtos_architecture.md`、IC-002 v3.0、TD-002 rev 4.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
-受测提交：`ae74cf2`（RESUME_SYNC 接手时工作区干净；本轮改动见下）。上一轮实现提交 `fe7acb4` 经 EV-006 独立验证判 **TEST_FAIL**（2 个缺陷），本轮完成修复（见下「EV-006 缺陷修复」）。
-测试环境：本轮可用 `mdk_build`（Keil MDK / ARMCLANG V6.24）、GNU 交叉编译（`arm-none-eabi-gcc 10.3.1`）与宿主机 MinGW-w64 gcc 12.2.0；`mdk_flash` 与串口采集未在本调用工具列表中，因此本轮**未执行**下载与 COM42 轨迹采集，T-L2-01..T-L2-09 的真实目标观测由嵌入式测试能力执行。
+本轮工作项：run7 Runtime 队列 **ITEM-002 ↔ 任务清单 T2（光照采集：完全无光基准 1/3 判据与有效性 + 实板标定）**；前一项 **ITEM-001（T1 UART1 调试串口）已 IMPLEMENTED 并经 EV-007 独立验证 TEST_PASS**
+依据：FD-002 **rev 4.0** `artifacts/firmware_design.md`、FWR-002 rev 4.0 `artifacts/firmware_requirements.md`、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
+受测提交：`2c0da5f`（RESUME_SYNC 接手时工作区干净）+ 本轮 T2 改动（见下）
+本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口采集不在本调用工具列表内** → 全暗基准 `C_dark` 的实板标定无法在本轮完成，结果见下「T2 未完成部分与阻塞」。
 
-> 说明：本文件现含 run7 的 T1 记录（当前判定依据）与上一轮工作流的历史记录（T1–T7 / 旧 12 项编号），历史部分仅供参考。
+> 说明：本文件含 run7 的 T2（当前，**部分交付/阻塞**）与 T1（已验证）记录，以及上一轮工作流的历史记录。
+
+---
+
+# 本轮 run7：T2（光照采集：完全无光基准 1/3 判据与有效性）
+
+**任务**：每次采样在 PB05 输出供电、稳定等待后用 PB04/AIN11 多次转换，采样结束把 PB05 置低；输出结构化结果 `{valid, samples_ok, mean_adc_code, code_min, code_max, dark}`（均值只取成功样本，全部转换超时为 valid=false）；无光判定 `dark = valid 且 3*mean_adc_code >= C_dark`（uint32 乘法、边界相等为暗），每笔独立、不使用旧 350/250 滞回或历史暗态；ADC 全部转换超时不得用满量程合成暗态；`C_dark` 在实板上完全遮光实测后回填 `LIGHT_DARK_REF_CODE` 并置 `LIGHT_DARK_CALIBRATED=1`，标定记录含板件/供电/遮光方式/原始样本分布/取样次数/配置版本。
+
+设计映射：FD-002 rev 4.0 §2.3（光敏分压）、§6.3（无光判据与标定方法）、§10（异常策略）、§11.7；FWR-102/110/113；TD-002 §4.5 T-L3-01..08、§4.1 T-L0-04。
+
+## 实际改动（本轮已完成）
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `USER/inc/sensor_config.h` | 修改 | 删除 `LIGHT_DARK_ENTER/EXIT/HYSTERESIS_STEP` 与 `LIGHT_ADC_FULL_SCALE`；新增 `LIGHT_DARK_REF_CODE`（未标定占位 0，允许 `-D` 覆盖供 harness 验证）与 `LIGHT_DARK_CALIBRATED`（本轮 = 0，未标定/未验收）；注释冻结 `dark = valid && 3*mean >= C_dark` 与标定记录要求 |
+| `USER/inc/fw_core.h` / `USER/src/fw_core.c` | 修改 | 删除 `light_code_is_dark`（滞回）；新增纯函数 `light_is_dark(mean_adc_code, valid, c_dark)`（`uint32` 乘法、`valid=false` → false、边界相等为暗） |
+| `USER/inc/light.h` / `USER/src/light.c` | 修改 | 新增 `light_result_t {valid, adc_ok, samples_ok, mean_adc_code, code_min, code_max, dark}`；`light_sample()` 返回该结构；**删除滞回状态与满量程回退**（全部超时 → `adc_ok=false`、`mean/min/max=0`、`valid=false`、`dark=false`）；`valid = adc_ok && LIGHT_DARK_CALIBRATED`；删除 `light_reset_state`/`light_last_code`/T1 期间的统计 getter |
+| `USER/src/measure.c` / `USER/inc/measure.h` | 修改 | 本周期光照结果存为 `s_light`（判定与调试轨迹共用一份数据）；判定改传 `s_light.dark`；`sensor_trace_fetch()` 从 `s_light` 填 `light_*` 字段 |
+| `USER/src/main.c` / `USER/inc/debug_trace.h` | 修改 | 移除 main.c 对 light 统计 getter 的调用与 `light.h` 包含（光照字段由 measure.c 快照提供）；更新 `light_valid`/`light_dark` 字段注释为新语义 |
+| `test/host_light_check.c`、`test/mock_light/`、`test/build_test.sh`、`test/host_sensor_core_test.c`、`test/host_fw_core_pure_check.c`、`test/host_measure_flow_check.c` | 新增/修改 | 实现侧自检改为新语义：新增 `mock_light/` 影子 MCU 层驱动真实 `light.c`；`build_test.sh` 扩为 4 阶段（光照阶段跑未标定与标定后两个变体） |
+
+未改动：`sensor_decide_report`（升温方向/严格边界属 T3）、433/BLE 帧布局、网关与 Android。
+
+## 已验证行为（宿主/构建）
+
+1. `light_is_dark`：`valid=false` 恒 false；`3*mean == C_dark` 为暗、少 1 不为暗；`C_dark=1..4095` 全量 `mean=ceil(C/3)` 边界与整数参考一致；无历史状态。
+2. `light.c`：PB05 供电（每次转换期间均为高）→ 8 次 AIN11 转换 → PB05 置低、ADC 关闭；均值/极值只取成功样本；部分超时按成功数记录；**全部超时 → `samples_ok=0`、`adc_ok=false`、`mean/min/max=0`、`valid=false`、`dark=false`（无 4095 合成）**。
+3. 有效性门禁：`LIGHT_DARK_CALIBRATED=0` 时即使 ADC 成功且读数为满量程，`valid=false`、`dark=false`；标定变体（`-DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000`）下 `valid=true` 且 `dark = 3*mean>=3000`。
+4. 构建：GNU 交叉编译 FLASH **31,952 B** / RAM **1,736 B**（0 错误，无新增告警指向本院）；Keil `mdk_build rebuild` **0 Error / 1 既有告警**，`Program Size: Code=13976`，产物 md5 `3ee3830814ec61384785998556a4461e`。
+5. 宿主自检（`test/build_test.sh`，4 阶段）：40/40 + 24/24 + 24/24 + 19/19（未标定）+ 20/20（标定变体）。
+
+原始结果见 `evidence/driver_test.md`（T2 节）与 `evidence/build.md`（T2 节）。
+
+## T2 未完成部分与阻塞（本轮返回 BLOCKED 的原因）
+
+任务要求的**全暗基准 `C_dark` 实板标定未完成**，因此本轮**不满足 T2 的完整交付与观测验收项**：
+
+| 未完成项 | 判定依据 | 阻塞原因 |
+|---|---|---|
+| `C_dark` 完全遮光实测 + 回填 `LIGHT_DARK_REF_CODE`/`LIGHT_DARK_CALIBRATED=1` + 标定记录（板件/供电/遮光方式/原始样本分布/取样次数/配置版本） | 任务文本；FD-002 §6.3/§12；TD-002 T-L3-05/07/08 | 本调用工具列表仅 `mdk_build`，**无 `mdk_flash`（部署）与串口采集（COM42）**，无法在真实目标上取得完全遮光下的原始样本分布 |
+| 三态观测（有光 `dark=0`、完全遮光 `dark=1` 且 `3*mean>=C_dark`、移开恢复 `dark=0`） | 任务文本「可观测」；TD-002 T-L3-01/02/03 | 同上（需标定后的镜像 + 实板串口） |
+
+**未标定状态已如实记录**：`LIGHT_DARK_CALIBRATED=0`、`LIGHT_DARK_REF_CODE=0`（占位），不使用旧默认 350/250、不使用满量程、不使用亮态读数冒充 `C_dark`；未标定时 `valid` 恒为 false，属设计允许的中间状态（FD-002 §6.3 规则 6；TD-002 T-L3-07①），但**不得**宣称「无光判定已验收」。
+
+**完成后即可闭环所需步骤（交接给具备部署+串口工具的执行）**：
+
+1. `mdk_flash {}` 部署本提交的镜像（`SENSOR_DEBUG_UART=1`，S 行会打印 `o/n/x/a` 原始样本）；
+2. 用完全不透光遮蔽物完全包住 J4 光敏器件，采集 ≥30 笔 S 行（可用多个 3 分钟周期），记录 `n/x/a/o` 的分布；
+3. `C_dark` 取全暗实测均值（或稳健中位），回填 `LIGHT_DARK_REF_CODE` 并置 `LIGHT_DARK_CALIBRATED=1`，附标定记录（板件标识、供电、遮光方式、原始样本分布、取样次数、配置版本）；
+4. 复跑：有光 `dark=0` 且 mean 明显低于 `ceil(C_dark/3)`；完全遮光 `dark=1` 且 `3*mean>=C_dark`；移开恢复 `dark=0`；并核对 S 行 `V=1`。
+
+## 交接（不属本能力执行）
+
+- **测试资产（嵌入式测试）**：本次 API 变更使 4 个 tester 自有独立 harness 需按 TD-002 §3.2 重写/扩展（本次未修改它们）：`host_light_verify_ev.c`（`light_sample` 返回类型、`light_code_is_dark`/`light_last_code` 已删）、`host_fw_core_verify_ev.c`（光照滞回用例 → `light_is_dark`）、`host_measure_flow_verify_ev.c`、`host_rf_report_verify_ev.c`（`bool light_sample()` 桩 → `light_result_t`）；`host_rtc_cadence_verify_ev.c` 不受影响。
+- **S 行语义变更**：自本项起 `light.valid = adc_ok && LIGHT_DARK_CALIBRATED`（未标定恒 0），不再是 T1 期间的 `V == (o>0)`；`o/n/x/a` 仍为原始样本观测值。
+- **T3/T4**：`sensor_decide_report` 仍为 as-built 降温方向（D-01），待现金等待上报冻结（D-03）未动。
 
 ---
 

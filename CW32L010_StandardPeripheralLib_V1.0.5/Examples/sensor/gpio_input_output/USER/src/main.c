@@ -28,7 +28,6 @@
  * Include files
  ******************************************************************************/
 #include "../inc/main.h"
-#include "light.h"           /* T1: 光照原始样本统计 (UART1 调试轨迹) */
 
 /******************************************************************************
  * Local pre-processor symbols/macros ('#define')
@@ -230,12 +229,8 @@ int32_t main(void)
 #if SENSOR_DEBUG_UART
 			/* T1: 每个采样周期在判定与发送之后输出一行 S 轨迹 (光照/温度/判定/发送同一周期) */
 			if (sensor_trace_fetch(&trace) != 0u) {
-				trace.tick        = rtc_tick_total;   /* RTC 累计分钟节拍 (本行对应的采样时刻) */
-				trace.light_ok    = light_last_ok();
-				trace.light_valid = (trace.light_ok > 0u) ? 1u : 0u;
-				trace.light_min   = light_last_min();
-				trace.light_max   = light_last_max();
-				trace.light_mean  = light_last_mean();
+				trace.tick = rtc_tick_total;   /* RTC 累计分钟节拍 (本行对应的采样时刻) */
+				/* 光照/温度/判定/发送字段由 measure.c 的本周期快照提供 (T2) */
 				debug_trace_sample(&trace);
 			}
 			/* 幂等: 保证任何深睡路径之前 UART1 已排空(TC)并关闭, 采样间期无输出 */

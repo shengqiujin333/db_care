@@ -1,15 +1,124 @@
-# 驱动测试证据（DRV-002 rev 4.0）
+# 驱动测试证据（DRV-002 rev 4.1）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run7 任务队列 **ITEM-001（T1：UART1 调试串口初始化与可观测打印）**
+本轮范围：run7 **ITEM-002（T2：光照采集—完全无光基准 1/3 判据与有效性）**；前一项 ITEM-001（UART1）已 TEST_PASS
 依据：FD-002 rev 4.0、FWR-002 rev 4.0、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0、`artifacts/firmware_tasks.yaml`
-受测实现：`USER/src/debug_trace.c` + `USER/inc/debug_trace.h`、`USER/src/measure.c`（轨迹快照）、`USER/src/light.c`（样本统计）、`USER/src/main.c`（编排）
-测试载体：`test/host_debug_trace_check.c` + `test/mock_trace/`（宿主机影子 MCU 层）
-测试环境：宿主机 MinGW-w64 gcc 12.2.0；`mdk_flash`/串口采集未在本调用工具列表内 → **真实目标 COM42 轨迹未采集**，不代表 T-L2-01..09 已通过。本轮为 **EV-006 TEST_FAIL 后的修复轮**（修复 D-ITEM001-1 排空、D-ITEM001-2 复位标志锁存）。
+受测实现：`USER/src/light.c` + `USER/inc/light.h`、`USER/src/fw_core.c` + `USER/inc/fw_core.h`（`light_is_dark`）、`USER/src/measure.c`（`s_light` 单一来源）、`USER/inc/sensor_config.h`（无光基准配置点）
+测试载体：`test/host_light_check.c` + `test/mock_light/`（新）、`test/host_sensor_core_test.c`、`test/host_fw_core_pure_check.c`、`test/host_measure_flow_check.c`、`test/build_test.sh`
+测试环境：宿主机 MinGW-w64 gcc 12.2.0；**`mdk_flash`/串口未在本调用工具列表内** → 全暗基准 `C_dark` 实板标定与三态实板观测未执行（本项返回 BLOCKED 的原因）。
 
 ---
 
-## T1（run7 ITEM-001）：UART1 调试通道自检（本轮实际执行）
+## T2（run7 ITEM-002）：光照通路自检（本轮实际执行）
+
+### 1. `test/build_test.sh`（4 阶段）原始 stdout 节选
+
+```
+$ CC=<mingw full path> sh test/build_test.sh
+== [1/4] fw_core pure logic: CRC16/CRC-8/convert/light(1/3)/report ==
+==== result: 40 passed, 0 failed ====
+== [2/4] measure flow (mock MCU): sample/report/prev-not-updated-on-failure ==
+==== result: 24 passed, 0 failed ====
+== [3/4] UART1 debug trace (mock UART): banner/S-line budget/close semantics ==
+==== result: 24 passed, 0 failed ====
+== [4/4a] light channel (mock ADC, uncalibrated delivery default) ==
+==== light.c self-check (T2, LIGHT_DARK_CALIBRATED=0, C_dark=0) ====
+==== result: 19 passed, 0 failed ====
+== [4/4b] light channel (calibrated variant: -DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000) ==
+==== light.c self-check (T2, LIGHT_DARK_CALIBRATED=1, C_dark=3000) ====
+==== result: 20 passed, 0 failed ====
+(exit 0)
+```
+
+> 宿主环境备注（可复现事实，非代码问题）：本机 `test/` 目录下**同名产物 `host_measure_flow_check.exe` 无法再创建**（bash/gcc 均报 `Permission denied`，删除后仍复现；推测为宿主安全软件对该路径的残留拦截）。`build_test.sh` 因此把产物改为中性短名（`s1_core/s2_flow/s3_trace/s4_light/s4_light_cal.exe`）并写入 `_hostbin/`，同时对链接失败做一次带延迟重试；harness 源文件名、编译参数与断言不变，故不影响测试内容。
+
+### 2. 纯逻辑 `light_is_dark`（`host_sensor_core_test.c` 节选，1/3 判据与边界）
+
+```
+[5] T-L0-04 light_is_dark (dark = valid && 3*mean >= C_dark)
+  PASS  valid=false -> 恒 false
+  PASS  valid=false + 满量程 -> false (不合成暗态)
+  PASS  C_dark=1: 3*0=0 < 1 -> false
+  PASS  C_dark=1: 3*1=3 >= 1 -> true
+  PASS  C_dark=4095: 3*1364=4092 < 4095 -> false
+  PASS  C_dark=4095: 3*1365=4095 -> true (相等为暗)
+  PASS  C_dark=4095: 满量程 -> true
+  PASS  C_dark=3000: 边界相等为暗, 低 1 不为暗
+  PASS  每笔独立: 无滞回/无历史暗态
+```
+
+`host_fw_core_pure_check.c` 另有 `C_dark=1..4095` 全量边界扫描（`mean=ceil(C/3)` 为暗、低 1 不为暗，`bad=0`），随阶段 1 部分覆盖（该文件本阶段未入 build_test，属实现侧补充自检，编译运行见下）：
+
+```
+$ gcc -std=c11 -Wall -Wextra -I../USER/inc -I../COMMON host_fw_core_pure_check.c ../USER/src/fw_core.c -lm -o fw_core_pure && ./fw_core_pure
+[5] T-L0-04 光照: 完全无光基准 1/3 判据 (light_is_dark)
+    PASS  valid=false -> 恒 false (即使 3*mean>=C_dark)
+    PASS  C_dark=1: 3*0=0 < 1 -> false
+    PASS  C_dark=4095: 3*1365=4095 = C_dark -> true (相等为暗)
+    PASS  C_dark=3000: 边界相等为暗, 低 1 不为暗
+    PASS  每笔独立: 同输入同输出 (无滞回/无历史暗态)
+    PASS  本交付件为未标定状态 (C_dark 占位 0, 不得当作已验收)
+    PASS  C_dark=1..4095 全量: mean=ceil(C/3) 为暗, 再低 1 不是暗
+```
+
+### 3. `light.c` 采样通路（`host_light_check.c` + `mock_light/`，真实 light.c）
+
+未标定变体（交付件默认）：
+
+```
+[1] light_init: 引脚配置与 ADC 关闭
+    PASS  light_init configures exactly two pins (PB05, PB04)
+    PASS  PB04 configured as analog input (AIN11) after PB05
+    PASS  ADC is left disabled outside sampling
+[2] 8 次全部成功: 均值/极值取自成功样本, PB05 供电后置低, ADC 关闭
+    PASS  exactly LIGHT_ADC_SAMPLES conversions
+    PASS  PB05 was powered (high) for every conversion
+    PASS  PB05 returned low after sampling
+    PASS  ADC disabled after sampling
+    PASS  samples_ok=8, adc_ok=true
+    PASS  mean = 135 over successful samples
+    PASS  min=100, max=170
+[3] 部分超时: 均值只取成功样本, 成功数如实记录
+    PASS  4 successes recorded (timeouts dropped)
+    PASS  mean/min/max computed over the 4 successful samples only
+[4] 全部超时: valid=false, 不得用满量程合成暗态
+    PASS  samples_ok=0, adc_ok=false
+    PASS  mean/min/max stay 0 (no 4095 full-scale synthesis)
+    PASS  valid=false, dark=false on total timeout
+    PASS  PB05 low and ADC off after timeout too
+[5] 有效性/无光判定
+    PASS  uncalibrated: adc_ok=true but valid=false (cannot prove darkness)
+    PASS  uncalibrated: dark=false even at full-scale reading
+[6] 每笔独立 (无滞回/无历史暗态)
+    PASS  same input -> same result regardless of the previous sample
+==== result: 19 passed, 0 failed ====
+```
+
+标定后变体（`-DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000`，仅验证判据接线，**不是**实板标定值）：
+
+```
+[5] 有效性/无光判定
+    PASS  calibrated: valid=true when ADC succeeds
+    PASS  dark = (3*mean >= C_dark) at mean=1000
+    PASS  dark = (3*mean >= C_dark) at mean=999 (one below)
+==== result: 20 passed, 0 failed ====
+```
+
+### 4. 流程回归（`host_measure_flow_check.c`，24/24）
+
+`light_sample` 桩改为返回 `light_result_t`；采样顺序、失败不污染前值、上报门控/发送路径预期均保持通过（该文件的 `sensor_decide_report` 仍为 as-built 降温方向，属 T3）。
+
+### 5. 未覆盖（如实记录）
+
+- **全暗基准 `C_dark` 实板标定未执行**：需 `mdk_flash` + COM42 采集（不在本调用工具列表），未取得完全遮光原始样本分布 → 未回填、未置 `LIGHT_DARK_CALIBRATED=1`；**不得**用满量程/旧默认 350/250/亮态读数冒充。
+- 实板三态观测（有光 `dark=0` / 完全遮光 `dark=1` / 移开恢复）与 `ceil(C_dark/3)` 实板邻界：同上未执行。
+- 位级 I²C/ADC 时序与 PB05 实际波形：仪器未提供（TD-002 §4.10 可选扩展）。
+
+---
+
+# 历史：本轮 run7 T1（ITEM-001 UART1 调试串口，已 TEST_PASS）
+
+## T1（run7 ITEM-001）：UART1 调试通道自检（已验证）
 
 环境：MinGW-w64 GCC 12.2.0（`C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin/gcc.exe`；PATH 上的 chocolatey shim 解析 libexec/cc1 失败，需用完整路径）。宿主机无 MCU 串口外设，默认 `SENSOR_DEBUG_UART=0`；本自检显式 `-DSENSOR_DEBUG_UART=1` 并链接真实 `debug_trace.c`。
 

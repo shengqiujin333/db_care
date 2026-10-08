@@ -28,12 +28,12 @@ typedef struct {
     uint32_t tick;          /* RTC 累计 1 分钟节拍计数 (置位时每 3 拍一次采样; 用于核对节拍) */
     int16_t  prev_temp_x10; /* 判定用的前一有效温度 x10 (0.1 C, 有符号) */
     uint8_t  have_prev;     /* 是否存在前一有效样本 (0/1) */
-    uint8_t  light_valid;   /* 光照采样是否有效 (成功样本数 > 0) */
+    uint8_t  light_valid;   /* 光照有效性: adc_ok && LIGHT_DARK_CALIBRATED (T2; 未标定恒 0) */
     uint8_t  light_ok;      /* 成功转换样本数 (0..LIGHT_ADC_SAMPLES) */
     uint16_t light_min;     /* 成功样本最小 ADC 码 (0..4095) */
     uint16_t light_max;     /* 成功样本最大 ADC 码 (0..4095) */
     uint16_t light_mean;    /* 成功样本算术均值 (ok==0 时为 0, 不得冒充暗态) */
-    uint8_t  light_dark;    /* 判定路径实际使用的无光结果 (0/1) */
+    uint8_t  light_dark;    /* 无光判定结果 (T2: valid && 3*mean >= C_dark; 无滞回) */
     int16_t  temp_x10;      /* 本周期温度 x10 (失败周期为最近有效值, 由 sample_ok=0 标记) */
     uint16_t hum_x10;       /* 本周期湿度 x10 (同上) */
     uint8_t  sample_ok;     /* 本周期温湿度采样是否有效 (1=有效, 0=失败) */

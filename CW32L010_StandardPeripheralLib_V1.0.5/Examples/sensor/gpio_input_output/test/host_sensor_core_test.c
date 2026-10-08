@@ -112,19 +112,22 @@ static void test_hum(void)
 }
 
 /* ------------------------------------------------------------------ */
-/* T-L0-04: 光照阈值与滞回                                               */
+/* T-L0-04: 无光判据 (完全无光基准 1/3, T2)                               */
 /* ------------------------------------------------------------------ */
 static void test_light(void)
 {
-    printf("[5] T-L0-04 light_code_is_dark\n");
-    CHECK(light_code_is_dark(349u, false) == false, "已明 + 349 (<350) -> LIT");
-    CHECK(light_code_is_dark(350u, false) == true,  "已明 + 350 (=350) -> DARK");
-    CHECK(light_code_is_dark(251u, true)  == true,  "已暗 + 251 (>250) -> DARK");
-    CHECK(light_code_is_dark(250u, true)  == false, "已暗 + 250 (=250) -> LIT");
-    CHECK(light_code_is_dark(0u, false)   == false, "0 -> LIT");
-    CHECK(light_code_is_dark(4095u, false) == true, "4095 (满量程/开路) -> DARK");
-    CHECK(light_code_is_dark(300u, false) == false && light_code_is_dark(300u, true) == true,
-          "滞回带内 (300) 保持原状态");
+    printf("[5] T-L0-04 light_is_dark (dark = valid && 3*mean >= C_dark)\n");
+    CHECK(light_is_dark(0u, false, 1u)   == false, "valid=false -> 恒 false");
+    CHECK(light_is_dark(4095u, false, 1u) == false, "valid=false + 满量程 -> false (不合成暗态)");
+    CHECK(light_is_dark(0u, true, 1u)    == false, "C_dark=1: 3*0=0 < 1 -> false");
+    CHECK(light_is_dark(1u, true, 1u)    == true,  "C_dark=1: 3*1=3 >= 1 -> true");
+    CHECK(light_is_dark(1364u, true, 4095u) == false, "C_dark=4095: 3*1364=4092 < 4095 -> false");
+    CHECK(light_is_dark(1365u, true, 4095u) == true,  "C_dark=4095: 3*1365=4095 -> true (相等为暗)");
+    CHECK(light_is_dark(4095u, true, 4095u) == true,  "C_dark=4095: 满量程 -> true");
+    CHECK(light_is_dark(1000u, true, 3000u) == true && light_is_dark(999u, true, 3000u) == false,
+          "C_dark=3000: 边界相等为暗, 低 1 不为暗");
+    CHECK(light_is_dark(300u, true, 1000u) == light_is_dark(300u, true, 1000u),
+          "每笔独立: 无滞回/无历史暗态");
 }
 
 /* ------------------------------------------------------------------ */

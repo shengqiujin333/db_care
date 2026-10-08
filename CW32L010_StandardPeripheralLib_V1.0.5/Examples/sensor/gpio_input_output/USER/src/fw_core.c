@@ -89,14 +89,15 @@ bool gxht40_raw_to_x10(uint16_t raw_t, uint16_t raw_rh,
 }
 
 /* ------------------------------------------------------------------ */
-/* 光照滞回 (readme 修改点 2; FD-002 §6.3)                              */
+/* 无光判据: 完全无光基准 1/3 (readme 修改点 7; FD-002 rev 4.0 §6.3)      */
 /* ------------------------------------------------------------------ */
-bool light_code_is_dark(uint16_t code, bool prev_dark)
+bool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t c_dark)
 {
-    if (prev_dark) {
-        return !(code <= (uint16_t)LIGHT_DARK_EXIT);    /* 已暗: 低于退出阈值才转明 */
+    if (!valid) {
+        return false;                       /* 光照无效不能证明无光 */
     }
-    return (code >= (uint16_t)LIGHT_DARK_ENTER);        /* 已明: 达到进入阈值才转暗 */
+    /* uint32 乘法, 不得先做整数除法截断; 等价于 mean >= ceil(c_dark/3), 边界相等为暗 */
+    return (((uint32_t)3u * (uint32_t)mean_adc_code) >= (uint32_t)c_dark);
 }
 
 /* ------------------------------------------------------------------ */

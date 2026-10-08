@@ -78,29 +78,37 @@
 #define GXHT40_HUM_X10_MAX              (1000u)
 
 /* ==================================================================== */
-/* 3. 光照通路数值配置 (readme 修改点 2; FD-002 §2.3/§6.3)              */
+/* 3. 光照通路数值配置 (readme 修改点 2/7; FD-002 rev 4.0 §2.3/§6.3)      */
 /*    拓扑: PB05(VDD) -> R3 5M -> LIGHT_ADC(PB04) -> 光敏电阻 -> GND     */
 /*    ADC 满量程参考 = VDD (比率式, 与电池电压无关)                      */
 /*    极性: 无光 = 光敏阻值大 = 读数高 = DARK                            */
 /* ==================================================================== */
-#define LIGHT_ADC_FULL_SCALE            4095u           /* 12 bit */
 #define LIGHT_ADC_SAMPLES               8u              /* 多次取样求算术平均 */
-/* ADC EOC 轮询上限(防转换挂死): 超时样本丢弃, 全部超时按满量程(无光)处理, 不阻塞 */
+/* ADC EOC 轮询上限(防转换挂死): 超时样本丢弃; 全部超时 -> valid=false, 不得合成暗态 */
 #define LIGHT_ADC_EOC_GUARD             100000uL
 /* PB05 上电到首次转换的稳定等待, 覆盖分压 RC 与光敏器件响应 */
 #define LIGHT_SETTLE_MS                 100u
 #define LIGHT_IDLE_POWER_OFF            1               /* 1 = 非采样期 PB05 输出低 */
 
-/* 明暗阈值 + 滞回 (FD-002 §6.3)
- * !! 待标定: 以下为工程默认值, 不是需求给定值; 必须按 T-L3-03 实板标定后回填,
- *    回填前置 LIGHT_DARK_CALIBRATED = 1, 否则不得宣称"无光判定已验收"。
- *    标定方法: PB05 恒高, 在"预期最亮/预期最暗"各读 30 次均值, 取二者之间且
- *    偏离两端 >=2 倍噪声带的整数作为 ENTER, EXIT = ENTER - 100。
+/* 无光判据: 完全无光基准 1/3 (readme 修改点 7; FD-002 rev 4.0 §6.3)
+ *   dark  = valid && (uint32)3*mean_adc_code >= C_dark    (整数乘法, 边界相等为暗)
+ *   valid = adc_ok(samples_ok>0) && LIGHT_DARK_CALIBRATED
+ *   每笔独立判断, 无滞回/无历史暗态。
+ *
+ * C_dark = 完全遮光、与量产一致的供电/建立等待/取样次数下的实板实测有效均值码 (1..4095)。
+ * !! 未标定状态: LIGHT_DARK_CALIBRATED = 0 时 valid 恒为 false -> 升温分支不触发,
+ *    不得宣称"无光判定已验收", 也不得用满量程/旧默认 350/250/亮态读数冒充 C_dark。
+ *    标定记录须含: 板件标识、供电、遮光方式、原始样本分布(最小/最大/均值)、
+ *    取样次数与配置版本 (FD-002 §6.3; TD-002 T-L3-05/07)。
+ *    回填: 置 LIGHT_DARK_REF_CODE = 全暗实测均值(或稳健中位), LIGHT_DARK_CALIBRATED = 1。
+ * 注: 两个宏允许构建期覆盖 (-D), 供宿主机 harness 验证标定后的判据; 交付件用本文件值。
  */
-#define LIGHT_DARK_ENTER                350u
-#define LIGHT_DARK_EXIT                 250u
-#define LIGHT_DARK_HYSTERESIS_STEP      100u            /* EXIT = ENTER - STEP 的标定关系 */
-#define LIGHT_DARK_CALIBRATED           0               /* 0 = 默认未标定 (FWR-OPEN-1) */
+#ifndef LIGHT_DARK_REF_CODE
+#define LIGHT_DARK_REF_CODE             0u              /* 0 = 未标定占位 (标定后回填 1..4095) */
+#endif
+#ifndef LIGHT_DARK_CALIBRATED
+#define LIGHT_DARK_CALIBRATED           0               /* 0 = 未标定 (本轮无实板全暗数据, 未验收) */
+#endif
 
 /* ==================================================================== */
 /* 4. 上报判定 (readme 修改点 4; IC-002 §2; FD-002 §6.4)                 */

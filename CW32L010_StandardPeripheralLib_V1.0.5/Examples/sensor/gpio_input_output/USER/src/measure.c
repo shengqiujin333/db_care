@@ -120,7 +120,7 @@ static uint8_t report_retry = 0;
 static int16_t  s_prev_temp_x10 = 0;    /* 前一有效测量温度 (判定用) */
 static bool     s_have_prev     = false;/* 是否已有前一有效样本 */
 static uint16_t s_last_hum_x10  = 0;    /* 最近有效湿度 */
-static bool     s_last_dark     = false;/* 本周期光照判定结果 (送到 sensor_decide_report 的值) */
+static light_result_t s_light;          /* 本周期光照结构化结果 (判定与轨迹的唯一来源; T2) */
 static bool     s_sensor_ready  = false;/* 驱动/光照是否已初始化 */
 
 /* T1: UART1 调试轨迹状态 (只读快照, 不参与判定/发送) */
@@ -150,7 +150,6 @@ static bool measure_sample(void)
 {
     int16_t  t = 0;
     uint16_t h = 0;
-    bool     dark;
 
     if (!s_sensor_ready) {
         bsp_i2c_init();          /* 软 I2C 物理层/对象 */
@@ -159,8 +158,8 @@ static bool measure_sample(void)
         s_sensor_ready = true;
     }
 
-    dark = light_sample();                         /* 1) 光照: PB05 高 -> 稳定 -> ADC 均值 -> PB05 低 */
-    s_last_dark = dark;                            /* 本周期光照判定结果 (仅用于判定, 不影响是否上报的其它状态) */
+    /* 1) 光照: PB05 高 -> 稳定 -> ADC 均值 -> PB05 低; 结构化结果供判定与轨迹共用 */
+    s_light = light_sample();
 
     if (gxht40_measure(&t, &h) != GXHT40_OK) {     /* 2) 温湿度: 0xFD + 6B + 双字 CRC, 驱动内有界重试 */
         return false;
@@ -187,7 +186,7 @@ uint16_t temperature_process(void)
 
     if (measure_sample()) {
         uint8_t rep = sensor_decide_report(s_prev_temp_x10, s_have_prev,
-                                           tempvalue, s_last_dark) ? 1u : 0u;
+                                           tempvalue, s_light.dark) ? 1u : 0u;
         if (rep != 0u) {
             report_req = 1u;
         }
@@ -208,8 +207,8 @@ uint16_t temperature_process(void)
 }
 
 /*
- * T1: 取出本采样周期的只读轨迹快照 (不改变任何业务状态)。
- * 光照统计字段由调用方 (main.c) 从 light 模块补齐。
+ * T1/T2: 取出本采样周期的只读轨迹快照 (不改变任何业务状态)。
+ * 光照字段来自本周期 light_result_t (s_light), 与判定使用同一份数据。
  */
 uint8_t sensor_trace_fetch(debug_trace_sample_t *out)
 {
@@ -221,12 +220,12 @@ uint8_t sensor_trace_fetch(debug_trace_sample_t *out)
     out->tick          = (uint32_t)SENSOR_SAMPLE_TICKS;
     out->prev_temp_x10 = s_prev_temp_x10;
     out->have_prev     = s_have_prev ? 1u : 0u;
-    out->light_valid   = 0u;        /* 由 main.c 从 light 模块补齐 */
-    out->light_ok      = 0u;
-    out->light_min     = 0u;
-    out->light_max     = 0u;
-    out->light_mean    = 0u;
-    out->light_dark    = s_last_dark ? 1u : 0u;
+    out->light_valid   = s_light.valid ? 1u : 0u;
+    out->light_ok      = s_light.samples_ok;
+    out->light_min     = s_light.code_min;
+    out->light_max     = s_light.code_max;
+    out->light_mean    = s_light.mean_adc_code;
+    out->light_dark    = s_light.dark ? 1u : 0u;
     out->temp_x10      = s_trace_temp_x10;
     out->hum_x10       = s_trace_hum_x10;
     out->sample_ok     = s_trace_sample_ok;

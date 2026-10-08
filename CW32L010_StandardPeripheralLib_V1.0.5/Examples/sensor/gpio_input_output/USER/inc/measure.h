@@ -25,9 +25,9 @@ void send_data_to_gateway(void);
 void go_to_sleep(void);
 
 /*
- * 取出本采样周期的调试轨迹状态 (T1; 只读, 不改变任何业务状态)。
+ * 取出本采样周期的调试轨迹状态 (T1/T2; 只读, 不改变任何业务状态)。
  * 返回 1 = 本周期存在待发布轨迹并已填充/清除 pending; 返回 0 = 无 (不修改 *out)。
- * 光照统计字段 (light_*) 由调用方从 light 模块补齐 (measure.c 只填采样/判定/发送状态)。
+ * 光照字段来自 measure.c 内本周期 light_result_t (与判定同一份数据; T2)。
  */
 uint8_t sensor_trace_fetch(debug_trace_sample_t *out);
 

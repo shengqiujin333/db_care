@@ -22,6 +22,7 @@
 #include <string.h>
 #include "measure.h"
 #include "gxht40.h"
+#include "light.h"
 #include "sensor_config.h"
 #include "cw32l010_gpio.h"
 #include "cw32l010_sysctrl.h"
@@ -77,7 +78,7 @@ void encode_frame10(uint8_t u[10], int16_t t, uint16_t h, uint8_t o[10])
 static gxht40_status_t g_status = GXHT40_OK;
 static int16_t         g_t      = 0;
 static uint16_t        g_h      = 0;
-static bool            g_dark   = false;
+static light_result_t  g_light;              /* T2: light_sample() 返回结构化结果 */
 static char            g_order[16];
 static int             g_ordn   = 0;
 
@@ -95,11 +96,11 @@ gxht40_status_t gxht40_measure(int16_t *t, uint16_t *h)
 
 void gxht40_init(i2c_dev *dev) { (void)dev; }
 
-bool light_sample(void)
+light_result_t light_sample(void)
 {
     if (g_ordn < 14) g_order[g_ordn++] = 'L';
     g_order[g_ordn] = '\0';
-    return g_dark;
+    return g_light;
 }
 
 void light_init(void) { }
@@ -113,7 +114,15 @@ static int pass, fail;
 
 static void cycle(gxht40_status_t st, int16_t t, uint16_t h, bool dark)
 {
-    g_status = st; g_t = t; g_h = h; g_dark = dark;
+    g_status = st; g_t = t; g_h = h;
+    /* 流程测试只关心 dark 门控; 把一份自洽的光照结果整体置为对应状态 */
+    g_light.valid         = dark;
+    g_light.adc_ok        = true;
+    g_light.samples_ok    = 8u;
+    g_light.mean_adc_code = dark ? 2000u : 100u;
+    g_light.code_min      = g_light.mean_adc_code;
+    g_light.code_max      = g_light.mean_adc_code;
+    g_light.dark          = dark;
     g_ordn = 0; g_order[0] = '\0';
     sample_flag = 1u;
     (void)temperature_process();

@@ -1,14 +1,43 @@
-# 构建证据（BUILD-002 rev 4.0）
+# 构建证据（BUILD-002 rev 4.1）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run7 任务队列 **ITEM-001（T1：UART1 调试串口初始化与可观测打印）**
-依据：FD-002 **rev 4.0**、FWR-002 rev 4.0、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0、`artifacts/firmware_tasks.yaml`
-受测提交：`ae74cf2`（RESUME_SYNC 接手时工作区干净）+ 本轮修复工作区改动（无提交）；上一轮实现 `fe7acb4` 经 EV-006 判 TEST_FAIL（2 缺陷），本轮修复
-测试环境：本轮执行 GNU 交叉编译（`arm-none-eabi-gcc 10.3.1 20210824`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`）；`mdk_flash` 与串口采集**不在本调用工具列表内**，故不含下载/回读或 COM42 轨迹结论。
+本轮范围：run7 **ITEM-002（T2：光照采集—完全无光基准 1/3 判据与有效性）**；前一项 ITEM-001（UART1 调试串口）已 TEST_PASS
+依据：FD-002 rev 4.0、FWR-002 rev 4.0、RTA-002 rev 4.0、IC-002 v3.0、TD-002 rev 4.0、`artifacts/firmware_tasks.yaml`
+受测提交：`2c0da5f` + 本轮 T2 改动（无提交）
+测试环境：GNU 交叉编译（`arm-none-eabi-gcc 10.3.1`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`）；`mdk_flash`/串口**不在本调用工具列表内** → 不含部署/回读与实际光线标定结论（见文末阻塞说明）。
 
 ---
 
-## T1（run7 ITEM-001）：交叉编译 + Keil MDK 构建（本轮实际执行）
+## T2（run7 ITEM-002）：交叉编译 + Keil MDK 构建（本轮实际执行）
+
+```
+$ sh gcc/build.sh
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       31952 B        64 KB     48.75%
+             RAM:        1736 B         4 KB     42.38%
+(exit 0；27 条告警，均为既有厂商库/既有代码，无一条指向 light.c/fw_core.c/measure.c/main.c 本轮改动)
+
+$ mdk_build {"action":"rebuild"}
+*** Using Compiler 'V6.24' ...
+compiling light.c / fw_core.c / measure.c / debug_trace.c ...
+Program Size: Code=13976 RO-data=620 RW-data=76 ZI-data=1652
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+（唯一告警为 main.c 既有空体 `while(k--);`）
+
+$ md5sum MDK/output/exe/Project.axf
+3ee3830814ec61384785998556a4461e  MDK/output/exe/Project.axf
+```
+
+- 相对 T1（FLASH 32,020 B / Code=14048）：FLASH **31,952 B**、Code **13,976**（−72/−72 B，删滞回/回退并改用结构化结果）。
+- 本提交**未标定**：`LIGHT_DARK_CALIBRATED=0`、`LIGHT_DARK_REF_CODE=0`（占位），属设计允许的中间状态，**不得**当作无光判定已验收。
+- **未执行**：`mdk_flash`（部署/回读校验）与 COM42 采集 → 全暗基准 `C_dark` 实板标定与三态观测未执行（本项返回 BLOCKED 的原因）。
+- 工具在仓库根产生的 `build.log` 已读入本证据后删除。
+
+---
+
+# 历史：本轮 run7 T1（ITEM-001 UART1 调试串口）
+
+## T1（run7 ITEM-001）：交叉编译 + Keil MDK 构建（已 TEST_PASS，EV-007）
 
 ### 1. GNU 交叉编译（`gcc/build.sh`）
 

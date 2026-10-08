@@ -1,34 +1,23 @@
 /*
- * light.c - 光照通路 (readme 修改点 2; FD-002 §2.3/§3.1/§6.3/§10)
+ * light.c - 光照通路 (readme 修改点 2/7; FD-002 rev 4.0 §2.3/§3.1/§6.3/§10)
  *
  * 引脚所有权 (FD-002 §11.4): PB04 只在本文件被配置为模拟输入(AIN11),
  * PB05 只在本文件被配置为输出; 其它模块不得再配置 PB04/PB05/PB06。
  *
  * 低功耗 (FD-002 §11.5): 非采样期 PB05 = 低(分压无电流), ADC 使能位关闭。
+ *
+ * T2 (rev 4.0): 结果改为结构化 light_result_t{valid,adc_ok,samples_ok,mean,min,max,dark}；
+ *   无光判据 = 完全无光基准 1/3 (light_is_dark)；删除旧 350/250 滞回与满量程回退。
+ *   未标定 (LIGHT_DARK_CALIBRATED=0) 时 valid=false -> 不得判暗。
  */
 #include "light.h"
 #include "sensor_config.h"
-#include "fw_core.h"      /* 纯滞回判定 light_code_is_dark (ITEM-005) */
+#include "fw_core.h"      /* 纯逻辑: light_is_dark (FD-002 §6.3) */
 #include "delay.h"
 
 #include "cw32l010_gpio.h"
 #include "cw32l010_adc.h"
 #include "cw32l010_sysctrl.h"
-
-static bool     s_dark_state = false;   /* 上电默认 LIT; 首个样本按进入阈值判定 */
-static uint16_t s_last_code  = 0u;
-
-/* T1: 最近一次采样的原始样本统计 (供 UART1 调试轨迹; 不参与判定) */
-static uint8_t  s_last_ok   = 0u;
-static uint16_t s_last_mean = 0u;
-static uint16_t s_last_min  = 0u;
-static uint16_t s_last_max  = 0u;
-
-void light_reset_state(void)
-{
-    s_dark_state = false;
-    s_last_code  = 0u;
-}
 
 /* ------------------------------------------------------------------ */
 /* ADC 通路                                                            */
@@ -69,7 +58,6 @@ void light_init(void)
     GPIO_Init(LIGHT_ADC_PORT, &gpio);
 
     light_adc_config();
-    light_reset_state();
 }
 
 /* 单次 ADC 转换; 返回 false = 未在有限时间内完成 (不无限等待) */
@@ -89,14 +77,22 @@ static bool light_adc_read_once(uint16_t *out)
     return true;
 }
 
-bool light_sample(void)
+light_result_t light_sample(void)
 {
+    light_result_t r;
     uint32_t sum = 0u;
     uint8_t  i;
     uint8_t  ok = 0u;
-    uint16_t code;
     uint16_t vmin = 0u;
     uint16_t vmax = 0u;
+
+    r.valid         = false;
+    r.adc_ok        = false;
+    r.samples_ok    = 0u;
+    r.mean_adc_code = 0u;
+    r.code_min      = 0u;
+    r.code_max      = 0u;
+    r.dark          = false;
 
     /* 分压供电: PB05 = VDD, 等待 RC 建立与光敏器件响应 */
     GPIO_WritePin(LIGHT_POWER_PORT, LIGHT_POWER_PIN, GPIO_Pin_SET);
@@ -123,47 +119,21 @@ bool light_sample(void)
     GPIO_WritePin(LIGHT_POWER_PORT, LIGHT_POWER_PIN, GPIO_Pin_RESET);   /* 采样结束 PB05 低 */
 #endif
 
-    /* T1: 记录原始样本统计 (只读观测, 不改变判定) */
-    s_last_ok = ok;
-    if (ok == 0u) {
-        s_last_mean = 0u;
-        s_last_min  = 0u;
-        s_last_max  = 0u;
-        /* 全部转换超时: 保留既有满量程回退行为 (D-02 由 T2 修正为 valid=false) */
-        code = LIGHT_ADC_FULL_SCALE;
-    } else {
-        s_last_mean = (uint16_t)(sum / (uint32_t)ok);
-        s_last_min  = vmin;
-        s_last_max  = vmax;
-        code = s_last_mean;
+    /*
+     * 全部转换超时: adc_ok=false, 均值/极值保持 0, valid=false -> dark=false。
+     * 不得用满量程 4095 合成暗态 (FD-002 rev 4.0 §6.3 规则 1/5; TD-002 T-L3-04)。
+     */
+    r.samples_ok = ok;
+    r.adc_ok     = (ok > 0u);
+    if (r.adc_ok) {
+        r.mean_adc_code = (uint16_t)(sum / (uint32_t)ok);
+        r.code_min      = vmin;
+        r.code_max      = vmax;
     }
 
-    s_last_code  = code;
-    s_dark_state = light_code_is_dark(code, s_dark_state);
-    return s_dark_state;
-}
+    /* 有效性门禁: ADC 成功 且 全暗基准已标定 */
+    r.valid = r.adc_ok && (LIGHT_DARK_CALIBRATED != 0);
+    r.dark  = light_is_dark(r.mean_adc_code, r.valid, (uint16_t)LIGHT_DARK_REF_CODE);
 
-uint16_t light_last_code(void)
-{
-    return s_last_code;
-}
-
-uint8_t light_last_ok(void)
-{
-    return s_last_ok;
-}
-
-uint16_t light_last_mean(void)
-{
-    return s_last_mean;
-}
-
-uint16_t light_last_min(void)
-{
-    return s_last_min;
-}
-
-uint16_t light_last_max(void)
-{
-    return s_last_max;
+    return r;
 }
