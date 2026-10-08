@@ -1,15 +1,67 @@
-# 驱动测试证据（DRV-002 rev 5.2）
+# 驱动测试证据（DRV-002 rev 5.3）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复**（FWR-118 任何失败后完整重探两候选地址 + OBS-2 结果码一致性）
-依据：FD-002 rev 5.0（§6.6.3）、FWR-002 rev 5.0（FWR-118）、TD-002 rev 5.0（B18）；触发 `evidence/test.md` EV-009（TEST_FAIL 事实 2 与 OBS-2）
-受测实现：`USER/src/gxht40.c`（`gxht40_acquire` 双候选完整重探 + `gxht40_measure` 失败即清缓存 + 结果码一致性）
-测试载体：`test/host_gxht40_check.c`（60 项）、`test/build_test.sh`（146 项）、`test/host_sf_i2c_bus_check.c`（35 项）；另**只读复跑** tester 自有 harness 作信息性对照
-测试环境：宿主机 MinGW-w64 gcc 12.2.0（位级 mock I2C 总线/从机、mock MCU 影子头）；`mdk_flash`/串口不在本调用工具列表内。
+本轮范围：run8 **ITEM-002 复验修复二**（EV-011 交回实现：E1 主机拉低/回读自检 + SDA/SCL 角色对调探测）
+依据：FD-002 rev 5.0（§6.6.1/§6.6.3）、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-011（TEST_FAIL，§5 E1）
+受测实现：`USER/src/measure.c`（`sensor_io_diag_scan`、PA03 开漏输出、互换角色影子设备）、`USER/src/debug_trace.c`（`debug_trace_iotest`）、`USER/src/main.c`（上电接线顺序）
+测试载体：`test/build_test.sh`（155 项）、`test/host_gxht40_check.c`（60）、`test/host_sf_i2c_bus_check.c`（35）；另**只读复跑** tester 自有 harness
+测试环境：宿主机 MinGW-w64 gcc 12.2.0（带**开漏回读模型**的 mock GPIO）；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## ITEM-002 复验修复：自检与独立资产对照（本轮实际执行）
+## ITEM-002 复验修复二：自检与独立资产对照（本轮实际执行）
+
+### 1. 新增观测量（E1）与自检原始 stdout（节选）
+
+```
+$ sh test/build_test.sh
+[1/4] 40 passed  [2/4] 39 passed  [3/4] 37 passed  [4/4a] 19 passed  [4/4b] 20 passed   (0 failed)
+$ ./host_gxht40_check     ->  60 passed / 0 failed
+$ ./host_sf_i2c_bus_check ->  35 passed / 0 failed
+
+[12] E1 上电 I/O 自检: 主机拉低/回读 + 释放 + 角色对调 (E1)
+  PASS  I/O 自检完成并填充结果
+  PASS  主机能把 SDA(PA04) 与 SCL(PA03) 拉低并回读为 0 (开漏模型)
+  PASS  释放后两线回读为高 (idle=3)
+  PASS  mock 总线无器件: 角色对调后仍无 ACK
+  PASS  负对照: PA03 回读恒高时 scl_lo=1 而 sda_lo=0 (能区分主机拉不低)
+
+[T11] IOTEST 上电 I/O 自检行 (E1): 格式/预算
+    PASS  典型: 拉低成功/释放回高/对调后无 ACK -> swap=none
+        |IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    PASS  最坏: 拉不低 + 对调后两候选均 ACK -> swap=44,45 (大写 hex)
+        |IOTEST sda_lo=1 scl_lo=1 idle=3 swap=44,45
+    PASS  worst-case IOTEST line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes
+        len(worst IOTEST)=44 bytes
+    PASS  IOTEST 仅整数与大写十六进制
+```
+
+### 2. 负对照说明（为何该自检能定罪“主机拉不低”）
+
+mock GPIO 按开漏模型实现（外部拉低→0；开漏输出且锁存为0→0；释放/输入→1），并把“回读恒高”作为可注入故障；注入后 `scl_lo=1` 而 `sda_lo=0`，证明该字段确实反映驱动器行为而不是常量。
+
+### 3. tester 自有 harness 只读复跑（未修改其文件；结论权归 tester）
+
+| 资产 | 结果 |
+|---|---|
+| `test/host_gxht40_verify_ev.c` | **93 passed / 0 failed**（含其已按上轮交接更新的 OBS-2 新语义）|
+| `test/host_diag_probe_verify_ev.c` | **85 passed / 0 failed** |
+| `test/host_sf_i2c_verify_ev.c` / `test/host_diag_line_verify_ev.c` | 51/51、36/36（上轮已复跑，本轮未涉及其被测文件）|
+
+### 4. 本轮自检发现并修复的实现缺陷
+
+| 缺陷 | 发现方式 | 修复 |
+|---|---|---|
+| `sensor_io_diag_scan` 首版位于 `#if SENSOR_DEBUG_UART` 之外，`=0` 时与空实现重定义，并引用被条件编译剔除的 `i2c0_scl_pin_read_level`/`i2c0_swap_dev` | `-DSENSOR_DEBUG_UART=0` 逐 TU 编译复核（`measure.c` 报 redefinition/undeclared） | 把真实实现移入 `#if SENSOR_DEBUG_UART` 块；复测 `measure.c`/`debug_trace.c` 在 `=0` 下 0 告警 0 错误 |
+
+### 5. 未取得 / 不声称
+
+- `IOTEST` 的**实板读数**与 `q=1` 均未在本轮取得（本调用无 `mdk_flash`/串口）。本轮交付的是“可复跑的判别观测量”，其判读表见 `artifacts/firmware_implementation.md` 本轮节 §2。
+- 不变的不变量（未改且逐项回归通过）：双字 CRC-8、有效域、读重读/整帧重测上限、命令白名单、失败不写输出/不上报/不推进前值、`BUS`/`S`/`G` 行字面与字段。
+
+---
+
+# 历史：ITEM-002 复验修复一（FWR-118 + OBS-2）
 
 ### 1. 修复内容（对应 EV-009 事实 2 与 OBS-2）
 

@@ -1,14 +1,52 @@
-# 构建证据（BUILD-002 rev 5.2）
+# 构建证据（BUILD-002 rev 5.3）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复**（FWR-118 任何失败后完整重探两候选地址 + OBS-2 结果码一致性）；ITEM-001 已 TEST_PASS，保持回归
-依据：FD-002 rev 5.0、FWR-002 rev 5.0、RTA-002 rev 5.0、IC-002 v3.0、TD-002 rev 5.0；触发 `evidence/test.md` EV-009（TEST_FAIL 事实 2）
-受测提交：`3305b68`（RESUME_SYNC 接手时工作区干净）+ 本轮修复
-测试环境：GNU 交叉编译（`arm-none-eabi-gcc`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`，本调用唯一设备工具授权）；`mdk_flash`/串口**不在本调用工具列表内** → 不包含实板 `q=1` 复测。
+本轮范围：run8 **ITEM-002 复验修复二**（EV-011 交回实现：新增上电 `IOTEST` 主机拉低/回读自检 + SDA/SCL 角色对调探测）；ITEM-001 已 TEST_PASS
+依据：FD-002 rev 5.0、FWR-002 rev 5.0、TD-002 rev 5.0；触发 `evidence/test.md` EV-011（TEST_FAIL，§5 E1）
+受测提交：`001cd52`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
+测试环境：GNU 交叉编译（`arm-none-eabi-gcc`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`，本调用唯一设备工具授权）；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## ITEM-002 复验修复：交叉编译 + Keil MDK 构建（本轮实际执行）
+## ITEM-002 复验修复二：交叉编译 + Keil MDK 构建（本轮实际执行）
+
+```
+$ sh gcc/build.sh
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       33564 B        64 KB     51.21%
+             RAM:        1808 B         4 KB     44.14%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+(exit 0；告警 27 条，均为既有类别；无一条指向本轮 measure.c/debug_trace.c 新增代码)
+
+$ md5sum gcc/obj/sensor_fw.elf gcc/obj/sensor_fw.bin
+c166e26384dffae6968acdf4d9191ec1  gcc/obj/sensor_fw.elf
+fb6196f666dcb4e658a9a8c63ee3365c  gcc/obj/sensor_fw.bin
+
+$ mdk_build {"action":"rebuild"}   (授权工具，经 hardware-verification MCP/CLI)
+*** Using Compiler 'V6.24' ...
+../USER/src/main.c(224): warning: while loop has empty body [-Wempty-body]   (既有 `while(k--);`)
+Program Size: Code=17808 RO-data=636 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+
+$ md5sum MDK/output/exe/Project.axf
+bcfc14dc27ee9afeb02df2e0e7b4b586  MDK/output/exe/Project.axf
+
+$ arm-none-eabi-strings MDK/output/exe/Project.axf | grep -E "IOTEST|swap=|sda_lo"
+@IOTEST sda_lo=
+ swap=
+(证明 IOTEST 诊断行确实编入本轮交付件)
+
+$ arm-none-eabi-gcc -mcpu=cortex-m0plus -O1 -Wall -Wextra -DSENSOR_DEBUG_UART=0 -c ... USER/src/{measure,debug_trace,main}.c
+(measure.c / debug_trace.c：0 告警 0 错误; main.c：仅既有告警)
+```
+
+- 相对上一轮（GNU 33,076 B / RAM 1,768 B；Keil Code=16,572，axf md5 `e309bac2…`）：GNU **+488 B / +40 B**（新增 `sensor_io_diag_scan` 204 B、`debug_trace_iotest` 168 B、PA03 开漏输出/影子设备等；`i2c0_swap_dev` 占 40 B RW-data）；Keil Code **+1,236 B**（同一批新增代码，ARMCLANG 不合并等价路径，故增量大于 GNU）；RAM/Flash 均在预算内（Code+RO ≈ 18.4 KB / 64 KB，RAM ≈ 1.79 KB / 4 KB）。
+- **未执行**：`mdk_flash` 与 COM42 采集（本调用工具列表仅含 `mdk_build`）⇒ `IOTEST` 实板读数、`q=1` 复判均未取得，由嵌入式测试能力执行。
+- 工具在仓库根产生的 `build*.log` 已读入本证据后删除（`.gitignore` 的 `/build*.log` 覆盖）。
+
+---
+
+# 历史：ITEM-002 复验修复一（FWR-118 + OBS-2）
 
 ```
 $ sh gcc/build.sh

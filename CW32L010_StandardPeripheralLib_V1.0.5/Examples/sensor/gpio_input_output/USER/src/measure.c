@@ -83,6 +83,15 @@ void i2c0_sda_pin_dir_output(void)
     GPIO_Init(CW_GPIOA, &GPIO_InitStruct);
 }
 
+/* PA03 开漏输出 (仅上电 I/O 自检的互换角色影子设备使用) */
+void i2c0_scl_pin_dir_output(void)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pins = GPIO_PIN_3;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+    GPIO_Init(CW_GPIOA, &GPIO_InitStruct);
+}
+
 static i2c_dev i2c0_dev = {
     .name                    = "i2c0",
     .speed                   = 100,
@@ -94,6 +103,25 @@ static i2c_dev i2c0_dev = {
     .port.sda_pin_dir_input  = i2c0_sda_pin_dir_input,
     .port.sda_pin_dir_output = i2c0_sda_pin_dir_output,
 };
+
+/*
+ * E1 互换角色影子设备 (仅上电自检): 把 SDA/SCL 的引脚角色对调,
+ * 用于区分「板级装配把 SDA/SCL 接反」(网表基准为 PA04=SDA / PA03=SCL)。
+ * 不注册进 i2c_obj_find 列表, 只供 i2c_probe_addr() 直接使用。
+ */
+#if SENSOR_DEBUG_UART
+static i2c_dev i2c0_swap_dev = {
+    .name                    = "i2c0swap",
+    .speed                   = 100,
+    .port.sda_pin_out_low    = i2c0_scl_pin_out_low,     /* 影子 SDA = PA03 */
+    .port.sda_pin_out_high   = i2c0_scl_pin_out_high,
+    .port.scl_pin_out_low    = i2c0_sda_pin_out_low,     /* 影子 SCL = PA04 */
+    .port.scl_pin_out_high   = i2c0_sda_pin_out_high,
+    .port.sda_pin_read_level = i2c0_scl_pin_read_level,
+    .port.sda_pin_dir_input  = i2c0_scl_pin_dir_input,
+    .port.sda_pin_dir_output = i2c0_scl_pin_dir_output,
+};
+#endif
 
 static void i2c0_phy_init(void)
 {
@@ -125,11 +153,78 @@ void bsp_i2c_init(void)
 }
 
 /*
- * 上电总线身份诊断 (FWR-116; 只观测): 空闲电平 + 0x08..0x77 有界地址探测。
- * 只发地址写字节 (i2c_probe_addr), 不写任何器件命令、不读数据; 每个地址后释放总线。
- * 不修改采样/判定/上报/冻结状态。SENSOR_DEBUG_UART=0 时无扫描、无 I2C 探测依赖。
+ * 上电 I/O 自检 (E1; 交回实现的最小区分实验):
+ *   ① 主机能否把 SDA/SCL 真正拉低并回读为 0;
+ *   ② 释放后能否回到高;
+ *   ③ SDA/SCL 引脚角色对调后两个候选地址是否有 ACK (区分装配接反)。
+ * 只做电平驱动与只发地址字节的探测 (不发命令/不读数据), 可重复; 不改变采样/判定/上报。
+ * 电平驱动顺序保证不产生 START/STOP: 先 SCL 低 再 SDA 低; 释放时先 SDA 高 再 SCL 高。
+ * SENSOR_DEBUG_UART=0 时为编译期空实现 (不读引脚/不发探测)。
  */
 #if SENSOR_DEBUG_UART
+uint8_t sensor_io_diag_scan(debug_trace_iotest_t *out)
+{
+    uint8_t i;
+    static const uint8_t cand[2] = { GXHT40_ADDR_7BIT_A, GXHT40_ADDR_7BIT_B };
+
+    if (out == NULL) {
+        return 0u;
+    }
+
+    bsp_i2c_init();                 /* 幂等: 只注册一次物理层/对象 */
+    if (temp_ptr == NULL) {
+        return 0u;
+    }
+
+    out->sda_lo     = 1u;           /* 保守缺省: 尚未证明能拉低 */
+    out->scl_lo     = 1u;
+    out->idle       = 0u;
+    out->swap_count = 0u;
+    out->swap_addr[0] = 0u;
+    out->swap_addr[1] = 0u;
+
+    /* ① 把两线拉低 (先 SCL 低再 SDA 低: SDA 下降沿落在 SCL 为低时, 不会形成 START) */
+    i2c0_scl_pin_dir_output();
+    i2c0_sda_pin_dir_output();
+    i2c0_scl_pin_out_low();
+    i2c0_sda_pin_out_low();
+    delay_ms(SENSOR_BUS_DIAG_IDLE_SETTLE_MS);
+    out->sda_lo = i2c0_sda_pin_read_level();   /* 0 = 主机确实把 PA04 拉低 */
+    out->scl_lo = i2c0_scl_pin_read_level();   /* 0 = 主机确实把 PA03 拉低 */
+
+    /* ② 先释放 SDA 再释放 SCL (SDA 上升沿落在 SCL 为低时, 不会形成 STOP), 回读空闲电平 */
+    i2c0_sda_pin_out_high();
+    i2c0_scl_pin_out_high();
+    delay_ms(SENSOR_BUS_DIAG_IDLE_SETTLE_MS);
+    if (i2c0_scl_pin_read_level() != 0u) {
+        out->idle |= 0x01u;
+    }
+    if (i2c0_sda_pin_read_level() != 0u) {
+        out->idle |= 0x02u;
+    }
+
+    /* ③ 角色对调探测 (仅两个候选地址): 命中即说明板级装配把两线接反 */
+    for (i = 0u; i < 2u; i++) {
+        if (i2c_probe_addr(&i2c0_swap_dev, (uint8_t)(cand[i] << 1)) == SF_I2C_SUCCESS) {
+            out->swap_addr[out->swap_count] = cand[i];
+            out->swap_count++;
+        }
+    }
+
+    /* ④ 恢复本工程的引脚角色并释放, 供随后的 BUS 扫描使用 */
+    i2c0_sda_pin_dir_output();
+    i2c0_scl_pin_dir_output();
+    i2c0_sda_pin_out_high();
+    i2c0_scl_pin_out_high();
+
+    return 1u;
+}
+
+/*
+ * 上电总线身份诊断 (FWR-116; 只观测): 空闲电平 + 0x08..0x77 有界地址探测。
+ * 只发地址写字节 (i2c_probe_addr), 不写任何器件命令、不读数据; 每个地址后释放总线。
+ * 不修改采样/判定/上报/冻结状态。
+ */
 uint8_t sensor_bus_diag_scan(debug_trace_bus_t *out)
 {
     uint16_t addr;
@@ -173,6 +268,12 @@ uint8_t sensor_bus_diag_scan(debug_trace_bus_t *out)
 }
 #else
 /* 调试关闭: 不扫描、不读取引脚、不发起任何 I2C 探测 */
+uint8_t sensor_io_diag_scan(debug_trace_iotest_t *out)
+{
+    (void)out;
+    return 0u;
+}
+
 uint8_t sensor_bus_diag_scan(debug_trace_bus_t *out)
 {
     (void)out;

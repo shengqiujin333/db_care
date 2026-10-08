@@ -321,6 +321,31 @@ int main(void)
     debug_trace_sample(&s);
     CHECK(strchr(cap, 'G') == NULL, "diag_valid=0 -> 只打印 S 行, 无 G 行");
 
+    printf("[T11] IOTEST 上电 I/O 自检行 (E1): 格式/预算\n");
+    cap_reset();
+    {
+        debug_trace_iotest_t io;
+        memset(&io, 0, sizeof(io));
+        io.sda_lo = 0u; io.scl_lo = 0u; io.idle = 3u; io.swap_count = 0u;
+        debug_trace_iotest(&io);
+        CHECK(strcmp(cap, "IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n") == 0,
+              "典型: 拉低成功/释放回高/对调后无 ACK -> swap=none");
+        printf("        |%s", cap);
+
+        cap_reset();
+        io.sda_lo = 1u; io.scl_lo = 1u; io.idle = 3u;
+        io.swap_count = 2u; io.swap_addr[0] = 0x44u; io.swap_addr[1] = 0x45u;
+        debug_trace_iotest(&io);
+        CHECK(strcmp(cap, "IOTEST sda_lo=1 scl_lo=1 idle=3 swap=44,45\r\n") == 0,
+              "最坏: 拉不低 + 对调后两候选均 ACK -> swap=44,45 (大写 hex)");
+        printf("        |%s", cap);
+        CHECK(strlen(cap) <= (size_t)SENSOR_DEBUG_UART_MAXLINE,
+              "worst-case IOTEST line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");
+        printf("        len(worst IOTEST)=%u bytes\n", (unsigned)strlen(cap));
+        CHECK(strchr(cap, '.') == NULL && strchr(cap, 'x') == NULL && strchr(cap, 'f') == NULL,
+              "IOTEST 仅整数与大写十六进制");
+    }
+
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
 }

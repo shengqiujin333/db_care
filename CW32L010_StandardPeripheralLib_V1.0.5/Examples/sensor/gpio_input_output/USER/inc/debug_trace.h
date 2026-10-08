@@ -60,6 +60,20 @@ typedef struct {
     uint8_t ack_addr[SENSOR_BUS_DIAG_MAX_ACK]; /* 收到 ACK 的 7bit 地址 */
 } debug_trace_bus_t;
 
+/*
+ * 上电 I/O 自检 (E1; 独立验证交回实现的最小区分实验):
+ *   sda_lo/scl_lo = 主机把线拉低时回读到的电平 (0 = 确实拉低成功, 1 = 拉不低);
+ *   idle          = 释放后回读 (bit0=SCL, bit1=SDA, 1=高);
+ *   swap*         = SDA/SCL 引脚角色对调后收到 ACK 的候选地址 (区分板级装配接反)。
+ */
+typedef struct {
+    uint8_t sda_lo;         /* 拉低 PA04(SDA) 时的回读电平 (0 = 拉低成功) */
+    uint8_t scl_lo;         /* 拉低 PA03(SCL) 时的回读电平 (0 = 拉低成功) */
+    uint8_t idle;           /* 释放两线后的回读位掩码 */
+    uint8_t swap_count;     /* 角色对调后收到 ACK 的候选地址数 (0..2) */
+    uint8_t swap_addr[2];   /* 角色对调后收到 ACK 的 7bit 地址 */
+} debug_trace_iotest_t;
+
 #if SENSOR_DEBUG_UART
 
 /* 上电横幅: 固件标识 + 芯片 UID 前 4 字节 + 复位来源 + 串口参数, 并打开 UART1 */
@@ -67,6 +81,9 @@ void debug_trace_boot(const uint8_t *uid, uint32_t reset_flags);
 
 /* 打印一条 BUS 上电总线诊断行 (仅在上电扫描完成后调用一次) */
 void debug_trace_bus(const debug_trace_bus_t *b);
+
+/* 打印一条 IOTEST 上电 I/O 自检行 (仅在自检完成后调用一次) */
+void debug_trace_iotest(const debug_trace_iotest_t *t);
 
 /* 打印一个采样周期的 S 轨迹行 (要求 UART1 已由 debug_trace_boot 打开);
  * 当 s->diag_valid != 0 时在 S 行之后追加一行 G 失败诊断行 */
@@ -91,6 +108,11 @@ static inline void debug_trace_boot(const uint8_t *uid, uint32_t reset_flags)
 static inline void debug_trace_bus(const debug_trace_bus_t *b)
 {
     (void)b;
+}
+
+static inline void debug_trace_iotest(const debug_trace_iotest_t *t)
+{
+    (void)t;
 }
 
 static inline void debug_trace_sample(const debug_trace_sample_t *s)

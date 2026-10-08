@@ -40,6 +40,16 @@ uint8_t sensor_trace_fetch(debug_trace_sample_t *out);
  */
 uint8_t sensor_bus_diag_scan(debug_trace_bus_t *out);
 
+/*
+ * 上电 I/O 自检 (E1; 交回实现的区分实验)。
+ *   ① 主机把 SDA/SCL 拉低并回读 (sda_lo/scl_lo, 0 = 确实拉低);
+ *   ② 释放后回读空闲电平 (idle);
+ *   ③ SDA/SCL 角色对调后两个候选地址是否有 ACK (swap, 区分装配接反)。
+ * 只做电平驱动与只发地址字节的探测; 不改变采样/判定/上报/冻结状态。
+ * 返回 1 = 已填充; 0 = 无法进行。
+ */
+uint8_t sensor_io_diag_scan(debug_trace_iotest_t *out);
+
 /* 上报调度状态 (FD-002 §6.4) */
 extern uint8_t report_req;
 #endif /* MEASURE_H_ */

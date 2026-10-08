@@ -213,6 +213,13 @@ int32_t main(void)
 	/* T1 (FWR-116): 上电总线身份诊断 (空闲电平 + 0x08..0x77 有界地址探测)。
 	 * 在横幅之后、任何 I2C 事务之前执行一次; 只发地址字节, 不写命令/不读数据。 */
 	{
+		/* E1 上电 I/O 自检 (拉低/回读 + 释放 + 角色对调探测): 先于任何 I2C 事务 */
+		debug_trace_iotest_t io;
+		if (sensor_io_diag_scan(&io) != 0u) {
+			debug_trace_iotest(&io);
+		}
+	}
+	{
 		debug_trace_bus_t bus;
 		if (sensor_bus_diag_scan(&bus) != 0u) {
 			debug_trace_bus(&bus);

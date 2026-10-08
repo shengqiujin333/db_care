@@ -1,14 +1,58 @@
-# 固件实现（FWI-002 rev 5.2）
+# 固件实现（FWI-002 rev 5.3）
 
 状态：固件实现（firmware_engineer.firmware_implementation）
-本轮工作项：run8 Runtime 队列 **ITEM-002 复验修复**（T2：GXHT40 采集恢复 —— 修复 EV-009 判定的 FWR-118 重探义务不符，并裁决 OBS-2 结果码语义）；ITEM-001 已 TEST_PASS
-依据：FD-002 rev 5.0（§6.6.3 规则 4、§6.7）、FWR-002 rev 5.0（FWR-101/107/118）、TD-002 rev 5.0（B18/T-L0-13）、IC-002 v3.0；触发证据 `evidence/test.md` EV-009（TEST_FAIL）
-受测提交：`3305b68`（RESUME_SYNC 接手时工作区干净）+ 本轮修复改动
-本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口不在本调用工具列表内** → 实板 `q=1` 复测仍由嵌入式测试能力执行（不声称已取得）
+本轮工作项：run8 Runtime 队列 **ITEM-002 复验修复二**（EV-011 交回实现：按最小区分实验 **E1** 增加上电「主机拉低/回读」自检，并按同一思路扩展“SDA/SCL 角色对调”探测以切掉装配接反假设）；ITEM-001 已 TEST_PASS
+依据：FD-002 rev 5.0（§6.6.1 候选原因矩阵 / §6.6.3）、FWR-002 rev 5.0（FWR-101/107/116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-011（TEST_FAIL，§5 交接 E1）
+受测提交：`001cd52`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
+本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口不在本调用工具列表内** → IOTEST 的实板读数由嵌入式测试能力采集（本文件不声称已取得）
 
 ---
 
-# 本轮 run8：ITEM-002 复验修复（FWR-118 重探义务 + OBS-2 结果码一致性）
+# 本轮 run8：ITEM-002 复验修复二（E1 主机拉低/回读自检 + 互换角色探测）
+
+**触发**：EV-011（受测 md5 `e309bac2…` = 上一轮交付件）判 **TEST_FAIL**：核心可观察 0/10 周期 `q=1` 且稳定复现；该能力按规则“无 ACK/功能不符首先是 TEST_FAIL、未知根因不得据以证明硬件损坏或软件无可修”将本项交回实现，并列出竞争假设 H1–H11 与最小区分实验 E1–E4。其中 **E1 明文属实现能力**：在**任何 I²C 事务之前**增加一次「把 SDA/SCL 拉低→回读；释放→回读」的自检并打印，用于切分「主机拉不低」（H5）与「器件不应答」（H1/H2/H3）。
+
+## 1. 本轮实现
+
+| # | 内容 | 位置 |
+|---|---|---|
+| 1 | **新增上电 `IOTEST` 行**：`IOTEST sda_lo=<0\|1> scl_lo=<0\|1> idle=<0..3> swap=<addr7[,addr7]\|none>`。`sda_lo`/`scl_lo` = 把 PA04/PA03 按开漏拉低后回读（**0 = 主机确实拉低成功**，1 = 拉不低）；`idle` = 释放后回读位掩码（bit0=SCL、bit1=SDA）；`swap` = 把 SDA/SCL **角色对调**后候选 0x44/0x45 中收到 ACK 的地址（无则 `none`） | `USER/src/measure.c` (`sensor_io_diag_scan`)、`USER/src/debug_trace.c` (`debug_trace_iotest`)、`USER/inc/{measure,debug_trace}.h` |
+| 2 | 电平驱动顺序保证**不产生 START/STOP**（先 SCL 低再 SDA 低；释放先 SDA 高再 SCL 高），且整个自检在任何 I²C 事务之前完成（`main.c` 上电顺序：`BOOT` → `IOTEST` → `BUS`） | `USER/src/measure.c`、`USER/src/main.c` |
+| 3 | 互换角色影子设备（仅自检用，不注册进 `i2c_obj_find` 列表）；自检结束后恢复本工程引脚角色并释放 | `USER/src/measure.c` |
+| 4 | 仅 `SENSOR_DEBUG_UART=1` 编译；`=0` 时两个扫描均为编译期空实现 | 同上 |
+
+**未改动**：`BUS`/`S`/`G` 行的字面与字段、采样/判定/上报/冻结逻辑、GXHT40 校验与重试、总线恢复原语、433/BLE 布局。
+
+## 2. 判读表（交 tester/用户；本能力不代替采集）
+
+| IOTEST 实板读数 | 结论 | 后续 |
+|---|---|---|
+| `sda_lo=0 scl_lo=0` | 主机能真正拉低**并**释放两条线 ⇒ 地址位/时钟位真实出现在总线上 ⇒ 故障在**器件/接线侧**（H1 贴装/焊接、H2 损坏、H3 异常闩锁） | E2 真真实掉电复上电；E3 目视/通断/换件（用户动作） |
+| `sda_lo=1` 或 `scl_lo=1` | 主机**拉不低**该线（引脚驱动器/走线/配置层）⇒ **H5**；此时**不应把传感器判为故障件** | 板级/硬件定位（需位级手段） |
+| `swap=44`（或 `45`） | 板级装配把 SDA/SCL **接反**（与网表不符）⇒ **H4** 被证实 | 交硬件/装配核对；**不**用固件适配掩盖 |
+| `swap=none` | 未发现接反（与网表一致） | 按 `sda_lo`/`scl_lo` 分支继续 |
+| `idle≠3` | 释放后线未回高（缺上拉/短路） | 硬件排查（与 `BUS idle` 一致） |
+
+> `swap` 是本能力在 E1 请求之外的**同一思路扩展**（成本 ≈ 2 ms / 2 个地址），目的是一次构建就切掉原本需要万用表的装配接反假设；它**只报告事实**，不自动适配接反的板子。
+
+## 3. 验证（本轮实际执行）
+
+- **宿主自检合计 155 项 0 失败**：`test/build_test.sh` 40+**39**+**37**+19+20（measure-flow 新增 [12] 拉低/回读/释放/对调 4 项 + 负对照 1 项；debug-trace 新增 [T11] IOTEST 典型/最坏/预算/仅整数 4 项）；`test/host_gxht40_check.c` 60/60；`test/host_sf_i2c_bus_check.c` 35/35。负对照：把 PA03 模拟为“回读恒高”时 `scl_lo=1` 而 `sda_lo=0`，证明该字段能区分主机拉不低。
+- **tester 自有 harness 只读复跑**（未修改其文件）：`test/host_gxht40_verify_ev.c` **93/93**（含其已更新的 OBS-2 新语义）、`test/host_diag_probe_verify_ev.c` **85/85**。
+- **构建**：GNU 0 错误，FLASH **33,564 B** / RAM **1,808 B**（较上轮 33,076/1,768 为 +488/+40 B；27 条告警均为既有类别）；Keil `mdk_build rebuild` **0 Error / 1 既有告警**，`Code=17808 RO-data=636 RW-data=116 ZI-data=1676`，axf md5 **`bcfc14dc27ee9afeb02df2e0e7b4b586`**；镜像内含 `IOTEST sda_lo=` 等字符串。
+- **自检发现并修复的缺陷（本轮）**：新增的 `sensor_io_diag_scan` 首版误置于 `#if SENSOR_DEBUG_UART` 之外，导致 `SENSOR_DEBUG_UART=0` 时重定义/引用被条件编译剔除的符号——在 debug-off 编译复核中暴露并修正；修后 `measure.c`/`debug_trace.c`（`=0`）0 告警 0 错误。
+- 原始命令与 stdout：`evidence/build.md`、`evidence/driver_test.md`。
+
+## 4. 未取得与交接
+
+- **实板 `q=1` 仍未取得**：本调用无 `mdk_flash`/串口。本轮交付的是**可复跑的判别观测量**；IOTEST 实板读数与 E2/E3（用户现场动作）齐备后才能分支处置（H5 → 硬件侧；H1/H2/H3 → 现场/换件；H4 → 装配）。
+- **tester 需同步**：① TD-002 §4.4 与解析脚本需接受新行 `IOTEST`（`BUS` 字面不变，但位置由“横幅后第一行”变为第二行）；② `evidence/embedded_verify_gxht40_item002.py` 可添 `IOTEST` 字段域与自洽规则（`sda_lo/scl_lo/idle` 取值域、`swap` 为 `none` 或合法 7bit 地址）。
+- **设计能力需同步**：FD-002 §5.2 上电顺序与 §6.7 诊断行集合需补 `IOTEST`（本次为验证能力交回的 E1 需求所追加，设计正文尚未收录）。
+- **不属本能力**：E2（真实断电复上电）、E3（目视/通断/换件）、E4（示波器/逻辑分析仪）均为现场或仪器动作。
+
+---
+
+# 历史：ITEM-002 复验修复一（FWR-118 重探义务 + OBS-2 结果码一致性）
 
 **触发**：独立验证 EV-009 判 **TEST_FAIL**，两条事实中的**事实 2（可实现缺陷）**：FWR-118 / FD-002 §6.6.3(4) / TD-002 B18 要求在**任何**测量失败（含 CRC 错、量程无效）后，下一周期必须重探 0x44/0x45 **两个**候选地址并先做有界总线恢复；实测在**缓存地址 CRC 错**与**量程无效**后缓存地址仍被保留、下一周期只探 `0x88`（`0x8A=0`）且未调用恢复。同时 EV-009 §4.3 将 **OBS-2**（“恰好一个候选 ACK 而读不通”时 `s=2` 与 `a44=1` 互相矛盾）交本能力裁决。（事实 1：器件地址级不应答，属现场条件，非固件可修。）
 

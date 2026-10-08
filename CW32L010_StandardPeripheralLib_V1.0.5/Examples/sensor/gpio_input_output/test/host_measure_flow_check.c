@@ -37,9 +37,43 @@ extern i2c_dev *temp_ptr;      /* T1: 总线诊断与采样共用的 I2C 对象 
 /* ==================================================================== */
 /* MCU 层桩 (影子头声明的函数)                                            */
 /* ==================================================================== */
-void          GPIO_Init(GPIO_TypeDef *p, GPIO_InitTypeDef *q) { (void)p; (void)q; }
-void          GPIO_WritePin(GPIO_TypeDef *p, uint16_t pin, GPIO_PinState s) { (void)p; (void)pin; (void)s; }
-GPIO_PinState GPIO_ReadPin(GPIO_TypeDef *p, uint16_t pin) { (void)p; (void)pin; return GPIO_Pin_SET; }
+/* ---- MCU 层桩: 带开漏回读模型 (E1 上电 I/O 自检需要) ---- */
+static uint32_t g_pin_mode[16];
+static uint32_t g_pin_odr[16];
+static uint32_t g_pin_stuck_high[16];   /* 负对照: 模拟引脚无法被拉低/回读恒高 */
+
+void          GPIO_Init(GPIO_TypeDef *p, GPIO_InitTypeDef *q)
+{
+    int i;
+    (void)p;
+    for (i = 0; i < 16; i++) {
+        if ((q->Pins & (1u << i)) != 0u) g_pin_mode[i] = q->Mode;
+    }
+}
+
+void          GPIO_WritePin(GPIO_TypeDef *p, uint16_t pin, GPIO_PinState s)
+{
+    int i;
+    (void)p;
+    for (i = 0; i < 16; i++) {
+        if ((pin & (1u << i)) != 0u) g_pin_odr[i] = (s == GPIO_Pin_SET) ? 1u : 0u;
+    }
+}
+
+/* 开漏模型: 外部拉低 -> 0; 开漏输出且输出锁存为 0 -> 0; 其余(释放/上拉/输入) -> 1 */
+GPIO_PinState GPIO_ReadPin(GPIO_TypeDef *p, uint16_t pin)
+{
+    int i;
+    (void)p;
+    for (i = 0; i < 16; i++) {
+        if ((pin & (1u << i)) != 0u) {
+            if (g_pin_stuck_high[i] != 0u) return GPIO_Pin_SET;
+            if (g_pin_mode[i] == GPIO_MODE_OUTPUT_OD && g_pin_odr[i] == 0u) return GPIO_Pin_RESET;
+            return GPIO_Pin_SET;
+        }
+    }
+    return GPIO_Pin_SET;
+}
 void          UART_Init(UART_TypeDef *p, UART_InitTypeDef *q) { (void)p; (void)q; }
 void          SYSCTRL_AHBPeriphReset(uint32_t p, FunctionalState s) { (void)p; (void)s; }
 void          SYSCTRL_APBPeriphReset1(uint32_t p, FunctionalState s) { (void)p; (void)s; }
@@ -254,6 +288,24 @@ int main(void)
               "主机 mock 总线两线均高 (idle=3), 无器件应答 (ack_count=0)");
         CHECK(sensor_bus_diag_scan(&bus) == 1u, "可重复调用 (bsp_i2c_init 幂等, 不重复注册对象)");
         CHECK(temp_ptr == i2c_obj_find("i2c0"), "幂等初始化后仍能按名找到同一 I2C 对象");
+    }
+
+    printf("[12] E1 上电 I/O 自检: 主机拉低/回读 + 释放 + 角色对调 (E1)\n");
+    {
+        debug_trace_iotest_t io;
+        memset(&io, 0xFF, sizeof(io));
+        CHECK(sensor_io_diag_scan(&io) == 1u, "I/O 自检完成并填充结果");
+        CHECK(io.sda_lo == 0u && io.scl_lo == 0u,
+              "主机能把 SDA(PA04) 与 SCL(PA03) 拉低并回读为 0 (开漏模型)");
+        CHECK(io.idle == 0x03u, "释放后两线回读为高 (idle=3)");
+        CHECK(io.swap_count == 0u, "mock 总线无器件: 角色对调后仍无 ACK");
+
+        /* 负对照: 引脚无法拉低/回读恒高 (H5 形态) -> 字段必须区分得出来 */
+        g_pin_stuck_high[3] = 1u;
+        (void)sensor_io_diag_scan(&io);
+        CHECK(io.sda_lo == 0u && io.scl_lo == 1u,
+              "负对照: PA03 回读恒高时 scl_lo=1 而 sda_lo=0 (能区分主机拉不低)");
+        g_pin_stuck_high[3] = 0u;
     }
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);

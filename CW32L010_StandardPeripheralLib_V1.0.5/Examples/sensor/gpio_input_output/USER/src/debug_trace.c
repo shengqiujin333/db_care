@@ -242,6 +242,48 @@ void debug_trace_bus(const debug_trace_bus_t *b)
     trace_puts("\r\n");
 }
 
+void debug_trace_iotest(const debug_trace_iotest_t *t)
+{
+    uint8_t i;
+
+    if (t == NULL) {
+        return;
+    }
+    if (s_uart_open == 0u) {
+        trace_uart_open();
+    }
+    if (s_uart_open == 0u) {
+        return;
+    }
+
+    /*
+     * 上电 I/O 自检行 (E1; 字段固定):
+     *   IOTEST sda_lo=<0|1> scl_lo=<0|1> idle=<0..3> swap=<addr7[,addr7]|none>
+     * sda_lo/scl_lo = 主机把该线拉低时回读到的电平 (0 = 确实拉低成功);
+     * idle = 释放后回读位掩码 (bit0=SCL, bit1=SDA, 1=高);
+     * swap = SDA/SCL 角色对调后收到 ACK 的候选地址 (无则 none)。
+     * 只报告软件读到的事实, 不代表位级电气结论。
+     */
+    trace_puts("IOTEST sda_lo=");
+    trace_u32((uint32_t)((t->sda_lo != 0u) ? 1u : 0u), 1u);
+    trace_puts(" scl_lo=");
+    trace_u32((uint32_t)((t->scl_lo != 0u) ? 1u : 0u), 1u);
+    trace_puts(" idle=");
+    trace_u32((uint32_t)t->idle, 1u);
+    trace_puts(" swap=");
+    if (t->swap_count == 0u) {
+        trace_puts("none");
+    } else {
+        for (i = 0u; i < t->swap_count; i++) {
+            if (i != 0u) {
+                trace_putc(',');
+            }
+            trace_hex((uint32_t)t->swap_addr[i], 2u);
+        }
+    }
+    trace_puts("\r\n");
+}
+
 void debug_trace_sample(const debug_trace_sample_t *s)
 {
     uint8_t i;
@@ -320,6 +362,9 @@ void debug_trace_sample(const debug_trace_sample_t *s)
  *   BUS 行:
  *   "BUS"=3 " idle=3"=7 " scl=1"=6 " sda=1"=6 " ack="=5
  *   + 8 × "XX," = 24 (+ 截断标记 '+') + CRLF 2                      => 54
+ *   IOTEST 行:
+ *   "IOTEST"=6 " sda_lo=0"=9 " scl_lo=0"=9 " idle=3"=7 " swap="=6
+ *   + "44,45"=5 + CRLF 2                                            => 44
  *   G 行:
  *   "G"=1 " s=2"=4 " a44=0"=6 " a45=0"=6 " rd=5"=5 " at=3"=5
  *   " raw="=5 + 12 位 hex + CRLF 2                                   => 46
