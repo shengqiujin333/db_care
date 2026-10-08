@@ -22,11 +22,14 @@ evidence/embedded_verify_gxht40_item002.py
     C DOMAIN   q==1 => t in [-400,1250] 且 h in [0,1000]; q in {0,1}; H,V,D,r in {0,1}; s in {0,1,2}
     D GLINE    q==0 的 S 行之后紧随且仅有 1 条 G 行; q==1 的 S 行之后不得有 G 行
     E GCONS    G 行字段自洽: s in 1..5; a44/a45 in {0,1}; rd in 0..5; at in 1..3;
-               raw 为 12 位大写 hex 或 12 个 '-'; raw 为 hex 时用脚本内独立 CRC-8 复算两个字
+               raw 为 12 位大写 hex 或 12 个 '-'; raw 为 hex 时用脚本内独立 CRC-8 复算两个字;
+               s=2 <=> 两个候选地址均未 ACK, s in {3,4,5} => 至少一个候选 ACK
+               (EV-009 登记的 "s=2 与 a44=1 并存" 张力在 ITEM-002 修复后由 E 项作为硬门禁)
     F CADENCE  S 行的 k 单调不减且同一次采集内相邻样本 Δk==3 (采样周期 = 3 个 1 分钟节拍)
     G ADVANCE  q==0 的周期不得推进前一有效温度 (下一行 p 仍等于失败前的有效 t)
     H ACCEPT   本项核心: 统计连续 q==1 的周期数; 连续 >=3 记为 ACCEPT 达成
-    I OBS      登记性观察 (不作通过门槛): "s==2 与 a44==1 并存" 这类结果码/地址 ACK 张力
+    I OBS      登记性观察 (不作通过门槛): 采集内 G 行的结果码分布、BUS 行 ack 集合与
+               G 行 a44/a45 的一致性
 """
 import re
 import sys
@@ -190,10 +193,23 @@ def check_file(path):
                 crc8_gxht(b[0:2]) == b[2] and crc8_gxht(b[3:5]) == b[5],
                 "crc_t=%02X vs %02X, crc_h=%02X vs %02X"
                 % (crc8_gxht(b[0:2]), b[2], crc8_gxht(b[3:5]), b[5]))
-        # observation (not a gate): result code vs address-ACK facts
+        # result code vs address-ACK facts.  EV-009 registered the tension observed on the
+        # pre-fix build (s=2 printed together with a44=1, so a reader could not tell
+        # "sensor absent" from "sensor present but unreadable").  The ITEM-002 fix reconciles
+        # them, so both directions are now hard gates instead of an observation:
+        #   s=2 (NO_DEVICE)          => neither candidate may have ACKed in this period
+        #   s in {3,4,5} (IO/CRC/RANGE) => at least one candidate must have ACKed, because all
+        #                                 three can only be reached after an address ACK
         if s == 2 and (a44 == 1 or a45 == 1):
-            add("I OBS %s G@%d s=2 coexists with an ACKed address" % (tag, g["after"]), True,
+            add("E GCONS %s G@%d s=2 requires no ACKed address" % (tag, g["after"]), False,
                 "s=2 a44=%d a45=%d -> %r" % (a44, a45, g["_msg"]))
+        else:
+            add("E GCONS %s G@%d s=2 requires no ACKed address" % (tag, g["after"]), True)
+        if s in (3, 4, 5) and not (a44 == 1 or a45 == 1):
+            add("E GCONS %s G@%d s=%d requires an ACKed address" % (tag, g["after"], s), False,
+                "s=%d a44=%d a45=%d -> %r" % (s, a44, a45, g["_msg"]))
+        elif s in (3, 4, 5):
+            add("E GCONS %s G@%d s=%d requires an ACKed address" % (tag, g["after"], s), True)
 
     # ---- F/G: cadence and previous-value advancement ----
     for a, b in zip(periods, periods[1:]):

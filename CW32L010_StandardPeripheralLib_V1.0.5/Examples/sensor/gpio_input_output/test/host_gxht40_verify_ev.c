@@ -423,13 +423,15 @@ int main(void)
     CHECK(delay_count_of(GXHT40_POWER_ON_WAIT_MS) == 0, "tPU margin is NOT repeated on later accesses");
     CHECK(delay_count_of(GXHT40_MEASURE_WAIT_MS) == 1, "tMEAS waited exactly once again");
 
-    /* ---- T15: OBSERVATION - diagnostic snapshot when only one candidate ACKs ----
-     * Reproduces the corner a real board hits when the device answers its address but no
-     * read ever completes: the health words served on the UART then show the LAST attempt's
-     * result code together with the address-ACK facts, which a reader may find contradictory.
-     * Asserted here so that any future change to this reporting is detected and re-reviewed;
-     * it is recorded as an observation, not as a criterion for the current increment. */
-    printf("[T15] observation: diagnostic snapshot with exactly one ACKing candidate\n");
+    /* ---- T15: result code reconciles with the address-ACK facts (OBS-2 closed) ----
+     * EV-009 registered OBS-2: when a device answers its 7-bit address but no read ever
+     * completes, the health words used to show s=2 (NO_DEVICE) *together with* a44=1, i.e. a
+     * result code contradicting the address-ACK facts printed on the same line (a reader could
+     * not tell "sensor absent" from "sensor present but unreadable").
+     * The ITEM-002 fix reconciles the two: any ACKed candidate means "device present but not
+     * readable" -> GXHT40_ERR_IO.  BOTH directions are asserted, so the rule cannot be
+     * satisfied by unconditionally returning ERR_IO. */
+    printf("[T15] result code reconciles with the address-ACK facts (OBS-2)\n");
     gxht40_init(&dev); log_reset(); dev_addr7 = 0x44; read_nack_remaining = 99; set_frame(F_ROOM);
     slave_start_reset(); t = 0x1111; h = 0x2222;
     r = gxht40_measure(&t, &h);
@@ -443,10 +445,26 @@ int main(void)
                (unsigned)d.status, (unsigned)d.ack44, (unsigned)d.ack45,
                (unsigned)d.read_retry, (unsigned)d.attempt,
                d.raw_valid ? "<12 hex digits>" : "------------");
-        CHECK(d.status == (uint8_t)GXHT40_ERR_NO_DEVICE && d.ack44 == 1u && d.ack45 == 0u,
-              "reproduced: s=2 while a44=1 (result code is the last attempt's, not the dominant cause)");
+        CHECK(d.ack44 == 1u && d.ack45 == 0u, "corner established: exactly one candidate ACKed");
+        CHECK(r == GXHT40_ERR_IO && d.status == (uint8_t)GXHT40_ERR_IO,
+              "a candidate ACKed but no read completed -> ERR_IO, not NO_DEVICE (s/a44 no longer contradict)");
     }
     CHECK(t == 0x1111 && h == 0x2222, "outputs untouched in this corner too");
+
+    /* negative control: a genuinely absent device must still be reported as NO_DEVICE */
+    gxht40_init(&dev); log_reset(); dev_addr7 = 0; read_nack_remaining = 0; set_frame(F_ROOM);
+    slave_start_reset(); t = 0x3333; h = 0x4444;
+    r = gxht40_measure(&t, &h);
+    {
+        gxht40_diag_t d;
+        gxht40_diag_fetch(&d);
+        printf("    absent-device snapshot: status=%u ack44=%u ack45=%u\n",
+               (unsigned)d.status, (unsigned)d.ack44, (unsigned)d.ack45);
+        CHECK(d.ack44 == 0u && d.ack45 == 0u, "negative control corner: neither candidate ACKed");
+        CHECK(r == GXHT40_ERR_NO_DEVICE && d.status == (uint8_t)GXHT40_ERR_NO_DEVICE,
+              "no candidate ACKed -> NO_DEVICE still reported (rule is not 'always ERR_IO')");
+    }
+    CHECK(t == 0x3333 && h == 0x4444, "outputs untouched when the device is absent");
 
     /* ---- T17: FWR-118 conformance for the CRC-error and out-of-range failures ----
      * FWR-118 ("任一测量失败（含缓存地址读失败、CRC 错、读 NACK 用尽）后，下一周期必须重新探测
@@ -461,6 +479,8 @@ int main(void)
     CHECK(r == GXHT40_ERR_CRC, "CRC-error period is reported as GXHT40_ERR_CRC");
     CHECK(t == 0x1111 && h == 0x2222, "outputs NOT modified on the CRC-error period");
     printf("    cached address after the CRC failure = 0x%02X\n", (unsigned)gxht40_detected_addr7());
+    CHECK(gxht40_detected_addr7() == 0x00,
+          "FWR-118: the cached address is invalidated by a CRC failure (not only by a read failure)");
 
     log_reset(); set_frame(F_ROOM); slave_start_reset(); t = 0; h = 0;
     r = gxht40_measure(&t, &h);
@@ -470,12 +490,23 @@ int main(void)
     CHECK(r == GXHT40_OK && t == 250 && h == 500, "the next period reads normally again");
     CHECK(wr_addr_seen(0x88) && wr_addr_seen(0x8A),
           "FWR-118: the period after a CRC failure re-probes BOTH candidate addresses");
+    CHECK(ev_count_code(EV_RECOVCALL) >= 1,
+          "FWR-118: the re-probe after a CRC failure is preceded by the bounded bus recovery");
+    {
+        int ixrec = ev_index_of_code(EV_RECOVCALL, 1);
+        int ix88  = ev_index_of_tx_after(0x88, ixrec);
+        CHECK(ixrec >= 0 && ix88 > ixrec,
+              "FWR-118: recovery call precedes the first re-probe byte in the wire transcript");
+    }
 
     printf("[T17b] FWR-118: after a range failure the next period must re-probe both candidates\n");
     gxht40_init(&dev); log_reset(); dev_addr7 = 0x44; read_nack_remaining = 0; set_frame(F_RLOW);
     slave_start_reset(); t = 0x1111; h = 0x2222;
     r = gxht40_measure(&t, &h);
     CHECK(r == GXHT40_ERR_RANGE, "range-invalid period is reported as GXHT40_ERR_RANGE");
+    CHECK(t == 0x1111 && h == 0x2222, "outputs NOT modified on the range-invalid period");
+    CHECK(gxht40_detected_addr7() == 0x00,
+          "FWR-118: the cached address is invalidated by a range failure too");
 
     log_reset(); set_frame(F_ROOM); slave_start_reset(); t = 0; h = 0;
     r = gxht40_measure(&t, &h);
@@ -483,6 +514,8 @@ int main(void)
            wr_addr_seen(0x88), wr_addr_seen(0x8A), ev_count_code(EV_RECOVCALL));
     CHECK(wr_addr_seen(0x88) && wr_addr_seen(0x8A),
           "FWR-118: the period after a range failure re-probes BOTH candidate addresses");
+    CHECK(ev_count_code(EV_RECOVCALL) >= 1,
+          "FWR-118: the re-probe after a range failure is preceded by the bounded bus recovery");
 
     printf("[T16] command whitelist re-check over the whole run (%d commands)\n", all_cmd_n);
     CHECK(all_cmd_n > 0, "commands were actually exercised (non-empty set)");

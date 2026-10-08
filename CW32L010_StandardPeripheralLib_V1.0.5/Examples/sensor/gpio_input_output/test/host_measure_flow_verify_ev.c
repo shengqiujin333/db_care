@@ -56,6 +56,12 @@ void SYSCTRL_AHBPeriphClk_Enable(uint32_t p, FunctionalState s) { (void)p; (void
 void SYSCTRL_APBPeriphClk_Enable1(uint32_t p, FunctionalState s) { (void)p; (void)s; }
 void SYSCTRL_GotoDeepSleep(void) { deep_sleep_calls++; }
 void UART_Init(uint32_t u, UART_InitTypeDef *c) { (void)u; (void)c; uart_init_calls++; }
+/* delay_ms test double: the flow logic is what is under test here, not wall-clock timing,
+ * so the delay is counted instead of slept (the real timing primitives are exercised on
+ * the target and by the driver/light harnesses). */
+static int delay_ms_calls;
+static uint32_t delay_ms_total;
+void delay_ms(uint16_t ms) { delay_ms_calls++; delay_ms_total += ms; }
 
 /* ---------------- scripted sensor primitives ---------------- */
 #define MAXC 64
@@ -71,11 +77,20 @@ static int              light_calls, gxht_calls, gxht_init_calls, light_init_cal
 static int              send_calls;
 
 void light_init(void) { light_init_calls++; }
-bool light_sample(void)
+/* light.h contract since T2: light_sample() returns a structured light_result_t and
+ * measure.c consumes only .dark (the dark/valid derivation itself is verified separately
+ * by host_light_verify_ev.c, which links the REAL light.c).  The stub therefore scripts
+ * the dark flag directly and reports a coherent adc_ok/sample count. */
+light_result_t light_sample(void)
 {
+    light_result_t r;
     bool d = (cyc < scr_n) ? scr_dark[cyc] : false;
     light_calls++; order[order_n++] = 'L';
-    return d;
+    memset(&r, 0, sizeof(r));
+    r.adc_ok = true;
+    r.samples_ok = 8u;
+    r.dark = d;
+    return r;
 }
 void gxht40_init(i2c_dev *dev) { (void)dev; gxht_init_calls++; }
 gxht40_status_t gxht40_measure(int16_t *t, uint16_t *h)
@@ -89,6 +104,20 @@ gxht40_status_t gxht40_measure(int16_t *t, uint16_t *h)
     return st;
 }
 uint8_t gxht40_detected_addr7(void) { return 0x44u; }
+/* T1 (FWR-116): measure.c snapshots the driver's failure diagnostics on a failing cycle.
+ * Stub it with a deterministic snapshot; the REAL snapshot contents are verified by
+ * host_gxht40_verify_ev.c and host_diag_probe_verify_ev.c, which link the real driver. */
+void gxht40_diag_fetch(gxht40_diag_t *out)
+{
+    uint8_t i;
+    if (out == NULL) return;
+    memset(out, 0, sizeof(*out));
+    out->status = (uint8_t)GXHT40_ERR_IO;
+    out->read_retry = 3u;
+    out->attempt = 2u;
+    for (i = 0u; i < (uint8_t)GXHT40_RESULT_LEN; i++) out->raw[i] = (uint8_t)(0xA0u + i);
+    out->raw_valid = 1u;
+}
 /* ITEM-009 retired hall/OPTCFG: measure.c no longer references these, so no stubs needed. */
 uint8_t app_um2005C_send_data_timeout(uint8_t *d, uint16_t n, uint32_t to) { (void)d; (void)n; (void)to; send_calls++; return 1u; }
 
