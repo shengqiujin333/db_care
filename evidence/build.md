@@ -1,14 +1,46 @@
-# 构建证据（BUILD-002 rev 5.0）
+# 构建证据（BUILD-002 rev 5.1）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-001（T1：GXHT40 温湿度采集失败在真实目标上可诊断）**；已完成项（run7 T1 UART1 调试通道、T2 光照 1/3 判据）保持回归
+本轮范围：run8 **ITEM-002（T2：GXHT40 采集失败定位与按证据修复——有界总线恢复 + 强制双地址重探 + tPU 余量）**；ITEM-001（T1 诊断可观测）已 TEST_PASS，保持回归
 依据：FD-002 rev 5.0、FWR-002 rev 5.0、RTA-002 rev 5.0、IC-002 v3.0、TD-002 rev 5.0、`artifacts/firmware_tasks.yaml`
-受测提交：`1dd8e4b`（RESUME_SYNC 接手时工作区干净）+ 本轮 T1 改动（无提交）
-测试环境：GNU 交叉编译（`arm-none-eabi-gcc`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`，本调用唯一设备工具授权）；`mdk_flash`/串口**不在本调用工具列表内** → 不含部署与实际目标观测（见文末交接）。
+受测提交：`eac43eb`（RESUME_SYNC 接手时工作区干净）+ 本轮 T2 改动（无提交）
+测试环境：GNU 交叉编译（`arm-none-eabi-gcc`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`，本调用唯一设备工具授权）；`mdk_flash`/串口**不在本调用工具列表内** → 不包含实板 `q=1` 复测（见文末交接）。
 
 ---
 
-## T1（run8 ITEM-001）：GXHT40 失败诊断可观测 — 交叉编译 + Keil MDK 构建（本轮实际执行）
+## T2（run8 ITEM-002）：T2 修复后的交叉编译 + Keil MDK 构建（本轮实际执行）
+
+```
+$ sh gcc/build.sh
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       33016 B        64 KB     50.38%
+             RAM:        1768 B         4 KB     43.16%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+(exit 0；告警 27 条，均为既有类别，无一条指向本轮改动的 gxht40.c / sf_i2c.c 新增函数)
+
+$ md5sum gcc/obj/sensor_fw.elf gcc/obj/sensor_fw.bin
+b90246dd7bdf82047c38cc362fab46fe  gcc/obj/sensor_fw.elf
+11558a770775b92adb7191cca4496c04  gcc/obj/sensor_fw.bin   (33,104 B)
+
+$ mdk_build {"action":"rebuild"}   (授权工具，经 hardware-verification MCP/CLI)
+*** Using Compiler 'V6.24' ...
+compiling gxht40.c / sf_i2c.c / measure.c / debug_trace.c / main.c ...
+../USER/src/main.c(224): warning: while loop has empty body [-Wempty-body]   (既有 `while(k--);`)
+Program Size: Code=16488 RO-data=624 RW-data=76 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+
+$ md5sum MDK/output/exe/Project.axf
+196b0040d5378eaf2edcd6a3d5fdf9a5  MDK/output/exe/Project.axf
+```
+
+- 相对 ITEM-001（GNU 32,840 B / RAM 1,768 B；Keil Code=16,316 ZI=1,676）：GNU **+176 B**、Keil **Code +172 B**（新增 `i2c_bus_recover`（含 9 脉冲与 STOP）与 `gxht40_acquire` 重探分支、首访 tPU 余量）；RAM 不变。仍远在预算内。
+- **`SENSOR_DEBUG_UART=0` 编译路径复核**（`-mcpu=cortex-m0plus -O1 -Wall -Wextra -DSENSOR_DEBUG_UART=0`）：`gxht40.c` / `measure.c` **0 告警 0 错误**（本轮改动与调试开关无关）；`sf_i2c.c` 仅 `i2c_write_multi_byte`/`i2c_write_multi_byte_16bit` 的**改动前既有** `err may be used uninitialized`（未触碰的旧函数）。默认（ARM，`SENSOR_DEBUG_UART=1`）`gxht40.c` 0 告警。
+- **未执行**：`mdk_flash`（部署/回读校验）与 COM42 采集 —— 本调用工具列表仅含 `mdk_build`。T2 的实板验收（每周期 `S` 行 `q=1`、`t/h` 在有效域且与环境相符、上报时手机显示一致）由嵌入式测试能力执行（TD-002 §4.4 T-L2-14）；若仍 `ack=none`，按 `evidence/test.md` EV-008 §3 的一手结论交现场硬件核对。
+- 工具在仓库根产生的 `build*.log` 已读入本证据后删除；`.gitignore` 已由 `/build.log` 扩为 `/build*.log`（覆盖实测变体）。
+
+---
+
+# 历史：本轮 run8 ITEM-001（T1 诊断可观测）
 
 ```
 $ sh gcc/build.sh

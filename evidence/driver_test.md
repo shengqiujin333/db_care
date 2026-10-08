@@ -1,15 +1,88 @@
-# 驱动测试证据（DRV-002 rev 5.0）
+# 驱动测试证据（DRV-002 rev 5.1）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-001（T1：GXHT40 温湿度采集失败在真实目标上可诊断）**
-依据：FD-002 rev 5.0、FWR-002 rev 5.0、RTA-002 rev 5.0、IC-002 v3.0、TD-002 rev 5.0、`artifacts/firmware_tasks.yaml`
-受测实现：`USER/src/gxht40.c`/`USER/inc/gxht40.h`（诊断快照 getter）、`USER/src/debug_trace.c`/`USER/inc/debug_trace.h`（`BUS`/`G` 行）、`USER/src/measure.c`/`USER/inc/measure.h`（有界地址扫描、幂等 `bsp_i2c_init`、失败快照传递）、`USER/src/sf_i2c.c`/`USER/inc/sf_i2c.h`（`i2c_probe_addr`）、`USER/src/main.c`（上电接线）、`USER/inc/sensor_config.h`（诊断常量）
-测试载体：`test/build_test.sh`（5 个可执行产物）+ `test/host_debug_trace_check.c`、`test/host_gxht40_check.c`、`test/host_sf_i2c_bus_check.c`、`test/host_measure_flow_check.c`
-测试环境：宿主机 MinGW-w64 gcc 12.2.0（mock UART / 位级 mock I2C 总线 / mock MCU 影子头）；**`mdk_flash`/串口不在本调用工具列表内** → 实板 `BUS`/`G` 观测由嵌入式测试能力执行。
+本轮范围：run8 **ITEM-002（T2：GXHT40 采集失败定位与按证据修复）**
+依据：FD-002 rev 5.0（§6.6.2/§6.6.3）、FWR-002 rev 5.0（FWR-101/107/118）、TD-002 rev 5.0、`artifacts/firmware_tasks.yaml`；一手输入 `evidence/test.md` EV-008（ITEM-001 实板 `BUS`/`G`）
+受测实现：`USER/src/sf_i2c.c`/`USER/inc/sf_i2c.h`（新增 `i2c_bus_recover`）、`USER/src/gxht40.c`（失败失效缓存 + 重探前有界恢复 + 双地址强制重探 + 首访 tPU 余量）
+测试载体：`test/host_sf_i2c_bus_check.c`（35 项）、`test/host_gxht40_check.c`（48 项）、`test/build_test.sh`（146 项，回归）
+测试环境：宿主机 MinGW-w64 gcc 12.2.0（位级 mock I2C 总线/从机、mock MCU 影子头）；**`mdk_flash`/串口不在本调用工具列表内** → 实板 `q=1` 复测由嵌入式测试能力执行。
 
 ---
 
-## T1（run8 ITEM-001）：诊断实现侧自检（本轮实际执行）
+## T2（run8 ITEM-002）：总线恢复与失败后强制重探的自检（本轮实际执行）
+
+### 1. 一手输入（来自 ITEM-001 独立验证，决定本轮修复方向）
+
+| 事实 | 原文/数值 | 含义 |
+|---|---|---|
+| 总线空闲 | `BUS idle=1 scl=1 sda=0 ack=none`（boot#1）；`BUS idle=3 scl=1 sda=1 ack=none`（boot#2/#3） | 上拉/供电正常（idle=3）；存在一次 SDA 空闲读到低的瞬态 |
+| 地址应答 | 0x08..0x77 全部 `none`（含 0x44/0x45） | **器件在地址级不应答**（非 CRC/量程/地址变体未覆盖） |
+| 失败周期 | `G s=2 a44=0 a45=0 rd=0 at=3 raw=------------` ×6 | 驱动走“两地址均无 ACK”路径；未发起读 |
+| 负对照 | 若 SDA 被持续拉低，扫描必然得到满 8 地址 `+`；实得 `ack=none` | 排除“SDA 卡低”解释（`evidence/test.md` EV-008 §3.3） |
+
+**定位**：失败在「器件是否在总线上应答」这一层。固件侧可做且被 FWR-118/任务明文要求的修复 = 有界总线恢复 + 任一失败后强制双地址重探 + 首访 tPU 余量；**不应答本身不得由固件“绕过”**。
+
+### 2. `host_sf_i2c_bus_check.c`（新增 [7]–[9]；共 35 项 0 失败）节选原文
+
+```
+[7] i2c_bus_recover: 空闲总线不产生时钟/STOP
+  PASS  总线空闲: 返回 SF_I2C_SUCCESS
+  PASS  空闲总线不产生 START
+  PASS  空闲总线未额外打时钟 (仅释放 SCL 的一次置高)
+  PASS  恢复后双线均高 (总线空闲)
+[8] i2c_bus_recover: SDA 被从机持续拉低 -> 9 个 SCL 脉冲 + STOP, 仍有界返回
+  PASS  SDA 仍被拉低: 返回 SF_I2C_TIMEOUT (不无限等待)
+  PASS  脉冲数有界: 释放 1 + 9 个恢复脉冲 + STOP 1 = 11 个 SCL 上升沿
+  PASS  恢复后补发合法 STOP
+  PASS  恢复过程不发起任何 I2C 事务 (无 START/地址/命令)
+[9] i2c_bus_recover: 从机在第 4 个上升沿前释放 SDA -> 提前结束并成功
+  PASS  从机释放 SDA 后返回 SF_I2C_SUCCESS
+  PASS  提前结束: 释放 1 + 3 个脉冲 + STOP 1 = 5 个上升沿 (未用满 9 个)
+  PASS  结束前仍补发 STOP
+  PASS  恢复后总线空闲
+```
+
+### 3. `host_gxht40_check.c`（新增 [11]–[12]；共 48 项 0 失败）节选原文
+
+```
+[11] FWR-118: 缓存地址读失败后必须重探两个候选地址
+  PASS  器件在 0x45 上测量成功并缓存
+  PASS  读 NACK 用尽 -> GXHT40_ERR_IO
+  PASS  失败仍不修改输出
+  PASS  缓存地址在任一失败后被清空 (FWR-118)
+  PASS  缓存地址(0x45)读失败后仍重探了 0x44 (不再提前返回)
+  PASS  下一轮重新探测后测量成功
+  PASS  重新探测后缓存更新为 0x44
+  PASS  重探从 0x44 开始且仅一次命令+读取
+[12] 首次访问前 tPU 上电余量 (只一次, 不进周期路径)
+  PASS  首测成功
+  PASS  首次访问前恰好一次 GXHT40_POWER_ON_WAIT_MS (手册 tPU)
+  PASS  tMEAS 等待仍为 1 次 10 ms (>= 手册 8.3 ms 上限)
+  PASS  后续测量不再重复上电余量 (仅首访)
+```
+
+既有断言全部保留且通过：手册 CRC 向量、地址探测与缓存、双字 CRC-8、读 NACK 重读上限、CRC 重测上限、无器件/超范围、失败不改输出、命令白名单无 0x94/加热器。
+
+### 4. 回归（本轮实际执行）
+
+```
+$ sh test/build_test.sh
+[1/4] 40 passed  [2/4] 34 passed  [3/4] 33 passed  [4/4a] 19 passed  [4/4b] 20 passed
+（合计 146 项 0 失败；S 行逐字节金标准、BUS/G 行预算、光照/判定/流程全部未变）
+$ ./host_sf_i2c_bus_check => 35 passed / 0 failed
+$ ./host_gxht40_check      => 48 passed / 0 failed
+```
+
+本轮实现侧合计 **229 项 0 失败**。
+
+### 5. 本轮修复未涉及、也不得伪造的部分
+
+- **实板 `q=1` 未取得**：本轮无 `mdk_flash`/串口（见 `evidence/build.md`）。若器件仍对任何地址不应答，则固件侧的恢复/重探无法使其应答；此时应保留 `q=0` 事实，并将“U9 贴装/焊接、VDD 与 PA03/PA04 连通性、器件异常保持态”交持有万用表/目视条件的角色现场核对（`evidence/test.md` EV-008 §3）。
+- **未放宽任何校验**：CRC-8 双字校验、温度有效域、读重读(5)/整帧重测(3)、命令白名单、失败不写输出均未改动（见 [10] 及既有断言）。
+
+---
+
+# 历史：本轮 run8 ITEM-001（T1 诊断可观测，已 TEST_PASS）
 
 ### 1. `test/build_test.sh` 原始 stdout 摘要
 

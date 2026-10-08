@@ -1,16 +1,76 @@
-# 固件实现（FWI-002 rev 5.0）
+# 固件实现（FWI-002 rev 5.1）
 
 状态：固件实现（firmware_engineer.firmware_implementation）
-本轮工作项：run8 Runtime 队列 **ITEM-001 ↔ 任务清单 T1（GXHT40 温湿度采集失败在真实目标上可诊断）**；前置（FD-002 rev 5.0 设计）已完成，run7 的 UART1 调试通道与光照 1/3 判据实现保持回归
-依据：FD-002 rev 5.0 `artifacts/firmware_design.md`、FWR-002 rev 5.0 `artifacts/firmware_requirements.md`、RTA-002 rev 5.0、IC-002 v3.0、TD-002 rev 5.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
-受测提交：`1dd8e4b`（RESUME_SYNC 接手时工作区干净；中间提交 `239ad6c` 设计 / `4c5f0ab` 测试设计已读）+ 本轮 T1 改动（见下）
-本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口采集不在本调用工具列表内** → 真实目标上的 `BUS`/`G` 观测由嵌入式测试能力执行（本文件不声称已观测）
+本轮工作项：run8 Runtime 队列 **ITEM-002 ↔ 任务清单 T2（GXHT40 温湿度采集在真实目标上恢复有效）**；前一项 ITEM-001（T1 失败诊断可观测）已 IMPLEMENTED 并经独立验证 TEST_PASS（`evidence/test.md` EV-008）
+依据：FD-002 rev 5.0 `artifacts/firmware_design.md`（§6.6.2 候选原因矩阵 / §6.6.3 修复边界）、FWR-002 rev 5.0（FWR-101/107/118）、RTA-002 rev 5.0、IC-002 v3.0、TD-002 rev 5.0 `artifacts/test_design.md`、`artifacts/firmware_tasks.yaml`
+受测提交：`eac43eb`（RESUME_SYNC 接手时工作区干净）+ 本轮 T2 改动（见下）
+本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口采集不在本调用工具列表内** → 真实目标 `q=1` 的复测由嵌入式测试能力执行（本文件**不声称**已取得）
 
-> 说明：本文件含 run8 的 T1（当前）与 run7 的 T2/T1（历史）记录。
+> 说明：本文件含 run8 的 ITEM-002（当前）、ITEM-001（已验证）与 run7 记录。
 
 ---
 
-# 本轮 run8：ITEM-001（T1：GXHT40 采集失败可诊断）
+# 本轮 run8：ITEM-002（T2：GXHT40 采集失败定位与按证据修复）
+
+**任务**：依据上一增量在实板上取得的 `BUS`/`G` 原始数据定位失败环节（器件不应答/地址变体/读 NACK/CRC/量程/总线卡死）并在驱动/总线层按证据修复；保留双字 CRC-8、整数 x10 换算与有效域、有界读重读与有界整帧重测；周期路径不得用软复位 0x94/加热命令；任一失败周期仍不上报/不推进前一有效温度/不构造 0 值；**任何失败（含缓存地址读失败）后下一周期必须重新探测 0x44/0x45，并在重探前做有界总线恢复（9 个 SCL 脉冲 + STOP）**；等待与重试不低于手册；可观察：实板每周期 `q=1`、`t/h` 在有效域且与环境相符。
+
+## 1. 一手输入与定位（不采信推测）
+
+| 输入 | 原始事实 | 来源 |
+|---|---|---|
+| 上电总线身份 ×3 | `BUS idle=1 scl=1 sda=0 ack=none`（boot#1）；`BUS idle=3 scl=1 sda=1 ack=none`（boot#2/#3） | `evidence/test.md` EV-008 §2.2 |
+| 失败周期 ×6 | **全部** `G s=2 a44=0 a45=0 rd=0 at=3 raw=------------`（= `GXHT40_ERR_NO_DEVICE`，两候选地址均无 ACK，未发起读） | 同上 §2.3 |
+| 负对照 | 若 SDA 被持续拉低，113 地址扫描必然报出满 8 地址 + `+`；实得 `ack=none` ⇒ **排除“SDA 卡低”解释** | 同上 §3.3（宿主模型实测） |
+| 引脚/拓扑（本能力一手复核 netlist） | N05845: `U9.SDA`(pin1)—`U7.PA04` + R1 4.7K→BAT；N06024: `U9.SCL`(pin2)—`U7.PA03` + R2 4.7K→BAT；`U9.3`=BAT(VDD)、`U9.4`=GND、`U9.5`=NC | `sensor_hardware/pstxnet.dat`、`MAIN_BOARD.BOM`（U9=`gxht40`） |
+| 波形与驱动逻辑（实现侧自检回归） | 地址字节/START/STOP/ACK 采样位级正确；112 地址扫描只发地址字节；`gxht40` 失败不改输出 | `test/host_sf_i2c_bus_check.c`、`test/host_gxht40_check.c` |
+
+**定位结论**：失败发生在**「器件是否在总线上应答」这一层（地址级）**，而非协议/CRC/量程层，也非上拉/供电缺失（`idle=3`）或观测通路。地址扫描已覆盖 0x44 与 0x45，故也不是“地址变体未覆盖”。
+
+**因此驱动/总线层可做且被任务/需求明文要求的修复**（不超出设计要求，不降低任何校验）：
+
+1. 失败后的**有界总线恢复**（≤9 个 SCL 脉冲 + STOP）——针对 `boot#1 idle=1` 与“从机字节中途被复位后握住 SDA”的异常保持态；
+2. 任一失败后**强制失效缓存地址并重探 0x44/0x45**（原来缓存地址读失败会直接返回，不重探另一地址）；
+3. 首次访问前的 **tPU 上电余量**（手册 ≤1 ms，配置点常量 `GXHT40_POWER_ON_WAIT_MS` 原先已定义但未被使用）。
+
+**明确不能由固件解决、不得伪造的部分**：若器件在**任何时刻对任何地址都不应答**，则固件无法使其应答；报告必须停在“无应答”这一事实上，并把候选交给持有万用表/目视条件的角色（U9 贴装/焊接、VDD 与 PA03/PA04 连通性、器件异常保持态）。**本轮不声称 `q=1` 已取得。**
+
+## 2. 实际改动（本轮）
+
+| 文件 | 动作 | 内容 |
+|---|---|---|
+| `USER/inc/sf_i2c.h` / `USER/src/sf_i2c.c` | 新增（加法） | `i2c_bus_recover(dev)`：释放两线→若 SDA 仍低则补 ≤9 个 SCL 脉冲→补一个合法 STOP（避免误发 START）→返回 SDA 是否释放；不写任何器件命令、不无限等待；**既有函数语义未改** |
+| `USER/src/gxht40.c` | 修改 | ① `gxht40_acquire()`：缓存地址**任一失败**即 `s_addr7=0`，重探前调用 `i2c_bus_recover()`；0x44 读失败不再提前返回，继续重探 0x45（FWR-118）；② 首次访问前 `delay_ms(GXHT40_POWER_ON_WAIT_MS)` 一次（`gxht40_init` 重置）；③ CRC/有效域/`GXHT40_READ_RETRY(5)`/`GXHT40_MEAS_RETRY(3)`/命令白名单/失败不写输出**均不变** |
+| `test/host_sf_i2c_bus_check.c` | 扩展 | [7] 空闲总线恢复不产时钟；[8] SDA 持续被拉低→11 个上升沿（释放1+9脉冲+STOP1）、返回 TIMEOUT、不发事务；[9] 从机第 4 个上升沿前释放→5 个上升沿提前结束、返回 SUCCESS（共 35 项） |
+| `test/host_gxht40_check.c` | 扩展 | [11] 缓存地址 0x45 读失败→缓存清空、**仍重探了 0x44**、下一轮重新探测后成功且缓存更新；[12] 首次访问恰好一次 `GXHT40_POWER_ON_WAIT_MS`、`tMEAS` 仍 1 次 10 ms、后续测量不再重复（共 48 项） |
+| `.gitignore` | 修改 | `/build.log` → `/build*.log`（`mdk_build` 实测生成 `build.log` / `build_<timestamp>.log` 变体，避免共享仓库出现未跟踪文件） |
+
+**未改动**：`fw_core.c`（升温方向/边界属 T4）、光照标定（T3）、发送冻结（T5）、433/BLE 布局、网关与 Android、引脚归属。
+
+## 3. 预期行为（真实目标；本轮未执行实板复测）
+
+1. **器件恢复应答时**：下一采样周期先做有界恢复、重新探测 0x44→0x45，成功后 `S` 行 `q=1` 且 `t/h` 在有效域并与环境相符；`G` 行不再出现。
+2. **器件仍不应答时**：行为与 ITEM-001 一致（`q=0`、`S`+`G` 行、`G s=2 a44=0 a45=0`），不上报/不推进前值/不构造 0 值；不得伪造成功。
+3. **有界性**：单周期内最多 `GXHT40_MEAS_RETRY` 轮 ×（1 次恢复 + 2 个候选地址）探测，每轮 ≤10 ms tMEAS + 读重读，最坏活动时间仍在百 ms 量级（远小于 3 分钟节拍）；恢复仅在需要时产生 ≤9 个 SCL 脉冲。
+4. **成功路径无额外开销**：稳态下走缓存地址快路径，`i2c_bus_recover` 在总线空闲时立即返回且不产时钟；tPU 余量仅首次访问一次。
+
+## 4. 验证（本轮实际执行）
+
+- **宿主自检合计 229 项 0 失败**：`test/build_test.sh` 146 项（40+34+33+19+20）+ `host_sf_i2c_bus_check.c` 35 项 + `host_gxht40_check.c` 48 项。
+- **GNU 交叉编译**：0 错误；FLASH **33,016 B** / RAM **1,768 B**（较 ITEM-001 的 32,840 为 +176 B；27 条告警均为既有类别）。
+- **Keil MDK `mdk_build rebuild`（授权工具）**：0 Error / 1 Warning（既有 `main.c(224) while(k--);` 空体）；`Code=16488 RO-data=624 RW-data=76 ZI-data=1676`；`Project.axf` md5 `196b0040d5378eaf2edcd6a3d5fdf9a5`。
+- **`SENSOR_DEBUG_UART=0` 复核**：`gxht40.c`/`measure.c` 0 告警 0 错误；`sf_i2c.c` 仅两处**改动前既有**的 `err may be used uninitialized`（属未触碰的旧函数）。
+- 原始命令与 stdout：`evidence/build.md`（本轮 T2 节）、`evidence/driver_test.md`（本轮 T2 节）。
+
+## 5. 未完成与交接（如实记录，不当作通过）
+
+- **实板 `q=1` 未取得**：本调用工具列表仅含 `mdk_build`；部署与 COM42 复测由嵌入式测试能力执行。若复测仍 `q=0`，按 EV-008 §3 的“地址级无应答”结论交现场硬件核对（U9 贴装/焊接、VDD 与 PA03/PA04 连通、器件异常保持态）；**不得由固件继续猜测或放宽校验**。
+- **测试方自有资产同步（属执行能力，本能力只登记）**：`host_gxht40_verify_ev.c` / `host_sf_i2c_verify_ev.c` 需补 `i2c_bus_recover` 与失败后重探的独立验证（TD-002 §3.2 已登记）。
+- **设计文档数值更新（属设计能力，本能力只登记）**：`RTA-002` §3.2 的 T_MEAS 最坏时间语句（“失败重试时最多约 3 倍”）已不覆盖含双地址重探的最坏情形（最多 `GXHT40_MEAS_RETRY` 轮 × 2 个候选地址 ≈ 6 次 10 ms 级命令等待）；实际最坏值见本文件 §3.3，供设计能力下轮更新。
+- **后续增量（非本项）**：T3 全暗基准回填；T4 判定升方向与严格边界；T5 待上报冻结快照。
+
+---
+
+# 本轮 run8：ITEM-001（T1：GXHT40 采集失败可诊断；已 IMPLEMENTED + TEST_PASS）
 
 **任务**：上电横幅之后、任何 I²C 事务之前，读 PA03(SCL)/PA04(SDA) 空闲电平并对 0x08..0x77 逐地址做有界探测
 （START + 地址写字节 + ACK 判定 + STOP，只发地址、不写命令、不读数据、NACK 后释放总线），打印一条 `BUS` 行

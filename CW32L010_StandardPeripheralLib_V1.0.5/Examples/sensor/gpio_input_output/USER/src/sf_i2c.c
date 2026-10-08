@@ -409,6 +409,52 @@ sf_i2c_err i2c_probe_addr(const i2c_dev *dev, uint8_t slave_addr)
 }
 
 /**
+ * @brief  Bounded bus recovery: release both lines; if a slave still holds SDA
+ *         low, clock SCL up to 9 times so it can finish its byte, then emit a
+ *         legal STOP. Never waits unbounded, never writes a device command.
+ * @param  dev : Pointer to iic structure
+ * @return SF_I2C_SUCCESS : SDA released after recovery (bus idle)
+ *         SF_I2C_TIMEOUT : SDA still held low (electrical/hardware condition)
+ */
+sf_i2c_err i2c_bus_recover(const i2c_dev *dev)
+{
+    uint8_t i;
+
+    /* 1) 把 SDA 恢复为开漏输出并释放两条线 */
+    I2C_PIN_SDA_DIR_OUTPUT(dev);
+    I2C_PIN_SDA_HIGH(dev);
+    I2C_PIN_SCL_HIGH(dev);
+    i2c_delay(dev);
+
+    if (I2C_PIN_SDA_READ(dev)) {
+        return SF_I2C_SUCCESS;              /* 总线已空闲, 无需时钟复位 */
+    }
+
+    /* 2) 从机可能在字节中途被复位: 补最多 9 个 SCL 脉冲让它把剩余位移完 */
+    for (i = 0u; i < 9u; i++) {
+        I2C_PIN_SCL_LOW(dev);
+        i2c_delay(dev);
+        I2C_PIN_SCL_HIGH(dev);
+        i2c_delay(dev);
+        if (I2C_PIN_SDA_READ(dev)) {
+            break;                          /* 从机已释放 SDA */
+        }
+    }
+
+    /* 3) 补一个合法 STOP (先把 SCL 拉低再完成 SDA 上升沿, 避免误发 START) */
+    I2C_PIN_SCL_LOW(dev);
+    i2c_delay(dev);
+    I2C_PIN_SDA_LOW(dev);
+    i2c_delay(dev);
+    I2C_PIN_SCL_HIGH(dev);
+    i2c_delay(dev);
+    I2C_PIN_SDA_HIGH(dev);
+    i2c_delay(dev);
+
+    return I2C_PIN_SDA_READ(dev) ? SF_I2C_SUCCESS : SF_I2C_TIMEOUT;
+}
+
+/**
  * @brief  i2c writes multiple bytes to a register consecutively
  * @param  dev Pointer : to iic structure
  * @param  slave_addr  : Device address

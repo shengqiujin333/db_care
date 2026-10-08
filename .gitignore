@@ -38,5 +38,6 @@ Thumbs.db
 **/MDK/output/**/*.build_log.htm
 **/MDK/output/**/*.iex
 
-# Keil/hardware-verification build tool log written into the repo root by mdk_build
-/build.log
+# Keil/hardware-verification build tool logs written into the repo root by mdk_build
+# (also seen as build_<timestamp>.log / build1.log variants)
+/build*.log

@@ -29,7 +29,15 @@
 #include "sensor_config.h"
 #include "delay.h"
 
-void delay_ms(uint16_t ms) { (void)ms; }   /* 测试桩: 不真正等待 */
+/* FWR-118 / tPU 时序观测 (delay_ms 桩计数, 见 [12]) */
+static int delay_calls, delay_power_on_calls, delay_tmeas_calls;
+
+void delay_ms(uint16_t ms)
+{
+    delay_calls++;
+    if (ms == (uint16_t)GXHT40_POWER_ON_WAIT_MS) delay_power_on_calls++;
+    if (ms == (uint16_t)GXHT40_MEASURE_WAIT_MS) delay_tmeas_calls++;
+}
 
 /* ---------------- mock bus ---------------- */
 static int scl = 1, sda_master = 1, sda_dir = 1;
@@ -325,6 +333,51 @@ int main(void)
         }
         CHECK(bad == 0, "所有已发命令均为 0xFD (无 0x94 软复位/加热器命令)");
     }
+
+    printf("[11] FWR-118: 缓存地址读失败后必须重探两个候选地址\n");
+    mock_addr7 = 0x45; set_frame(F_25C_50RH); gxht40_init(&dev);
+    obs_reset();
+    t = 0; h = 0;
+    st = gxht40_measure(&t, &h);                       /* 首测: 探测 A 失败 -> B 成功, 缓存 0x45 */
+    CHECK(st == GXHT40_OK && gxht40_detected_addr7() == 0x45, "器件在 0x45 上测量成功并缓存");
+    mock_read_nack = 99;                               /* 读地址持续 NACK -> ERR_IO */
+    obs_reset();
+    t = 1234; h = 4321;
+    st = gxht40_measure(&t, &h);
+    CHECK(st == GXHT40_ERR_IO, "读 NACK 用尽 -> GXHT40_ERR_IO");
+    CHECK(t == 1234 && h == 4321, "失败仍不修改输出");
+    CHECK(gxht40_detected_addr7() == 0u, "缓存地址在任一失败后被清空 (FWR-118)");
+    {
+        int i, saw_a = 0;
+        for (i = 0; i < addr_w_count; i++) {
+            if (addr_w_seen[i] == GXHT40_ADDR_WRITE_A) saw_a = 1;
+        }
+        CHECK(saw_a, "缓存地址(0x45)读失败后仍重探了 0x44 (不再提前返回)");
+    }
+    mock_read_nack = 0;
+    mock_addr7 = 0x44;
+    obs_reset();
+    t = 0; h = 0;
+    st = gxht40_measure(&t, &h);                       /* 下一轮: 重新探测两个候选地址 */
+    CHECK(st == GXHT40_OK && t == 250 && h == 500, "下一轮重新探测后测量成功");
+    CHECK(gxht40_detected_addr7() == 0x44, "重新探测后缓存更新为 0x44");
+    CHECK(addr_w_count == 2 && addr_w_seen[0] == GXHT40_ADDR_WRITE_A,
+          "重探从 0x44 开始且仅一次命令+读取");
+    mock_addr7 = 0x44;
+
+    printf("[12] 首次访问前 tPU 上电余量 (只一次, 不进周期路径)\n");
+    gxht40_init(&dev);
+    delay_calls = 0; delay_power_on_calls = 0; delay_tmeas_calls = 0;
+    t = 0; h = 0;
+    st = gxht40_measure(&t, &h);
+    CHECK(st == GXHT40_OK, "首测成功");
+    CHECK(delay_power_on_calls == 1, "首次访问前恰好一次 GXHT40_POWER_ON_WAIT_MS (手册 tPU)\n");
+    CHECK(delay_tmeas_calls == 1, "tMEAS 等待仍为 1 次 10 ms (>= 手册 8.3 ms 上限)");
+    delay_power_on_calls = 0;
+    t = 0; h = 0;
+    st = gxht40_measure(&t, &h);
+    CHECK(st == GXHT40_OK && delay_power_on_calls == 0,
+          "后续测量不再重复上电余量 (仅首访)");
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

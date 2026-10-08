@@ -38,6 +38,11 @@ static uint8_t rx_bytes[16];
 static int n_rx;
 static int n_start, n_stop;
 
+/* FWR-118 总线恢复用: 模拟从机在字节中途被复位而保持 SDA 低,
+ * sda_low_until_rise = -1 表示不卡低; 否则在 n_scl_rise 达到该值后释放 SDA */
+static int sda_low_until_rise = -1;
+static int n_scl_rise;
+
 static void reset_slave(void)
 {
     st = ST_RX; bitidx = 0; first_byte = 1; ack_pending = 0; ack_hold = 0;
@@ -47,6 +52,9 @@ static void reset_slave(void)
 
 static uint8_t m_sda_read(void)
 {
+    if (sda_low_until_rise >= 0) {
+        return (uint8_t)((n_scl_rise < sda_low_until_rise) ? 0 : 1);
+    }
     if (slave_driving) return (uint8_t)slave_sda;
     if (sda_dir) return (uint8_t)sda_master;
     return 1; /* external pull-up */
@@ -64,6 +72,7 @@ static void m_sda(int level)
 static void m_scl(int level)
 {
     if (level == 1) {
+        n_scl_rise++;
         if (st == ST_TX) {
             if (bitidx < 8) {
                 bitidx++;   /* keep driving bit0 until the next falling edge */
@@ -205,6 +214,31 @@ int main(void)
     CHECK(n_stop >= 1, "NACK 后已发出 STOP 释放总线");
     CHECK(n_rx == 1 && rx_bytes[0] == 0x8A, "线上只有地址写字节 0x8A, 未继续写命令");
     CHECK(m_sda_read() == 1 && scl == 1, "超时后总线仍释放");
+
+    printf("[7] i2c_bus_recover: 空闲总线不产生时钟/STOP\n");
+    reset_slave(); n_start = 0; n_stop = 0; n_scl_rise = 0; sda_low_until_rise = -1;
+    e = i2c_bus_recover(&dev);
+    CHECK(e == SF_I2C_SUCCESS, "总线空闲: 返回 SF_I2C_SUCCESS");
+    CHECK(n_start == 0, "空闲总线不产生 START");
+    CHECK(n_scl_rise <= 1, "空闲总线未额外打时钟 (仅释放 SCL 的一次置高)");
+    CHECK(m_sda_read() == 1 && scl == 1, "恢复后双线均高 (总线空闲)");
+
+    printf("[8] i2c_bus_recover: SDA 被从机持续拉低 -> 9 个 SCL 脉冲 + STOP, 仍有界返回\n");
+    reset_slave(); n_start = 0; n_stop = 0; n_scl_rise = 0; sda_low_until_rise = 999;
+    e = i2c_bus_recover(&dev);
+    CHECK(e == SF_I2C_TIMEOUT, "SDA 仍被拉低: 返回 SF_I2C_TIMEOUT (不无限等待)");
+    CHECK(n_scl_rise == 11, "脉冲数有界: 释放 1 + 9 个恢复脉冲 + STOP 1 = 11 个 SCL 上升沿");
+    CHECK(n_stop >= 1, "恢复后补发合法 STOP");
+    CHECK(n_start == 0, "恢复过程不发起任何 I2C 事务 (无 START/地址/命令)");
+
+    printf("[9] i2c_bus_recover: 从机在第 4 个上升沿前释放 SDA -> 提前结束并成功\n");
+    reset_slave(); n_start = 0; n_stop = 0; n_scl_rise = 0; sda_low_until_rise = 4;
+    e = i2c_bus_recover(&dev);
+    CHECK(e == SF_I2C_SUCCESS, "从机释放 SDA 后返回 SF_I2C_SUCCESS");
+    CHECK(n_scl_rise == 5, "提前结束: 释放 1 + 3 个脉冲 + STOP 1 = 5 个上升沿 (未用满 9 个)");
+    CHECK(n_stop >= 1, "结束前仍补发 STOP");
+    CHECK(m_sda_read() == 1 && scl == 1, "恢复后总线空闲");
+    sda_low_until_rise = -1;
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

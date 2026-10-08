@@ -12,6 +12,7 @@
 /* 绑定总线与地址探测缓存 */
 static i2c_dev *s_dev = NULL;
 static uint8_t  s_addr7 = 0u;   /* 0 = 未探测到 */
+static uint8_t  s_first_access = 1u;  /* 首次访问前需 tPU 上电余量 (GXHT40_POWER_ON_WAIT_MS) */
 
 /* 诊断快照 (FWR-116): 只读观测, 不参与判定/重试/输出写入 */
 static gxht40_diag_t s_diag;
@@ -63,6 +64,7 @@ void gxht40_init(i2c_dev *dev)
 {
     s_dev = dev;
     s_addr7 = 0u;
+    s_first_access = 1u;
     gxht40_diag_clear();
 }
 
@@ -112,7 +114,15 @@ static gxht40_status_t gxht40_start_and_read(uint8_t addr7, uint8_t *buf)
     return GXHT40_ERR_IO;
 }
 
-/* 地址探测(带缓存): 先试缓存地址, 失败则依次试 0x44 / 0x45 */
+/*
+ * 地址探测(带缓存) + FWR-118 失败后强制重探:
+ *   - 缓存地址成功: 直接返回 (周期稳定时的快路径)。
+ *   - 缓存地址**任一失败** (含读失败 ERR_IO / CRC / 量程): 失效缓存,
+ *     不得因缓存地址让器件永久失联。
+ *   - 重探前执行有界总线恢复 (i2c_bus_recover): 总线已空闲时立即返回(不产时钟),
+ *     仅当从机仍握住 SDA 时才补 <=9 个 SCL 脉冲 + STOP。
+ *   - 依次探测 0x44 -> 0x45; 0x44 读失败时仍重探 0x45 (不再提前返回)。
+ */
 static gxht40_status_t gxht40_acquire(uint8_t *buf)
 {
     gxht40_status_t st;
@@ -122,19 +132,15 @@ static gxht40_status_t gxht40_acquire(uint8_t *buf)
         if (st == GXHT40_OK) {
             return GXHT40_OK;
         }
-        if (st == GXHT40_ERR_IO) {
-            return st;              /* 器件在但通信失败 */
-        }
-        s_addr7 = 0u;               /* 地址失配: 重新探测 */
+        s_addr7 = 0u;                   /* FWR-118: 任一失败都使缓存地址失效 */
     }
+
+    (void)i2c_bus_recover(s_dev);       /* FWR-118: 重探前的有界总线恢复 */
 
     st = gxht40_start_and_read(GXHT40_ADDR_7BIT_A, buf);
     if (st == GXHT40_OK) {
         s_addr7 = GXHT40_ADDR_7BIT_A;
         return GXHT40_OK;
-    }
-    if (st == GXHT40_ERR_IO) {
-        return st;
     }
 
     st = gxht40_start_and_read(GXHT40_ADDR_7BIT_B, buf);
@@ -159,6 +165,12 @@ gxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10)
     }
 
     gxht40_diag_clear();      /* 诊断快照只服务本轮; 不改变失败语义 */
+
+    /* FD-002 §2.2 / 手册 tPU: 首次访问前留出器件上电稳定余量 (不进入周期路径) */
+    if (s_first_access != 0u) {
+        s_first_access = 0u;
+        delay_ms(GXHT40_POWER_ON_WAIT_MS);
+    }
 
     for (attempt = 0u; attempt < GXHT40_MEAS_RETRY; attempt++) {
         gxht40_status_t st;
