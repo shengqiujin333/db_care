@@ -308,6 +308,22 @@ int main(void)
         g_pin_stuck_high[3] = 0u;
     }
 
+    printf("[13] E1b 事务内逐位回读签名 (IOSIG): 期望值与 H12 负对照\n");
+    {
+        debug_trace_iosig_t sig;
+        memset(&sig, 0, sizeof(sig));
+        CHECK(sensor_io_sig_scan(&sig) == 1u, "签名扫描完成并填充结果");
+        CHECK(sig.scl20 == 0x95555u && sig.sda20 == 0x30303u,
+              "无器件时签名 = scl=95555 / sda=30303 (地址 0x88 位序列与时钟均回读跟随)");
+
+        /* 负对照: SDA 回读恒高 (位序列未真实送达) -> 签名必须不同 -> 命中 H12 形态 */
+        g_pin_stuck_high[4] = 1u;
+        (void)sensor_io_sig_scan(&sig);
+        CHECK(sig.scl20 == 0x95555u && sig.sda20 == 0xFFFFFu,
+              "负对照: SDA 回读恒高时 sda=FFFFF ≠ 30303 (能区分 H12)");
+        g_pin_stuck_high[4] = 0u;
+    }
+
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
 }

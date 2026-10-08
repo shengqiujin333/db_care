@@ -50,6 +50,16 @@ uint8_t sensor_bus_diag_scan(debug_trace_bus_t *out);
  */
 uint8_t sensor_io_diag_scan(debug_trace_iotest_t *out);
 
+/*
+ * 上电事务内逐位回读签名 (E1b; H12 判别)。
+ *   用与软 I2C 相同的引脚原语与半位延时, 手工发出一个地址字节 0x88 的完整事务
+ *   (START + 8 数据位 + ACK 时隙), 在 20 个半位采样点回读 SCL/SDA 并 MSB 先入拼成
+ *   两个 20 bit 值。无器件应答时正确主机应得 scl=0x95555 / sda=0x30303。
+ *   不写 0xFD、不发第二个字节; 结束后补一个合法 STOP 并释放两线。
+ * 返回 1 = 已填充; 0 = 无法进行。
+ */
+uint8_t sensor_io_sig_scan(debug_trace_iosig_t *out);
+
 /* 上报调度状态 (FD-002 §6.4) */
 extern uint8_t report_req;
 #endif /* MEASURE_H_ */

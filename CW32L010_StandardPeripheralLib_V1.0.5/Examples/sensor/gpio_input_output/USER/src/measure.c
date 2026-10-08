@@ -221,6 +221,102 @@ uint8_t sensor_io_diag_scan(debug_trace_iotest_t *out)
 }
 
 /*
+ * E1b 事务内逐位回读签名 (H12 判别): 用与软 I2C 相同的引脚原语与半位延时 (speed=100),
+ * 手工发出一个地址字节 0x88 (=0x44<<1, 写) 的完整事务 START + 8 数据位 + ACK 时隙,
+ * 在 20 个半位采样点回读 SCL/SDA 并 MSB 先入各拼成一个 20 bit 值。
+ * 采样顺序（S0 为最高位）:
+ *   S0  START 建立 (SCL 高, 本机把 SDA 拉低)
+ *   S1  SCL 拉低
+ *   S2..S17  数据位 b7..b0, 每位先(SCL 低)后(SCL 高)各一个采样点
+ *   S18 ACK 时隙 SCL 低 (本机释放 SDA)
+ *   S19 ACK 时隙 SCL 高 (此处回读到 0 = 器件 ACK)
+ * 无器件应答时正确主机的期望值: scl=0x95555 / sda=0x30303。
+ * 只发地址字节, 不写 0xFD、不发第二个字节; 结束后补一个合法 STOP 并释放两线。
+ */
+static void i2c0_halfbit_delay(void)
+{
+    volatile uint32_t i = 100u;   /* 与 sf_i2c 的 i2c_delay(speed=100) 等价 */
+    while (i != 0u) {
+        i--;
+    }
+}
+
+uint8_t sensor_io_sig_scan(debug_trace_iosig_t *out)
+{
+    uint32_t   scl_sig = 0u;
+    uint32_t   sda_sig = 0u;
+    uint8_t    k;
+    const uint8_t addr8 = (uint8_t)(GXHT40_ADDR_7BIT_A << 1);   /* 0x88 */
+
+    if (out == NULL) {
+        return 0u;
+    }
+
+    bsp_i2c_init();                 /* 幂等: 只注册一次物理层/对象 */
+    if (temp_ptr == NULL) {
+        return 0u;
+    }
+
+    out->scl20 = 0u;
+    out->sda20 = 0u;
+
+    i2c0_sda_pin_dir_output();
+    i2c0_scl_pin_dir_output();
+
+#define I2C0_SIG_SAMPLE() do {                                              \
+        i2c0_halfbit_delay();                                               \
+        scl_sig = (scl_sig << 1) | (uint32_t)i2c0_scl_pin_read_level();      \
+        sda_sig = (sda_sig << 1) | (uint32_t)i2c0_sda_pin_read_level();      \
+    } while (0)
+
+    /* S0: START 建立 (SCL 保持高, SDA 由高变低) */
+    i2c0_scl_pin_out_high();
+    i2c0_sda_pin_out_high();
+    i2c0_halfbit_delay();
+    i2c0_sda_pin_out_low();
+    I2C0_SIG_SAMPLE();              /* S0: 期望 scl=1 sda=0 */
+
+    /* S1: SCL 拉低 */
+    i2c0_scl_pin_out_low();
+    I2C0_SIG_SAMPLE();              /* S1: 期望 scl=0 sda=0 */
+
+    /* S2..S17: 8 个数据位, 每位 (SCL 低) 与 (SCL 高) 各一个采样点 */
+    for (k = 0u; k < 8u; k++) {
+        if ((addr8 & (uint8_t)(0x80u >> k)) != 0u) {
+            i2c0_sda_pin_out_high();
+        } else {
+            i2c0_sda_pin_out_low();
+        }
+        I2C0_SIG_SAMPLE();          /* SCL 低: 期望 scl=0 sda=该数据位 */
+        i2c0_scl_pin_out_high();
+        I2C0_SIG_SAMPLE();          /* SCL 高: 期望 scl=1 sda=该数据位 */
+        i2c0_scl_pin_out_low();
+    }
+
+    /* S18/S19: ACK 时隙 — 主机释放 SDA, SCL 低 -> 高 (回读 0 = 器件 ACK) */
+    i2c0_sda_pin_dir_input();
+    I2C0_SIG_SAMPLE();              /* S18: 期望 scl=0 */
+    i2c0_scl_pin_out_high();
+    I2C0_SIG_SAMPLE();              /* S19: 期望 scl=1, 无器件时 sda=1 */
+
+    /* 收尾: 合法 STOP 并恢复开漏输出释放 (不采样) */
+    i2c0_scl_pin_out_low();
+    i2c0_sda_pin_dir_output();
+    i2c0_sda_pin_out_low();
+    i2c0_halfbit_delay();
+    i2c0_scl_pin_out_high();
+    i2c0_halfbit_delay();
+    i2c0_sda_pin_out_high();
+    i2c0_halfbit_delay();
+
+#undef I2C0_SIG_SAMPLE
+
+    out->scl20 = scl_sig;
+    out->sda20 = sda_sig;
+    return 1u;
+}
+
+/*
  * 上电总线身份诊断 (FWR-116; 只观测): 空闲电平 + 0x08..0x77 有界地址探测。
  * 只发地址写字节 (i2c_probe_addr), 不写任何器件命令、不读数据; 每个地址后释放总线。
  * 不修改采样/判定/上报/冻结状态。
@@ -269,6 +365,12 @@ uint8_t sensor_bus_diag_scan(debug_trace_bus_t *out)
 #else
 /* 调试关闭: 不扫描、不读取引脚、不发起任何 I2C 探测 */
 uint8_t sensor_io_diag_scan(debug_trace_iotest_t *out)
+{
+    (void)out;
+    return 0u;
+}
+
+uint8_t sensor_io_sig_scan(debug_trace_iosig_t *out)
 {
     (void)out;
     return 0u;

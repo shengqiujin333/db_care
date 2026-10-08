@@ -346,6 +346,30 @@ int main(void)
               "IOTEST 仅整数与大写十六进制");
     }
 
+    printf("[T12] IOSIG 事务内逐位回读签名行 (E1b): 格式/预算\n");
+    cap_reset();
+    {
+        debug_trace_iosig_t sig;
+        memset(&sig, 0, sizeof(sig));
+        sig.scl20 = 0x95555u; sig.sda20 = 0x30303u;   /* 地址 0x88、无器件应答的期望签名 */
+        debug_trace_iosig(&sig);
+        CHECK(strcmp(cap, "IOSIG scl=95555 sda=30303\r\n") == 0,
+              "无器件期望签名逐字节匹配 (scl=95555 sda=30303)");
+        printf("        |%s", cap);
+
+        cap_reset();
+        sig.scl20 = 0xFFFFFu; sig.sda20 = 0xFFFFFu;
+        debug_trace_iosig(&sig);
+        CHECK(strcmp(cap, "IOSIG scl=FFFFF sda=FFFFF\r\n") == 0,
+              "最坏: 全 1 签名逐字节匹配 (5 位大写 hex, 高位已掩码)");
+        printf("        |%s", cap);
+        CHECK(strlen(cap) <= (size_t)SENSOR_DEBUG_UART_MAXLINE,
+              "worst-case IOSIG line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");
+        printf("        len(worst IOSIG)=%u bytes\n", (unsigned)strlen(cap));
+        CHECK(strchr(cap, 'x') == NULL && strchr(cap, '.') == NULL,
+              "IOSIG 仅整数与大写十六进制");
+    }
+
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
 }

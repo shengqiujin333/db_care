@@ -220,6 +220,13 @@ int32_t main(void)
 		}
 	}
 	{
+		/* E1b 事务内逐位回读签名 (IOSIG): 判别 H12 (位序列是否真的送到引脚) */
+		debug_trace_iosig_t sig;
+		if (sensor_io_sig_scan(&sig) != 0u) {
+			debug_trace_iosig(&sig);
+		}
+	}
+	{
 		debug_trace_bus_t bus;
 		if (sensor_bus_diag_scan(&bus) != 0u) {
 			debug_trace_bus(&bus);

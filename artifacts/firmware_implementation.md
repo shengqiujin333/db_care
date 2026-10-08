@@ -1,14 +1,59 @@
-# 固件实现（FWI-002 rev 5.3）
+# 固件实现（FWI-002 rev 5.4）
 
 状态：固件实现（firmware_engineer.firmware_implementation）
-本轮工作项：run8 Runtime 队列 **ITEM-002 复验修复二**（EV-011 交回实现：按最小区分实验 **E1** 增加上电「主机拉低/回读」自检，并按同一思路扩展“SDA/SCL 角色对调”探测以切掉装配接反假设）；ITEM-001 已 TEST_PASS
-依据：FD-002 rev 5.0（§6.6.1 候选原因矩阵 / §6.6.3）、FWR-002 rev 5.0（FWR-101/107/116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-011（TEST_FAIL，§5 交接 E1）
-受测提交：`001cd52`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
-本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口不在本调用工具列表内** → IOTEST 的实板读数由嵌入式测试能力采集（本文件不声称已取得）
+本轮工作项：run8 Runtime 队列 **ITEM-002 复验修复三**（EV-012 交回实现：按 **E1b** 新增上电 `IOSIG` 事务内逐位回读签名，用于判别 H12）；ITEM-001 已 TEST_PASS
+依据：FD-002 rev 5.0（§6.6.1 候选原因矩阵）、FWR-002 rev 5.0（FWR-101/116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-012（TEST_FAIL 但排除 H4/H5、新登记 H12、§5 E1b）
+受测提交：`6dac824`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
+本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口不在本调用工具列表内** → IOSIG 实板读数由嵌入式测试能力采集（本文件不声称已取得）
 
 ---
 
-# 本轮 run8：ITEM-002 复验修复二（E1 主机拉低/回读自检 + 互换角色探测）
+# 本轮 run8：ITEM-002 复验修复三（E1b 事务内逐位回读签名 IOSIG）
+
+**触发**：EV-012 判 TEST_FAIL，但取到实质进展：实板 `IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none`（5/5 一致）**排除 H5（主机拉不低）与 H4（装配接反）**，并新登记 **H12**（静态驱动可回读，但**事务期间**的位/时钟形态是否真实送达未被覆盖）；该能力按规则交回实现，要求做 **E1b**。
+
+## 1. 本轮实现（E1b）
+
+| # | 内容 | 位置 |
+|---|---|---|
+| 1 | **新增上电 `IOSIG` 行**：`IOSIG scl=<5 位大写 hex> sda=<5 位大写 hex>`（各 20 bit）。用与软 I2C **相同的引脚原语与半位延时**（`speed=100` 等价）手工发出地址字节 `0x88` 的完整事务，在 **20 个半位采样点**回读 SCL/SDA 并 MSB 先入：S0 START 建立；S1 SCL 拉低；S2..S17 八位数据（每位 SCL 低/高各一点）；S18 ACK 时隙 SCL 低（主机释放 SDA）；S19 ACK 时隙 SCL 高 | `USER/src/measure.c` (`sensor_io_sig_scan`)、`USER/src/debug_trace.c` (`debug_trace_iosig`)、`USER/inc/{measure,debug_trace}.h` |
+| 2 | 只发地址字节（**不写 0xFD、不发第二个字节**），结束补一个合法 STOP 并释放两线；不改变采样/判定/上报/冻结 | 同上 |
+| 3 | 上电顺序：`BOOT` → `IOTEST` → `IOSIG` → `BUS`；仅 `SENSOR_DEBUG_UART=1`，`=0` 时两个自检均为编译期空实现 | `USER/src/main.c` |
+
+**未改动**：`BUS`/`S`/`G`/`IOTEST` 行字段与字面、采样/判定/上报/冻结、GXHT40 校验与重试、总线恢复、433/BLE 布局。
+
+## 2. 判读表（交 tester；本能力不代替采集）
+
+无器件应答时，**正确主机**应得 `scl=95555 sda=30303`（数据位回读等于被驱动位、每个数据位 SCL 低/高各一次、ACK 时隙释放后为高）。
+
+| IOSIG 实板读数 | 结论 |
+|---|---|
+| `scl=95555 sda=30303` | 位序列与时钟在引脚上**真实成立** ⇒ **H12 排除** ⇒ 剩余解释全部落在**器件/接线侧**（H1 贴装/焊接、H2 损坏、H3 异常闩锁） |
+| `scl≠95555` | SCL 未按时序翻转/未被真实送达 ⇒ **H12**（主机侧） |
+| `sda` 数据位部分不符 | SDA 位未被真实送达/回读不符 ⇒ **H12**（主机侧） |
+| `sda` 末两位（ACK 时隙）为 `0`（即 `sda=30300`） | 有器件在该地址上 **ACK**——若与 `BUS ack=none`/`G a44=0` 同轮不符，是需单独追查的异常 |
+
+> 边界：IOSIG 用与生产路径相同的引脚原语与半位延时构造序列，验证的是**引脚级序列与回读**；`sf_i2c` 源级位时序已由 tester 自有 harness 逐位验证，本轮不改 `sf_i2c`（保持其机器码不变验证）。
+
+## 3. 验证（本轮实际执行）
+
+- **宿主自检合计 162 项 0 失败**：`test/build_test.sh` 40+**42**+**41**+19+20（measure-flow 新增 [13]：签名扫描完成 + **无器件时 scl=95555/sda=30303** + **H12 负对照**（SDA 回读恒高时 `sda=FFFFF≠30303`）；debug-trace 新增 [T12]：IO SIG 期望签名逐字节匹配 / 全 1 最坏 27 B / 仅整数与大写 hex）；`host_gxht40_check` 60/60；`host_sf_i2c_bus_check` 35/35。
+- **tester 自有 harness 只读复跑**（未修改其文件）：`host_diag_probe_verify_ev` **85/85**、`host_gxht40_verify_ev` **93/93**。
+- **构建**：GNU 0 错误，FLASH **34,004 B** / RAM **1,808 B**（较上轮 33,564/1,808 为 +440/0 B；27 条告警均为既有类别）；Keil `mdk_build rebuild` **0 Error / 1 既有告警**（`main.c(238) while loop has empty body`），`Code=18888 RO-data=644 RW-data=116 ZI-data=1676`，axf md5 **`5c2fdb58d0fc4ef7dac8a21e343082a3`**；镜像内含 `IOSIG scl=` 与 `IOTEST sda_lo=` 字符串。
+- **`SENSOR_DEBUG_UART=0` 复核**：`measure.c`/`debug_trace.c` 0 告警 0 错误（两个自检均空实现）。
+- **修正上一轮证据的行号笔误**：Tester 在 EV-012 §1 指出上轮 `evidence/build.md` 写 `main.c(224)` 而实际为 231；本轮如实报 `main.c(238)`（行号随新增代码位移）。
+- 原始命令与 stdout：`evidence/build.md`、`evidence/driver_test.md`（本轮节）。
+
+## 4. 未取得与交接
+
+- **实板 `IOSIG` 读数与 `q=1` 均未取得**：本调用无 `mdk_flash`/串口。本轮交付的是 E1b 的**可复跑判别观测量**；读数出来后才能把 H12 与器件侧一刀切开。
+- **tester 需同步**：TD-002 §4.4 与解析脚本接受新行 `IOSIG`（上电顺序 `BOOT→IOTEST→IOSIG→BUS`；`BUS`/`IOTEST` 字面不变）；并在复判中记录 IOSIG 与 `BUS`/`G` 的同轮自洽性。
+- **设计能力需同步**（EV-012 §7.3 亦已登记该文档不同步）：FD-002 §5.2/§6.7 需收录 `IOTEST`、`IOSIG` 两行与真实上电顺序；FWR/TD 三份基线目前均未出现 `IOTEST`。
+- **用户/现场**：若 IOSIG 为 `scl=95555 sda=30303`（H12 排除），则只剩 E2（真实断电复上电）与 E3（目视/通断/换件）；两项均不需再改代码。
+
+---
+
+# 历史：ITEM-002 复验修复二（E1 拉低/回读 + 互换角色探测）
 
 **触发**：EV-011（受测 md5 `e309bac2…` = 上一轮交付件）判 **TEST_FAIL**：核心可观察 0/10 周期 `q=1` 且稳定复现；该能力按规则“无 ACK/功能不符首先是 TEST_FAIL、未知根因不得据以证明硬件损坏或软件无可修”将本项交回实现，并列出竞争假设 H1–H11 与最小区分实验 E1–E4。其中 **E1 明文属实现能力**：在**任何 I²C 事务之前**增加一次「把 SDA/SCL 拉低→回读；释放→回读」的自检并打印，用于切分「主机拉不低」（H5）与「器件不应答」（H1/H2/H3）。
 

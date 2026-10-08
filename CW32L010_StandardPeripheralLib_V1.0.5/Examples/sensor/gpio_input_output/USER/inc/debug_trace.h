@@ -74,6 +74,17 @@ typedef struct {
     uint8_t swap_addr[2];   /* 角色对调后收到 ACK 的 7bit 地址 */
 } debug_trace_iotest_t;
 
+/*
+ * 上电事务内逐位回读签名 (E1b; H12 判别):
+ *   在一次真实地址字节事务 (START + 8 数据位 + ACK 时隙 = 20 个半位采样点)
+ *   的每个采样点回读 SCL/SDA, MSB 先入各拼成 20 bit 值 (打印为 5 位大写 hex)。
+ *   无器件应答时正确主机应得 scl=0x95555 / sda=0x30303 (地址 0x88)。
+ */
+typedef struct {
+    uint32_t scl20;         /* 20 个半位采样点的 SCL 回读位 (S0..S19, S0 为最高位) */
+    uint32_t sda20;         /* 同上, SDA */
+} debug_trace_iosig_t;
+
 #if SENSOR_DEBUG_UART
 
 /* 上电横幅: 固件标识 + 芯片 UID 前 4 字节 + 复位来源 + 串口参数, 并打开 UART1 */
@@ -84,6 +95,9 @@ void debug_trace_bus(const debug_trace_bus_t *b);
 
 /* 打印一条 IOTEST 上电 I/O 自检行 (仅在自检完成后调用一次) */
 void debug_trace_iotest(const debug_trace_iotest_t *t);
+
+/* 打印一条 IOSIG 事务内逐位回读签名行 (仅在签名完成后调用一次) */
+void debug_trace_iosig(const debug_trace_iosig_t *s);
 
 /* 打印一个采样周期的 S 轨迹行 (要求 UART1 已由 debug_trace_boot 打开);
  * 当 s->diag_valid != 0 时在 S 行之后追加一行 G 失败诊断行 */
@@ -113,6 +127,11 @@ static inline void debug_trace_bus(const debug_trace_bus_t *b)
 static inline void debug_trace_iotest(const debug_trace_iotest_t *t)
 {
     (void)t;
+}
+
+static inline void debug_trace_iosig(const debug_trace_iosig_t *s)
+{
+    (void)s;
 }
 
 static inline void debug_trace_sample(const debug_trace_sample_t *s)

@@ -1,14 +1,53 @@
-# 构建证据（BUILD-002 rev 5.3）
+# 构建证据（BUILD-002 rev 5.4）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复二**（EV-011 交回实现：新增上电 `IOTEST` 主机拉低/回读自检 + SDA/SCL 角色对调探测）；ITEM-001 已 TEST_PASS
-依据：FD-002 rev 5.0、FWR-002 rev 5.0、TD-002 rev 5.0；触发 `evidence/test.md` EV-011（TEST_FAIL，§5 E1）
-受测提交：`001cd52`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
-测试环境：GNU 交叉编译（`arm-none-eabi-gcc`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`，本调用唯一设备工具授权）；`mdk_flash`/串口不在本调用工具列表内。
+本轮范围：run8 **ITEM-002 复验修复三**（EV-012 交回实现：新增上电 `IOSIG` 事务内逐位回读签名，E1b/H12 判别）
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-012（TEST_FAIL，§5 E1b）
+受测提交：`6dac824`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
+测试环境：GNU 交叉编译（`arm-none-eabi-gcc`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`）；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## ITEM-002 复验修复二：交叉编译 + Keil MDK 构建（本轮实际执行）
+## ITEM-002 复验修复三：交叉编译 + Keil MDK 构建（本轮实际执行）
+
+```
+$ sh gcc/build.sh
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       34004 B        64 KB     51.89%
+             RAM:        1808 B         4 KB     44.14%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+(exit 0；告警 27 条，均为既有类别；无一条指向本轮 measure.c/debug_trace.c 新增代码)
+
+$ md5sum gcc/obj/sensor_fw.elf gcc/obj/sensor_fw.bin
+d4543806318f8ec86c6e9b0f40cafd7e  gcc/obj/sensor_fw.elf
+16633799923f8c2a7b4f1eea9d9d906a  gcc/obj/sensor_fw.bin
+
+$ mdk_build {"action":"rebuild"}   (授权工具，经 hardware-verification MCP/CLI)
+*** Using Compiler 'V6.24' ...
+../USER/src/main.c(238): warning: while loop has empty body [-Wempty-body]   (既有 `while(k--);`)
+Program Size: Code=18888 RO-data=644 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+
+$ md5sum MDK/output/exe/Project.axf
+5c2fdb58d0fc4ef7dac8a21e343082a3  MDK/output/exe/Project.axf
+
+$ arm-none-eabi-strings MDK/output/exe/Project.axf | grep -E "IOSIG|IOTEST"
+@IOSIG scl=
+@IOTEST sda_lo=
+(证明 IOSIG/IOTEST 诊断行确实编入本轮交付件)
+
+$ arm-none-eabi-gcc -mcpu=cortex-m0plus -O1 -Wall -Wextra -DSENSOR_DEBUG_UART=0 -c ... USER/src/{measure,debug_trace,main}.c
+(measure.c / debug_trace.c：0 告警 0 错误; main.c：仅既有告警)
+```
+
+- 相对上一轮（GNU 33,564 B / RAM 1,808 B；Keil Code=17,808 RO=636 RW=116，axf md5 `bcfc14dc…`）：GNU **+440 B**、Keil **Code +1,080 B / RO +8 B**（新增 `sensor_io_sig_scan` 20 个采样点的位序列与签名拼装、`debug_trace_iosig` 渲染、`IOSIG` 字面；ARMCLANG 不合并等价路径，故增量大于 GNU）；RAM 不变。均在预算内（Code+RO ≈ 19.5 KB / 64 KB；RAM ≈ 1.79 KB / 4 KB）。
+- **告警行号更正**：上轮 `evidence/build.md` 写 `main.c(224)`；Tester 在 EV-012 §1 指出实际为 231（行号随新增代码位移）。本轮如实记录为 `main.c(238)`（同一既有告警）。
+- **未执行**：`mdk_flash` 与 COM42 采集（本调用工具列表仅含 `mdk_build`）⇒ `IOSIG` 实板读数与 `q=1` 复判均未取得。
+- 工具在仓库根产生的 `build*.log` 已读入本证据后删除（`.gitignore` 的 `/build*.log` 覆盖）。
+
+---
+
+# 历史：ITEM-002 复验修复二（E1）
 
 ```
 $ sh gcc/build.sh

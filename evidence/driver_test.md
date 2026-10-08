@@ -1,15 +1,67 @@
-# 驱动测试证据（DRV-002 rev 5.3）
+# 驱动测试证据（DRV-002 rev 5.4）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复二**（EV-011 交回实现：E1 主机拉低/回读自检 + SDA/SCL 角色对调探测）
-依据：FD-002 rev 5.0（§6.6.1/§6.6.3）、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-011（TEST_FAIL，§5 E1）
-受测实现：`USER/src/measure.c`（`sensor_io_diag_scan`、PA03 开漏输出、互换角色影子设备）、`USER/src/debug_trace.c`（`debug_trace_iotest`）、`USER/src/main.c`（上电接线顺序）
-测试载体：`test/build_test.sh`（155 项）、`test/host_gxht40_check.c`（60）、`test/host_sf_i2c_bus_check.c`（35）；另**只读复跑** tester 自有 harness
-测试环境：宿主机 MinGW-w64 gcc 12.2.0（带**开漏回读模型**的 mock GPIO）；`mdk_flash`/串口不在本调用工具列表内。
+本轮范围：run8 **ITEM-002 复验修复三**（EV-012 交回实现：E1b 事务内逐位回读签名 `IOSIG`）
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-012（TEST_FAIL，§5 E1b）
+受测实现：`USER/src/measure.c`（`sensor_io_sig_scan` + 半位延时）、`USER/src/debug_trace.c`（`debug_trace_iosig`）、`USER/src/main.c`（上电顺序）
+测试载体：`test/build_test.sh`（162 项）、`test/host_gxht40_check.c`（60）、`test/host_sf_i2c_bus_check.c`（35）；另**只读复跑** tester 自有 harness
+测试环境：宿主机 MinGW-w64 gcc 12.2.0（带开漏回读模型的 mock GPIO）；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## ITEM-002 复验修复二：自检与独立资产对照（本轮实际执行）
+## ITEM-002 复验修复三：自检与独立资产对照（本轮实际执行）
+
+### 1. 新增观测量（E1b）与自检原始 stdout（节选）
+
+```
+$ sh test/build_test.sh
+[1/4] 40 passed  [2/4] 42 passed  [3/4] 41 passed  [4/4a] 19 passed  [4/4b] 20 passed   (0 failed)
+$ ./host_gxht40_check     ->  60 passed / 0 failed
+$ ./host_sf_i2c_bus_check ->  35 passed / 0 failed
+
+[13] E1b 事务内逐位回读签名 (IOSIG): 期望值与 H12 负对照
+  PASS  签名扫描完成并填充结果
+  PASS  无器件时签名 = scl=95555 / sda=30303 (地址 0x88 位序列与时钟均回读跟随)
+  PASS  负对照: SDA 回读恒高时 sda=FFFFF ≠ 30303 (能区分 H12)
+
+[T12] IOSIG 事务内逐位回读签名行 (E1b): 格式/预算
+    PASS  无器件期望签名逐字节匹配 (scl=95555 sda=30303)
+        |IOSIG scl=95555 sda=30303
+    PASS  最坏: 全 1 签名逐字节匹配 (5 位大写 hex, 高位已掩码)
+        |IOSIG scl=FFFFF sda=FFFFF
+    PASS  worst-case IOSIG line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes
+        len(worst IOSIG)=27 bytes
+    PASS  IOSIG 仅整数与大写十六进制
+```
+
+### 2. 签名定义与期望值推导（供 tester 独立复算）
+
+采样顺序固定为 S0..S19（S0 为最高位）：
+`S0` START 建立（SCL 高、本机拉低 SDA）→ `S1` SCL 拉低 → `S2..S17` 八位数据 b7..b0，每位（SCL 低、SCL 高）各一点 → `S18` ACK 时隙 SCL 低（本机释放 SDA）→ `S19` ACK 时隙 SCL 高。
+
+对地址 `0x88`（=0x44<<1）且**无器件应答**：
+- `scl` 序列 = `1 0 | 0 1 ×8 | 0 1` → `0x95555`
+- `sda` 序列 = `0 0 | 1 1 0 0 0 0 0 0 1 1 0 0 0 0 0 0 | 1 1` → `0x30303`
+  （数据位按 b7..b0 = 1,0,0,0,1,0,0,0；末两位为 ACK 时隙，释放且无器件 ⇒ `1 1`）
+- 若器件在该地址 ACK，则末两位变为 `0 0` ⇒ `sda=0x30300`。
+
+> 期望值由本能力纸面推导 + 开漏模型实测双重得到；不是从被测实现反推。
+
+### 3. tester 自有 harness 只读复跑（未修改其文件；结论权归 tester）
+
+| 资产 | 结果 |
+|---|---|
+| `test/host_diag_probe_verify_ev.c` | **85 passed / 0 failed** |
+| `test/host_gxht40_verify_ev.c` | **93 passed / 0 failed** |
+
+### 4. 未取得 / 不声称
+
+- `IOSIG` 的**实板读数**与 `q=1` 均未在本轮取得（本调用无 `mdk_flash`/串口）；判读表见 `artifacts/firmware_implementation.md` 本轮节 §2。
+- 未改动的冻结不变量逐项回归通过：双字 CRC-8、有效域、读重读/整帧重测上限、命令白名单、失败不写输出/不上报/不推进前值、`BUS`/`S`/`G`/`IOTEST` 行字面与字段。
+
+---
+
+# 历史：ITEM-002 复验修复二（E1）
 
 ### 1. 新增观测量（E1）与自检原始 stdout（节选）
 

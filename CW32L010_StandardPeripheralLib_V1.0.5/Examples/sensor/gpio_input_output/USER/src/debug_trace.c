@@ -284,6 +284,33 @@ void debug_trace_iotest(const debug_trace_iotest_t *t)
     trace_puts("\r\n");
 }
 
+void debug_trace_iosig(const debug_trace_iosig_t *s)
+{
+    if (s == NULL) {
+        return;
+    }
+    if (s_uart_open == 0u) {
+        trace_uart_open();
+    }
+    if (s_uart_open == 0u) {
+        return;
+    }
+
+    /*
+     * 事务内逐位回读签名行 (E1b; 字段固定):
+     *   IOSIG scl=<5 位大写 hex> sda=<5 位大写 hex>
+     * 各 20 bit = 20 个半位采样点 (S0..S19) 的回读电平, S0 为最高位;
+     * 采样顺序: S0 START 建立 / S1 SCL 拉低 / S2..S17 八位数据 (每位低+高)
+     *           / S18 ACK 时隙 SCL 低 / S19 ACK 时隙 SCL 高。
+     * 只报告软件读到的事实, 不代表位级电气结论。
+     */
+    trace_puts("IOSIG scl=");
+    trace_hex(s->scl20 & 0xFFFFFu, 5u);
+    trace_puts(" sda=");
+    trace_hex(s->sda20 & 0xFFFFFu, 5u);
+    trace_puts("\r\n");
+}
+
 void debug_trace_sample(const debug_trace_sample_t *s)
 {
     uint8_t i;
@@ -365,6 +392,8 @@ void debug_trace_sample(const debug_trace_sample_t *s)
  *   IOTEST 行:
  *   "IOTEST"=6 " sda_lo=0"=9 " scl_lo=0"=9 " idle=3"=7 " swap="=6
  *   + "44,45"=5 + CRLF 2                                            => 44
+ *   IOSIG 行:
+ *   "IOSIG"=5 " scl="=5 + 5 位 hex + " sda="=5 + 5 位 hex + CRLF 2   => 27
  *   G 行:
  *   "G"=1 " s=2"=4 " a44=0"=6 " a45=0"=6 " rd=5"=5 " at=3"=5
  *   " raw="=5 + 12 位 hex + CRLF 2                                   => 46
