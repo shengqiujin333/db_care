@@ -1,3 +1,260 @@
+# 嵌入式验证证据（EV-008 / run8 ITEM-001 ↔ GXHT40 温湿度采集失败在真实目标上可诊断：上电 BUS 行 + 失败周期 G 行）
+
+状态：embedded_tester.embedded_verification 独立验证证据（本轮任务项执行轮；重新部署、重新采集真实目标字节流，不沿用历史结论）
+本轮验证对象：run8 队列项 **ITEM-001**（GXHT40 温湿度采集失败在真实目标上可诊断，不依赖逻辑分析仪的实板一手数据）
+受测提交：`374fa29`（HEAD，工作树干净）
+受测件：`MDK/output/exe/Project.axf`，md5 **`c39bf314851a0988a5f347c73604d105`**（由 HEAD 源码经 `mdk_build rebuild` 构建；与实现声明一致）
+验证基线：TD-002 rev 5.0 `artifacts/test_design.md`（§4.1 T-L0-11、§4.3 T-L1-14、§4.4 T-L2-11/T-L2-12）
+结论：**TEST_PASS** —— 本项全部**可观测**验收点均在真实目标上以原始字节复现，并在宿主端对真实目标当前无法出现的形态（ACK 地址表、`raw` 十六进制、成功周期）做了独立验证。
+
+| 验收点（任务文本「可观察」） | 实板实测 | 依据 |
+|---|---|---|
+| 复位后横幅之后可见**一条** `BUS` 行（空闲电平 + ACK 地址集合） | **通过 ×3 次复位**：`BUS idle=1 scl=1 sda=0 ack=none`（boot#1）/ `BUS idle=3 scl=1 sda=1 ack=none`（boot#2、boot#3）；每段恰 1 条，后续周期不再出现 | §2.2 |
+| `idle` 位掩码与 `scl`/`sda` 自洽（bit0=SCL、bit1=SDA） | 通过：`idle=1`⇒(1,0)、`idle=3`⇒(1,1)；宿主端 4 种掩码全量展开验证 | §2.2 / §4.2 |
+| `ack` 为 `none` 或合法 7bit 地址集合（最多 8、超出 `+`） | 实测 `ack=none`（合法形态）；地址表/截断形态由宿主端最坏情形验证 | §2.2 / §4.2 |
+| `q=0` 周期在该周期 `S` 行后**紧跟**一条 `G` 行 | 通过 ×6 个失败周期（4 次捕获）：每个 `q=0` 周期恰 1 条 `G`，且紧跟其 `S` 行 | §2.3 |
+| `G` 的结果码/地址 ACK/重读重测次数/原始字节与本周期失败原因自洽 | 通过：全部 `G s=2 a44=0 a45=0 rd=0 at=3 raw=------------`，与 `BUS ack=none` 及「无器件」结果码逐项自洽 | §2.3 / §3 |
+| 每行 ≤96 B、只用整数与大写十六进制 | 通过：`BUS`=33 B、`G`=46 B、`S`=66 B；脚本逐值断言仅整数/大写 hex | §2.5 / §4.2 |
+| 成功且未上报周期的输出与既有 `S` 行逐字节相同 | `S` 行字面/字段集/顺序相对上一轮**未改**（diff 无实现行改动）；宿主端用真实捕获的 `S` 行做逐字节金标准比对 | §4.1 / §4.2 / §4.5 |
+| 采样间期仍无任何字节 | 通过：300 s 窗口内仅 2 个 `S+G` 对（224 B）、10 s 窗口 0 B | §2.4 |
+| 新增地址探测原语不得改变既有软 I²C 函数语义 | 通过（最强证据）：既有全部 `sf_i2c` 函数机器码逐指令相同、符号大小逐项相等；唯一新增符号 `i2c_probe_addr`(34 B) | §4.4 |
+| 诊断不得改变采样、判定、上报与冻结状态 | 通过：实板 `S` 行字段与失败语义自洽；宿主端真实 `measure.c` 流程验证业务状态不被扫描/快照改动 | §4.1 / §4.3 |
+| `SENSOR_DEBUG_UART=0` 时全部为空实现 | 通过（编译级）：扫描编译为 `movs r0,#0; bx lr`、`debug_trace.c` 零符号、`measure.o` 无 `i2c_probe_addr`/UART 引用（附 1 项内部观察，见 §5 局限） | §4.3 |
+
+---
+
+## 1. 环境、构建与部署
+
+| 工具 / 命令 | 原始结果（节选） | 结论 |
+|---|---|---|
+| `serial_list_ports` | `COM42 = Prolific USB-to-Serial Comm Port (VID:PID 067B:2303)`；`COM26 = USB 串行设备 (C251:F001)` | 传感器调试口 **COM42 在位** |
+| `usb_list_devices` | `USB\VID_C251&PID_F001`（HID MI_02 + Ports MI_00，SN `87094109484987710672FF50`，Status OK） | **CW-DAPLink 下载探针在位** |
+| `mdk_build rebuild` | `*** Using Compiler 'V6.24'`；`Program Size: Code=16316 RO-data=624 RW-data=76 ZI-data=1676`；`0 Error(s), 1 Warning(s)`（`main.c(224): while loop has empty body` —— **基线既有**空体 `while(k--);`） | 当前提交可构建；与实现声明逐字一致 |
+| `mdk_flash {}` ×3（本项部署/复现） | 均 `Erase Done.Programming Done.Verify OK.Application running ...`（03:56:59Z / 04:25:59Z / 04:29:04Z） | 受测镜像已下载并回读校验；在已打印多条轨迹后仍可再次下载 ⇒ **SWD 未被调试通道或诊断路径破坏** |
+| `sh gcc/build.sh`（HEAD） | `0 error`；`FLASH: 32840 B / 64 KB (50.11%)`、`RAM: 1768 B / 4 KB (43.16%)` | 与实现声明一致（基线 `1dd8e4b`：31,952/1,736 → 本项 +888/+32 B） |
+| `sh test/build_test.sh`（实现侧自检复跑） | `40 + 34 + 33 + 19 + 20`，全部 0 失败 | 交叉确认（不作独立证据） |
+
+工具副作用：`mdk_build`/`mdk_flash` 会在仓库根生成 `build*.log`；已读入本证据后删除，未入库（本轮实测文件名形如 `build_1791431810961820000.log`，`.gitignore` 的 `/build.log` 未覆盖该变体——见 §6 交接）。
+
+## 2. 真实目标 UART1 观测（COM42 @9600 8N1，原始字节）
+
+采集方式：先开一个 `serial_capture` 窗口（300 s 或 120 s，`duration_sec` 上限 300），再在窗口内执行 `mdk_flash`，使复位后的横幅与 `BUS` 行落在窗口内。时间均为 UTC。原始捕获文件（Runtime 角色工作目录 `work/verification_tools/`）：
+
+| 捕获 | 文件 | 窗口（UTC） | 字节 | 内容 |
+|---|---|---|---|---|
+| **capA** | `serial-capture-1791432093371341400.bin` | 03:56:33.155 → 04:01:33.380 | 409 | 复位前旧镜像横幅 + 截断 `S`；复位后横幅 + `BUS` + `S k=0` + `G` + `S k=3` + `G` |
+| **capB** | `serial-capture-1791432459701609400.bin` | 04:02:39.490 → 04:07:39.703 | 224 | 无复位：`S k=6`+`G`、`S k=9`+`G` |
+| **capW** | `serial-capture-1791431776097425700.bin` | 03:56:05.882 → 03:56:16.098（10 s） | **0** | 采样间期零输出 |
+| **capC** | `serial-capture-1791433645089851300.bin` | 04:25:24.891 → 04:27:25.091 | 245 | 覆盖烧录：横幅×2 + `BUS` + `S k=1` + `G` |
+| **capD** | `serial-capture-1791433832424379300.bin` | 04:28:32.212 → 04:30:32.425 | 245 | 覆盖烧录：横幅×2 + `BUS` + `S k=0` + `G` |
+
+**字节账目（逐字节闭合，无未知字节）**
+
+- capA = 50 + 52 + 50 + 33 + 66 + 46 + 66 + 46 = **409** ✔（第 2 项为烧录停止 CPU 造成的无 CRLF 截断行）
+- capB = (66+46) × 2 = **224** ✔（300 s 窗口内**除此之外无任何字节**）
+- capC = capD = 50 + 50 + 33 + 66 + 46 = **245** ✔
+
+### 2.1 capA 原始行表（脚本 `evidence/embedded_verify_diag_item001.py` 输出）
+
+```
+[   0] BOOT  OK    50B  BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+[  50] S     CUT   52B  S k=0 p=0 H=0 V=1 o=8 n=62 x=64 a=63 D=0 t=0 h=0 q=0
+[ 102] BOOT  OK    50B  BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600
+[ 152] BUS   OK    33B  BUS idle=1 scl=1 sda=0 ack=none
+[ 185] S     OK    66B  S k=0 p=0 H=0 V=0 o=8 n=63 x=64 a=63 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+[ 251] G     OK    46B  G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+[ 297] S     OK    66B  S k=3 p=0 H=0 V=0 o=8 n=62 x=64 a=63 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+[ 363] G     OK    46B  G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+全局: 横幅 2 条 / BUS 1 条
+```
+
+- 第一条横幅 `rst=0040` 与其后**无 CRLF 的 52 B `S` 行（`V=1`）**来自**烧录前仍在 Flash 中的 run7 镜像**（`V=1` 与 run7 语义一致，本轮 `V=0`）；该行被 `mdk_flash` 擦除/编程时停止 CPU 截断，属**烧录产物**，与 EV-006/EV-007 记录一致，不计固件缺陷。
+- 第二条横幅 `rst=0240`（=PIN|SYSRESETREQ）之后即为本项受测件的输出。
+
+### 2.2 上电 BUS 行（三次复位，逐字段）
+
+| 复位 | 捕获 | 原始 BUS 行 | `idle` | `scl` | `sda` | `ack` |
+|---|---|---|---|---|---|---|
+| boot#1 | capA（03:56:59Z） | `BUS idle=1 scl=1 sda=0 ack=none` | 1 | 1 | 0 | none |
+| boot#2 | capC（04:25:59Z） | `BUS idle=3 scl=1 sda=1 ack=none` | 3 | 1 | 1 | none |
+| boot#3 | capD（04:29:04Z） | `BUS idle=3 scl=1 sda=1 ack=none` | 3 | 1 | 1 | none |
+
+- 三条 `BUS` 行**均恰好出现一次**，位置**紧随横幅、且在任何 `S`/`G` 行之前**（上电先诊断、任何 I²C 事务之前），后续周期不再出现（capB 300 s 无复位窗口内 0 条）。
+- `idle` 与展开位逐条自洽：boot#1 `idle=1` ⇒ SCL 高/SDA 低；boot#2/#3 `idle=3` ⇒ 双线均高（健全空线）。
+- `ack=none` 三次一致：**7bit 地址 0x08..0x77（含 0x44/0x45）无任何地址收到 ACK**。
+- **可复现性观察**：空闲电平在 3 次上电中为 `1,3,3` —— SDA 空闲读数**不恒定**（1 次读到低、2 次读到高），但 `ack=none` **恒定**。该差异本身是一手事实，见 §3 的解读与负对照。
+
+### 2.3 失败周期 S 行 → G 行（本项捕获到的全部 6 个失败周期）
+
+| 捕获 | S 行（原文） | 紧跟的 G 行（原文） |
+|---|---|---|
+| capA | `S k=0 p=0 H=0 V=0 o=8 n=63 x=64 a=63 D=0 t=0 h=0 q=0 r=0 s=0 y=0` | `G s=2 a44=0 a45=0 rd=0 at=3 raw=------------` |
+| capA | `S k=3 … n=62 x=64 a=63 …` | `G s=2 a44=0 a45=0 rd=0 at=3 raw=------------` |
+| capB | `S k=6 … n=60 x=62 a=61 …` | `G s=2 a44=0 a45=0 rd=0 at=3 raw=------------` |
+| capB | `S k=9 … n=59 x=62 a=60 …` | `G s=2 a44=0 a45=0 rd=0 at=3 raw=------------` |
+| capC | `S k=1 … n=58 x=60 a=59 …` | `G s=2 a44=0 a45=0 rd=0 at=3 raw=------------` |
+| capD | `S k=0 … n=58 x=60 a=58 …` | `G s=2 a44=0 a45=0 rd=0 at=3 raw=------------` |
+
+- 每个 `q=0` 周期**恰好一条** `G` 行且**紧跟**其 `S` 行（中间无其它字节/行）；`G` 行的三处计数与结果码逐周期恒定。
+- **逐项自洽**（脚本断言）：`s=2`（`GXHT40_ERR_NO_DEVICE`，取值域 1..5）⇒ 必然 `a44=0 && a45=0` ✔ 与 `BUS ack=none` 一致；`rd=0`（本轮读事务未发生，因为命令从未被 ACK）✔；`at=3`（= `GXHT40_MEAS_RETRY`，整帧重测用尽）✔；`raw=------------`（12 个 `-`，未成功读回 6 字节）✔ 且此时 `rd=0` 与「无成功读」一致 ✔。
+- `S` 行字段集与顺序（15 字段 `k p H V o n x a D t h q r s y`）与既有轨迹一致，未因诊断行发生任何变化。
+
+### 2.4 采样间期零输出与节拍
+
+- capB：300 s 窗口内**只有** 2 个 `S+G` 对（224 B），其余时间为空 ⇒ 打印后 UART1 已关闭，采样间期无任何字节。
+- capW（10 s）：**0 字节**（同一结论的独立窗口）。
+- capA 复位 T0=03:56:59Z：`k=0` 于 T0、`k=3` 于窗口内（≤270 s）⇒ 相邻 `k` 增量恒为 3（3 分钟节拍）；capC 首个 `k=1`、capD 首个 `k=0` 属**非 POR 复位下 RTC 相位随机**的既有行为（EV-007 §2.4 已登记，与本项无关）。
+
+### 2.5 独立字节级复核脚本
+
+`evidence/embedded_verify_diag_item001.py`（本能力新写，不复用实现侧测试）：按 `BOOT/BUS/S/G` 行首切分原始字节，识别烧录截断行（CUT）与窗口起始残行（FRAG）并将其排除出判定，按每次横幅分段，逐行/逐字段断言（行长 ≤96、CRLF 终止、仅整数与大写十六进制、`idle` 位与 `scl`/`sda` 一致、`BUS` 恰 1 条且在横幅后任何 `S/G` 前、`G` 仅随 `q=0` 出现且恰 1 条、结果码与地址 ACK/重读重测/原始字节自洽、`raw` 为 hex 时用**脚本内独立 CRC-8** 复算两个字）。
+
+```
+$ python evidence/embedded_verify_diag_item001.py <capA> <capB> <capW> <capC> <capD>
+==== result: 139 checks, 0 failed ====      (exit=0)
+```
+
+## 3. 诊断解读：GXHT40 采集失败的一手定位（本项交付物）
+
+三条 `BUS` 行 + 6 条 `G` 行给出如下**互相印证**的事实链：
+
+1. **总线空闲**：`scl=1` 恒定；`sda` 在 3 次上电中读到 `0/1/1`。netlist 核定 `PA04`(=SDA) 与 `R1 4.7K→BAT`、`PA03`(=SCL) 与 `R2 4.7K→BAT` 同网（`sensor_hardware/pstxnet.dat` 网 N05845/N06024），故 `idle=3`（boot#2/#3）表示两条线都被外部上拉拉到高，**上拉与供电正常**。
+2. **无器件应答**：`ack=none` 三次一致 —— 0x08..0x77 全部无 ACK，含 GXHT40 的 0x44/0x45。
+3. **负对照（宿主端可控实验）**：I²C 是线与总线。若 SDA 被**持续**拉低，主机在每个地址槽都会读到「ACK」，扫描必然报出一张**满 8 地址且带 `+`** 的列表。宿主 harness 用「SDA 被外部持续拉低」模型实测得 `ack_count=8, truncated=1`（§4.1 [S6]）。因此**实板 `ack=none` 不可能由 SDA 卡低解释** —— 它直接证明在 ACK 时隙 SDA 为高、且**没有任何器件应答**。
+4. **与 G 行一致**：驱动因此走「两地址均无 ACK」路径 ⇒ `s=2`、`a44=a45=0`、未发起读 ⇒ `rd=0`、无成功读 ⇒ `raw=------------`、整帧重测用尽 ⇒ `at=3`。三条输出（`BUS`/`S`/`G`）互相自洽，且与本周期实际失败原因（地址无应答）一致。
+
+**结论（交 T2 实现能力）**：真实目标上的失败发生在「器件是否在总线上应答」这一层，而非协议/CRC/量程层。可排除的候选与仍需现场确认的候选：
+
+- **可排除（有一手数据）**：总线无上拉/被卡低（boot#2/#3 `idle=3`）；UART 观测通路（本项已证）。
+- **boot#1 的 `idle=1` 需注意**：该次仅在**空闲读时刻**读到 SDA 低，而该次 112 次地址探测仍全部无 ACK（若持续卡低会得到满表 ACK）。故它更像一次**瞬态/未定态读数**（例如器件在复位瞬间短暂握住 SDA，或释放后未立即建立），不能据此判定「SDA 硬件短路/卡低」，也不宜据此定位根因；重复测量应优先观察该字段是否复现。
+- **仍需现场确认（非本能力工具面，需万用表/目视/焊接检查）**：U9(GXHT40) 是否贴装/焊接良好、其 VDD/引脚是否连通到 N05845/N06024、器件是否处于异常保持状态。本项已把「无应答」这一确定事实与「SDA 空闲瞬态」这一不确定观察分离记录，避免把后者当成根因。
+
+## 4. 宿主端独立验证（覆盖真实目标当前无法出现的形态）
+
+### 4.1 `test/host_diag_probe_verify_ev.c`（本能力新写）—— 85/85
+
+链接**真实** `USER/src/{measure.c,gxht40.c,sf_i2c.c,fw_core.c}`，由本能力自写的**位级 mock 总线 + mock 从机**驱动（真实软 I²C 逐位打入，非桩）。
+
+```
+$ cc -std=c11 -Wall -Wextra -Wno-unused-function -Wno-misleading-indentation \
+     -Wno-unused-const-variable -DSENSOR_DEBUG_UART=1 -Itest/mock_measure_ev \
+     -IUSER/inc -IUM2005C -ICOMMON test/host_diag_probe_verify_ev.c USER/src/measure.c \
+     USER/src/gxht40.c USER/src/sf_i2c.c USER/src/fw_core.c USER/src/encrytogate.c -lm -o diag_probe_verify
+$ ./diag_probe_verify
+==== result: 85 passed, 0 failed ====      (exit=0)
+```
+
+| 组 | 独立断言（原始线上转录 / 数值） | 结果 |
+|---|---|---|
+| **P1 探测原语** | 有器件：`START TX(88) ACK STOP` —— 恰 1 START/1 STOP、**线上恰 1 个地址字节**、不读数据、从机未收到任何命令/寄存器字节、结束后双线均高 | PASS |
+| **P2 NACK 释放** | 无器件：`START TX(88) NACK STOP STOP` —— NACK 后仍发 STOP、地址后不再发任何字节、总线空闲高（未卡死） | PASS |
+| **P3 地址精确** | 0x44 应答时探测 0x8A：`START TX(8A) NACK …`，只发请求的地址 | PASS |
+| **P4 既有原语回归** | `i2c_write_cmd` 仍 `TX(88) ACK TX(FD) ACK`；`i2c_read_bytes(0x89,6)` 仍 `… RX(61) M-ACK … RX(75) M-NACK STOP` | PASS |
+| **S1 BUS 扫描** | 112 次探测、`TX=112`（地址字节仅此）、`RX=0`、从机写入 0 字节；地址字节严格按 `(addr7<<1)` 从 0x08 升到 0x77（写位=0）；每次探测 1 START 且均发 STOP（`STOP=224`，NACK 路径双 STOP 属既有写法）；`idle=3`；**业务状态 `sample_flag`/`report_req`/`tempvalue`/`huminityvalue` 完全未变**；`bsp_i2c_init()` 恰好配置 PA3/PA4 一次 | PASS ×10 |
+| **S2 幂等** | 第二次扫描同结果、物理层不再重配、仍完整探测 112 地址 | PASS ×3 |
+| **S3/S4 ACK 集合** | 器件在 0x44 ⇒ `ack_count=1, ack_addr[0]=0x44`；换成 0x10 ⇒ 原样记录（无硬编码） | PASS |
+| **S5 截断上限** | 全部地址应答 ⇒ `ack_count=8, ack_truncated=1`，记录的 8 个为**最先探测的** 0x08..0x0F（即行尾 `+`） | PASS ×3 |
+| **S6 负对照（关键）** | 模型「SDA 被外部持续拉低」⇒ `idle=1` 且 **`ack_count=8, truncated=1`** —— 证明实板 `ack=none` 不可能来自 SDA 卡低（见 §3.3） | PASS ×2 |
+| **D1..D7 驱动诊断快照** | 成功：`status=0 a44=1 a45=0 rd=0 at=1 raw_valid=1 raw=66669372B0DC`（与实读 6 字节一致）、tMEAS 仍恰 1 次 10 ms；读 NACK×2 后成功：`rd=2 at=1`；CRC 错：`status=4 a44=1 at=3 raw` 保留最后读回帧；无器件：`status=2 a44=a45=0 rd=0 at=3 raw_valid=0`；量程无效：`status=5 a44=1 at=3`；读重试用尽：`status=3 a44=1 rd=5 raw_valid=0`；全部失败路径**输出哨兵值不变**；重复 `gxht40_diag_fetch` 返回同一快照 | PASS ×25 |
+| **F1..F3 流程传播** | 真实 `measure.c` 流程：失败周期 `sample_ok=0, diag_valid=1` 且快照字段逐项来自驱动、`temp/hum` 保留上次有效值、不置上报、快照消费一次；成功周期 `sample_ok=1, diag_valid=0`（**不产生 G 行**）且测得值进入 `S` 字段；成功后再失败的周期**前值仍为 250 未被污染** | PASS ×13 |
+
+### 4.2 `test/host_diag_line_verify_ev.c`（本能力新写）—— 36/36
+
+链接**真实** `USER/src/debug_trace.c`，对接到本能力自建的 UART/GPIO 影子层（`test/mock_diagline_ev/`，本能力新写，不复用实现侧 `mock_trace`），逐字节比对 UART1 实际输出。
+
+```
+$ cc -std=c11 -Wall -Wextra -DSENSOR_DEBUG_UART=1 -Itest/mock_diagline_ev -IUSER/inc \
+     test/host_diag_line_verify_ev.c USER/src/debug_trace.c -o diag_line_verify
+$ ./diag_line_verify
+==== result: 36 passed, 0 failed ====      (exit=0)
+```
+
+| 情形 | 期望（独立写出的字面量） | 实测 |
+|---|---|---|
+| BUS 最坏（8 地址 + 截断） | `BUS idle=3 scl=1 sda=1 ack=08,1F,2A,44,45,50,6E,77+` | **53 B**（≤96）逐字节相同 |
+| BUS 单地址 | `BUS idle=3 scl=1 sda=1 ack=44` | 31 B 相同 |
+| BUS 实板形态 | `BUS idle=1 scl=1 sda=0 ack=none` | 33 B 相同 |
+| BUS 掩码展开 | `idle=0/1/2/3` ⇒ `scl,sda = 0,0 / 1,0 / 0,1 / 1,1` | 4/4 相同 |
+| `BUS` 传 NULL | 不输出任何字节 | 通过 |
+| **S 行金标准** | 用**实板 capA 捕获到的原文** `S k=0 p=0 H=0 V=0 o=8 n=63 x=64 a=63 D=0 t=0 h=0 q=0 r=0 s=0 y=0` 作期望 | 逐字节相同、恰 1 个 CRLF、**无 `G` 行**（`diag_valid=0`） |
+| S 行最坏宽度 | tick=4294967295、p=-1250、t=-1250、h=1000、ADC=4095、s=2、y=3 | **92 B**（≤96）、恰 1 CRLF |
+| G 行（未读成功） | `S …` + `G s=2 a44=0 a45=0 rd=0 at=3 raw=------------` | 112 B 两行、恰 2 CRLF、`G` 紧随 `S` |
+| G 行最坏（全计数最大 + 12 位大写 hex） | `G s=5 a44=1 a45=1 rd=5 at=3 raw=ABCDEF012345` | **46 B**；`s=1..5` 均渲染为单个十进制位 |
+| 整机上电最坏 | 横幅 + 最坏 BUS + 最坏 S + 最坏 G | 4 行、最长 92 B（≤96） |
+| 关闭语义 | 排空后复位并关 UART1 时钟、幂等、下一行自动重开 | 通过 |
+
+> 说明：写 `S2/G2` 期望值时，本能力先用独立算式核算得到最坏 `S`=92 B、最坏 `G`=46 B、最坏 `BUS`=53 B，与实现文档所列一致；这不是采信实现数字，而是独立复算后的吻合。
+
+### 4.3 `SENSOR_DEBUG_UART=0` 空实现（编译级证据）
+
+```
+$ arm-none-eabi-gcc -c -O1 -DSENSOR_DEBUG_UART=0 -DSENSOR_CONFIG_NO_MCU ... USER/src/measure.c
+$ arm-none-eabi-objdump -d -j .text.sensor_bus_diag_scan measure0.o
+00000000 <sensor_bus_diag_scan>:
+   0: 2000   movs  r0, #0
+   2: 4770   bx    lr                 <- 空实现: 不读引脚、不发任何 I2C 探测
+$ arm-none-eabi-nm measure0.o | grep -i "i2c_probe\|UART\|scl_pin_read"   -> 无命中
+$ arm-none-eabi-gcc -c -DSENSOR_DEBUG_UART=0 ... USER/src/debug_trace.c && arm-none-eabi-nm dt0.o   -> 空（本文件不产生任何符号）
+对照 -DSENSOR_DEBUG_UART=1：sensor_bus_diag_scan 为完整实现且引用 i2c_probe_addr
+```
+
+即：关闭态下 `BUS`/`G` 的输出与地址扫描均为**空实现**，不引入 UART 符号、不做 I2C 探测、不读 PA03/PA04。
+
+### 4.4 既有软 I²C 函数机器码等价（回归最强证据）
+
+在临时 worktree 独立构建基线 `1dd8e4b`，与 HEAD 构建产物逐函数比对（`arm-none-eabi-objdump -d --disassemble=<fn>`，归一化重定位地址后逐指令比较）：
+
+| 既有函数 | 结果 |
+|---|---|
+| `i2c_init` / `i2c_start` / `i2c_stop` / `i2c_write_byte` / `i2c_read_byte` / `i2c_wait_ack` / `i2c_write_multi_byte` / `i2c_read_multi_byte` / `i2c_obj_find` / `i2c_write_cmd` / `i2c_read_bytes` | **逐指令完全相同** |
+| `i2c_write_multi_byte_16bit` / `i2c_read_multi_byte_16bit` | 仅分支**目标地址**整体平移 `+0x22`（= 新增函数大小），指令编码逐字相同 |
+| `nm --print-size` 对照 | 既有函数**大小逐项相等**；唯一新增符号 `i2c_probe_addr` = **0x22(34) B** |
+
+### 4.5 变更范围审查（`git diff 1dd8e4b 374fa29`）
+
+| 文件 | 变更 | 性质 |
+|---|---|---|
+| `USER/src/sf_i2c.c`（20/0）、`USER/inc/sf_i2c.h`（6/0） | 仅追加 `i2c_probe_addr` | **纯新增** |
+| `USER/src/measure.c`（96/0）、`gxht40.c`（56/0）、`main.c`（8/0）、`sensor_config.h`（10/0）、`measure.h`（9/0）、`gxht40.h`（20/0） | 仅追加 | **纯新增** |
+| `USER/src/debug_trace.c`（83/3）、`USER/inc/debug_trace.h`（28/1） | 全部 4 处删除**均为注释行**（“S 行最坏宽度核算”注释与 `debug_trace_sample` 的行注释）；`S` 行发射代码无任何改动 | 无实现行改动 |
+| `test/*`、`.gitignore`、`artifacts/`、`evidence/` | 实现侧自检/文档 | 非产品代码 |
+
+⇒ 「新增地址探测原语不得改变既有软 I²C 函数语义」与「成功周期输出与既有 `S` 行逐字节相同」在源码与机器码两层同时成立。
+
+### 4.6 宿主自检复跑与遗留测试资产
+
+- 实现侧 `test/build_test.sh`：`40 + 34 + 33 + 19 + 20 = 146` 项 0 失败（交叉确认，不作为独立证据）。
+- 本能力既有独立 harness 复跑：`host_sf_i2c_verify_ev` **35/35**、`host_gxht40_verify_ev` **42/42**（T1 相关面未回归）。
+- **遗留（如实记录，本轮未修）**：`host_fw_core_verify_ev.c`、`host_light_verify_ev.c`、`host_measure_flow_verify_ev.c` 仍按 run7-rev4.0 的光照语义断言（`light_code_is_dark` / `bool light_sample()`），已无法对着当前 `light_is_dark` / `light_result_t` 编译。它们属**光照判据/标定**相关任务项的验证资产，本项未改（改动会越过本能力当前边界）；该缺口与实现侧交接说明一致。
+
+## 5. 判定与局限
+
+**判定：TEST_PASS（run8 ITEM-001）**
+
+- 本项全部**可观测**验收点在真实目标上以原始字节复现（§2），三条诊断输出线（`BUS`/`S`/`G`）互相自洽并与本周期实际失败原因一致（§3）。
+- 真实目标当前**无法**出现的形态（ACK 地址集合、`raw` 十六进制、成功周期的「只有一条 `S` 行」）由宿主端独立 harness 覆盖（§4.1 [S3/S4/S5/S6]、[D1]、[F2]、§4.2）。
+
+**局限（如实记录）**：
+
+1. **成功周期未在实板出现**：GXHT40 每个周期都不应答（`ack=none`、`q=0`），因此「正常周期仍只有一条 `S` 行」**未在实板观测**；该条仅在宿主端（`diag_valid=0` ⇒ 恰一行、且与实板捕获的 `S` 行逐字节相同）得到证据。这是本项要诊断的既有故障（OBS-1）所致，不是本项交付物的缺陷。
+2. **`ack` 的地址表/截断形态未在实板出现**（实板为 `none`）：以宿主端最坏情形与 8 地址上限验证。
+3. **`raw` 的 12 位十六进制形态未在实板出现**（实板全程无成功读，故打印 12 个 `-`）：以宿主端 + 脚本内独立 CRC-8 复算路径覆盖。实板 `raw` 全 `-` 与 `rd=0` 的自洽性已断言。
+4. **`SENSOR_DEBUG_UART=0` 的一处内部观察**：关闭态下 `sensor_bus_diag_scan`/`debug_trace.*` 确为空实现（§4.3），但 `measure.c` 在失败分支仍会调用一次 `gxht40_diag_fetch()` 并把快照写入内部静态变量（`.bss` 约 10 B），驱动侧也仍维护该快照。它是**只读、无 I/O、不参与任何判定/上报/冻结**的内部记账，不改变任何可观测行为（同类的 `s_trace_*` 记账自 run7 T1 起即如此）；本项按「输出与扫描为空实现、行为不变」判通过，并把「是否在关闭态一并编译掉该快照拷贝」登记为**可选**的实现侧改进（见 §6），不作为本项失败依据。
+5. 未测：位级 I²C 时序/波形/上升时间、空口 433 与 BLE 波形、功耗电流、绝对温湿度精度、PA04 对 BAT 的实际电平（无逻辑分析仪/示波器/万用表，用户未提供）。本项**未**据这些未测项降低或提高任何判据。
+6. `serial_capture` 原始产物无逐字节时间戳，节拍与出现顺序以窗口边界与行序表述。
+
+## 6. 跨项观察与交接
+
+1. **【交 T2 实现能力】GXHT40 失败的一手事实**（本项交付物，见 §3）：总线空闲在 boot#2/#3 为 `idle=3`（上拉正常），三次上电 `ack=none` 恒定，故失败在「器件不应答」层；`S`/`G` 输出（`q=0`、`s=2`、`a44=a45=0`、`rd=0`、`at=3`、`raw` 全 `-`）与之一致。boot#1 的 `idle=1` 是瞬时/未定态读数（同次 `ack=none` 排除持续卡低），建议 T2 判断时以「是否复现」为准，并配合万用表/目视确认 U9 贴装与供电。
+2. **【交后续验证轮】** 后续若修好采集，需按本证据 §2/§2.5 复跑 `evidence/embedded_verify_diag_item001.py`（可直接使用），并补验「成功周期只有一条 `S` 行」与 `G` 行不出现的实板形态；届时 `raw` 会出现 12 位十六进制，脚本已内置独立 CRC-8 复算。
+3. **【仓库卫生·交实现能力或工具维护】** `mdk_build`/`mdk_flash` 会在仓库根生成 `build_<数字>.log`，`.gitignore` 仅含 `/build.log`，该变体会出现在 `git status` 中（本轮读入证据后已删除，未入库）。建议把忽略规则放宽为 `/build*.log`；本轮未改该文件（越界）。
+4. **【交光照相关任务项】** 本能力 3 个旧独立 harness（`host_fw_core_verify_ev` / `host_light_verify_ev` / `host_measure_flow_verify_ev`）仍按 run7-rev4.0 光照语义编写，需在光照判据/标定任务项中重写（§4.6）。
+5. **节拍/复位相位**：capC 首个 `k=1`、capD 首个 `k=0`，源于非 POR 复位下 RTC 域跨复位继续计数（EV-007 §2.4 已登记，基线既有行为），与本项无关。
+
+---
+
+# 历史记录（EV-007 / run7 同一 ITEM-001；当轮判 TEST_PASS；已提交 2c0da5f）
+
 # 嵌入式验证证据（EV-007 / ITEM-001 复验 ↔ UART1 调试串口初始化与调试打印可在真实目标上观测）
 
 状态：embedded_tester.embedded_verification 独立验证证据（**EV-006 TEST_FAIL 后的修复复验轮**；重新部署并重新采集真实目标字节流，不沿用 EV-006 结论）
