@@ -1,0 +1,75 @@
+
+===== b1.cap (412 bytes) =====
+    S b1.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    S b1.cap k=3    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3504 x=3511 a=3508 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    BUS idle=3 scl=1 sda=1 ack=none
+
+===== b2.cap (455 bytes) =====
+    S b2.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3590 x=3596 a=3594 D=0 r=0 s=0 y=0
+    S b2.cap k=3    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3614 x=3620 a=3617 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    BUS idle=3 scl=1 sda=1 ack=none
+
+===== b3.cap (455 bytes) =====
+    S b3.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3604 x=3610 a=3607 D=0 r=0 s=0 y=0
+    S b3.cap k=3    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3618 x=3627 a=3623 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    BUS idle=3 scl=1 sda=1 ack=none
+
+===== c1.cap (236 bytes) =====
+    S c1.cap k=6    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3620 x=3628 a=3624 D=0 r=0 s=0 y=0
+    S c1.cap k=9    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3611 x=3618 a=3614 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+
+===== c2.cap (238 bytes) =====
+    S c2.cap k=12   q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3608 x=3615 a=3612 D=0 r=0 s=0 y=0
+    S c2.cap k=15   q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3605 x=3615 a=3611 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+
+===== AGGREGATE =====
+    periods observed: 10  (q=1: 0, q=0: 10)
+    longest run of consecutive q=1 periods: 0
+      b1.cap k=0    q=0 t=0 h=0
+      b1.cap k=3    q=0 t=0 h=0
+      b2.cap k=0    q=0 t=0 h=0
+      b2.cap k=3    q=0 t=0 h=0
+      b3.cap k=0    q=0 t=0 h=0
+      b3.cap k=3    q=0 t=0 h=0
+      c1.cap k=6    q=0 t=0 h=0
+      c1.cap k=9    q=0 t=0 h=0
+      c2.cap k=12   q=0 t=0 h=0
+      c2.cap k=15   q=0 t=0 h=0
+
+===== IOTEST READINGS (E1) =====
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    distinct readings: 1 of 5 occurrences
+      x5  IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+
+===== IOSIG READINGS (E1b) =====
+    independently derived expectation: scl=95555  sda=30303 (no device) / 30300 (device ACK at 0x44)
+    (no IOSIG line in these captures)
+
+===== CHECKS =====
+    FAIL  L IOSIG b1.cap reset#2 exactly one IOSIG in the completed boot run  [found=0]
+    FAIL  L IOSIG b2.cap reset#2 exactly one IOSIG in the completed boot run  [found=0]
+    FAIL  L IOSIG b3.cap reset#2 exactly one IOSIG in the completed boot run  [found=0]
+    FAIL  H ACCEPT >=3 consecutive q=1 periods with t/h in domain  [longest run = 0 (needed >= 3)]
+    FAIL  M IOSIG at least one IOSIG reading observed  [no IOSIG line captured]
+    (100 checks passed, 5 failed)
+
+===== RESULT: FAIL =====

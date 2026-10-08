@@ -1,0 +1,8 @@
+BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600
+IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+BUS idle=3 scl=1 sda=1 ack=none
+S k=0 p=0 H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+S k=3 p=0 H=0 V=0 o=8 n=3504 x=3511 a=3508 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+G s=2 a44=0 a45=0 rd=0 at=3 raw=------------

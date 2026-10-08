@@ -7,11 +7,21 @@
  *   - fw_crc8_gxht           : exhaustive over all 65536 two-byte inputs + vectors
  *   - gxht40_temp_raw_to_x10 : exhaustive over all 65536 raw values
  *   - gxht40_hum_raw_to_x10  : exhaustive over all 65536 raw values
- *   - light_code_is_dark     : exhaustive over 4096 codes x both previous states
+ *   - light_is_dark          : exhaustive 1/3 no-light criterion (mean x valid x sampled
+ *                              c_dark), compared per case against an independently written
+ *                              ceil-division reference
  *   - sensor_decide_report   : exhaustive over a structured (prev,cur,have,dark) grid
  * plus explicit boundary vectors. Expected hashes/values were produced by an
  * independent Python reference using exact rational arithmetic (round-half-up)
  * and a from-scratch CRC-8 - never by the code under test.
+ *
+ * T2/T4 sync note: the light criterion changed in T2 from the two-state hysteresis
+ * (light_code_is_dark) to the readme-point-7 form light_is_dark(mean,valid,c_dark) =
+ * valid && 3*mean >= c_dark; T7/T7b below were re-derived for it. T8/T8b characterise
+ * the AS-BUILT report decision, which still uses the cooling direction
+ * ((prev-cur) > 9) - that is the registered deviation D-01 in TD-002 rev 5.0; the
+ * readme's rising direction is pending firmware task T4 and this harness will need
+ * re-derivation when it lands.
  *
  * Build (from gpio_input_output/):
  *   gcc -std=c11 -Wall -Wextra -I USER/inc -I COMMON test/host_fw_core_verify_ev.c \
@@ -32,7 +42,6 @@ static uint32_t fnv_u16(uint32_t h, uint16_t v) { h = fnv(h, (uint8_t)(v & 0xFFu
 #define REF_TEMP_HASH   0xBB0C5ABBu
 #define REF_HUM_HASH    0x5F674BC5u
 #define REF_CRC8_HASH   0x7CC4B9C5u
-#define REF_LIGHT_HASH  0x19DB6FE6u
 #define REF_REPORT_HASH 0xF7D66E3Eu
 
 static int pass, fail;
@@ -118,26 +127,50 @@ int main(void)
       CHECK(gxht40_raw_to_x10(0x6666u, 0x72B0u, NULL, NULL) == true,
             "NULL output pointers tolerated (no crash, validity still returned)"); }
 
-    /* ---- T7: exhaustive light hysteresis over 4096 codes x 2 states ---- */
-    printf("[T7] exhaustive light hysteresis (4096 codes x prev state)\n");
-    { uint32_t h = FNV_INIT;
-      for (uint32_t code = 0; code < 4096u; code++)
-          for (int prev = 0; prev < 2; prev++)
-              h = fnv(h, light_code_is_dark((uint16_t)code, prev ? true : false) ? 1u : 0u);
-      printf("    light hash = 0x%08X (ref 0x%08X)\n", h, REF_LIGHT_HASH);
-      CHECK(h == REF_LIGHT_HASH, "all 8192 hysteresis decisions match the reference state machine"); }
-    printf("[T7b] hysteresis boundaries\n");
-    CHECK(light_code_is_dark(0u, false) == false && light_code_is_dark(349u, false) == false,
-          "LIT: 0 / 349 -> LIT");
-    CHECK(light_code_is_dark(350u, false) == true && light_code_is_dark(4095u, false) == true,
-          "LIT: 350 (>= ENTER) / 4095 -> DARK");
-    CHECK(light_code_is_dark(251u, true) == true && light_code_is_dark(250u, true) == false,
-          "DARK: 251 stays DARK / 250 (<= EXIT) -> LIT");
-    CHECK(light_code_is_dark(300u, true) == true && light_code_is_dark(300u, false) == false,
-          "inside band keeps the previous state (no chatter)");
+    /* ---- T7: exhaustive 1/3 no-light criterion (readme point 7) ----
+     * Reference written independently of the implementation:
+     *     dark = valid && mean >= ceil(c_dark / 3)
+     * The implementation states the same rule as (uint32)3*mean >= c_dark; the harness
+     * recomputes every case with the ceil-division form instead, so a rounding or
+     * overflow mistake on the multiplication side can not hide behind a matching
+     * expression. Equality counts as DARK in both forms. Each case is compared
+     * individually (no aggregate hash, which could in principle collide). */
+    printf("[T7] exhaustive 1/3 criterion (mean 0..4095 x valid x sampled c_dark)\n");
+    { static uint16_t cd[160];
+      unsigned ncd = 0, ci, k;
+      static const uint16_t extra[] = {100,101,102,341,342,343,1023,1024,1025,
+                                       2047,2048,2049,3071,3072,3073,4093,4094,4095};
+      for (k = 0; k <= 66u; k++) cd[ncd++] = (uint16_t)k;              /* all residues mod 3 */
+      for (k = 0; k < sizeof(extra)/sizeof(extra[0]); k++) cd[ncd++] = extra[k];
+      for (k = 0; k < 4096u; k += 61u) cd[ncd++] = (uint16_t)k;        /* stride sample */
+      uint32_t n = 0, bad = 0;
+      for (ci = 0; ci < ncd; ci++)
+        for (int valid = 0; valid < 2; valid++)
+          for (uint32_t mean = 0; mean < 4096u; mean++) {
+              bool exp = (valid != 0) && (mean >= (((uint32_t)cd[ci] + 2u) / 3u));
+              if (light_is_dark((uint16_t)mean, valid != 0, cd[ci]) != exp) bad++;
+              n++;
+          }
+      printf("    %u cases over %u c_dark values, %u mismatches\n", n, ncd, bad);
+      CHECK(bad == 0, "every case matches dark = valid && mean >= ceil(c_dark/3)"); }
+    printf("[T7b] 1/3 criterion boundaries + uncalibrated gate\n");
+    CHECK(light_is_dark(0u, false, 4095u) == false && light_is_dark(4095u, false, 4095u) == false,
+          "valid=false is never dark, even with a full-scale code (uncalibrated gate)");
+    CHECK(light_is_dark(1364u, true, 4095u) == false,
+          "mean one below the boundary (ceil(4095/3)=1365) -> LIT (no hysteresis, no slack)");
+    CHECK(light_is_dark(1365u, true, 4095u) == true, "mean at the boundary -> DARK (equality counts)");
+    CHECK(light_is_dark(1366u, true, 4095u) == true, "mean one above the boundary -> DARK");
+    CHECK(light_is_dark(0u, true, 0u) == true, "c_dark=0 -> every valid sample is DARK");
+    CHECK(light_is_dark(1u, true, 3u) == true && light_is_dark(0u, true, 3u) == false,
+          "c_dark=3 -> mean 1 dark / mean 0 lit (3*mean >= c_dark)");
+    CHECK(light_is_dark(100u, true, 300u) == true && light_is_dark(100u, true, 301u) == false,
+          "c_dark straddling 3*mean flips the decision (stateless, per-sample)");
 
-    /* ---- T8: exhaustive report decision over a structured grid ---- */
-    printf("[T8] exhaustive report decision grid\n");
+    /* ---- T8: exhaustive report decision over a structured grid ----
+     * NOTE: the hash below characterises the AS-BUILT cooling direction (registered
+     * deviation D-01); the readme's rising direction is firmware task T4 and will
+     * require a new reference hash here once it lands. */
+    printf("[T8] exhaustive report decision grid (as-built, D-01)\n");
     { static const int16_t PREVS[] = {-32768,-1000,-400,-1,0,9,10,100,300,350,351,1000,32767};
       static const int16_t CURS[]  = {-32768,-1000,-400,0,100,291,300,350,351,1000,32767};
       uint32_t h = FNV_INIT; int n = 0;
@@ -150,9 +183,9 @@ int main(void)
                 n++;
             }
       printf("    report hash = 0x%08X (ref 0x%08X) over %d combinations\n", h, REF_REPORT_HASH, n);
-      CHECK(h == REF_REPORT_HASH, "all grid decisions match IC-002 report=(cur>350)||(cur<350&&have&&dark&&(prev-cur>9))"); }
+      CHECK(h == REF_REPORT_HASH, "all grid decisions match the as-built rule report=(cur>350)||(cur<350&&have&&dark&&(prev-cur>9)) [D-01: cooling direction]"); }
 
-    printf("[T8b] report truth table (readme/IC-002 semantics)\n");
+    printf("[T8b] report truth table (as-built, D-01; readme's rising direction pending T4)\n");
     CHECK(sensor_decide_report(0, false, 200, true) == false, "no prev, cur=200 -> false");
     CHECK(sensor_decide_report(0, false, 350, true) == false, "no prev, cur=350 (exactly 35.0C) -> false");
     CHECK(sensor_decide_report(0, false, 351, false) == true, "no prev, cur=351 -> true (light-independent)");

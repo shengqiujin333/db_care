@@ -1,0 +1,29 @@
+# Independent host harness re-runs against the delivered source (ef03c13) - EV-013
+# All harnesses below are embedded_tester-owned assets; only the compiled object under
+# test (USER/src/*) comes from the delivered firmware. Built with MinGW-w64 gcc 12.2.0.
+
+$ gcc -std=c11 -Wall -Wextra -Wno-unused-function -Wno-misleading-indentation -Wno-unused-const-variable -DSENSOR_DEBUG_UART=1 -Itest/mock_measure_ev -IUSER/inc -IUM2005C -ICOMMON test/host_diag_probe_verify_ev.c USER/src/measure.c USER/src/gxht40.c USER/src/sf_i2c.c USER/src/fw_core.c USER/src/encrytogate.c -lm -o diag_probe_verify
+    PASS  S fields keep the last valid sample on a failing cycle
+==== result: 85 passed, 0 failed ====
+$ gcc -std=c11 -Wall -Wextra -Wno-int-to-pointer-cast -Itest/mock_mcu -IUSER/inc -ICOMMON test/host_gxht40_verify_ev.c USER/src/gxht40.c USER/src/sf_i2c.c USER/src/fw_core.c -Wl,--wrap=i2c_bus_recover -o gxht40_verify
+    PASS  soft reset 0x94 never appears in any path
+==== result: 93 passed, 0 failed ====
+$ gcc -std=c11 -Wall -Wextra -IUSER/inc test/host_sf_i2c_verify_ev.c USER/src/sf_i2c.c -o sfi2c_verify
+    PASS  no ACK slot, no read byte, no master response bit during recovery
+==== result: 51 passed, 0 failed ====
+$ gcc -std=c11 -Wall -Wextra -DSENSOR_DEBUG_UART=1 -Itest/mock_diagline_ev -IUSER/inc test/host_diag_line_verify_ev.c USER/src/debug_trace.c -o diag_line_verify
+    PASS  UART1 re-opened for the next diagnostic line
+==== result: 36 passed, 0 failed ====
+$ gcc -std=c11 -Wall -Wextra -Wno-unused-function -Itest/mock_measure_ev -IUSER/inc -IUM2005C -ICOMMON test/host_measure_flow_verify_ev.c USER/src/measure.c USER/src/fw_core.c USER/src/sf_i2c.c USER/src/encrytogate.c -lm -o measure_verify   # SENSOR_DEBUG_UART=0
+    PASS  no state change when the flag is clear
+==== result: 79 passed, 0 failed ====
+$ ... same with -DSENSOR_DEBUG_UART=1 (compiles the new sensor_io_sig_scan path)
+    PASS  no state change when the flag is clear
+==== result: 79 passed, 0 failed ====
+$ gcc -std=c11 -Wall -Wextra -IUSER/inc -ICOMMON test/host_fw_core_verify_ev.c USER/src/fw_core.c -lm -o fwcore_verify   # T7 re-derived for the 1/3 criterion this round
+    1253376 cases over 153 c_dark values, 0 mismatches
+==== result: 56 passed, 0 failed ====
+
+# NOT USABLE this round (stale test asset, registered):
+#   test/host_light_verify_ev.c -> compiled against the pre-T2 light_sample() bool API:
+#     error: incompatible types when initializing type '_Bool' using type 'light_result_t'
