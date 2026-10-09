@@ -1,0 +1,167 @@
+
+===== tmp2vj180lz.cap (276 bytes) =====
+    S tmp2vj180lz.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST baseline (correct signature, no device)                  ok
+
+===== tmp6epti33s.cap (276 bytes) =====
+    S tmp6epti33s.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=9555F sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST scl clock shape wrong                                    ok
+
+===== tmp45ncvs4x.cap (276 bytes) =====
+    S tmp45ncvs4x.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=10303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST sda data bit wrong (address bit 7 flips)                 ok
+
+===== tmpo_j5cn89.cap (276 bytes) =====
+    S tmpo_j5cn89.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=30302
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST ACK slot mixed (10)                                      ok
+
+===== tmphfc5p69n.cap (276 bytes) =====
+    S tmphfc5p69n.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=30300
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST device-ACK signature vs BUS ack=none (contradiction)     ok
+
+===== tmp6dsxshme.cap (274 bytes) =====
+    S tmp6dsxshme.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+    IOSIG scl=95555 sda=30300
+    BUS idle=3 scl=1 sda=1 ack=44
+    SELFTEST device-ACK signature vs BUS ack=44 (consistent)          ok
+
+===== tmpy3m364ei.cap (274 bytes) =====
+    S tmpy3m364ei.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=44
+    SELFTEST no-device signature vs BUS ack=44 (contradiction)        ok
+
+===== tmpl9oloi71.cap (276 bytes) =====
+    S tmpl9oloi71.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST IOSIG printed after BUS (order broken)                   ok
+
+===== tmpu8175k6v.cap (249 bytes) =====
+    S tmpu8175k6v.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST IOSIG line missing                                       ok
+
+===== tmps9acnhp_.cap (276 bytes) =====
+    S tmps9acnhp_.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST gc=3 with BUS ack=none (consistent)                      ok
+
+===== tmplkhgx076.cap (274 bytes) =====
+    S tmplkhgx076.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+    IOSIG scl=95555 sda=30300
+    BUS idle=3 scl=1 sda=1 ack=44
+    SELFTEST gc=0 with BUS ack=44 (consistent)                        ok
+
+===== tmpuma9ahn2.cap (274 bytes) =====
+    S tmpuma9ahn2.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=30300
+    BUS idle=3 scl=1 sda=1 ack=44
+    SELFTEST gc=3 with BUS ack=44 (contradiction)                     ok
+
+===== tmp78g4429k.cap (276 bytes) =====
+    S tmp78g4429k.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST gc=0 with BUS ack=none (contradiction)                   ok
+
+===== tmpdyvqszs3.cap (276 bytes) =====
+    S tmpdyvqszs3.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=4
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST gc field out of domain (gc=4)                            ok
+
+===== tmpm1rh0hgg.cap (271 bytes) =====
+    S tmpm1rh0hgg.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST gc field missing (old 4-field line is no longer accepted) ok
+
+===== tmp_v2lku9_.cap (398 bytes) =====
+    S tmp_v2lku9_.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=3030
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST reset-cut line (partial IOSIG then BOOT banner) is a not ok
+
+===== tmpwej30ome.cap (346 bytes) =====
+    S tmpwej30ome.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    S tmpwej30ome.cap k=3    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST line missing CRLF followed by the next S line (EV-006 D- ok
+
+===== tmpv7ewjd6u.cap (348 bytes) =====
+    S tmpv7ewjd6u.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=None
+    S tmpv7ewjd6u.cap k=3    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST truncated garbage (not a prefix of any intact line) fail ok
+
+===== tmp5usckhj8.cap (393 bytes) =====
+    S tmp5usckhj8.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=3030
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST capture overlapping the download: the pre-download image ok
+
+===== tmp116ua8gw.cap (271 bytes) =====
+    S tmp116ua8gw.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+    SELFTEST a 4-field IOTEST in a COMPLETED boot run is still a froz ok
+
+===== SELFTEST: PASS (20/20 cases as expected) =====

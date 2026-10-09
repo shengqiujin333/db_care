@@ -569,6 +569,78 @@ int main(void)
               "S fields keep the last valid sample on a failing cycle");
     }
 
+    /* ============ IOTEST / gc: sensor_io_diag_scan power-up general-call branch ============ */
+    /* EV-015 §6.3 registered "general-call address 0x00 was never probed" as an untested
+     * item; the delivered revision adds a bounded, power-up-only I2C general-call reset
+     * attempt (manual §7.7: address 0x00 + command 0x06) reported as IOTEST field gc.
+     * These cases pin the four documented outcomes, so a real-target gc=3 is a genuine
+     * "no I2C address answers" reading rather than a firmware-side mis-report. */
+    printf("[I1] no device at all -> gc=3, and no command byte is ever written\n");
+    {
+        bus_reset(); slave_present = 0;
+        debug_trace_iotest_t iot; memset(&iot, 0xEE, sizeof iot);
+        delay_ms_total = 0; delay_ms_calls = 0;
+        uint8_t iok = sensor_io_diag_scan(&iot);
+        int seen00 = 0, i;
+        for (i = 1; i <= ev_count(EV_TX); i++) { if (ev_get(EV_TX, i) == 0x00) seen00++; }
+        CHECK(iok == 1, "self-check completes and fills the result struct");
+        CHECK(iot.gc == 3, "gc=3: neither 0x44/0x45 nor general-call 0x00 answered");
+        CHECK(seen00 == 1, "general-call address 0x00 probed exactly once (bounded, not retried)");
+        CHECK(wr_len == 0, "no command byte is written when 0x00 does not ACK (no blind reset)");
+        CHECK(ev_count(EV_RX) == 0, "no data byte is ever read during the self-check");
+        CHECK(delay_ms_calls >= 1 && delay_last_ms == SENSOR_BUS_DIAG_IDLE_SETTLE_MS,
+              "last wait is the idle settle time, i.e. no post-reset wait was taken");
+    }
+
+    printf("[I2] device answers 0x44 -> gc=0, general call is not attempted at all\n");
+    {
+        bus_reset(); slave_present = 1; slave_a7 = 0x44;
+        debug_trace_iotest_t iot; memset(&iot, 0xEE, sizeof iot);
+        uint8_t iok = sensor_io_diag_scan(&iot);
+        int seen00 = 0, i;
+        for (i = 1; i <= ev_count(EV_TX); i++) { if (ev_get(EV_TX, i) == 0x00) seen00++; }
+        CHECK(iok == 1, "self-check completes");
+        CHECK(iot.gc == 0, "gc=0: a candidate answered, so no reset path is taken");
+        CHECK(seen00 == 0, "0x00 is never even probed on the normal path");
+        CHECK(wr_len == 0, "no command byte is written on the normal path");
+    }
+
+    printf("[I3] only 0x00 answers, and 0x06 is ACKed -> gc=2 (reset accepted)\n");
+    {
+        bus_reset(); slave_present = 1; slave_a7 = 0x00; nack_cmd = 0;
+        debug_trace_iotest_t iot; memset(&iot, 0xEE, sizeof iot);
+        delay_ms_total = 0; delay_ms_calls = 0;
+        uint8_t iok = sensor_io_diag_scan(&iot);
+        CHECK(iok == 1, "self-check completes");
+        CHECK(iot.gc == 2, "gc=2: general call answered and the reset command was accepted");
+        CHECK(wr_len == 1 && wr_bytes[0] == 0x06,
+              "exactly one command byte is written, and it is the manual's 0x06");
+        CHECK(wr_bytes[0] != 0x94, "the periodic-path soft reset 0x94 is never used");
+        CHECK(delay_last_ms == GXHT40_GCALL_RESET_WAIT_MS,
+              "the documented post-reset wait is applied once");
+    }
+
+    printf("[I4] 0x00 answers but 0x06 is NACKed -> gc=1 (partial response)\n");
+    {
+        bus_reset(); slave_present = 1; slave_a7 = 0x00; nack_cmd = 1;
+        debug_trace_iotest_t iot; memset(&iot, 0xEE, sizeof iot);
+        uint8_t iok = sensor_io_diag_scan(&iot);
+        CHECK(iok == 1, "self-check completes");
+        CHECK(iot.gc == 1, "gc=1: 0x00 ACKed, 0x06 not ACKed");
+        CHECK(wr_len == 1 && wr_bytes[0] == 0x06, "the 0x06 attempt is still on the wire");
+    }
+
+    printf("[I5] gc consistency: gc in {0,3} agrees with the BUS scan of the same pins\n");
+    {
+        bus_reset(); slave_present = 0;
+        debug_trace_iotest_t iot; memset(&iot, 0xEE, sizeof iot);
+        sensor_io_diag_scan(&iot);
+        debug_trace_bus_t bus; memset(&bus, 0xEE, sizeof bus);
+        sensor_bus_diag_scan(&bus);
+        CHECK(iot.gc == 3 && bus.ack_count == 0,
+              "gc=3 <=> BUS ack=none (the two readings of the same bus cannot disagree)");
+    }
+
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
 }

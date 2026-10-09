@@ -1,0 +1,58 @@
+
+===== r1.cap (499 bytes) =====
+    S r1.cap k=0    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=30 x=32 a=30 D=0 r=0 s=0 y=0
+    S r1.cap k=3    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=29 x=32 a=30 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    IOSIG scl=95555 sda=3030
+    IOSIG scl=95555 sda=30303
+    BUS idle=3 scl=1 sda=1 ack=none
+
+===== s1.cap (224 bytes) =====
+    S s1.cap k=6    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=30 x=32 a=30 D=0 r=0 s=0 y=0
+    S s1.cap k=9    q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=30 x=32 a=31 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+
+===== s2.cap (226 bytes) =====
+    S s2.cap k=12   q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=30 x=32 a=30 D=0 r=0 s=0 y=0
+    S s2.cap k=15   q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=30 x=32 a=30 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+
+===== s3.cap (113 bytes) =====
+    S s3.cap k=18   q=0 t=0      h=0     p=0      H=0 V=0 o=8 n=30 x=33 a=31 D=0 r=0 s=0 y=0
+    G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+
+===== AGGREGATE =====
+    periods observed: 7  (q=1: 0, q=0: 7)
+    longest run of consecutive q=1 periods: 0
+      r1.cap k=0    q=0 t=0 h=0
+      r1.cap k=3    q=0 t=0 h=0
+      s1.cap k=6    q=0 t=0 h=0
+      s1.cap k=9    q=0 t=0 h=0
+      s2.cap k=12   q=0 t=0 h=0
+      s2.cap k=15   q=0 t=0 h=0
+      s3.cap k=18   q=0 t=0 h=0
+
+===== IOTEST READINGS (E1) =====
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    distinct readings: 2 of 2 occurrences
+      x1  IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+      x1  IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3
+    gc readings (0=dev answered / 1=0x00 ack, 0x06 nack / 2=reset accepted / 3=0x00 silent): 3
+    1 distinct reading(s) carry no gc field - the pre-download image (see the B FIELDS NOTE lines), not the build under test:
+      IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none
+
+===== IOSIG READINGS (E1b) =====
+    independently derived expectation: scl=95555  sda=30303 (no device) / 30300 (device ACK at 0x44)
+    [r1.cap reset#2] IOSIG scl=95555 sda=30303
+
+===== CHECKS =====
+    FAIL  H ACCEPT >=3 consecutive q=1 periods with t/h in domain  [longest run = 0 (needed >= 3)]
+    (79 checks passed, 1 failed)
+
+===== RESULT: FAIL =====

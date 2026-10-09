@@ -1,3 +1,42 @@
+# ProgrammedPrototypeArtifact（EV-016 / run8 ITEM-002）
+
+本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。本项的功能判定见 `evidence/test.md` EV-016（结论 **`TEST_FAIL`**：7/7 采样周期 `q=0`、器件对 112 个合法地址与 general call `0x00` 均不应答（`gc=3`），失败形态逐字节稳定）。
+
+## 本次下载的固件身份
+
+| 项 | 值 |
+|---|---|
+| 受测提交 | `55ed979`（HEAD；`git status` 干净；本轮**产品源码零改动**） |
+| 受测源码版本 | `git log -1 -- <FW>/USER` = `55ed979`；本轮交付增量 = `git diff --stat 5b07982 HEAD -- <FW>/USER` = **4 文件 +35/−3**（`sensor_config.h`/`measure.c`/`debug_trace.{h,c}`：上电一次性 general call 复位尝试 + `IOTEST` 尾字段 `gc`） |
+| 构建方式 | `mdk_flash {}` 内含工程保存配置的编译（Keil MDK / ARMCLANG **V6.24**，未另选芯片/调试器/算法）。下载前 build 为 `0 Error(s), 0 Warning(s)`（无可重建项 ⇒ 所下即下述 axf） |
+| 镜像路径 | `CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.axf` |
+| 镜像 md5 | **`ff49029608f3315ee76964c131d06821`**（与实现交付声明逐字符一致） |
+| 附带 hex md5 | `d18c0d623812f96351d7b8ebb3d9d3a9`（`Project.hex`） |
+
+## 下载目标与下载校验
+
+| 项 | 值 |
+|---|---|
+| 目标器件 | CW32L010（U7），传感器板（与 GXHT40 U9 同板），板上 MCU 唯一编号 `uid=6A002C00`（与 EV-012..EV-015 同一块板） |
+| 调试口 | COM42 = Prolific USB-to-Serial（VID:PID `067B:2303`），9600 8N1 |
+| 下载探针 | CW-DAPLink `USB VID:PID=C251:F001`（SN `87094109484987710672FF50`，=`COM26` 同源），在位 |
+| 下载方式 | `mdk_flash {}`（用工程保存的调试器/Flash 算法先编译再下载） |
+| 下载结果 | **1 次成功**：`Erase Done.Programming Done.Verify OK.Application running ...`（本地 2026-10-09 12:32:51 = UTC 04:32:51） |
+
+| # | 下载完成时刻（本地，UTC+8） | 日志关键行 | 该次下载后的采集窗口 |
+|---|---|---|---|
+| 1 | 2026-10-09 12:32:51 | `Erase Done.Programming Done.Verify OK.Application running ...` | `evidence/ev016/r1.cap`（04:32:37–04:37:37 UTC，含下载复位 `rst=0240` 的横幅与 `IOTEST…gc=3`/`IOSIG`/`BUS`），随后 `s1.cap`/`s2.cap`/`s3.cap` 无间隙续采 |
+
+原始 build/flash 日志：`evidence/ev016/mdk_flash_logs.txt`；采集窗口清单：`evidence/ev016/capture_windows.txt`。
+
+`Verify OK` 只证明**下载内容的回读校验一致**；下载成功后仍在真实目标上做了 COM42@9600 原始字节观测（`evidence/test.md` EV-016 §2），业务功能判定不取自本文件。`r1→s1→s2→s3` 四个窗口首尾相接（间隙 0.41/0.43/0.42 s），把 `k=0,3,6,9,12,15,18` 接成**无间隙连续 ≈21 分钟**观测。
+
+**下载生效的实板自证**：窗口起点那一段（下载前镜像）的 `IOTEST` 只有 4 个字段，下载复位后的 `IOTEST` 为 5 个字段且带 `gc=3`（`gc` 为 rev 5.5 新增，rev 5.4 恒不打印）⇒ 板上镜像确实由 rev 5.4 换成了本次所下的 rev 5.5。本次成功下载亦再次证明：在目标已连续打印多条轨迹之后 SWD 仍可用。
+
+---
+
+# 历史记录（EV-015 / run8 ITEM-002；当轮下载 1 次 `Verify OK`，axf md5 `5c2fdb58…`（rev 5.4）；已提交 5b07982）
+
 # ProgrammedPrototypeArtifact（EV-015 / run8 ITEM-002）
 
 本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。本项的功能判定见 `evidence/test.md` EV-015（结论 **`TEST_FAIL`**：5/5 采样周期 `q=0`、器件地址级不应答，失败形态逐字节稳定）。

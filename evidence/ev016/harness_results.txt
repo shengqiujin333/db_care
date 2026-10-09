@@ -1,0 +1,46 @@
+# EV-016 independent host harness re-runs (gcc.exe (x86_64-posix-seh-rev2, Built by MinGW-W64 project) 12.2.0)
+# firmware source under test: 55ed979
+
+$ gcc ... host_diag_probe_verify_ev.c (ITEM-001 BUS/G + probe)
+[I5] gc consistency: gc in {0,3} agrees with the BUS scan of the same pins
+    PASS  gc=3 <=> BUS ack=none (the two readings of the same bus cannot disagree)
+==== result: 104 passed, 0 failed ====
+exit=0
+
+$ gcc ... host_gxht40_verify_ev.c (-Wl,--wrap=i2c_bus_recover)
+    PASS  every command byte sent in every test was 0xFD
+    PASS  soft reset 0x94 never appears in any path
+==== result: 93 passed, 0 failed ====
+exit=0
+
+$ gcc ... host_sf_i2c_verify_ev.c
+[T11b] recovery sequence contains no address byte and no read
+    PASS  no ACK slot, no read byte, no master response bit during recovery
+==== result: 51 passed, 0 failed ====
+exit=0
+
+$ gcc ... host_diag_line_verify_ev.c
+    PASS  close is idempotent
+    PASS  UART1 re-opened for the next diagnostic line
+==== result: 36 passed, 0 failed ====
+exit=0
+
+$ gcc ... host_fw_core_verify_ev.c
+    PASS  int16 min, no drop -> false
+    PASS  int16 max -> over-temp branch -> true
+==== result: 56 passed, 0 failed ====
+exit=0
+
+$ gcc ... host_measure_flow_verify_ev.c -DSENSOR_DEBUG_UART=0 (delivered default)
+    PASS  no sampling when the flag is clear
+    PASS  no state change when the flag is clear
+==== result: 79 passed, 0 failed ====
+exit=0
+
+$ gcc ... host_measure_flow_verify_ev.c -DSENSOR_DEBUG_UART=1
+    PASS  no sampling when the flag is clear
+    PASS  no state change when the flag is clear
+==== result: 79 passed, 0 failed ====
+exit=0
+
+ALL HARNESSES DONE

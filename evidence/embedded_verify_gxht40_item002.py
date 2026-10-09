@@ -19,7 +19,10 @@ evidence/embedded_verify_gxht40_item002.py
 检查项 (逐项 PASS/FAIL; 退出码 0=无 FAIL):
     A STRUCT   每行 <=96 B、以 CRLF 终止 (采集窗口边缘的截断只记 FRAG);
                行首仅 BOOT/IOTEST/BUS/S/G
-    B FIELDS   S 行 15 个冻结字段齐全且顺序正确; BUS/G/IOTEST 行字段齐全
+    B FIELDS   S 行 15 个冻结字段齐全且顺序正确; BUS/G 行字段齐全; IOTEST 行的冻结字段集
+               (sda_lo,scl_lo,idle,swap,gc, rev5.5 起) 只对**完整上电打印段**(段内有 BUS 行)
+               强制; 采集窗口跨越下载时, 段内可能仍是下载前镜像打印的行, 该行只登记为
+               NOTE(不计通过也不计失败), 不据此评判被测构建
     C DOMAIN   q==1 => t in [-400,1250] 且 h in [0,1000]; q in {0,1}; H,V,D,r in {0,1}; s in {0,1,2}
     D GLINE    q==0 的 S 行之后紧随且仅有 1 条 G 行; q==1 的 S 行之后不得有 G 行
     E GCONS    G 行字段自洽: s in 1..5; a44/a45 in {0,1}; rd in 0..5; at in 1..3;
@@ -32,9 +35,16 @@ evidence/embedded_verify_gxht40_item002.py
     I OBS      登记性观察 (不作通过门槛): 采集内 G 行的结果码分布、BUS 行 ack 集合与
                G 行 a44/a45 的一致性
     J IOTEST   上电 I/O 自检行 (EV-011 §5 E1 交回实现的判别观测量):
-               域 sda_lo/scl_lo in {0,1}、idle in 0..3、swap in {none, 合法 7bit 地址列表};
+               域 sda_lo/scl_lo in {0,1}、idle in 0..3、swap in {none, 合法 7bit 地址列表}、
+               gc in {0,1,2,3} (EV-015 §6.3 登记的「general call 地址 0x00 未被探测」已由
+               实现按手册 §7.7 补为「上电一次性 general call 复位尝试 0x00+0x06」, gc 为其
+               读数: 0=器件已应答 0x44/0x45 未复位、1=0x00 ACK 但 0x06 未 ACK、
+               2=0x06 被接受、3=0x00 也不应答);
                每次复位段内恰 1 条, 位于横幅之后、BUS 之前; 并与该复位段的 BUS 行
-               idle 位掩码一致 (两者都读同一对引脚, 不得互相矛盾)
+               idle 位掩码一致 (两者都读同一对引脚, 不得互相矛盾);
+               且 gc 与该复位段 BUS 的 ack 地址表必须一致:
+               gc==0 => ack 含 44/45; gc==3 => ack 为 none
+               (gc 探的正是 BUS 扫描域内的两个候选地址, 两者不得互相矛盾)
     L IOSIG    上电事务内逐位回读签名行 (EV-012 §5 E1b 交回实现的判别观测量):
                `IOSIG scl=<5 位大写 hex> sda=<5 位大写 hex>`, 各 20 bit;
                本脚本按 TD/实现文档化的 20 个半位采样点顺序**独立重建**期望序列
@@ -50,7 +60,7 @@ import sys
 
 KEY_ORDER = ["k", "p", "H", "V", "o", "n", "x", "a", "D", "t", "h", "q", "r", "s", "y"]
 GKEY_ORDER = ["s", "a44", "a45", "rd", "at", "raw"]
-IOKEY_ORDER = ["sda_lo", "scl_lo", "idle", "swap"]
+IOKEY_ORDER = ["sda_lo", "scl_lo", "idle", "swap", "gc"]
 SIGKEY_ORDER = ["scl", "sda"]
 MAXLINE = 96
 T_MIN, T_MAX = -400, 1250      # -40.0 .. 125.0 C  (x10), readme 点 1 + FD-002 §6.1
@@ -294,12 +304,16 @@ def check_file(path):
                             "nums": {k: kv.get(k) for k in ("s", "a44", "a45", "rd", "at")}})
         elif kind == "IOTEST":
             kv, order, err = parse_kv(payload, "IOTEST")
-            if err or order != IOKEY_ORDER:
-                add("B FIELDS %s IOTEST@%d" % (tag, off), False,
-                    "err=%s order=%s" % (err, order))
+            if err:
+                add("B FIELDS %s IOTEST@%d" % (tag, off), False, "err=%s" % err)
                 continue
+            # The frozen field set is checked per reset segment (see the J block): only a
+            # line from a *completed* boot run can be attributed to the firmware under test.
+            # A capture window that overlaps the download may contain the previously
+            # programmed image's line inside an interrupted run; that line is registered as
+            # an explicit note rather than silently accepted or blamed on the delivered build.
             io_lines.append({"after": i, "_msg": payload.decode("ascii", "replace"),
-                             "kv": kv})
+                             "kv": kv, "order": order})
         elif kind == "IOSIG":
             kv, order, err = parse_kv(payload, "IOSIG")
             if err or order != SIGKEY_ORDER:
@@ -318,7 +332,20 @@ def check_file(path):
     sig_idx = [i for i, (k, _, _, _) in enumerate(msgs) if k == "IOSIG"]
     boot_idx = [i for i, (k, _, _, _) in enumerate(msgs) if k == "BOOT"]
     bus_idx = [i for i, (k, _, _, _) in enumerate(msgs) if k == "BUS"]
+
+    # IOTEST lines sitting in an interrupted boot run (a reset segment with no BUS line):
+    # the download halted the target, so such a line may belong to the image that was in
+    # flash before this run. Those lines are registered as explicit NOTEs below and are not
+    # used to judge the delivered build (neither for nor against it).
+    _boot_bounds = (boot_idx + [len(msgs)]) if boot_idx else []
+    _interrupted_io = set()
+    for _b0, _b1 in zip(_boot_bounds, _boot_bounds[1:]):
+        if not any(_b0 < i < _b1 for i in bus_idx):
+            _interrupted_io.update(i for i in io_idx if _b0 < i < _b1)
+
     for io in io_lines:
+        if io["after"] in _interrupted_io:
+            continue
         kv = io["kv"]
         msg = io["_msg"]
         ok_dom = True
@@ -326,6 +353,8 @@ def check_file(path):
             if kv.get(f) not in ("0", "1"):
                 ok_dom = False
         if kv.get("idle") not in ("0", "1", "2", "3"):
+            ok_dom = False
+        if kv.get("gc") not in ("0", "1", "2", "3"):
             ok_dom = False
         sw = kv.get("swap", "")
         if sw == "none":
@@ -337,7 +366,7 @@ def check_file(path):
         else:
             ok_dom = False
         add("J IOTEST %s @%d field domain (sda_lo/scl_lo in {0,1}, idle in 0..3, "
-            "swap in {none|7bit addr list})" % (tag, io["after"]), ok_dom, msg)
+            "swap in {none|7bit addr list}, gc in 0..3)" % (tag, io["after"]), ok_dom, msg)
     # exactly one IOTEST per reset segment (between a BOOT and the next BOOT),
     # placed after its BOOT banner and before that segment's BUS line
     # A reset segment (BOOT .. next BOOT) that *completed* its power-up print run is the
@@ -347,6 +376,31 @@ def check_file(path):
     # recorded as a note, never as a pass for the missing lines.
     if boot_idx:
         bounds = boot_idx + [len(msgs)]
+
+        def _iotest_fields(tagg, seg, judged):
+            """Frozen IOTEST field set for the segment's lines.
+
+            judged=True  -> the line comes from a completed power-up print run, so it is
+                            attributable to the firmware under test: the frozen order
+                            (sda_lo,scl_lo,idle,swap,gc) is enforced.
+            judged=False -> the run was interrupted by the download; the line may belong to
+                            the image that was in flash *before* this run. It is registered
+                            explicitly as a NOTE (never as a silent pass and never as a
+                            failure of the delivered build).
+            """
+            for io in io_lines:
+                if io["after"] not in seg:
+                    continue
+                if judged:
+                    add("B FIELDS %s IOTEST@%d frozen field set/order "
+                        "(sda_lo,scl_lo,idle,swap,gc)" % (tagg, io["after"]),
+                        io["order"] == IOKEY_ORDER, "order=%s" % io["order"])
+                else:
+                    add("B FIELDS NOTE %s IOTEST@%d not judged: interrupted boot run "
+                        "(download halted the target; the image may have been replaced "
+                        "mid-session) order=%s" % (tagg, io["after"], io["order"]),
+                        True, io["_msg"])
+
         completed = 0
         for n, (b0, b1) in enumerate(zip(bounds, bounds[1:])):
             seg_io = [i for i in io_idx if b0 < i < b1]
@@ -355,8 +409,10 @@ def check_file(path):
                 add("J IOTEST %s reset#%d no BUS -> boot print run interrupted "
                     "(allowed: debugger halted target); IOTEST count=%d"
                     % (tag, n + 1, len(seg_io)), len(seg_io) <= 1, "io=%s" % seg_io)
+                _iotest_fields(tag, seg_io, False)
                 continue
             completed += 1
+            _iotest_fields(tag, seg_io, True)
             add("J IOTEST %s reset#%d exactly one IOTEST in the completed boot run"
                 % (tag, n + 1), len(seg_io) == 1, "found=%d" % len(seg_io))
             if len(seg_io) == 1:
@@ -370,6 +426,24 @@ def check_file(path):
                 add("J IOTEST %s reset#%d idle == BUS idle (%s vs %s)"
                     % (tag, n + 1, io_row["kv"].get("idle"), bus_row["kv"].get("idle")),
                     io_row["kv"].get("idle") == bus_row["kv"].get("idle"),
+                    "IOTEST %r / BUS %r" % (io_row["_msg"], bus_row["_msg"]))
+
+            # ---- gc (general-call reset attempt, hand-back E1c) vs the same segment's ----
+            # ---- BUS ack table: gc probes exactly the two candidate addresses that  ----
+            # ---- BUS also scans, so the two readings must not contradict each other. ----
+            gc_v = io_row["kv"].get("gc") if io_row else None
+            ack_set = parse_bus_ack(bus_row["kv"]) if bus_row else None
+            if gc_v in ("0", "3") and ack_set is not None:
+                if gc_v == "0":
+                    ok_gc = bool(ack_set & {"44", "45"})
+                    why = "gc=0 (device answered) needs 44/45 in BUS ack=%s" \
+                          % sorted(ack_set)
+                else:
+                    ok_gc = not ack_set
+                    why = "gc=3 (no I2C address answered) needs BUS ack=none, got %s" \
+                          % sorted(ack_set)
+                add("J IOTEST %s reset#%d gc vs BUS ack consistency: %s"
+                    % (tag, n + 1, why), ok_gc,
                     "IOTEST %r / BUS %r" % (io_row["_msg"], bus_row["_msg"]))
 
             # ---- segment wiring for the IOSIG line (E1b) ----
@@ -395,6 +469,10 @@ def check_file(path):
     elif io_lines:
         add("J IOTEST %s every IOTEST has a preceding BOOT banner" % tag, False,
             "%d IOTEST without any BOOT in window" % len(io_lines))
+        for io in io_lines:
+            add("B FIELDS %s IOTEST@%d frozen field set/order "
+                "(sda_lo,scl_lo,idle,swap,gc)" % (tag, io["after"]),
+                io["order"] == IOKEY_ORDER, "order=%s" % io["order"])
     if not boot_idx and sig_lines:
         add("L IOSIG %s every IOSIG has a preceding BOOT banner" % tag, False,
             "%d IOSIG without any BOOT in window" % len(sig_lines))
@@ -492,10 +570,11 @@ def check_file(path):
 
 
 def _selftest_capture(iosig_line, bus_line=b"BUS idle=3 scl=1 sda=1 ack=none",
-                      iosig_after_bus=False):
+                      iosig_after_bus=False,
+                      iotest_line=b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"):
     """构造一段最小合成捕获 (仅供 --selftest 使用, 不参与任何实板判定)。"""
     boot = b"BOOT fw=FD-002r5 uid=6A002C00 rst=0040 uart=9600\r\n"
-    iot = b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n"
+    iot = iotest_line
     s0 = (b"S k=0 p=0 H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 t=0 h=0 q=0 r=0 s=0 y=0\r\n")
     g = b"G s=2 a44=0 a45=0 rd=0 at=3 raw=------------\r\n"
     if iosig_line is None:
@@ -538,9 +617,17 @@ def selftest():
          ["exactly one IOSIG in the completed boot run"]),
     ]
     bad = 0
+    # a device-ACK BUS reading implies the power-up general-call probe saw a device too
+    iotest_override = {
+        "device-ACK signature vs BUS ack=44 (consistent)":
+            b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0\r\n",
+        "no-device signature vs BUS ack=44 (contradiction)":
+            b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0\r\n",
+    }
     for name, line, bus, after_bus, expect_fail_substrings in cases:
         del results[:]
-        rawp = _selftest_capture(line, bus, after_bus)
+        kw = {"iotest_line": iotest_override[name]} if name in iotest_override else {}
+        rawp = _selftest_capture(line, bus, after_bus, **kw)
         fd, path = tempfile.mkstemp(suffix=".cap")
         try:
             os.write(fd, rawp)
@@ -561,34 +648,105 @@ def selftest():
         if not ok:
             bad += 1
         print("    SELFTEST %-56s %s" % (name, "ok" if ok else "MISMATCH"))
+
+    # ---- gc (E1c) 字段的定向变异: 证明新增的域/一致性判据既能通过也能失败 ----
+    gc_cases = [
+        ("gc=3 with BUS ack=none (consistent)",
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n",
+         b"BUS idle=3 scl=1 sda=1 ack=none",
+         b"IOSIG scl=95555 sda=30303", []),
+        ("gc=0 with BUS ack=44 (consistent)",
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0\r\n",
+         b"BUS idle=3 scl=1 sda=1 ack=44",
+         b"IOSIG scl=95555 sda=30300", []),
+        ("gc=3 with BUS ack=44 (contradiction)",
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n",
+         b"BUS idle=3 scl=1 sda=1 ack=44",
+         b"IOSIG scl=95555 sda=30300", ["gc vs BUS ack consistency"]),
+        ("gc=0 with BUS ack=none (contradiction)",
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0\r\n",
+         b"BUS idle=3 scl=1 sda=1 ack=none",
+         b"IOSIG scl=95555 sda=30303", ["gc vs BUS ack consistency"]),
+        ("gc field out of domain (gc=4)",
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=4\r\n",
+         b"BUS idle=3 scl=1 sda=1 ack=none",
+         b"IOSIG scl=95555 sda=30303", ["field domain"]),
+        ("gc field missing (old 4-field line is no longer accepted)",
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n",
+         b"BUS idle=3 scl=1 sda=1 ack=none",
+         b"IOSIG scl=95555 sda=30303", ["B FIELDS"]),
+    ]
+    for name, iot_line, bus, sig_line, expect_fail_substrings in gc_cases:
+        del results[:]
+        rawp = _selftest_capture(sig_line, bus, False, iotest_line=iot_line)
+        fd, path = tempfile.mkstemp(suffix=".cap")
+        try:
+            os.write(fd, rawp)
+            os.close(fd)
+            check_file(path)
+        finally:
+            os.unlink(path)
+        fails = [n for n, ok, _ in results if not ok]
+        ok = True
+        for sub in expect_fail_substrings:
+            if not any(sub in f for f in fails):
+                ok = False
+                print("    SELFTEST MISS: %s -> expected a FAIL containing %r, got %r"
+                      % (name, sub, fails))
+        if not expect_fail_substrings and fails:
+            ok = False
+            print("    SELFTEST UNEXPECTED FAIL: %s -> %r" % (name, fails))
+        cases.append((name, None, None, None, expect_fail_substrings))
+        if not ok:
+            bad += 1
+        print("    SELFTEST %-56s %s" % (name, "ok" if ok else "MISMATCH"))
+
     # 直接给定原始字节的用例 (A 组的行终止规则)
     s_tail = b"H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 t=0 h=0 q=0 r=0 s=0 y=0\r\n"
     g_tail = b"G s=2 a44=0 a45=0 rd=0 at=3 raw=------------\r\n"
     raw_cases = [
         ("reset-cut line (partial IOSIG then BOOT banner) is a note",
          b"BOOT fw=FD-002r5 uid=6A002C00 rst=0040 uart=9600\r\n"
-         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n"
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
          b"IOSIG scl=95555 sda=3030"                                   # cut mid-line
          b"BOOT fw=FD-002r5 uid=6A002C00 rst=0240 uart=9600\r\n"
-         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n"
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
          b"IOSIG scl=95555 sda=30303\r\n"
          b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
          b"S k=0 p=0 " + s_tail + g_tail,
          []),
         ("line missing CRLF followed by the next S line (EV-006 D-ITEM001-1 class) fails",
          b"BOOT fw=FD-002r5 uid=6A002C00 rst=0040 uart=9600\r\n"
-         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n"
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
          b"IOSIG scl=95555 sda=30303\r\n"
          b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
          b"S k=0 p=0 " + s_tail.replace(b"\r\n", b"") + b"S k=3 p=0 " + s_tail + g_tail,
          ["A TERM", "A CRLF"]),
         ("truncated garbage (not a prefix of any intact line) fails",
          b"BOOT fw=FD-002r5 uid=6A002C00 rst=0040 uart=9600\r\n"
-         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n"
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
          b"IOSIG scl=95555 sda=30303\r\n"
          b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
          b"S k=0 p=0 " + s_tail.replace(b"\r\n", b"XX") + b"S k=3 p=0 " + s_tail + g_tail,
          ["A TERM"]),
+        ("capture overlapping the download: the pre-download image's 4-field IOTEST sits in "
+         "an interrupted run -> registered as a NOTE, not a failure of the delivered build",
+         b"BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600\r\n"
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n"        # old image, no gc field
+         b"IOSIG scl=95555 sda=3030"                             # cut by the download
+         b"BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600\r\n"
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
+         b"IOSIG scl=95555 sda=30303\r\n"
+         b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
+         b"S k=0 p=0 " + s_tail + g_tail,
+         []),
+        ("a 4-field IOTEST in a COMPLETED boot run is still a frozen-field-set failure",
+         b"BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600\r\n"
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n"        # gc missing, run completed
+         b"IOSIG scl=95555 sda=30303\r\n"
+         b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
+         b"S k=0 p=0 " + s_tail + g_tail,
+         ["B FIELDS", "frozen field set"]),
     ]
     for name, rawp, expect_fail_substrings in raw_cases:
         del results[:]
@@ -679,6 +837,20 @@ def main():
             rel_hi, "%d distinct reading(s)" % len(uniq))
         add("K IOTEST all readings: no SDA/SCL role swap detected (swap=none)",
             no_swap, "%d distinct reading(s)" % len(uniq))
+        # E1c: the power-up general-call reset attempt reading (manual §7.7, 0x00 + 0x06)
+        gc_vals = sorted({u.split("gc=")[1].split()[0] for u in uniq if "gc=" in u})
+        legacy = [u for u in uniq if "gc=" not in u]
+        print("    gc readings (0=dev answered / 1=0x00 ack, 0x06 nack / 2=reset accepted / "
+              "3=0x00 silent): %s" % (",".join(gc_vals) if gc_vals else "(field absent)"))
+        if legacy:
+            print("    %d distinct reading(s) carry no gc field - the pre-download image "
+                  "(see the B FIELDS NOTE lines), not the build under test:" % len(legacy))
+            for u in legacy:
+                print("      %s" % u)
+        add("K IOTEST gc readings are in the documented domain 0..3",
+            bool(gc_vals) and all(v in "0123" for v in gc_vals),
+            "gc values seen: %s; %d distinct reading(s) without gc (pre-download image)"
+            % (gc_vals, len(legacy)))
     else:
         add("K IOTEST at least one IOTEST reading observed", False, "no IOTEST line captured")
 
