@@ -1,0 +1,4 @@
+CRC(0xBEEF)=0x92 (datasheet 0x92) MATCH
+raw_t=0x6666 raw_h=0x8000 -> valid=1 t=25.0C h=56.5%RH (expect 25.0/56.5)
+raw=0x0000 -> valid=0 (expect 0: T=-45.0 out of -40.0..125.0)
+raw=0xFFFF -> valid=0 (expect 0: T=129.99 / RH=119 out of domain)
