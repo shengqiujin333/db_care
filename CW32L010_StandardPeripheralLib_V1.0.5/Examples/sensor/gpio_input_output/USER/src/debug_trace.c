@@ -281,6 +281,8 @@ void debug_trace_iotest(const debug_trace_iotest_t *t)
             trace_hex((uint32_t)t->swap_addr[i], 2u);
         }
     }
+    trace_puts(" gc=");
+    trace_u32((uint32_t)t->gc, 1u);
     trace_puts("\r\n");
 }
 
@@ -391,7 +393,7 @@ void debug_trace_sample(const debug_trace_sample_t *s)
  *   + 8 × "XX," = 24 (+ 截断标记 '+') + CRLF 2                      => 54
  *   IOTEST 行:
  *   "IOTEST"=6 " sda_lo=0"=9 " scl_lo=0"=9 " idle=3"=7 " swap="=6
- *   + "44,45"=5 + CRLF 2                                            => 44
+ *   + "44,45"=5 + " gc=3"=5 + CRLF 2                                  => 49
  *   IOSIG 行:
  *   "IOSIG"=5 " scl="=5 + 5 位 hex + " sda="=5 + 5 位 hex + CRLF 2   => 27
  *   G 行:

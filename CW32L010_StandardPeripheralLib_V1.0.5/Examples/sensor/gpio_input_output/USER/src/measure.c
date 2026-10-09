@@ -156,9 +156,13 @@ void bsp_i2c_init(void)
  * 上电 I/O 自检 (E1; 交回实现的最小区分实验):
  *   ① 主机能否把 SDA/SCL 真正拉低并回读为 0;
  *   ② 释放后能否回到高;
- *   ③ SDA/SCL 引脚角色对调后两个候选地址是否有 ACK (区分装配接反)。
- * 只做电平驱动与只发地址字节的探测 (不发命令/不读数据), 可重复; 不改变采样/判定/上报。
+ *   ③ SDA/SCL 引脚角色对调后两个候选地址是否有 ACK (区分装配接反);
+ *   ④ 两个候选地址都不应答时, 做**一次**文档化的 I²C general call 复位尝试
+ *      (手册 §7.7: 地址 0x00 + 命令 0x06), 结果写入 out->gc。
+ * 只做电平驱动与只发地址/复位命令, 可重复; 不改变采样/判定/上报。
  * 电平驱动顺序保证不产生 START/STOP: 先 SCL 低 再 SDA 低; 释放时先 SDA 高 再 SCL 高。
+ * out->gc 取值: 0=未尝试(器件已应答 0x44/0x45) 1=0x00 ACK 但 0x06 未 ACK
+ *                2=0x00 与 0x06 均 ACK(复位命令已被接受) 3=0x00 也不应答
  * SENSOR_DEBUG_UART=0 时为编译期空实现 (不读引脚/不发探测)。
  */
 #if SENSOR_DEBUG_UART
@@ -182,6 +186,7 @@ uint8_t sensor_io_diag_scan(debug_trace_iotest_t *out)
     out->swap_count = 0u;
     out->swap_addr[0] = 0u;
     out->swap_addr[1] = 0u;
+    out->gc         = 0u;
 
     /* ① 把两线拉低 (先 SCL 低再 SDA 低: SDA 下降沿落在 SCL 为低时, 不会形成 START) */
     i2c0_scl_pin_dir_output();
@@ -209,6 +214,24 @@ uint8_t sensor_io_diag_scan(debug_trace_iotest_t *out)
             out->swap_addr[out->swap_count] = cand[i];
             out->swap_count++;
         }
+    }
+
+    /*
+     * ③b 上电一次性器件恢复尝试 (手册 §7.7 的 I²C general call 复位: 0x00 + 0x06):
+     *   仅当两个候选地址都不应答时才尝试一次 (正常器件不走此路径);
+     *   0x00 也不应答时不再重试/不再反复复位 (有界, 不进周期路径)。
+     */
+    if ((i2c_probe_addr(temp_ptr, (uint8_t)(GXHT40_ADDR_7BIT_A << 1)) == SF_I2C_SUCCESS) ||
+        (i2c_probe_addr(temp_ptr, (uint8_t)(GXHT40_ADDR_7BIT_B << 1)) == SF_I2C_SUCCESS)) {
+        out->gc = 0u;               /* 器件已应答: 不做复位 */
+    } else if (i2c_probe_addr(temp_ptr, (uint8_t)(GXHT40_ADDR_GENERAL_CALL << 1)) != SF_I2C_SUCCESS) {
+        out->gc = 3u;               /* 0x00 也不应答: 器件对任何 I²C 地址都无响应 */
+    } else if (i2c_write_cmd(temp_ptr, (uint8_t)(GXHT40_ADDR_GENERAL_CALL << 1),
+                             (uint8_t)GXHT40_CMD_GENERAL_CALL_RESET) != SF_I2C_SUCCESS) {
+        out->gc = 1u;               /* 0x00 ACK 但复位命令未被 ACK */
+    } else {
+        out->gc = 2u;               /* 复位命令已被接受 */
+        delay_ms(GXHT40_GCALL_RESET_WAIT_MS);
     }
 
     /* ④ 恢复本工程的引脚角色并释放, 供随后的 BUS 扫描使用 */

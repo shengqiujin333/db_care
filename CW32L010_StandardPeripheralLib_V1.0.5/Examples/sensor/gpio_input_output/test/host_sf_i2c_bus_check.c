@@ -23,6 +23,7 @@
 static int scl = 1, sda_master = 1, sda_dir = 1;
 static int slave_driving, slave_sda;
 static int slave_present = 1;
+static int slave_gcall = 0;   /* 1 = 从机也接受 I²C general call 地址 0x00 (复位序列用) */
 
 /* slave engine */
 enum { ST_IDLE = 0, ST_RX = 1, ST_TX = 2 };
@@ -100,7 +101,8 @@ static void m_scl(int level)
             }
         }
         if (ack_pending) {
-            int ack = slave_present && (!first_byte || ((sh >> 1) == 0x44u));
+            int ack = slave_present && (!first_byte || ((sh >> 1) == 0x44u) ||
+                                        (slave_gcall && (sh == 0x00u)));
             ack_pending = 0;
             slave_driving = 1;
             slave_sda = ack ? 0 : 1;
@@ -111,7 +113,8 @@ static void m_scl(int level)
             if (n_rx < 16) rx_bytes[n_rx++] = sh;
             if (first_byte) {
                 first_byte = 0;
-                addr_match = slave_present && ((sh >> 1) == 0x44u);
+                addr_match = slave_present && (((sh >> 1) == 0x44u) ||
+                                               (slave_gcall && (sh == 0x00u)));
                 addr_read = sh & 1;
                 st = addr_match ? (addr_read ? ST_TX : ST_RX) : ST_IDLE;
                 if (st == ST_TX) txidx = 0;
@@ -239,6 +242,21 @@ int main(void)
     CHECK(n_stop >= 1, "结束前仍补发 STOP");
     CHECK(m_sda_read() == 1 && scl == 1, "恢复后总线空闲");
     sda_low_until_rise = -1;
+
+    printf("[10] 通用调用复位序列: 地址 0x00 + 命令 0x06 (手册 §7.7)\n");
+    reset_slave(); n_rx = 0; n_start = 0; n_stop = 0; slave_present = 1; slave_gcall = 1;
+    e = i2c_write_cmd(&dev, 0x00, 0x06);
+    CHECK(e == SF_I2C_SUCCESS, "0x00/0x06 序列被从机 ACK: 返回 SF_I2C_SUCCESS");
+    CHECK(n_start == 1 && n_stop == 1, "恰好 1 个 START 与 1 个 STOP");
+    CHECK(n_rx == 2 && rx_bytes[0] == 0x00 && rx_bytes[1] == 0x06,
+          "线上字节为 0x00 后接 0x06 (general call reset)");
+    CHECK(m_sda_read() == 1 && scl == 1, "复位序列后总线释放");
+
+    reset_slave(); n_rx = 0; n_start = 0; n_stop = 0; slave_present = 1; slave_gcall = 0;
+    e = i2c_write_cmd(&dev, 0x00, 0x06);
+    CHECK(e == SF_I2C_TIMEOUT, "0x00 无应答: 返回 SF_I2C_TIMEOUT");
+    CHECK(n_rx == 1 && rx_bytes[0] == 0x00, "0x00 未被 ACK 时不再写 0x06");
+    CHECK(n_stop >= 1, "无应答后已释放总线");
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

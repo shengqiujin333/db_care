@@ -1,14 +1,53 @@
-# 构建证据（BUILD-002 rev 5.4）
+# 构建证据（BUILD-002 rev 5.5）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复三**（EV-012 交回实现：新增上电 `IOSIG` 事务内逐位回读签名，E1b/H12 判别）
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-012（TEST_FAIL，§5 E1b）
-受测提交：`6dac824`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
+本轮范围：run8 **ITEM-002 复验修复四**（用户重焊 U9 后重做授权；上电一次性 I²C general call 复位尝试 `0x00`+`0x06` 与 `gc` 可观测字段）
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；`gxht40.pdf` §7.7；触发 `evidence/test.md` EV-015 与 operator_update（重焊授权）
+受测提交：`5b07982`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
 测试环境：GNU 交叉编译（`arm-none-eabi-gcc`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`）；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## ITEM-002 复验修复三：交叉编译 + Keil MDK 构建（本轮实际执行）
+## ITEM-002 复验修复四：交叉编译 + Keil MDK 构建（本轮实际执行）
+
+```
+$ sh gcc/build.sh
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       34120 B        64 KB     52.06%
+             RAM:        1808 B         4 KB     44.14%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+(exit 0；告警 27 条，均为既有类别；无一条指向本轮 measure.c/debug_trace.c 新增代码)
+
+$ md5sum gcc/obj/sensor_fw.elf gcc/obj/sensor_fw.bin
+9533f40d746fc9e42427dd72a63577ad  gcc/obj/sensor_fw.elf
+a092df240b773cbfbb0cfc902128c1b5  gcc/obj/sensor_fw.bin
+
+$ mdk_build {"action":"rebuild"}   (授权工具，经 hardware-verification MCP/CLI)
+*** Using Compiler 'V6.24' ...
+../USER/src/main.c(238): warning: while loop has empty body [-Wempty-body]   (既有 `while(k--);`)
+Program Size: Code=19144 RO-data=644 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+
+$ md5sum MDK/output/exe/Project.axf
+ff49029608f3315ee76964c131d06821  MDK/output/exe/Project.axf
+
+$ arm-none-eabi-strings MDK/output/exe/Project.axf | grep -E "gc=|IOSIG|IOTEST"
+@IOSIG scl=
+@IOTEST sda_lo=
+ gc=
+(证明 general call 恢复尝试的 gc 字段已编入本轮交付件)
+
+$ arm-none-eabi-gcc -mcpu=cortex-m0plus -O1 -Wall -Wextra -DSENSOR_DEBUG_UART=0 -c ... USER/src/{measure,debug_trace}.c
+(0 告警 0 错误)
+```
+
+- 相对上一轮（GNU 34,004 B / RAM 1,808 B；Keil Code=18,888 RO=644 RW=116，axf md5 `5c2fdb58…`）：GNU **+116 B**；Keil **Code +256 B**（新增 general call 探测/命令写入分支与 `gc` 渲染 + 三个配置常量）；RAM 不变。均在预算内（Code+RO ≈ 19.8 KB / 64 KB；RAM ≈ 1.79 KB / 4 KB）。
+- **未执行**：`mdk_flash` 与 COM42 采集（本调用工具列表仅含 `mdk_build`）⇒ 实板 `gc` 读数与 `q=1` 复判均未取得（由嵌入式测试能力执行）。
+- 工具在仓库根产生的 `build*.log` 已读入本证据后删除（`.gitignore` 的 `/build*.log` 覆盖）。
+
+---
+
+# 历史：ITEM-002 复验修复三（E1b IOSIG）
 
 ```
 $ sh gcc/build.sh

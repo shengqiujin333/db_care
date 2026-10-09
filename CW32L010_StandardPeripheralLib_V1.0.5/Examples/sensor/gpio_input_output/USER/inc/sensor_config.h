@@ -57,6 +57,12 @@
 /* 首次访问前上电余量: 手册 tPU 最大 1 ms */
 #define GXHT40_POWER_ON_WAIT_MS         2u
 
+/* 上电一次性器件恢复 (手册 §7.7 复位方式之二): I²C general call = 地址 0x00 + 命令 0x06。
+ * 仅在两个候选地址都不应答时尝试一次, 不进周期路径; 等待与手册软复位 tSR ≤ 1 ms 同量级。 */
+#define GXHT40_ADDR_GENERAL_CALL        0x00u
+#define GXHT40_CMD_GENERAL_CALL_RESET   0x06u
+#define GXHT40_GCALL_RESET_WAIT_MS      2u
+
 /* CRC-8: poly 0x31, init 0xFF, 不反转, xorout 0x00; 参考向量 CRC(0xBEEF)=0x92 */
 #define GXHT40_CRC8_POLY                0x31u
 #define GXHT40_CRC8_INIT                0xFFu

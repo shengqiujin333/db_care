@@ -72,6 +72,7 @@ typedef struct {
     uint8_t idle;           /* 释放两线后的回读位掩码 */
     uint8_t swap_count;     /* 角色对调后收到 ACK 的候选地址数 (0..2) */
     uint8_t swap_addr[2];   /* 角色对调后收到 ACK 的 7bit 地址 */
+    uint8_t gc;             /* 上电一次性 general call 恢复尝试结果 (见 sensor_io_diag_scan 注释) */
 } debug_trace_iotest_t;
 
 /*

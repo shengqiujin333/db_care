@@ -1,15 +1,71 @@
-# 驱动测试证据（DRV-002 rev 5.4）
+# 驱动测试证据（DRV-002 rev 5.5）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复三**（EV-012 交回实现：E1b 事务内逐位回读签名 `IOSIG`）
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-012（TEST_FAIL，§5 E1b）
-受测实现：`USER/src/measure.c`（`sensor_io_sig_scan` + 半位延时）、`USER/src/debug_trace.c`（`debug_trace_iosig`）、`USER/src/main.c`（上电顺序）
-测试载体：`test/build_test.sh`（162 项）、`test/host_gxht40_check.c`（60）、`test/host_sf_i2c_bus_check.c`（35）；另**只读复跑** tester 自有 harness
-测试环境：宿主机 MinGW-w64 gcc 12.2.0（带开漏回读模型的 mock GPIO）；`mdk_flash`/串口不在本调用工具列表内。
+本轮范围：run8 **ITEM-002 复验修复四**（上电一次性 I²C general call 复位尝试 `0x00`+`0x06` + `gc` 可观测）
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；`gxht40.pdf` §7.7；触发 `evidence/test.md` EV-015 与 operator_update
+受测实现：`USER/src/measure.c`（`sensor_io_diag_scan` 尾部恢复尝试）、`USER/inc/sensor_config.h`（常量）、`USER/src/debug_trace.c`（`gc` 字段）
+测试载体：`test/build_test.sh`（163 项）、`test/host_gxht40_check.c`（60）、`test/host_sf_i2c_bus_check.c`（42）；另**只读复跑** tester 自有 harness
+测试环境：宿主机 MinGW-w64 gcc 12.2.0（带开漏回读模型与 general-call 从机模型的位级 mock 总线）；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## ITEM-002 复验修复三：自检与独立资产对照（本轮实际执行）
+## ITEM-002 复验修复四：自检与独立资产对照（本轮实际执行）
+
+### 1. 新增观测量与自检原始 stdout（节选）
+
+```
+$ sh test/build_test.sh
+[1/4] 40 passed  [2/4] 43 passed  [3/4] 41 passed  [4/4a] 19 passed  [4/4b] 20 passed   (0 failed)
+$ ./host_gxht40_check     ->  60 passed / 0 failed
+$ ./host_sf_i2c_bus_check ->  42 passed / 0 failed
+
+[10] 通用调用复位序列: 地址 0x00 + 命令 0x06 (手册 §7.7)
+  PASS  0x00/0x06 序列被从机 ACK: 返回 SF_I2C_SUCCESS
+  PASS  恰好 1 个 START 与 1 个 STOP
+  PASS  线上字节为 0x00 后接 0x06 (general call reset)
+  PASS  复位序列后总线释放
+  PASS  0x00 无应答: 返回 SF_I2C_TIMEOUT
+  PASS  0x00 未被 ACK 时不再写 0x06
+
+[12] E1 上电 I/O 自检 ...
+  PASS  mock 总线无器件: 角色对调后仍无 ACK
+  PASS  无器件应答时 gc=3 (0x00 也不 ACK, 未发出复位命令; 有界且不反复复位)
+
+[T11] IOTEST 行 ...
+  PASS  典型: 拉低成功/释放回高/对调无 ACK/器件已应答故未做过复位 -> gc=0
+        |IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+  PASS  最坏: 拉不低 + 对调后两候选均 ACK + 0x00 也不应答 -> gc=3 (大写 hex)
+        |IOTEST sda_lo=1 scl_lo=1 idle=3 swap=44,45 gc=3
+  PASS  worst-case IOTEST line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes
+        len(worst IOTEST)=49 bytes
+```
+
+### 2. `gc` 编码与动作边界（供 tester 独立核验）
+
+| `gc` | 触发条件 | 固件动作 |
+|---|---|---|
+| 0 | `0x44` 或 `0x45` ACK | 不任何复位（正常路径行为不变） |
+| 1 | 两候选均不 ACK，`0x00` ACK 但 `0x06` 不 ACK | 停止（不重试） |
+| 2 | 两候选均不 ACK，`0x00` 与 `0x06` 均 ACK | 等待 `GXHT40_GCALL_RESET_WAIT_MS=2 ms` 后返回；随后的 `BUS` 扫描反映复位后状态 |
+| 3 | 两候选与 `0x00` 均不 ACK（或不接受 fundamental reset） | 停止（有界一次，不反复复位） |
+
+仅在上电诊断中执行一次；**采样周期路径无任何复位**（`0x94` 宏仍然零调用）。
+
+### 3. tester 自有 harness 只读复跑（未修改其文件；结论权归 tester）
+
+| 资产 | 结果 |
+|---|---|
+| `test/host_diag_probe_verify_ev.c` | **85 passed / 0 failed** |
+| `test/host_gxht40_verify_ev.c` | **93 passed / 0 failed** |
+
+### 4. 未取得 / 不声称
+
+- 实板 `gc` 读数与 `q=1` 均未在本轮取得（本调用无 `mdk_flash`/串口）；判读表见 `artifacts/firmware_implementation.md` 本轮节 §3。
+- 未改动的冻结不变量逐项回归通过：双字 CRC-8、有效域、读重读/整帧重测上限、命令白名单、失败不写输出/不上报/不推进前值、`BUS`/`S`/`G`/`IOSIG` 行字面与字段。
+
+---
+
+# 历史：ITEM-002 复验修复三（E1b IOSIG）
 
 ### 1. 新增观测量（E1b）与自检原始 stdout（节选）
 

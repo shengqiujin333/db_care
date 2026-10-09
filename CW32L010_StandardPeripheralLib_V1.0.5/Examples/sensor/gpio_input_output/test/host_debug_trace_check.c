@@ -326,18 +326,19 @@ int main(void)
     {
         debug_trace_iotest_t io;
         memset(&io, 0, sizeof(io));
-        io.sda_lo = 0u; io.scl_lo = 0u; io.idle = 3u; io.swap_count = 0u;
+        io.sda_lo = 0u; io.scl_lo = 0u; io.idle = 3u; io.swap_count = 0u; io.gc = 0u;
         debug_trace_iotest(&io);
-        CHECK(strcmp(cap, "IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n") == 0,
-              "典型: 拉低成功/释放回高/对调后无 ACK -> swap=none");
+        CHECK(strcmp(cap, "IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0\r\n") == 0,
+              "典型: 拉低成功/释放回高/对调无 ACK/器件已应答故未做过复位 -> gc=0");
         printf("        |%s", cap);
 
         cap_reset();
         io.sda_lo = 1u; io.scl_lo = 1u; io.idle = 3u;
         io.swap_count = 2u; io.swap_addr[0] = 0x44u; io.swap_addr[1] = 0x45u;
+        io.gc = 3u;
         debug_trace_iotest(&io);
-        CHECK(strcmp(cap, "IOTEST sda_lo=1 scl_lo=1 idle=3 swap=44,45\r\n") == 0,
-              "最坏: 拉不低 + 对调后两候选均 ACK -> swap=44,45 (大写 hex)");
+        CHECK(strcmp(cap, "IOTEST sda_lo=1 scl_lo=1 idle=3 swap=44,45 gc=3\r\n") == 0,
+              "最坏: 拉不低 + 对调后两候选均 ACK + 0x00 也不应答 -> gc=3 (大写 hex)");
         printf("        |%s", cap);
         CHECK(strlen(cap) <= (size_t)SENSOR_DEBUG_UART_MAXLINE,
               "worst-case IOTEST line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");

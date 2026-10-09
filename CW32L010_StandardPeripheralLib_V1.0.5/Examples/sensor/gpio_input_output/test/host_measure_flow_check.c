@@ -299,6 +299,8 @@ int main(void)
               "主机能把 SDA(PA04) 与 SCL(PA03) 拉低并回读为 0 (开漏模型)");
         CHECK(io.idle == 0x03u, "释放后两线回读为高 (idle=3)");
         CHECK(io.swap_count == 0u, "mock 总线无器件: 角色对调后仍无 ACK");
+        CHECK(io.gc == 3u,
+              "无器件应答时 gc=3 (0x00 也不 ACK, 未发出复位命令; 有界且不反复复位)");
 
         /* 负对照: 引脚无法拉低/回读恒高 (H5 形态) -> 字段必须区分得出来 */
         g_pin_stuck_high[3] = 1u;

@@ -1,14 +1,62 @@
-# 固件实现（FWI-002 rev 5.4）
+# 固件实现（FWI-002 rev 5.5）
 
 状态：固件实现（firmware_engineer.firmware_implementation）
-本轮工作项：run8 Runtime 队列 **ITEM-002 复验修复三**（EV-012 交回实现：按 **E1b** 新增上电 `IOSIG` 事务内逐位回读签名，用于判别 H12）；ITEM-001 已 TEST_PASS
-依据：FD-002 rev 5.0（§6.6.1 候选原因矩阵）、FWR-002 rev 5.0（FWR-101/116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-012（TEST_FAIL 但排除 H4/H5、新登记 H12、§5 E1b）
-受测提交：`6dac824`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
-本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口不在本调用工具列表内** → IOSIG 实板读数由嵌入式测试能力采集（本文件不声称已取得）
+本轮工作项：run8 Runtime 队列 **ITEM-002 复验修复四**（用户重焊 U9 后重做授权；按 EV-015 交回实现并依手册 §7.7 新增**上电一次性 I²C general call 复位尝试** 0x00+0x06 与 `gc` 可观测字段）；ITEM-001 已 TEST_PASS
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-101/107/116/118）、TD-002 rev 5.0；`gxht40.pdf`（GXHT4x Family Datasheet V2.6）§7.7；触发 `evidence/test.md` EV-015（TEST_FAIL；H4/H5/H12 已排除、H3 权重最高、0x00 列为未测项）与 operator_update（重焊授权）
+受测提交：`5b07982`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
+本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口不在本调用工具列表内** → 新 `gc` 字段的实板读数由嵌入式测试能力采集（本文件不声称已取得）
 
 ---
 
-# 本轮 run8：ITEM-002 复验修复三（E1b 事务内逐位回读签名 IOSIG）
+# 本轮 run8：ITEM-002 复验修复四（上电一次性 general call 复位尝试 + `gc` 可观测）
+
+**触发**：operator_update（2026-10-09T01:13Z）告知用户**已重新焊接 U9**并授权重做，且旧无 ACK/`q=0` 记录属焊接前条件；随后 EV-015 以当前交付件重测：重焊后失败形态**逐字节相同**（5/5 周期 `q=0`、`BUS ack=none`），但主机侧已被实板证据证明健康（`IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none`、`IOSIG scl=95555 sda=30303` ⇒ H4/H5/H12 均排除），剩余假设为 H1（贴装/焊接）、H2（损坏）、**H3（异常闩锁，需真正断电；权重最高）**，且该能力**明确登记 general call 地址 `0x00` 从未被探测**，并把“是否/如何改动”交回实现。
+
+## 1. 手册依据（第一手，并如实标注提取限制）
+
+- `gxht40.pdf`（GXHT4x Family Datasheet V2.6, Aug-2026）**§7.7（复位）** 列出多种复位方式，其中第 2 项可提取到拉丁字符：`I²C general call … I²C … 0x00 … 0x06`，即 **I²C general call 复位 = 地址 `0x00` + 命令 `0x06`**（I²C 规范中用于复位处于未定义/异常状态的从机的标准机制）。
+- **提取限制（如实记录）**：该 PDF 的中文正文使用无 ToUnicode 映射的嵌入字体，`pdftotext` 只能取到拉丁字符/数字/公式；§7.7 的完整句子**未能被本能力读全**。因此本条依据为**手册 §7.7 “复位”小节的 token 级证据**（`general call`/`0x00`/`0x06` 同时出现于同一小节），不是整句翻译。本节实证价值在于：**该命令在此之前从未在本项目上尝试过**，且其效果可由现有 `BUS` 行直接观察。
+- 与冻结约束的关系：任务禁止的是**周期路径**使用软复位 `0x94`/加热命令；本轮**未使用 `0x94`**，新增的是**上电一次性、仅当器件不应答时**才尝试的 general call 复位（不在采样周期内、不重试、不反复复位）。
+
+## 2. 本轮实现
+
+| # | 内容 | 位置 |
+|---|---|---|
+| 1 | `sensor_io_diag_scan()` 末尾新增**上电一次性器件恢复尝试**：先探 `0x44`/`0x45`；**任一应答则 `gc=0` 且不任何复位**（正常器件路径不变）；否则探 general call `0x00`：不应答 ⇒ `gc=3`（有界，不再重试）；应答但 `0x06` 未被 ACK ⇒ `gc=1`；`0x06` 被 ACK ⇒ `gc=2` 并等 `GXHT40_GCALL_RESET_WAIT_MS`（2 ms）后返回，随后的 `BUS` 扫描即反映复位后是否恢复应答 | `USER/src/measure.c` |
+| 2 | 单一配置点新增：`GXHT40_ADDR_GENERAL_CALL=0x00`、`GXHT40_CMD_GENERAL_CALL_RESET=0x06`、`GXHT40_GCALL_RESET_WAIT_MS=2` | `USER/inc/sensor_config.h` |
+| 3 | `IOTEST` 行**末尾追加** `gc=<0..3>`（不改既有字段/顺序/字面）；最坏行长 49 B ≤ 96 B | `USER/inc/debug_trace.h`、`USER/src/debug_trace.c` |
+
+**未改动**：`BUS`/`S`/`G`/`IOSIG` 行字段、采样/判定/上报/冻结、GXHT40 校验与重试、地址缓存与总线恢复策略、433/BLE 布局。
+
+## 3. 判读表（交 tester；本能力不代替采集）
+
+| 新 `IOTEST gc=` | 含义 | 后续 |
+|---|---|---|
+| `gc=0` | 器件已应答 `0x44`/`0x45`，未做复位（正常路径） | 看 `BUS ack` 与 `S q=` |
+| `gc=2` | `0x00` 与复位命令 `0x06` 均被 ACK ⇒ **复位命令已被器件接受** | **关键看紧随的 `BUS` 行**：`ack` 含 `44`/`45` 且后续 `S` 行 `q=1` ⇒ 固件侧恢复成功（无需再改代码）；仍 `ack=none` ⇒ 复位未奏效，转现场 |
+| `gc=1` | `0x00` 被 ACK 但 `0x06` 未被 ACK（器件部分响应） | 记录；若重复出现，属器件异常行为，转现场 |
+| `gc=3` | **连 general call 地址 `0x00` 也不应答** ⇒ 器件对**任何** I²C 地址均无响应 | 固件侧已无可为：唯一前行路径为现场 E-a（**真正断电 ≥ 5 s**）、E-b（四处焊点通断/阻值）、E-c（换件） |
+
+> 按 EV-015 实测（`BUS ack=none`、`IOSIG` ACK 时隙 `11`）预测本轮实板最可能得 `gc=3`；若如此，则该项的剩余解释**全部**在器件/接线侧，且已有一手证据支撑——但这是**由 tester 采集判定**，本能力不预先宣告。
+
+## 4. 验证（本轮实际执行）
+
+- **宿主自检合计 265 项 0 失败**：`test/build_test.sh` 40+**43**+41+19+20；`host_gxht40_check` 60/60；`host_sf_i2c_bus_check` **42/42**（新增 general call 线序用例：`0x00`+`0x06` 逐字节、1 START/1 STOP、ACK 与不应答两条分支）。measure-flow 新增断言：无器件时 `gc=3`（不发出复位命令、不反复复位）。
+- **tester 自有 harness 只读复跑**（未修改其文件）：`host_diag_probe_verify_ev` **85/85**、`host_gxht40_verify_ev` **93/93**。
+- **构建**：GNU 0 错误，FLASH **34,120 B** / RAM **1,808 B**（较上轮 34,004/1,808 为 +116/0 B）；Keil `mdk_build rebuild` **0 Error / 1 既有告警**（`main.c(238) while loop has empty body`），`Code=19144 RO-data=644 RW-data=116 ZI-data=1676`，axf md5 **`ff49029608f3315ee76964c131d06821`**；镜像内含 ` gc=` 字符串。
+- **`SENSOR_DEBUG_UART=0` 复核**：`measure.c`/`debug_trace.c` 0 告警 0 错误。
+- 原始命令与 stdout：`evidence/build.md`、`evidence/driver_test.md`（本轮节）。
+
+## 5. 未取得与交接
+
+- **实板 `gc` 读数与 `q=1` 均未取得**：本调用无 `mdk_flash`/串口。本轮交付的是**最后一个固件侧可行动分支**的尝试与可观测字段。
+- **tester 需同步**：判定脚本/用例接受 `IOTEST` 新尾部字段 `gc=<0..3>`（既有字段/顺序不变）；复判时把 `gc` 与紧随的 `BUS ack`、后续 `S q=` 关联；建议的恢复判据（EV-015 §7 已给出）：`BUS ack` 含 `44`/`45` 或 `IOSIG` ACK 时隙变为 `00`，或直接出现 `q=1`。
+- **设计能力需同步**：FD-002 §5.2/§6.7 收录 `IOTEST`/`IOSIG`/`gc` 与 `BOOT→IOTEST→IOSIG→BUS` 顺序；§10 异常策略建议补一行「上电一次性 general call 复位尝试（仅器件不应答时，有界一次）」。
+- **现场/用户（若 `gc=3`）**：E-a 真正断电 ≥ 5 s 后复上电；E-b 四处焊点通断/阻值；E-c 换一只已知良好的 GXHT40（含 `GXHT40-BD` 0x45）。任一步后**无需**再改代码，只需重新上电 + COM42 采集复判。
+
+---
+
+# 历史：ITEM-002 复验修复三（E1b IOSIG 事务内逐位回读签名）
 
 **触发**：EV-012 判 TEST_FAIL，但取到实质进展：实板 `IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none`（5/5 一致）**排除 H5（主机拉不低）与 H4（装配接反）**，并新登记 **H12**（静态驱动可回读，但**事务期间**的位/时钟形态是否真实送达未被覆盖）；该能力按规则交回实现，要求做 **E1b**。
 
