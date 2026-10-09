@@ -1,15 +1,42 @@
-# 驱动测试证据（DRV-002 rev 5.6）
+# 驱动测试证据（DRV-002 rev 5.7）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复五**（上电供电轨 VDD/BAT 实测与 `VDD` 可观测行）
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；厂商示例 `Examples/ADC/adc_sgl_sw_vdd`；触发 `evidence/test.md` EV-016
-受测实现：`USER/src/light.c`/`USER/inc/light.h`（`light_read_vdd_mv`，ADC 拥有者）、`USER/src/debug_trace.c`/`USER/inc/debug_trace.h`（`VDD` 行）、`USER/src/main.c`（上电顺序）
+本轮范围：run8 **ITEM-002 复验修复六**（固件侧手段穷尽性复核；**无产品代码改动**，重跑自检作可复现证据）
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；`gxht40.pdf`；触发 `evidence/test.md` EV-017
+受测实现：与最后交付提交相同（`USER/**` = `8ae4a33`；本轮未改源码）
 测试载体：`test/build_test.sh`（184 项）、`test/host_gxht40_check.c`（60）、`test/host_sf_i2c_bus_check.c`（42）；另**只读复跑** tester 自有 harness
-测试环境：宿主机 MinGW-w64 gcc 12.2.0（`mock_light` 影子层已扩 `ADC_InputVref1P2` 与 `CR_f.BGREN`；用 `-DLIGHT_BGR_TRIM_MV=1200u` 避免访问 0x001007D2 绝对地址）；`mdk_flash`/串口不在本调用工具列表内。
+测试环境：宿主机 MinGW-w64 gcc 12.2.0；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## ITEM-002 复验修复五：自检与独立资产对照（本轮实际执行）
+## ITEM-002 复验修复六：自检可复现性（本轮实际执行）
+
+```
+$ sh test/build_test.sh
+[1/4] 40 passed  [2/4] 43 passed  [3/4] 44 passed  [4/4a] 28 passed  [4/4b] 29 passed   (0 failed)
+$ ./host_gxht40_check     ->  60 passed / 0 failed
+$ ./host_sf_i2c_bus_check ->  42 passed / 0 failed
+$ (tester 自有, 只读复跑) ./host_diag_probe_verify_ev -> 104 passed / 0 failed
+```
+
+### 1. 本轮无新增可测行为（含原因）
+
+本轮未新增任何驱动/总线层行为，因此无新增用例；上述重跑用于证明**当前工作树与最后交付件逐字节相同**且自检仍全部通过。新增可观测量的最后两轮分别是：
+- rev 5.5 `IOTEST` 尾字段 `gc=<0..3>`（general call 尝试结果）；
+- rev 5.6 `VDD ok/code/bgrmv/mv`（供电轨测量，`mv=4095*bgrmv/code`）。
+
+### 2. 穷尽性结论（对应 EV-017 交回实现的要求）
+
+EV-017 要求实现能力判断“是否仍有未列出的、不违反冻结约束的驱动或总线层手段”。逐项复核结果见 `artifacts/firmware_implementation.md` 本轮节 §1（地址/时序/等待/恢复/general call/`0x94`/读层/引脚/供电/总线内其它从机/推挽反向/直流电气量判“未得电但已连接”共 13 项）。结论：**无剩余可行动手段**；其中第 11 项（推挽/反向）明确**不做**（违 I²C 且存在对真器件的冲撞损坏风险），第 12 项在 4.7 k 上拉下**不可由固件区分**。
+
+### 3. 未取得 / 不声称
+
+- 实板 `q=1` 未取得（器件对任何 I²C 地址含 `0x00` 均不应答；EV-017 已给出 `VDD mv=3289` 正常、`gc=3`、`BUS ack=none` 的一手数据）。
+- 本轮未改动的冻结不变量仍然成立：双字 CRC-8、有效域、读重读/整帧重测上限、命令白名单、失败不写输出/不上报/不推进前值、各诊断行字面与字段。
+
+---
+
+# 历史：ITEM-002 复验修复五（供电轨 VDD 实测）
 
 ### 1. 新增观测量与自检原始 stdout（节选）
 

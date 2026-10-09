@@ -1,14 +1,37 @@
-# 构建证据（BUILD-002 rev 5.6）
+# 构建证据（BUILD-002 rev 5.7）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复五**（上电供电轨 VDD/BAT 实测：ADC 内部 BGR1.2V 反推，`VDD` 行）
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；厂商示例 `Examples/ADC/adc_sgl_sw_vdd`；触发 `evidence/test.md` EV-016（`gc=3`）
-受测提交：`e769e56`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
-测试环境：GNU 交叉编译（`arm-none-eabi-gcc`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`）；`mdk_flash`/串口不在本调用工具列表内。
+本轮范围：run8 **ITEM-002 复验修复六**（固件侧手段穷尽性复核；**无产品代码改动**，只验证交付件身份可重建与自检可复现）
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-017
+受测提交：`dfda689`（RESUME_SYNC 接手时工作区干净；`USER/**` 仍为 `8ae4a33`，`git diff --stat 8ae4a33 HEAD -- <FW>/USER` 为空）
+测试环境：Keil MDK（ARMCLANG V6.24，`mdk_build`）、GNU 交叉编译、宿主机 MinGW-w64 gcc；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## ITEM-002 复验修复五：交叉编译 + Keil MDK 构建（本轮实际执行）
+## ITEM-002 复验修复六：交付件身份可重建（本轮实际执行）
+
+```
+$ git diff --stat 8ae4a33 HEAD -- <FW>/USER
+(空)                                  => 本轮无产品代码改动 (与最后交付提交逐字节相同)
+
+$ mdk_build {"action":"rebuild"}     (全量重建, 授权工具)
+*** Using Compiler 'V6.24' ...
+../USER/src/main.c(245): warning: while loop has empty body [-Wempty-body]   (既有 `while(k--);`)
+Program Size: Code=20100 RO-data=644 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+
+$ md5sum MDK/output/exe/Project.axf
+5fc16235ccd043f4edb48b16ee44da0b  MDK/output/exe/Project.axf   (与 EV-017 受测件/实现声明逐字符一致)
+```
+
+- **确定性重建**：全量 rebuild 后 axf md5 与本轮交付声明、EV-017 下载受测件**完全一致** ⇒ 当前工作树可产出同一字节的镜像；`Code/RO/RW/ZI` 与上轮声明逐项相同（无代码改动）。
+- **宿主机自检重跑**（本工作树）：`test/build_test.sh` 40+43+44+28+29、`host_gxht40_check` 60、`host_sf_i2c_bus_check` 42 → **合计 286 项 0 失败**；tester 自有 `host_diag_probe_verify_ev` 104/104（只读复跑）。
+- **未执行**：`mdk_flash` 与 COM42 采集（本调用工具列表仅含 `mdk_build`）⇒ 实板 `VDD`/`gc`/`BUS`/`S` 读数与 `q=1` 复判均由嵌入式测试能力执行（EV-017 已给出）⇒ 本轮不重复下载。
+- 工具在仓库根产生的 `build*.log` 已删除（`.gitignore` 的 `/build*.log` 覆盖）。
+
+---
+
+# 历史：ITEM-002 复验修复五（供电轨 VDD 实测）
 
 ```
 $ sh gcc/build.sh
