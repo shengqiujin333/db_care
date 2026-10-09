@@ -1,0 +1,56 @@
+# Independent host harness re-runs against the delivered source (ef03c13 == HEAD product source) - EV-014
+# Only the compiled object under test (USER/src/*) comes from the delivered firmware;
+# all harnesses, mock/shadow layers and this driver script are embedded_tester-owned assets.
+# Toolchain: gcc.exe (x86_64-posix-seh-rev2, Built by MinGW-W64 project) 12.2.0
+
+$ gcc -std=c11 -Wall -Wextra -Wno-unused-function -Wno-misleading-indentation -Wno-unused-const-variable -DSENSOR_DEBUG_UART=1 -Itest/mock_measure_ev -IUSER/inc -IUM2005C -ICOMMON test/host_diag_probe_verify_ev.c USER/src/measure.c USER/src/gxht40.c USER/src/sf_i2c.c USER/src/fw_core.c USER/src/encrytogate.c -lm -o _ev014bin/diag_probe_verify
+    PASS  previous value still 250: a diagnosed failure does not corrupt it
+    PASS  S fields keep the last valid sample on a failing cycle
+==== result: 85 passed, 0 failed ====
+$ gcc ... test/host_gxht40_verify_ev.c ... -Wl,--wrap=i2c_bus_recover -o _ev014bin/gxht40_verify
+    PASS  every command byte sent in every test was 0xFD
+    PASS  soft reset 0x94 never appears in any path
+==== result: 93 passed, 0 failed ====
+$ gcc ... test/host_sf_i2c_verify_ev.c -o _ev014bin/sfi2c_verify
+[T11b] recovery sequence contains no address byte and no read
+    PASS  no ACK slot, no read byte, no master response bit during recovery
+==== result: 51 passed, 0 failed ====
+$ gcc ... test/host_diag_line_verify_ev.c -o _ev014bin/diag_line_verify
+    PASS  close is idempotent
+    PASS  UART1 re-opened for the next diagnostic line
+==== result: 36 passed, 0 failed ====
+$ gcc ... test/host_measure_flow_verify_ev.c ... -o _ev014bin/measure_verify    # SENSOR_DEBUG_UART=0 (delivered default)
+USER/src/encrytogate.c: In function 'print_hex':
+USER/src/encrytogate.c:142:3: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  142 |   for(size_t i=0;i<n;i++) printf("%02X ", b[i]); printf("\n");
+      |   ^~~
+USER/src/encrytogate.c:142:50: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  142 |   for(size_t i=0;i<n;i++) printf("%02X ", b[i]); printf("\n");
+      |                                                  ^~~~~~
+USER/src/encrytogate.c: At top level:
+USER/src/encrytogate.c:17:22: warning: 'IPERM' defined but not used [-Wunused-const-variable=]
+   17 | static const uint8_t IPERM[10] = {4, 2, 8, 0, 6, 3, 9, 7, 1, 5};
+      |                      ^~~~~
+    PASS  no sampling when the flag is clear
+    PASS  no state change when the flag is clear
+==== result: 79 passed, 0 failed ====
+$ gcc ... same with -DSENSOR_DEBUG_UART=1 -o _ev014bin/measure_verify_dbg
+USER/src/encrytogate.c: In function 'print_hex':
+USER/src/encrytogate.c:142:3: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  142 |   for(size_t i=0;i<n;i++) printf("%02X ", b[i]); printf("\n");
+      |   ^~~
+USER/src/encrytogate.c:142:50: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  142 |   for(size_t i=0;i<n;i++) printf("%02X ", b[i]); printf("\n");
+      |                                                  ^~~~~~
+USER/src/encrytogate.c: At top level:
+USER/src/encrytogate.c:17:22: warning: 'IPERM' defined but not used [-Wunused-const-variable=]
+   17 | static const uint8_t IPERM[10] = {4, 2, 8, 0, 6, 3, 9, 7, 1, 5};
+      |                      ^~~~~
+    PASS  no sampling when the flag is clear
+    PASS  no state change when the flag is clear
+==== result: 79 passed, 0 failed ====
+$ gcc ... test/host_fw_core_verify_ev.c -o _ev014bin/fwcore_verify
+    PASS  34.9C + large drop + DARK -> report
+    PASS  int16 min, no drop -> false
+    PASS  int16 max -> over-temp branch -> true
+==== result: 56 passed, 0 failed ====

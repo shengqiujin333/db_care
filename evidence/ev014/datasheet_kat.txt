@@ -1,0 +1,12 @@
+# Datasheet known-answer cross-check of the DELIVERED code against gxht40.pdf V2.6 (EV-014)
+# built from USER/src/fw_core.c (unmodified delivered source)
+$ gcc -std=c11 -Wall -Wextra -IUSER/inc -ICOMMON _ev014bin/kat.c USER/src/fw_core.c -lm -o _ev014bin/kat
+$ ./_ev014bin/kat
+CRC(0xBEEF)=0x92  (datasheet expects 0x92)  MATCH
+raw_t=0x0000 raw_h=0x0000 -> valid=0 t=0.0C h=0.0%RH
+raw_t=0xFFFF raw_h=0xFFFF -> valid=0 t=0.0C h=0.0%RH
+raw_t=0x6666 raw_h=0x8000 -> valid=1 t=25.0C h=56.5%RH
+raw_t=0x7FFF raw_h=0x4000 -> valid=1 t=42.5C h=25.3%RH
+
+# gxht40.pdf Table 8 / section 7.3: CRC-8 poly 0x31 init 0xFF, no reflect, final xor 0x00, example CRC(0xBEEF)=0x92
+# gxht40.pdf section 7.5 form 1/2: RH=(-6+125*S_RH/2^16) %RH ; T=(-45+175*S_T/2^16) C
