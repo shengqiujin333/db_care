@@ -1,0 +1,63 @@
+# EV-017 镜像身份与下载记录（raw）
+
+## 1. 下载前 / 下载后 / 独立重建后 的镜像 md5（三者一致）
+
+```
+$ md5sum CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.axf \
+         CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.hex
+# 下载前（05:26 UTC，mdk_flash 之前）
+5fc16235ccd043f4edb48b16ee44da0b *Project.axf
+9a32cf3bcdbca2c1346da9c3bb3581da *Project.hex
+# mdk_flash {} 之后（05:29 UTC，构建步骤报告无可重建项）
+5fc16235ccd043f4edb48b16ee44da0b *Project.axf
+9a32cf3bcdbca2c1346da9c3bb3581da *Project.hex
+# 测试能力独立执行 mdk_build {"action":"rebuild"} 之后（05:53 UTC，全量重编译）
+5fc16235ccd043f4edb48b16ee44da0b *Project.axf
+9a32cf3bcdbca2c1346da9c3bb3581da *Project.hex
+```
+
+⇒ 板上所下镜像 == 本轮交付件，且可由当前工作树（干净，`USER/**` 最后一次改动为 `8ae4a33`）**确定性重建**为同一字节。
+
+## 2. mdk_flash {} 原始日志（1 次；经 hardware-verification 工具入口）
+
+```
+$ mdk_flash {}            # 05:29:15 → 05:29:25 UTC
+build_log:
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Build target 'Project'
+".\output\exe\Project.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:00
+flash_log:
+Load "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\MDK\\output\\exe\\Project.axf"
+Erase Done.Programming Done.Verify OK.Application running ...
+Flash Load finished at 13:29:25
+```
+
+`Verify OK` **仅**证明下载回读校验通过；业务功能仍按 §2 实测判定。
+
+## 3. mdk_build {"action":"rebuild"}（测试能力独立执行，用于镜像可重建性）
+
+```
+$ mdk_build {"action":"rebuild"}          # 05:52:58 → 05:53:00 UTC
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Rebuild target 'Project'
+assembling startup_cw32l010.s...
+../USER/src/main.c(245): warning: while loop has empty body [-Wempty-body]
+  245 |         while(k--);
+      |                   ^
+../USER/src/main.c(245): note: put the semicolon on a separate line to silence this warning
+1 warning generated.
+compiling main.c... light.c... cw32l010_sysctrl.c... system_cw32l010.c... cw32l010_gpio.c...
+gxht40.c... interrupts_cw32l010.c... fw_core.c... measure.c... cw32l010_flash.c...
+encrytogate.c... sf_i2c.c... cw32l010_uart.c... cw32l010_rtc.c... debug_trace.c...
+cw32l010_lptim.c... cw32l010_digitalsign.c... cw32l010_adc.c... app_um2005C.c...
+convert.c... radio.c... delay.c... um2005C.c... app_gtimer.c... um2005C_hal.c...
+linking...
+Program Size: Code=20100 RO-data=644 RW-data=116 ZI-data=1676
+FromELF: creating hex file...
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:01
+```
+
+- 0 Error；唯一的 1 条告警是**既有**模板代码告警（`main.c(245) while(k--);` 空循环体），与本轮改动无关。
+- `Program Size: Code=20100 RO-data=644 RW-data=116 ZI-data=1676` 与实现能力在 `evidence/build.md` 中声明的同一构建参数**逐项一致**；RAM（RW+ZI = 1,792 B）≤ 4 KB、Flash（Code+RO = 20,744 B）≤ 64 KB。

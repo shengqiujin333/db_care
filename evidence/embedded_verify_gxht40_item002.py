@@ -18,7 +18,7 @@ evidence/embedded_verify_gxht40_item002.py
 
 检查项 (逐项 PASS/FAIL; 退出码 0=无 FAIL):
     A STRUCT   每行 <=96 B、以 CRLF 终止 (采集窗口边缘的截断只记 FRAG);
-               行首仅 BOOT/IOTEST/BUS/S/G
+               行首仅 BOOT/VDD/IOTEST/IOSIG/BUS/S/G
     B FIELDS   S 行 15 个冻结字段齐全且顺序正确; BUS/G 行字段齐全; IOTEST 行的冻结字段集
                (sda_lo,scl_lo,idle,swap,gc, rev5.5 起) 只对**完整上电打印段**(段内有 BUS 行)
                强制; 采集窗口跨越下载时, 段内可能仍是下载前镜像打印的行, 该行只登记为
@@ -54,6 +54,16 @@ evidence/embedded_verify_gxht40_item002.py
                并与同一复位段的 BUS ack 地址表**交叉核对**(同一对引脚的两次观测
                不得互相矛盾)。逐位不符 = 位序列未真实送达 (H12); 全符 = H12 排除,
                解释面收缩到器件/接线侧。
+    N VDD      上电供电轨测量行 (rev 5.6 新增; 判读供现场定位 H1/H3 的供电分支):
+               `VDD ok=<0|1> code=<0..4095> bgrmv=<0..4095> mv=<0..6000>`;
+               本脚本**独立复算** mv —— ok=1 时必须满足 mv == 4095*bgrmv/code
+               (整数除法, 与厂商示例 Examples/ADC/adc_sgl_sw_vdd 的
+               MCU_VDD=(4095*BGR_mV*0.001)/code 同式), 且 code!=0、bgrmv!=0、mv!=0;
+               ok=0 时 mv/code 无意义但**必须为 0**(不得伪造读数)。
+               冻结字段集 (ok,code,bgrmv,mv) 与「恰 1 条、位于 BOOT 之后 IOTEST 之前」
+               只对完整上电段强制 (与 IOTEST 同一 NOTE 规则)。
+               **mv 的数值本身不作通过/失败门槛**(当前验收未定义电压阈值): 它作为
+               供电事实登记并打印, 供定位器件不应答的解释面。
 """
 import re
 import sys
@@ -62,12 +72,15 @@ KEY_ORDER = ["k", "p", "H", "V", "o", "n", "x", "a", "D", "t", "h", "q", "r", "s
 GKEY_ORDER = ["s", "a44", "a45", "rd", "at", "raw"]
 IOKEY_ORDER = ["sda_lo", "scl_lo", "idle", "swap", "gc"]
 SIGKEY_ORDER = ["scl", "sda"]
+VDDKEY_ORDER = ["ok", "code", "bgrmv", "mv"]
+VDD_FULL_SCALE = 4095          # 12-bit ADC full scale (vendor example: VDD = 4095*BGR_mV/code)
 MAXLINE = 96
 T_MIN, T_MAX = -400, 1250      # -40.0 .. 125.0 C  (x10), readme 点 1 + FD-002 §6.1
 H_MIN, H_MAX = 0, 1000         # 0.0 .. 100.0 %RH (x10)
 SAMPLE_TICKS = 3               # readme 点 3: 每 3 分钟采样一次
 SIG_ADDR7 = 0x44               # IOSIG 发出的地址字节 = (0x44 << 1) = 0x88 (GXHT40 候选 A)
 SIG_SAMPLES = 20               # 20 个半位采样点 (S0..S19)
+VDD_OK_LINE = b"VDD ok=1 code=1632 bgrmv=1200 mv=3011\r\n"   # 4095*1200/1632 = 3011 (仅供合成用例)
 results = []   # (name, ok, detail)
 
 
@@ -121,15 +134,15 @@ def crc8_gxht(data: bytes) -> int:
 def split_messages(raw: bytes):
     """按行首标记切分; 返回 [(kind, payload, terminated, offset)]。"""
     starts = [(m.start(), m.group(0))
-              for m in re.finditer(rb"BOOT |IOTEST |IOSIG |BUS |S k=|G s=", raw)]
+              for m in re.finditer(rb"BOOT |VDD |IOTEST |IOSIG |BUS |S k=|G s=", raw)]
     out = []
     for i, (start, marker) in enumerate(starts):
         end = starts[i + 1][0] if i + 1 < len(starts) else len(raw)
         blk = raw[start:end]
         terminated = blk.endswith(b"\r\n")
         payload = blk[:-2] if terminated else blk
-        kind = {b"BOOT ": "BOOT", b"IOTEST ": "IOTEST", b"IOSIG ": "IOSIG", b"BUS ": "BUS",
-                b"S k=": "S", b"G s=": "G"}[marker]
+        kind = {b"BOOT ": "BOOT", b"VDD ": "VDD", b"IOTEST ": "IOTEST", b"IOSIG ": "IOSIG",
+                b"BUS ": "BUS", b"S k=": "S", b"G s=": "G"}[marker]
         out.append((kind, payload, terminated, start))
     return out
 
@@ -142,7 +155,7 @@ def parse_kv(payload: bytes, first_key: str):
         text = text[1:].strip()               # 去掉行首 'S'
     elif first_key == "G":
         text = text[1:].strip()               # 去掉行首 'G'
-    elif first_key in ("IOTEST", "IOSIG", "BUS", "BOOT"):
+    elif first_key in ("IOTEST", "IOSIG", "BUS", "BOOT", "VDD"):
         text = text[len(first_key):].strip()  # 去掉行首标签
     parts = text.split()
     kv, order = {}, []
@@ -229,6 +242,43 @@ def _check_iosig(tag, reset_no, sig, bus_row):
         "IOSIG %r / BUS %r" % (msg, (bus_row or {}).get("_msg")))
 
 
+def _check_vdd_line(tag, off, row):
+    """VDD 行自身的域与自洽性 (本脚本独立复算, 不引用被测实现的公式/常量)。
+
+      ok=1 -> code!=0、bgrmv!=0、mv!=0, 且 mv 必须等于独立复算的 4095*bgrmv/code
+              (整数除法后按 6000 上限截断, 与厂商示例
+               Examples/ADC/adc_sgl_sw_vdd 的 MCU_VDD=(4095*BGR_mV*0.001f)/code 同式);
+      ok=0 -> mv 必须为 0 (转换无效时不得留下/合成读数)。
+    **mv 的量值本身不作门槛**: 本项验收未定义供电电压阈值, 该值只作为事实登记。
+    """
+    kv = row["kv"]
+    msg = row["_msg"]
+    vals = {}
+    for f in VDDKEY_ORDER:
+        v = kv.get(f, "")
+        if not re.fullmatch(r"[0-9]{1,5}", v or ""):
+            add("N VDD %s @%d field %s is a decimal number" % (tag, off, f), False, msg)
+            return
+        vals[f] = int(v)
+    ok_dom = (vals["ok"] in (0, 1) and 0 <= vals["code"] <= VDD_FULL_SCALE
+              and 0 <= vals["bgrmv"] <= VDD_FULL_SCALE and 0 <= vals["mv"] <= 6000)
+    add("N VDD %s @%d value domain (ok in {0,1}, code/bgrmv 0..%d, mv 0..6000)"
+        % (tag, off, VDD_FULL_SCALE), ok_dom, msg)
+    if not ok_dom:
+        return
+    if vals["ok"] == 1:
+        exp = None
+        if vals["code"] != 0:
+            exp = min((VDD_FULL_SCALE * vals["bgrmv"]) // vals["code"], 6000)
+        add("N VDD %s @%d ok=1 self-consistency: mv == 4095*bgrmv/code "
+            "(independently recomputed, clamped at 6000)" % (tag, off),
+            vals["code"] != 0 and vals["bgrmv"] != 0 and vals["mv"] != 0 and exp == vals["mv"],
+            "%s -> independently recomputed mv=%s" % (msg, exp))
+    else:
+        add("N VDD %s @%d ok=0 does not fabricate a reading (mv==0)" % (tag, off),
+            vals["mv"] == 0, msg)
+
+
 def check_file(path):
     raw = open(path, "rb").read()
     tag = path.split("/")[-1].split("\\")[-1]
@@ -277,8 +327,16 @@ def check_file(path):
         if len(msgs) > 1 else True,
         "cut=%s" % sorted(cut))
 
-    periods, g_lines, io_lines, bus_lines, sig_lines = [], [], [], [], []
+    periods, g_lines, io_lines, bus_lines, sig_lines, vdd_lines = [], [], [], [], [], []
     for i, (kind, payload, terminated, off) in enumerate(msgs):
+        if i in cut:
+            # 该行被烧录流程 (擦写/下载) 在打印中途切断: 字节是**同窗口同类型完整行**的前缀,
+            # 且其后紧接 BOOT 横幅 -> 属测试手段造成的截断 (A 组已登记), 不据此判字段集。
+            # (不能被用来掩盖缺字段: A 组对「中途未终止且非任何完整行前缀」仍判 TERM 失败,
+            #  且本轮的完整上电段由 J/L/N 组按复位段独立核对字段集。)
+            add("B FIELDS NOTE %s %s@%d not judged: line interrupted by a target reset "
+                "(flash/halt)" % (tag, kind, off), True, "%r" % payload)
+            continue
         if kind == "S":
             kv, order, err = parse_kv(payload, "S")
             if err or order != KEY_ORDER:
@@ -322,6 +380,14 @@ def check_file(path):
                 continue
             sig_lines.append({"after": i, "_msg": payload.decode("ascii", "replace"),
                               "kv": kv})
+        elif kind == "VDD":
+            kv, order, err = parse_kv(payload, "VDD")
+            if err or order != VDDKEY_ORDER:
+                add("B FIELDS %s VDD@%d" % (tag, off), False,
+                    "err=%s order=%s" % (err, order))
+                continue
+            vdd_lines.append({"after": i, "_msg": payload.decode("ascii", "replace"),
+                              "kv": kv, "order": order})
         elif kind == "BUS":
             kv, _order, _err = parse_kv(payload, "BUS")
             bus_lines.append({"after": i, "_msg": payload.decode("ascii", "replace"),
@@ -332,6 +398,11 @@ def check_file(path):
     sig_idx = [i for i, (k, _, _, _) in enumerate(msgs) if k == "IOSIG"]
     boot_idx = [i for i, (k, _, _, _) in enumerate(msgs) if k == "BOOT"]
     bus_idx = [i for i, (k, _, _, _) in enumerate(msgs) if k == "BUS"]
+    vdd_idx = [i for i, (k, _, _, _) in enumerate(msgs) if k == "VDD"]
+
+    # ---- N: power-rail VDD line, intrinsic self-consistency (every occurrence) ----
+    for v in vdd_lines:
+        _check_vdd_line(tag, v["after"], v)
 
     # IOTEST lines sitting in an interrupted boot run (a reset segment with no BUS line):
     # the download halted the target, so such a line may belong to the image that was in
@@ -401,18 +472,47 @@ def check_file(path):
                         "mid-session) order=%s" % (tagg, io["after"], io["order"]),
                         True, io["_msg"])
 
+        def _vdd_fields(tagg, seg, judged):
+            """Frozen VDD field set for the segment's lines (same NOTE rule as IOTEST).
+
+            judged=True  -> completed power-up print run: the frozen order
+                            (ok,code,bgrmv,mv) is enforced.
+            judged=False -> run interrupted by the download; the line may belong to the image
+                            that was in flash before this run: explicit NOTE only.
+            """
+            for v in vdd_lines:
+                if v["after"] not in seg:
+                    continue
+                if judged:
+                    add("B FIELDS %s VDD@%d frozen field set/order (ok,code,bgrmv,mv)"
+                        % (tagg, v["after"]), v["order"] == VDDKEY_ORDER,
+                        "order=%s" % v["order"])
+                else:
+                    add("B FIELDS NOTE %s VDD@%d not judged: interrupted boot run "
+                        "order=%s" % (tagg, v["after"], v["order"]), True, v["_msg"])
+
         completed = 0
         for n, (b0, b1) in enumerate(zip(bounds, bounds[1:])):
             seg_io = [i for i in io_idx if b0 < i < b1]
             seg_bus = [i for i in bus_idx if b0 < i < b1]
+            seg_vdd = [i for i in vdd_idx if b0 < i < b1]
             if not seg_bus:
                 add("J IOTEST %s reset#%d no BUS -> boot print run interrupted "
                     "(allowed: debugger halted target); IOTEST count=%d"
                     % (tag, n + 1, len(seg_io)), len(seg_io) <= 1, "io=%s" % seg_io)
                 _iotest_fields(tag, seg_io, False)
+                _vdd_fields(tag, seg_vdd, False)
                 continue
             completed += 1
             _iotest_fields(tag, seg_io, True)
+            _vdd_fields(tag, seg_vdd, True)
+            add("N VDD %s reset#%d exactly one VDD in the completed boot run"
+                % (tag, n + 1), len(seg_vdd) == 1, "found=%d" % len(seg_vdd))
+            if len(seg_vdd) == 1 and len(seg_io) == 1:
+                add("N VDD %s reset#%d order BOOT<VDD<IOTEST and adjacent"
+                    % (tag, n + 1),
+                    b0 < seg_vdd[0] == b0 + 1 and seg_io[0] == seg_vdd[0] + 1,
+                    "boot=%d vdd=%s io=%s" % (b0, seg_vdd, seg_io))
             add("J IOTEST %s reset#%d exactly one IOTEST in the completed boot run"
                 % (tag, n + 1), len(seg_io) == 1, "found=%d" % len(seg_io))
             if len(seg_io) == 1:
@@ -455,10 +555,12 @@ def check_file(path):
             if not seg_sig:
                 continue
             first_bus = min(seg_bus)
-            add("L IOSIG %s reset#%d order BOOT<IOTEST<IOSIG<BUS and adjacent "
-                "(IOTEST,IOSIG) then (IOSIG,BUS)" % (tag, n + 1),
-                len(seg_io) == 1 and b0 < seg_io[0] == seg_sig[0] - 1 == first_bus - 2,
-                "boot=%d io=%s sig=%s bus=%s" % (b0, seg_io, seg_sig, seg_bus))
+            add("L IOSIG %s reset#%d order BOOT<VDD<IOTEST<IOSIG<BUS and adjacent "
+                "(VDD,IOTEST) then (IOTEST,IOSIG) then (IOSIG,BUS)" % (tag, n + 1),
+                len(seg_io) == 1 and len(seg_vdd) == 1
+                and b0 < seg_vdd[0] == seg_io[0] - 1
+                and seg_io[0] == seg_sig[0] - 1 == first_bus - 2,
+                "boot=%d vdd=%s io=%s sig=%s bus=%s" % (b0, seg_vdd, seg_io, seg_sig, seg_bus))
             sig_row = next((s for s in sig_lines if s["after"] == seg_sig[0]), None)
             if sig_row is None:
                 continue
@@ -562,6 +664,8 @@ def check_file(path):
         print("    %s" % g["_msg"])
     for io in io_lines:
         print("    %s" % io["_msg"])
+    for v in vdd_lines:
+        print("    %s" % v["_msg"])
     for s in sig_lines:
         print("    %s" % s["_msg"])
     for b in bus_lines:
@@ -571,17 +675,19 @@ def check_file(path):
 
 def _selftest_capture(iosig_line, bus_line=b"BUS idle=3 scl=1 sda=1 ack=none",
                       iosig_after_bus=False,
-                      iotest_line=b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"):
+                      iotest_line=b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n",
+                      vdd_line=VDD_OK_LINE):
     """构造一段最小合成捕获 (仅供 --selftest 使用, 不参与任何实板判定)。"""
-    boot = b"BOOT fw=FD-002r5 uid=6A002C00 rst=0040 uart=9600\r\n"
+    boot = b"BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600\r\n"
     iot = iotest_line
+    vdd = vdd_line or b""
     s0 = (b"S k=0 p=0 H=0 V=0 o=8 n=3419 x=3425 a=3422 D=0 t=0 h=0 q=0 r=0 s=0 y=0\r\n")
     g = b"G s=2 a44=0 a45=0 rd=0 at=3 raw=------------\r\n"
     if iosig_line is None:
-        return boot + iot + bus_line + b"\r\n" + s0 + g
+        return boot + vdd + iot + bus_line + b"\r\n" + s0 + g
     if iosig_after_bus:
-        return boot + iot + bus_line + b"\r\n" + iosig_line + b"\r\n" + s0 + g
-    return boot + iot + iosig_line + b"\r\n" + bus_line + b"\r\n" + s0 + g
+        return boot + vdd + iot + bus_line + b"\r\n" + iosig_line + b"\r\n" + s0 + g
+    return boot + vdd + iot + iosig_line + b"\r\n" + bus_line + b"\r\n" + s0 + g
 
 
 def selftest():
@@ -611,7 +717,7 @@ def selftest():
          ["cross-check with BUS scan"]),
         ("IOSIG printed after BUS (order broken)",
          b"IOSIG scl=95555 sda=30303", b"BUS idle=3 scl=1 sda=1 ack=none", True,
-         ["order BOOT<IOTEST<IOSIG<BUS"]),
+         ["order BOOT<VDD<IOTEST<IOSIG<BUS"]),
         ("IOSIG line missing",
          None, b"BUS idle=3 scl=1 sda=1 ack=none", False,
          ["exactly one IOSIG in the completed boot run"]),
@@ -707,9 +813,11 @@ def selftest():
     raw_cases = [
         ("reset-cut line (partial IOSIG then BOOT banner) is a note",
          b"BOOT fw=FD-002r5 uid=6A002C00 rst=0040 uart=9600\r\n"
+         + VDD_OK_LINE +
          b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
          b"IOSIG scl=95555 sda=3030"                                   # cut mid-line
          b"BOOT fw=FD-002r5 uid=6A002C00 rst=0240 uart=9600\r\n"
+         + VDD_OK_LINE +
          b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
          b"IOSIG scl=95555 sda=30303\r\n"
          b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
@@ -717,6 +825,7 @@ def selftest():
          []),
         ("line missing CRLF followed by the next S line (EV-006 D-ITEM001-1 class) fails",
          b"BOOT fw=FD-002r5 uid=6A002C00 rst=0040 uart=9600\r\n"
+         + VDD_OK_LINE +
          b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
          b"IOSIG scl=95555 sda=30303\r\n"
          b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
@@ -724,6 +833,7 @@ def selftest():
          ["A TERM", "A CRLF"]),
         ("truncated garbage (not a prefix of any intact line) fails",
          b"BOOT fw=FD-002r5 uid=6A002C00 rst=0040 uart=9600\r\n"
+         + VDD_OK_LINE +
          b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
          b"IOSIG scl=95555 sda=30303\r\n"
          b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
@@ -735,6 +845,7 @@ def selftest():
          b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n"        # old image, no gc field
          b"IOSIG scl=95555 sda=3030"                             # cut by the download
          b"BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600\r\n"
+         + VDD_OK_LINE +
          b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
          b"IOSIG scl=95555 sda=30303\r\n"
          b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
@@ -742,11 +853,32 @@ def selftest():
          []),
         ("a 4-field IOTEST in a COMPLETED boot run is still a frozen-field-set failure",
          b"BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600\r\n"
+         + VDD_OK_LINE +
          b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none\r\n"        # gc missing, run completed
          b"IOSIG scl=95555 sda=30303\r\n"
          b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
          b"S k=0 p=0 " + s_tail + g_tail,
          ["B FIELDS", "frozen field set"]),
+        ("reset-cut line ending mid-token (partial 'IOSIG scl' then BOOT) is a note",
+         b"BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600\r\n"
+         + VDD_OK_LINE +
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
+         b"IOSIG scl"                                            # cut mid-token by the flash
+         b"BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600\r\n"
+         + VDD_OK_LINE +
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
+         b"IOSIG scl=95555 sda=30303\r\n"
+         b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
+         b"S k=0 p=0 " + s_tail + g_tail,
+         []),
+        ("mid-token partial line with NO intact reference in the window still fails",
+         b"BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600\r\n"
+         + VDD_OK_LINE +
+         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
+         b"IOSIG scl"                                            # no intact IOSIG anywhere
+         b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
+         b"S k=0 p=0 " + s_tail + g_tail,
+         ["A TERM"]),
     ]
     for name, rawp, expect_fail_substrings in raw_cases:
         del results[:]
@@ -771,6 +903,64 @@ def selftest():
         if not ok:
             bad += 1
         print("    SELFTEST %-56s %s" % (name[:56], "ok" if ok else "MISMATCH"))
+
+    # ---- VDD (rev 5.6 新增观测量) 的定向变异: 证明 N 组既能通过也能失败 ----
+    _b = b"BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600\r\n"
+    _iot = b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=3\r\n"
+    _sig = b"IOSIG scl=95555 sda=30303\r\n"
+    _bus = b"BUS idle=3 scl=1 sda=1 ack=none\r\n"
+    _tail = b"S k=0 p=0 " + s_tail + g_tail
+    vdd_cases = [
+        ("VDD ok=1 with mv == 4095*bgrmv/code (independently recomputed)",
+         _b + VDD_OK_LINE + _iot + _sig + _bus + _tail, []),
+        ("VDD ok=1 with value clamped at 6000 (code=100 -> 49140 -> 6000) passes",
+         _b + b"VDD ok=1 code=100 bgrmv=1200 mv=6000\r\n" + _iot + _sig + _bus + _tail, []),
+        ("VDD ok=0 with mv=0 (invalid conversion, no fabricated reading) passes",
+         _b + b"VDD ok=0 code=0 bgrmv=0 mv=0\r\n" + _iot + _sig + _bus + _tail, []),
+        ("VDD mv inconsistent with its own code/bgrmv fails",
+         _b + b"VDD ok=1 code=1632 bgrmv=1200 mv=3012\r\n" + _iot + _sig + _bus + _tail,
+         ["ok=1 self-consistency"]),
+        ("VDD ok=1 with code=0 (invalid conversion reported as valid) fails",
+         _b + b"VDD ok=1 code=0 bgrmv=1200 mv=3011\r\n" + _iot + _sig + _bus + _tail,
+         ["ok=1 self-consistency"]),
+        ("VDD ok=0 with a non-zero mv (fabricated reading) fails",
+         _b + b"VDD ok=0 code=0 bgrmv=1200 mv=3011\r\n" + _iot + _sig + _bus + _tail,
+         ["ok=0 does not fabricate"]),
+        ("VDD mv out of domain (6001) fails",
+         _b + b"VDD ok=1 code=1632 bgrmv=1200 mv=6001\r\n" + _iot + _sig + _bus + _tail,
+         ["value domain"]),
+        ("VDD with a wrong field order fails",
+         _b + b"VDD ok=1 bgrmv=1200 code=1632 mv=3011\r\n" + _iot + _sig + _bus + _tail,
+         ["B FIELDS"]),
+        ("VDD line missing in a completed boot run fails",
+         _b + _iot + _sig + _bus + _tail, ["exactly one VDD"]),
+        ("VDD printed after IOTEST (power-up order broken) fails",
+         _b + _iot + VDD_OK_LINE + _sig + _bus + _tail, ["order BOOT<VDD<IOTEST"]),
+    ]
+    for name, rawp, expect_fail_substrings in vdd_cases:
+        del results[:]
+        fd, path = tempfile.mkstemp(suffix=".cap")
+        try:
+            os.write(fd, rawp)
+            os.close(fd)
+            check_file(path)
+        finally:
+            os.unlink(path)
+        fails = [n for n, ok, _ in results if not ok]
+        ok = True
+        for sub in expect_fail_substrings:
+            if not any(sub in f for f in fails):
+                ok = False
+                print("    SELFTEST MISS: %s -> expected a FAIL containing %r, got %r"
+                      % (name, sub, fails))
+        if not expect_fail_substrings and fails:
+            ok = False
+            print("    SELFTEST UNEXPECTED FAIL: %s -> %r" % (name, fails))
+        cases.append((name, None, None, None, expect_fail_substrings))
+        if not ok:
+            bad += 1
+        print("    SELFTEST %-56s %s" % (name[:56], "ok" if ok else "MISMATCH"))
+
     print("\n===== SELFTEST: %s (%d/%d cases as expected) ====="
           % ("PASS" if bad == 0 else "FAIL", len(cases) - bad, len(cases)))
     return 0 if bad == 0 else 1
@@ -874,6 +1064,44 @@ def main():
     else:
         print("    (no IOSIG line in these captures)")
         add("M IOSIG at least one IOSIG reading observed", False, "no IOSIG line captured")
+
+    # ---- N: registration of the power-rail VDD readings (rev 5.6) ----
+    # 登记性: mv 的**量值**不是本项验收门槛 (未定义电压阈值), 只作为供电事实登记,
+    # 供把「器件对任何 I2C 地址都不应答」的解释面收敛到供电/器件/接线侧。
+    print("\n===== VDD READINGS (power rail; rev 5.6) =====")
+    vdd_seen = []
+    for path in sys.argv[1:]:
+        data = open(path, "rb").read()
+        for m in re.finditer(rb"VDD [^\r\n]*", data):
+            vdd_seen.append(m.group(0).decode("ascii", "replace"))
+    if vdd_seen:
+        uniq = sorted(set(vdd_seen))
+        print("    distinct readings: %d of %d occurrences" % (len(uniq), len(vdd_seen)))
+        for u in uniq:
+            print("      x%d  %s" % (vdd_seen.count(u), u))
+        mvs = sorted({int(re.search(rb"\bmv=(\d+)", u.encode()).group(1)) for u in uniq
+                      if re.search(rb"\bmv=(\d+)", u.encode())})
+        cds = sorted({int(re.search(rb"\bcode=(\d+)", u.encode()).group(1)) for u in uniq
+                      if re.search(rb"\bcode=(\d+)", u.encode())})
+        bgs = sorted({int(re.search(rb"\bbgrmv=(\d+)", u.encode()).group(1)) for u in uniq
+                      if re.search(rb"\bbgrmv=(\d+)", u.encode())})
+        print("    mv (mV): %s   code: %s   bgrmv (mV): %s" % (mvs, cds, bgs))
+        for mv in mvs:
+            if mv == 0:
+                print("    note: mv=0 accompanies ok=0 (invalid conversion); "
+                      "it is NOT a measurement of 0 V")
+            elif mv < 1600:
+                print("    note: mv=%d is below the GXHT40 VDD minimum (datasheet 1.6 V) - "
+                      "the sensor cannot be expected to power up" % mv)
+            elif mv < 2000:
+                print("    note: mv=%d is far below a fresh CR2032 (~2.9-3.0 V)" % mv)
+            else:
+                print("    note: mv=%d is in the CR2032 usable range" % mv)
+        add("N VDD at least one VDD reading observed", True,
+            "%d distinct reading(s)" % len(uniq))
+    else:
+        print("    (no VDD line in these captures)")
+        add("N VDD at least one VDD reading observed", False, "no VDD line captured")
 
     npass = sum(1 for _, ok, _ in results if ok)
     nfail = sum(1 for _, ok, _ in results if not ok)

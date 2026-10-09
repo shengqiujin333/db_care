@@ -1,3 +1,43 @@
+# ProgrammedPrototypeArtifact（EV-017 / run8 ITEM-002）
+
+本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。本项的功能判定见 `evidence/test.md` EV-017（结论 **`TEST_FAIL`**：7/7 采样周期 `q=0`、器件对 112 个合法地址与 general call `0x00` 均不应答（`gc=3`），而**供电轨实测 ≈3.289 V 为正常量级**，失败形态逐字节稳定）。
+
+## 本次下载的固件身份
+
+| 项 | 值 |
+|---|---|
+| 受测提交 | `8ae4a33`（HEAD；`git status` 干净；本轮**产品源码零改动**） |
+| 受测源码版本 | `git log -1 -- <FW>/USER` = `8ae4a33`；本轮交付增量 = `git diff --stat 55ed979 HEAD -- <FW>/USER` = **5 文件 +136/−0**（`light.c`/`light.h`：`light_read_vdd_mv()` 上电供电轨测量；`debug_trace.{h,c}`：`VDD` 行渲染；`main.c`：上电顺序 `BOOT→VDD→IOTEST→IOSIG→BUS`） |
+| 构建方式 | `mdk_flash {}` 内含工程保存配置的编译（Keil MDK / ARMCLANG **V6.24**，未另选芯片/调试器/算法）。下载前 build 为 `0 Error(s), 0 Warning(s)`（无可重建项 ⇒ 所下即下述 axf） |
+| 镜像路径 | `CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.axf` |
+| 镜像 md5 | **`5fc16235ccd043f4edb48b16ee44da0b`**（与实现交付声明逐字符一致；下载前、下载后、以及本能力**独立 `mdk_build rebuild`** 后三处相同 ⇒ 可由当前工作树确定性重建） |
+| 附带 hex md5 | `9a32cf3bcdbca2c1346da9c3bb3581da`（`Project.hex`） |
+| 独立重建 | `mdk_build {"action":"rebuild"}`（本能力执行，本地 13:52:58→13:53:00）：`0 Error(s), 1 Warning(s)`（既有模板 `main.c(245)` 空循环体告警）；`Program Size: Code=20100 RO-data=644 RW-data=116 ZI-data=1676`（RAM 1,792 B ≤ 4 KB、Flash 20,744 B ≤ 64 KB）；axf/hex md5 **不变** |
+
+## 下载目标与下载校验
+
+| 项 | 值 |
+|---|---|
+| 目标器件 | CW32L010（U7），传感器板（与 GXHT40 U9 同板），板上 MCU 唯一编号 `uid=6A002C00`（与 EV-012..EV-016 同一块板） |
+| 调试口 | COM42 = Prolific USB-to-Serial（VID:PID `067B:2303`），9600 8N1 |
+| 下载探针 | CW-DAPLink `USB VID:PID=C251:F001`（SN `87094109484987710672FF50`，=`COM26` 同源），在位 |
+| 下载方式 | `mdk_flash {}`（用工程保存的调试器/Flash 算法先编译再下载） |
+| 下载结果 | **1 次成功**：`Erase Done.Programming Done.Verify OK.Application running ...`（本地 2026-10-09 13:29:25 = UTC 05:29:25） |
+
+| # | 下载完成时刻（本地，UTC+8） | 日志关键行 | 该次下载后的采集窗口 |
+|---|---|---|---|
+| 1 | 2026-10-09 13:29:25 | `Erase Done.Programming Done.Verify OK.Application running ...` | `evidence/ev017/r1.cap`（05:29:11–05:34:11 UTC，含下载复位 `rst=0240` 的横幅与 `VDD ok=1 code=1480 bgrmv=1189 mv=3289` / `IOTEST…gc=3` / `IOSIG` / `BUS`），随后 `s1.cap`/`s2.cap`/`s3.cap` 无间隙续采 |
+
+原始 build/flash 日志：`evidence/ev017/mdk_flash_logs.txt`；镜像身份（三处 md5 + 两次构建日志）：`evidence/ev017/image_identity.txt`；采集窗口清单：`evidence/ev017/capture_windows.txt`。
+
+`Verify OK` 只证明**下载内容的回读校验一致**；下载成功后仍在真实目标上做了 COM42@9600 原始字节观测（`evidence/test.md` EV-017 §2），业务功能判定不取自本文件。`r1→s1→s2→s3` 四个窗口首尾相接（间隙 0.43/0.40/0.41 s），把 `k=0,3,6,9,12,15,18` 接成**无间隙连续 ≈21 分钟**观测。
+
+**下载生效的实板自证**：窗口起点那一段（下载前镜像 = rev 5.5）的上电序列为 `BOOT→IOTEST→IOSIG→…`，**没有 `VDD` 行**；下载复位后的段为 `BOOT→VDD→IOTEST→IOSIG→BUS`，含 `VDD` 行（`VDD` 为 rev 5.6 新增，rev 5.5 恒不打印）⇒ 板上镜像确实由 rev 5.5 换成了本次所下的 rev 5.6。本次成功下载亦再次证明：在目标已连续打印多条轨迹之后 SWD 仍可用。
+
+---
+
+# 历史记录（EV-016 / run8 ITEM-002；当轮下载 1 次 `Verify OK`，axf md5 `ff490296…`（rev 5.5）；已提交 e769e56）
+
 # ProgrammedPrototypeArtifact（EV-016 / run8 ITEM-002）
 
 本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。本项的功能判定见 `evidence/test.md` EV-016（结论 **`TEST_FAIL`**：7/7 采样周期 `q=0`、器件对 112 个合法地址与 general call `0x00` 均不应答（`gc=3`），失败形态逐字节稳定）。
