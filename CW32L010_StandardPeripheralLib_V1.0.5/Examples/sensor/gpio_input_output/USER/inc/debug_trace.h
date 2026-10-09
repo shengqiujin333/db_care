@@ -86,6 +86,18 @@ typedef struct {
     uint32_t sda20;         /* 同上, SDA */
 } debug_trace_iosig_t;
 
+/*
+ * 上电供电轨测量 (ADC 内部 BGR1.2V 反推 VDD):
+ *   ok=1 时 mv = VDD 毫伏; ok=0 时 mv/code 无意义 (不伪造读数)。
+ *   code/bgr_mv 同时上报, 便于独立复核 mv = 4095*bgr_mv/code。
+ */
+typedef struct {
+    uint8_t  ok;            /* 1 = 测量有效 */
+    uint16_t code;          /* BGR 通道原始 ADC 码 */
+    uint16_t bgr_mv;        /* 出厂修调的内部参考电压 (mV) */
+    uint16_t mv;            /* 计算出的 VDD (mV); ok=0 时为 0 */
+} debug_trace_vdd_t;
+
 #if SENSOR_DEBUG_UART
 
 /* 上电横幅: 固件标识 + 芯片 UID 前 4 字节 + 复位来源 + 串口参数, 并打开 UART1 */
@@ -99,6 +111,9 @@ void debug_trace_iotest(const debug_trace_iotest_t *t);
 
 /* 打印一条 IOSIG 事务内逐位回读签名行 (仅在签名完成后调用一次) */
 void debug_trace_iosig(const debug_trace_iosig_t *s);
+
+/* 打印一条 VDD 供电轨测量行 (仅在上电测量完成后调用一次) */
+void debug_trace_vdd(const debug_trace_vdd_t *v);
 
 /* 打印一个采样周期的 S 轨迹行 (要求 UART1 已由 debug_trace_boot 打开);
  * 当 s->diag_valid != 0 时在 S 行之后追加一行 G 失败诊断行 */
@@ -133,6 +148,11 @@ static inline void debug_trace_iotest(const debug_trace_iotest_t *t)
 static inline void debug_trace_iosig(const debug_trace_iosig_t *s)
 {
     (void)s;
+}
+
+static inline void debug_trace_vdd(const debug_trace_vdd_t *v)
+{
+    (void)v;
 }
 
 static inline void debug_trace_sample(const debug_trace_sample_t *s)

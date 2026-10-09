@@ -193,6 +193,43 @@ int main(void)
               "same input -> same result regardless of the previous sample");
     }
 
+    printf("[7] 上电供电轨测量 light_read_vdd_mv (ADC 内部 BGR1.2V 反推 VDD)\n");
+    {
+        uint16_t mv = 0xFFFFu, code = 0xFFFFu, bgrmv = 0xFFFFu;
+        uint8_t  ok;
+
+        /* 正常: code=1632, 出厂修调 1200mV -> mv = 4095*1200/1632 = 3011 mV */
+        script_begin();
+        script_add(1632);
+        mock_adc.CR_f.BGREN = 0u;
+        adc_enabled = 1;
+        ok = light_read_vdd_mv(&mv, &code, &bgrmv);
+        CHECK(ok == 1u, "有效转换: 返回 1");
+        CHECK(code == 1632u && bgrmv == 1200u, "上报原始码与出厂修调值 (code=1632, bgrmv=1200)");
+        CHECK(mv == (uint16_t)((4095uL * 1200uL) / 1632uL), "mv = 4095*bgrmv/code (可独立复核)");
+        CHECK(mock_adc.CR_f.BGREN == 0u, "测完后 BGREN 已清 (不持续耗电)");
+        CHECK(adc_enabled == 0, "测完后 ADC 已关闭");
+
+        /* 转换超时: 返回 0 且不伪造读数, BGREN 仍被清 */
+        script_begin();
+        script_add(-1);
+        mock_adc.CR_f.BGREN = 0u;
+        adc_enabled = 1;
+        mv = 0xFFFFu; code = 0xFFFFu; bgrmv = 0xFFFFu;
+        ok = light_read_vdd_mv(&mv, &code, &bgrmv);
+        CHECK(ok == 0u, "转换超时: 返回 0 (无效)");
+        CHECK(mv == 0u && code == 0u && bgrmv == 0u, "无效时不写任何伪造读数");
+        CHECK(mock_adc.CR_f.BGREN == 0u && adc_enabled == 0, "超时路径也关闭 BGR 与 ADC");
+
+        /* 测量后光照通路仍可用 (VDD 测量不得破坏后续 AIN11 采样) */
+        light_init();
+        script_begin();
+        script_add(10); script_add(20); script_add(30); script_add(40);
+        script_add(50); script_add(60); script_add(70); script_add(80);
+        r = light_sample();
+        CHECK(r.samples_ok == LIGHT_ADC_SAMPLES && r.adc_ok, "VDD 测量后 light_sample 仍 8/8 成功");
+    }
+
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
 }

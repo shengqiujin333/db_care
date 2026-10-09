@@ -41,6 +41,7 @@ void GPIO_WritePin(GPIO_TypeDef *port, uint16_t pin, GPIO_PinState state);
 #define ADC_SqrEns0to0       0u
 #define ADC_SampTime390Clk   7u
 #define ADC_InputCH11        0xBu
+#define ADC_InputVref1P2     0xFu   /* 内部 BGR1.2V 通道 (供电测量用) */
 #define ADC_IT_EOC           1u
 #define ADC_ISR_EOC_Msk      (1u << 0)
 
@@ -52,8 +53,9 @@ typedef struct {
     ADC_InitChannelTypeDef ADC_IN0;
 } ADC_InitTypeDef;
 
-/* light.c 读取 CW_ADC->ISR 判 EOC; 本影子层提供真实可写字段, 由 harness 脚本驱动 */
-typedef struct { volatile uint32_t ISR; } ADC_TypeDef;
+/* light.c 读取 CW_ADC->ISR 判 EOC 并写 CW_ADC->CR_f.BGREN 使能/失能 BGR; 由 harness 驱动 */
+typedef struct { volatile uint32_t BGREN : 1; volatile uint32_t rsv : 31; } ADC_CR_bits;
+typedef struct { volatile uint32_t ISR; volatile ADC_CR_bits CR_f; } ADC_TypeDef;
 extern ADC_TypeDef mock_adc;
 #define CW_ADC (&mock_adc)
 

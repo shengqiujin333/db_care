@@ -313,6 +313,35 @@ void debug_trace_iosig(const debug_trace_iosig_t *s)
     trace_puts("\r\n");
 }
 
+void debug_trace_vdd(const debug_trace_vdd_t *v)
+{
+    if (v == NULL) {
+        return;
+    }
+    if (s_uart_open == 0u) {
+        trace_uart_open();
+    }
+    if (s_uart_open == 0u) {
+        return;
+    }
+
+    /*
+     * 供电轨测量行 (字段固定):
+     *   VDD ok=<0|1> code=<0..4095> bgrmv=<0..4095> mv=<0..6000>
+     * 独立复核: mv == 4095 * bgrmv / code (ok=1 时)。
+     * ok=0 表示转换超时/无效, 此时 mv=0, 不得当作真实供电电压。
+     */
+    trace_puts("VDD ok=");
+    trace_u32((uint32_t)((v->ok != 0u) ? 1u : 0u), 1u);
+    trace_puts(" code=");
+    trace_u32((uint32_t)v->code, 1u);
+    trace_puts(" bgrmv=");
+    trace_u32((uint32_t)v->bgr_mv, 1u);
+    trace_puts(" mv=");
+    trace_u32((uint32_t)v->mv, 1u);
+    trace_puts("\r\n");
+}
+
 void debug_trace_sample(const debug_trace_sample_t *s)
 {
     uint8_t i;
@@ -396,6 +425,9 @@ void debug_trace_sample(const debug_trace_sample_t *s)
  *   + "44,45"=5 + " gc=3"=5 + CRLF 2                                  => 49
  *   IOSIG 行:
  *   "IOSIG"=5 " scl="=5 + 5 位 hex + " sda="=5 + 5 位 hex + CRLF 2   => 27
+ *   VDD 行:
+ *   "VDD"=3 " ok=1"=5 " code=4095"=10 " bgrmv=1200"=11 " mv=6000"=8
+ *   + CRLF 2                                                        => 39
  *   G 行:
  *   "G"=1 " s=2"=4 " a44=0"=6 " a45=0"=6 " rd=5"=5 " at=3"=5
  *   " raw="=5 + 12 位 hex + CRLF 2                                   => 46

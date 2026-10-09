@@ -1,14 +1,54 @@
-# 构建证据（BUILD-002 rev 5.5）
+# 构建证据（BUILD-002 rev 5.6）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复四**（用户重焊 U9 后重做授权；上电一次性 I²C general call 复位尝试 `0x00`+`0x06` 与 `gc` 可观测字段）
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；`gxht40.pdf` §7.7；触发 `evidence/test.md` EV-015 与 operator_update（重焊授权）
-受测提交：`5b07982`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
+本轮范围：run8 **ITEM-002 复验修复五**（上电供电轨 VDD/BAT 实测：ADC 内部 BGR1.2V 反推，`VDD` 行）
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；厂商示例 `Examples/ADC/adc_sgl_sw_vdd`；触发 `evidence/test.md` EV-016（`gc=3`）
+受测提交：`e769e56`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
 测试环境：GNU 交叉编译（`arm-none-eabi-gcc`，Cortex-M0+）与 Keil MDK（ARMCLANG V6.24，`mdk_build`）；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## ITEM-002 复验修复四：交叉编译 + Keil MDK 构建（本轮实际执行）
+## ITEM-002 复验修复五：交叉编译 + Keil MDK 构建（本轮实际执行）
+
+```
+$ sh gcc/build.sh
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       34572 B        64 KB     52.75%
+             RAM:        1808 B         4 KB     44.14%
+== done: obj/sensor_fw.elf/.hex/.bin ==
+(exit 0；告警 27 条，均为既有类别；无一条指向本轮 light.c/debug_trace.c/main.c 新增代码)
+
+$ md5sum gcc/obj/sensor_fw.elf gcc/obj/sensor_fw.bin
+22ee9abf90ea3bb124751d9493b325c9  gcc/obj/sensor_fw.elf
+17412af2586b6074a28ef9726f1e3810  gcc/obj/sensor_fw.bin
+
+$ mdk_build {"action":"rebuild"}   (授权工具，经 hardware-verification MCP/CLI)
+*** Using Compiler 'V6.24' ...
+../USER/src/main.c(245): warning: while loop has empty body [-Wempty-body]   (既有 `while(k--);`)
+Program Size: Code=20100 RO-data=644 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+
+$ md5sum MDK/output/exe/Project.axf
+5fc16235ccd043f4edb48b16ee44da0b  MDK/output/exe/Project.axf
+
+$ arm-none-eabi-strings MDK/output/exe/Project.axf | grep -E "VDD ok=|bgrmv=|IOSIG|IOTEST"
+@IOSIG scl=
+@IOTEST sda_lo=
+@VDD ok=
+ bgrmv=
+(证明 VDD 供电测量行已编入本轮交付件)
+
+$ arm-none-eabi-gcc -mcpu=cortex-m0plus -O1 -Wall -Wextra -DSENSOR_DEBUG_UART=0 -c ... USER/src/{light,main,debug_trace}.c
+(light.c / debug_trace.c：0 告警 0 错误; main.c：仅既有告警)
+```
+
+- 相对上一轮（GNU 34,120 B / RAM 1,808 B；Keil Code=19,144 RO=644 RW=116，axf md5 `ff490296…`）：GNU **+452 B**；Keil **Code +956 B**（新增 `light_read_vdd_mv()` 的 ADC/BGR 配置与有界转换、`debug_trace_vdd()` 渲染、`VDD` 字面；ARMCLANG 不合并等价路径，故增量大于 GNU）；RAM 不变。均在预算内（Code+RO ≈ 20.7 KB / 64 KB；RAM ≈ 1.79 KB / 4 KB）。
+- **未执行**：`mdk_flash` 与 COM42 采集（本调用工具列表仅含 `mdk_build`）⇒ 实板 `VDD` 读数与 `q=1` 复判均未取得（由嵌入式测试能力执行）。
+- 工具在仓库根产生的 `build*.log` 已读入本证据后删除（`.gitignore` 的 `/build*.log` 覆盖）。
+
+---
+
+# 历史：ITEM-002 复验修复四（general call + gc）
 
 ```
 $ sh gcc/build.sh

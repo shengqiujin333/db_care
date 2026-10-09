@@ -371,6 +371,28 @@ int main(void)
               "IOSIG 仅整数与大写十六进制");
     }
 
+    printf("[T13] VDD 上电供电测量行: 格式/预算\n");
+    cap_reset();
+    {
+        debug_trace_vdd_t v;
+        memset(&v, 0, sizeof(v));
+        v.ok = 1u; v.code = 1632u; v.bgr_mv = 1200u; v.mv = 3011u;
+        debug_trace_vdd(&v);
+        CHECK(strcmp(cap, "VDD ok=1 code=1632 bgrmv=1200 mv=3011\r\n") == 0,
+              "有效供电测量行逐字节匹配 (3.011 V @ code=1632, bgrmv=1200)");
+        printf("        |%s", cap);
+
+        cap_reset();
+        v.ok = 0u; v.code = 0u; v.mv = 0u;
+        debug_trace_vdd(&v);
+        CHECK(strcmp(cap, "VDD ok=0 code=0 bgrmv=1200 mv=0\r\n") == 0,
+              "无效测量行逐字节匹配 (ok=0/mv=0, 不伪造电压)");
+        printf("        |%s", cap);
+        CHECK(strlen(cap) <= (size_t)SENSOR_DEBUG_UART_MAXLINE,
+              "worst-case VDD line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");
+        printf("        len(worst VDD)=%u bytes\n", (unsigned)strlen(cap));
+    }
+
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
 }

@@ -1,15 +1,68 @@
-# 驱动测试证据（DRV-002 rev 5.5）
+# 驱动测试证据（DRV-002 rev 5.6）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复四**（上电一次性 I²C general call 复位尝试 `0x00`+`0x06` + `gc` 可观测）
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；`gxht40.pdf` §7.7；触发 `evidence/test.md` EV-015 与 operator_update
-受测实现：`USER/src/measure.c`（`sensor_io_diag_scan` 尾部恢复尝试）、`USER/inc/sensor_config.h`（常量）、`USER/src/debug_trace.c`（`gc` 字段）
-测试载体：`test/build_test.sh`（163 项）、`test/host_gxht40_check.c`（60）、`test/host_sf_i2c_bus_check.c`（42）；另**只读复跑** tester 自有 harness
-测试环境：宿主机 MinGW-w64 gcc 12.2.0（带开漏回读模型与 general-call 从机模型的位级 mock 总线）；`mdk_flash`/串口不在本调用工具列表内。
+本轮范围：run8 **ITEM-002 复验修复五**（上电供电轨 VDD/BAT 实测与 `VDD` 可观测行）
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；厂商示例 `Examples/ADC/adc_sgl_sw_vdd`；触发 `evidence/test.md` EV-016
+受测实现：`USER/src/light.c`/`USER/inc/light.h`（`light_read_vdd_mv`，ADC 拥有者）、`USER/src/debug_trace.c`/`USER/inc/debug_trace.h`（`VDD` 行）、`USER/src/main.c`（上电顺序）
+测试载体：`test/build_test.sh`（184 项）、`test/host_gxht40_check.c`（60）、`test/host_sf_i2c_bus_check.c`（42）；另**只读复跑** tester 自有 harness
+测试环境：宿主机 MinGW-w64 gcc 12.2.0（`mock_light` 影子层已扩 `ADC_InputVref1P2` 与 `CR_f.BGREN`；用 `-DLIGHT_BGR_TRIM_MV=1200u` 避免访问 0x001007D2 绝对地址）；`mdk_flash`/串口不在本调用工具列表内。
 
 ---
 
-## ITEM-002 复验修复四：自检与独立资产对照（本轮实际执行）
+## ITEM-002 复验修复五：自检与独立资产对照（本轮实际执行）
+
+### 1. 新增观测量与自检原始 stdout（节选）
+
+```
+$ sh test/build_test.sh
+[1/4] 40 passed  [2/4] 43 passed  [3/4] 44 passed  [4/4a] 28 passed  [4/4b] 29 passed   (0 failed)
+$ ./host_gxht40_check     ->  60 passed / 0 failed
+$ ./host_sf_i2c_bus_check ->  42 passed / 0 failed
+
+[7] 上电供电轨测量 light_read_vdd_mv (ADC 内部 BGR1.2V 反推 VDD)
+    PASS  有效转换: 返回 1
+    PASS  上报原始码与出厂修调值 (code=1632, bgrmv=1200)
+    PASS  mv = 4095*bgrmv/code (可独立复核)
+    PASS  测完后 BGREN 已清 (不持续耗电)
+    PASS  测完后 ADC 已关闭
+    PASS  转换超时: 返回 0 (无效)
+    PASS  无效时不写任何伪造读数
+    PASS  超时路径也关闭 BGR 与 ADC
+    PASS  VDD 测量后 light_sample 仍 8/8 成功
+
+[T13] VDD 上电供电测量行: 格式/预算
+    PASS  有效供电测量行逐字节匹配 (3.011 V @ code=1632, bgrmv=1200)
+        |VDD ok=1 code=1632 bgrmv=1200 mv=3011
+    PASS  无效测量行逐字节匹配 (ok=0/mv=0, 不伪造电压)
+        |VDD ok=0 code=0 bgrmv=1200 mv=0
+    PASS  worst-case VDD line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes
+        len(worst VDD)=39 bytes
+```
+
+### 2. 测量原理与独立复核（供 tester 核验）
+
+- 通道:`ADC_InputVref1P2`（内部 BGR 1.2 V）；使能 `CW_ADC->CR_f.BGREN=1` 后等 1 ms（厂商：BGR 启动≈30 us）；采样时间 390 clk（=390 us ≥ 厂商要求的 40 us）。
+- 出厂修调值: `0x001007D2`（16 位，mV；同厂商示例）。宿主机自检用 `-DLIGHT_BGR_TRIM_MV=1200u` 覆盖，不在宿主访问绝对地址。
+- 换算: `mv = 4095 * bgrmv / code`（整数, 与厂商示例 `MCU_VDD = 4.095f*BGR_mV/code` 一致）；测试向量: `code=1632, bgrmv=1200 → mv=3011`（≈3.011 V）。
+- 有界与低功耗: EOC 轮询用 `LIGHT_ADC_EOC_GUARD`；超时→`ok=0` 且 `mv/code/bgrmv=0`；无论成败均 `ADC_Disable()` + `BGREN=0`。
+- 与光照通路隔离: 该测量**必须在 `light_init()` 之前**；自检已断言测后 `light_sample()` 仍 8/8 成功。
+
+### 3. tester 自有 harness 只读复跑（未修改其文件；结论权归 tester）
+
+| 资产 | 结果 |
+|---|---|
+| `test/host_diag_probe_verify_ev.c`（含其新增的 `gc` 四分支正/负对照） | **104 passed / 0 failed** |
+| `test/host_gxht40_verify_ev.c` | **93 passed / 0 failed** |
+
+### 4. 未取得 / 不声称
+
+- 实板 `VDD` 读数与 `q=1` 均未在本轮取得（本调用无 `mdk_flash`/串口）；判读表见 `artifacts/firmware_implementation.md` 本轮节 §2。
+- 精度不作精密测量声明（依赖出厂修调与 ADC）；`ok=0` 时 `mv=0` 不代表 0 V。
+- 未改动的冻结不变量逐项回归通过：双字 CRC-8、有效域、读重读/整帧重测上限、命令白名单、失败不写输出/不上报/不推进前值、`BUS`/`S`/`G`/`IOTEST`/`IOSIG` 行字面与字段。
+
+---
+
+# 历史：ITEM-002 复验修复四（general call + gc）
 
 ### 1. 新增观测量与自检原始 stdout（节选）
 

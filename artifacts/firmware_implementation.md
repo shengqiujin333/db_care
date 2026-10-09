@@ -1,14 +1,57 @@
-# 固件实现（FWI-002 rev 5.5）
+# 固件实现（FWI-002 rev 5.6）
 
 状态：固件实现（firmware_engineer.firmware_implementation）
-本轮工作项：run8 Runtime 队列 **ITEM-002 复验修复四**（用户重焊 U9 后重做授权；按 EV-015 交回实现并依手册 §7.7 新增**上电一次性 I²C general call 复位尝试** 0x00+0x06 与 `gc` 可观测字段）；ITEM-001 已 TEST_PASS
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-101/107/116/118）、TD-002 rev 5.0；`gxht40.pdf`（GXHT4x Family Datasheet V2.6）§7.7；触发 `evidence/test.md` EV-015（TEST_FAIL；H4/H5/H12 已排除、H3 权重最高、0x00 列为未测项）与 operator_update（重焊授权）
-受测提交：`5b07982`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
-本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口不在本调用工具列表内** → 新 `gc` 字段的实板读数由嵌入式测试能力采集（本文件不声称已取得）
+本轮工作项：run8 Runtime 队列 **ITEM-002 复验修复五**（EV-016 得到 `gc=3` 后的最后一个固件可观测物理量：**供电轨 VDD/BAT 实测**）；ITEM-001 已 TEST_PASS
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-101/107/116/118）、TD-002 rev 5.0；`gxht40.pdf`（VDD ≥ 1.6 V）；厂商示例 `Examples/ADC/adc_sgl_sw_vdd`（BGR1.2V 反推 VDD）；触发 `evidence/test.md` EV-016
+受测提交：`e769e56`（RESUME_SYNC 接手时工作区干净）+ 本轮改动
+本轮环境：可用 `mdk_build`（Keil ARMCLANG V6.24）、GNU 交叉编译、宿主机 MinGW-w64 gcc；**`mdk_flash` 与串口不在本调用工具列表内** → 新 `VDD` 行的实板读数由嵌入式测试能力采集（本文件不声称已取得）
 
 ---
 
-# 本轮 run8：ITEM-002 复验修复四（上电一次性 general call 复位尝试 + `gc` 可观测）
+# 本轮 run8：ITEM-002 复验修复五（上电供电轨 VDD/BAT 实测与可观测）
+
+**触发**：EV-016（当前交付件 rev 5.5）给出新的判别事实 **`gc=3`**：连 I²C general call 地址 `0x00` 也不应答，因此**未发出复位命令**（`wr_len=0`）；叠加 112 个合法 7bit 地址 `ack=none`，受测器件对**任何** I²C 地址都不响应。该能力用自有 harness（新增至 104 项，含 `gc=0/1/2/3` 四分支正/负对照）确认 `gc=3` 是器件静默的真实读数而非固件误报，并重申不代实现者判定不可修复。
+
+**本轮选择的下一步（依据）**：主机侧可观测的分支已经穷尽（H4/H5/H12 已排除，general call/H12 分支已实测），而**唯一从未被测量的物理量是供电轨**（项目无万用表；MCU/BAT/传感器 VDD 同网）。该量在本项目内**可由固件第一手测得**：厂商提供了内部 BGR1.2V ADC 通道（`ADC_InputVref1P2`）+ 出厂修调值（`0x001007D2`，mV），示例公式 `VDD = 4.095 × BGR_mV / code`。GXHT40 要求 VDD ≥ 1.6 V，而 CR2032 衰老/负载压降可能使器件无法完成上电复位而闩锁——这恰好是 H3 的成因之一且**无需任何新仪器**即可判别。
+
+## 1. 本轮实现
+
+| # | 内容 | 位置 |
+|---|---|---|
+| 1 | 新增 `light_read_vdd_mv(&mv,&code,&bgrmv)`：配置 ADC 为内部 `ADC_InputVref1P2`，使能 BGR 并等 1 ms（厂商：启动≈30 us），有界 EOC 轮询（guard）读一次转换，`mv = 4095*bgrmv/code`；读完 **关 ADC 并清 BGREN**（低功耗）；超时/除零→返回 0 且三个输出均为 0（**不伪造读数**）；**必须在 `light_init()` 之前调用**（随后 light_init 会重配 AIN11 通道） | `USER/inc/light.h`、`USER/src/light.c`（ADC 拥有者） |
+| 2 | 新增上电行 `VDD ok=<0\|1> code=<0..4095> bgrmv=<0..4095> mv=<0..6000>`（最坏 39 B ≤ 96 B）；同时上报 `code/bgrmv` 以便独立复核 `mv = 4095*bgrmv/code` | `USER/inc/debug_trace.h`、`USER/src/debug_trace.c` |
+| 3 | 上电顺序变为 `BOOT` → **`VDD`** → `IOTEST` → `IOSIG` → `BUS`（VDD 测量无 I²C 事务，仍在所有 I²C 事务之前） | `USER/src/main.c` |
+
+**未改动**：BUS/S/G/IOTEST/IOSIG 行字段与字面、采样/判定/上报/冻结、GXHT40 校验与重试、general call 复位尝试、433/BLE 布局；PB04/PB05 引脚归属仍在 light.c。
+
+## 2. 判读表（交 tester；本能力不代替采集）
+
+| `VDD` 实板读数 | 含义 | 后续 |
+|---|---|---|
+| `ok=1` 且 `mv` ≈ 2700–3100 | 新鲜 CR2032 范围，**供电正常** | 供电假设被排除 ⇒ 剩余解释在器件/接线侧（焊点开路/芯片损坏/闩锁），走现场 E-a（真正断电 ≥5 s）/E-b（通断）/E-c（换件） |
+| `ok=1` 且 `mv` 明显偏低（≲ 1800） | 供电接近/低于 GXHT40 的 VDD 下限（1.6 V），器件可能无法完成上电复位 | **最小现场动作：换新 CR2032**（无仪器）后重上电复测 |
+| `ok=0` | 测量无效（转换超时） | 不当作电压结论；记录后按上两项之一的实测重试 |
+
+> 精度边界：依赖出厂修调值与 ADC，仅供“供电是否在可用量级”判断，**不作精密测量**；`ok=0` 时 `mv=0` 不代表 0 V。
+
+## 3. 验证（本轮实际执行）
+
+- **宿主自检合计 286 项 0 失败**：`test/build_test.sh` 40+43+**44**+**28**+**29**（light 两个变体各 +9：正常转换期望值 `mv=4095*1200/1632`、超时→`ok=0/mv=0` 不伪造、测后 `BGREN`/ADC 均关闭、**VDD 测量后 light_sample 仍 8/8 成功**；debug-trace 新增 [T13] VDD 行有效/无效逐字节与预算）；`host_gxht40_check` 60/60；`host_sf_i2c_bus_check` 42/42。
+- **tester 自有 harness 只读复跑**（未修改其文件）：`host_diag_probe_verify_ev` **104/104**、`host_gxht40_verify_ev` **93/93**。
+- **构建**：GNU 0 错误，FLASH **34,572 B** / RAM **1,808 B**（较上轮 34,120/1,808 为 +452/0 B）；Keil `mdk_build rebuild` **0 Error / 1 既有告警**（`main.c(245) while loop has empty body`），`Code=20100 RO-data=644 RW-data=116 ZI-data=1676`，axf md5 **`5fc16235ccd043f4edb48b16ee44da0b`**；镜像内含 `VDD ok=`/`bgrmv=` 字符串。
+- **`SENSOR_DEBUG_UART=0` 复核**：`light.c`/`debug_trace.c` 0 告警 0 错误。
+- 原始命令与 stdout：`evidence/build.md`、`evidence/driver_test.md`（本轮节）。
+
+## 4. 未取得与交接
+
+- **实板 `VDD` 读数与 `q=1` 均未取得**：本调用无 `mdk_flash`/串口。本轮交付的是**最后一个可由固件第一手观测、且尚未测量过的物理量**。
+- **tester 需同步**：解析/断言接受新行 `VDD`（上电顺序 `BOOT→VDD→IOTEST→IOSIG→BUS`），可用 `mv == 4095*bgrmv/code` 独立复核 `ok=1` 的值；复判时把 `VDD mv` 与 `BUS ack`/`gc`/`q=` 关联记录。
+- **设计能力需同步**：FD-002 §5.2/§6.7/§10 收录 `VDD` 行、`IOTEST`/`IOSIG` 行与真实上电顺序；若采纳，`low_power` 章节可记一笔「上电一次 BGR 测量，测后关 ADC/BGR」。
+- **现场/用户（按 §2 分支）**：`mv` 正常 ⇒ E-a/E-b/E-c；`mv` 偏低 ⇒ 先换 CR2032。任一步后**无需再改代码**，重新上电即可自动重观测（新 `VDD` 行 + `gc` + `BUS` + `S q=`）。
+
+---
+
+# 历史：ITEM-002 复验修复四（general call 复位尝试 + gc）
 
 **触发**：operator_update（2026-10-09T01:13Z）告知用户**已重新焊接 U9**并授权重做，且旧无 ACK/`q=0` 记录属焊接前条件；随后 EV-015 以当前交付件重测：重焊后失败形态**逐字节相同**（5/5 周期 `q=0`、`BUS ack=none`），但主机侧已被实板证据证明健康（`IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none`、`IOSIG scl=95555 sda=30303` ⇒ H4/H5/H12 均排除），剩余假设为 H1（贴装/焊接）、H2（损坏）、**H3（异常闩锁，需真正断电；权重最高）**，且该能力**明确登记 general call 地址 `0x00` 从未被探测**，并把“是否/如何改动”交回实现。
 

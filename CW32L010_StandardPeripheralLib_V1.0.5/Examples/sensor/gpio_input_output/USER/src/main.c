@@ -28,6 +28,7 @@
  * Include files
  ******************************************************************************/
 #include "../inc/main.h"
+#include "light.h"       /* light_read_vdd_mv(): 上电供电轨测量 (ADC 拥有者) */
 
 /******************************************************************************
  * Local pre-processor symbols/macros ('#define')
@@ -210,6 +211,12 @@ int32_t main(void)
 	/* T1 (readme 修改点 8): UART1 调试串口启动横幅 (固件标识/UID 前 4 字节/复位来源/串口参数) */
 #if SENSOR_DEBUG_UART
 	debug_trace_boot(mcu_uid, rst_flags);
+	{
+		/* 供电轨测量 (ADC 内部 BGR1.2V 反推 VDD≈BAT): 一次, 在任何 I2C 事务之前 */
+		debug_trace_vdd_t vdd;
+		vdd.ok     = light_read_vdd_mv(&vdd.mv, &vdd.code, &vdd.bgr_mv);
+		debug_trace_vdd(&vdd);
+	}
 	/* T1 (FWR-116): 上电总线身份诊断 (空闲电平 + 0x08..0x77 有界地址探测)。
 	 * 在横幅之后、任何 I2C 事务之前执行一次; 只发地址字节, 不写命令/不读数据。 */
 	{

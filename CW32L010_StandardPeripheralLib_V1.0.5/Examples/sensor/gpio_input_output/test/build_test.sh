@@ -43,13 +43,16 @@ build "$BIN/debug_trace_check.exe" -std=c11 -Wall -Wextra -DSENSOR_DEBUG_UART=1 
 "$BIN/debug_trace_check.exe"
 
 # T2: 光照通路自检 (真实 light.c; 未标定变体 + 标定后变体)
+#  -DLIGHT_BGR_TRIM_MV=1200u: 宿主机覆盖出厂修调值, 避免访问 0x001007D2 绝对地址
 echo "== [4/4a] light channel (mock ADC, uncalibrated delivery default) =="
 build "$BIN/light_check.exe" -std=c11 -Wall -Wextra -Imock_light \
+    -DLIGHT_BGR_TRIM_MV=1200u \
     -I../USER/inc -I../COMMON host_light_check.c ../USER/src/light.c ../USER/src/fw_core.c
 "$BIN/light_check.exe"
 
 echo "== [4/4b] light channel (calibrated variant: -DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000) =="
 build "$BIN/light_check_cal.exe" -std=c11 -Wall -Wextra -Imock_light \
+    -DLIGHT_BGR_TRIM_MV=1200u \
     -I../USER/inc -I../COMMON -DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000u \
     host_light_check.c ../USER/src/light.c ../USER/src/fw_core.c
 "$BIN/light_check_cal.exe"

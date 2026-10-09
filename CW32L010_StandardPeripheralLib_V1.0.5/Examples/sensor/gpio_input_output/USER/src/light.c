@@ -77,6 +77,73 @@ static bool light_adc_read_once(uint16_t *out)
     return true;
 }
 
+#ifndef LIGHT_BGR_TRIM_MV
+/*
+ * 出厂修调值: 内部 BGR1.2V 的实际电压 (mV), 厂商在 0x001007D2 处标定
+ * (同厂商示例 Examples/ADC/adc_sgl_sw_vdd)。宿主机 harness 用
+ * -DLIGHT_BGR_TRIM_MV=<mv> 覆盖, 从而不访问绝对地址。
+ */
+#define LIGHT_BGR_TRIM_MV   (*(volatile const uint16_t *)0x001007D2u)
+#endif
+
+uint8_t light_read_vdd_mv(uint16_t *mv_out, uint16_t *code_out, uint16_t *bgr_mv_out)
+{
+    ADC_InitTypeDef adc = {0};
+    uint32_t guard = LIGHT_ADC_EOC_GUARD;
+    uint16_t code;
+    uint32_t bgr_mv;
+    uint32_t mv;
+
+    if ((mv_out == NULL) || (code_out == NULL) || (bgr_mv_out == NULL)) {
+        return 0u;
+    }
+    *mv_out     = 0u;
+    *code_out   = 0u;
+    *bgr_mv_out = 0u;
+
+    __SYSCTRL_ADC_CLK_ENABLE();
+
+    adc.ADC_ClkDiv      = LIGHT_ADC_CLK_DIV;
+    adc.ADC_ConvertMode = ADC_ConvertMode_Once;
+    adc.ADC_SQREns      = ADC_SqrEns0to0;
+    adc.ADC_IN0.ADC_InputChannel = ADC_InputVref1P2;   /* 内部 BGR1.2V */
+    adc.ADC_IN0.ADC_SampTime     = LIGHT_ADC_SAMPLE_TIME;
+    ADC_Init(&adc);
+    ADC_ClearITPendingAll();
+
+    CW_ADC->CR_f.BGREN = 1u;      /* 使能 BGR (厂商: 启动约 30 us) */
+    delay_ms(1u);                 /* 有界等待: 1 ms >> 30 us */
+    ADC_Enable();
+
+    ADC_SoftwareStartConvCmd(ENABLE);
+    while ((CW_ADC->ISR & ADC_ISR_EOC_Msk) == 0u) {
+        if (guard == 0u) {
+            CW_ADC->CR_f.BGREN = 0u;
+            ADC_Disable();
+            return 0u;            /* 超时: 不伪造读数 */
+        }
+        guard--;
+    }
+    ADC_ClearITPendingBit(ADC_IT_EOC);
+    code   = ADC_GetConversionValue(0);
+    bgr_mv = (uint32_t)LIGHT_BGR_TRIM_MV;
+
+    ADC_Disable();
+    CW_ADC->CR_f.BGREN = 0u;      /* 关闭 BGR (低功耗) */
+
+    *code_out   = code;
+    *bgr_mv_out = (uint16_t)bgr_mv;
+    if (code == 0u) {
+        return 0u;                /* 除零保护: 视为无效 */
+    }
+    mv = (4095uL * bgr_mv) / (uint32_t)code;   /* VDD[mV] = 4095 * Vref[mV] / code */
+    if (mv > 6000uL) {
+        mv = 6000uL;              /* 合理上限保护 (MCU 最大 5.5 V) */
+    }
+    *mv_out = (uint16_t)mv;
+    return 1u;
+}
+
 light_result_t light_sample(void)
 {
     light_result_t r;

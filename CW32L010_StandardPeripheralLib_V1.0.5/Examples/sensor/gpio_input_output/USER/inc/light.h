@@ -36,6 +36,16 @@ typedef struct {
 void light_init(void);
 
 /*
+ * 上电诊断: 用 ADC 内部 BGR1.2V 通道反推 MCU 供电电压 VDD (≈BAT/CR2032)。
+ *   返回 1 = 有效: *mv_out=VDD 毫伏, *code_out=原始码, *bgr_mv_out=出厂修调值(mV);
+ *   返回 0 = 无效 (转换超时/除零: *mv_out=0, 不伪造读数)。
+ * 会重配 ADC 为 BGR 通道, 读完后关闭 ADC 并清 BGREN (低功耗);
+ * **只允许在 light_init() 之前调用** (随后 light_init() 会重新配置 AIN11 通道)。
+ * 精度依赖出厂修调值与 ADC 本身, 仅供“供电是否在可用量级”判断, 不作精密测量。
+ */
+uint8_t light_read_vdd_mv(uint16_t *mv_out, uint16_t *code_out, uint16_t *bgr_mv_out);
+
+/*
  * 一次光照采样:
  *   PB05 输出高 -> 稳定延时 -> PB04/AIN11 取样 LIGHT_ADC_SAMPLES 次求均值 -> PB05 置低;
  *   均值只取成功样本; 全部转换超时 -> adc_ok=false/valid=false (不合成暗态)。
