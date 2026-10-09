@@ -1,14 +1,21 @@
-# 构建证据（BUILD-002 rev 5.7）
+# 构建证据（BUILD-002 rev 5.8）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复六**（固件侧手段穷尽性复核；**无产品代码改动**，只验证交付件身份可重建与自检可复现）
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；触发 `evidence/test.md` EV-017
-受测提交：`dfda689`（RESUME_SYNC 接手时工作区干净；`USER/**` 仍为 `8ae4a33`，`git diff --stat 8ae4a33 HEAD -- <FW>/USER` 为空）
-测试环境：Keil MDK（ARMCLANG V6.24，`mdk_build`）、GNU 交叉编译、宿主机 MinGW-w64 gcc；`mdk_flash`/串口不在本调用工具列表内。
+本轮范围：run8 **ITEM-002 复验修复七**（RESUME；无新上游证据、无现场动作记录）——**本轮未执行构建**（无源码改动），仅作版本注记并确认交付件身份继续有效
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；上游仍为 `evidence/test.md` EV-017
+受测提交：`0539ede`（`USER/**` = `8ae4a33`，`git diff` 为空）
 
 ---
 
-## ITEM-002 复验修复六：交付件身份可重建（本轮实际执行）
+## 本轮（复验修复七）：未执行新构建的原因与身份依据
+
+- **无源码改动**：`git diff --stat 8ae4a33 HEAD -- <FW>/USER` 为空 ⇒ 上轮（复验修复六）的构建结果继续适用：`mdk_build rebuild` **0 Error / 1 既有告警**（`main.c(245)`）、`Code=20100 RO-data=644 RW-data=116 ZI-data=1676`、axf md5 **`5fc16235ccd043f4edb48b16ee44da0b`**。
+- **独立重建已由验证能力完成**：`evidence/test.md` EV-017 §1 记录其独立执行 `mdk_build {"action":"rebuild"}` 后 axf/hex md5 **不变**（同一字节）⇒ 交付件可由当前工作树确定性重建，无需本轮重复执行。
+- **未执行**：`mdk_flash`/COM42（不在本调用工具列表）⇒ 实板读数与 `q=1` 复判仍由嵌入式测试能力执行。若现场动作（E-b/E-a/E-c）完成，**无需重新构建**，现有镜像上电即自动重观测。
+
+---
+
+# 历史：ITEM-002 复验修复六（无代码改动；全量 rebuild 复现同一 md5）
 
 ```
 $ git diff --stat 8ae4a33 HEAD -- <FW>/USER

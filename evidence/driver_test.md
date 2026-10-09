@@ -1,15 +1,22 @@
-# 驱动测试证据（DRV-002 rev 5.7）
+# 驱动测试证据（DRV-002 rev 5.8）
 
 状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复六**（固件侧手段穷尽性复核；**无产品代码改动**，重跑自检作可复现证据）
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；`gxht40.pdf`；触发 `evidence/test.md` EV-017
-受测实现：与最后交付提交相同（`USER/**` = `8ae4a33`；本轮未改源码）
-测试载体：`test/build_test.sh`（184 项）、`test/host_gxht40_check.c`（60）、`test/host_sf_i2c_bus_check.c`（42）；另**只读复跑** tester 自有 harness
-测试环境：宿主机 MinGW-w64 gcc 12.2.0；`mdk_flash`/串口不在本调用工具列表内。
+本轮范围：run8 **ITEM-002 复验修复七**（RESUME；无新上游证据）——**本轮未改代码、未新增用例**；仅登记“用既有实板读数收窄现场定位”的推论及其依据
+依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；`gxht40.pdf`；上游仍为 `evidence/test.md` EV-017
+受测实现：与最后交付提交相同（`USER/**` = `8ae4a33`）
 
 ---
 
-## ITEM-002 复验修复六：自检可复现性（本轮实际执行）
+## 本轮（复验修复七）：未新增测试的原因与上轮可复现结果
+
+- **无新行为 ⇒ 无新用例**：本轮未修改任何驱动/总线行为，仅做文档级推论（见 `artifacts/firmware_implementation.md` 本轮节 §1/§2）。
+- **上轮（复验修复六）对本工作树重跑的原始结果仍适用**：`test/build_test.sh` 40+43+44+28+29、`host_gxht40_check` 60、`host_sf_i2c_bus_check` 42 → **合计 286 项 0 失败**；tester 自有 `host_diag_probe_verify_ev` 104/104（只读）。
+- **本轮新推论的依据均为 EV-017 已采集的一手读数**（不新增测量）：`IOTEST idle=3`、`sda_lo=0`、`scl_lo=0`；`IOSIG scl=95555 sda=30303`；`VDD ok=1 code=1480 bgrmv=1189 mv=3289`。据此排除“短路/连锡/错位”类装配缺陷（SDA↔SCL、SDA/SCL↔GND、SDA/SCL↔VDD、VDD↔GND、横向错一位），并将 E-b 的重点修正为：**目视核对器件方位 + 四焊点开路/虚焊检查**。
+- **不得写成已排除**：四焊点开路（含 `U9.3`/`U9.4`）、**装配方位错（如 180° 旋转）**、器件本体损坏/闩锁——总线侧与供电网侧都无法区分，必须现场核对。
+
+---
+
+# 历史：ITEM-002 复验修复六（无新增行为；自检可复现性重跑）
 
 ```
 $ sh test/build_test.sh
