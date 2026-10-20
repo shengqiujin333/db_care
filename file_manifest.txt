@@ -79,7 +79,8 @@ artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 5.0（含
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 5.0（裸机超级循环 + RTC 深睡；T_DIAG/T_TRACE 预算与不变量）
 artifacts/firmware_tasks.yaml | active | 固件实现任务清单（run8 5 项：T1 诊断、T2 采集恢复、T3 全暗标定、T4 升温判定、T5 待上报冻结）
 artifacts/interface_contract.md | active | 接口契约 IC-002 v3.0（升温 >0.9℃ 且有效无光 或 >35.0℃、180 s 采样、全暗 ADC 码 1/3、433/BLE/平台兼容与实现交接；CONTRACT_READY）
-artifacts/product_acceptance.md | active | 本轮产品验收定义 PACC-001（D/I/G/F/O 五级、AD-01..08 定义级核对、PA-001..025 验收矩阵、E2E-01..08 真实条件场景、退出标准与 FB-01..10 需求反馈）
+artifacts/product_acceptance.md | history | 产品验收定义 PACC-001（n002；已被 PACC-002 在 n008 修正，保留历史，不再作为下游现行判据）
+artifacts/product_acceptance_v2.md | active | 本轮产品验收定义 PACC-002（v2：修正合法零/BLE 前缀/接收观察/同键幂等/报警覆盖/暗可分离，PA-001..031、AD-01..10、E2E-01..09、FB-01..20）
 artifacts/product_requirements.md | active | 本轮产品需求 PDR-001（readme 8 点；用户范围、行为/异常/恢复、优先级与来源、验收判据、决策与开放问题、as-built 偏差登记）
 artifacts/product_scope.md | active | 本轮产品范围定义 PSCOPE-001（目标/用户/系统边界、readme 8 点交付、明确不做、持续约束与规划指令区分、决策权/条件/变更控制）
 artifacts/product_specification.md | active | 本轮产品规格 PSPEC-001（端到端行为、判据表、调试行、故障矩阵、部署运维要求、AT-01..AT-12 验收场景）
@@ -126,8 +127,11 @@ dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.8）
 evidence/acceptance_alignment.md | active | 本轮验收对齐证据 ALIGN-001（n001 产物摘要绑定、定义级 98/98 检查与 2 警告、readme 覆盖/语义一致性、FB 反馈、未执行声明）
+evidence/acceptance_alignment_v2.md | active | 验收对齐证据 ALIGN-002（PACC-002 对 9 份输入的摘要绑定、PACC-001 七处缺陷修正、SA-X01..12 落点、68/68 静态检查、未执行声明）
 evidence/acceptance_definition_check.out | active | 上述脚本本次运行输出（98/98 通过、2 个非阻塞警告）
 evidence/acceptance_definition_check.py | active | 可复跑只读检查脚本：PDR/PSPEC/TR 的 PR 数量、优先级/来源/验收、核心语义、追溯、无 Runtime ID；退出码 0/1
+evidence/acceptance_definition_check_v2.out | active | 上述 v2 脚本本次运行输出（68/68 通过）
+evidence/acceptance_definition_check_v2.py | active | PACC-002 可复跑只读检查：输入摘要、AD/PA/E2E/FB 覆盖、SA-X 映射、跨切面语义、无 Runtime ID
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002
 evidence/architecture_exploration/adapter_results.json | active | 6向量参考适配读回及缓存新鲜度、降温不可见、MQTT顺序构造反例
 evidence/architecture_exploration/execution.json | active | 本次编译、原型、ADB 原始输出、退出码、时间和超时；非产品通过证据
