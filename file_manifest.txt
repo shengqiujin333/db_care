@@ -72,6 +72,7 @@ artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（
 artifacts/android_tasks.yaml | active | Android 实现任务清单（14 项，按前置依赖排序）
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 5.0（逐文件核对、诊断设计、标定现场最小操作、判定与上报冻结语义、增量任务）
+artifacts/firmware_exploration.md | active | 本轮固件可行性探索报告 FEX-001（GXHT40 无 ACK 的外部仪器定位、光敏 1/3 可分离性风险、上报判据 3/14 不符、测试资产同向偏差、节拍/UART/资源结论与未知项）
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 5.8（ITEM-002 复验修复：本轮无产品代码改动，用既有实板数据收窄装配/器件假设并登记现场检查项）
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 5.0（含 FWR-116 失败可诊断、FWR-117 以当前构建再观测、FWR-118 失败后重探 + 总线恢复，readme 修改点 1–8 对应表）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 5.0（裸机超级循环 + RTC 深睡；T_DIAG/T_TRACE 预算与不变量）
@@ -136,6 +137,16 @@ evidence/ev014/ | history | EV-014 原始证据目录（用户重焊 U9 后复�
 evidence/ev015/ | history | EV-015 原始证据目录（3 份 .cap、harness_run.sh、判定输出）
 evidence/ev016/ | history | EV-016 原始证据目录（4 份 .cap、IOTEST gc 字段、判定输出）
 evidence/ev017/ | active | EV-017 当前轮原始证据目录（4 份 .cap + 工具元数据 .json、image_identity.txt 三处 md5 一致、harness/判定/selftest 输出、seq/collect/summarize 脚本）
+evidence/ev018/ | active | EV-018 本轮探索原始证据：COM43 300 s 原始字节、fx2lafw 5 s 被动 .sr 与正确/错误映射 I2C 解码、14 向量最小原型源码与输出、宿主机 184 项测试日志、rebuild 日志与 README（含 md5、工具路径问题与限制）
+evidence/ev018/README.md | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
+evidence/ev018/build_rebuild.log | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
+evidence/ev018/host_tests_current.log | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
+evidence/ev018/proto_report_rule.c | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
+evidence/ev018/proto_report_rule.out | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
+evidence/ev018/sigrok/capture.sr | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
+evidence/ev018/sigrok/capture_metadata.json | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
+evidence/ev018/sigrok/decoded_i2c_configured_mapping_wrong.txt | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
+evidence/ev018/sigrok/decoded_i2c_swapped_correct.txt | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
 evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
 evidence/product_requirements_traceability.md | active | 本轮需求追溯证据 TR-001（readme→需求→来源→源码/as-built 状态、冲突处理、证据缺口；只做源码/文档核对，未执行实板/网络）
 evidence/programmed_prototype.md | active | 下载身份记录（EV-017：mdk_flash Verify OK，axf md5 5fc16235… 可由当前工作树确定性重建；仅证明下载成功，不代表功能合格）
