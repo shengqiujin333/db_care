@@ -1,0 +1,106 @@
+artifacts\product_requirements.md sha256=7e2da2e889f9342ebc81fc1c88badd2d3d4321b7f3b350eb5fdfafb3ec346d2c
+artifacts\product_specification.md sha256=9bd3119af50a6e45f2705e537ab6cf2dd69f97d4e0867497e9f7dd7f29f0bd68
+evidence\product_requirements_traceability.md sha256=c29abd7a941934d62187f460fe7e86fe41d60865f31e47b59d419f8a79c933f7
+PASS exists:product_requirements.md :: artifacts\product_requirements.md
+PASS exists:product_specification.md :: artifacts\product_specification.md
+PASS exists:product_requirements_traceability.md :: evidence\product_requirements_traceability.md
+PASS PR section count == 14 :: got 14
+PASS PR ids unique
+PASS PR-001:priority :: GXHT40 温湿度采集（P0）
+PASS PR-001:source
+PASS PR-001:observable acceptance
+PASS PR-002:priority :: 光照采集与“无光”判定（P0）
+PASS PR-002:source
+PASS PR-002:observable acceptance
+PASS PR-003:priority :: 3 分钟采样节拍（P0）
+PASS PR-003:source
+PASS PR-003:observable acceptance
+PASS PR-004:priority :: 条件上报判据（P0，核心）
+PASS PR-004:source
+PASS PR-004:observable acceptance
+PASS PR-005:priority :: 433 MHz 空口兼容（P0）
+PASS PR-005:source
+PASS PR-005:observable acceptance
+PASS PR-006:priority :: 中继器（网关）保持现状（P1，兼容约束）
+PASS PR-006:source
+PASS PR-006:observable acceptance
+PASS PR-007:priority :: Android 数据解码与归因（P0）
+PASS PR-007:source
+PASS PR-007:observable acceptance
+PASS PR-008:priority :: Android 产品行为同步（P1）
+PASS PR-008:source
+PASS PR-008:observable acceptance
+PASS PR-009:priority :: 平台服务器迁移与云上传（P0，依赖外部在线条件）
+PASS PR-009:source
+PASS PR-009:observable acceptance
+PASS PR-010:priority :: UART1 调试串口（P0）
+PASS PR-010:source
+PASS PR-010:observable acceptance
+PASS PR-011:priority :: 退役光通讯/霍尔识别（P0）
+PASS PR-011:source
+PASS PR-011:observable acceptance
+PASS PR-012:priority :: 电池与低功耗（P1）
+PASS PR-012:source
+PASS PR-012:observable acceptance
+PASS PR-013:priority :: 异常、恢复与不伪造（P0）
+PASS PR-013:source
+PASS PR-013:observable acceptance
+PASS PR-014:priority :: 操作部署手册、独立核验与真实条件总功能测试（P0，项目目标）
+PASS PR-014:source
+PASS PR-014:observable acceptance
+PASS spec references PR-001
+PASS spec references PR-002
+PASS spec references PR-003
+PASS spec references PR-004
+PASS spec references PR-005
+PASS spec references PR-007
+PASS spec references PR-008
+PASS spec references PR-009
+PASS spec references PR-010
+PASS spec references PR-013
+PASS spec references PR-014
+PASS traceability references PR-001
+PASS traceability references PR-002
+PASS traceability references PR-003
+PASS traceability references PR-004
+PASS traceability references PR-005
+PASS traceability references PR-006
+PASS traceability references PR-007
+PASS traceability references PR-008
+PASS traceability references PR-009
+PASS traceability references PR-010
+PASS traceability references PR-011
+PASS traceability references PR-012
+PASS traceability references PR-013
+PASS traceability references PR-014
+PASS traceability status legend
+PASS req rise formula
+PASS spec rise formula
+PASS req strict high boundary
+PASS spec strict high boundary
+PASS req dark 1/3 formula
+PASS spec dark 1/3 formula
+PASS req exact 35.0 still evaluated
+PASS spec exact 35.0 still evaluated
+PASS req prev semantics
+PASS spec prev semantics
+PASS readme point 1 mapped
+PASS readme point 2 mapped
+PASS readme point 3 mapped
+PASS readme point 4 mapped
+PASS readme point 5 mapped
+PASS readme point 6 mapped
+PASS readme point 7 mapped
+PASS readme point 8 mapped
+PASS no call/workflow ids
+PASS no absolute windows paths
+PASS open condition documented:C_dark
+PASS open condition documented:OQ-01
+PASS open condition documented:OQ-03
+PASS open condition documented:OQ-06
+PASS open condition documented:OQ-09
+PASS spec covers PR-006 semantically :: 网关/不改
+WARN spec covers PR-011 semantically :: 光通讯/退役
+WARN spec covers PR-012 semantically :: 低功耗/深睡
+
+98/98 checks passed; 2 warning(s)
