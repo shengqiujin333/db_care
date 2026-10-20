@@ -1,0 +1,110 @@
+{
+  "classification": "local substitute adapters and constructed stimuli; not target evidence",
+  "cases": [
+    {
+      "case": "0",
+      "frame_hex": "0102030405060116060408040a081917123456780000fe70828674b6d0f2f078",
+      "reference_android_temp": -40.0,
+      "reference_android_hum": 0.0,
+      "ok": true
+    },
+    {
+      "case": "1",
+      "frame_hex": "0102030405060116060408040a081917123456780001ffff130975475e10f0e3",
+      "reference_android_temp": -0.1,
+      "reference_android_hum": 0.1,
+      "ok": true
+    },
+    {
+      "case": "2",
+      "frame_hex": "0102030405060116060408040a0819171234567801f4000009fd8a3e5f12f106",
+      "reference_android_temp": 0.0,
+      "reference_android_hum": 50.0,
+      "ok": true
+    },
+    {
+      "case": "3",
+      "frame_hex": "0102030405060116060408040a0819171234567803e7015e5db38b9402cef34e",
+      "reference_android_temp": 35.0,
+      "reference_android_hum": 99.9,
+      "ok": true
+    },
+    {
+      "case": "4",
+      "frame_hex": "0102030405060116060408040a0819171234567803e8015f5fbd8b9603d0f343",
+      "reference_android_temp": 35.1,
+      "reference_android_hum": 100.0,
+      "ok": true
+    },
+    {
+      "case": "5",
+      "frame_hex": "0102030405060116060408040a08191712345678006404e25e8a8e92b8d6f00a",
+      "reference_android_temp": 125.0,
+      "reference_android_hum": 10.0,
+      "ok": true
+    }
+  ],
+  "freshness": {
+    "receive_seconds": [
+      1000,
+      1180
+    ],
+    "source_sample_identity": "absent",
+    "outbox_keys": [
+      [
+        "12345678",
+        1000
+      ],
+      [
+        "12345678",
+        1180
+      ]
+    ],
+    "conclusion": "transport retries can be idempotent; cache rereads are not identifiable"
+  },
+  "drop_visibility": {
+    "stimulus": [
+      {
+        "time": 0,
+        "temp_x10": 300,
+        "hum_x10": 600,
+        "report": false
+      },
+      {
+        "time": 180,
+        "temp_x10": 310,
+        "hum_x10": 600,
+        "report": true
+      },
+      {
+        "time": 360,
+        "temp_x10": 280,
+        "hum_x10": 500,
+        "report": false
+      },
+      {
+        "time": 540,
+        "temp_x10": 270,
+        "hum_x10": 450,
+        "report": false
+      }
+    ],
+    "received_times": [
+      180
+    ],
+    "conclusion": "later cooling samples below 35C never reach the App; no decline observation"
+  },
+  "mqtt_permutation": {
+    "payload": "1000:30,31:60,61",
+    "saved_ids_a": [
+      "A",
+      "B"
+    ],
+    "saved_ids_b": [
+      "B",
+      "A"
+    ],
+    "accepted_by_count_check_both": true,
+    "conclusion": "count equality cannot prove producer order"
+  }
+}

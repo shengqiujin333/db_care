@@ -70,6 +70,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 artifacts/android_architecture.md | active | Android 方案设计 AA-002（需求 6 点落点、分层/模块/接口、SQLite v3 与 /upload_data 幂等、异常边界、未决项）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加）
 artifacts/android_tasks.yaml | active | Android 实现任务清单（14 项，按前置依赖排序）
+artifacts/architecture_exploration.md | active | 本轮架构与接口探索 AEX-001：候选责任边界、7个问题、原始证据与最小区分实验；非正式契约或验收
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 5.0（逐文件核对、诊断设计、标定现场最小操作、判定与上报冻结语义、增量任务）
 artifacts/firmware_exploration.md | active | 本轮固件可行性探索报告 FEX-001（GXHT40 无 ACK 的外部仪器定位、光敏 1/3 可分离性风险、上报判据 3/14 不符、测试资产同向偏差、节拍/UART/资源结论与未知项）
@@ -125,6 +126,12 @@ evidence/acceptance_alignment.md | active | 本轮验收对齐证据 ALIGN-001�
 evidence/acceptance_definition_check.out | active | 上述脚本本次运行输出（98/98 通过、2 个非阻塞警告）
 evidence/acceptance_definition_check.py | active | 可复跑只读检查脚本：PDR/PSPEC/TR 的 PR 数量、优先级/来源/验收、核心语义、追溯、无 Runtime ID；退出码 0/1
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002
+evidence/architecture_exploration/adapter_results.json | active | 6向量参考适配读回及缓存新鲜度、降温不可见、MQTT顺序构造反例
+evidence/architecture_exploration/execution.json | active | 本次编译、原型、ADB 原始输出、退出码、时间和超时；非产品通过证据
+evidence/architecture_exploration/object_versions.json | active | 本次源码、需求、上游报告与实验脚本 SHA-256 及基线提交
+evidence/architecture_exploration/probe.c | active | 真实传感器编码、网关解码及聚合打包最小实验；显式适配器与容量边界
+evidence/architecture_exploration/run_probe.py | active | 有界实验与登记手机只读诊断入口；保存版本、stdout/stderr、源码片段与参考模型
+evidence/architecture_exploration/source_excerpts.txt | active | 当前版本关键网关及 App 源码原文与行号，静态证据
 evidence/build.md | active | 构建证据 BUILD-002 rev 5.8（mdk_build rebuild 0 Error/1 既有告警、Code/RO/RW/ZI、axf md5 与受测件一致）
 evidence/codegraph_validation.md | history | CodeGraph 历史可用性验证证据（索引 complete、无 pending/drift）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 5.8（宿主 harness 复跑记录与穷尽性结论）
