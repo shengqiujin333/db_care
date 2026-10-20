@@ -1,0 +1,197 @@
+{
+  "kind": "contract author static consistency only; not independent product validation",
+  "baseline": "619433e5dd3f41d69dfae9bfdf303273e506e099",
+  "checked_at_utc": "2026-10-20T23:35:56.421035+00:00",
+  "input_sha256": {
+    "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/gxht40.h": "cc26ebc902a2ce9c9193fc9e5d07adcf53b0b98de5f06dc33b0b3b79563937de",
+    "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/light.h": "73d7d8e58eae630670fd116267750bb5437e9d618ca35dce73df1b297576cc4b",
+    "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/debug_trace.h": "c9b6434f1fd1cf833dff5ae498a59642d23145e0fa0d2b1269355e941ea2097c",
+    "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h": "3a2893add0aefaaddce0b7300fbf707806f67b69aa6619ff6807da7f1377177b",
+    "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c": "748adab459e3744961c9924bb3fd5ad32788df5ffcd53ee545aa23d627611d6c",
+    "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c": "cc4d1a7eb6287815c7f4bf0b17cfffdb938874941fabb944f50d7a2e82ad61f0",
+    "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c": "a20b056e227a0a93bf8c2f367b2ca4b368beccb745d325cac0b4a687c698c073",
+    "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/encrytogate.c": "c88265618b91278b36981838d424d23931fddebed5bbbdeacb4365b30d7106d0",
+    "CH592EVT/EVT/EXAM/BLE/beiwov2/APP/feistel_al.c": "b1c14ae82067a4ef5ba69d3c6bd04aa8fdec7524a07a58d28cf5c5df2d6ad300",
+    "CH592EVT/EVT/EXAM/BLE/beiwov2/APP/bleencrypt.c": "982060bfab94ee6d93c3b91942c41802d84adc22cddf87f4196166af7903d2a6",
+    "CH592EVT/EVT/EXAM/BLE/beiwov2/APP/app_um2006A.c": "b351b44161635c0339b9be1ab3c21213d50a4520660d3c557f41d29ebabba78a",
+    "CH592EVT/EVT/EXAM/BLE/beiwov2/Profile/include/gattprofile.h": "83215c5e4f1be55b642cf304857380b92485528a1f6d1f20f5d168f0a0bd82c7",
+    "CH592EVT/EVT/EXAM/BLE/beiwov2/Profile/gattprofile.c": "1678efa31d36b662b619a791d2ebd5c902e454c2c4f743ac372995d08b269790",
+    "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt": "76f669ad4ad88a786b3bec95d70bf76c1c8f865ff901938a626a34f84ccde464",
+    "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt": "8b31db2523b5416c74e03297659d49ad7384d5d2b5446adc817edb388416306a",
+    "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt": "dd3847ff2fec80289f0e82282140fab77b8f0c78e85e59ff6a94040b934a88ac",
+    "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt": "63d06a21e4f2c22d9e77580b81fc6056fe523d8e17ddfef6c6246a6da543dbf7",
+    "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt": "c221de8da8d78ecc4b41e341daca69ece754fe8e18fd95920cdb065612b84a1c",
+    "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt": "c0fff0ed06404895c52b216d4ce0c31657c2c4a6a509f29d015e6d579a6d98a9",
+    "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt": "d7daae2db108ec9b8f349ec61a9148bfd762e58d3fdd78e110fd81a7279b6cfb",
+    "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt": "7d9fd0d15994174f13857fff29db880edd697f156fbfc4bbc4316237aab7b444",
+    "服务器迁移记录.md": "e883e4df73b109dd7ac08c862e350ed9b11372a9e073930dd7bcf9e4749811ed",
+    "artifacts/product_acceptance_v2.md": "62e9507d7ac640e2cc238b7083f7bf00271421a9de46df15e1c87ce59d0f183f",
+    "artifacts/system_decomposition.md": "33540eeede9fd3551f52718a657acb3a507a0d43f88437c0dbf911c332aa581a",
+    "artifacts/system_architecture.md": "463ad472adf9fca288233af08dc09d9ab9b9172af5248552d580ce82f54c6659",
+    "artifacts/architecture_exploration.md": "848f7fbc240b8d31e939ed1353ca610d81acbeb9414200714da07e7d4f75e713",
+    "artifacts/product_requirements.md": "7e2da2e889f9342ebc81fc1c88badd2d3d4321b7f3b350eb5fdfafb3ec346d2c",
+    "artifacts/product_specification.md": "9bd3119af50a6e45f2705e537ab6cf2dd69f97d4e0867497e9f7dd7f29f0bd68",
+    "artifacts/interface_contract_v4.md": "0dcaa65dd58ab73bc208191a35903c47c2320b25cf0cec24b4e2a9e5e196abe4",
+    "evidence/interface_contract_v4_check.py": "2797215d2b3ac20d2df64dfca15b85fa1346324e4561899b9135f64e51bfc848"
+  },
+  "checks": [
+    {
+      "name": "IF01..IF08 present",
+      "ok": true
+    },
+    {
+      "name": "PACC-002 and PA-026..031 referenced",
+      "ok": true
+    },
+    {
+      "name": "UTF-8 and balanced code fences",
+      "ok": true
+    },
+    {
+      "name": "CRC8 documented vector",
+      "ok": true
+    },
+    {
+      "name": "CRC16 standard vector",
+      "ok": true
+    },
+    {
+      "name": "01020304 -50/600 RF layout",
+      "ok": true
+    },
+    {
+      "name": "01020304 -50/600 BLE layout",
+      "ok": true
+    },
+    {
+      "name": "12345678 0/0 RF layout",
+      "ok": true
+    },
+    {
+      "name": "12345678 0/0 BLE layout",
+      "ok": true
+    },
+    {
+      "name": "12345678 351/1000 RF layout",
+      "ok": true
+    },
+    {
+      "name": "12345678 351/1000 BLE layout",
+      "ok": true
+    },
+    {
+      "name": "documented cross-endian vector",
+      "ok": true
+    },
+    {
+      "name": "zero preserved in schema",
+      "ok": true
+    },
+    {
+      "name": "BLE effective vs carrier lengths",
+      "ok": true
+    },
+    {
+      "name": "BLE ten devices rejected in 160B",
+      "ok": true
+    },
+    {
+      "name": "light integer boundary",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 1",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 2",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 3",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 4",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 5",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 6",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 7",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 8",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 9",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 10",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 11",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 12",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 13",
+      "ok": true
+    },
+    {
+      "name": "PDR gate vector 14",
+      "ok": true
+    },
+    {
+      "name": "S line budget including CRLF",
+      "ok": true
+    },
+    {
+      "name": "G line budget including CRLF",
+      "ok": true
+    },
+    {
+      "name": "HTTP field sets",
+      "ok": true
+    },
+    {
+      "name": "time integer not rescaled",
+      "ok": true
+    },
+    {
+      "name": "current light API",
+      "ok": true
+    },
+    {
+      "name": "current fixed GATT length",
+      "ok": true
+    },
+    {
+      "name": "current codec allows effective prefix",
+      "ok": true
+    },
+    {
+      "name": "current upload DTO fields",
+      "ok": true
+    },
+    {
+      "name": "git identity command exited",
+      "ok": true
+    }
+  ],
+  "passed": 39,
+  "total": 39
+}

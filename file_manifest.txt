@@ -78,7 +78,8 @@ artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 5
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 5.0（含 FWR-116 失败可诊断、FWR-117 以当前构建再观测、FWR-118 失败后重探 + 总线恢复，readme 修改点 1–8 对应表）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 5.0（裸机超级循环 + RTC 深睡；T_DIAG/T_TRACE 预算与不变量）
 artifacts/firmware_tasks.yaml | active | 固件实现任务清单（run8 5 项：T1 诊断、T2 采集恢复、T3 全暗标定、T4 升温判定、T5 待上报冻结）
-artifacts/interface_contract.md | active | 接口契约 IC-002 v3.0（升温 >0.9℃ 且有效无光 或 >35.0℃、180 s 采样、全暗 ADC 码 1/3、433/BLE/平台兼容与实现交接；CONTRACT_READY）
+artifacts/interface_contract.md | history | 旧接口契约 IC-002 v3.0；本轮由 interface_contract_v4.md IC-003 v4.0替代，保留历史
+artifacts/interface_contract_v4.md | active | 本轮接口契约 IC-003 v4.0：IF01..08字段/编码/时序/错误/重试/兼容；消费PACC-002、AEX、SD；保留真实条件与产品待决项
 artifacts/product_acceptance.md | history | 产品验收定义 PACC-001（n002；已被 PACC-002 在 n008 修正，保留历史，不再作为下游现行判据）
 artifacts/product_acceptance_v2.md | active | 本轮产品验收定义 PACC-002（v2：修正合法零/BLE 前缀/接收观察/同键幂等/报警覆盖/暗可分离，PA-001..031、AD-01..10、E2E-01..09、FB-01..20）
 artifacts/product_requirements.md | active | 本轮产品需求 PDR-001（readme 8 点；用户范围、行为/异常/恢复、优先级与来源、验收判据、决策与开放问题、as-built 偏差登记）
@@ -161,7 +162,11 @@ evidence/ev018/sigrok/capture.sr | active | 由 firmware_engineer.firmware_feasi
 evidence/ev018/sigrok/capture_metadata.json | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
 evidence/ev018/sigrok/decoded_i2c_configured_mapping_wrong.txt | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
 evidence/ev018/sigrok/decoded_i2c_swapped_correct.txt | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
-evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
+evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
+evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
+evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应
+evidence/interface_contract_v4_validation.md | active | IC-003 v4.0作者静态一致性核对；39/39、源码偏差交接与未执行边界；非产品测试
+evidence/interface_contract_validation.md | history | 旧接口契约 IC-002 v3.0 自检证据；不作为当前契约验证
 evidence/product_requirements_traceability.md | active | 本轮需求追溯证据 TR-001（readme→需求→来源→源码/as-built 状态、冲突处理、证据缺口；只做源码/文档核对，未执行实板/网络）
 evidence/programmed_prototype.md | active | 下载身份记录（EV-017：mdk_flash Verify OK，axf md5 5fc16235… 可由当前工作树确定性重建；仅证明下载成功，不代表功能合格）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
