@@ -428,6 +428,36 @@ evidence/ev026_item007/driver_test.md | active | ITEM-007 DriverTestEvidence 正
 evidence/ev026_item007/host_tests_full.log | active | test/build_test.sh 7 组原始输出（295/0）
 evidence/ev026_item007/image_md5.txt | active | axf/hex md5（与 ITEM-006 相同）
 evidence/ev026_item007/source_sha256.txt | active | build_test.sh 与 host_sensor_core_test.c SHA-256
+evidence/ev027_item007_verify/ | active | EV-027 ITEM-007 独立验证：两次 295/0、5 组错误实现负向对照、静态 42/0、提交/镜像身份与限制；仅宿主机
+evidence/ev027_item007_verify/commit_files.txt | active | 受测提交 baf9d0f 实际改动文件清单
+evidence/ev027_item007_verify/host_tests_run1.out | active | 本能力独立执行 build_test.sh 原始输出（7 组 295/0，EXIT_CODE=0）
+evidence/ev027_item007_verify/host_tests_run2.out | active | 第二次执行原始输出（与 run1 逐字节相同）
+evidence/ev027_item007_verify/negative_controls.out | active | 负向对照原始输出（ALL_WRONG_IMPLEMENTATIONS_CAUGHT）
+evidence/ev027_item007_verify/negative_controls_item007.py | active | 5 组错误实现变异负向对照脚本（只改产品源码副本）
+evidence/ev027_item007_verify/negctl/ | active | 负向对照用产品源码副本与逐组编译/运行日志（非产品源码）
+evidence/ev027_item007_verify/negctl/N1a_host_sensor_core_vs_legacy_gate.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N1a_host_sensor_core_vs_legacy_gate.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N1b_host_pure_check_vs_legacy_gate.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N1b_host_pure_check_vs_legacy_gate.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N2_measure_flow_vs_post_advance_prev.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N2_measure_flow_vs_post_advance_prev.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N3_measure_flow_vs_reencode_retry.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N3_measure_flow_vs_reencode_retry.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N4_debug_trace_vs_unbounded_wait.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N4_debug_trace_vs_unbounded_wait.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N5_light_check_vs_uncalibrated_valid.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/N5_light_check_vs_uncalibrated_valid.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/debug_trace_unbounded.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/fw_core_legacy_drop.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/light_uncalibrated_valid.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/measure_reencode_each_retry.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/negctl/measure_trace_post_advance.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev027_item007_verify/run_context.txt | active | 本次验证 UTC/本地时间、Git HEAD、gcc 与宿主环境
+evidence/ev027_item007_verify/run_host_suite.sh | active | 独立执行 build_test.sh 的包装脚本
+evidence/ev027_item007_verify/source_sha256.txt | active | 自检资产、产品源码与门禁脚本 SHA-256
+evidence/ev027_item007_verify/static_check.out | active | 静态核对原始输出（42 passed / 0 failed / 1 warning）
+evidence/ev027_item007_verify/static_check_item007.py | active | 独立静态核对脚本（14 向量、旧语义隔离、覆盖断言、产品源码语义、提交范围）
+evidence/ev027_item007_verify/test.md | active | EV-027 TestEvidence 正文：受测提交 baf9d0f、295/0、负向对照、静态核对、差异与限制、TEST_PASS（本增量）
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应

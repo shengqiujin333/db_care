@@ -1,0 +1,50 @@
+[A] 14-vector table identity (implementation self-checks vs frozen EV-020 table)
+  PASS  host_sensor_core_test.c: first 14 vectors exactly match frozen table (14 found)
+  PASS  host_sensor_core_test.c: v3 rise +1.0C dark -> report
+  PASS  host_sensor_core_test.c: v6 drop -> no report
+  PASS  host_sensor_core_test.c: v7 exact 35.0C continues rise evaluation -> report
+  PASS  host_sensor_core_test.c: v8 exact 35.0C but lit -> no report
+  PASS  host_sensor_core_test.c: v14 sample_valid=0 -> no decision
+  PASS  host_fw_core_pure_check.c: first 14 vectors exactly match frozen table (14 found)
+  PASS  host_fw_core_pure_check.c: v3 rise +1.0C dark -> report
+  PASS  host_fw_core_pure_check.c: v6 drop -> no report
+  PASS  host_fw_core_pure_check.c: v7 exact 35.0C continues rise evaluation -> report
+  PASS  host_fw_core_pure_check.c: v8 exact 35.0C but lit -> no report
+  PASS  host_fw_core_pure_check.c: v14 sample_valid=0 -> no decision
+[B] legacy drop / 35.0-exclusion semantics only as explicit negative control
+  PASS  host_sensor_core_test: legacy replica is explicit and named
+  PASS  host_sensor_core_test: replica must fail exactly 3 of 13 vectors
+  PASS  host_sensor_core_test: v3/v6/v7 discriminations asserted
+  PASS  host_fw_core_pure_check.c: no legacy drop/35.0-exclusion expectation
+  PASS  host_measure_flow_check.c: no legacy drop/35.0-exclusion expectation
+  PASS  host_sensor_core_test: legacy drop absent outside the negative-control replica
+  PASS  host_sensor_core_test: 35.0 exclusion absent outside the negative-control replica
+[C] required behavior categories are asserted
+  PASS  measure flow: section [14] pre-decision snapshot present
+  PASS  measure flow: pre-decision prev asserted (A p=160 while t=170)
+  PASS  measure flow: failure does not advance prev
+  PASS  measure flow: frozen frame byte-identical across attempts
+  PASS  measure flow: no re-encode during retries
+  PASS  measure flow: exhaustion clears state, no cross-cycle retry
+  PASS  measure flow: S.s=2 / S.y=0 on exhaustion
+  PASS  measure flow: no pending -> no send
+  PASS  UART bounded: TXE stuck aborts within line guard
+  PASS  UART bounded: TXBUSY stuck close within guard and teardown still runs
+  PASS  light: uncalibrated cannot claim valid
+  PASS  light: uncalibrated cannot claim dark
+  PASS  light: calibrated ceil(C_dark/3) boundary 1000/999
+  PASS  build_test.sh: single entry runs all 7 groups including pure check and calib gate
+[D] product sources carry the current semantics the assets assert
+  PASS  fw_core.c: rise comparison cur-prev
+  PASS  fw_core.c: uses RISE constant
+  PASS  fw_core.c: no exact-35.0 exclusion
+  PASS  measure.c: pre-decision snapshot
+  PASS  measure.c: trace uses pre-decision snapshot
+  PASS  measure.c: retries send the frozen 10B buffer
+[E] commit under test did not modify tester-owned *_verify_ev.c
+  PASS  commit baf9d0f changed no *_verify_ev.c
+  PASS  commit baf9d0f did change the declared assets
+  PASS  commit baf9d0f changed no product source
+
+==== static result: 42 passed, 0 failed, 1 warning ====
+WARN: host_measure_flow_check.c [14] label says A->B->failure->C, but the executed sequence is A->failure->C (no B cycle); driver_test.md's 'B p=A / C p=B' wording is not backed by the executed checks. Pre-decision snapshot coverage itself is present (A p=160, t=170).
