@@ -153,6 +153,18 @@ static bool ref_gate(bool sample_valid, int16_t prev_x10, bool have_prev,
     return ((int32_t)cur_x10 - (int32_t)prev_x10) > 9;
 }
 
+/* Negative control: replica of the as-built (8ae4a33) drop/35.0-short circuit.
+ * It must fail exactly v3/v6/v7 on the 14-vector table; if it passes everything,
+ * the vectors are not discriminating. */
+static bool legacy_drop(int16_t prev_x10, bool have_prev, int16_t cur_x10, bool dark)
+{
+    if (cur_x10 > 350) return true;
+    if (cur_x10 == 350) return false;
+    if (!have_prev) return false;
+    if (!dark) return false;
+    return ((int32_t)prev_x10 - (int32_t)cur_x10) > 9;
+}
+
 static void test_report(void)
 {
     static const gate_vec_t v[14] = {
@@ -201,6 +213,19 @@ static void test_report(void)
         }
     }
     CHECK(bad == 0u, "structured gate grid matches int32 reference");
+
+    {
+        unsigned legacy_bad = 0u;
+        unsigned k;
+        for (k = 0u; k < 13u; k++) {
+            bool got = legacy_drop(v[k].prev_x10, v[k].have_prev, v[k].cur_x10, v[k].dark);
+            if (got != v[k].expect) legacy_bad++;
+        }
+        CHECK(legacy_bad == 3u, "legacy as-built direction fails exactly 3/13 evaluated vectors");
+        CHECK(legacy_drop(300, true, 310, true) == false, "legacy fails v3 (rise not reported)");
+        CHECK(legacy_drop(310, true, 300, true) == true,  "legacy fails v6 (drop reported)");
+        CHECK(legacy_drop(340, true, 350, true) == false, "legacy fails v7 (35.0 rise short-circuited)");
+    }
 
     printf("[6c] T-L0-08 4-arg compatibility\n");
     CHECK(sensor_decide_report(300, true, 310, true) == true,  "rise 1.0C + dark -> true");

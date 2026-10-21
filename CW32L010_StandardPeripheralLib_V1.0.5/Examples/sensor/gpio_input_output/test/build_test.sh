@@ -24,12 +24,17 @@ build() {
     }
 }
 
-echo "== [1/4] fw_core pure logic: CRC16/CRC-8/convert/light(1/3)/report =="
+echo "== [1/5] fw_core pure logic: CRC16/CRC-8/convert/light(1/3)/report =="
 build "$BIN/core_check.exe" -std=c11 -Wall -Wextra -I../USER/inc \
     host_sensor_core_test.c ../USER/src/fw_core.c -lm
 "$BIN/core_check.exe"
 
-echo "== [2/4] measure flow (mock MCU): sample/report/prev-not-updated-on-failure =="
+echo "== [1b/5] fw_core pure check: 14 vectors/4-arg/grid =="
+build "$BIN/pure_check.exe" -std=c11 -Wall -Wextra -I../USER/inc \
+    host_fw_core_pure_check.c ../USER/src/fw_core.c -lm
+"$BIN/pure_check.exe"
+
+echo "== [2/5] measure flow (mock MCU): sample/report/prev-not-updated-on-failure =="
 build "$BIN/measure_flow_check.exe" -std=c11 -Wall -Wextra -DSENSOR_CONFIG_NO_MCU -DSENSOR_DEBUG_UART=1 \
     -Imock_measure_mcu -I../USER/inc -I../COMMON -I../UM2005C \
     host_measure_flow_check.c ../USER/src/measure.c ../USER/src/sf_i2c.c \
@@ -37,22 +42,25 @@ build "$BIN/measure_flow_check.exe" -std=c11 -Wall -Wextra -DSENSOR_CONFIG_NO_MC
 "$BIN/measure_flow_check.exe"
 
 # T1: UART1 调试通道自检 (真实 debug_trace.c, 强制 SENSOR_DEBUG_UART=1; 宿主机无 UART 外设, 用 mock_trace 影子层)
-echo "== [3/4] UART1 debug trace (mock UART): banner/S-line budget/close semantics =="
+echo "== [3/5] UART1 debug trace (mock UART): banner/S-line budget/close semantics =="
 build "$BIN/debug_trace_check.exe" -std=c11 -Wall -Wextra -DSENSOR_DEBUG_UART=1 \
     -Imock_trace -I../USER/inc host_debug_trace_check.c ../USER/src/debug_trace.c
 "$BIN/debug_trace_check.exe"
 
 # T2: 光照通路自检 (真实 light.c; 未标定变体 + 标定后变体)
 #  -DLIGHT_BGR_TRIM_MV=1200u: 宿主机覆盖出厂修调值, 避免访问 0x001007D2 绝对地址
-echo "== [4/4a] light channel (mock ADC, uncalibrated delivery default) =="
+echo "== [4/5a] light channel (mock ADC, uncalibrated delivery default) =="
 build "$BIN/light_check.exe" -std=c11 -Wall -Wextra -Imock_light \
     -DLIGHT_BGR_TRIM_MV=1200u \
     -I../USER/inc -I../COMMON host_light_check.c ../USER/src/light.c ../USER/src/fw_core.c
 "$BIN/light_check.exe"
 
-echo "== [4/4b] light channel (calibrated variant: -DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000) =="
+echo "== [4/5b] light channel (calibrated variant: -DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000) =="
 build "$BIN/light_check_cal.exe" -std=c11 -Wall -Wextra -Imock_light \
     -DLIGHT_BGR_TRIM_MV=1200u \
     -I../USER/inc -I../COMMON -DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000u \
     host_light_check.c ../USER/src/light.c ../USER/src/fw_core.c
 "$BIN/light_check_cal.exe"
+
+echo "== [5/5] calibration config compile gate (ITEM-006) =="
+sh check_calib_config.sh
