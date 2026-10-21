@@ -81,9 +81,11 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/cw32l010_uart.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/mock_uart_hw.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_vdd_ev/ | active | 测试能力自建影子 MCU 层（供电轨测量 harness，mock_bgr_trim_value 替身修调值）
-artifacts/android_architecture.md | active | Android 方案设计 AA-002（需求 6 点落点、分层/模块/接口、SQLite v3 与 /upload_data 幂等、异常边界、未决项）
+artifacts/android_architecture.md | history | 旧 Android 方案 AA-002；已被 AA-003（android_architecture_v3.md）取代，保留历史
+artifacts/android_architecture_v3.md | active | Android 方案设计 AA-003：对齐 IC-003 v4/PACC-002；as-built 核对、G-01..G-09 偏差、合法零/前缀/接收与源时间/同键幂等、页面与重连、异常矩阵、兼容面与未决项
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加）
-artifacts/android_tasks.yaml | active | Android 实现任务清单（14 项，按前置依赖排序）
+artifacts/android_tasks.yaml | history | 旧 Android 实现任务清单（14 项）；已被 android_tasks_v3.yaml 取代，保留历史
+artifacts/android_tasks_v3.yaml | active | 本轮 Android 实现任务清单（14 项，按前置依赖排序：零值/接收观察/时间语义/展示/前缀/归因/报警/云/重连/文档/自检）
 artifacts/architecture_exploration.md | active | 本轮架构与接口探索 AEX-001：候选责任边界、7个问题、原始证据与最小区分实验；非正式契约或验收
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 5.0（逐文件核对、诊断设计、标定现场最小操作、判定与上报冻结语义、增量任务）
