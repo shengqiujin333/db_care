@@ -94,7 +94,8 @@ artifacts/software_test_design.md | active | 软件测试设计 TD-SW-002（Andr
 artifacts/system_analysis.md | active | 本轮系统需求与约束分析 SA-001：功能、时序、资源、安全和持续限制；已知/未知/冲突、可继续范围与必要决定；非设计定稿或验收
 artifacts/system_architecture.md | active | 端云架构 SARCH-001：9架构决定、传感器与App状态/数据流、故障恢复、时序资源与部署边界；非实现或验收通过
 artifacts/system_decomposition.md | active | 系统分解 SD-001：14组件、8边界契约、8可实现验证增量及9未决依赖；责任与PACC追溯
-artifacts/test_design.md | active | 嵌入式测试设计 TD-002 rev 5.0（B1–B18 行为、L0/L0i/L1/L2–L9 用例组、BUS/G/P 行判据、当前构建再观测前提、as-built 偏差 D-01/D-03/OBS-1 登记；只做设计不执行）
+artifacts/test_design.md | history | 旧嵌入式测试设计 TD-002 rev 5.0（基于 FD-002/IC-002/COM42/P 行假设；已由本轮 TD-003 取代，仅保留历史，不再作为当前判据）
+artifacts/test_design_v3.md | active | 本轮嵌入式测试设计 TD-003（对齐 FDS-003/FWR-003/RTA-003/IC-003/PACC-002；B1–B18、L0/L0i/L1–L9 用例、14 向量与旧实现负向对照、判定前快照、单周期冻结帧 3 次发送、UART 有界、UID 零路径、编译期标定门禁、COM43/fx2lafw 资源事实与证据局限；只做设计不执行）
 dengbei_care/ | active | Android App 工程根（Gradle/Kotlin；本轮按 readme 第 6 点同步修改）
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
 dengbei_care/app/build.gradle.kts | active | App 模块构建脚本（versionCode 9 / versionName 1.8；宿主机单测 isReturnDefaultValues）
