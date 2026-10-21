@@ -202,11 +202,6 @@ int32_t main(void)
 	for(i = 0;i < 10;i++){
 		k += mcu_uid[i];
 	}
-	if(k == 0){
-		while(1){
-			go_to_sleep();
-		}
-	}
 
 	/* T1 (readme 修改点 8): UART1 调试串口启动横幅 (固件标识/UID 前 4 字节/复位来源/串口参数) */
 #if SENSOR_DEBUG_UART
@@ -241,6 +236,18 @@ int32_t main(void)
 	}
 #endif
 
+	/* ITEM-005: UID 零为致命身份错误。BOOT/诊断已在上方完成; 此处不进入采样/发送,
+	 * 置 PB05 低/关 ADC, 关闭 UART, 并真正深睡循环 (不得因 sample_flag=1 空转)。 */
+	if (k == 0u) {
+		report_req = 0u;
+		sample_flag = 0u;
+		light_init();                 /* PB05 低 + ADC 配置后关闭 */
+		debug_trace_flush_close();
+		while (1) {
+			SYSCTRL_GotoDeepSleep();
+		}
+	}
+
 	k = 10000;
 	while(k--);
 	
@@ -252,17 +259,23 @@ int32_t main(void)
     while(1)
     {
         //-----------------------------------------------------------------------
-			temperature_process(); /* 采样节拍: 3 分钟一拍 (ITEM-007) */
-			send_data_to_gateway();/* 条件上报: sensor_gate_decide 门控 (ITEM-008) */
+			/* ITEM-005: 每个采样机会只执行一次完整事务; 发送内部最多 3 次已在
+			 * ITEM-003 完成, 不再依赖多轮主循环重试。 */
+			if (sample_flag != 0u) {
+				temperature_process(); /* 光照->温湿度->判定->冻结/发送 */
+				send_data_to_gateway();/* 本周期 1..3 次发送, 用尽/成功即清 pending */
 
 #if SENSOR_DEBUG_UART
-			/* T1: 每个采样周期在判定与发送之后输出一行 S 轨迹 (光照/温度/判定/发送同一周期) */
-			if (sensor_trace_fetch(&trace) != 0u) {
-				trace.tick = rtc_tick_total;   /* RTC 累计分钟节拍 (本行对应的采样时刻) */
-				/* 光照/温度/判定/发送字段由 measure.c 的本周期快照提供 (T2) */
-				debug_trace_sample(&trace);
+				/* T1: 发送结束后输出唯一 S 轨迹; 失败周期由 trace 追加 G */
+				if (sensor_trace_fetch(&trace) != 0u) {
+					trace.tick = rtc_tick_total;   /* RTC 累计分钟节拍 */
+					debug_trace_sample(&trace);
+				}
+#endif
 			}
-			/* 幂等: 保证任何深睡路径之前 UART1 已排空(TC)并关闭, 采样间期无输出 */
+
+#if SENSOR_DEBUG_UART
+			/* 幂等: 保证任何深睡路径之前 UART1 已排空并关闭, 采样间期无输出 */
 			debug_trace_flush_close();
 #endif
 

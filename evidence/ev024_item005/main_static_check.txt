@@ -1,0 +1,17 @@
+PASS  BOOT before UID fatal
+PASS  UID block clears report_req
+PASS  UID block clears sample_flag
+PASS  UID block calls light_init
+PASS  UID block closes UART
+PASS  UID block deep-sleeps
+PASS  UID block does not sample
+PASS  UID block does not send
+PASS  loop is gated by sample_flag
+PASS  loop calls temperature_process
+PASS  loop calls send_data_to_gateway
+PASS  loop fetches trace
+PASS  loop closes UART
+PASS  loop calls go_to_sleep
+PASS  old UID busy loop absent
+PASS  no GPIOA reset
+==== result: 16 passed, 0 failed ====

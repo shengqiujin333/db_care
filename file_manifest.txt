@@ -33,7 +33,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/gxht40.c | active | GXHT40 驱动实现（0x44/0x45 探测与缓存、0xFD 测量、6B 读取、双字 CRC-8、x10 换算、有界重读重测、失败后重探 + 总线恢复、诊断快照）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/interrupts_cw32l010.c | active | 中断服务实现
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c | active | 光照通路实现（PB05 供电→稳定→PB04/AIN11 多次转换→均值/有效性/暗判据；light_read_vdd_mv 用 ADC 内部 BGR1.2V 反推 VDD）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c | active | 主循环/RTC 节拍；上电顺序 BOOT→VDD→IOTEST→IOSIG→BUS，每周期 S 行
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c | active | 主循环/RTC 节拍；上电顺序 BOOT→VDD→IOTEST→IOSIG→BUS；每采样机会一次完整事务/唯一 S；UID 零清标志/PB05 低/关 UART/真正深睡
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c | active | 采样流程与条件上报（判定前 prev/H 快照、判定后推进、失败不推进；触发时冻结 10B 帧、单周期最多 3 次发送同一帧；调用 sensor_gate_decide）；上电一次性总线诊断（含 general call 复位尝试）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 软 I2C 实现（位时序、ACK 判定、地址探测、≤9 脉冲 + STOP 的总线恢复）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh | active | GNU 交叉编译脚本（cw32l010.ld / startup_cw32l010.S 同目录）
@@ -89,6 +89,7 @@ artifacts/firmware_implementation_v3.md | active | 本轮固件实现记录 FWI-
 artifacts/firmware_implementation_v4.md | active | 本轮固件实现记录 FWI-004：ITEM-002 完成判定前 prev/H 快照、判定后推进、失败不推进、S 行 p/H 轨迹；含 A→B→失败→C 自检、构建 md5 与未完成项
 artifacts/firmware_implementation_v5.md | active | 本轮固件实现记录 FWI-005：ITEM-003 完成触发时冻结 10B 帧、单周期最多 3 次发送同一帧、成功后/用尽清除、不跨周期、S.s/y；含发送场景自检、构建 md5 与未完成项
 artifacts/firmware_implementation_v6.md | active | 本轮固件实现记录 FWI-006：ITEM-004 完成 UART1 整行/关闭有界等待、超时中止本行但照常关闭、无新定时器；含 TXE/TXBUSY 卡死自检、构建 md5 与未完成项
+artifacts/firmware_implementation_v7.md | active | 本轮固件实现记录 FWI-007：ITEM-005 完成主循环单次事务、BOOT 先于 UID 零致命判断、UID 零清标志/关 UART/真正深睡；含结构自检/RTC 回归、构建 md5 与未完成项
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 5.0（含 FWR-116 失败可诊断、FWR-117 以当前构建再观测、FWR-118 失败后重探 + 总线恢复，readme 修改点 1–8 对应表）
 artifacts/firmware_requirements_v3.md | active | 本轮固件需求 FWR-003（采样/驱动/光照标定/升温门控/冻结发送/UART 有界/启动/资源/不伪造，偏差 D-01..D-10 与依赖 U01..U07）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 5.0（裸机超级循环 + RTC 深睡；T_DIAG/T_TRACE 预算与不变量）
@@ -317,6 +318,17 @@ evidence/ev024_item004_verify/verify_com43_item004.py | active | 实板原始字
 evidence/ev024_item004_verify/verify_current.out | active | 当前实现 88 passed / 0 failed，RESULT PASS
 evidence/ev024_item004_verify/verify_old.out | active | 旧实现负向对照 NEGATIVE_CONTROL_OK
 evidence/ev024_item004_verify/verify_uart_guard_item004.py | active | 独立 Python 判据/参考模型（逐字节格式、CRLF、轮询预算、teardown、业务不变）
+evidence/ev024_item005/ | active | EV-024 ITEM-005 实现证据：build.md、driver_test.md、rebuild 日志、md5、源码 SHA-256、main 结构自检、RTC 回归、全量 host 测试
+evidence/ev024_item005/README.md | active | EV-024 证据清单与限制
+evidence/ev024_item005/build.md | active | ITEM-005 BuildEvidence 正文（构建命令/结果/产物 md5/限制）
+evidence/ev024_item005/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
+evidence/ev024_item005/driver_test.md | active | ITEM-005 DriverTestEvidence 正文（结构自检/RTC/汇总）
+evidence/ev024_item005/host_tests_full.log | active | test/build_test.sh 5 组原始输出（233/0）
+evidence/ev024_item005/image_md5.txt | active | 本轮 axf/hex md5
+evidence/ev024_item005/main_static_check.py | active | main.c BOOT/UID/单次事务结构静态检查（16 项）
+evidence/ev024_item005/main_static_check.txt | active | 上述静态检查原始输出（16/0）
+evidence/ev024_item005/rtc_verify.log | active | 测试能力 RTC harness 配临时外部 stub 的回归输出（17/0）
+evidence/ev024_item005/source_sha256.txt | active | main.c 与 main_static_check.py SHA-256
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应
