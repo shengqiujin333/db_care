@@ -1,0 +1,17 @@
+USER/src/encrytogate.c: In function 'print_hex':
+USER/src/encrytogate.c:142:3: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  142 |   for(size_t i=0;i<n;i++) printf("%02X ", b[i]); printf("\n");
+      |   ^~~
+USER/src/encrytogate.c:142:50: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  142 |   for(size_t i=0;i<n;i++) printf("%02X ", b[i]); printf("\n");
+      |                                                  ^~~~~~
+USER/src/encrytogate.c: At top level:
+USER/src/encrytogate.c:144:13: warning: 'uid4_hex' defined but not used [-Wunused-function]
+  144 | static void uid4_hex(const uint8_t u4[4], char out9[9]){
+      |             ^~~~~~~~
+USER/src/encrytogate.c:140:13: warning: 'print_hex' defined but not used [-Wunused-function]
+  140 | static void print_hex(const char* title, const uint8_t* b, size_t n){
+      |             ^~~~~~~~~
+USER/src/encrytogate.c:17:22: warning: 'IPERM' defined but not used [-Wunused-const-variable=]
+   17 | static const uint8_t IPERM[10] = {4, 2, 8, 0, 6, 3, 9, 7, 1, 5};
+      |                      ^~~~~

@@ -52,6 +52,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/hos
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_verify_ev.c | history | 测试能力 harness，已陈旧不可编译（仍按 T2 之前 light_sample() 的 bool API 编写，且引用已删滞回语义）；结论不采用，待重写
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c | active | measure.c 采样流程与发送路径实现侧自检；含判定前 p/H 快照、失败不推进、发送路径
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_verify_ev.c | active | 测试能力独立验证 harness：measure.c 多周期流程模型
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_snapshot_verify_item002.c | active | 测试能力独立验证 harness（EV-022 ITEM-002）：16 周期成功/失败混合、判定前 p/H 快照、失败零副作用、失败后帧身份；直编当前产品 measure.c
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_check.c | active | 空口帧往返 + 网关→Android 映射实现侧自检
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_verify_ev.c | active | 测试能力独立验证 harness：空口帧字段/字节序/篡改拒绝
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_report_verify_ev.c | active | 测试能力独立验证 harness：条件上报发送路径
@@ -210,6 +211,30 @@ evidence/ev021_item002/image_md5.txt | active | 本轮 axf/hex md5
 evidence/ev021_item002/measure_flow_item002.log | active | host_measure_flow_check 原始输出（52/0，含 [14] p/H）
 evidence/ev021_item002/pure_check_item002.log | active | host_fw_core_pure_check 原始输出（52/0）
 evidence/ev021_item002/source_sha256.txt | active | measure.c 与 host_measure_flow_check.c SHA-256
+evidence/ev022_item002/ | active | EV-022 ITEM-002 独立验证证据：16 周期 harness/独立参考模型/旧实现负向对照、实板 COM43 原始捕获与判定、实际下载身份、构建与哈希
+evidence/ev022_item002/README.md | active | EV-022 证据清单与边界
+evidence/ev022_item002/build_rebuild.log | active | 本能力 mdk_build rebuild 原始日志（0 Error/1 既有 warning、Code/RO/RW/ZI）
+evidence/ev022_item002/com43_capture_a.bin | active | 下载后 COM43 300 s 原始字节（115 B，1 个失败周期）
+evidence/ev022_item002/com43_capture_b.bin | active | 下载后 COM43 300 s 原始字节（230 B，2 个失败周期，间隔 180 s）
+evidence/ev022_item002/compile_current.err | active | 当前 harness 编译 stderr（无本 harness 告警）
+evidence/ev022_item002/compile_old.err | active | 负向对照 harness 编译 stderr
+evidence/ev022_item002/git_head.txt | active | 受测提交 31be53b
+evidence/ev022_item002/harness_current.err | active | 当前 harness stderr（空）
+evidence/ev022_item002/harness_current.out | active | 当前产品 measure.c 16 周期逐周期原始输出
+evidence/ev022_item002/harness_old.err | active | 旧实现 harness stderr（空）
+evidence/ev022_item002/harness_old.out | active | 父提交 17a92ba measure.c 同刺激原始输出（负向对照）
+evidence/ev022_item002/host_tests_regression.log | active | 实现侧既有宿主机套件回归日志（5 组 206/0，仅参考）
+evidence/ev022_item002/image_md5.txt | active | 本轮 axf/hex md5
+evidence/ev022_item002/old_measure_pre_item002.c | active | 从 Git 17a92ba 只读导出的父提交 measure.c（证据输入，非产品源码）
+evidence/ev022_item002/programmed_prototype.md | active | 本次 mdk_flash 实际下载身份（axf/hex md5、Verify OK）与目标；仅证明下载
+evidence/ev022_item002/source_sha256.txt | active | measure.c、harness、旧实现、参考模型 SHA-256
+evidence/ev022_item002/static_refs.txt | active | measure.c 快照/判定/推进/轨迹引用的 rg 原始输出
+evidence/ev022_item002/test.md | active | EV-022 TestEvidence 正文：受测身份、16 周期逐条、负向对照、实板失败周期不变式、静态核对、局限、TEST_PASS（本增量）
+evidence/ev022_item002/verify_com43.out | active | 实板复核：56 passed / 0 failed，含成功路径未执行的限制声明
+evidence/ev022_item002/verify_com43_item002.py | active | 实板原始字节独立解析/判据（失败周期 q=0、p/H 不变、G 诊断）
+evidence/ev022_item002/verify_current.out | active | 独立参考模型对当前实现：224 passed / 0 failed
+evidence/ev022_item002/verify_measure_snapshot_item002.py | active | 独立 Python 参考模型（快照/判定/推进/失败零副作用）
+evidence/ev022_item002/verify_old.out | active | 独立参考模型对旧实现：11 项 p/H 不符、NEGATIVE_CONTROL_OK
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应

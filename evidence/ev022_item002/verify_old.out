@@ -1,0 +1,13 @@
+RESULT checks_passed=213 checks_failed=11
+MISMATCH cycle 0 p(pre-decision) actual=250 expected=0 (t=250)
+MISMATCH cycle 0 H(pre-decision) actual=1 expected=0
+MISMATCH cycle 1 p(pre-decision) actual=260 expected=250 (t=260)
+MISMATCH cycle 3 p(pre-decision) actual=270 expected=260 (t=270)
+MISMATCH cycle 4 p(pre-decision) actual=280 expected=270 (t=280)
+MISMATCH cycle 6 p(pre-decision) actual=290 expected=280 (t=290)
+MISMATCH cycle 7 p(pre-decision) actual=351 expected=290 (t=351)
+MISMATCH cycle 9 p(pre-decision) actual=0 expected=351 (t=0)
+MISMATCH cycle 10 p(pre-decision) actual=-10 expected=0 (t=-10)
+MISMATCH cycle 12 p(pre-decision) actual=5 expected=-10 (t=5)
+MISMATCH cycle 14 p(pre-decision) actual=15 expected=5 (t=15)
+NEGATIVE_CONTROL_OK: old implementation rejected on p(pre-decision)
