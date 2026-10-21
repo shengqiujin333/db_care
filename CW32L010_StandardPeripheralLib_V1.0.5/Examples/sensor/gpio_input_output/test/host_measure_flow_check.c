@@ -326,6 +326,35 @@ int main(void)
         g_pin_stuck_high[4] = 0u;
     }
 
+    printf("[14] ITEM-002 判定前 p/H 快照 (成功 A -> 成功 B -> 失败 -> 成功 C)\n");
+    {
+        debug_trace_sample_t tr;
+
+        report_req = 0u;
+        cycle(GXHT40_OK, 170, 600, true);          /* A: 当前 prev=160 */
+        CHECK(sensor_trace_fetch(&tr) == 1u, "A 周期有轨迹");
+        CHECK(tr.prev_temp_x10 == 160 && tr.have_prev == 1u,
+              "A 周期 p/H 为判定前值 (160/1)");
+        CHECK(tr.temp_x10 == 170 && tr.sample_ok == 1u && tr.report == 1u,
+              "A 周期 t=170, q=1, rise 10 -> r=1");
+
+        report_req = 0u;
+        cycle(GXHT40_ERR_CRC, 180, 999, true);     /* 失败: prev 仍 170 */
+        CHECK(sensor_trace_fetch(&tr) == 1u, "失败周期有轨迹");
+        CHECK(tr.prev_temp_x10 == 170 && tr.have_prev == 1u,
+              "失败周期 p/H 保持失败前值 (170/1)");
+        CHECK(tr.temp_x10 == 170 && tr.sample_ok == 0u && tr.report == 0u,
+              "失败周期 q=0, t 保留最近有效 170, 不判定");
+
+        cycle(GXHT40_OK, 180, 601, true);          /* C: 判定前 prev 仍 170 */
+        CHECK(sensor_trace_fetch(&tr) == 1u, "C 周期有轨迹");
+        CHECK(tr.prev_temp_x10 == 170 && tr.have_prev == 1u,
+              "C 周期 p/H 仍为失败前值 (170/1), 不是推进后的 180");
+        CHECK(tr.temp_x10 == 180 && tr.sample_ok == 1u && tr.report == 1u,
+              "C 周期 t=180, q=1, rise 10 -> r=1");
+        report_req = 0u;
+    }
+
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
 }

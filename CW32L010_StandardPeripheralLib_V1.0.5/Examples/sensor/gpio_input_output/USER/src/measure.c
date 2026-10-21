@@ -428,6 +428,8 @@ static gxht40_diag_t s_trace_diag;
 
 /* T1: UART1 调试轨迹状态 (只读快照, 不参与判定/发送) */
 static uint8_t  s_trace_pending = 0u;   /* 本周期存在待发布轨迹 */
+static int16_t  s_trace_prev_temp_x10 = 0; /* 判定前上一有效温度 (轨迹 p 字段) */
+static uint8_t  s_trace_have_prev = 0u;    /* 判定前是否存在上一有效温度 (轨迹 H 字段) */
 static int16_t  s_trace_temp_x10 = 0;   /* 本周期展示用温度 (失败周期为最近有效值) */
 static uint16_t s_trace_hum_x10  = 0u;  /* 本周期展示用湿度 */
 static uint8_t  s_trace_sample_ok = 0u; /* 本周期温湿度采样是否有效 */
@@ -480,21 +482,30 @@ static bool measure_sample(void)
  */
 uint16_t temperature_process(void)
 {
+    int16_t prev_for_decision;
+    bool    have_prev_for_decision;
+
     if (sample_flag == 0u) {
         return 0u;
     }
+
+    /* ITEM-002: 在任何测量/判定前快照本次判定要使用的上一有效值。
+     * 成功周期用该快照判定; 失败周期不判定且不推进, 快照仍为本周期开始时的 prev。
+     * 轨迹 p/H 必须来自该快照, 不能读取判定后已推进的 s_prev_temp_x10。 */
+    prev_for_decision       = s_prev_temp_x10;
+    have_prev_for_decision  = s_have_prev;
 
     s_trace_sample_ok = 0u;
     s_trace_report    = 0u;
     s_trace_diag_valid = 0u;
 
     if (measure_sample()) {
-        uint8_t rep = sensor_gate_decide(true, s_prev_temp_x10, s_have_prev,
+        uint8_t rep = sensor_gate_decide(true, prev_for_decision, have_prev_for_decision,
                                          tempvalue, s_light.valid, s_light.dark) ? 1u : 0u;
         if (rep != 0u) {
             report_req = 1u;
         }
-        s_prev_temp_x10 = tempvalue;    /* 仅成功后推进 (失败不污染前值) */
+        s_prev_temp_x10 = tempvalue;    /* 判定后才推进 (失败不污染前值) */
         s_have_prev     = true;
         s_last_hum_x10  = huminityvalue;
         s_trace_sample_ok = 1u;
@@ -505,7 +516,9 @@ uint16_t temperature_process(void)
         s_trace_diag_valid = 1u;
     }
 
-    /* 调试轨迹取本周期快照: 失败周期 temp/hum 保持最近有效值, 由 sample_ok=0 标记 */
+    /* ITEM-002: 轨迹使用判定前快照; 失败周期 temp/hum 保持最近有效值, 由 sample_ok=0 标记。 */
+    s_trace_prev_temp_x10 = prev_for_decision;
+    s_trace_have_prev     = have_prev_for_decision ? 1u : 0u;
     s_trace_temp_x10 = tempvalue;
     s_trace_hum_x10  = huminityvalue;
     s_trace_pending  = 1u;
@@ -528,8 +541,8 @@ uint8_t sensor_trace_fetch(debug_trace_sample_t *out)
     s_trace_pending = 0u;
 
     out->tick          = (uint32_t)SENSOR_SAMPLE_TICKS;
-    out->prev_temp_x10 = s_prev_temp_x10;
-    out->have_prev     = s_have_prev ? 1u : 0u;
+    out->prev_temp_x10 = s_trace_prev_temp_x10;
+    out->have_prev     = s_trace_have_prev;
     out->light_valid   = s_light.valid ? 1u : 0u;
     out->light_ok      = s_light.samples_ok;
     out->light_min     = s_light.code_min;

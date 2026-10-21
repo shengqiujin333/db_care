@@ -34,7 +34,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/interrupts_cw32l010.c | active | 中断服务实现
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c | active | 光照通路实现（PB05 供电→稳定→PB04/AIN11 多次转换→均值/有效性/暗判据；light_read_vdd_mv 用 ADC 内部 BGR1.2V 反推 VDD）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c | active | 主循环/RTC 节拍；上电顺序 BOOT→VDD→IOTEST→IOSIG→BUS，每周期 S 行
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c | active | 采样流程与条件上报（调用 sensor_gate_decide）；上电一次性总线诊断（含 general call 复位尝试）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c | active | 采样流程与条件上报（判定前 prev/H 快照、判定后推进、失败不推进；调用 sensor_gate_decide）；上电一次性总线诊断（含 general call 复位尝试）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 软 I2C 实现（位时序、ACK 判定、地址探测、≤9 脉冲 + STOP 的总线恢复）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh | active | GNU 交叉编译脚本（cw32l010.ld / startup_cw32l010.S 同目录）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
@@ -50,7 +50,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/hos
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_verify_ev.c | active | 测试能力独立验证 harness：GXHT40 驱动（位级 mock 总线/从机、重探、总线恢复、命令白名单）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_check.c | active | 光照通路实现侧自检（真实 light.c + 影子 MCU）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_verify_ev.c | history | 测试能力 harness，已陈旧不可编译（仍按 T2 之前 light_sample() 的 bool API 编写，且引用已删滞回语义）；结论不采用，待重写
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c | active | measure.c 采样流程与发送路径实现侧自检
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c | active | measure.c 采样流程与发送路径实现侧自检；含判定前 p/H 快照、失败不推进、发送路径
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_verify_ev.c | active | 测试能力独立验证 harness：measure.c 多周期流程模型
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_check.c | active | 空口帧往返 + 网关→Android 映射实现侧自检
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_verify_ev.c | active | 测试能力独立验证 harness：空口帧字段/字节序/篡改拒绝
@@ -77,6 +77,7 @@ artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 5.0（逐�
 artifacts/firmware_exploration.md | active | 本轮固件可行性探索报告 FEX-001（GXHT40 无 ACK 的外部仪器定位、光敏 1/3 可分离性风险、上报判据 3/14 不符、测试资产同向偏差、节拍/UART/资源结论与未知项）
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 5.8（ITEM-002 复验修复：本轮无产品代码改动，用既有实板数据收窄装配/器件假设并登记现场检查项）
 artifacts/firmware_implementation_v3.md | active | 本轮固件实现记录 FWI-003：ITEM-001 完成 sensor_gate_decide/升温门控/35.0 继续评估/常量更名/调用点与 14 向量自检；其余任务未实现，构建 md5 与限制见文
+artifacts/firmware_implementation_v4.md | active | 本轮固件实现记录 FWI-004：ITEM-002 完成判定前 prev/H 快照、判定后推进、失败不推进、S 行 p/H 轨迹；含 A→B→失败→C 自检、构建 md5 与未完成项
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 5.0（含 FWR-116 失败可诊断、FWR-117 以当前构建再观测、FWR-118 失败后重探 + 总线恢复，readme 修改点 1–8 对应表）
 artifacts/firmware_requirements_v3.md | active | 本轮固件需求 FWR-003（采样/驱动/光照标定/升温门控/冻结发送/UART 有界/启动/资源/不伪造，偏差 D-01..D-10 与依赖 U01..U07）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 5.0（裸机超级循环 + RTC 深睡；T_DIAG/T_TRACE 预算与不变量）
@@ -199,6 +200,16 @@ evidence/ev020_item001/source_and_image_hash.txt | active | 受测源码 SHA-256
 evidence/ev020_item001/test.md | active | EV-020 TestEvidence 正文：受测件身份、14 向量逐条、1,936 网格/边界、构建与静态核对、局限（U01/U02 未闭合、未实板）、TEST_PASS（本增量）
 evidence/ev020_item001/verify_gate_item001.out | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
 evidence/ev020_item001/verify_gate_item001.py | active | 独立 Python 门控参考模型与逐点比对（14 向量/1,936 网格/4 参等价/旧实现不符集合）
+evidence/ev021_item002/ | active | EV-021 ITEM-002 实现证据：build.md、driver_test.md、rebuild 日志、md5、源码 SHA-256、A→B→失败→C p/H 与全量 host 测试原始输出
+evidence/ev021_item002/README.md | active | EV-021 证据清单与限制
+evidence/ev021_item002/build.md | active | ITEM-002 BuildEvidence 正文（构建命令/结果/产物 md5/限制）
+evidence/ev021_item002/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
+evidence/ev021_item002/driver_test.md | active | ITEM-002 DriverTestEvidence 正文（p/H A→B→失败→C、汇总）
+evidence/ev021_item002/host_tests_full.log | active | test/build_test.sh 5 组原始输出（206/0）
+evidence/ev021_item002/image_md5.txt | active | 本轮 axf/hex md5
+evidence/ev021_item002/measure_flow_item002.log | active | host_measure_flow_check 原始输出（52/0，含 [14] p/H）
+evidence/ev021_item002/pure_check_item002.log | active | host_fw_core_pure_check 原始输出（52/0）
+evidence/ev021_item002/source_sha256.txt | active | measure.c 与 host_measure_flow_check.c SHA-256
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应
