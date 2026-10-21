@@ -42,6 +42,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/bui
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c | active | UART1 调试通道实现侧自检（行格式与预算）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_line_verify_ev.c | active | 测试能力独立验证 harness：BUS/G/S 行逐字节与 96 B 预算
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_probe_verify_ev.c | active | 测试能力独立验证 harness：BUS 扫描/general call 分支/诊断快照传播
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_gate_verify_item001.c | active | 测试能力独立验证 harness（EV-020 ITEM-001）：门控 14 向量、1,936 点网格、int32 边界、4 参兼容；直编当前产品 fw_core.c
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_pure_check.c | active | fw_core 纯逻辑自检
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_verify_ev.c | active | 测试能力独立验证 harness：fw_core 穷举（65536 温度/湿度字、CRC、1-3 判据网格）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gw_compat_verify_ev.c | active | 测试能力独立验证 harness：传感器→网关→Android 全链兼容
@@ -179,6 +180,25 @@ evidence/ev019_item001/image_md5.txt | active | 本轮 axf/hex md5
 evidence/ev019_item001/measure_flow.log | active | host_measure_flow_check 原始输出（43/0）
 evidence/ev019_item001/pure_check.log | active | host_fw_core_pure_check 原始输出（52/0）
 evidence/ev019_item001/source_sha256.txt | active | 8 个改动源码/自检文件 SHA-256
+evidence/ev020_item001/ | active | EV-020 ITEM-001 门控纯逻辑独立验证：测试能力 harness、独立 Python 参考、旧实现（8ae4a33）负向对照、rebuild 日志、源码/镜像哈希；仅宿主机，未烧录/未实板
+evidence/ev020_item001/README.md | active | EV-020 证据清单与边界
+evidence/ev020_item001/build_rebuild.log | active | 本能力 mdk_build rebuild 原始日志（0 Error/1 既有 warning、Code/RO/RW/ZI）
+evidence/ev020_item001/compile_current.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev020_item001/compile_old.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev020_item001/gate_verify_current.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev020_item001/gate_verify_current.out | active | 当前产品 fw_core.c 独立 harness 原始输出（V/G/B/C/SELF 行）
+evidence/ev020_item001/gate_verify_old.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev020_item001/gate_verify_old.out | active | 旧实现 8ae4a33 对同一 14 向量的原始输出（O 行）
+evidence/ev020_item001/host_tests_current.log | active | 既有宿主机套件回归输出（197/0，实现侧资产，仅参考）
+evidence/ev020_item001/old_impl/ | active | 从 Git 8ae4a33 只读导出的旧 fw_core.c/fw_core.h/sensor_config.h 与负向对照 harness（证据输入，非产品源码）
+evidence/ev020_item001/old_impl/fw_core.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev020_item001/old_impl/fw_core.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev020_item001/old_impl/old_gate_negative_control.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev020_item001/old_impl/sensor_config.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev020_item001/source_and_image_hash.txt | active | 受测源码 SHA-256、Git HEAD、axf/hex md5
+evidence/ev020_item001/test.md | active | EV-020 TestEvidence 正文：受测件身份、14 向量逐条、1,936 网格/边界、构建与静态核对、局限（U01/U02 未闭合、未实板）、TEST_PASS（本增量）
+evidence/ev020_item001/verify_gate_item001.out | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+evidence/ev020_item001/verify_gate_item001.py | active | 独立 Python 门控参考模型与逐点比对（14 向量/1,936 网格/4 参等价/旧实现不符集合）
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应
