@@ -116,6 +116,19 @@
 #define LIGHT_DARK_CALIBRATED           0               /* 0 = 未标定 (本轮无实板全暗数据, 未验收) */
 #endif
 
+/* 标定配置编译期门禁 (ITEM-006): 非法组合必须编译失败, 不得带入固件。 */
+#if (LIGHT_DARK_CALIBRATED != 0) && (LIGHT_DARK_CALIBRATED != 1)
+#error "LIGHT_DARK_CALIBRATED must be 0 or 1"
+#endif
+#if LIGHT_DARK_CALIBRATED
+#if (LIGHT_DARK_REF_CODE < 1u) || (LIGHT_DARK_REF_CODE > 4095u)
+#error "LIGHT_DARK_REF_CODE must be 1..4095 when LIGHT_DARK_CALIBRATED=1"
+#endif
+#endif
+
+/* 构建标识 (BOOT fw=...): 仅日志标识, 不单独证明镜像身份; 身份由提交/axf md5 绑定。 */
+#define SENSOR_FW_BUILD_ID              "RUN10-FDS003"
+
 /* ==================================================================== */
 /* 4. 上报判定 (readme 修改点 4; PR-004/DEC-01; IC-003 IF02; FDS-003 §5)  */
 /*    report = sample_valid && (cur > 35.0C 或                         */

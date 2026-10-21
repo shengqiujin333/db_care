@@ -219,7 +219,9 @@ void debug_trace_boot(const uint8_t *uid, uint32_t reset_flags)
     }
 
     trace_line_begin();
-    trace_puts("BOOT fw=FD-002r4 uid=");
+    trace_puts("BOOT fw=");
+    trace_puts(SENSOR_FW_BUILD_ID);
+    trace_puts(" uid=");
     trace_hex(uid[0], 2u);
     trace_hex(uid[1], 2u);
     trace_hex(uid[2], 2u);

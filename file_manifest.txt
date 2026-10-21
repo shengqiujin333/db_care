@@ -25,9 +25,9 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/light.h | active | 光照通路接口（light_result_t、light_init/light_sample、light_read_vdd_mv 供电轨测量）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/main.h | active | 主程序接口
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/measure.h | active | 采样/上报接口 + 上电诊断（sensor_bus_diag_scan、sensor_io_diag_scan、sensor_io_sig_scan）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h | active | 唯一配置点：引脚、GXHT40 地址/命令/重试/等待、180 s 节拍、SENSOR_REPORT_RISE_X10(9)/HIGH_X10(350) 与 1/3 无光常量、UART1 调试与行/关闭预算(DEBUG_UART_*) 、总线诊断常量、general call 复位常量；LIGHT_DARK_* 仍未标定（=0）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h | active | 唯一配置点：引脚、GXHT40 地址/命令/重试/等待、180 s 节拍、SENSOR_REPORT_RISE_X10(9)/HIGH_X10(350) 与 1/3 无光常量、UART1 调试与行/关闭预算(DEBUG_UART_*) 、总线诊断常量、general call 复位常量、LIGHT_DARK_* 编译门禁(0/1、1..4095)、SENSOR_FW_BUILD_ID；LIGHT_DARK_* 仍未标定（=0）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sf_i2c.h | active | 软 I2C 接口（命令写/连续读、i2c_probe_addr、i2c_bus_recover）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c | active | UART1 调试通道实现（各行渲染与 ≤96 B 行预算、整行/关闭有界等待、超时中止本行但照常关闭、引脚边界）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c | active | UART1 调试通道实现（各行渲染与 ≤96 B 行预算、整行/关闭有界等待、超时中止本行但照常关闭、BOOT 使用 SENSOR_FW_BUILD_ID、引脚边界）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/encrytogate.c | active | 433 空口帧加密实现
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c | active | 纯逻辑实现（CRC/换算/有效域/light_is_dark/sensor_gate_decide 升温门控/sensor_decide_report 4 参兼容；不引 MCU 头，可宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/gxht40.c | active | GXHT40 驱动实现（0x44/0x45 探测与缓存、0xFD 测量、6B 读取、双字 CRC-8、x10 换算、有界重读重测、失败后重探 + 总线恢复、诊断快照）
@@ -39,7 +39,8 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh | active | GNU 交叉编译脚本（cw32l010.ld / startup_cw32l010.S 同目录）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh | active | 宿主机测试单一入口（纯逻辑 + 光照等阶段；含 -DLIGHT_BGR_TRIM_MV 覆盖）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c | active | UART1 调试通道实现侧自检（行格式与预算、正常/超长行、TXE/TXBUSY 卡死与恢复）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/check_calib_config.sh | active | ITEM-006 标定配置编译门禁自检（默认/1/4095 通过；2/0/4096 拒绝）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c | active | UART1 调试通道实现侧自检（行格式与预算、正常/超长行、TXE/TXBUSY 卡死与恢复、BOOT 构建标识）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_line_verify_ev.c | active | 测试能力独立验证 harness：BUS/G/S 行逐字节与 96 B 预算
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_probe_verify_ev.c | active | 测试能力独立验证 harness：BUS 扫描/general call 分支/诊断快照传播
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_gate_verify_item001.c | active | 测试能力独立验证 harness（EV-020 ITEM-001）：门控 14 向量、1,936 点网格、int32 边界、4 参兼容；直编当前产品 fw_core.c
@@ -92,6 +93,7 @@ artifacts/firmware_implementation_v4.md | active | 本轮固件实现记录 FWI-
 artifacts/firmware_implementation_v5.md | active | 本轮固件实现记录 FWI-005：ITEM-003 完成触发时冻结 10B 帧、单周期最多 3 次发送同一帧、成功后/用尽清除、不跨周期、S.s/y；含发送场景自检、构建 md5 与未完成项
 artifacts/firmware_implementation_v6.md | active | 本轮固件实现记录 FWI-006：ITEM-004 完成 UART1 整行/关闭有界等待、超时中止本行但照常关闭、无新定时器；含 TXE/TXBUSY 卡死自检、构建 md5 与未完成项
 artifacts/firmware_implementation_v7.md | active | 本轮固件实现记录 FWI-007：ITEM-005 完成主循环单次事务、BOOT 先于 UID 零致命判断、UID 零清标志/关 UART/真正深睡；含结构自检/RTC 回归、构建 md5 与未完成项
+artifacts/firmware_implementation_v8.md | active | 本轮固件实现记录 FWI-008：ITEM-006 完成 LIGHT_DARK_* 编译门禁、未标定门禁保持、BOOT 构建标识；含 6/0 配置编译门禁、51/0 BOOT、构建 md5 与未完成项
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 5.0（含 FWR-116 失败可诊断、FWR-117 以当前构建再观测、FWR-118 失败后重探 + 总线恢复，readme 修改点 1–8 对应表）
 artifacts/firmware_requirements_v3.md | active | 本轮固件需求 FWR-003（采样/驱动/光照标定/升温门控/冻结发送/UART 有界/启动/资源/不伪造，偏差 D-01..D-10 与依赖 U01..U07）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 5.0（裸机超级循环 + RTC 深睡；T_DIAG/T_TRACE 预算与不变量）
@@ -367,6 +369,16 @@ evidence/ev025_item005_verify/verify_com43_item005.py | active | COM43 原始字
 evidence/ev025_item005_verify/verify_current.out | active | 主流程 harness 输出独立判据（26/0）
 evidence/ev025_item005_verify/verify_main_flow_item005.py | active | 主流程不变量独立判据（含父提交 --expect-old 模式）
 evidence/ev025_item005_verify/verify_old.out | active | 父提交负向对照独立判据（NEGATIVE_CONTROL_OK）
+evidence/ev025_item006/ | active | EV-025 ITEM-006 实现证据：build.md、driver_test.md、rebuild 日志、md5、源码 SHA-256、编译门禁、BOOT 与全量 host 测试
+evidence/ev025_item006/README.md | active | EV-025 证据清单与限制
+evidence/ev025_item006/build.md | active | ITEM-006 BuildEvidence 正文（构建命令/结果/产物 md5/限制）
+evidence/ev025_item006/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
+evidence/ev025_item006/calib_cfg.log | active | 标定配置编译门禁原始输出（6/0）
+evidence/ev025_item006/debug_trace_item006.log | active | host_debug_trace_check 原始输出（51/0，含新 BOOT 标识）
+evidence/ev025_item006/driver_test.md | active | ITEM-006 DriverTestEvidence 正文（编译门禁/未标定/BOOT/汇总）
+evidence/ev025_item006/host_tests_full.log | active | test/build_test.sh 5 组原始输出（233/0）
+evidence/ev025_item006/image_md5.txt | active | 本轮 axf/hex md5
+evidence/ev025_item006/source_sha256.txt | active | sensor_config.h/debug_trace.c/host_debug_trace_check.c/check_calib_config.sh SHA-256
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应

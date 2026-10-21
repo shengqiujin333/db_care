@@ -143,7 +143,7 @@ static int pass, fail;
 #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
                          else   { fail++; printf("    FAIL  %s (line %d)\n", m, __LINE__); } } while (0)
 
-static const char *EXPECT_BOOT = "BOOT fw=FD-002r4 uid=01020304 rst=0001 uart=9600\r\n";
+static const char *EXPECT_BOOT = "BOOT fw=" SENSOR_FW_BUILD_ID " uid=01020304 rst=0001 uart=9600\r\n";
 static const char *EXPECT_WORST =
     "S k=4294967295 p=-1250 H=1 V=1 o=8 n=4095 x=4095 a=4095 D=1 t=-1250 h=1000 q=0 r=1 s=2 y=2\r\n";
 static const char *EXPECT_TYPICAL =
