@@ -1,0 +1,27 @@
+FILE CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c
+ 416: uint8_t report_req  = 0;       /* 待上报标志 (置位见 temperature_process) */
+ 417: static uint8_t report_retry = 0;
+ 422: static uint8_t s_pending_frame_valid = 0u;
+ 442: static uint8_t  s_last_send_result = 0u;/* 最近一次 433 发送结果: 0=未发送 1=成功 2=失败 */
+ 512: encode_frame10(mcu_uid, tempvalue, huminityvalue, send_data);
+ 513: s_pending_frame_valid = 1u;
+ 514: report_req = 1u;
+ 515: s_last_send_result = 0u;
+ 565: out->send          = s_last_send_result;
+ 566: out->retry         = report_retry;
+ 584: /* report_req 由 temperature_process() 按 sensor_gate_decide 置位。       */
+ 585: /* ITEM-003: 触发时 encode_frame10() 一次; 本函数内最多 3 次发送同一帧。 */
+ 592: if (report_req == 0u) {
+ 593: s_last_send_result = 0u;       /* 无待上报: 本周期未发送 (调试轨迹用) */
+ 597: if (s_pending_frame_valid == 0u) {
+ 599: report_req = 0u;
+ 600: s_last_send_result = 2u;
+ 601: report_retry = 0u;
+ 606: for (attempt = 0u; attempt < (uint8_t)SENSOR_RF_TX_RETRY; attempt++) {
+ 607: if (app_um2005C_send_data_timeout(send_data, SENSOR_RF_FRAME_LEN,
+ 608: SENSOR_RF_TX_TIMEOUT_MS)) {
+ 615: report_req = 0u;                  /* 成功或用尽均结束本周期, 不跨周期保留 */
+ 616: s_pending_frame_valid = 0u;
+ 617: report_retry = 0u;                /* IC-003: S.y 在成功/用尽后为 0 */
+ 618: s_last_send_result = result;
+ 623: if ((report_req == 0u) && (sample_flag == 0u)) {

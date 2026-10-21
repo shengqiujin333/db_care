@@ -52,6 +52,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/hos
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_verify_ev.c | history | 测试能力 harness，已陈旧不可编译（仍按 T2 之前 light_sample() 的 bool API 编写，且引用已删滞回语义）；结论不采用，待重写
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c | active | measure.c 采样流程与发送路径实现侧自检；含判定前 p/H 快照、失败不推进、冻结帧/3 次发送/不跨周期
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_verify_ev.c | active | 测试能力独立验证 harness：measure.c 多周期流程模型
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_freeze_verify_item003.c | active | 测试能力独立验证 harness（EV-022 ITEM-003）：触发一次编码、单周期 1..3 次同字节发送、重试期间改值不改帧、成功后/用尽清除、不跨周期、S.s/y；直编当前产品 measure.c，--wrap 计数真实 encoder
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_snapshot_verify_item002.c | active | 测试能力独立验证 harness（EV-022 ITEM-002）：16 周期成功/失败混合、判定前 p/H 快照、失败零副作用、失败后帧身份；直编当前产品 measure.c
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_check.c | active | 空口帧往返 + 网关→Android 映射实现侧自检
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_verify_ev.c | active | 测试能力独立验证 harness：空口帧字段/字节序/篡改拒绝
@@ -245,6 +246,32 @@ evidence/ev022_item003/host_tests_full.log | active | test/build_test.sh 5 组�
 evidence/ev022_item003/image_md5.txt | active | 本轮 axf/hex md5
 evidence/ev022_item003/measure_flow_item003.log | active | host_measure_flow_check 原始输出（72/0，含 [9]）
 evidence/ev022_item003/source_sha256.txt | active | measure.c 与 host_measure_flow_check.c SHA-256
+evidence/ev022_item003_verify/ | active | EV-022 ITEM-003 独立验证证据：16 周期 harness/独立参考模型/旧实现负向对照、实板 COM43 原始捕获与判定、实际下载身份、构建与哈希
+evidence/ev022_item003_verify/README.md | active | 证据清单与限制
+evidence/ev022_item003_verify/build_rebuild.log | active | 本能力 mdk_build rebuild 原始日志（0 Error/1 既有 warning、Code/RO/RW/ZI）
+evidence/ev022_item003_verify/com43_capture_a.dat | active | 下载后 COM43 300 s 原始字节（112 B，k=3）
+evidence/ev022_item003_verify/com43_capture_b.dat | active | 下载后 COM43 300 s 原始字节（224 B，k=6/9，间隔 180 s）
+evidence/ev022_item003_verify/compile_current.err | active | 当前 harness 编译 stderr（仅产品 encrytogate.c 既有告警）
+evidence/ev022_item003_verify/compile_old.err | active | 负向对照 harness 编译 stderr（同上）
+evidence/ev022_item003_verify/git_head.txt | active | 受测提交 09d4c52
+evidence/ev022_item003_verify/harness_current.err | active | 当前 harness 运行 stderr（空）
+evidence/ev022_item003_verify/harness_current.out | active | 当前实现逐周期原始输出（9 个触发周期）
+evidence/ev022_item003_verify/harness_old.err | active | 旧 harness 运行 stderr（空）
+evidence/ev022_item003_verify/harness_old.out | active | 旧实现同刺激原始输出
+evidence/ev022_item003_verify/host_tests_regression.log | active | 实现侧既有宿主机套件回归日志（5 组 226/0，仅参考）
+evidence/ev022_item003_verify/image_md5.txt | active | 本次 axf/hex md5
+evidence/ev022_item003_verify/mdk_flash.log | active | 本能力 mdk_flash 原始下载日志（Verify OK）
+evidence/ev022_item003_verify/old_measure_pre_item003.c | active | 父提交 d4edf1f 的 measure.c（证据输入，非产品源码）
+evidence/ev022_item003_verify/programmed_prototype.md | active | 本次 mdk_flash 实际下载身份（axf/hex md5、Verify OK）与目标；仅证明下载
+evidence/ev022_item003_verify/source_sha256.txt | active | measure.c、harness、旧实现 SHA-256
+evidence/ev022_item003_verify/static_refs.py | active | measure.c 静态引用提取脚本（可复跑）
+evidence/ev022_item003_verify/static_refs.txt | active | 冻结/发送/清除/轨迹字段的行号引用原始输出
+evidence/ev022_item003_verify/test.md | active | EV-022 TestEvidence 正文：受测身份、16 周期逐条、负向对照、实板观测、静态核对、局限、TEST_PASS（本增量）
+evidence/ev022_item003_verify/verify_com43.out | active | 实板复核 62 passed / 0 failed，含触发路径未执行声明
+evidence/ev022_item003_verify/verify_com43_item003.py | active | 实板原始字节独立解析/判据（非触发周期不变量、节拍、行长）
+evidence/ev022_item003_verify/verify_current.out | active | 当前实现 332 passed / 0 failed
+evidence/ev022_item003_verify/verify_measure_freeze_item003.py | active | 独立 Python 参考模型（门控/尝试次数/逐字节冻结/s·y/清除）
+evidence/ev022_item003_verify/verify_old.out | active | 旧实现 22 项不符，NEGATIVE_CONTROL_OK
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应
