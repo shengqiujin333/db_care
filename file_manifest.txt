@@ -89,6 +89,7 @@ artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（�
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 5.0（逐文件核对、诊断设计、标定现场最小操作、判定与上报冻结语义、增量任务）
 artifacts/firmware_exploration.md | active | 本轮固件可行性探索报告 FEX-001（GXHT40 无 ACK 的外部仪器定位、光敏 1/3 可分离性风险、上报判据 3/14 不符、测试资产同向偏差、节拍/UART/资源结论与未知项）
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 5.8（ITEM-002 复验修复：本轮无产品代码改动，用既有实板数据收窄装配/器件假设并登记现场检查项）
+artifacts/firmware_implementation_v10.md | active | 本轮最终固件实现记录 FWI-010：ITEM-001..008 汇总、最终 rebuild 0 Error/1 既有 warning、静态核对 11/11、7 组 295/0、镜像 md5 与未完成/未实板边界
 artifacts/firmware_implementation_v3.md | active | 本轮固件实现记录 FWI-003：ITEM-001 完成 sensor_gate_decide/升温门控/35.0 继续评估/常量更名/调用点与 14 向量自检；其余任务未实现，构建 md5 与限制见文
 artifacts/firmware_implementation_v4.md | active | 本轮固件实现记录 FWI-004：ITEM-002 完成判定前 prev/H 快照、判定后推进、失败不推进、S 行 p/H 轨迹；含 A→B→失败→C 自检、构建 md5 与未完成项
 artifacts/firmware_implementation_v5.md | active | 本轮固件实现记录 FWI-005：ITEM-003 完成触发时冻结 10B 帧、单周期最多 3 次发送同一帧、成功后/用尽清除、不跨周期、S.s/y；含发送场景自检、构建 md5 与未完成项
@@ -458,6 +459,17 @@ evidence/ev027_item007_verify/source_sha256.txt | active | 自检资产、产品
 evidence/ev027_item007_verify/static_check.out | active | 静态核对原始输出（42 passed / 0 failed / 1 warning）
 evidence/ev027_item007_verify/static_check_item007.py | active | 独立静态核对脚本（14 向量、旧语义隔离、覆盖断言、产品源码语义、提交范围）
 evidence/ev027_item007_verify/test.md | active | EV-027 TestEvidence 正文：受测提交 baf9d0f、295/0、负向对照、静态核对、差异与限制、TEST_PASS（本增量）
+evidence/ev027_item008/ | active | EV-027 ITEM-008 最终实现证据：build.md、driver_test.md、rebuild 日志、md5、6 个源码 SHA-256、静态核对脚本/输出、7 组 295/0 host 测试
+evidence/ev027_item008/README.md | active | EV-027 证据清单与限制
+evidence/ev027_item008/build.md | active | ITEM-008 BuildEvidence 正文（最终 rebuild/尺寸/md5/限制）
+evidence/ev027_item008/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
+evidence/ev027_item008/driver_test.md | active | ITEM-008 DriverTestEvidence 正文（11 项静态核对/S-G 行长/295 自检）
+evidence/ev027_item008/host_tests_full.log | active | test/build_test.sh 7 组原始输出（295/0）
+evidence/ev027_item008/image_md5.txt | active | 最终 axf/hex md5
+evidence/ev027_item008/manifest_check.txt | active | ITEM-008 清单同步核对输出（新文件均已登记）
+evidence/ev027_item008/source_sha256.txt | active | fw_core.h/sensor_config.h/fw_core.c/measure.c/debug_trace.c/main.c SHA-256
+evidence/ev027_item008/static_audit.py | active | 退役路径/NVM/心跳/引脚/RF 与 S-G 行长静态核对脚本
+evidence/ev027_item008/static_audit.txt | active | 上述静态核对原始输出（11/0）
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应

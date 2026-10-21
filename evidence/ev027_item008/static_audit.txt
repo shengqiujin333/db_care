@@ -1,0 +1,21 @@
+changed product-source files vs 8ae4a33:
+  CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/fw_core.h
+  CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+  CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c
+  CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c
+  CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c
+  CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c
+
+PASS  no effective hall/OPTCFG/params/history call
+PASS  no NVM/Flash parameter write
+PASS  sample_flag=1 only initial/RTC
+PASS  temperature_process called once in USER
+PASS  send_data_to_gateway called once in USER
+PASS  no GPIOA reset in USER code
+PASS  no GPIOA clock disable in USER code
+PASS  no added GPIO/NVIC/RTC configuration lines
+PASS  no gateway firmware change
+PASS  no RF/encrytogate change
+PASS  no light/gxht40/sf_i2c behavior change
+PASS  S/G worst <= 96 B
+==== result: 12 passed, 0 failed ====
