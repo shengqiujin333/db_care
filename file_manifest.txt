@@ -76,8 +76,12 @@ artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 5.0（逐�
 artifacts/firmware_exploration.md | active | 本轮固件可行性探索报告 FEX-001（GXHT40 无 ACK 的外部仪器定位、光敏 1/3 可分离性风险、上报判据 3/14 不符、测试资产同向偏差、节拍/UART/资源结论与未知项）
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 5.8（ITEM-002 复验修复：本轮无产品代码改动，用既有实板数据收窄装配/器件假设并登记现场检查项）
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 5.0（含 FWR-116 失败可诊断、FWR-117 以当前构建再观测、FWR-118 失败后重探 + 总线恢复，readme 修改点 1–8 对应表）
+artifacts/firmware_requirements_v3.md | active | 本轮固件需求 FWR-003（采样/驱动/光照标定/升温门控/冻结发送/UART 有界/启动/资源/不伪造，偏差 D-01..D-10 与依赖 U01..U07）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 5.0（裸机超级循环 + RTC 深睡；T_DIAG/T_TRACE 预算与不变量）
+artifacts/firmware_rtos_architecture_v3.md | active | 本轮运行时架构 RTA-003（裸机主循环/RTC ISR 边界、单周期事务状态机、时序/资源预算、故障隔离与可测试性）
+artifacts/firmware_solution_design.md | active | 本轮固件方案 FDS-003（DD-01..12：完整门控/判定前快照/单周期冻结帧/有界 UART/标定/启动致命路径；文件改动面、伪码、异常矩阵、预算、任务映射）
 artifacts/firmware_tasks.yaml | active | 固件实现任务清单（run8 5 项：T1 诊断、T2 采集恢复、T3 全暗标定、T4 升温判定、T5 待上报冻结）
+artifacts/firmware_tasks_v3.yaml | active | 本轮固件实现任务清单（仅 items：门控/快照/冻结发送/UART 有界/主循环/标定配置/测试/构建 8 项；现场标定为外部依赖，按前置依赖排序）
 artifacts/interface_contract.md | history | 旧接口契约 IC-002 v3.0；本轮由 interface_contract_v4.md IC-003 v4.0替代，保留历史
 artifacts/interface_contract_v4.md | active | 本轮接口契约 IC-003 v4.0：IF01..08字段/编码/时序/错误/重试/兼容；消费PACC-002、AEX、SD；保留真实条件与产品待决项
 artifacts/product_acceptance.md | history | 产品验收定义 PACC-001（n002；已被 PACC-002 在 n008 修正，保留历史，不再作为下游现行判据）
