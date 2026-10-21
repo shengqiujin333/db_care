@@ -470,6 +470,25 @@ evidence/ev027_item008/manifest_check.txt | active | ITEM-008 清单同步核对
 evidence/ev027_item008/source_sha256.txt | active | fw_core.h/sensor_config.h/fw_core.c/measure.c/debug_trace.c/main.c SHA-256
 evidence/ev027_item008/static_audit.py | active | 退役路径/NVM/心跳/引脚/RF 与 S-G 行长静态核对脚本
 evidence/ev027_item008/static_audit.txt | active | 上述静态核对原始输出（11/0）
+evidence/ev028_item008_verify/ | active | EV-028 ITEM-008 独立验证证据：最终 rebuild、镜像身份、23 项静态核对、S/G 96 B 预算、mdk_flash 与 COM43 实板观测
+evidence/ev028_item008_verify/README.md | active | EV-028 证据清单与边界
+evidence/ev028_item008_verify/build_rebuild.log | active | 本能力 mdk_build rebuild 原始日志（V6.24，0 Error / 1 既有 main.c:252 warning）
+evidence/ev028_item008_verify/com43_capture_a.dat | active | 下载后 COM43 9600 8N1、300 s 原始字节（112 B，1 个失败周期）
+evidence/ev028_item008_verify/compile_diag_line.err | active | 诊断行 harness 编译 stderr（空）
+evidence/ev028_item008_verify/diag_line_verify.exe | active | 直编当前 debug_trace.c + 自建影子 MCU 的诊断行 harness（构建产物）
+evidence/ev028_item008_verify/diag_line_verify.out | active | 诊断行 harness 原始输出（36 passed / 0 failed；worst S=92 B，G=46 B）
+evidence/ev028_item008_verify/host_tests_regression.log | active | 既有实现侧套件最终树回归（7 组 295 passed / 0 failed，仅参考）
+evidence/ev028_item008_verify/image_md5.txt | active | 构建后 axf/hex md5 与大小
+evidence/ev028_item008_verify/image_md5_after_flash.txt | active | 下载后 axf/hex md5（与构建一致）
+evidence/ev028_item008_verify/mdk_flash.log | active | 本能力 mdk_flash 原始日志（Erase/Program/Verify OK/Application running）
+evidence/ev028_item008_verify/programmed_prototype.md | active | 本次 mdk_flash 实际下载身份（axf/hex md5、Verify OK）与目标；仅证明下载
+evidence/ev028_item008_verify/run_context.txt | active | 本轮 UTC/本地时间、Git HEAD、对比基线
+evidence/ev028_item008_verify/source_sha256.txt | active | 6 个受测产品源码 SHA-256
+evidence/ev028_item008_verify/static_audit.out | active | 静态核对原始输出（23 passed / 0 failed）
+evidence/ev028_item008_verify/static_audit_item008.py | active | 本能力自建 ITEM-008 静态核对脚本（退役路径/NVM/RF/节拍/引脚/中断/行长）
+evidence/ev028_item008_verify/test.md | active | EV-028 TestEvidence 正文：受测身份、独立构建、静态核对 23/0、S=92 B/G=46 B、实板周期、局限、TEST_PASS（本 item）
+evidence/ev028_item008_verify/verify_com43.out | active | 实板解析结果（13 passed / 0 failed）
+evidence/ev028_item008_verify/verify_com43_item008.py | active | COM43 原始字节独立解析/判据（唯一 S 周期、行长、CRLF、字段）
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应
