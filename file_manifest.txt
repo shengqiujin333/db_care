@@ -48,8 +48,10 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/hos
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gw_compat_verify_ev.c | active | 测试能力独立验证 harness：传感器→网关→Android 全链兼容
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_check.c | active | GXHT40 驱动实现侧自检（mock 从机）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_verify_ev.c | active | 测试能力独立验证 harness：GXHT40 驱动（位级 mock 总线/从机、重探、总线恢复、命令白名单）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_item005_link_stubs.c | active | ITEM-005 测试侧最小链接桩（report_req/light_init），供既有 RTC 节拍 harness 链接当前 main.c；无产品逻辑
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_check.c | active | 光照通路实现侧自检（真实 light.c + 影子 MCU）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_verify_ev.c | history | 测试能力 harness，已陈旧不可编译（仍按 T2 之前 light_sample() 的 bool API 编写，且引用已删滞回语义）；结论不采用，待重写
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_main_flow_verify_item005.c | active | 测试能力独立验证 harness（EV-025 ITEM-005）：直编当前 main.c，事件顺序验证 UID 零不采样/不发送/不空转与每机会一次事务/唯一 S；setjmp 有界退出产品无限循环
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c | active | measure.c 采样流程与发送路径实现侧自检；含判定前 p/H 快照、失败不推进、冻结帧/3 次发送/不跨周期
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_verify_ev.c | active | 测试能力独立验证 harness：measure.c 多周期流程模型
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_freeze_verify_item003.c | active | 测试能力独立验证 harness（EV-022 ITEM-003）：触发一次编码、单周期 1..3 次同字节发送、重试期间改值不改帧、成功后/用尽清除、不跨周期、S.s/y；直编当前产品 measure.c，--wrap 计数真实 encoder
@@ -329,6 +331,42 @@ evidence/ev024_item005/main_static_check.py | active | main.c BOOT/UID/单次事
 evidence/ev024_item005/main_static_check.txt | active | 上述静态检查原始输出（16/0）
 evidence/ev024_item005/rtc_verify.log | active | 测试能力 RTC harness 配临时外部 stub 的回归输出（17/0）
 evidence/ev024_item005/source_sha256.txt | active | main.c 与 main_static_check.py SHA-256
+evidence/ev025_item005_verify/README.md | active | EV-025 证据清单与限制（ITEM-005 主流程/BOOT/UID 零）
+evidence/ev025_item005_verify/build_rebuild.log | active | 本轮 Keil rebuild 原始日志（0 Error / 1 既有 warning，Code/RO/RW/ZI）
+evidence/ev025_item005_verify/com43_capture_a.bin | active | COM43 原始字节窗口 A（300 s，1 周期 S k=3 + G）
+evidence/ev025_item005_verify/com43_capture_b.bin | active | COM43 原始字节窗口 B（300 s，2 周期 S k=6/9 + G）
+evidence/ev025_item005_verify/compile_harness.err | active | 主流程 harness 编译 stderr（空）
+evidence/ev025_item005_verify/compile_main.err | active | 当前 main.c host 编译 stderr（仅既有隐式声明 warning）
+evidence/ev025_item005_verify/compile_old_main.err | active | 父提交 main.c 负向对照编译 stderr
+evidence/ev025_item005_verify/compile_rtc_harness.err | active | RTC harness 编译 stderr（空）
+evidence/ev025_item005_verify/compile_rtc_main.err | active | RTC 回归用 main.c 编译 stderr（空）
+evidence/ev025_item005_verify/compile_stubs.err | active | 测试链接桩编译 stderr（空）
+evidence/ev025_item005_verify/git_head.txt | active | 受测 Git HEAD
+evidence/ev025_item005_verify/harness_main_flow.exe | active | 主流程 harness 可执行产物（当前 main.c）
+evidence/ev025_item005_verify/harness_main_flow.out | active | 主流程 harness 原始事件序列与结果（26/0）
+evidence/ev025_item005_verify/harness_main_flow_old.exe | active | 同一 harness 编译父提交 main.c 的可执行产物
+evidence/ev025_item005_verify/harness_main_flow_old.out | active | 父提交负向对照原始输出（10/16 fail）
+evidence/ev025_item005_verify/harness_rtc_cadence.exe | active | RTC 1 min×3 回归 harness（当前 main.c）
+evidence/ev025_item005_verify/host_tests_regression.log | active | 既有宿主机套件 5 组原始输出（233/0，参考）
+evidence/ev025_item005_verify/image_md5.txt | active | 本轮 axf/hex md5
+evidence/ev025_item005_verify/link_main_flow.err | active | 主流程链接 stderr（空）
+evidence/ev025_item005_verify/mdk_flash.log | active | 首次下载原始日志（Verify OK / Application running）
+evidence/ev025_item005_verify/mdk_flash_second.log | active | 运行后第二次下载日志（Verify OK，SWD 可用）
+evidence/ev025_item005_verify/old_main_pre_item005.c | active | 父提交 847b230 的 main.c（负向对照）
+evidence/ev025_item005_verify/programmed_prototype.md | active | 实际下载固件身份与目标（仅证明下载，不代表功能合格）
+evidence/ev025_item005_verify/rtc_verify.out | active | RTC 1 min×3 回归原始输出（17/0）
+evidence/ev025_item005_verify/run_timestamp.txt | active | 本轮验证 UTC 时间
+evidence/ev025_item005_verify/serial_ports.txt | active | serial_list_ports 原始摘要（COM43/COM26）
+evidence/ev025_item005_verify/source_sha256.txt | active | 被测源码 SHA-256
+evidence/ev025_item005_verify/static_check.out | active | 静态/边界检查原始输出（47/0）
+evidence/ev025_item005_verify/static_check_item005.py | active | 独立静态核对：BOOT 顺序、UID 零块、单次事务、RTC ISR、GPIOA/I2C/SWD/UART/Flash 边界
+evidence/ev025_item005_verify/test.md | active | 嵌入式验证证据 EV-025 正文：TEST_PASS（ITEM-005，含范围限制）
+evidence/ev025_item005_verify/usb_devices.txt | active | usb_list_devices 原始摘要（探针/串口/手机/逻辑仪枚举）
+evidence/ev025_item005_verify/verify_com43.out | active | 实板原始字节独立解析结果（44/0）
+evidence/ev025_item005_verify/verify_com43_item005.py | active | COM43 原始字节独立判据（行格式/行长/每机会一 S/k 增量/G 形态）
+evidence/ev025_item005_verify/verify_current.out | active | 主流程 harness 输出独立判据（26/0）
+evidence/ev025_item005_verify/verify_main_flow_item005.py | active | 主流程不变量独立判据（含父提交 --expect-old 模式）
+evidence/ev025_item005_verify/verify_old.out | active | 父提交负向对照独立判据（NEGATIVE_CONTROL_OK）
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应

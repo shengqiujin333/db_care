@@ -1,0 +1,45 @@
+PASS  com43_capture_a.bin: payload is printable ASCII (HEX/int fields only)
+PASS  com43_capture_a.bin: last line ends with CRLF (no truncated tail)
+PASS  com43_capture_a.bin: no trailing bytes after final CRLF
+PASS  com43_capture_a.bin: line length 66 <= 96 (incl. CRLF)
+PASS  com43_capture_a.bin: line length 46 <= 96 (incl. CRLF)
+PASS  com43_capture_a.bin: contains diagnostic lines
+PASS  com43_capture_a.bin: S line has the 15 frozen keys in order
+PASS  com43_capture_a.bin: S k=3 (q=0) followed by exactly one G
+PASS  com43_capture_a.bin: S k=3 light fields o/n/a/x self-consistent
+PASS  com43_capture_a.bin: S k=3 uncalibrated V=0 -> D=0
+PASS  com43_capture_a.bin: S k=3 first-sample H=0/p=0
+PASS  com43_capture_a.bin: S k=3 failed sample -> no report/send (q=r=s=y=0)
+PASS  com43_capture_a.bin: S k=3 no fabricated t/h on a failed sample
+PASS  com43_capture_a.bin: G line has the 7 frozen keys in order
+PASS  com43_capture_a.bin: G failure shape matches no-device ACK (a44=a45=0, at=3)
+PASS  com43_capture_b.bin: payload is printable ASCII (HEX/int fields only)
+PASS  com43_capture_b.bin: last line ends with CRLF (no truncated tail)
+PASS  com43_capture_b.bin: no trailing bytes after final CRLF
+PASS  com43_capture_b.bin: line length 66 <= 96 (incl. CRLF)
+PASS  com43_capture_b.bin: line length 46 <= 96 (incl. CRLF)
+PASS  com43_capture_b.bin: line length 66 <= 96 (incl. CRLF)
+PASS  com43_capture_b.bin: line length 46 <= 96 (incl. CRLF)
+PASS  com43_capture_b.bin: contains diagnostic lines
+PASS  com43_capture_b.bin: S line has the 15 frozen keys in order
+PASS  com43_capture_b.bin: S k=6 (q=0) followed by exactly one G
+PASS  com43_capture_b.bin: S k=6 light fields o/n/a/x self-consistent
+PASS  com43_capture_b.bin: S k=6 uncalibrated V=0 -> D=0
+PASS  com43_capture_b.bin: S k=6 first-sample H=0/p=0
+PASS  com43_capture_b.bin: S k=6 failed sample -> no report/send (q=r=s=y=0)
+PASS  com43_capture_b.bin: S k=6 no fabricated t/h on a failed sample
+PASS  com43_capture_b.bin: G line has the 7 frozen keys in order
+PASS  com43_capture_b.bin: G failure shape matches no-device ACK (a44=a45=0, at=3)
+PASS  com43_capture_b.bin: S line has the 15 frozen keys in order
+PASS  com43_capture_b.bin: S k=9 (q=0) followed by exactly one G
+PASS  com43_capture_b.bin: S k=9 light fields o/n/a/x self-consistent
+PASS  com43_capture_b.bin: S k=9 uncalibrated V=0 -> D=0
+PASS  com43_capture_b.bin: S k=9 first-sample H=0/p=0
+PASS  com43_capture_b.bin: S k=9 failed sample -> no report/send (q=r=s=y=0)
+PASS  com43_capture_b.bin: S k=9 no fabricated t/h on a failed sample
+PASS  com43_capture_b.bin: G line has the 7 frozen keys in order
+PASS  com43_capture_b.bin: G failure shape matches no-device ACK (a44=a45=0, at=3)
+PASS  at least two real sampling opportunities observed (got 3)
+PASS  exactly one S per k (no duplicate opportunity)
+PASS  k increments by 3 between opportunities: [3, 6, 9] diffs=[3, 3]
+result: 44 passed, 0 failed; S rows k=[3, 6, 9]

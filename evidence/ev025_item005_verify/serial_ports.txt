@@ -1,0 +1,9 @@
+# serial_list_ports — 2026-10-21T03:47:25Z（工具原始输出摘要）
+
+| port | description | hwid | vid:pid |
+|---|---|---|---|
+| COM43 | Prolific USB-to-Serial Comm Port (COM43) | USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2 | 067B:2303 |
+| COM26 | USB 串行设备 (COM26) | USB VID:PID=C251:F001 SER=87094109484987710672FF50 | C251:F001 |
+
+结论（仅枚举事实）：传感器调试串口 COM43 在线；COM26 是调试器（CW-DAPLink）附带的 CDC 口，不是传感器 UART1。
+本项实板观测使用 COM43 @9600 8N1。

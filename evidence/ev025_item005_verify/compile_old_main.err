@@ -1,0 +1,4 @@
+D:/mypro/beiwo2/AIP/evidence/ev025_item005_verify/old_main_pre_item005.c: In function 'firmware_main_entry':
+D:/mypro/beiwo2/AIP/evidence/ev025_item005_verify/old_main_pre_item005.c:187:21: warning: implicit declaration of function 'SYSCTRL_GetAllRstFlag' [-Wimplicit-function-declaration]
+  187 |         rst_flags = SYSCTRL_GetAllRstFlag();
+      |                     ^~~~~~~~~~~~~~~~~~~~~

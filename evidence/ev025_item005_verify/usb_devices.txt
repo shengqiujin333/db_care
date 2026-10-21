@@ -1,0 +1,14 @@
+# usb_list_devices — 2026-10-21T04:08:31Z（工具原始输出摘要）
+
+| Class | FriendlyName | InstanceId |
+|---|---|---|
+| HIDClass | USB 输入设备 | USB\VID_C251&PID_F001&MI_02\6&87FA922&0&0002 |
+| Ports | Prolific USB-to-Serial Comm Port (COM43) | USB\VID_067B&PID_2303\7&298A15B9&0&2 |
+| Ports | USB 串行设备 (COM26) | USB\VID_C251&PID_F001&MI_00\6&87FA922&0&0000 |
+| USB | USB Composite Device | USB\VID_C251&PID_F001\87094109484987710672FF50 |
+| USBDevice | SDM439-QRD _SN:3AE89DF1 | USB\VID_18D1&PID_4EE7\12F046690506 |
+| USBDevice | fx2lafw | USB\VID_04B4&PID_8613\CYPRESS_FX2 |
+| Bluetooth | Intel(R) 无线 Bluetooth(R) | USB\VID_8087&PID_0033\5&FE57545&0&10 |
+
+结论（仅枚举事实）：下载调试探针 C251:F001、本项使用的 COM43、登记手机 12F046690506 与可选逻辑分析仪 fx2lafw 均在 USB 层被枚举。
+枚举不证明目标协议可用、固件行为或功能通过。
