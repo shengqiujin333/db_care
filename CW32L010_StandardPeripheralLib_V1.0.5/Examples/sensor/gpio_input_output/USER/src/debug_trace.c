@@ -4,7 +4,7 @@
  * 行为:
  *   - debug_trace_boot():     打开 UART1, 打印一条启动横幅 (单行)。
  *   - debug_trace_sample():   打印一行 S 轨迹 (字段固定、仅整数、<= 96 字节含行尾)。
- *   - debug_trace_flush_close(): 等 TC 后关闭 UART1 (幂等)。
+ *   - debug_trace_flush_close(): 有界等待 TXE/TXBUSY 后关闭 UART1 (幂等)。
  *
  * 字节预算: S 行的字面格式与最坏宽度见本文末尾注释; 单行最坏 86 字节 (含 CRLF),
  *           不超过 SENSOR_DEBUG_UART_MAXLINE=96。
@@ -27,13 +27,31 @@
 
 static uint8_t s_uart_open = 0u;
 
+/* ITEM-004: 整行发送预算。每个 debug_trace_* 行开始时重置; 超时只中止本行,
+ * 不影响采样/判定/发送, 随后 flush_close() 仍会在关闭预算内完成 UART 复位。 */
+static uint32_t s_tx_guard = 0u;
+static uint8_t  s_tx_abort = 0u;
+
 /* ==================================================================== */
-/* 输出原语 (轮询, 逐字节有界)                                           */
+/* 输出原语 (轮询, 逐字节/逐行有界)                                       */
 /* ==================================================================== */
+static void trace_line_begin(void)
+{
+    s_tx_guard = (uint32_t)DEBUG_UART_LINE_GUARD;
+    s_tx_abort = 0u;
+}
+
 static void trace_putc(char c)
 {
+    if (s_tx_abort != 0u) {
+        return;                         /* 本行预算已耗尽: 后续字符不再写 */
+    }
     while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET) {
-        /* 轮询等待发送保持寄存器空; 有界由固定行长保证 */
+        if (s_tx_guard == 0u) {
+            s_tx_abort = 1u;
+            return;
+        }
+        s_tx_guard--;
     }
     UART_SendData_8bit(DEBUG_UARTx, (uint8_t)c);
 }
@@ -141,16 +159,29 @@ void debug_trace_flush_close(void)
     }
 
     /*
-     * 等发送器完全排空后再关闭 (D-ITEM001-1 修复):
+     * 有界等待发送器排空后再关闭 (D-ITEM001-1 修复; ITEM-004 加预算):
      *   1) 先等 TXE: 确认最后一字节已从发送数据寄存器进入移位寄存器;
      *   2) 再等 TXBUSY 清零: 确认移位寄存器已排空。
      * 不能只用 TC: TC 是可清除标志, 上一帧完成后可能保持置位, 使等待成为空操作,
      * 随后的 UART1 复位会截断仍在移位的尾字节 (实测丢失 S 行末尾 CR+LF)。
      * vendor UART_SendString() 同样以 TXBUSY 排空。
      */
-    while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET) {
-    }
-    while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXBUSY) == SET) {
+    /* ITEM-004: 关闭前排水也有界; 超时仍执行下面的 UART1 复位/引脚回收。 */
+    {
+        uint32_t guard = (uint32_t)DEBUG_UART_CLOSE_GUARD;
+        while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET) {
+            if (guard == 0u) {
+                break;
+            }
+            guard--;
+        }
+        guard = (uint32_t)DEBUG_UART_CLOSE_GUARD;
+        while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXBUSY) == SET) {
+            if (guard == 0u) {
+                break;
+            }
+            guard--;
+        }
     }
 
     /* 只复位/关闭 UART1 外设与时钟; 绝不动 GPIOA 复位或 GPIOA 时钟 */
@@ -169,6 +200,8 @@ void debug_trace_flush_close(void)
     GPIO_Init(DEBUG_UART_RX_GPIO_PORT, &gpio);
 
     s_uart_open = 0u;
+    s_tx_abort = 0u;
+    s_tx_guard = 0u;
 }
 
 /* ==================================================================== */
@@ -185,6 +218,7 @@ void debug_trace_boot(const uint8_t *uid, uint32_t reset_flags)
         return;
     }
 
+    trace_line_begin();
     trace_puts("BOOT fw=FD-002r4 uid=");
     trace_hex(uid[0], 2u);
     trace_hex(uid[1], 2u);
@@ -219,6 +253,7 @@ void debug_trace_bus(const debug_trace_bus_t *b)
      *           超出以 '+' 结尾, 无地址应答时为 none。
      * 只报告软件读到的事实, 不代表位级电气/时序结论。
      */
+    trace_line_begin();
     trace_puts("BUS idle=");
     trace_u32((uint32_t)b->idle, 1u);
     trace_puts(" scl=");
@@ -264,6 +299,7 @@ void debug_trace_iotest(const debug_trace_iotest_t *t)
      * swap = SDA/SCL 角色对调后收到 ACK 的候选地址 (无则 none)。
      * 只报告软件读到的事实, 不代表位级电气结论。
      */
+    trace_line_begin();
     trace_puts("IOTEST sda_lo=");
     trace_u32((uint32_t)((t->sda_lo != 0u) ? 1u : 0u), 1u);
     trace_puts(" scl_lo=");
@@ -306,6 +342,7 @@ void debug_trace_iosig(const debug_trace_iosig_t *s)
      *           / S18 ACK 时隙 SCL 低 / S19 ACK 时隙 SCL 高。
      * 只报告软件读到的事实, 不代表位级电气结论。
      */
+    trace_line_begin();
     trace_puts("IOSIG scl=");
     trace_hex(s->scl20 & 0xFFFFFu, 5u);
     trace_puts(" sda=");
@@ -331,6 +368,7 @@ void debug_trace_vdd(const debug_trace_vdd_t *v)
      * 独立复核: mv == 4095 * bgrmv / code (ok=1 时)。
      * ok=0 表示转换超时/无效, 此时 mv=0, 不得当作真实供电电压。
      */
+    trace_line_begin();
     trace_puts("VDD ok=");
     trace_u32((uint32_t)((v->ok != 0u) ? 1u : 0u), 1u);
     trace_puts(" code=");
@@ -362,6 +400,7 @@ void debug_trace_sample(const debug_trace_sample_t *s)
      * 单位: k=1 分钟 RTC 节拍; p/t=0.1C 有符号; H/V/D/q/r=0/1; o=成功样本数;
      *       n/x/a=ADC 原始码(0..4095); h=0.1%RH; s=0 未发送/1 成功/2 失败; y=重试计数。
      */
+    trace_line_begin();
     trace_putc('S');
     trace_puts(" k=");  trace_u32(s->tick, 1u);
     trace_puts(" p=");  trace_i32((int32_t)s->prev_temp_x10);
@@ -387,6 +426,7 @@ void debug_trace_sample(const debug_trace_sample_t *s)
      * raw 未读成功时用 12 个 '-' 占位; 不改变任何业务状态。
      */
     if (s->diag_valid != 0u) {
+        trace_line_begin();
         trace_putc('G');
         trace_puts(" s=");    trace_u32((uint32_t)s->diag_status, 1u);
         trace_puts(" a44=");  trace_u32((uint32_t)((s->diag_ack44 != 0u) ? 1u : 0u), 1u);

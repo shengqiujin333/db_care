@@ -155,6 +155,11 @@
 #endif
 #endif
 #define SENSOR_DEBUG_UART_MAXLINE       96u
+/* UART 等待预算(轮询循环次数, 8 MHz 下约 4 cycles/loop):
+ *   行预算约 300 ms (>= 2x 96 B@9600 理论线时); 关闭预算约 50 ms。
+ * 仅用于 UART 故障隔离; 超时中止本行/关闭仍执行, 不阻塞业务。 */
+#define DEBUG_UART_LINE_GUARD           600000uL
+#define DEBUG_UART_CLOSE_GUARD          100000uL
 
 /* ==================================================================== */
 /* 6c. 上电总线诊断 (FWR-116; FD-002 rev 5.0 §5.2/§6.6.1/§6.7)           */
