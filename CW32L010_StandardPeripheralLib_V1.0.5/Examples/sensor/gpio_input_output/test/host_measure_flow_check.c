@@ -184,33 +184,33 @@ int main(void)
     CHECK(tempvalue == 200 && huminityvalue == 500, "成功样本写入 tempvalue/huminityvalue");
     CHECK(report_req == 0u, "无前值 + cur=200 -> report_req=0");
 
-    printf("[2] 下降恰好 0.9C (9) -> 不触发\n");
-    cycle(GXHT40_OK, 191, 501, true);
-    CHECK(report_req == 0u, "prev=200,cur=191 (drop 9) -> report_req=0");
+    printf("[2] 升温恰好 0.9C (9) -> 不触发\n");
+    cycle(GXHT40_OK, 209, 501, true);
+    CHECK(report_req == 0u, "prev=200,cur=209 (rise 9) -> report_req=0");
     CHECK(huminityvalue == 501, "成功时更新最近有效湿度");
 
-    printf("[3] 下降 1.0C (10) 且无光 -> 触发; 待上报不被后续无条件下周期清除\n");
-    cycle(GXHT40_OK, 181, 502, true);
-    CHECK(report_req == 1u, "prev=191,cur=181 (drop 10) 且 DARK -> report_req=1");
-    cycle(GXHT40_OK, 181, 502, true);          /* 无上报条件 */
+    printf("[3] 升温 1.0C (10) 且无光 -> 触发; 待上报不被后续无条件下周期清除\n");
+    cycle(GXHT40_OK, 219, 502, true);
+    CHECK(report_req == 1u, "prev=209,cur=219 (rise 10) 且 DARK -> report_req=1");
+    cycle(GXHT40_OK, 219, 502, true);          /* 无上报条件 */
     CHECK(report_req == 1u, "待上报标志保持 (不被无条件下周期清除)");
     report_req = 0u;
 
-    printf("[4] 下降满足但有光 -> 不触发\n");
-    cycle(GXHT40_OK, 170, 503, false);
-    CHECK(report_req == 0u, "prev=181,cur=170 (drop 11) 但 LIT -> report_req=0");
+    printf("[4] 升温满足但有光 -> 不触发\n");
+    cycle(GXHT40_OK, 229, 503, false);
+    CHECK(report_req == 0u, "prev=219,cur=229 (rise 10) 但 LIT -> report_req=0");
 
     printf("[5] 整周期失败: 不上报/不更新前值/不构造 0 值\n");
     report_req = 0u;
     cycle(GXHT40_ERR_CRC, 50, 999, true);
     CHECK(report_req == 0u, "失败周期不置 report_req");
-    CHECK(tempvalue == 170, "tempvalue 保持上次有效值 170 (未被失败的 50 覆盖)");
+    CHECK(tempvalue == 229, "tempvalue 保持上次有效值 229 (未被失败的 50 覆盖)");
     CHECK(huminityvalue == 503, "huminityvalue 保持上次有效值 503");
     CHECK(strcmp(g_order, "LT") == 0, "失败周期仍先光照后温湿度");
 
     printf("[6] 失败不污染前值: 恢复后按失败前的前值判定\n");
-    cycle(GXHT40_OK, 160, 504, true);
-    CHECK(report_req == 1u, "prev=170,cur=160 (drop 10) -> 上报 (证明失败周期未把 prev 改成 50)");
+    cycle(GXHT40_OK, 239, 504, true);
+    CHECK(report_req == 1u, "prev=229,cur=239 (rise 10) -> 上报 (证明失败周期未把 prev 改成 50)");
 
     printf("[7] 超温分支不受前值/光照限制\n");
     report_req = 0u;

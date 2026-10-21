@@ -2,7 +2,7 @@
  * measure.c - 传感器采样流程 (readme 修改点 1/2/4; FD-002 §4/§6/§10)
  *
  * 每个采样周期: 光照 (light_sample) -> 温湿度 (gxht40_measure) -> 状态推进。
- *   成功: 更新前一有效温度与最近有效湿度, 并按 sensor_decide_report 置待上报标志。
+ *   成功: 更新前一有效温度与最近有效湿度, 并按 sensor_gate_decide 置待上报标志。
  *   失败: 不上报、不更新前一有效温度、不构造 0 值 (tempvalue/huminityvalue 保持上次有效值)。
  * GXHT40 的读 NACK / CRC 错有界重试在驱动 gxht40_measure() 内按 sensor_config.h 上限完成。
  *
@@ -489,8 +489,8 @@ uint16_t temperature_process(void)
     s_trace_diag_valid = 0u;
 
     if (measure_sample()) {
-        uint8_t rep = sensor_decide_report(s_prev_temp_x10, s_have_prev,
-                                           tempvalue, s_light.dark) ? 1u : 0u;
+        uint8_t rep = sensor_gate_decide(true, s_prev_temp_x10, s_have_prev,
+                                         tempvalue, s_light.valid, s_light.dark) ? 1u : 0u;
         if (rep != 0u) {
             report_req = 1u;
         }
@@ -561,8 +561,8 @@ uint8_t mcu_uid[10];
 uint8_t send_data[10];
 
 /* ==================================================================== */
-/* 条件上报 (readme 修改点 4; IC-002 §2; FD-002 §6.4/§8.1)                */
-/* report_req 由 temperature_process() 按 sensor_decide_report 置位。    */
+/* 条件上报 (readme 修改点 4; PR-004/IC-003 IF02; FDS-003 §5)              */
+/* report_req 由 temperature_process() 按 sensor_gate_decide 置位。       */
 /* 帧布局/字节序/Feistel 加密均由 encode_frame10() 决定, 本项不变。        */
 /* ==================================================================== */
 void send_data_to_gateway(void)

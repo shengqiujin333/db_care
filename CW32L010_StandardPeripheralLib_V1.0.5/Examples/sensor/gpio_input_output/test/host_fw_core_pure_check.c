@@ -6,7 +6,7 @@
  *   T-L0-02 温度换算与合法域       -40.0/0/25/125 C 与 S=0/0xFFFF 无效域
  *   T-L0-03 湿度换算与截断         0%RH/50%RH/100%RH/S=0xFFFF
  *   T-L0-04 光照滞回状态机         阈值端点/带内不抖动
- *   T-L0-05 上报判定真值表         无前值/下降边界/需 DARK/35.0C 边界
+ *   T-L0-05 上报判定真值表         14 向量/升温边界/35.0C 继续评估
  *
  * 编译(在本目录):
  *   gcc -std=c11 -Wall -Wextra -I../USER/inc host_fw_core_pure_check.c \
@@ -20,9 +20,34 @@
 #include <stdbool.h>
 #include "fw_core.h"
 
+#ifndef SENSOR_CONFIG_NO_MCU
+#define SENSOR_CONFIG_NO_MCU
+#endif
+#include "sensor_config.h"
+
 static int pass, fail;
 #define CHECK(c, m) do { if (c) { pass++; printf("  PASS  %s\n", m); } \
                          else   { fail++; printf("  FAIL  %s\n", m); } } while (0)
+
+typedef struct {
+    bool sample_valid;
+    bool have_prev;
+    int16_t prev_x10;
+    int16_t cur_x10;
+    bool light_valid;
+    bool dark;
+    bool expect;
+} gate_vec_t;
+
+static bool ref_gate(bool sample_valid, int16_t prev_x10, bool have_prev,
+                     int16_t cur_x10, bool light_valid, bool dark)
+{
+    if (!sample_valid) return false;
+    if ((int32_t)cur_x10 > 350) return true;
+    if (!have_prev) return false;
+    if (!(light_valid && dark)) return false;
+    return ((int32_t)cur_x10 - (int32_t)prev_x10) > 9;
+}
 
 int main(void)
 {
@@ -87,16 +112,34 @@ int main(void)
         CHECK(bad == 0, "C_dark=1..4095 全量: mean=ceil(C/3) 为暗, 再低 1 不是暗");
     }
 
-    printf("[6] T-L0-05 上报判定真值表\n");
-    CHECK(sensor_decide_report(0, false, 200, true) == false, "无前值 + cur=200 -> false");
-    CHECK(sensor_decide_report(0, false, 351, false) == true, "无前值 + cur=351 -> true");
-    CHECK(sensor_decide_report(300, true, 291, true) == false, "下降 9 (0.9 C) -> false");
-    CHECK(sensor_decide_report(300, true, 290, true) == true, "下降 10 (1.0 C) -> true");
-    CHECK(sensor_decide_report(300, true, 289, true) == true, "下降 11 (1.1 C) -> true");
-    CHECK(sensor_decide_report(300, true, 290, false) == false, "下降满足但非 DARK -> false");
-    CHECK(sensor_decide_report(360, true, 350, true) == false, "cur=350 (恰好 35.0 C) -> false");
-    CHECK(sensor_decide_report(0, false, 351, false) == true, "cur=351 不受光照/前值限制");
-    CHECK(sensor_decide_report(300, true, 300, true) == false, "prev==cur -> false");
+    printf("[6] T-L0-05 上报判定真值表 (sensor_gate_decide)\n");
+    {
+        static const gate_vec_t v[14] = {
+            {1,1,300,308,1,1,0}, {1,1,300,309,1,1,0}, {1,1,300,310,1,1,1},
+            {1,1,300,310,1,0,0}, {1,1,300,310,0,0,0}, {1,1,310,300,1,1,0},
+            {1,1,340,350,1,1,1}, {1,1,340,350,1,0,0}, {1,0,0,351,0,0,1},
+            {1,0,0,350,1,1,0}, {1,0,0,360,0,0,1}, {1,1,352,351,0,0,1},
+            {1,1,300,310,0,0,0}, {0,0,0,0,0,0,0}
+        };
+        unsigned i;
+        for (i = 0u; i < 14u; i++) {
+            bool got = sensor_gate_decide(v[i].sample_valid, v[i].prev_x10,
+                                          v[i].have_prev, v[i].cur_x10,
+                                          v[i].light_valid, v[i].dark);
+            bool exp = ref_gate(v[i].sample_valid, v[i].prev_x10, v[i].have_prev,
+                                v[i].cur_x10, v[i].light_valid, v[i].dark);
+            char msg[48];
+            snprintf(msg, sizeof(msg), "v%u product/reference agree and match expected", i + 1u);
+            CHECK(got == v[i].expect && exp == v[i].expect, msg);
+        }
+    }
+    CHECK(sensor_decide_report(300, true, 310, true) == true,  "4-arg: rise 1.0C + dark -> true");
+    CHECK(sensor_decide_report(300, true, 310, false) == false, "4-arg: rise 1.0C + lit -> false");
+    CHECK(sensor_decide_report(340, true, 350, true) == true,  "4-arg: exact 35.0C evaluates rise -> true");
+    CHECK(sensor_decide_report(0, false, 350, true) == false,  "4-arg: no prev + exact 35.0C -> false");
+    CHECK(sensor_decide_report(0, false, 351, false) == true,  "4-arg: no prev + 35.1C -> true");
+    CHECK(sensor_decide_report(300, true, 309, true) == false, "4-arg: rise 0.9C -> false");
+    CHECK(sensor_decide_report(310, true, 300, true) == false, "4-arg: drop -> false");
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

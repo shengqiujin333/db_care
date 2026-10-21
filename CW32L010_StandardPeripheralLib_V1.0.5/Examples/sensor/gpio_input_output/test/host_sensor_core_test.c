@@ -11,7 +11,7 @@
  *   T-L0-02 GXHT40 温度换算与合法域 (含负温、域外无效)
  *   T-L0-03 GXHT40 湿度换算与 0..1000 截断
  *   T-L0-04 light_code_is_dark 光照阈值与滞回
- *   T-L0-05 sensor_decide_report 上报判定边界 (0.9C / 35.0C / 无前值 / 非暗)
+ *   T-L0-05 sensor_gate_decide 上报判定边界 (升温 0.9C / 35.0C / 无前值 / 光照无效) + 4 参兼容
  *
  * 注: "测量失败不更新前值" 属采样流程行为 (measure.c)，由 build_test.sh 第二阶段
  *     host_measure_flow_check.c 覆盖；ITEM-009 已移除 OPTCFG/params/history 用例。
@@ -131,20 +131,85 @@ static void test_light(void)
 }
 
 /* ------------------------------------------------------------------ */
-/* T-L0-05: 上报判定边界                                                 */
+/* T-L0-05: 上报判定边界 (产品包装 + 4 参兼容)                           */
 /* ------------------------------------------------------------------ */
+typedef struct {
+    bool sample_valid;
+    bool have_prev;
+    int16_t prev_x10;
+    int16_t cur_x10;
+    bool light_valid;
+    bool dark;
+    bool expect;
+} gate_vec_t;
+
+static bool ref_gate(bool sample_valid, int16_t prev_x10, bool have_prev,
+                     int16_t cur_x10, bool light_valid, bool dark)
+{
+    if (!sample_valid) return false;
+    if ((int32_t)cur_x10 > 350) return true;
+    if (!have_prev) return false;
+    if (!(light_valid && dark)) return false;
+    return ((int32_t)cur_x10 - (int32_t)prev_x10) > 9;
+}
+
 static void test_report(void)
 {
-    printf("[6] T-L0-05 sensor_decide_report\n");
-    CHECK(sensor_decide_report(0, false, 200, true) == false, "无前值 + cur=200 -> false");
-    CHECK(sensor_decide_report(0, false, 351, false) == true, "无前值 + cur=351 -> true");
-    CHECK(sensor_decide_report(300, true, 291, true) == false, "下降 9 (0.9C) -> false");
-    CHECK(sensor_decide_report(300, true, 290, true) == true,  "下降 10 (1.0C) -> true");
-    CHECK(sensor_decide_report(300, true, 289, true) == true,  "下降 11 (1.1C) -> true");
-    CHECK(sensor_decide_report(300, true, 290, false) == false, "下降满足但非 DARK -> false");
-    CHECK(sensor_decide_report(360, true, 350, true) == false, "cur=350 (恰好 35.0C) -> false");
-    CHECK(sensor_decide_report(0, false, 351, false) == true, "cur=351 不受光照/前值限制");
-    CHECK(sensor_decide_report(300, true, 300, true) == false, "prev==cur -> false");
+    static const gate_vec_t v[14] = {
+        {1,1,300,308,1,1,0}, {1,1,300,309,1,1,0}, {1,1,300,310,1,1,1},
+        {1,1,300,310,1,0,0}, {1,1,300,310,0,0,0}, {1,1,310,300,1,1,0},
+        {1,1,340,350,1,1,1}, {1,1,340,350,1,0,0}, {1,0,0,351,0,0,1},
+        {1,0,0,350,1,1,0}, {1,0,0,360,0,0,1}, {1,1,352,351,0,0,1},
+        {1,1,300,310,0,0,0}, {0,0,0,0,0,0,0}
+    };
+    static const int16_t grid_vals[10] = {
+        -400, -1, 0, 9, 349, 350, 351, 1250, 32767, -32768
+    };
+    unsigned i, j, k, a, b, c;
+    unsigned bad = 0u;
+
+    printf("[6] T-L0-05 sensor_gate_decide 14 vectors\n");
+    for (i = 0u; i < 14u; i++) {
+        bool got = sensor_gate_decide(v[i].sample_valid, v[i].prev_x10,
+                                      v[i].have_prev, v[i].cur_x10,
+                                      v[i].light_valid, v[i].dark);
+        char msg[96];
+        snprintf(msg, sizeof(msg), "v%u sample_valid=%d have=%d prev=%d cur=%d light=%d dark=%d -> %d",
+                 i + 1u, v[i].sample_valid ? 1 : 0, v[i].have_prev ? 1 : 0,
+                 (int)v[i].prev_x10, (int)v[i].cur_x10,
+                 v[i].light_valid ? 1 : 0, v[i].dark ? 1 : 0, v[i].expect ? 1 : 0);
+        CHECK(got == v[i].expect, msg);
+    }
+
+    printf("[6b] T-L0-07 gate grid against independent reference\n");
+    for (i = 0u; i < 2u; i++) {
+        for (j = 0u; j < 2u; j++) {
+            for (k = 0u; k < 2u; k++) {
+                for (a = 0u; a < 2u; a++) {
+                    for (b = 0u; b < 10u; b++) {
+                        for (c = 0u; c < 10u; c++) {
+                            bool sv = (i != 0u), have = (j != 0u);
+                            bool lv = (k != 0u), dark = (a != 0u);
+                            bool got = sensor_gate_decide(sv, grid_vals[b], have,
+                                                          grid_vals[c], lv, dark);
+                            bool exp = ref_gate(sv, grid_vals[b], have, grid_vals[c], lv, dark);
+                            if (got != exp) bad++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    CHECK(bad == 0u, "structured gate grid matches int32 reference");
+
+    printf("[6c] T-L0-08 4-arg compatibility\n");
+    CHECK(sensor_decide_report(300, true, 310, true) == true,  "rise 1.0C + dark -> true");
+    CHECK(sensor_decide_report(300, true, 310, false) == false, "rise 1.0C + lit -> false");
+    CHECK(sensor_decide_report(340, true, 350, true) == true,  "exact 35.0C still evaluates rise -> true");
+    CHECK(sensor_decide_report(0, false, 350, true) == false,  "no prev + exact 35.0C -> false");
+    CHECK(sensor_decide_report(0, false, 351, false) == true,  "no prev + 35.1C -> true");
+    CHECK(sensor_decide_report(300, true, 309, true) == false, "rise 0.9C -> false");
+    CHECK(sensor_decide_report(310, true, 300, true) == false, "drop -> false");
 }
 
 /* ------------------------------------------------------------------ */
