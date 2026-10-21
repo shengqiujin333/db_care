@@ -1,0 +1,141 @@
+-- com43_capture_a.dat: 112 bytes
+PASS  com43_capture_a.dat: 最后一行以 CRLF 结束（无悬挂半字节）
+PASS  com43_capture_a.dat 行0: 66 B <= 96
+PASS  com43_capture_a.dat 行0: 含 CRLF
+PASS  com43_capture_a.dat 行0: 仅可打印 ASCII
+PASS  com43_capture_a.dat 行1: 46 B <= 96
+PASS  com43_capture_a.dat 行1: 含 CRLF
+PASS  com43_capture_a.dat 行1: 仅可打印 ASCII
+PASS  com43_capture_a.dat: 捕获非空
+PASS  com43_capture_a.dat S0: 行首为 S
+PASS  com43_capture_a.dat S0: 字段键名与顺序冻结
+PASS  com43_capture_a.dat S0: k 为十进制整数（3）
+PASS  com43_capture_a.dat S0: p 为十进制整数（0）
+PASS  com43_capture_a.dat S0: H 为十进制整数（0）
+PASS  com43_capture_a.dat S0: V 为十进制整数（0）
+PASS  com43_capture_a.dat S0: o 为十进制整数（8）
+PASS  com43_capture_a.dat S0: n 为十进制整数（70）
+PASS  com43_capture_a.dat S0: x 为十进制整数（73）
+PASS  com43_capture_a.dat S0: a 为十进制整数（71）
+PASS  com43_capture_a.dat S0: D 为十进制整数（0）
+PASS  com43_capture_a.dat S0: t 为十进制整数（0）
+PASS  com43_capture_a.dat S0: h 为十进制整数（0）
+PASS  com43_capture_a.dat S0: q 为十进制整数（0）
+PASS  com43_capture_a.dat S0: r 为十进制整数（0）
+PASS  com43_capture_a.dat S0: s 为十进制整数（0）
+PASS  com43_capture_a.dat S0: y 为十进制整数（0）
+PASS  com43_capture_a.dat S0: 当前实板 q=0（GXHT40 无 ACK，U01 未闭合）
+PASS  com43_capture_a.dat S0: 无触发上报 r=0
+PASS  com43_capture_a.dat S0: 未发送 s=0（无残留发送状态）
+PASS  com43_capture_a.dat S0: 无重试残留 y=0
+PASS  com43_capture_a.dat S0: H/V/D 为 0/1
+PASS  com43_capture_a.dat S0: 光照成功样本数 o 在 0..8
+PASS  com43_capture_a.dat S0: 0 <= n <= x <= 4095
+PASS  com43_capture_a.dat S0: n <= a <= x（均值落在最小/最大之间）
+PASS  com43_capture_a.dat G1: 行首为 G
+PASS  com43_capture_a.dat G1: 字段键名与顺序冻结
+PASS  com43_capture_a.dat G1: raw 为 12 位大写 HEX 或 12 个 '-'
+PASS  com43_capture_a.dat G1: s 为整数
+PASS  com43_capture_a.dat G1: a44 为整数
+PASS  com43_capture_a.dat G1: a45 为整数
+PASS  com43_capture_a.dat G1: rd 为整数
+PASS  com43_capture_a.dat G1: at 为整数
+PASS  com43_capture_a.dat G1: 0x44/0x45 均无 ACK（与 S.q=0 一致）
+PASS  com43_capture_a.dat G1: raw 未读成功时为 12 个 '-'
+PASS  com43_capture_a.dat G1: 状态 2（无器件）
+-- com43_capture_b.dat: 224 bytes
+PASS  com43_capture_b.dat: 最后一行以 CRLF 结束（无悬挂半字节）
+PASS  com43_capture_b.dat 行0: 66 B <= 96
+PASS  com43_capture_b.dat 行0: 含 CRLF
+PASS  com43_capture_b.dat 行0: 仅可打印 ASCII
+PASS  com43_capture_b.dat 行1: 46 B <= 96
+PASS  com43_capture_b.dat 行1: 含 CRLF
+PASS  com43_capture_b.dat 行1: 仅可打印 ASCII
+PASS  com43_capture_b.dat 行2: 66 B <= 96
+PASS  com43_capture_b.dat 行2: 含 CRLF
+PASS  com43_capture_b.dat 行2: 仅可打印 ASCII
+PASS  com43_capture_b.dat 行3: 46 B <= 96
+PASS  com43_capture_b.dat 行3: 含 CRLF
+PASS  com43_capture_b.dat 行3: 仅可打印 ASCII
+PASS  com43_capture_b.dat: 捕获非空
+PASS  com43_capture_b.dat S0: 行首为 S
+PASS  com43_capture_b.dat S0: 字段键名与顺序冻结
+PASS  com43_capture_b.dat S0: k 为十进制整数（6）
+PASS  com43_capture_b.dat S0: p 为十进制整数（0）
+PASS  com43_capture_b.dat S0: H 为十进制整数（0）
+PASS  com43_capture_b.dat S0: V 为十进制整数（0）
+PASS  com43_capture_b.dat S0: o 为十进制整数（8）
+PASS  com43_capture_b.dat S0: n 为十进制整数（66）
+PASS  com43_capture_b.dat S0: x 为十进制整数（69）
+PASS  com43_capture_b.dat S0: a 为十进制整数（67）
+PASS  com43_capture_b.dat S0: D 为十进制整数（0）
+PASS  com43_capture_b.dat S0: t 为十进制整数（0）
+PASS  com43_capture_b.dat S0: h 为十进制整数（0）
+PASS  com43_capture_b.dat S0: q 为十进制整数（0）
+PASS  com43_capture_b.dat S0: r 为十进制整数（0）
+PASS  com43_capture_b.dat S0: s 为十进制整数（0）
+PASS  com43_capture_b.dat S0: y 为十进制整数（0）
+PASS  com43_capture_b.dat S0: 当前实板 q=0（GXHT40 无 ACK，U01 未闭合）
+PASS  com43_capture_b.dat S0: 无触发上报 r=0
+PASS  com43_capture_b.dat S0: 未发送 s=0（无残留发送状态）
+PASS  com43_capture_b.dat S0: 无重试残留 y=0
+PASS  com43_capture_b.dat S0: H/V/D 为 0/1
+PASS  com43_capture_b.dat S0: 光照成功样本数 o 在 0..8
+PASS  com43_capture_b.dat S0: 0 <= n <= x <= 4095
+PASS  com43_capture_b.dat S0: n <= a <= x（均值落在最小/最大之间）
+PASS  com43_capture_b.dat G1: 行首为 G
+PASS  com43_capture_b.dat G1: 字段键名与顺序冻结
+PASS  com43_capture_b.dat G1: raw 为 12 位大写 HEX 或 12 个 '-'
+PASS  com43_capture_b.dat G1: s 为整数
+PASS  com43_capture_b.dat G1: a44 为整数
+PASS  com43_capture_b.dat G1: a45 为整数
+PASS  com43_capture_b.dat G1: rd 为整数
+PASS  com43_capture_b.dat G1: at 为整数
+PASS  com43_capture_b.dat G1: 0x44/0x45 均无 ACK（与 S.q=0 一致）
+PASS  com43_capture_b.dat G1: raw 未读成功时为 12 个 '-'
+PASS  com43_capture_b.dat G1: 状态 2（无器件）
+PASS  com43_capture_b.dat S2: 行首为 S
+PASS  com43_capture_b.dat S2: 字段键名与顺序冻结
+PASS  com43_capture_b.dat S2: k 为十进制整数（9）
+PASS  com43_capture_b.dat S2: p 为十进制整数（0）
+PASS  com43_capture_b.dat S2: H 为十进制整数（0）
+PASS  com43_capture_b.dat S2: V 为十进制整数（0）
+PASS  com43_capture_b.dat S2: o 为十进制整数（8）
+PASS  com43_capture_b.dat S2: n 为十进制整数（63）
+PASS  com43_capture_b.dat S2: x 为十进制整数（65）
+PASS  com43_capture_b.dat S2: a 为十进制整数（64）
+PASS  com43_capture_b.dat S2: D 为十进制整数（0）
+PASS  com43_capture_b.dat S2: t 为十进制整数（0）
+PASS  com43_capture_b.dat S2: h 为十进制整数（0）
+PASS  com43_capture_b.dat S2: q 为十进制整数（0）
+PASS  com43_capture_b.dat S2: r 为十进制整数（0）
+PASS  com43_capture_b.dat S2: s 为十进制整数（0）
+PASS  com43_capture_b.dat S2: y 为十进制整数（0）
+PASS  com43_capture_b.dat S2: 当前实板 q=0（GXHT40 无 ACK，U01 未闭合）
+PASS  com43_capture_b.dat S2: 无触发上报 r=0
+PASS  com43_capture_b.dat S2: 未发送 s=0（无残留发送状态）
+PASS  com43_capture_b.dat S2: 无重试残留 y=0
+PASS  com43_capture_b.dat S2: H/V/D 为 0/1
+PASS  com43_capture_b.dat S2: 光照成功样本数 o 在 0..8
+PASS  com43_capture_b.dat S2: 0 <= n <= x <= 4095
+PASS  com43_capture_b.dat S2: n <= a <= x（均值落在最小/最大之间）
+PASS  com43_capture_b.dat G3: 行首为 G
+PASS  com43_capture_b.dat G3: 字段键名与顺序冻结
+PASS  com43_capture_b.dat G3: raw 为 12 位大写 HEX 或 12 个 '-'
+PASS  com43_capture_b.dat G3: s 为整数
+PASS  com43_capture_b.dat G3: a44 为整数
+PASS  com43_capture_b.dat G3: a45 为整数
+PASS  com43_capture_b.dat G3: rd 为整数
+PASS  com43_capture_b.dat G3: at 为整数
+PASS  com43_capture_b.dat G3: 0x44/0x45 均无 ACK（与 S.q=0 一致）
+PASS  com43_capture_b.dat G3: raw 未读成功时为 12 个 '-'
+PASS  com43_capture_b.dat G3: 状态 2（无器件）
+observed sample ticks: [3, 6, 9]
+PASS  两次捕获合计 >= 3 个周期（至少一个窗口内两个周期）
+PASS  k 单调递增
+PASS  相邻周期 k 增量 = 3（1 min × 3 = 180 s）: 3 -> 6
+PASS  相邻周期 k 增量 = 3（1 min × 3 = 180 s）: 6 -> 9
+PASS  复位后首个观测周期 k >= 3（3 分钟采样节拍）
+
+checks: 135 passed / 0 failed
+RESULT PASS

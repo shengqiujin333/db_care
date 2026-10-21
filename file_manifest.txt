@@ -61,6 +61,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/hos
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c | active | 宿主机纯逻辑综合套件（CRC/换算/有效域/1-3 判据/上报判定）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_bus_check.c | active | 软 I2C 位级 mock 总线自检（含探测与总线恢复线序）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_verify_ev.c | active | 测试能力独立验证 harness：软 I2C 原语与 i2c_bus_recover
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_uart_bounded_verify_item004.c | active | 测试能力独立验证 harness（EV-024 ITEM-004）：真实产品 debug_trace.c + 影子 UART 的 TXE/TXBUSY 卡死、行/关闭预算、S/G 独立预算、业务不变
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_vdd_verify_ev.c | active | 测试能力独立验证 harness：light_read_vdd_mv 供电轨测量（含公式/超时/不伪造）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_diagline_ev/ | active | 测试能力自建影子 MCU 层（诊断行 harness）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_light/ | active | 实现侧影子 MCU 层（供 light.c 宿主机编译）
@@ -69,6 +70,12 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_ev/ | active | 测试能力自建影子 MCU 层（measure 流程 harness）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_mcu/ | active | 实现侧影子 MCU 层（供 measure.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/ | active | 实现侧影子 MCU 层（供 debug_trace.c 宿主机编译）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/ | active | 测试能力自建影子 MCU 层（ITEM-004：TXE READY/STUCK/SLOW、TXBUSY 卡死、轮询计数与硬上限）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/cw32l010_adc.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/cw32l010_gpio.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/cw32l010_sysctrl.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/cw32l010_uart.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/mock_uart_hw.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_vdd_ev/ | active | 测试能力自建影子 MCU 层（供电轨测量 harness，mock_bgr_trim_value 替身修调值）
 artifacts/android_architecture.md | active | Android 方案设计 AA-002（需求 6 点落点、分层/模块/接口、SQLite v3 与 /upload_data 幂等、异常边界、未决项）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加）
@@ -282,6 +289,34 @@ evidence/ev023_item004/driver_test.md | active | ITEM-004 DriverTestEvidence 正
 evidence/ev023_item004/host_tests_full.log | active | test/build_test.sh 5 组原始输出（233/0）
 evidence/ev023_item004/image_md5.txt | active | 本轮 axf/hex md5
 evidence/ev023_item004/source_sha256.txt | active | sensor_config.h/debug_trace.c/host_debug_trace_check.c SHA-256
+evidence/ev024_item004_verify/ | active | EV-024 ITEM-004 独立验证证据：真实产品 debug_trace.c 故障注入 harness/独立判据/旧实现负向对照、静态核对、实板 COM43 捕获与判定、下载身份与哈希
+evidence/ev024_item004_verify/README.md | active | EV-024 证据清单与限制
+evidence/ev024_item004_verify/build_rebuild.log | active | 本能力 mdk_build rebuild 原始日志（0 Error/1 既有 warning、Code/RO/RW/ZI）
+evidence/ev024_item004_verify/com43_capture_a.dat | active | 下载后 COM43 9600 8N1 原始字节（300 s，112 B，k=3）
+evidence/ev024_item004_verify/com43_capture_b.dat | active | 下载后 COM43 9600 8N1 原始字节（300 s，224 B，k=6/9）
+evidence/ev024_item004_verify/compile_current.err | active | 当前 harness 编译 stderr（空）
+evidence/ev024_item004_verify/compile_old.err | active | 旧实现负向对照编译 stderr（空）
+evidence/ev024_item004_verify/git_head.txt | active | 受测提交 7081ed9
+evidence/ev024_item004_verify/harness_current.err | active | 当前 harness 运行 stderr（空）
+evidence/ev024_item004_verify/harness_current.out | active | 当前实现 14 用例原始观测
+evidence/ev024_item004_verify/harness_old.err | active | 旧 harness 运行 stderr（空）
+evidence/ev024_item004_verify/harness_old.out | active | 旧实现同刺激原始观测（F1 被判 UNBOUNDED）
+evidence/ev024_item004_verify/host_tests_regression.log | active | 实现侧既有宿主机套件 5 组 233/0（回归参考）
+evidence/ev024_item004_verify/image_md5.txt | active | 本次 axf/hex md5
+evidence/ev024_item004_verify/mdk_flash.log | active | 本能力 mdk_flash 原始下载日志（Verify OK / Application running）
+evidence/ev024_item004_verify/old_debug_trace_pre_item004.c | active | 父提交 fdd1ff1 的 debug_trace.c（只读导出，负向对照输入，非产品源码）
+evidence/ev024_item004_verify/programmed_prototype.md | active | 本次 mdk_flash 实际下载身份（axf/hex md5、Verify OK）与目标；仅证明下载
+evidence/ev024_item004_verify/serial_ports.txt | active | 本轮串口枚举（COM43/COM26）原始身份
+evidence/ev024_item004_verify/source_sha256.txt | active | debug_trace.c/sensor_config.h/main.c/harness/旧实现 SHA-256
+evidence/ev024_item004_verify/static_check.out | active | 静态核对 29 passed / 0 failed
+evidence/ev024_item004_verify/static_check_item004.py | active | ITEM-004 静态核对脚本（可复跑）
+evidence/ev024_item004_verify/test.md | active | EV-024 TestEvidence 正文：受测身份、方法、14 用例、负向对照、静态、实板、局限、TEST_PASS（本增量）
+evidence/ev024_item004_verify/usb_devices.txt | active | 本轮 USB 枚举（C251:F001、Prolific、手机、fx2lafw）
+evidence/ev024_item004_verify/verify_com43.out | active | 实板复核 135 passed / 0 failed
+evidence/ev024_item004_verify/verify_com43_item004.py | active | 实板原始字节独立解析/判据（S/G 顺序、字段、CRLF、≤96、k 节拍、s/y）
+evidence/ev024_item004_verify/verify_current.out | active | 当前实现 88 passed / 0 failed，RESULT PASS
+evidence/ev024_item004_verify/verify_old.out | active | 旧实现负向对照 NEGATIVE_CONTROL_OK
+evidence/ev024_item004_verify/verify_uart_guard_item004.py | active | 独立 Python 判据/参考模型（逐字节格式、CRLF、轮询预算、teardown、业务不变）
 evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
 evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
 evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应
