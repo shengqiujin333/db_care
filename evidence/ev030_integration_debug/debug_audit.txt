@@ -1,0 +1,13 @@
+EV-029 failure capture summary: S=4 G=4 BUS none=1
+product diff in audited paths: (empty)
+PASS  current 6 product sources match EV-029
+PASS  current axf/hex md5 match EV-029
+PASS  EV-029 captures: 4 S, 4 G, all q=0/a44=a45=0
+PASS  EV-029 BUS shows ack=none
+PASS  no firmware/gateway change in I2C/device/power/RF paths
+PASS  firmware probes both 0x44/0x45
+PASS  firmware sends 0xFD only after address ACK
+PASS  firmware has no fake/constant sample assignment
+PASS  netlist U9 VCC and MCU VDD on BAT
+PASS  host self-tests all pass (295 total)
+==== result: 10 passed, 0 failed ====
