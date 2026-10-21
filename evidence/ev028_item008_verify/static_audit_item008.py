@@ -55,8 +55,21 @@ def code_text() -> str:
 
 # ---------------------------------------------------------------- 0. identity
 head = git("rev-parse", "HEAD").strip()
-check("git HEAD recorded (working tree is the tested identity)",
-      head.startswith("c176d02"), head[:12])
+# The verified identity is the delivered product source, not a fixed commit hash:
+# later non-firmware commits (docs/Android) may move HEAD while USER/** stays identical.
+delivered = ROOT / "evidence/ev027_item008/source_sha256.txt"
+mismatch = []
+for ln in delivered.read_text(encoding="utf-8").splitlines():
+    ln = ln.strip()
+    if not ln:
+        continue
+    digest, rel = ln.split(None, 1)
+    rel = rel.lstrip("*")
+    actual = hashlib.sha256((ROOT / rel).read_bytes()).hexdigest()
+    if actual != digest:
+        mismatch.append(rel)
+check("product source identity matches the n012 delivery hashes (HEAD recorded)",
+      not mismatch, "HEAD=%s mismatched=%s" % (head[:12], mismatch or "none"))
 
 changed = [ln for ln in git("diff", "--name-only", BASE, "--",
                             "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER")

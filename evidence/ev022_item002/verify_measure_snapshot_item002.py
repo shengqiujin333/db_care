@@ -50,8 +50,7 @@ def main():
     fail_cycles = 0
     p_ne_t_success = 0
     expected_sends = 0
-    frames = 0
-    frame_ok = 0
+    pending_probes = 0
 
     for line in lines:
         if line.startswith("C idx="):
@@ -95,13 +94,12 @@ def main():
             check(d["fetched"] == 1, tag + " trace fetched", "actual=%d" % d["fetched"])
             expected_sends += exp_r
 
-        elif line.startswith("FRAME_AFTER_FAIL"):
+        elif line.startswith("NO_PENDING_SENDS"):
             d = kv(line)
-            frames += 1
-            check(d["eq"] == 1, "frame after failed cycle %d" % d["idx"],
-                  "failed-cycle frame differs from pre-failure reference")
-            if d["eq"] == 1:
-                frame_ok += 1
+            pending_probes += 1
+            check(d["delta"] == 0,
+                  "report_req without frozen frame performs no RF attempt (cycle %d)" % d["idx"],
+                  "actual=%d" % d["delta"])
 
         elif line.startswith("FETCH_AGAIN"):
             d = kv(line)
@@ -125,8 +123,8 @@ def main():
                   "light=%d gxht=%d cycles=%d" % (d["light_calls"], d["gxht_calls"], cycles))
             check(d["gxht_init"] == 1 and d["light_init"] == 1, "lazy init exactly once",
                   "gxht_init=%d light_init=%d" % (d["gxht_init"], d["light_init"]))
-            check(d["send_calls"] == expected_sends + frames, "send stub calls = reported cycles + forced frames",
-                  "actual=%d expected=%d" % (d["send_calls"], expected_sends + frames))
+            check(d["send_calls"] == expected_sends, "send stub calls = reported cycles (no cross-cycle resend)",
+                  "actual=%d expected=%d" % (d["send_calls"], expected_sends))
 
         elif line.startswith("TEMP_PTR_NULL"):
             d = kv(line)
@@ -138,8 +136,8 @@ def main():
     check(fail_cycles == 6, "failed cycles exercised", "actual=%d" % fail_cycles)
     check(p_ne_t_success > 0, "at least one successful cycle has p != t",
           "count=%d" % p_ne_t_success)
-    check(frames == 2 and frame_ok == 2, "pre-failure frame identity after failed cycles",
-          "frames=%d ok=%d" % (frames, frame_ok))
+    check(pending_probes == 2, "no-pending-frame probes exercised",
+          "probes=%d" % pending_probes)
 
     print("RESULT checks_passed=%d checks_failed=%d" % (CHECK_PASS, CHECK_FAIL))
     for f in FAIL_DETAILS:

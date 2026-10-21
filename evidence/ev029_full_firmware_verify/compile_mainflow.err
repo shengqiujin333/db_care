@@ -1,0 +1,7 @@
+USER/src/main.c: In function 'firmware_main_entry':
+USER/src/main.c:187:21: warning: implicit declaration of function 'SYSCTRL_GetAllRstFlag' [-Wimplicit-function-declaration]
+  187 |         rst_flags = SYSCTRL_GetAllRstFlag();
+      |                     ^~~~~~~~~~~~~~~~~~~~~
+C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\Users\kason\AppData\Local\Temp\ccX7ZSW7.o:main.c:(.text+0x1b6): multiple definition of `firmware_main_entry'; C:\Users\kason\AppData\Local\Temp\ccefkjUL.o:host_main_flow_verify_item005.c:(.text+0x864): first defined here
+C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.2.0/../../../../x86_64-w64-mingw32/lib/../lib/libmingw32.a(lib64_libmingw32_a-crtexewin.o):crtexewin.c:(.text.startup+0xbd): undefined reference to `WinMain'
+collect2.exe: error: ld returned 1 exit status

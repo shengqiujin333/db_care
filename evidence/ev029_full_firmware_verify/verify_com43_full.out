@@ -1,0 +1,93 @@
+
+== window evidence/ev029_full_firmware_verify/com43_capture_window_a.bin (257 B) ==
+PASS  capture non-empty  [257 B]
+PASS  no bare LF
+PASS  no stray CR
+PASS  capture is pure ASCII  [257 chars]
+PASS  capture ends with CRLF
+PASS  every line <= 96 B including CRLF  [33B, 66B, 46B, 66B, 46B]
+PASS  w1 previous failing S is followed by G
+PASS  w1 S line has fixed 15-field order  [S k=0 p=0 H=0 V=0 o=8 n=41 x=44 a=42 D=0 t=0 h=0 q=0 r=0 s=0 y=0]
+PASS  w1 S key order  [k,p,H,V,o,n,x,a,D,t,h,q,r,s,y]
+PASS  w1 ADC fields in domain and ordered  [o=8 n=41 x=44 a=42]
+PASS  w1 a==0 iff o==0  [o=8 a=42]
+PASS  w1 dark field defined for valid light  [V=0 D=0]
+PASS  w1 uncalibrated delivery: V=0/D=0  [V=0 D=0]
+PASS  w1 sampled values within valid domain  [q=0 t=0 h=0]
+PASS  w1 failed sample does not fabricate values  [t=0 h=0]
+PASS  w1 failed sample requests no report / sends nothing  [r=0 s=0 y=0]
+PASS  w1 k is a multiple of the 3-tick sample period  [k=0]
+PASS  w1 G line has fixed field order  [G s=2 a44=0 a45=0 rd=0 at=3 raw=------------]
+PASS  w1 G facts consistent with no device ACK  [G s=2 a44=0 a45=0 rd=0 at=3 raw=------------]
+PASS  w1 G raw is 12 uppercase hex or placeholder  [------------]
+PASS  w1 G only emitted for a failing sample  [q=0]
+PASS  w1 previous failing S is followed by G
+PASS  w1 S line has fixed 15-field order  [S k=3 p=0 H=0 V=0 o=8 n=41 x=44 a=42 D=0 t=0 h=0 q=0 r=0 s=0 y=0]
+PASS  w1 S key order  [k,p,H,V,o,n,x,a,D,t,h,q,r,s,y]
+PASS  w1 ADC fields in domain and ordered  [o=8 n=41 x=44 a=42]
+PASS  w1 a==0 iff o==0  [o=8 a=42]
+PASS  w1 dark field defined for valid light  [V=0 D=0]
+PASS  w1 uncalibrated delivery: V=0/D=0  [V=0 D=0]
+PASS  w1 sampled values within valid domain  [q=0 t=0 h=0]
+PASS  w1 failed sample does not fabricate values  [t=0 h=0]
+PASS  w1 failed sample requests no report / sends nothing  [r=0 s=0 y=0]
+PASS  w1 k is a multiple of the 3-tick sample period  [k=3]
+PASS  w1 k advances by 3-minute ticks without reset  [0 -> 3]
+PASS  w2 G line has fixed field order  [G s=2 a44=0 a45=0 rd=0 at=3 raw=------------]
+PASS  w2 G facts consistent with no device ACK  [G s=2 a44=0 a45=0 rd=0 at=3 raw=------------]
+PASS  w2 G raw is 12 uppercase hex or placeholder  [------------]
+PASS  w2 G only emitted for a failing sample  [q=0]
+PASS  window evidence/ev029_full_firmware_verify/com43_capture_window_a.bin ends without an unmatched failing S
+
+== window evidence/ev029_full_firmware_verify/com43_capture_window_b.bin (226 B) ==
+PASS  capture non-empty  [226 B]
+PASS  no bare LF
+PASS  no stray CR
+PASS  capture is pure ASCII  [226 chars]
+PASS  capture ends with CRLF
+PASS  every line <= 96 B including CRLF  [67B, 46B, 67B, 46B]
+PASS  w2 previous failing S is followed by G
+PASS  w2 S line has fixed 15-field order  [S k=15 p=0 H=0 V=0 o=8 n=42 x=45 a=43 D=0 t=0 h=0 q=0 r=0 s=0 y=0]
+PASS  w2 S key order  [k,p,H,V,o,n,x,a,D,t,h,q,r,s,y]
+PASS  w2 ADC fields in domain and ordered  [o=8 n=42 x=45 a=43]
+PASS  w2 a==0 iff o==0  [o=8 a=43]
+PASS  w2 dark field defined for valid light  [V=0 D=0]
+PASS  w2 uncalibrated delivery: V=0/D=0  [V=0 D=0]
+PASS  w2 sampled values within valid domain  [q=0 t=0 h=0]
+PASS  w2 failed sample does not fabricate values  [t=0 h=0]
+PASS  w2 failed sample requests no report / sends nothing  [r=0 s=0 y=0]
+PASS  w2 k is a multiple of the 3-tick sample period  [k=15]
+PASS  w2 k advances by 3-minute ticks without reset  [3 -> 15]
+PASS  w2 G line has fixed field order  [G s=2 a44=0 a45=0 rd=0 at=3 raw=------------]
+PASS  w2 G facts consistent with no device ACK  [G s=2 a44=0 a45=0 rd=0 at=3 raw=------------]
+PASS  w2 G raw is 12 uppercase hex or placeholder  [------------]
+PASS  w2 G only emitted for a failing sample  [q=0]
+PASS  w2 previous failing S is followed by G
+PASS  w2 S line has fixed 15-field order  [S k=18 p=0 H=0 V=0 o=8 n=42 x=45 a=43 D=0 t=0 h=0 q=0 r=0 s=0 y=0]
+PASS  w2 S key order  [k,p,H,V,o,n,x,a,D,t,h,q,r,s,y]
+PASS  w2 ADC fields in domain and ordered  [o=8 n=42 x=45 a=43]
+PASS  w2 a==0 iff o==0  [o=8 a=43]
+PASS  w2 dark field defined for valid light  [V=0 D=0]
+PASS  w2 uncalibrated delivery: V=0/D=0  [V=0 D=0]
+PASS  w2 sampled values within valid domain  [q=0 t=0 h=0]
+PASS  w2 failed sample does not fabricate values  [t=0 h=0]
+PASS  w2 failed sample requests no report / sends nothing  [r=0 s=0 y=0]
+PASS  w2 k is a multiple of the 3-tick sample period  [k=18]
+PASS  w2 k advances by 3-minute ticks without reset  [15 -> 18]
+PASS  w3 G line has fixed field order  [G s=2 a44=0 a45=0 rd=0 at=3 raw=------------]
+PASS  w3 G facts consistent with no device ACK  [G s=2 a44=0 a45=0 rd=0 at=3 raw=------------]
+PASS  w3 G raw is 12 uppercase hex or placeholder  [------------]
+PASS  w3 G only emitted for a failing sample  [q=0]
+PASS  window evidence/ev029_full_firmware_verify/com43_capture_window_b.bin ends without an unmatched failing S
+
+== aggregate ==
+PASS  multiple sampling opportunities observed  [cycles=4]
+PASS  no duplicate k  [0,3,15,18]
+INFO  cycles=4 q1=0 q0=4 k=0,3,15,18
+INFO  non-cycle line present: BUS
+FAIL  PA-001 real sampling: >=3 consecutive cycles with q=1  [observed q=1 in 0/4 cycles]
+FAIL  PA-017 power-on BOOT/VDD/IOTEST/IOSIG observed in these windows  [boot=0 vdd=0 iotest=0 iosig=0]
+
+==== result: 79 passed, 2 failed ====
+MISMATCH PA-001 real sampling: >=3 consecutive cycles with q=1 [observed q=1 in 0/4 cycles]
+MISMATCH PA-017 power-on BOOT/VDD/IOTEST/IOSIG observed in these windows [boot=0 vdd=0 iotest=0 iosig=0]

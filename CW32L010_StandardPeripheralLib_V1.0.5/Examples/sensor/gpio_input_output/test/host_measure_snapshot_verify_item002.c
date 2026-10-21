@@ -13,8 +13,8 @@
  *   - tempvalue/huminityvalue after the cycle
  *   - report_req after temperature_process()
  *   - whether send_data_to_gateway() invoked the RF stub in that cycle
- *   - the exact 10-byte frame for a forced pending report after a FAILED cycle
- *     (proves a failed cycle did not advance the previous temperature/humidity)
+ *   - report_req without a pending frozen frame performs no RF attempt
+ *     (current ITEM-003 freeze contract; see the NO_PENDING_SENDS probe)
  *
  * Build (from gpio_input_output/):
  *   gcc -std=c11 -Wall -Wextra -I test/mock_measure_ev -I USER/inc -I UM2005C -I COMMON \
@@ -158,17 +158,6 @@ uint8_t app_um2005C_send_data_timeout(uint8_t *d, uint16_t n, uint32_t to)
 }
 
 /* ==================== driver ==================== */
-static void print_frame(const char *tag, int idx, const uint8_t frame[10], const uint8_t ref[10])
-{
-    int i, eq = 1;
-    for (i = 0; i < 10; i++) if (frame[i] != ref[i]) eq = 0;
-    printf("%s idx=%d frame=", tag, idx);
-    for (i = 0; i < 10; i++) printf("%02X", frame[i]);
-    printf(" ref=");
-    for (i = 0; i < 10; i++) printf("%02X", ref[i]);
-    printf(" eq=%d\n", eq);
-}
-
 int main(void)
 {
     debug_trace_sample_t tr;
@@ -208,17 +197,20 @@ int main(void)
                (unsigned)req_before, (unsigned)req_after, sends,
                (int)tempvalue, (unsigned)huminityvalue, (unsigned)fetched);
 
-        /* Forced pending report after a FAILED cycle: the frame must be encoded from the
-         * values that were current BEFORE the failure (280/530 after cycle 5, -10/600
-         * after cycle 11), proving the failed cycle did not advance prev/humidity. */
+        /* Current contract (FDS-003 DD-03/DD-04, T-L6-04): the 10-byte report frame is
+         * frozen exactly once at trigger time inside temperature_process(); there is no
+         * re-encode on retry and nothing survives into the next cycle. Therefore a bare
+         * report_req without a pending frozen frame MUST NOT perform any RF attempt
+         * (measure.c send_data_to_gateway(): s_pending_frame_valid==0 -> clear, no send).
+         * The old "force report_req then send pre-failure values" stimulus exercised the
+         * superseded ITEM-002 retry model; the "failed cycle did not advance prev"
+         * invariant is asserted by the p/H fields of the following cycles above, and
+         * frame freeze byte-identity is covered by host_measure_freeze_verify_item003.c. */
         if (cyc == 5 || cyc == 11) {
-            int16_t  exp_t = (cyc == 5) ? 280 : -10;
-            uint16_t exp_h = (cyc == 5) ? 530u : 600u;
-            uint8_t  ref[10];
-            encode_frame10(mcu_uid, exp_t, exp_h, ref);
-            report_req = 1u;                     /* stimulus: retry a previously triggered report */
-            send_data_to_gateway();              /* must use the pre-failure values */
-            print_frame("FRAME_AFTER_FAIL", cyc, last_frame, ref);
+            int sends_before_probe = send_calls;
+            report_req = 1u;                     /* spurious external pending flag */
+            send_data_to_gateway();              /* no frozen frame -> no RF attempt */
+            printf("NO_PENDING_SENDS idx=%d delta=%d\n", cyc, send_calls - sends_before_probe);
             report_req = 0u;
         }
     }

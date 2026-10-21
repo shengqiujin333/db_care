@@ -1,0 +1,52 @@
+{
+  "tool": "sigrok_capture",
+  "started_at": "2026-10-21T05:28:08.281503+00:00",
+  "configuration": {
+    "enabled": true,
+    "executable": "D:/Program Files/sigrok/sigrok-cli/sigrok-cli.exe",
+    "driver": "fx2lafw",
+    "connection": "2.35",
+    "channels": [
+      "D0",
+      "D1"
+    ],
+    "signal_labels": {
+      "D0": "scl",
+      "D1": "sda"
+    },
+    "triggers": {
+      "D1": "f"
+    },
+    "samplerate_hz": 4000000,
+    "max_samplerate_hz": 8000000,
+    "max_samples": 20000000,
+    "timeout_sec": 240.0
+  },
+  "arguments": {
+    "samples": 8000000,
+    "samplerate_hz": 4000000
+  },
+  "functional_verdict": "not_evaluated",
+  "command": [
+    "D:/Program Files/sigrok/sigrok-cli/sigrok-cli.exe",
+    "--driver",
+    "fx2lafw:conn=2.35",
+    "--config",
+    "samplerate=4000000",
+    "--channels",
+    "D0,D1",
+    "--samples",
+    "8000000",
+    "--wait-trigger",
+    "--triggers",
+    "D1=f",
+    "--output-format",
+    "srzip",
+    "--output-file",
+    "C:\\Users\\kason\\.codex\\worktrees\\generic-orchestration-v2\\restlessdream_vnext_r4_60_runtime_manifest_codegraph_rl_20260911_DELIVERY\\projects\\dengbei_run10\\roles\\embedded_tester\\work\\verification_tools\\sigrok_capture_2f99b21a49f148c5a1aff3e47917eb48\\capture.sr"
+  ],
+  "session_error": "[Errno 2] No such file or directory: 'C:\\\\Users\\\\kason\\\\.codex\\\\worktrees\\\\generic-orchestration-v2\\\\restlessdream_vnext_r4_60_runtime_manifest_codegraph_rl_20260911_DELIVERY\\\\projects\\\\dengbei_run10\\\\roles\\\\embedded_tester\\\\work\\\\verification_tools\\\\sigrok_capture_2f99b21a49f148c5a1aff3e47917eb48\\\\capture.sr'",
+  "exit_code": 0,
+  "timed_out": false,
+  "error_code": "INVALID_CAPTURE"
+}

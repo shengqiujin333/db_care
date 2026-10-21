@@ -1,0 +1,77 @@
+==== independent sf_i2c verification (embedded_tester) ====
+[T1] i2c_write_cmd(0x88,0xFD) with ACKing slave
+    transcript[T1]: START TX(88) ACK TX(FD) ACK STOP
+    PASS  returns SF_I2C_SUCCESS
+    PASS  exactly 1 START and 1 STOP
+    PASS  wire bytes = 0x88 then 0xFD (no register address)
+    PASS  both bytes ACKed
+    PASS  slave received exactly the command byte
+    PASS  bus released (idle high) after transaction
+    PASS  no read bytes in a command write
+[T2] i2c_write_cmd with no slave response
+    transcript[T2]: START TX(88) NACK STOP
+    PASS  returns SF_I2C_TIMEOUT
+    PASS  bus released with STOP on the failure path
+    PASS  command byte NOT sent after address NACK (fail fast)
+    PASS  bus idle high afterwards
+[T3] i2c_read_bytes(0x89,6)
+    transcript[T3]: START TX(89) ACK RX(61) M-ACK RX(9C) M-ACK RX(2B) M-ACK RX(8A) M-ACK RX(44) M-ACK RX(75) M-NACK STOP
+    PASS  returns SF_I2C_SUCCESS
+    PASS  exactly 1 START and 1 STOP
+    PASS  read address byte 0x89 sent first
+    PASS  6 bytes received match slave data
+    PASS  6 master response bits observed
+    PASS  master ACK on bytes 1-5, NACK on last byte
+    PASS  bus released after read
+[T4] i2c_read_bytes with no slave response
+    transcript[T4]: START TX(89) NACK STOP
+    PASS  returns SF_I2C_TIMEOUT when read address is NACKed
+    PASS  no data bytes read
+    PASS  STOP issued on failure path (bus not stuck)
+[T5] i2c_read_bytes length=0
+    PASS  returns SF_I2C_SUCCESS
+    PASS  no bus activity for empty request
+[T6] i2c_read_bytes with write-form address 0x88
+    transcript[T6]: START TX(89) ACK RX(11) M-NACK STOP
+    PASS  address byte becomes 0x89 on the wire
+    PASS  byte read correctly
+[T6b] i2c_write_cmd: address ACKed, command byte NACKed
+    transcript[T6b]: START TX(88) ACK TX(FD) NACK STOP STOP
+    PASS  returns SF_I2C_TIMEOUT when the command byte is NACKed
+    PASS  bus released with STOP
+    PASS  bus idle high afterwards
+[T7] regression: i2c_write_multi_byte(0x70,0xAC,{0x33,0x00},2)
+    transcript[T7]: START TX(70) ACK TX(AC) ACK TX(33) ACK TX(00) ACK STOP
+    PASS  returns SF_I2C_SUCCESS
+    PASS  legacy sequence addr|reg|data0|data1 preserved
+    PASS  legacy single START/STOP framing preserved
+[T8] regression: i2c_read_multi_byte(0x70,0x71,buf,5)
+    transcript[T8]: START TX(70) ACK TX(71) ACK START TX(71) ACK RX(A0) M-ACK RX(A1) M-ACK RX(A2) M-ACK RX(A3) M-ACK RX(A4) M-NACK STOP
+    PASS  legacy read uses START ... repeated START
+    PASS  legacy sequence write-addr|reg then read-addr
+    PASS  legacy read data unchanged
+    PASS  legacy read NACKs the last byte
+[T9] i2c_bus_recover on an idle (released) bus
+    transcript[T9]:
+    PASS  returns SF_I2C_SUCCESS when the bus is already idle
+    PASS  zero SCL rising edges: no clocking injected into a healthy bus
+    PASS  zero recovery pulses counted
+    PASS  no START/STOP/byte activity at all on the healthy-bus path
+[T10] i2c_bus_recover with SDA held low (slave never releases)
+    transcript[T10]: STOP
+    PASS  returns SF_I2C_TIMEOUT while SDA is still held low
+    PASS  exactly 9 recovery SCL pulses (the configured bound), not unbounded
+    PASS  10 SCL rising edges total = 9 recovery pulses + the STOP edge
+    PASS  no START was emitted by the recovery sequence
+    PASS  exactly one legal STOP emitted
+    PASS  no device address/command byte was written by the recovery
+[T11] i2c_bus_recover: slave releases SDA on the 3rd pulse
+    transcript[T11]: STOP
+    PASS  returns SF_I2C_SUCCESS once SDA is released
+    PASS  clocking stops as soon as the slave releases (3 pulses, not 9)
+    PASS  4 SCL rising edges total = 3 recovery pulses + the STOP edge
+    PASS  one STOP, no START
+    PASS  no device address/command byte was written by the recovery
+[T11b] recovery sequence contains no address byte and no read
+    PASS  no ACK slot, no read byte, no master response bit during recovery
+==== result: 51 passed, 0 failed ====

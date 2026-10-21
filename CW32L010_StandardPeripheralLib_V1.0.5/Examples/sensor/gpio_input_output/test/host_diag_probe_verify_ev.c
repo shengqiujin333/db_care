@@ -547,8 +547,20 @@ int main(void)
         CHECK(tr.sample_ok == 1 && tr.diag_valid == 0,
               "successful cycle -> sample_ok=1 and diag_valid=0 (no G line emitted)");
         CHECK(tr.temp_x10 == 250 && tr.hum_x10 == 500, "measured values appear in the S fields");
-        CHECK(tr.have_prev == 1 && tr.prev_temp_x10 == 250,
-              "previous value advanced to the measurement taken this cycle");
+        /* ITEM-002 (FDS-003 DD-02): S.p/H are the PRE-decision snapshot. This is the
+         * first successful cycle in this harness, so the snapshot must still be empty;
+         * the old "post-advance" expectation belonged to the superseded semantics. */
+        CHECK(tr.have_prev == 0 && tr.prev_temp_x10 == 0,
+              "first successful cycle reports the pre-decision snapshot (no prior value)");
+        /* A second successful cycle must now see the value stored by the first one
+         * as its pre-decision previous value (same measurement, so t == p). */
+        sample_flag = 1;
+        temperature_process();
+        debug_trace_sample_t tr_prev; memset(&tr_prev, 0, sizeof tr_prev);
+        CHECK(sensor_trace_fetch(&tr_prev) == 1, "second successful cycle has a trace snapshot");
+        CHECK(tr_prev.temp_x10 == 250 && tr_prev.have_prev == 1 &&
+              tr_prev.prev_temp_x10 == 250,
+              "second successful cycle reports the pre-decision previous value");
     }
 
     printf("[F3] a failing cycle must not advance the previous valid temperature\n");

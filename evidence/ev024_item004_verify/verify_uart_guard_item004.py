@@ -13,6 +13,8 @@ verify_uart_guard_item004.py - 独立判据/参考模型（embedded_tester.embed
   python verify_uart_guard_item004.py harness_current.out
   python verify_uart_guard_item004.py harness_old.out --expect-unbounded
 """
+import os
+import re
 import sys
 
 MAXLINE = 96
@@ -21,6 +23,25 @@ CLOSE_GUARD = 100000
 INPUT_MODE = 0x10
 PULLUP_MODE = 0x11
 PP_MODE = 0x20
+
+
+def read_build_id():
+    """Derive the BOOT build id from the product configuration (single source).
+
+    ITEM-006 replaced the hard-coded FD-002r4 banner with SENSOR_FW_BUILD_ID;
+    reading it here keeps the independent expectation bound to the tested tree
+    instead of a stale literal. A missing macro is a hard error (never fallback).
+    """
+    path = os.path.normpath(os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "..", "..",
+        "CW32L010_StandardPeripheralLib_V1.0.5", "Examples", "sensor",
+        "gpio_input_output", "USER", "inc", "sensor_config.h"))
+    with open(path, "r", encoding="utf-8", errors="replace") as f:
+        text = f.read()
+    m = re.search(r'^\s*#define\s+SENSOR_FW_BUILD_ID\s+"([^"]+)"', text, re.MULTILINE)
+    if not m:
+        raise SystemExit("SENSOR_FW_BUILD_ID not found in " + path)
+    return m.group(1).encode("ascii")
 
 passed = 0
 failed = 0
@@ -135,8 +156,9 @@ def verify_current(path):
     # ---- N_BOOT_ORDER: 上电顺序与逐行格式 ----
     c = cases.get("N_BOOT_ORDER", {})
     data = bytes_of(c)
+    build_id = read_build_id()
     expect = (
-        b"BOOT fw=FD-002r4 uid=11223344 rst=0001 uart=9600\r\n"
+        b"BOOT fw=" + build_id + b" uid=11223344 rst=0001 uart=9600\r\n"
         b"VDD ok=1 code=1632 bgrmv=1200 mv=3011\r\n"
         b"IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0\r\n"
         b"IOSIG scl=95555 sda=30303\r\n"
