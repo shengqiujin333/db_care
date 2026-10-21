@@ -1,0 +1,26 @@
+==== ITEM-006 independent static checks ====
+root: D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER
+PASS  compile-time check rejects any CALIBRATED value other than 0/1
+PASS  distinct #error text for an illegal LIGHT_DARK_CALIBRATED
+PASS  compile-time range check for LIGHT_DARK_REF_CODE 1..4095
+PASS  distinct #error text for an out-of-range calibrated reference
+PASS  reference range check is nested under 'when calibrated'
+PASS  delivery configuration remains uncalibrated (CALIBRATED=0)
+PASS  delivery configuration keeps the 0 placeholder reference
+PASS  settle window unchanged (LIGHT_SETTLE_MS=100)
+PASS  burst length unchanged (LIGHT_ADC_SAMPLES=8)
+PASS  SENSOR_FW_BUILD_ID defined as RUN10-FDS003 in the single config point
+PASS  SENSOR_FW_BUILD_ID has exactly one definition (sensor_config.h): [('sensor_config.h', 130)]
+PASS  no FD-002r4 remains in any USER source/header: []
+PASS  debug_trace_boot renders 'BOOT fw=' + SENSOR_FW_BUILD_ID
+PASS  no literal firmware id is inlined in the banner
+PASS  valid = adc_ok && LIGHT_DARK_CALIBRATED (uncalibrated -> false)
+PASS  dark comes from light_is_dark(mean, valid, LIGHT_DARK_REF_CODE)
+PASS  mean is an integer division of the successful-sample sum
+PASS  no floating point in the light path
+PASS  no full-scale fallback constant/path in light.c
+PASS  mean/min/max are only assigned when adc_ok (failure keeps 0)
+PASS  light_is_dark returns false when valid=false
+PASS  light_is_dark uses uint32 3*mean >= C (equality = dark)
+PASS  product path passes light.valid and light.dark into sensor_gate_decide
+result: 23 passed, 0 failed

@@ -1,0 +1,59 @@
+==== independent diagnostic line-format verification (embedded_tester) ====
+[boot] BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600
+    FAIL  boot banner uses SENSOR_FW_BUILD_ID (ITEM-006 build identifier) (line 140)
+[B1] BUS worst case: 8 addresses and the truncation marker
+    PASS  B1 worst-case BUS line (8 addrs + '+' , idle=3)
+    PASS  every emitted line <= SENSOR_DEBUG_UART_MAXLINE (96)
+      [B1 worst-case BUS line (8 addrs + '+' , idle=3)] 53 bytes: BUS idle=3 scl=1 sda=1 ack=08,1F,2A,44,45,50,6E,77+
+[B2] BUS with a single answering address
+    PASS  B2 single-address BUS line
+    PASS  every emitted line <= SENSOR_DEBUG_UART_MAXLINE (96)
+      [B2 single-address BUS line] 31 bytes: BUS idle=3 scl=1 sda=1 ack=44
+[B3] BUS with no answering address -> the observed target state
+    PASS  B3 BUS ack=none with the target idle bitmap
+    PASS  every emitted line <= SENSOR_DEBUG_UART_MAXLINE (96)
+      [B3 BUS ack=none with the target idle bitmap] 33 bytes: BUS idle=1 scl=1 sda=0 ack=none
+[B4] idle bitmap expansion (bit0=SCL, bit1=SDA)
+    PASS  idle bitmap expands consistently
+    PASS  idle bitmap expands consistently
+    PASS  idle bitmap expands consistently
+    PASS  idle bitmap expands consistently
+[B5] BUS with NULL argument must not emit anything
+    PASS  NULL bus snapshot prints no bytes
+[S1] S line byte-exact vs the line captured on the real target (COM42)
+    PASS  S1 S line identical to the real-target bytes (no G line)
+    PASS  every emitted line <= SENSOR_DEBUG_UART_MAXLINE (96)
+      [S1 S line identical to the real-target bytes (no G line)] 66 bytes: S k=0 p=0 H=0 V=0 o=8 n=63 x=64 a=63 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+    PASS  exactly one CRLF, no bare LF
+    PASS  no G line for a successful cycle (diag_valid=0)
+[S2] S line worst case against the 96-byte budget
+      worst-case S: 92 bytes
+    PASS  worst-case S line fits the 96-byte budget
+    PASS  worst-case S line terminated by exactly one CRLF
+[G1] failing cycle: S line followed immediately by a G line (no raw read)
+    PASS  G1 S line + G line (12 '-' placeholders) in one call
+    PASS  every emitted line <= SENSOR_DEBUG_UART_MAXLINE (96)
+      [G1 S line + G line (12 '-' placeholders) in one call] 112 bytes: S k=0 p=0 H=0 V=0 o=8 n=62 x=64 a=63 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+G s=2 a44=0 a45=0 rd=0 at=3 raw=------------
+    PASS  two CRLF-terminated lines, no bare LF
+    PASS  the G line follows the S line
+[G2] G line worst case: every count at its maximum, 12 uppercase hex digits
+    PASS  G line prints status/ACK/re-read/re-measure counts and 12 uppercase hex digits
+      worst-case G line: 46 bytes
+    PASS  worst-case G line fits the 96-byte budget
+    PASS  worst-case G line is 44 chars + CRLF
+    PASS  status code rendered as a single integer 1..5
+    PASS  status code rendered as a single integer 1..5
+    PASS  status code rendered as a single integer 1..5
+    PASS  status code rendered as a single integer 1..5
+    PASS  status code rendered as a single integer 1..5
+[G3] no line ever exceeds the budget across the whole boot
+      4 lines, longest = 92 bytes
+    PASS  every emitted line <= 96 bytes
+    PASS  banner + BUS + S + G = 4 lines for one failing cycle
+[C1] close semantics: UART1 reset/clock-off happen after full drain
+    PASS  close resets UART1
+    PASS  close disables the UART1 clock
+    PASS  close is idempotent
+    PASS  UART1 re-opened for the next diagnostic line
+==== result: 35 passed, 1 failed ====

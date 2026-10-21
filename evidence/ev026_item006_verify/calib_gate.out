@@ -1,0 +1,20 @@
+==== ITEM-006 independent compile-time gate check ====
+header: D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\inc\sensor_config.h
+gcc: gcc.exe (x86_64-posix-seh-rev2, Built by MinGW-W64 project) 12.2.0
+PASS  delivery default CAL=0 REF=0                         exit=0 expected=compile
+PASS  CAL=0 REF=0 explicit                                 exit=0 expected=compile
+PASS  CAL=0 REF=4096 (gate only applies when calibrated)   exit=0 expected=compile
+PASS  CAL=1 REF=1 lower bound                              exit=0 expected=compile
+PASS  CAL=1 REF=4095 upper bound                           exit=0 expected=compile
+PASS  CAL=1 REF=3000 representative                        exit=0 expected=compile
+PASS  CAL=2 rejected                                       exit=1 expected=reject
+      stderr: D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\inc/sensor_config.h:121:2: error: #error "LIGHT_DARK_CALIBRATED must be 0 or 1"
+PASS  CAL=-1 rejected                                      exit=1 expected=reject
+      stderr: D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\inc/sensor_config.h:121:2: error: #error "LIGHT_DARK_CALIBRATED must be 0 or 1"
+PASS  CAL=1 REF=0 rejected                                 exit=1 expected=reject
+      stderr: D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\inc/sensor_config.h:125:2: error: #error "LIGHT_DARK_REF_CODE must be 1..4095 when LIGHT_DARK_CALIBRATED=1"
+PASS  CAL=1 REF=4096 rejected                              exit=1 expected=reject
+      stderr: D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\inc/sensor_config.h:125:2: error: #error "LIGHT_DARK_REF_CODE must be 1..4095 when LIGHT_DARK_CALIBRATED=1"
+PASS  CAL=1 REF=-1 rejected                                exit=1 expected=reject
+      stderr: D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\inc/sensor_config.h:125:2: error: #error "LIGHT_DARK_REF_CODE must be 1..4095 when LIGHT_DARK_CALIBRATED=1"
+result: 11 passed, 0 failed

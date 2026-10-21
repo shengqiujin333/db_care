@@ -1,0 +1,10 @@
+port | description | hwid
+COM43 | Prolific USB-to-Serial Comm Port (COM43) | USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2
+COM26 | USB 串行设备 (COM26) | USB VID:PID=C251:F001 SER=87094109484987710672FF50
+
+Raw tool output (serial_list_ports, 2026-10-21T04:27:46.262238+00:00):
+[{"port":"COM43","description":"Prolific USB-to-Serial Comm Port (COM43)","hwid":"USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2","vid":1659,"pid":8963,"serial_number":""},
+ {"port":"COM26","description":"USB 串行设备 (COM26)","hwid":"USB VID:PID=C251:F001 SER=87094109484987710672FF50","vid":49745,"pid":61441,"serial_number":"87094109484987710672FF50"}]
+
+COM43 = sensor debug UART1 (as registered in environment.yaml).
+COM26 = debugger-attached CDC port, NOT the sensor UART1.

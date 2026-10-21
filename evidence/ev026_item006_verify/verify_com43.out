@@ -1,0 +1,70 @@
+==== ITEM-006 independent COM43 capture verification ====
+config: CALIBRATED=0 REF=0 BUILD_ID=RUN10-FDS003
+---- com43_capture_a.bin (145 bytes) ----
+PASS  com43_capture_a.bin: payload is printable ASCII + CRLF only
+PASS  com43_capture_a.bin: last line ends with CRLF (no truncated tail)
+PASS  com43_capture_a.bin: no empty line / trailing bytes
+PASS  com43_capture_a.bin: at least one complete line
+PASS  com43_capture_a.bin: line 33 bytes <= 96 incl CRLF: 'BUS idle=3 scl=1 sda=1 ack=none'
+PASS  com43_capture_a.bin: line 66 bytes <= 96 incl CRLF: 'S k=0 p=0 H=0 V=0 o=8 n=40 x=43 a=41 D=0'
+PASS  com43_capture_a.bin: line 46 bytes <= 96 incl CRLF: 'G s=2 a44=0 a45=0 rd=0 at=3 raw=--------'
+PASS  com43_capture_a.bin: S line has the 15 frozen keys in order: ['k', 'p', 'H', 'V', 'o', 'n', 'x', 'a', 'D', 't', 'h', 'q', 'r', 's', 'y']
+PASS  com43_capture_a.bin: S k=0 o=8 in 0..8
+PASS  com43_capture_a.bin: S k=0 n<=a<=x and 0..4095
+PASS  com43_capture_a.bin: S k=0 a==0 iff o==0
+PASS  com43_capture_a.bin: S k=0 V/D are 0/1
+PASS  com43_capture_a.bin: S k=0 uncalibrated -> V=0
+PASS  com43_capture_a.bin: S k=0 uncalibrated -> D=0 regardless of mean
+PASS  com43_capture_a.bin: S k=0 q/r/s/y domains
+PASS  com43_capture_a.bin: S k=0 failed sample -> no report/send (r=s=0)
+PASS  com43_capture_a.bin: S k=0 failed sample -> no fabricated t/h
+PASS  com43_capture_a.bin: G line has the 7 frozen keys in order: ['s', 'a44', 'a45', 'rd', 'at', 'raw']
+PASS  com43_capture_a.bin: G line follows an S line
+PASS  com43_capture_a.bin: G only appears after a failed sample (q=0)
+PASS  com43_capture_a.bin: at least one complete S line
+      S row k=0: S k=0 p=0 H=0 V=0 o=8 n=40 x=43 a=41 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+      G rows paired with an S row: 1
+---- com43_capture_b.bin (224 bytes) ----
+PASS  com43_capture_b.bin: payload is printable ASCII + CRLF only
+PASS  com43_capture_b.bin: last line ends with CRLF (no truncated tail)
+PASS  com43_capture_b.bin: no empty line / trailing bytes
+PASS  com43_capture_b.bin: at least one complete line
+PASS  com43_capture_b.bin: line 66 bytes <= 96 incl CRLF: 'S k=3 p=0 H=0 V=0 o=8 n=40 x=42 a=40 D=0'
+PASS  com43_capture_b.bin: line 46 bytes <= 96 incl CRLF: 'G s=2 a44=0 a45=0 rd=0 at=3 raw=--------'
+PASS  com43_capture_b.bin: line 66 bytes <= 96 incl CRLF: 'S k=6 p=0 H=0 V=0 o=8 n=39 x=43 a=40 D=0'
+PASS  com43_capture_b.bin: line 46 bytes <= 96 incl CRLF: 'G s=2 a44=0 a45=0 rd=0 at=3 raw=--------'
+PASS  com43_capture_b.bin: S line has the 15 frozen keys in order: ['k', 'p', 'H', 'V', 'o', 'n', 'x', 'a', 'D', 't', 'h', 'q', 'r', 's', 'y']
+PASS  com43_capture_b.bin: S k=3 o=8 in 0..8
+PASS  com43_capture_b.bin: S k=3 n<=a<=x and 0..4095
+PASS  com43_capture_b.bin: S k=3 a==0 iff o==0
+PASS  com43_capture_b.bin: S k=3 V/D are 0/1
+PASS  com43_capture_b.bin: S k=3 uncalibrated -> V=0
+PASS  com43_capture_b.bin: S k=3 uncalibrated -> D=0 regardless of mean
+PASS  com43_capture_b.bin: S k=3 q/r/s/y domains
+PASS  com43_capture_b.bin: S k=3 failed sample -> no report/send (r=s=0)
+PASS  com43_capture_b.bin: S k=3 failed sample -> no fabricated t/h
+PASS  com43_capture_b.bin: G line has the 7 frozen keys in order: ['s', 'a44', 'a45', 'rd', 'at', 'raw']
+PASS  com43_capture_b.bin: G line follows an S line
+PASS  com43_capture_b.bin: G only appears after a failed sample (q=0)
+PASS  com43_capture_b.bin: S line has the 15 frozen keys in order: ['k', 'p', 'H', 'V', 'o', 'n', 'x', 'a', 'D', 't', 'h', 'q', 'r', 's', 'y']
+PASS  com43_capture_b.bin: S k=6 o=8 in 0..8
+PASS  com43_capture_b.bin: S k=6 n<=a<=x and 0..4095
+PASS  com43_capture_b.bin: S k=6 a==0 iff o==0
+PASS  com43_capture_b.bin: S k=6 V/D are 0/1
+PASS  com43_capture_b.bin: S k=6 uncalibrated -> V=0
+PASS  com43_capture_b.bin: S k=6 uncalibrated -> D=0 regardless of mean
+PASS  com43_capture_b.bin: S k=6 q/r/s/y domains
+PASS  com43_capture_b.bin: S k=6 failed sample -> no report/send (r=s=0)
+PASS  com43_capture_b.bin: S k=6 failed sample -> no fabricated t/h
+PASS  com43_capture_b.bin: G line has the 7 frozen keys in order: ['s', 'a44', 'a45', 'rd', 'at', 'raw']
+PASS  com43_capture_b.bin: G line follows an S line
+PASS  com43_capture_b.bin: G only appears after a failed sample (q=0)
+PASS  com43_capture_b.bin: at least one complete S line
+PASS  com43_capture_b.bin: sampling opportunities are 3 ticks apart: [3, 6]
+      S row k=3: S k=3 p=0 H=0 V=0 o=8 n=40 x=42 a=40 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+      S row k=6: S k=6 p=0 H=0 V=0 o=8 n=39 x=43 a=40 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+      G rows paired with an S row: 2
+PASS  at least one real sampling opportunity observed (got 3)
+NOTE  com43_capture_a.bin: BOOT line not inside the capture window (reset occurred before capture)
+NOTE  com43_capture_b.bin: BOOT line not inside the capture window (reset occurred before capture)
+result: 58 passed, 0 failed
