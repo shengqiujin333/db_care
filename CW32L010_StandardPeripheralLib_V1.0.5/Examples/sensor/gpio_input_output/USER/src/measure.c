@@ -416,6 +416,11 @@ uint8_t sample_flag = 1;       /* 由 RTC 节拍置位 (ITEM-007) */
 uint8_t report_req  = 0;       /* 待上报标志 (置位见 temperature_process) */
 static uint8_t report_retry = 0;
 
+/* ITEM-003: 触发时冻结的 10B 密文帧; 发送重试只复用该缓冲, 不重新编码。 */
+uint8_t mcu_uid[10];
+uint8_t send_data[10];
+static uint8_t s_pending_frame_valid = 0u;
+
 static int16_t  s_prev_temp_x10 = 0;    /* 前一有效测量温度 (判定用) */
 static bool     s_have_prev     = false;/* 是否已有前一有效样本 */
 static uint16_t s_last_hum_x10  = 0;    /* 最近有效湿度 */
@@ -503,7 +508,11 @@ uint16_t temperature_process(void)
         uint8_t rep = sensor_gate_decide(true, prev_for_decision, have_prev_for_decision,
                                          tempvalue, s_light.valid, s_light.dark) ? 1u : 0u;
         if (rep != 0u) {
+            /* ITEM-003: 触发时一次性编码并冻结 ID/T/RH; 之后的重试只发送该缓冲。 */
+            encode_frame10(mcu_uid, tempvalue, huminityvalue, send_data);
+            s_pending_frame_valid = 1u;
             report_req = 1u;
+            s_last_send_result = 0u;
         }
         s_prev_temp_x10 = tempvalue;    /* 判定后才推进 (失败不污染前值) */
         s_have_prev     = true;
@@ -570,38 +579,43 @@ uint8_t sensor_trace_fetch(debug_trace_sample_t *out)
     return 1u;
 }
 
-uint8_t mcu_uid[10];
-uint8_t send_data[10];
-
 /* ==================================================================== */
 /* 条件上报 (readme 修改点 4; PR-004/IC-003 IF02; FDS-003 §5)              */
 /* report_req 由 temperature_process() 按 sensor_gate_decide 置位。       */
-/* 帧布局/字节序/Feistel 加密均由 encode_frame10() 决定, 本项不变。        */
+/* ITEM-003: 触发时 encode_frame10() 一次; 本函数内最多 3 次发送同一帧。 */
 /* ==================================================================== */
 void send_data_to_gateway(void)
 {
-    if (report_req == 0) {
+    uint8_t attempt;
+    uint8_t result = 2u;   /* 防御: 若配置为 0 次尝试, 视为本地失败 */
+
+    if (report_req == 0u) {
         s_last_send_result = 0u;       /* 无待上报: 本周期未发送 (调试轨迹用) */
         return;                        /* 不满足判据: 不上报 */
     }
 
-    /* 发送最近一次有效样本 (与触发上报的样本一致): encode_frame10 内部组装
-     * uid_pick(4) | temp_x10_LE(2) | hum_x10_LE(2) | crc16_LE(2) 并加密 */
-    encode_frame10(mcu_uid, s_prev_temp_x10, s_last_hum_x10, send_data);
-
-    if (app_um2005C_send_data_timeout(send_data, SENSOR_RF_FRAME_LEN,
-                                      SENSOR_RF_TX_TIMEOUT_MS)) {
-        report_req   = 0;              /* 仅在发送成功后清除待上报状态 */
-        report_retry = 0;
-        s_last_send_result = 1u;
-    } else {
-        report_retry++;                /* 失败不记成功 */
+    if (s_pending_frame_valid == 0u) {
+        /* 防御: 没有冻结帧时不得发送旧/未初始化数据; 按本地失败结束本周期。 */
+        report_req = 0u;
         s_last_send_result = 2u;
-        if (report_retry >= SENSOR_RF_TX_RETRY) {
-            report_req   = 0;          /* 按上限重试用尽, 放弃本轮; 下个周期自然重试 */
-            report_retry = 0;
-        }
+        report_retry = 0u;
+        return;
     }
+
+    /* 同一次调用内完成最多 3 次尝试; 所有尝试使用同一 send_data[10] 字节。 */
+    for (attempt = 0u; attempt < (uint8_t)SENSOR_RF_TX_RETRY; attempt++) {
+        if (app_um2005C_send_data_timeout(send_data, SENSOR_RF_FRAME_LEN,
+                                          SENSOR_RF_TX_TIMEOUT_MS)) {
+            result = 1u;
+            break;
+        }
+        result = 2u;                   /* 失败不记成功 */
+    }
+
+    report_req = 0u;                  /* 成功或用尽均结束本周期, 不跨周期保留 */
+    s_pending_frame_valid = 0u;
+    report_retry = 0u;                /* IC-003: S.y 在成功/用尽后为 0 */
+    s_last_send_result = result;
 }
 
 void go_to_sleep(void)
