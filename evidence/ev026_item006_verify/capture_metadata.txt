@@ -1,8 +1,0 @@
-capture | port | baud | duration_s | window (UTC, tool timestamps) | bytes | md5
-A | COM43 | 9600 | 90  | 04:28:38.003 -> 04:30:08.208 | 145 | 2e2e6a9437414ff71e8848bdaa82c863
-B | COM43 | 9600 | 200 | 04:31:26.444 -> 04:34:46.654 | 224 | 8e83b79f2a6361fff95ce88f4416f4f2
-A content: BUS + S k=0 + G (power-on opportunity immediately after the download reset)
-B content: (S k=3 + G) + (S k=6 + G)
-Serial framing: 9600 8N1, CRLF, ASCII only; see verify_com43.out.
-BOOT/VDD/IOTEST/IOSIG of the download reset are outside window A (capture opened
-after mdk_flash returned; see mdk_flash.log).

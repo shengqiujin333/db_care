@@ -1,8 +1,0 @@
-PASS  old: BOOT missing before UID-zero branch (expected defect)
-PASS  old: UID-zero spins in go_to_sleep() (expected defect)
-PASS  old: UID-zero never reaches deep sleep (expected defect)
-PASS  old: light_init() not called on UID-zero (expected defect)
-PASS  old: main loop calls temperature/send every round, not once per opportunity (expected defect)
-PASS  old: more than one S per opportunity (expected defect)
-NEGATIVE_CONTROL_OK
-result: 6 passed, 0 failed

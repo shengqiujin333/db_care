@@ -1,6 +1,0 @@
-COM43  Prolific USB-to-Serial Comm Port (COM43)  USB VID:PID=067B:2303  LOCATION=1-9.4.2
-COM26  USB 串行设备 (COM26)                      USB VID:PID=C251:F001  SER=87094109484987710672FF50
-
-来源: hardware_verification.serial_list_ports，2026-10-21T03:21:40Z
-说明: COM43 为本项目传感器调试串口（9600 8N1）；COM26 是 CW-DAPLink 附带的 CDC 接口，
-      不是传感器 UART1。本轮实际使用 COM43 捕获。

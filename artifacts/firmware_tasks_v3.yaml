@@ -1,9 +1,0 @@
-items:
-  - "将 fw_core 条件上报纯逻辑改为 PR-004/IC-003 完整判据：新增 sensor_gate_decide(sample_valid, prev_x10, have_prev, cur_x10, light_valid, dark)，仅在 sample_valid 为真时调用保留的 4 参 sensor_decide_report(prev_x10, have_prev, cur_x10, light_valid && dark)；sample_valid=false 返回 false；cur_x10>350 独立返回 true；恰好 350 继续评估升温；升温用 int32 cur-prev>9；光照无效或无前值不触发升温。同步头文件、调用点和注释，常量更名 SENSOR_REPORT_RISE_X10。验收行为：14 规范向量结果正确，v3/v6/v7 不再出现旧错误，v14 不判定。"
-  - "在 measure.c 的每个采样事务开始时快照 prev_for_decision 与 have_prev_for_decision，温湿度有效时用该快照判定，判定后才推进 prev 与最近有效湿度；失败周期不判定、不推进、不发送。S 行 p/H 来自判定前快照，不得读取推进后的值；失败周期 t/h 可保留最近有效值但 q=0。验收行为：成功周期 p 为旧 prev、t 为本次值；失败周期 q=0 且 prev 不变。"
-  - "门控触发时一次性构造并冻结 10B 加密待发帧，帧内 ID、温度、湿度与触发样本一致；本周期最多 3 次、每次 200ms 的发送全部发送同一字节缓冲，不重新编码、不重采样、不改值；成功或用尽都清除待发状态，不跨周期保留。验收行为：1..3 次尝试的发送字节逐字节相同；成功/用尽后下一周期无残留；S.s 为最终结果 0/1/2，S.y 保持现行失败计数器语义。"
-  - "为 UART1 诊断输出增加有界等待：TXE 与 TXBUSY 都使用整行/关闭预算，超时中止本行但复位并关闭 UART、PA05/PA06 置输入，随后继续睡眠/业务；不使用新定时器，不阻塞采样、判定、发送。验收行为：串口卡住时在预算内返回且业务结果不变；正常 BOOT/S/G 行顺序与每行含 CRLF 不超过 96B 不变。"
-  - "整理主循环为每个采样机会只执行一次完整事务：光照→温湿度→判定→冻结→最多 3 次发送→唯一 S（失败追加 G）→关闭 UART→深睡；不再依赖多轮主循环完成 RF 重试。BOOT 移到 UID 零致命判断之前；UID 和为零时清 sample_flag/report_req、置 PB05 低/关 ADC、关闭 UART 并真正深睡，不空转。验收行为：每机会一行 S；UID 零不采样/不发送/不空转；RTC 1min×3、GPIOA/I2C/SWD 边界不变。"
-  - "在 sensor_config.h 收口标定与构建标识：LIGHT_DARK_CALIBRATED 只允许 0/1，已标定时 LIGHT_DARK_REF_CODE 必须在 1..4095，否则编译期报错；未标定时 light.valid/dark 为 false，升温分支关闭；保留 100ms/8 次/整数均值。BOOT 使用本轮构建标识常量，不硬编码 FD-002r4。验收行为：非法组合编译失败；未标定不判暗；mean=ceil(C_dark/3) 判暗、其减一判亮。"
-  - "同步修正实现侧自检资产：把 host_fw_core_pure_check、host_sensor_core_test、host_measure_flow_check 中的下降期望改为 14 向量/升温期望，覆盖 35.0 继续评估升温、判定前 prev、冻结帧、3 次用尽不跨周期、UART 有界、未标定与标定边界；不得修改测试能力拥有的 *_verify_ev.c 独立 harness。验收行为：错误实现会被自检判失败，修正实现通过。"
-  - "完成构建与静态核对：Keil rebuild 0 Error（仅允许既有 main.c 空循环告警），记录 axf/hex md5、Code/RO/RW/ZI 和编译器版本；确认无 hall/OPTCFG/params/history 有效调用、无新增 NVM 参数写、无新增 RF/BLE/上传字段、无心跳/额外采样、引脚与中断边界未变；检查 S/G 行最坏长度不超过 96B。同步 file_manifest.txt 的新增/修改文件记录。"

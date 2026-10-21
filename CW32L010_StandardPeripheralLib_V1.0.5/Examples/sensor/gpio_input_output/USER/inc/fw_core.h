@@ -2,7 +2,7 @@
  * fw_core.h - 固件纯逻辑核心(与硬件访问分离, 宿主机 L0 可测)
  *
  * 包含: CRC16-CCITT-FALSE；以及本次需求新增的 GXHT40 CRC-8/整数换算、
- *       光照 1/3 判据、条件上报判定。
+ *       光照滞回、条件上报判定。
  * 本头文件及其实现 fw_core.c 不依赖任何 MCU 寄存器/外设头
  * (数值常量取自 sensor_config.h 的纯数值段: 实现中定义 SENSOR_CONFIG_NO_MCU)。
  *
@@ -39,22 +39,8 @@ bool gxht40_raw_to_x10(uint16_t raw_t, uint16_t raw_rh,
  */
 bool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t c_dark);
 
-/* ---------------- 条件上报判定 (readme 4; PR-004/DEC-01; IC-003 IF02; FDS-003 DD-01) ---------------- */
-/*
- * 产品路径: report = sample_valid && (
- *     cur > 35.0C
- *     || (have_prev && light_valid && dark && (int32)cur - (int32)prev > 0.9C)
- * )
- * sample_valid 只指温湿度有效；light_valid/dark 只作用于升温分支；
- * 35.0C 不满足超温但必须继续评估升温分支；差值用 int32 防溢出。
- *
- * sensor_gate_decide 为产品调用入口；sensor_decide_report 保留 4 参兼容签名，
- * 供既有 harness 调用，其 dark 参数须由调用方折算 light_valid && dark。
- */
-bool sensor_gate_decide(bool sample_valid,
-                        int16_t prev_temp_x10, bool have_prev,
-                        int16_t cur_temp_x10,
-                        bool light_valid, bool dark);
+/* ---------------- 条件上报判定 (readme 4; IC-002 §2; FD-002 §6.4) ---------------- */
+/* report = ((prev - cur) > 0.9C 且 DARK) 或 (cur > 35.0C); 无前值时下降分支恒假 */
 bool sensor_decide_report(int16_t prev_temp_x10, bool have_prev,
                           int16_t cur_temp_x10, bool dark);
 

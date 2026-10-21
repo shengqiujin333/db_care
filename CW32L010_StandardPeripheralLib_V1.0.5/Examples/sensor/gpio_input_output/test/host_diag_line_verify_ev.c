@@ -138,8 +138,8 @@ int main(void)
     debug_trace_boot(uid, 0x0240u);
     printf("[boot] %s", (const char *)mock_dl_tx);
     CHECK(strcmp((const char *)mock_dl_tx,
-                 "BOOT fw=" SENSOR_FW_BUILD_ID " uid=6A002C00 rst=0240 uart=9600\r\n") == 0,
-          "boot banner uses SENSOR_FW_BUILD_ID (ITEM-006 build identifier)");
+                 "BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600\r\n") == 0,
+          "boot banner literal unchanged (regression)");
 
     /* ================= BUS line ================= */
     printf("[B1] BUS worst case: 8 addresses and the truncation marker\n");

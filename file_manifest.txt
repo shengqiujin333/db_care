@@ -19,53 +19,45 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/UM2005C/
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/ | active | 传感器用户头文件（与 USER/src 一一对应）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/debug_trace.h | active | UART1 调试通道接口（BOOT/VDD/BUS/G/IOTEST/IOSIG/S 行结构与字段）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/encrytogate.h | active | 433 空口帧加密封装接口（与网关 feistel_al/bleencrypt 兼容）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/fw_core.h | active | 纯逻辑接口（CRC16/CRC-8、GXHT40 x10 换算与有效域、light_is_dark 1/3 判据、sensor_gate_decide 产品包装、sensor_decide_report 4 参兼容）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/fw_core.h | active | 纯逻辑接口（CRC16/CRC-8、GXHT40 x10 换算与有效域、light_is_dark 1/3 判据、sensor_decide_report）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/gxht40.h | active | GXHT40 驱动接口（init/measure/detected_addr7、结果码、只读诊断快照 gxht40_diag_t + gxht40_diag_fetch）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/interrupts_cw32l010.h | active | 中断入口声明
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/light.h | active | 光照通路接口（light_result_t、light_init/light_sample、light_read_vdd_mv 供电轨测量）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/main.h | active | 主程序接口
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/measure.h | active | 采样/上报接口 + 上电诊断（sensor_bus_diag_scan、sensor_io_diag_scan、sensor_io_sig_scan）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h | active | 唯一配置点：引脚、GXHT40 地址/命令/重试/等待、180 s 节拍、SENSOR_REPORT_RISE_X10(9)/HIGH_X10(350) 与 1/3 无光常量、UART1 调试与行/关闭预算(DEBUG_UART_*) 、总线诊断常量、general call 复位常量、LIGHT_DARK_* 编译门禁(0/1、1..4095)、SENSOR_FW_BUILD_ID；LIGHT_DARK_* 仍未标定（=0）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h | active | 唯一配置点：引脚、GXHT40 地址/命令/重试/等待、180 s 节拍、0.9℃/35.0℃ 与 1/3 无光常量、UART1 调试与行预算、总线诊断常量、general call 复位常量；LIGHT_DARK_* 仍未标定（=0）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sf_i2c.h | active | 软 I2C 接口（命令写/连续读、i2c_probe_addr、i2c_bus_recover）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c | active | UART1 调试通道实现（各行渲染与 ≤96 B 行预算、整行/关闭有界等待、超时中止本行但照常关闭、BOOT 使用 SENSOR_FW_BUILD_ID、引脚边界）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c | active | UART1 调试通道实现（各行渲染与 ≤96 B 行预算、关闭语义）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/encrytogate.c | active | 433 空口帧加密实现
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c | active | 纯逻辑实现（CRC/换算/有效域/light_is_dark/sensor_gate_decide 升温门控/sensor_decide_report 4 参兼容；不引 MCU 头，可宿主机编译）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c | active | 纯逻辑实现（CRC/换算/有效域/light_is_dark/sensor_decide_report；不引 MCU 头，可宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/gxht40.c | active | GXHT40 驱动实现（0x44/0x45 探测与缓存、0xFD 测量、6B 读取、双字 CRC-8、x10 换算、有界重读重测、失败后重探 + 总线恢复、诊断快照）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/interrupts_cw32l010.c | active | 中断服务实现
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c | active | 光照通路实现（PB05 供电→稳定→PB04/AIN11 多次转换→均值/有效性/暗判据；light_read_vdd_mv 用 ADC 内部 BGR1.2V 反推 VDD）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c | active | 主循环/RTC 节拍；上电顺序 BOOT→VDD→IOTEST→IOSIG→BUS；每采样机会一次完整事务/唯一 S；UID 零清标志/PB05 低/关 UART/真正深睡
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c | active | 采样流程与条件上报（判定前 prev/H 快照、判定后推进、失败不推进；触发时冻结 10B 帧、单周期最多 3 次发送同一帧；调用 sensor_gate_decide）；上电一次性总线诊断（含 general call 复位尝试）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c | active | 主循环/RTC 节拍；上电顺序 BOOT→VDD→IOTEST→IOSIG→BUS，每周期 S 行
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c | active | 采样流程与条件上报；上电一次性总线诊断（含 general call 复位尝试）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 软 I2C 实现（位时序、ACK 判定、地址探测、≤9 脉冲 + STOP 的总线恢复）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh | active | GNU 交叉编译脚本（cw32l010.ld / startup_cw32l010.S 同目录）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh | active | 宿主机测试单一入口（fw_core/pure check/measure/UART/light/标定编译门禁 7 组；含 -DLIGHT_BGR_TRIM_MV 覆盖）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/check_calib_config.sh | active | ITEM-006 标定配置编译门禁自检（默认/1/4095 通过；2/0/4096 拒绝）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c | active | UART1 调试通道实现侧自检（行格式与预算、正常/超长行、TXE/TXBUSY 卡死与恢复、BOOT 构建标识）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_line_verify_ev.c | active | 测试能力独立验证 harness：BUS/G/S 行逐字节与 96 B 预算；BOOT 期望使用 SENSOR_FW_BUILD_ID（ITEM-006 同步）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_probe_verify_ev.c | active | 测试能力独立验证 harness：BUS 扫描/general call 分支/诊断快照传播；F2 已按 ITEM-002 判定前快照语义更新（首个成功 H=0/p=0，第二个成功 p=前值）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_gate_verify_item001.c | active | 测试能力独立验证 harness（EV-020 ITEM-001）：门控 14 向量、1,936 点网格、int32 边界、4 参兼容；直编当前产品 fw_core.c
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh | active | 宿主机测试单一入口（纯逻辑 + 光照等阶段；含 -DLIGHT_BGR_TRIM_MV 覆盖）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c | active | UART1 调试通道实现侧自检（行格式与预算）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_line_verify_ev.c | active | 测试能力独立验证 harness：BUS/G/S 行逐字节与 96 B 预算
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_probe_verify_ev.c | active | 测试能力独立验证 harness：BUS 扫描/general call 分支/诊断快照传播
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_pure_check.c | active | fw_core 纯逻辑自检
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_verify_ev.c | active | 测试能力独立验证 harness：fw_core 穷举（65536 温度/湿度字、CRC、1-3 判据网格）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gw_compat_verify_ev.c | active | 测试能力独立验证 harness：传感器→网关→Android 全链兼容
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_check.c | active | GXHT40 驱动实现侧自检（mock 从机）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_verify_ev.c | active | 测试能力独立验证 harness：GXHT40 驱动（位级 mock 总线/从机、重探、总线恢复、命令白名单）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_item005_link_stubs.c | active | ITEM-005 测试侧最小链接桩（report_req/light_init），供既有 RTC 节拍 harness 链接当前 main.c；无产品逻辑
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_item006_calib_verify.c | active | 测试能力独立验证 harness（EV-026 ITEM-006）：直编当前 light.c+fw_core.c，四配置变体的未标定 valid/dark=false、100 ms/8 次/整数均值、ceil(C/3) 边界与 1..4095 全域、升温分支
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_check.c | active | 光照通路实现侧自检（真实 light.c + 影子 MCU）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_verify_ev.c | history | 测试能力 harness，已陈旧不可编译（仍按 T2 之前 light_sample() 的 bool API 编写，且引用已删滞回语义）；结论不采用，待重写
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_main_flow_verify_item005.c | active | 测试能力独立验证 harness（EV-025 ITEM-005）：直编当前 main.c，事件顺序验证 UID 零不采样/不发送/不空转与每机会一次事务/唯一 S；setjmp 有界退出产品无限循环
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c | active | measure.c 采样流程与发送路径实现侧自检；含判定前 p/H 快照、失败不推进、冻结帧/3 次发送/不跨周期
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c | active | measure.c 采样流程与发送路径实现侧自检
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_verify_ev.c | active | 测试能力独立验证 harness：measure.c 多周期流程模型
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_freeze_verify_item003.c | active | 测试能力独立验证 harness（EV-022 ITEM-003）：触发一次编码、单周期 1..3 次同字节发送、重试期间改值不改帧、成功后/用尽清除、不跨周期、S.s/y；直编当前产品 measure.c，--wrap 计数真实 encoder
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_snapshot_verify_item002.c | active | 测试能力独立验证 harness（ITEM-002）：16 周期成功/失败混合、判定前 p/H 快照、失败零副作用；EV-029 起按 ITEM-003 冻结契约改为“无冻结帧不发送”，冻结逐字节由 ITEM-003 harness 覆盖
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_check.c | active | 空口帧往返 + 网关→Android 映射实现侧自检
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_verify_ev.c | active | 测试能力独立验证 harness：空口帧字段/字节序/篡改拒绝
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_report_verify_ev.c | active | 测试能力独立验证 harness：条件上报发送路径
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rtc_cadence_verify_ev.c | active | 测试能力独立验证 harness：3 分钟 RTC 节拍门控
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c | active | 宿主机纯逻辑综合套件（CRC/换算/有效域/1-3 判据/14 向量/网格/4 参兼容/旧方向负向对照）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c | active | 宿主机纯逻辑综合套件（CRC/换算/有效域/1-3 判据/上报判定）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_bus_check.c | active | 软 I2C 位级 mock 总线自检（含探测与总线恢复线序）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_verify_ev.c | active | 测试能力独立验证 harness：软 I2C 原语与 i2c_bus_recover
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_uart_bounded_verify_item004.c | active | 测试能力独立验证 harness（EV-024 ITEM-004）：真实产品 debug_trace.c + 影子 UART 的 TXE/TXBUSY 卡死、行/关闭预算、S/G 独立预算、业务不变
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_vdd_verify_ev.c | active | 测试能力独立验证 harness：light_read_vdd_mv 供电轨测量（含公式/超时/不伪造）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_diagline_ev/ | active | 测试能力自建影子 MCU 层（诊断行 harness）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_light/ | active | 实现侧影子 MCU 层（供 light.c 宿主机编译）
@@ -74,52 +66,20 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_ev/ | active | 测试能力自建影子 MCU 层（measure 流程 harness）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_mcu/ | active | 实现侧影子 MCU 层（供 measure.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/ | active | 实现侧影子 MCU 层（供 debug_trace.c 宿主机编译）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/ | active | 测试能力自建影子 MCU 层（ITEM-004：TXE READY/STUCK/SLOW、TXBUSY 卡死、轮询计数与硬上限）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/cw32l010_adc.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/cw32l010_gpio.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/cw32l010_sysctrl.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/cw32l010_uart.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_uart_ev/mock_uart_hw.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_vdd_ev/ | active | 测试能力自建影子 MCU 层（供电轨测量 harness，mock_bgr_trim_value 替身修调值）
-artifacts/android_architecture.md | history | 旧 Android 方案 AA-002；已被 AA-003（android_architecture_v3.md）取代，保留历史
-artifacts/android_architecture_v3.md | active | Android 方案设计 AA-003：对齐 IC-003 v4/PACC-002；as-built 核对、G-01..G-09 偏差、合法零/前缀/接收与源时间/同键幂等、页面与重连、异常矩阵、兼容面与未决项
+artifacts/android_architecture.md | active | Android 方案设计 AA-002（需求 6 点落点、分层/模块/接口、SQLite v3 与 /upload_data 幂等、异常边界、未决项）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加）
-artifacts/android_tasks.yaml | history | 旧 Android 实现任务清单（14 项）；已被 android_tasks_v3.yaml 取代，保留历史
-artifacts/android_tasks_v3.yaml | active | 本轮 Android 实现任务清单（14 项，按前置依赖排序：零值/接收观察/时间语义/展示/前缀/归因/报警/云/重连/文档/自检）
-artifacts/architecture_exploration.md | active | 本轮架构与接口探索 AEX-001：候选责任边界、7个问题、原始证据与最小区分实验；非正式契约或验收
+artifacts/android_tasks.yaml | active | Android 实现任务清单（14 项，按前置依赖排序）
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 5.0（逐文件核对、诊断设计、标定现场最小操作、判定与上报冻结语义、增量任务）
-artifacts/firmware_exploration.md | active | 本轮固件可行性探索报告 FEX-001（GXHT40 无 ACK 的外部仪器定位、光敏 1/3 可分离性风险、上报判据 3/14 不符、测试资产同向偏差、节拍/UART/资源结论与未知项）
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 5.8（ITEM-002 复验修复：本轮无产品代码改动，用既有实板数据收窄装配/器件假设并登记现场检查项）
-artifacts/firmware_implementation_v10.md | active | 本轮最终固件实现记录 FWI-010：ITEM-001..008 汇总、最终 rebuild 0 Error/1 既有 warning、静态核对 11/11、7 组 295/0、镜像 md5 与未完成/未实板边界
-artifacts/firmware_implementation_v3.md | active | 本轮固件实现记录 FWI-003：ITEM-001 完成 sensor_gate_decide/升温门控/35.0 继续评估/常量更名/调用点与 14 向量自检；其余任务未实现，构建 md5 与限制见文
-artifacts/firmware_implementation_v4.md | active | 本轮固件实现记录 FWI-004：ITEM-002 完成判定前 prev/H 快照、判定后推进、失败不推进、S 行 p/H 轨迹；含 A→B→失败→C 自检、构建 md5 与未完成项
-artifacts/firmware_implementation_v5.md | active | 本轮固件实现记录 FWI-005：ITEM-003 完成触发时冻结 10B 帧、单周期最多 3 次发送同一帧、成功后/用尽清除、不跨周期、S.s/y；含发送场景自检、构建 md5 与未完成项
-artifacts/firmware_implementation_v6.md | active | 本轮固件实现记录 FWI-006：ITEM-004 完成 UART1 整行/关闭有界等待、超时中止本行但照常关闭、无新定时器；含 TXE/TXBUSY 卡死自检、构建 md5 与未完成项
-artifacts/firmware_implementation_v7.md | active | 本轮固件实现记录 FWI-007：ITEM-005 完成主循环单次事务、BOOT 先于 UID 零致命判断、UID 零清标志/关 UART/真正深睡；含结构自检/RTC 回归、构建 md5 与未完成项
-artifacts/firmware_implementation_v8.md | active | 本轮固件实现记录 FWI-008：ITEM-006 完成 LIGHT_DARK_* 编译门禁、未标定门禁保持、BOOT 构建标识；含 6/0 配置编译门禁、51/0 BOOT、构建 md5 与未完成项
-artifacts/firmware_implementation_v9.md | active | 本轮固件实现记录 FWI-009：ITEM-007 同步实现侧自检资产（build_test 纳入 pure/config、旧方向负向对照），7 组 295/0；产品源码未改、镜像 md5 同 ITEM-006
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 5.0（含 FWR-116 失败可诊断、FWR-117 以当前构建再观测、FWR-118 失败后重探 + 总线恢复，readme 修改点 1–8 对应表）
-artifacts/firmware_requirements_v3.md | active | 本轮固件需求 FWR-003（采样/驱动/光照标定/升温门控/冻结发送/UART 有界/启动/资源/不伪造，偏差 D-01..D-10 与依赖 U01..U07）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 5.0（裸机超级循环 + RTC 深睡；T_DIAG/T_TRACE 预算与不变量）
-artifacts/firmware_rtos_architecture_v3.md | active | 本轮运行时架构 RTA-003（裸机主循环/RTC ISR 边界、单周期事务状态机、时序/资源预算、故障隔离与可测试性）
-artifacts/firmware_solution_design.md | active | 本轮固件方案 FDS-003（DD-01..12：完整门控/判定前快照/单周期冻结帧/有界 UART/标定/启动致命路径；文件改动面、伪码、异常矩阵、预算、任务映射）
 artifacts/firmware_tasks.yaml | active | 固件实现任务清单（run8 5 项：T1 诊断、T2 采集恢复、T3 全暗标定、T4 升温判定、T5 待上报冻结）
-artifacts/firmware_tasks_v3.yaml | active | 本轮固件实现任务清单（仅 items：门控/快照/冻结发送/UART 有界/主循环/标定配置/测试/构建 8 项；现场标定为外部依赖，按前置依赖排序）
-artifacts/interface_contract.md | history | 旧接口契约 IC-002 v3.0；本轮由 interface_contract_v4.md IC-003 v4.0替代，保留历史
-artifacts/interface_contract_v4.md | active | 本轮接口契约 IC-003 v4.0：IF01..08字段/编码/时序/错误/重试/兼容；消费PACC-002、AEX、SD；保留真实条件与产品待决项
-artifacts/product_acceptance.md | history | 产品验收定义 PACC-001（n002；已被 PACC-002 在 n008 修正，保留历史，不再作为下游现行判据）
-artifacts/product_acceptance_v2.md | active | 本轮产品验收定义 PACC-002（v2：修正合法零/BLE 前缀/接收观察/同键幂等/报警覆盖/暗可分离，PA-001..031、AD-01..10、E2E-01..09、FB-01..20）
-artifacts/product_requirements.md | active | 本轮产品需求 PDR-001（readme 8 点；用户范围、行为/异常/恢复、优先级与来源、验收判据、决策与开放问题、as-built 偏差登记）
-artifacts/product_scope.md | active | 本轮产品范围定义 PSCOPE-001（目标/用户/系统边界、readme 8 点交付、明确不做、持续约束与规划指令区分、决策权/条件/变更控制）
-artifacts/product_specification.md | active | 本轮产品规格 PSPEC-001（端到端行为、判据表、调试行、故障矩阵、部署运维要求、AT-01..AT-12 验收场景）
+artifacts/interface_contract.md | active | 接口契约 IC-002 v3.0（升温 >0.9℃ 且有效无光 或 >35.0℃、180 s 采样、全暗 ADC 码 1/3、433/BLE/平台兼容与实现交接；CONTRACT_READY）
 artifacts/software_e2e_plan.md | active | 软件端到端测试计划 E2E-SW-002（关键旅程 J-1..J-6；只做计划不执行）
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-002（Android 分层测试设计与用例明细、7 项非阻塞缺口）
-artifacts/system_analysis.md | active | 本轮系统需求与约束分析 SA-001：功能、时序、资源、安全和持续限制；已知/未知/冲突、可继续范围与必要决定；非设计定稿或验收
-artifacts/system_architecture.md | active | 端云架构 SARCH-001：9架构决定、传感器与App状态/数据流、故障恢复、时序资源与部署边界；非实现或验收通过
-artifacts/system_decomposition.md | active | 系统分解 SD-001：14组件、8边界契约、8可实现验证增量及9未决依赖；责任与PACC追溯
-artifacts/test_design.md | history | 旧嵌入式测试设计 TD-002 rev 5.0（基于 FD-002/IC-002/COM42/P 行假设；已由本轮 TD-003 取代，仅保留历史，不再作为当前判据）
-artifacts/test_design_v3.md | active | 本轮嵌入式测试设计 TD-003（对齐 FDS-003/FWR-003/RTA-003/IC-003/PACC-002；B1–B18、L0/L0i/L1–L9 用例、14 向量与旧实现负向对照、判定前快照、单周期冻结帧 3 次发送、UART 有界、UID 零路径、编译期标定门禁、COM43/fx2lafw 资源事实与证据局限；只做设计不执行）
+artifacts/test_design.md | active | 嵌入式测试设计 TD-002 rev 5.0（B1–B18 行为、L0/L0i/L1/L2–L9 用例组、BUS/G/P 行判据、当前构建再观测前提、as-built 偏差 D-01/D-03/OBS-1 登记；只做设计不执行）
 dengbei_care/ | active | Android App 工程根（Gradle/Kotlin；本轮按 readme 第 6 点同步修改）
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
 dengbei_care/app/build.gradle.kts | active | App 模块构建脚本（versionCode 9 / versionName 1.8；宿主机单测 isReturnDefaultValues）
@@ -156,19 +116,7 @@ dengbei_care/readme.txt | active | Android 版本变更记录（最新 V1.8 条�
 dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.8）
-evidence/acceptance_alignment.md | active | 本轮验收对齐证据 ALIGN-001（n001 产物摘要绑定、定义级 98/98 检查与 2 警告、readme 覆盖/语义一致性、FB 反馈、未执行声明）
-evidence/acceptance_alignment_v2.md | active | 验收对齐证据 ALIGN-002（PACC-002 对 9 份输入的摘要绑定、PACC-001 七处缺陷修正、SA-X01..12 落点、68/68 静态检查、未执行声明）
-evidence/acceptance_definition_check.out | active | 上述脚本本次运行输出（98/98 通过、2 个非阻塞警告）
-evidence/acceptance_definition_check.py | active | 可复跑只读检查脚本：PDR/PSPEC/TR 的 PR 数量、优先级/来源/验收、核心语义、追溯、无 Runtime ID；退出码 0/1
-evidence/acceptance_definition_check_v2.out | active | 上述 v2 脚本本次运行输出（68/68 通过）
-evidence/acceptance_definition_check_v2.py | active | PACC-002 可复跑只读检查：输入摘要、AD/PA/E2E/FB 覆盖、SA-X 映射、跨切面语义、无 Runtime ID
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002
-evidence/architecture_exploration/adapter_results.json | active | 6向量参考适配读回及缓存新鲜度、降温不可见、MQTT顺序构造反例
-evidence/architecture_exploration/execution.json | active | 本次编译、原型、ADB 原始输出、退出码、时间和超时；非产品通过证据
-evidence/architecture_exploration/object_versions.json | active | 本次源码、需求、上游报告与实验脚本 SHA-256 及基线提交
-evidence/architecture_exploration/probe.c | active | 真实传感器编码、网关解码及聚合打包最小实验；显式适配器与容量边界
-evidence/architecture_exploration/run_probe.py | active | 有界实验与登记手机只读诊断入口；保存版本、stdout/stderr、源码片段与参考模型
-evidence/architecture_exploration/source_excerpts.txt | active | 当前版本关键网关及 App 源码原文与行号，静态证据
 evidence/build.md | active | 构建证据 BUILD-002 rev 5.8（mdk_build rebuild 0 Error/1 既有告警、Code/RO/RW/ZI、axf md5 与受测件一致）
 evidence/codegraph_validation.md | history | CodeGraph 历史可用性验证证据（索引 complete、无 pending/drift）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 5.8（宿主 harness 复跑记录与穷尽性结论）
@@ -181,413 +129,7 @@ evidence/ev014/ | history | EV-014 原始证据目录（用户重焊 U9 后复�
 evidence/ev015/ | history | EV-015 原始证据目录（3 份 .cap、harness_run.sh、判定输出）
 evidence/ev016/ | history | EV-016 原始证据目录（4 份 .cap、IOTEST gc 字段、判定输出）
 evidence/ev017/ | active | EV-017 当前轮原始证据目录（4 份 .cap + 工具元数据 .json、image_identity.txt 三处 md5 一致、harness/判定/selftest 输出、seq/collect/summarize 脚本）
-evidence/ev018/ | active | EV-018 本轮探索原始证据：COM43 300 s 原始字节、fx2lafw 5 s 被动 .sr 与正确/错误映射 I2C 解码、14 向量最小原型源码与输出、宿主机 184 项测试日志、rebuild 日志与 README（含 md5、工具路径问题与限制）
-evidence/ev018/README.md | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
-evidence/ev018/build_rebuild.log | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
-evidence/ev018/host_tests_current.log | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
-evidence/ev018/proto_report_rule.c | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
-evidence/ev018/proto_report_rule.out | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
-evidence/ev018/sigrok/capture.sr | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
-evidence/ev018/sigrok/capture_metadata.json | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
-evidence/ev018/sigrok/decoded_i2c_configured_mapping_wrong.txt | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
-evidence/ev018/sigrok/decoded_i2c_swapped_correct.txt | active | 由 firmware_engineer.firmware_feasibility_exploration 新增或修改的项目相关文件
-evidence/ev019_item001/ | active | EV-019 ITEM-001 实现证据：build.md、driver_test.md、rebuild 日志、axf/hex md5、源码 SHA-256、14 向量/网格/全量 host 测试原始输出；未实板
-evidence/ev019_item001/README.md | active | EV-019 证据清单与限制
-evidence/ev019_item001/build.md | active | ITEM-001 BuildEvidence 正文（构建命令/结果/产物 md5/限制）
-evidence/ev019_item001/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
-evidence/ev019_item001/driver_test.md | active | ITEM-001 DriverTestEvidence 正文（14 向量/网格/4 参兼容/汇总）
-evidence/ev019_item001/gate_vectors.log | active | host_sensor_core_test 原始输出（53/0，含 14 向量与网格）
-evidence/ev019_item001/host_tests_full.log | active | test/build_test.sh 5 组原始输出（197/0）
-evidence/ev019_item001/image_md5.txt | active | 本轮 axf/hex md5
-evidence/ev019_item001/measure_flow.log | active | host_measure_flow_check 原始输出（43/0）
-evidence/ev019_item001/pure_check.log | active | host_fw_core_pure_check 原始输出（52/0）
-evidence/ev019_item001/source_sha256.txt | active | 8 个改动源码/自检文件 SHA-256
-evidence/ev020_item001/ | active | EV-020 ITEM-001 门控纯逻辑独立验证：测试能力 harness、独立 Python 参考、旧实现（8ae4a33）负向对照、rebuild 日志、源码/镜像哈希；仅宿主机，未烧录/未实板
-evidence/ev020_item001/README.md | active | EV-020 证据清单与边界
-evidence/ev020_item001/build_rebuild.log | active | 本能力 mdk_build rebuild 原始日志（0 Error/1 既有 warning、Code/RO/RW/ZI）
-evidence/ev020_item001/compile_current.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev020_item001/compile_old.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev020_item001/gate_verify_current.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev020_item001/gate_verify_current.out | active | 当前产品 fw_core.c 独立 harness 原始输出（V/G/B/C/SELF 行）
-evidence/ev020_item001/gate_verify_old.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev020_item001/gate_verify_old.out | active | 旧实现 8ae4a33 对同一 14 向量的原始输出（O 行）
-evidence/ev020_item001/host_tests_current.log | active | 既有宿主机套件回归输出（197/0，实现侧资产，仅参考）
-evidence/ev020_item001/old_impl/ | active | 从 Git 8ae4a33 只读导出的旧 fw_core.c/fw_core.h/sensor_config.h 与负向对照 harness（证据输入，非产品源码）
-evidence/ev020_item001/old_impl/fw_core.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev020_item001/old_impl/fw_core.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev020_item001/old_impl/old_gate_negative_control.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev020_item001/old_impl/sensor_config.h | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev020_item001/source_and_image_hash.txt | active | 受测源码 SHA-256、Git HEAD、axf/hex md5
-evidence/ev020_item001/test.md | active | EV-020 TestEvidence 正文：受测件身份、14 向量逐条、1,936 网格/边界、构建与静态核对、局限（U01/U02 未闭合、未实板）、TEST_PASS（本增量）
-evidence/ev020_item001/verify_gate_item001.out | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev020_item001/verify_gate_item001.py | active | 独立 Python 门控参考模型与逐点比对（14 向量/1,936 网格/4 参等价/旧实现不符集合）
-evidence/ev021_item002/ | active | EV-021 ITEM-002 实现证据：build.md、driver_test.md、rebuild 日志、md5、源码 SHA-256、A→B→失败→C p/H 与全量 host 测试原始输出
-evidence/ev021_item002/README.md | active | EV-021 证据清单与限制
-evidence/ev021_item002/build.md | active | ITEM-002 BuildEvidence 正文（构建命令/结果/产物 md5/限制）
-evidence/ev021_item002/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
-evidence/ev021_item002/driver_test.md | active | ITEM-002 DriverTestEvidence 正文（p/H A→B→失败→C、汇总）
-evidence/ev021_item002/host_tests_full.log | active | test/build_test.sh 5 组原始输出（206/0）
-evidence/ev021_item002/image_md5.txt | active | 本轮 axf/hex md5
-evidence/ev021_item002/measure_flow_item002.log | active | host_measure_flow_check 原始输出（52/0，含 [14] p/H）
-evidence/ev021_item002/pure_check_item002.log | active | host_fw_core_pure_check 原始输出（52/0）
-evidence/ev021_item002/source_sha256.txt | active | measure.c 与 host_measure_flow_check.c SHA-256
-evidence/ev022_item002/ | active | EV-022 ITEM-002 独立验证证据：16 周期 harness/独立参考模型/旧实现负向对照、实板 COM43 原始捕获与判定、实际下载身份、构建与哈希
-evidence/ev022_item002/README.md | active | EV-022 证据清单与边界
-evidence/ev022_item002/build_rebuild.log | active | 本能力 mdk_build rebuild 原始日志（0 Error/1 既有 warning、Code/RO/RW/ZI）
-evidence/ev022_item002/com43_capture_a.bin | active | 下载后 COM43 300 s 原始字节（115 B，1 个失败周期）
-evidence/ev022_item002/com43_capture_b.bin | active | 下载后 COM43 300 s 原始字节（230 B，2 个失败周期，间隔 180 s）
-evidence/ev022_item002/compile_current.err | active | 当前 harness 编译 stderr（无本 harness 告警）
-evidence/ev022_item002/compile_old.err | active | 负向对照 harness 编译 stderr
-evidence/ev022_item002/git_head.txt | active | 受测提交 31be53b
-evidence/ev022_item002/harness_current.err | active | 当前 harness stderr（空）
-evidence/ev022_item002/harness_current.out | active | 当前产品 measure.c 16 周期逐周期原始输出
-evidence/ev022_item002/harness_old.err | active | 旧实现 harness stderr（空）
-evidence/ev022_item002/harness_old.out | active | 父提交 17a92ba measure.c 同刺激原始输出（负向对照）
-evidence/ev022_item002/host_tests_regression.log | active | 实现侧既有宿主机套件回归日志（5 组 206/0，仅参考）
-evidence/ev022_item002/image_md5.txt | active | 本轮 axf/hex md5
-evidence/ev022_item002/old_measure_pre_item002.c | active | 从 Git 17a92ba 只读导出的父提交 measure.c（证据输入，非产品源码）
-evidence/ev022_item002/programmed_prototype.md | active | 本次 mdk_flash 实际下载身份（axf/hex md5、Verify OK）与目标；仅证明下载
-evidence/ev022_item002/source_sha256.txt | active | measure.c、harness、旧实现、参考模型 SHA-256
-evidence/ev022_item002/static_refs.txt | active | measure.c 快照/判定/推进/轨迹引用的 rg 原始输出
-evidence/ev022_item002/test.md | active | EV-022 TestEvidence 正文：受测身份、16 周期逐条、负向对照、实板失败周期不变式、静态核对、局限、TEST_PASS（本增量）
-evidence/ev022_item002/verify_com43.out | active | 实板复核：56 passed / 0 failed，含成功路径未执行的限制声明
-evidence/ev022_item002/verify_com43_item002.py | active | 实板原始字节独立解析/判据（失败周期 q=0、p/H 不变、G 诊断）
-evidence/ev022_item002/verify_current.out | active | 独立参考模型对当前实现：224 passed / 0 failed
-evidence/ev022_item002/verify_measure_snapshot_item002.py | active | 独立 Python 参考模型（快照/判定/推进/失败零副作用）；EV-029 起增加“无冻结帧不发送”判据并移除旧 ITEM-002 重发模型
-evidence/ev022_item002/verify_old.out | active | 独立参考模型对旧实现：11 项 p/H 不符、NEGATIVE_CONTROL_OK
-evidence/ev022_item003/ | active | EV-022 ITEM-003 实现证据：build.md、driver_test.md、rebuild 日志、md5、源码 SHA-256、冻结帧/3 次发送与全量 host 测试原始输出
-evidence/ev022_item003/README.md | active | EV-022 证据清单与限制
-evidence/ev022_item003/build.md | active | ITEM-003 BuildEvidence 正文（构建命令/结果/产物 md5/限制）
-evidence/ev022_item003/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
-evidence/ev022_item003/driver_test.md | active | ITEM-003 DriverTestEvidence 正文（冻结帧/发送场景/汇总）
-evidence/ev022_item003/host_tests_full.log | active | test/build_test.sh 5 组原始输出（226/0）
-evidence/ev022_item003/image_md5.txt | active | 本轮 axf/hex md5
-evidence/ev022_item003/measure_flow_item003.log | active | host_measure_flow_check 原始输出（72/0，含 [9]）
-evidence/ev022_item003/source_sha256.txt | active | measure.c 与 host_measure_flow_check.c SHA-256
-evidence/ev022_item003_verify/ | active | EV-022 ITEM-003 独立验证证据：16 周期 harness/独立参考模型/旧实现负向对照、实板 COM43 原始捕获与判定、实际下载身份、构建与哈希
-evidence/ev022_item003_verify/README.md | active | 证据清单与限制
-evidence/ev022_item003_verify/build_rebuild.log | active | 本能力 mdk_build rebuild 原始日志（0 Error/1 既有 warning、Code/RO/RW/ZI）
-evidence/ev022_item003_verify/com43_capture_a.dat | active | 下载后 COM43 300 s 原始字节（112 B，k=3）
-evidence/ev022_item003_verify/com43_capture_b.dat | active | 下载后 COM43 300 s 原始字节（224 B，k=6/9，间隔 180 s）
-evidence/ev022_item003_verify/compile_current.err | active | 当前 harness 编译 stderr（仅产品 encrytogate.c 既有告警）
-evidence/ev022_item003_verify/compile_old.err | active | 负向对照 harness 编译 stderr（同上）
-evidence/ev022_item003_verify/git_head.txt | active | 受测提交 09d4c52
-evidence/ev022_item003_verify/harness_current.err | active | 当前 harness 运行 stderr（空）
-evidence/ev022_item003_verify/harness_current.out | active | 当前实现逐周期原始输出（9 个触发周期）
-evidence/ev022_item003_verify/harness_old.err | active | 旧 harness 运行 stderr（空）
-evidence/ev022_item003_verify/harness_old.out | active | 旧实现同刺激原始输出
-evidence/ev022_item003_verify/host_tests_regression.log | active | 实现侧既有宿主机套件回归日志（5 组 226/0，仅参考）
-evidence/ev022_item003_verify/image_md5.txt | active | 本次 axf/hex md5
-evidence/ev022_item003_verify/mdk_flash.log | active | 本能力 mdk_flash 原始下载日志（Verify OK）
-evidence/ev022_item003_verify/old_measure_pre_item003.c | active | 父提交 d4edf1f 的 measure.c（证据输入，非产品源码）
-evidence/ev022_item003_verify/programmed_prototype.md | active | 本次 mdk_flash 实际下载身份（axf/hex md5、Verify OK）与目标；仅证明下载
-evidence/ev022_item003_verify/source_sha256.txt | active | measure.c、harness、旧实现 SHA-256
-evidence/ev022_item003_verify/static_refs.py | active | measure.c 静态引用提取脚本（可复跑）
-evidence/ev022_item003_verify/static_refs.txt | active | 冻结/发送/清除/轨迹字段的行号引用原始输出
-evidence/ev022_item003_verify/test.md | active | EV-022 TestEvidence 正文：受测身份、16 周期逐条、负向对照、实板观测、静态核对、局限、TEST_PASS（本增量）
-evidence/ev022_item003_verify/verify_com43.out | active | 实板复核 62 passed / 0 failed，含触发路径未执行声明
-evidence/ev022_item003_verify/verify_com43_item003.py | active | 实板原始字节独立解析/判据（非触发周期不变量、节拍、行长）
-evidence/ev022_item003_verify/verify_current.out | active | 当前实现 332 passed / 0 failed
-evidence/ev022_item003_verify/verify_measure_freeze_item003.py | active | 独立 Python 参考模型（门控/尝试次数/逐字节冻结/s·y/清除）
-evidence/ev022_item003_verify/verify_old.out | active | 旧实现 22 项不符，NEGATIVE_CONTROL_OK
-evidence/ev023_item004/ | active | EV-023 ITEM-004 实现证据：build.md、driver_test.md、rebuild 日志、md5、源码 SHA-256、TXE/TXBUSY 卡死与全量 host 测试原始输出
-evidence/ev023_item004/README.md | active | EV-023 证据清单与限制
-evidence/ev023_item004/build.md | active | ITEM-004 BuildEvidence 正文（构建命令/结果/产物 md5/限制）
-evidence/ev023_item004/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
-evidence/ev023_item004/debug_trace_item004.log | active | host_debug_trace_check 原始输出（51/0，含 T14/T15）
-evidence/ev023_item004/driver_test.md | active | ITEM-004 DriverTestEvidence 正文（TXE/TXBUSY 卡死/恢复/关闭）
-evidence/ev023_item004/host_tests_full.log | active | test/build_test.sh 5 组原始输出（233/0）
-evidence/ev023_item004/image_md5.txt | active | 本轮 axf/hex md5
-evidence/ev023_item004/source_sha256.txt | active | sensor_config.h/debug_trace.c/host_debug_trace_check.c SHA-256
-evidence/ev024_item004_verify/ | active | EV-024 ITEM-004 独立验证证据：真实产品 debug_trace.c 故障注入 harness/独立判据/旧实现负向对照、静态核对、实板 COM43 捕获与判定、下载身份与哈希
-evidence/ev024_item004_verify/README.md | active | EV-024 证据清单与限制
-evidence/ev024_item004_verify/build_rebuild.log | active | 本能力 mdk_build rebuild 原始日志（0 Error/1 既有 warning、Code/RO/RW/ZI）
-evidence/ev024_item004_verify/com43_capture_a.dat | active | 下载后 COM43 9600 8N1 原始字节（300 s，112 B，k=3）
-evidence/ev024_item004_verify/com43_capture_b.dat | active | 下载后 COM43 9600 8N1 原始字节（300 s，224 B，k=6/9）
-evidence/ev024_item004_verify/compile_current.err | active | 当前 harness 编译 stderr（空）
-evidence/ev024_item004_verify/compile_old.err | active | 旧实现负向对照编译 stderr（空）
-evidence/ev024_item004_verify/git_head.txt | active | 受测提交 7081ed9
-evidence/ev024_item004_verify/harness_current.err | active | 当前 harness 运行 stderr（空）
-evidence/ev024_item004_verify/harness_current.out | active | 当前实现 14 用例原始观测
-evidence/ev024_item004_verify/harness_old.err | active | 旧 harness 运行 stderr（空）
-evidence/ev024_item004_verify/harness_old.out | active | 旧实现同刺激原始观测（F1 被判 UNBOUNDED）
-evidence/ev024_item004_verify/host_tests_regression.log | active | 实现侧既有宿主机套件 5 组 233/0（回归参考）
-evidence/ev024_item004_verify/image_md5.txt | active | 本次 axf/hex md5
-evidence/ev024_item004_verify/mdk_flash.log | active | 本能力 mdk_flash 原始下载日志（Verify OK / Application running）
-evidence/ev024_item004_verify/old_debug_trace_pre_item004.c | active | 父提交 fdd1ff1 的 debug_trace.c（只读导出，负向对照输入，非产品源码）
-evidence/ev024_item004_verify/programmed_prototype.md | active | 本次 mdk_flash 实际下载身份（axf/hex md5、Verify OK）与目标；仅证明下载
-evidence/ev024_item004_verify/serial_ports.txt | active | 本轮串口枚举（COM43/COM26）原始身份
-evidence/ev024_item004_verify/source_sha256.txt | active | debug_trace.c/sensor_config.h/main.c/harness/旧实现 SHA-256
-evidence/ev024_item004_verify/static_check.out | active | 静态核对 29 passed / 0 failed
-evidence/ev024_item004_verify/static_check_item004.py | active | ITEM-004 静态核对脚本（可复跑）
-evidence/ev024_item004_verify/test.md | active | EV-024 TestEvidence 正文：受测身份、方法、14 用例、负向对照、静态、实板、局限、TEST_PASS（本增量）
-evidence/ev024_item004_verify/usb_devices.txt | active | 本轮 USB 枚举（C251:F001、Prolific、手机、fx2lafw）
-evidence/ev024_item004_verify/verify_com43.out | active | 实板复核 135 passed / 0 failed
-evidence/ev024_item004_verify/verify_com43_item004.py | active | 实板原始字节独立解析/判据（S/G 顺序、字段、CRLF、≤96、k 节拍、s/y）
-evidence/ev024_item004_verify/verify_current.out | active | 当前实现 88 passed / 0 failed，RESULT PASS
-evidence/ev024_item004_verify/verify_old.out | active | 旧实现负向对照 NEGATIVE_CONTROL_OK
-evidence/ev024_item004_verify/verify_uart_guard_item004.py | active | 独立 Python 判据/参考模型（逐字节格式、CRLF、轮询预算、teardown、业务不变）；EV-029 起 BOOT 标识从 sensor_config.h 的 SENSOR_FW_BUILD_ID 派生
-evidence/ev024_item005/ | active | EV-024 ITEM-005 实现证据：build.md、driver_test.md、rebuild 日志、md5、源码 SHA-256、main 结构自检、RTC 回归、全量 host 测试
-evidence/ev024_item005/README.md | active | EV-024 证据清单与限制
-evidence/ev024_item005/build.md | active | ITEM-005 BuildEvidence 正文（构建命令/结果/产物 md5/限制）
-evidence/ev024_item005/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
-evidence/ev024_item005/driver_test.md | active | ITEM-005 DriverTestEvidence 正文（结构自检/RTC/汇总）
-evidence/ev024_item005/host_tests_full.log | active | test/build_test.sh 5 组原始输出（233/0）
-evidence/ev024_item005/image_md5.txt | active | 本轮 axf/hex md5
-evidence/ev024_item005/main_static_check.py | active | main.c BOOT/UID/单次事务结构静态检查（16 项）
-evidence/ev024_item005/main_static_check.txt | active | 上述静态检查原始输出（16/0）
-evidence/ev024_item005/rtc_verify.log | active | 测试能力 RTC harness 配临时外部 stub 的回归输出（17/0）
-evidence/ev024_item005/source_sha256.txt | active | main.c 与 main_static_check.py SHA-256
-evidence/ev025_item005_verify/README.md | active | EV-025 证据清单与限制（ITEM-005 主流程/BOOT/UID 零）
-evidence/ev025_item005_verify/build_rebuild.log | active | 本轮 Keil rebuild 原始日志（0 Error / 1 既有 warning，Code/RO/RW/ZI）
-evidence/ev025_item005_verify/com43_capture_a.bin | active | COM43 原始字节窗口 A（300 s，1 周期 S k=3 + G）
-evidence/ev025_item005_verify/com43_capture_b.bin | active | COM43 原始字节窗口 B（300 s，2 周期 S k=6/9 + G）
-evidence/ev025_item005_verify/compile_harness.err | active | 主流程 harness 编译 stderr（空）
-evidence/ev025_item005_verify/compile_main.err | active | 当前 main.c host 编译 stderr（仅既有隐式声明 warning）
-evidence/ev025_item005_verify/compile_old_main.err | active | 父提交 main.c 负向对照编译 stderr
-evidence/ev025_item005_verify/compile_rtc_harness.err | active | RTC harness 编译 stderr（空）
-evidence/ev025_item005_verify/compile_rtc_main.err | active | RTC 回归用 main.c 编译 stderr（空）
-evidence/ev025_item005_verify/compile_stubs.err | active | 测试链接桩编译 stderr（空）
-evidence/ev025_item005_verify/git_head.txt | active | 受测 Git HEAD
-evidence/ev025_item005_verify/harness_main_flow.exe | active | 主流程 harness 可执行产物（当前 main.c）
-evidence/ev025_item005_verify/harness_main_flow.out | active | 主流程 harness 原始事件序列与结果（26/0）
-evidence/ev025_item005_verify/harness_main_flow_old.exe | active | 同一 harness 编译父提交 main.c 的可执行产物
-evidence/ev025_item005_verify/harness_main_flow_old.out | active | 父提交负向对照原始输出（10/16 fail）
-evidence/ev025_item005_verify/harness_rtc_cadence.exe | active | RTC 1 min×3 回归 harness（当前 main.c）
-evidence/ev025_item005_verify/host_tests_regression.log | active | 既有宿主机套件 5 组原始输出（233/0，参考）
-evidence/ev025_item005_verify/image_md5.txt | active | 本轮 axf/hex md5
-evidence/ev025_item005_verify/link_main_flow.err | active | 主流程链接 stderr（空）
-evidence/ev025_item005_verify/mdk_flash.log | active | 首次下载原始日志（Verify OK / Application running）
-evidence/ev025_item005_verify/mdk_flash_second.log | active | 运行后第二次下载日志（Verify OK，SWD 可用）
-evidence/ev025_item005_verify/old_main_pre_item005.c | active | 父提交 847b230 的 main.c（负向对照）
-evidence/ev025_item005_verify/programmed_prototype.md | active | 实际下载固件身份与目标（仅证明下载，不代表功能合格）
-evidence/ev025_item005_verify/rtc_verify.out | active | RTC 1 min×3 回归原始输出（17/0）
-evidence/ev025_item005_verify/run_timestamp.txt | active | 本轮验证 UTC 时间
-evidence/ev025_item005_verify/serial_ports.txt | active | serial_list_ports 原始摘要（COM43/COM26）
-evidence/ev025_item005_verify/source_sha256.txt | active | 被测源码 SHA-256
-evidence/ev025_item005_verify/static_check.out | active | 静态/边界检查原始输出（47/0）
-evidence/ev025_item005_verify/static_check_item005.py | active | 独立静态核对：BOOT 顺序、UID 零块、单次事务、RTC ISR、GPIOA/I2C/SWD/UART/Flash 边界
-evidence/ev025_item005_verify/test.md | active | 嵌入式验证证据 EV-025 正文：TEST_PASS（ITEM-005，含范围限制）
-evidence/ev025_item005_verify/usb_devices.txt | active | usb_list_devices 原始摘要（探针/串口/手机/逻辑仪枚举）
-evidence/ev025_item005_verify/verify_com43.out | active | 实板原始字节独立解析结果（44/0）
-evidence/ev025_item005_verify/verify_com43_item005.py | active | COM43 原始字节独立判据（行格式/行长/每机会一 S/k 增量/G 形态）
-evidence/ev025_item005_verify/verify_current.out | active | 主流程 harness 输出独立判据（26/0）
-evidence/ev025_item005_verify/verify_main_flow_item005.py | active | 主流程不变量独立判据（含父提交 --expect-old 模式）
-evidence/ev025_item005_verify/verify_old.out | active | 父提交负向对照独立判据（NEGATIVE_CONTROL_OK）
-evidence/ev025_item006/ | active | EV-025 ITEM-006 实现证据：build.md、driver_test.md、rebuild 日志、md5、源码 SHA-256、编译门禁、BOOT 与全量 host 测试
-evidence/ev025_item006/README.md | active | EV-025 证据清单与限制
-evidence/ev025_item006/build.md | active | ITEM-006 BuildEvidence 正文（构建命令/结果/产物 md5/限制）
-evidence/ev025_item006/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
-evidence/ev025_item006/calib_cfg.log | active | 标定配置编译门禁原始输出（6/0）
-evidence/ev025_item006/debug_trace_item006.log | active | host_debug_trace_check 原始输出（51/0，含新 BOOT 标识）
-evidence/ev025_item006/driver_test.md | active | ITEM-006 DriverTestEvidence 正文（编译门禁/未标定/BOOT/汇总）
-evidence/ev025_item006/host_tests_full.log | active | test/build_test.sh 5 组原始输出（233/0）
-evidence/ev025_item006/image_md5.txt | active | 本轮 axf/hex md5
-evidence/ev025_item006/source_sha256.txt | active | sensor_config.h/debug_trace.c/host_debug_trace_check.c/check_calib_config.sh SHA-256
-evidence/ev026_item006_verify/README.md | active | EV-026 证据清单（ITEM-006 标定配置/构建标识）
-evidence/ev026_item006_verify/build_rebuild.log | active | Keil rebuild 原始日志（0 Error / 1 既有 warning）
-evidence/ev026_item006_verify/calib_cal1.exe | active | CAL=1 REF=1 变体 harness 可执行产物
-evidence/ev026_item006_verify/calib_cal1.out | active | CAL=1 REF=1 harness 原始输出（43/0）
-evidence/ev026_item006_verify/calib_cal3000.exe | active | CAL=1 REF=3000 变体 harness 可执行产物
-evidence/ev026_item006_verify/calib_cal3000.out | active | CAL=1 REF=3000 harness 原始输出（43/0）
-evidence/ev026_item006_verify/calib_cal4095.exe | active | CAL=1 REF=4095 变体 harness 可执行产物
-evidence/ev026_item006_verify/calib_cal4095.out | active | CAL=1 REF=4095 harness 原始输出（43/0）
-evidence/ev026_item006_verify/calib_delivery.exe | active | 未标定变体 harness 可执行产物
-evidence/ev026_item006_verify/calib_delivery.out | active | 未标定交付配置 harness 原始输出（48/0）
-evidence/ev026_item006_verify/calib_gate.out | active | 门禁原始输出（11/0，含具体 #error 文本）
-evidence/ev026_item006_verify/capture_metadata.txt | active | 捕获窗口、字节数、md5
-evidence/ev026_item006_verify/check_calib_gate_item006.py | active | 独立编译期门禁检查脚本（11 组合法/非法组合）
-evidence/ev026_item006_verify/com43_capture_a.bin | active | COM43 原始字节窗口 A（90 s，BUS + S k=0 + G）
-evidence/ev026_item006_verify/com43_capture_b.bin | active | COM43 原始字节窗口 B（200 s，S k=3/6 + G）
-evidence/ev026_item006_verify/compile_cal1.err | active | CAL=1 REF=1 编译 stderr（空）
-evidence/ev026_item006_verify/compile_cal3000.err | active | CAL=1 REF=3000 编译 stderr（空）
-evidence/ev026_item006_verify/compile_cal4095.err | active | CAL=1 REF=4095 编译 stderr（空）
-evidence/ev026_item006_verify/compile_delivery.err | active | 未标定变体编译 stderr（空）
-evidence/ev026_item006_verify/compile_diag_line.err | active | 当前 debug_trace.c 编译 stderr（空）
-evidence/ev026_item006_verify/compile_diag_line_old.err | active | 旧 debug_trace.c 编译 stderr（空）
-evidence/ev026_item006_verify/diag_line_verify.exe | active | 真实 debug_trace.c 的 BOOT/诊断行 harness 产物
-evidence/ev026_item006_verify/diag_line_verify.out | active | BOOT 逐字节 RUN10-FDS003 与行格式（36/0）
-evidence/ev026_item006_verify/diag_line_verify_old.exe | active | 旧 debug_trace.c 负向对照产物
-evidence/ev026_item006_verify/diag_line_verify_old.out | active | 旧源码打印 FD-002r4 并被同一检查判失败（35/1）
-evidence/ev026_item006_verify/git_head.txt | active | 受测 Git HEAD
-evidence/ev026_item006_verify/host_tests_regression.log | active | 实现侧既有宿主机套件 5 组 233/0（参考）
-evidence/ev026_item006_verify/image_md5.txt | active | 本轮 axf/hex md5
-evidence/ev026_item006_verify/mdk_flash.log | active | 下载原始日志（Verify OK / Application running）
-evidence/ev026_item006_verify/old_debug_trace_pre_item006.c | active | 8f9f86c 的 debug_trace.c（负向对照输入）
-evidence/ev026_item006_verify/programmed_prototype.md | active | 本次下载固件身份与目标（仅证明下载）
-evidence/ev026_item006_verify/run_timestamp.txt | active | 本轮验证 UTC 时间
-evidence/ev026_item006_verify/serial_ports.txt | active | serial_list_ports 原始摘要（COM43/COM26）
-evidence/ev026_item006_verify/source_sha256.txt | active | 被测源码 SHA-256
-evidence/ev026_item006_verify/static_check.out | active | 静态核对原始输出（23/0）
-evidence/ev026_item006_verify/static_check_item006.py | active | 独立静态核对脚本（门禁形态/单一标识/无旧硬编码/光照语义）
-evidence/ev026_item006_verify/test.md | active | 嵌入式验证证据 EV-026 正文：TEST_PASS（ITEM-006，含实板未入窗的 BOOT 限制）
-evidence/ev026_item006_verify/verify_com43.out | active | 实板原始字节独立解析结果（58/0）
-evidence/ev026_item006_verify/verify_com43_item006.py | active | COM43 原始字节独立判据（行长/字段/未标定 V=0 D=0/失败不伪造/节拍）
-evidence/ev026_item007/ | active | EV-026 ITEM-007 实现证据：build.md、driver_test.md、增量构建日志、md5、源码 SHA-256、7 组 295/0 host 测试
-evidence/ev026_item007/README.md | active | EV-026 证据清单与限制
-evidence/ev026_item007/build.md | active | ITEM-007 BuildEvidence 正文（无产品源码变更/构建结果/限制）
-evidence/ev026_item007/build_incremental.log | active | mdk_build build 原始日志（0 Error/0 Warning，无可重建项）
-evidence/ev026_item007/driver_test.md | active | ITEM-007 DriverTestEvidence 正文（7 组覆盖/负向对照）
-evidence/ev026_item007/host_tests_full.log | active | test/build_test.sh 7 组原始输出（295/0）
-evidence/ev026_item007/image_md5.txt | active | axf/hex md5（与 ITEM-006 相同）
-evidence/ev026_item007/source_sha256.txt | active | build_test.sh 与 host_sensor_core_test.c SHA-256
-evidence/ev027_item007_verify/ | active | EV-027 ITEM-007 独立验证：两次 295/0、5 组错误实现负向对照、静态 42/0、提交/镜像身份与限制；仅宿主机
-evidence/ev027_item007_verify/commit_files.txt | active | 受测提交 baf9d0f 实际改动文件清单
-evidence/ev027_item007_verify/host_tests_run1.out | active | 本能力独立执行 build_test.sh 原始输出（7 组 295/0，EXIT_CODE=0）
-evidence/ev027_item007_verify/host_tests_run2.out | active | 第二次执行原始输出（与 run1 逐字节相同）
-evidence/ev027_item007_verify/negative_controls.out | active | 负向对照原始输出（ALL_WRONG_IMPLEMENTATIONS_CAUGHT）
-evidence/ev027_item007_verify/negative_controls_item007.py | active | 5 组错误实现变异负向对照脚本（只改产品源码副本）
-evidence/ev027_item007_verify/negctl/ | active | 负向对照用产品源码副本与逐组编译/运行日志（非产品源码）
-evidence/ev027_item007_verify/negctl/N1a_host_sensor_core_vs_legacy_gate.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N1a_host_sensor_core_vs_legacy_gate.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N1b_host_pure_check_vs_legacy_gate.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N1b_host_pure_check_vs_legacy_gate.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N2_measure_flow_vs_post_advance_prev.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N2_measure_flow_vs_post_advance_prev.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N3_measure_flow_vs_reencode_retry.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N3_measure_flow_vs_reencode_retry.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N4_debug_trace_vs_unbounded_wait.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N4_debug_trace_vs_unbounded_wait.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N5_light_check_vs_uncalibrated_valid.compile.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/N5_light_check_vs_uncalibrated_valid.run.log | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/debug_trace_unbounded.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/fw_core_legacy_drop.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/light_uncalibrated_valid.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/measure_reencode_each_retry.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/negctl/measure_trace_post_advance.c | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev027_item007_verify/run_context.txt | active | 本次验证 UTC/本地时间、Git HEAD、gcc 与宿主环境
-evidence/ev027_item007_verify/run_host_suite.sh | active | 独立执行 build_test.sh 的包装脚本
-evidence/ev027_item007_verify/source_sha256.txt | active | 自检资产、产品源码与门禁脚本 SHA-256
-evidence/ev027_item007_verify/static_check.out | active | 静态核对原始输出（42 passed / 0 failed / 1 warning）
-evidence/ev027_item007_verify/static_check_item007.py | active | 独立静态核对脚本（14 向量、旧语义隔离、覆盖断言、产品源码语义、提交范围）
-evidence/ev027_item007_verify/test.md | active | EV-027 TestEvidence 正文：受测提交 baf9d0f、295/0、负向对照、静态核对、差异与限制、TEST_PASS（本增量）
-evidence/ev027_item008/ | active | EV-027 ITEM-008 最终实现证据：build.md、driver_test.md、rebuild 日志、md5、6 个源码 SHA-256、静态核对脚本/输出、7 组 295/0 host 测试
-evidence/ev027_item008/README.md | active | EV-027 证据清单与限制
-evidence/ev027_item008/build.md | active | ITEM-008 BuildEvidence 正文（最终 rebuild/尺寸/md5/限制）
-evidence/ev027_item008/build_rebuild.log | active | Keil rebuild 原始日志（0 Error/1 既有 warning，Code/RO/RW/ZI）
-evidence/ev027_item008/driver_test.md | active | ITEM-008 DriverTestEvidence 正文（11 项静态核对/S-G 行长/295 自检）
-evidence/ev027_item008/host_tests_full.log | active | test/build_test.sh 7 组原始输出（295/0）
-evidence/ev027_item008/image_md5.txt | active | 最终 axf/hex md5
-evidence/ev027_item008/manifest_check.txt | active | ITEM-008 清单同步核对输出（新文件均已登记）
-evidence/ev027_item008/source_sha256.txt | active | fw_core.h/sensor_config.h/fw_core.c/measure.c/debug_trace.c/main.c SHA-256
-evidence/ev027_item008/static_audit.py | active | 退役路径/NVM/心跳/引脚/RF 与 S-G 行长静态核对脚本
-evidence/ev027_item008/static_audit.txt | active | 上述静态核对原始输出（12/0）
-evidence/ev028_item008_verify/ | active | EV-028 ITEM-008 独立验证证据：最终 rebuild、镜像身份、23 项静态核对、S/G 96 B 预算、mdk_flash 与 COM43 实板观测
-evidence/ev028_item008_verify/README.md | active | EV-028 证据清单与边界
-evidence/ev028_item008_verify/build_rebuild.log | active | 本能力 mdk_build rebuild 原始日志（V6.24，0 Error / 1 既有 main.c:252 warning）
-evidence/ev028_item008_verify/com43_capture_a.dat | active | 下载后 COM43 9600 8N1、300 s 原始字节（112 B，1 个失败周期）
-evidence/ev028_item008_verify/compile_diag_line.err | active | 诊断行 harness 编译 stderr（空）
-evidence/ev028_item008_verify/diag_line_verify.exe | active | 直编当前 debug_trace.c + 自建影子 MCU 的诊断行 harness（构建产物）
-evidence/ev028_item008_verify/diag_line_verify.out | active | 诊断行 harness 原始输出（36 passed / 0 failed；worst S=92 B，G=46 B）
-evidence/ev028_item008_verify/host_tests_regression.log | active | 既有实现侧套件最终树回归（7 组 295 passed / 0 failed，仅参考）
-evidence/ev028_item008_verify/image_md5.txt | active | 构建后 axf/hex md5 与大小
-evidence/ev028_item008_verify/image_md5_after_flash.txt | active | 下载后 axf/hex md5（与构建一致）
-evidence/ev028_item008_verify/mdk_flash.log | active | 本能力 mdk_flash 原始日志（Erase/Program/Verify OK/Application running）
-evidence/ev028_item008_verify/programmed_prototype.md | active | 本次 mdk_flash 实际下载身份（axf/hex md5、Verify OK）与目标；仅证明下载
-evidence/ev028_item008_verify/run_context.txt | active | 本轮 UTC/本地时间、Git HEAD、对比基线
-evidence/ev028_item008_verify/source_sha256.txt | active | 6 个受测产品源码 SHA-256
-evidence/ev028_item008_verify/static_audit.out | active | 静态核对原始输出（23 passed / 0 failed）
-evidence/ev028_item008_verify/static_audit_item008.py | active | 本能力自建 ITEM-008 静态核对脚本（退役路径/NVM/RF/节拍/引脚/中断/行长）；EV-029 起受测身份按 n012 交付源码 SHA-256 判定，不再硬编码提交
-evidence/ev028_item008_verify/test.md | active | EV-028 TestEvidence 正文：受测身份、独立构建、静态核对 23/0、S=92 B/G=46 B、实板周期、局限、TEST_PASS（本 item）
-evidence/ev028_item008_verify/verify_com43.out | active | 实板解析结果（13 passed / 0 failed）
-evidence/ev028_item008_verify/verify_com43_item008.py | active | COM43 原始字节独立解析/判据（唯一 S 周期、行长、CRLF、字段）
-evidence/ev029_full_firmware_verify/ | active | EV-029 n012 固件完整交付独立验证原始证据目录（结论 TEST_FAIL：实板 4/4 q=0；宿主判据全部通过）；含各 harness 的 .out/.err/compile_*.err
-evidence/ev029_full_firmware_verify/README.md | active | EV-029 证据清单、结论与边界
-evidence/ev029_full_firmware_verify/build_rebuild.log | active | 本能力 Keil rebuild 原始日志（0 Error/1 既有 warning）
-evidence/ev029_full_firmware_verify/calib_3000.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/calib_3000.out | active | ITEM-006 标定 REF=3000 变体（43/0）
-evidence/ev029_full_firmware_verify/calib_delivery.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/calib_delivery.out | active | ITEM-006 未标定交付配置（48/0）
-evidence/ev029_full_firmware_verify/calib_gate.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/calib_gate.out | active | 标定编译门禁 11 组合（11/0）
-evidence/ev029_full_firmware_verify/capture_md5.txt | active | 两个实板窗口 md5
-evidence/ev029_full_firmware_verify/com43_capture_window_a.bin | active | 复位后 COM43 9600 8N1、300 s 原始字节（BUS + S k=0/3 + G）
-evidence/ev029_full_firmware_verify/com43_capture_window_b.bin | active | 续采 COM43 300 s 原始字节（S k=15/18 + G）
-evidence/ev029_full_firmware_verify/compile_calib_3000.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_calib_delivery.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_diagline.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_diagprobe.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_freeze.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_gate.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_gwcompat.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_gxht40.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_mainflow.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_mainflow_harness.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_mainflow_main.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_rfframe.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_rtc_harness.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_rtc_main.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_rtc_stubs.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_sfi2c.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_snapshot.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_uart.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/compile_vdd.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/diagline.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/diagline.out | active | 诊断行逐字节/96 B 独立 harness（36/0）
-evidence/ev029_full_firmware_verify/diagprobe.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/diagprobe.out | active | BUS/general call/诊断快照（106/0）
-evidence/ev029_full_firmware_verify/freeze.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/freeze.out | active | ITEM-003 独立 harness 原始输出（16 周期/9 触发）
-evidence/ev029_full_firmware_verify/gate.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/gate.out | active | ITEM-001 独立 harness 原始输出（14 向量/1936 网格）
-evidence/ev029_full_firmware_verify/gwcompat.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/gwcompat.out | active | 传感器→网关→Android 兼容（11/0）
-evidence/ev029_full_firmware_verify/gxht40.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/gxht40.out | active | GXHT40 驱动 + 位级 mock（93/0）
-evidence/ev029_full_firmware_verify/host_tests_build_test.log | active | 实现侧 7 组 295/0 回归（参考）
-evidence/ev029_full_firmware_verify/image_md5_build.txt | active | 构建 axf/hex md5（9cb97918…/3af11e7a…）
-evidence/ev029_full_firmware_verify/link_mainflow.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/link_rtc.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/mainflow.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/mainflow.out | active | ITEM-005 独立 harness 原始输出（UID 零/单事务）
-evidence/ev029_full_firmware_verify/mdk_flash.log | active | mdk_flash 原始日志（Verify OK / Application running）
-evidence/ev029_full_firmware_verify/programmed_prototype.md | active | 本轮实际下载身份（axf/hex md5、Verify OK、目标）；仅证明下载
-evidence/ev029_full_firmware_verify/rfframe.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/rfframe.out | active | 10 B 帧/网关/Android 归因（10/0）
-evidence/ev029_full_firmware_verify/rtc.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/rtc.out | active | RTC 3 分钟节拍（17/0）
-evidence/ev029_full_firmware_verify/run_context.txt | active | 验证时间、Git HEAD 690d2ee、基线 8ae4a33
-evidence/ev029_full_firmware_verify/sfi2c.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/sfi2c.out | active | 软 I2C 原语/恢复（51/0）
-evidence/ev029_full_firmware_verify/sigrok_capture_attempt1_metadata.json | active | 逻辑仪采集失败（INVALID_CAPTURE）原始元数据
-evidence/ev029_full_firmware_verify/sigrok_capture_attempt2_metadata.json | active | 第二次失败原始元数据
-evidence/ev029_full_firmware_verify/sigrok_capture_stderr_head.txt | active | sigrok-cli 临时文件写入错误首行（输出路径 258 字符，疑似 MAX_PATH）
-evidence/ev029_full_firmware_verify/snapshot.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/snapshot.out | active | ITEM-002 独立 harness 原始输出（16 周期）
-evidence/ev029_full_firmware_verify/source_sha256.txt | active | 6 个受测产品源码 SHA-256（与 n012 交付一致）
-evidence/ev029_full_firmware_verify/static_audit.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/static_audit.out | active | 独立静态核对 23/0（含源码身份）
-evidence/ev029_full_firmware_verify/test.md | active | EV-029 TestEvidence 正文：受测身份、方法、实板逐周期、15 组宿主结果、验收映射、失败分析与最小区分实验、测试资产修复、限制
-evidence/ev029_full_firmware_verify/uart.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/uart.out | active | ITEM-004 独立 harness 原始输出（UART 故障注入）
-evidence/ev029_full_firmware_verify/vdd.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/vdd.out | active | 供电轨测量（31/0）
-evidence/ev029_full_firmware_verify/verify_com43_full.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/verify_com43_full.out | active | 实板判定原始输出（79 passed / 2 failed：PA-001 q=0、PA-017 上电行未入窗）
-evidence/ev029_full_firmware_verify/verify_com43_full.py | active | 实板原始字节独立解析/判据（结构 + PA-001/PA-017），可复跑
-evidence/ev029_full_firmware_verify/verify_freeze.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/verify_freeze.out | active | ITEM-003 独立判据（332/0）
-evidence/ev029_full_firmware_verify/verify_gate.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/verify_gate.out | active | ITEM-001 独立 Python 参考比对（PASS）
-evidence/ev029_full_firmware_verify/verify_mainflow.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/verify_mainflow.out | active | ITEM-005 独立判据（26/0）
-evidence/ev029_full_firmware_verify/verify_snapshot.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/verify_snapshot.out | active | ITEM-002 独立判据（224/0）
-evidence/ev029_full_firmware_verify/verify_uart.err | active | 由 embedded_tester.embedded_verification 新增或修改的项目相关文件
-evidence/ev029_full_firmware_verify/verify_uart.out | active | ITEM-004 独立判据（88/0）
-evidence/ev030_integration_debug/ | active | EV-030 集成调试证据：EV-029 PA-001 失败的复现/身份/原始抓包/源码边界审计，结论 WRONG_OWNER（硬件/电气与嵌入式验证），未提交固件修复
-evidence/ev030_integration_debug/README.md | active | EV-030 证据清单与边界
-evidence/ev030_integration_debug/build_current.log | active | 当前树 mdk_build build 原始日志（0 Error/0 Warning，无可重建项）
-evidence/ev030_integration_debug/debug.md | active | EV-030 集成调试正文：失败环节/竞争假设/归属与下一步、未实板边界
-evidence/ev030_integration_debug/debug_audit.py | active | 身份/原始捕获/源码边界/主机自检审计脚本
-evidence/ev030_integration_debug/debug_audit.txt | active | 上述审计原始输出（10/0）
-evidence/ev030_integration_debug/host_tests_full.log | active | 当前实现侧 7 组 295/0 原始输出（仅宿主）
-evidence/interface_contract_v4_check.json | active | 本次39项静态结果、基线、UTC时刻和30项源码/工件SHA-256
-evidence/interface_contract_v4_check.py | active | 接口文档/schema/示例本地核对脚本；无设备/网络/构建调用
-evidence/interface_contract_v4_fixtures.json | active | 参考RF/BLE明文、14门控向量、承载长度、暗阈值邻界、UART及HTTP例子；非真实响应
-evidence/interface_contract_v4_validation.md | active | IC-003 v4.0作者静态一致性核对；39/39、源码偏差交接与未执行边界；非产品测试
-evidence/interface_contract_validation.md | history | 旧接口契约 IC-002 v3.0 自检证据；不作为当前契约验证
-evidence/product_requirements_traceability.md | active | 本轮需求追溯证据 TR-001（readme→需求→来源→源码/as-built 状态、冲突处理、证据缺口；只做源码/文档核对，未执行实板/网络）
+evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
 evidence/programmed_prototype.md | active | 下载身份记录（EV-017：mdk_flash Verify OK，axf md5 5fc16235… 可由当前工作树确定性重建；仅证明下载成功，不代表功能合格）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）

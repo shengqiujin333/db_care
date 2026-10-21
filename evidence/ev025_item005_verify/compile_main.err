@@ -1,4 +1,0 @@
-USER/src/main.c: In function 'firmware_main_entry':
-USER/src/main.c:187:21: warning: implicit declaration of function 'SYSCTRL_GetAllRstFlag' [-Wimplicit-function-declaration]
-  187 |         rst_flags = SYSCTRL_GetAllRstFlag();
-      |                     ^~~~~~~~~~~~~~~~~~~~~

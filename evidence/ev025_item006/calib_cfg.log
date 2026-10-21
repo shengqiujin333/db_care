@@ -1,7 +1,0 @@
-PASS  default uncalibrated (0/0) (compiles)
-PASS  calibrated ref=1 (compiles)
-PASS  calibrated ref=4095 (compiles)
-PASS  CALIBRATED=2 (rejected at compile time)
-PASS  calibrated ref=0 (rejected at compile time)
-PASS  calibrated ref=4096 (rejected at compile time)
-==== result: 6 passed, 0 failed ====

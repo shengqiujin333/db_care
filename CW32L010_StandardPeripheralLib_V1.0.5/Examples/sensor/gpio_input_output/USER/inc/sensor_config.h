@@ -116,26 +116,12 @@
 #define LIGHT_DARK_CALIBRATED           0               /* 0 = 未标定 (本轮无实板全暗数据, 未验收) */
 #endif
 
-/* 标定配置编译期门禁 (ITEM-006): 非法组合必须编译失败, 不得带入固件。 */
-#if (LIGHT_DARK_CALIBRATED != 0) && (LIGHT_DARK_CALIBRATED != 1)
-#error "LIGHT_DARK_CALIBRATED must be 0 or 1"
-#endif
-#if LIGHT_DARK_CALIBRATED
-#if (LIGHT_DARK_REF_CODE < 1u) || (LIGHT_DARK_REF_CODE > 4095u)
-#error "LIGHT_DARK_REF_CODE must be 1..4095 when LIGHT_DARK_CALIBRATED=1"
-#endif
-#endif
-
-/* 构建标识 (BOOT fw=...): 仅日志标识, 不单独证明镜像身份; 身份由提交/axf md5 绑定。 */
-#define SENSOR_FW_BUILD_ID              "RUN10-FDS003"
-
 /* ==================================================================== */
-/* 4. 上报判定 (readme 修改点 4; PR-004/DEC-01; IC-003 IF02; FDS-003 §5)  */
-/*    report = sample_valid && (cur > 35.0C 或                         */
-/*             (have_prev && light_valid && dark && cur-prev > 0.9C))  */
+/* 4. 上报判定 (readme 修改点 4; IC-002 §2; FD-002 §6.4)                 */
+/*    report = ((prev - cur) > 0.9C 且 DARK) 或 (cur > 35.0C)            */
 /* ==================================================================== */
-#define SENSOR_REPORT_RISE_X10          9       /* 0.9C; 严格大于: >9 即升温>=1.0C 才触发 */
-#define SENSOR_REPORT_HIGH_X10          350     /* 35.0C; 严格大于: 恰好 350 不触发超温 */
+#define SENSOR_REPORT_DROP_X10          9       /* 0.9 C; 严格大于(IC-002): >9 即下降>=1.0 C 才触发 */
+#define SENSOR_REPORT_HIGH_X10          350     /* 35.0 C; 严格大于: 恰好 350 不触发 */
 
 /* ==================================================================== */
 /* 5. 433MHz 上报链路 (FD-002 §8.1, 布局不许变)                          */
@@ -168,11 +154,6 @@
 #endif
 #endif
 #define SENSOR_DEBUG_UART_MAXLINE       96u
-/* UART 等待预算(轮询循环次数, 8 MHz 下约 4 cycles/loop):
- *   行预算约 300 ms (>= 2x 96 B@9600 理论线时); 关闭预算约 50 ms。
- * 仅用于 UART 故障隔离; 超时中止本行/关闭仍执行, 不阻塞业务。 */
-#define DEBUG_UART_LINE_GUARD           600000uL
-#define DEBUG_UART_CLOSE_GUARD          100000uL
 
 /* ==================================================================== */
 /* 6c. 上电总线诊断 (FWR-116; FD-002 rev 5.0 §5.2/§6.6.1/§6.7)           */

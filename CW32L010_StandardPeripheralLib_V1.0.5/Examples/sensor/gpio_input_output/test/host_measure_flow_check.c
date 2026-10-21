@@ -90,43 +90,21 @@ static uint16_t g_enc_hum   = 0;
 static uint16_t g_enc_len   = 0;
 static uint8_t  g_tx_ok     = 1u;   /* 1=发送成功, 0=失败 */
 static int      g_tx_calls  = 0;
-static uint8_t  g_last_enc[10];     /* 最近一次 encode_frame10 输出 */
-static uint8_t  g_tx_frames[8][10]; /* 每次发送实际收到的 10B */
-static int      g_tx_frame_count = 0;
-static int      g_tx_fail_remaining = 0; /* >0: 先失败该次数, 再按 g_tx_ok */
 
 uint8_t app_um2005C_send_data_timeout(uint8_t *d, uint16_t l, uint32_t t)
 {
-    (void)t;
+    (void)d; (void)t;
     g_tx_calls++;
     g_enc_len = l;
-    if ((d != NULL) && (g_tx_frame_count < 8)) {
-        memcpy(g_tx_frames[g_tx_frame_count], d, 10u);
-    }
-    g_tx_frame_count++;
-    if (g_tx_fail_remaining > 0) {
-        g_tx_fail_remaining--;
-        return 0u;
-    }
     return g_tx_ok;
 }
 
 void encode_frame10(uint8_t u[10], int16_t t, uint16_t h, uint8_t o[10])
 {
-    int i;
-    (void)u;
+    (void)u; (void)o;
     g_enc_calls++;
     g_enc_temp = t;
     g_enc_hum  = h;
-    /* 确定性的测试帧: 只用于比较“同一帧”, 不模拟真实 Feistel 字节布局 */
-    o[0] = (uint8_t)((uint16_t)t >> 8);
-    o[1] = (uint8_t)t;
-    o[2] = (uint8_t)(h >> 8);
-    o[3] = (uint8_t)h;
-    for (i = 4; i < 10; i++) {
-        o[i] = (uint8_t)(0xA0 + i);
-    }
-    memcpy(g_last_enc, o, 10u);
 }
 
 /* ==================================================================== */
@@ -206,33 +184,33 @@ int main(void)
     CHECK(tempvalue == 200 && huminityvalue == 500, "成功样本写入 tempvalue/huminityvalue");
     CHECK(report_req == 0u, "无前值 + cur=200 -> report_req=0");
 
-    printf("[2] 升温恰好 0.9C (9) -> 不触发\n");
-    cycle(GXHT40_OK, 209, 501, true);
-    CHECK(report_req == 0u, "prev=200,cur=209 (rise 9) -> report_req=0");
+    printf("[2] 下降恰好 0.9C (9) -> 不触发\n");
+    cycle(GXHT40_OK, 191, 501, true);
+    CHECK(report_req == 0u, "prev=200,cur=191 (drop 9) -> report_req=0");
     CHECK(huminityvalue == 501, "成功时更新最近有效湿度");
 
-    printf("[3] 升温 1.0C (10) 且无光 -> 触发; 待上报不被后续无条件下周期清除\n");
-    cycle(GXHT40_OK, 219, 502, true);
-    CHECK(report_req == 1u, "prev=209,cur=219 (rise 10) 且 DARK -> report_req=1");
-    cycle(GXHT40_OK, 219, 502, true);          /* 无上报条件 */
+    printf("[3] 下降 1.0C (10) 且无光 -> 触发; 待上报不被后续无条件下周期清除\n");
+    cycle(GXHT40_OK, 181, 502, true);
+    CHECK(report_req == 1u, "prev=191,cur=181 (drop 10) 且 DARK -> report_req=1");
+    cycle(GXHT40_OK, 181, 502, true);          /* 无上报条件 */
     CHECK(report_req == 1u, "待上报标志保持 (不被无条件下周期清除)");
     report_req = 0u;
 
-    printf("[4] 升温满足但有光 -> 不触发\n");
-    cycle(GXHT40_OK, 229, 503, false);
-    CHECK(report_req == 0u, "prev=219,cur=229 (rise 10) 但 LIT -> report_req=0");
+    printf("[4] 下降满足但有光 -> 不触发\n");
+    cycle(GXHT40_OK, 170, 503, false);
+    CHECK(report_req == 0u, "prev=181,cur=170 (drop 11) 但 LIT -> report_req=0");
 
     printf("[5] 整周期失败: 不上报/不更新前值/不构造 0 值\n");
     report_req = 0u;
     cycle(GXHT40_ERR_CRC, 50, 999, true);
     CHECK(report_req == 0u, "失败周期不置 report_req");
-    CHECK(tempvalue == 229, "tempvalue 保持上次有效值 229 (未被失败的 50 覆盖)");
+    CHECK(tempvalue == 170, "tempvalue 保持上次有效值 170 (未被失败的 50 覆盖)");
     CHECK(huminityvalue == 503, "huminityvalue 保持上次有效值 503");
     CHECK(strcmp(g_order, "LT") == 0, "失败周期仍先光照后温湿度");
 
     printf("[6] 失败不污染前值: 恢复后按失败前的前值判定\n");
-    cycle(GXHT40_OK, 239, 504, true);
-    CHECK(report_req == 1u, "prev=229,cur=239 (rise 10) -> 上报 (证明失败周期未把 prev 改成 50)");
+    cycle(GXHT40_OK, 160, 504, true);
+    CHECK(report_req == 1u, "prev=170,cur=160 (drop 10) -> 上报 (证明失败周期未把 prev 改成 50)");
 
     printf("[7] 超温分支不受前值/光照限制\n");
     report_req = 0u;
@@ -245,86 +223,34 @@ int main(void)
     (void)temperature_process();
     CHECK(g_order[0] == '\0', "无采样动作 (未调用 light/temp)");
 
-    printf("[9] ITEM-003 冻结帧/单周期 3 次/不跨周期\n");
+    printf("[9] 条件上报发送路径 (ITEM-008)\n");
+    /* 当前最近有效样本 = (351,505) (周期 7) */
     report_req = 0u;
-    g_enc_calls = 0; g_tx_calls = 0; g_tx_frame_count = 0; g_tx_fail_remaining = 0;
+    g_enc_calls = 0; g_tx_calls = 0;
     send_data_to_gateway();
-    CHECK(g_enc_calls == 0 && g_tx_calls == 0, "未触发 -> 不编码不发送");
+    CHECK(g_enc_calls == 0 && g_tx_calls == 0, "report_req=0 -> 不编码不发送");
 
-    /* 触发一次: 编码一次并冻结; 发送成功只用 1 次尝试 */
-    g_enc_calls = 0;
-    cycle(GXHT40_OK, 361, 506, true);
-    CHECK(g_enc_calls == 1 && report_req == 1u, "触发时编码一次并置待发");
-    CHECK(g_enc_temp == 361 && g_enc_hum == 506, "编码使用触发样本 361/506");
-    {
-        uint8_t ref[10];
-        memcpy(ref, g_last_enc, 10u);
-        g_tx_ok = 1u; g_tx_fail_remaining = 0;
-        g_tx_calls = 0; g_tx_frame_count = 0;
-        send_data_to_gateway();
-        CHECK(g_tx_calls == 1 && g_tx_frame_count == 1, "第一次成功 -> 仅 1 次发送");
-        CHECK(memcmp(g_tx_frames[0], ref, 10u) == 0, "发送帧 == 触发时冻结帧");
-        CHECK(g_enc_calls == 1, "发送路径不重新编码");
-        CHECK(report_req == 0u, "成功后清除待发状态");
-        CHECK(g_enc_len == SENSOR_RF_FRAME_LEN, "发送长度 = 10");
-        {
-            debug_trace_sample_t tr;
-            CHECK(sensor_trace_fetch(&tr) == 1u, "成功周期有轨迹");
-            CHECK(tr.send == 1u && tr.retry == 0u, "S.s=1, S.y=0 (IC-003 现行语义)");
-        }
-    }
+    report_req = 1u;
+    g_enc_calls = 0; g_tx_calls = 0; g_tx_ok = 1u;
+    send_data_to_gateway();
+    CHECK(g_enc_calls == 1 && g_tx_calls == 1, "report_req=1 -> 编码并发送一次");
+    CHECK(g_enc_temp == 351 && g_enc_hum == 505, "编码使用最近一次有效样本 (351/505)");
+    CHECK(g_enc_len == SENSOR_RF_FRAME_LEN, "发送长度为 SENSOR_RF_FRAME_LEN(10)");
+    CHECK(report_req == 0u, "发送成功后清除待上报状态");
 
-    /* 3 次全失败: 同一帧、用尽清除、不跨周期 */
-    report_req = 0u;
-    g_enc_calls = 0;
-    cycle(GXHT40_OK, 371, 507, true);
-    CHECK(g_enc_calls == 1 && report_req == 1u, "第二次触发编码一次");
-    {
-        uint8_t ref[10];
-        int i;
-        memcpy(ref, g_last_enc, 10u);
-        g_tx_ok = 0u; g_tx_fail_remaining = 0;
-        g_tx_calls = 0; g_tx_frame_count = 0;
-        send_data_to_gateway();
-        CHECK(g_tx_calls == 3 && g_tx_frame_count == 3, "3 次失败 -> 共 3 次发送");
-        for (i = 0; i < 3; i++) {
-            CHECK(memcmp(g_tx_frames[i], ref, 10u) == 0, "3 次尝试逐字节同一冻结帧");
-        }
-        CHECK(g_enc_calls == 1, "3 次发送不重新编码");
-        CHECK(report_req == 0u, "用尽后清除待发状态");
-        {
-            debug_trace_sample_t tr;
-            CHECK(sensor_trace_fetch(&tr) == 1u, "失败周期有轨迹");
-            CHECK(tr.send == 2u && tr.retry == 0u, "S.s=2, S.y=0 (用尽后计数器清零)");
-        }
-        send_data_to_gateway();
-        CHECK(g_tx_calls == 3, "下一周期无残留, 不再发送旧帧");
-    }
-
-    /* fail,fail,success: 第三次成功, 仍只用同一帧; 用尽/成功都清 pending */
-    report_req = 0u;
-    g_enc_calls = 0;
-    cycle(GXHT40_OK, 381, 508, true);
-    CHECK(g_enc_calls == 1 && report_req == 1u, "第三次触发编码一次");
-    {
-        uint8_t ref[10];
-        int i;
-        memcpy(ref, g_last_enc, 10u);
-        g_tx_ok = 1u; g_tx_fail_remaining = 2;
-        g_tx_calls = 0; g_tx_frame_count = 0;
-        send_data_to_gateway();
-        CHECK(g_tx_calls == 3 && g_tx_frame_count == 3, "fail,fail,success -> 3 次尝试");
-        for (i = 0; i < 3; i++) {
-            CHECK(memcmp(g_tx_frames[i], ref, 10u) == 0, "成功前失败不改变冻结帧");
-        }
-        CHECK(g_enc_calls == 1, "成功路径不重新编码");
-        CHECK(report_req == 0u, "第 3 次成功清除待发状态");
-        {
-            debug_trace_sample_t tr;
-            CHECK(sensor_trace_fetch(&tr) == 1u, "成功周期有轨迹");
-            CHECK(tr.send == 1u && tr.retry == 0u, "S.s=1, S.y=0");
-        }
-    }
+    report_req = 1u;
+    g_tx_ok = 0u; g_tx_calls = 0; g_enc_calls = 0;
+    send_data_to_gateway();
+    CHECK(g_tx_calls == 1 && report_req == 1u, "发送失败: 保留待上报 (重试)");
+    send_data_to_gateway();
+    CHECK(g_tx_calls == 2 && report_req == 1u, "第二次失败: 仍保留待上报");
+    send_data_to_gateway();
+    CHECK(g_tx_calls == 3 && report_req == 0u, "达到 SENSOR_RF_TX_RETRY(3) 后放弃本轮");
+    g_tx_ok = 1u;
+    report_req = 1u;
+    g_tx_calls = 0;
+    send_data_to_gateway();
+    CHECK(g_tx_calls == 1 && report_req == 0u, "放弃后下一轮重试计数已复位 (1 次即成功)");
 
     printf("[10] T1 诊断快照集成: 失败周期带 G 行数据 / 成功周期不带 (FWR-116)\n");
     report_req = 0u;
@@ -398,35 +324,6 @@ int main(void)
         CHECK(sig.scl20 == 0x95555u && sig.sda20 == 0xFFFFFu,
               "负对照: SDA 回读恒高时 sda=FFFFF ≠ 30303 (能区分 H12)");
         g_pin_stuck_high[4] = 0u;
-    }
-
-    printf("[14] ITEM-002 判定前 p/H 快照 (成功 A -> 成功 B -> 失败 -> 成功 C)\n");
-    {
-        debug_trace_sample_t tr;
-
-        report_req = 0u;
-        cycle(GXHT40_OK, 170, 600, true);          /* A: 当前 prev=160 */
-        CHECK(sensor_trace_fetch(&tr) == 1u, "A 周期有轨迹");
-        CHECK(tr.prev_temp_x10 == 160 && tr.have_prev == 1u,
-              "A 周期 p/H 为判定前值 (160/1)");
-        CHECK(tr.temp_x10 == 170 && tr.sample_ok == 1u && tr.report == 1u,
-              "A 周期 t=170, q=1, rise 10 -> r=1");
-
-        report_req = 0u;
-        cycle(GXHT40_ERR_CRC, 180, 999, true);     /* 失败: prev 仍 170 */
-        CHECK(sensor_trace_fetch(&tr) == 1u, "失败周期有轨迹");
-        CHECK(tr.prev_temp_x10 == 170 && tr.have_prev == 1u,
-              "失败周期 p/H 保持失败前值 (170/1)");
-        CHECK(tr.temp_x10 == 170 && tr.sample_ok == 0u && tr.report == 0u,
-              "失败周期 q=0, t 保留最近有效 170, 不判定");
-
-        cycle(GXHT40_OK, 180, 601, true);          /* C: 判定前 prev 仍 170 */
-        CHECK(sensor_trace_fetch(&tr) == 1u, "C 周期有轨迹");
-        CHECK(tr.prev_temp_x10 == 170 && tr.have_prev == 1u,
-              "C 周期 p/H 仍为失败前值 (170/1), 不是推进后的 180");
-        CHECK(tr.temp_x10 == 180 && tr.sample_ok == 1u && tr.report == 1u,
-              "C 周期 t=180, q=1, rise 10 -> r=1");
-        report_req = 0u;
     }
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);

@@ -40,8 +40,6 @@ static int      uart_init_calls;
 static int      tc_poll_calls;
 static int      txe_poll_calls;
 static int      txbusy_poll_calls;
-static int      txe_stuck;           /* ITEM-004: TXE 永不置位 */
-static int      txbusy_stuck;        /* ITEM-004: TXBUSY 永不置位 */
 static int      tx_pending;          /* 尚未移出移位寄存器的字节 (mock 每轮询一次移出一字节) */
 static int      pending_at_reset;    /* 复位 UART1 时刻仍在移位的字节数 (必须为 0) */
 static UART_InitTypeDef last_uart_cfg;
@@ -92,15 +90,9 @@ FlagStatus UART_GetFlagStatus(uint32_t uart, uint16_t flag)
 {
     (void)uart;
     if (flag == UART_FLAG_TC)     tc_poll_calls++;
-    if (flag == UART_FLAG_TXE) {
-        txe_poll_calls++;
-        return (txe_stuck != 0) ? RESET : SET;
-    }
+    if (flag == UART_FLAG_TXE)    txe_poll_calls++;
     if (flag == UART_FLAG_TXBUSY) {
         txbusy_poll_calls++;
-        if (txbusy_stuck != 0) {
-            return SET;                 /* ITEM-004: 永不排空 */
-        }
         if (tx_pending > 0) {
             tx_pending--;               /* 每次轮询移出一字节 */
             return SET;                 /* 仍在移位 -> 忙 */
@@ -143,7 +135,7 @@ static int pass, fail;
 #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
                          else   { fail++; printf("    FAIL  %s (line %d)\n", m, __LINE__); } } while (0)
 
-static const char *EXPECT_BOOT = "BOOT fw=" SENSOR_FW_BUILD_ID " uid=01020304 rst=0001 uart=9600\r\n";
+static const char *EXPECT_BOOT = "BOOT fw=FD-002r4 uid=01020304 rst=0001 uart=9600\r\n";
 static const char *EXPECT_WORST =
     "S k=4294967295 p=-1250 H=1 V=1 o=8 n=4095 x=4095 a=4095 D=1 t=-1250 h=1000 q=0 r=1 s=2 y=2\r\n";
 static const char *EXPECT_TYPICAL =
@@ -400,42 +392,6 @@ int main(void)
               "worst-case VDD line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");
         printf("        len(worst VDD)=%u bytes\n", (unsigned)strlen(cap));
     }
-
-    printf("[T14] ITEM-004 TXE stuck: line aborts within line guard; next line recovers\n");
-    memset(&s, 0, sizeof(s));
-    s.tick = 3u; s.prev_temp_x10 = 250; s.have_prev = 1u;
-    s.light_valid = 1u; s.light_ok = 8u; s.light_min = 12u; s.light_max = 15u;
-    s.light_mean = 13u; s.light_dark = 0u; s.temp_x10 = 456; s.hum_x10 = 678u;
-    s.sample_ok = 1u; s.report = 0u; s.send = 0u; s.retry = 0u;
-    cap_reset();
-    txe_poll_calls = 0; txe_stuck = 1;
-    debug_trace_sample(&s);
-    CHECK(cap_n == 0u, "TXE 永不置位 -> 不写出任何字节 (本行中止)");
-    CHECK(txe_poll_calls <= (int)(DEBUG_UART_LINE_GUARD + 1u),
-          "TXE 等待不超过 DEBUG_UART_LINE_GUARD");
-    txe_stuck = 0;
-    cap_reset();
-    debug_trace_sample(&s);
-    CHECK(strcmp(cap, EXPECT_TYPICAL) == 0, "下一行重新获得预算并完整输出");
-    debug_trace_flush_close();
-
-    printf("[T15] ITEM-004 TXBUSY stuck: close returns within close guard and still tears down\n");
-    cap_reset();
-    debug_trace_sample(&s);                 /* 重新打开并写一行 */
-    txbusy_poll_calls = 0; uart_reset_calls = 0; uart_clk_disable_calls = 0;
-    pin_mode[5] = 0xFFFFu; pin_mode[6] = 0xFFFFu;
-    txbusy_stuck = 1;
-    debug_trace_flush_close();
-    CHECK(txbusy_poll_calls <= (int)(DEBUG_UART_CLOSE_GUARD + 1u),
-          "TXBUSY 等待不超过 DEBUG_UART_CLOSE_GUARD");
-    CHECK(uart_reset_calls == 2 && uart_clk_disable_calls == 1,
-          "超时后仍执行 UART1 复位/关时钟");
-    CHECK(pin_mode[6] == GPIO_MODE_INPUT && pin_mode[5] == GPIO_MODE_INPUT,
-          "超时后 PA06/PA05 仍置输入");
-    txbusy_stuck = 0;
-    cap_reset();
-    debug_trace_sample(&s);
-    CHECK(strcmp(cap, EXPECT_TYPICAL) == 0, "关闭超时后仍可重新初始化并完整打印");
 
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;
