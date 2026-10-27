@@ -9,6 +9,7 @@ CH592EVT/EVT/EXAM/BLE/beiwov2/ | active | 网关 CH592 BLE 固件工程：UM2006
 CH592EVT/EVT/EXAM/BLE/beiwov2/APP/ | active | 网关应用源码：app_um2006A/um2006A_hal（433 接收）、bleencrypt + feistel_al（加密）、measure、peripheral_main、radio、app_uart、app_i2c、app_ev1527、sf_i2c；记录块 id|hum_be|temp_be 与 Android u16be@4/s16be@6 一致
 CH592EVT/EVT/EXAM/BLE/beiwov2/Profile/ | active | 网关 BLE GATT Profile 服务（gattprofile、devinfoservice）
 CH592EVT/EVT/EXAM/BLE/beiwov2/beiwov2.wvproj | active | 网关固件 WCH 工程文件
+CH592EVT/EVT/EXAM/BLE/beiwov2/codegraph.json | active | ??????????? IDE ???????
 CH592EVT/EVT/EXAM/SRC/ | coarse | CH592 标准外设驱动/RVMSIS/Startup（网关编译依赖）
 CH592EVT/EVT/PUB/ | coarse | 沁恒官方手册/评估板原理图/天线参考
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/ | active | 传感器固件工程根：GXHT40 温湿度采集 + 光照通路 + UM2005C 433 发射 + UART1 调试；工程说明见同目录 readme.txt
@@ -36,6 +37,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c | active | 主循环/RTC 节拍；上电顺序 BOOT→VDD→IOTEST→IOSIG→BUS，每周期 S 行
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c | active | 采样流程与条件上报；上电一次性总线诊断（含 general call 复位尝试）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 软 I2C 实现（位时序、ACK 判定、地址探测、≤9 脉冲 + STOP 的总线恢复）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/codegraph.json | active | ?????????????????????????
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh | active | GNU 交叉编译脚本（cw32l010.ld / startup_cw32l010.S 同目录）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh | active | 宿主机测试单一入口（纯逻辑 + 光照等阶段；含 -DLIGHT_BGR_TRIM_MV 覆盖）
@@ -70,6 +72,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 artifacts/android_architecture.md | active | Android 方案设计 AA-002（需求 6 点落点、分层/模块/接口、SQLite v3 与 /upload_data 幂等、异常边界、未决项）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加）
 artifacts/android_tasks.yaml | active | Android 实现任务清单（14 项，按前置依赖排序）
+artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 5.0（逐文件核对、诊断设计、标定现场最小操作、判定与上报冻结语义、增量任务）
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 5.8（ITEM-002 复验修复：本轮无产品代码改动，用既有实板数据收窄装配/器件假设并登记现场检查项）
@@ -107,6 +110,7 @@ dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | coarse | 内�
 dengbei_care/app/src/main/res/ | coarse | Android 资源（layout/values/drawable/mipmap/navigation/xml）；xml/network_security_config.xml 放行 8.140.23.253（保留既有两项）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ | active | 宿主机 JUnit 自检（cloud/、db/、protocol/、report/、telemetry/、ui/）与 verification/ 下软件独立验证用例（ITEM-001..014）
 dengbei_care/build.gradle.kts | active | 工程级 Gradle 脚本
+dengbei_care/codegraph.json | active | ?????Android ???? iOS ?????????????????
 dengbei_care/gradle/libs.versions.toml | active | 依赖版本目录（gradle.properties、dependencies.txt、gradlew(.bat) 同级）
 dengbei_care/iOS开发所需资料清单.md | coarse | iOS 资料清单
 dengbei_care/iOS开发资料/ | coarse | iOS 开发资料包（本轮不改 iOS，仅参考）
@@ -118,6 +122,7 @@ dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.8）
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002
 evidence/build.md | active | 构建证据 BUILD-002 rev 5.8（mdk_build rebuild 0 Error/1 既有告警、Code/RO/RW/ZI、axf md5 与受测件一致）
+evidence/codegraph_dengbei11_validation.json | active | ????????? status?????????? explore ???????????
 evidence/codegraph_validation.md | history | CodeGraph 历史可用性验证证据（索引 complete、无 pending/drift）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 5.8（宿主 harness 复跑记录与穷尽性结论）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）

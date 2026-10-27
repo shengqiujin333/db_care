@@ -1,0 +1,314 @@
+{
+  "responsible_role": "????",
+  "verified_at_utc": "2026-10-27T14:40:54.505156+00:00",
+  "cli_version": "1.6.0",
+  "head": "f4fff42d65969274a006ba6b61edba6434a9b329",
+  "baseline": "f38b5a21e5f13120c1b8a09f6b98c7447779d584",
+  "prior_attempts": "??????????? MCP ???????????????????????????",
+  "initial_worktree_status": "clean (git status --porcelain returned empty)",
+  "sync_history": [
+    "sensor: 12 added + 26 modified; exit 0, Synced 38 changed files",
+    "after exclusions: gateway removed 1; sensor removed 1; android removed 48; all exit 0"
+  ],
+  "roots": [
+    {
+      "name": "gateway",
+      "projectPath": "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2",
+      "indexPath": "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2\\.codegraph",
+      "status_command": [
+        "codegraph",
+        "status",
+        "--json",
+        "CH592EVT/EVT/EXAM/BLE/beiwov2"
+      ],
+      "status_exit_code": 0,
+      "status_stderr": "",
+      "status": {
+        "initialized": true,
+        "version": "1.6.0",
+        "projectPath": "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2",
+        "indexPath": "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2\\.codegraph",
+        "lastIndexed": "2026-10-02T12:17:46.875Z",
+        "fileCount": 34,
+        "nodeCount": 508,
+        "edgeCount": 1066,
+        "dbSizeBytes": 1167360,
+        "walSizeBytes": 0,
+        "backend": "node-sqlite",
+        "journalMode": "wal",
+        "nodesByKind": {
+          "constant": 35,
+          "enum": 18,
+          "enum_member": 78,
+          "file": 34,
+          "function": 154,
+          "import": 79,
+          "struct": 9,
+          "type_alias": 4,
+          "variable": 97
+        },
+        "languages": [
+          "c"
+        ],
+        "pendingChanges": {
+          "added": 0,
+          "modified": 0,
+          "removed": 0
+        },
+        "worktreeMismatch": null,
+        "index": {
+          "builtWithVersion": "1.6.0",
+          "builtWithExtractionVersion": 25,
+          "currentExtractionVersion": 25,
+          "reindexRecommended": false,
+          "state": "complete",
+          "pendingRefs": 0
+        }
+      },
+      "coverage_command": [
+        "codegraph",
+        "files",
+        "-p",
+        "CH592EVT/EVT/EXAM/BLE/beiwov2",
+        "--format",
+        "flat",
+        "--no-metadata"
+      ],
+      "coverage_exit_code": 0,
+      "excluded_paths_present": [],
+      "explore_command": [
+        "codegraph",
+        "explore",
+        "-p",
+        "CH592EVT/EVT/EXAM/BLE/beiwov2",
+        "--max-files",
+        "1",
+        "decode_frame10"
+      ],
+      "explore_exit_code": 0,
+      "explore_stderr": "",
+      "explore_output_sha256": "c29c8d6fb938c65781befdf6c70f93be01f9951a416d067357c7b9e95412d8c2",
+      "explore_summary": [
+        "Found 9 symbols across 1 file.",
+        "- `decode_frame10` (APP/feistel_al.c:119) — 1 caller in `APP/app_um2006A.c`; no tests found within 3 caller hops"
+      ],
+      "source_excerpt": [
+        "118\t/* ���룺�ɹ����� true������� uid_pick/temp/hum */",
+        "119\tbool decode_frame10(uint8_t in10[10], uint8_t uid_pick_out[4], int16_t *temp_out, uint16_t *hum_out){",
+        "120\t  uint8_t p[10]; memcpy(p, in10, 10);",
+        "121\t  feistel10_decrypt(p);",
+        "122\t",
+        "123\t  // CRC У��",
+        "124\t  uint16_t c_calc = crc16_ccitt(p, 8);"
+      ],
+      "source_path": "APP/feistel_al.c",
+      "source_git_blob": "94e58f7025f4df5e061427c6f63c319596042a5c",
+      "source_matches_baseline": true,
+      "verified_at_utc": "2026-10-27T14:40:55.875957+00:00"
+    },
+    {
+      "name": "sensor",
+      "projectPath": "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+      "indexPath": "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\.codegraph",
+      "status_command": [
+        "codegraph",
+        "status",
+        "--json",
+        "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output"
+      ],
+      "status_exit_code": 0,
+      "status_stderr": "",
+      "status": {
+        "initialized": true,
+        "version": "1.6.0",
+        "projectPath": "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+        "indexPath": "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\.codegraph",
+        "lastIndexed": "2026-10-27T14:38:50.054Z",
+        "fileCount": 99,
+        "nodeCount": 1246,
+        "edgeCount": 3399,
+        "dbSizeBytes": 3432448,
+        "walSizeBytes": 0,
+        "backend": "node-sqlite",
+        "journalMode": "wal",
+        "nodesByKind": {
+          "constant": 18,
+          "enum": 41,
+          "enum_member": 117,
+          "file": 99,
+          "function": 463,
+          "import": 291,
+          "struct": 51,
+          "variable": 166
+        },
+        "languages": [
+          "c"
+        ],
+        "pendingChanges": {
+          "added": 0,
+          "modified": 0,
+          "removed": 0
+        },
+        "worktreeMismatch": null,
+        "index": {
+          "builtWithVersion": "1.6.0",
+          "builtWithExtractionVersion": 25,
+          "currentExtractionVersion": 25,
+          "reindexRecommended": false,
+          "state": "complete",
+          "pendingRefs": 0
+        }
+      },
+      "coverage_command": [
+        "codegraph",
+        "files",
+        "-p",
+        "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output",
+        "--format",
+        "flat",
+        "--no-metadata"
+      ],
+      "coverage_exit_code": 0,
+      "excluded_paths_present": [],
+      "explore_command": [
+        "codegraph",
+        "explore",
+        "-p",
+        "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output",
+        "--max-files",
+        "1",
+        "gxht40_measure"
+      ],
+      "explore_exit_code": 0,
+      "explore_stderr": "",
+      "explore_output_sha256": "8bf1958b4170537714b5347fe315174925939cf5fb164406ce97884149edbc4e",
+      "explore_summary": [
+        "Found 12 symbols across 1 file.",
+        "- `gxht40_measure` (USER/src/gxht40.c:170) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops",
+        "- `gxht40_init` (USER/src/gxht40.c:63) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops",
+        "- `measure_sample` (USER/src/measure.c:452) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops",
+        "- `gxht40_acquire` (USER/src/gxht40.c:124) — 1 caller in `USER/src/gxht40.c`; no tests found within 3 caller hops",
+        "- `gxht40_diag_clear` (USER/src/gxht40.c:20) — 2 callers in `USER/src/gxht40.c`; no tests found within 3 caller hops"
+      ],
+      "source_excerpt": [
+        "169\t/* ------------------------------------------------------------------ */",
+        "170\tgxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10)",
+        "171\t{",
+        "172\t    uint8_t buf[GXHT40_RESULT_LEN];",
+        "173\t    uint8_t attempt;",
+        "174\t    gxht40_status_t last = GXHT40_ERR_IO;",
+        "175\t"
+      ],
+      "source_path": "USER/src/gxht40.c",
+      "source_git_blob": "c95b7b504fabf7b53b834aa86e1c817e4127049a",
+      "source_matches_baseline": true,
+      "verified_at_utc": "2026-10-27T14:40:57.083003+00:00"
+    },
+    {
+      "name": "android",
+      "projectPath": "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+      "indexPath": "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\.codegraph",
+      "status_command": [
+        "codegraph",
+        "status",
+        "--json",
+        "dengbei_care"
+      ],
+      "status_exit_code": 0,
+      "status_stderr": "",
+      "status": {
+        "initialized": true,
+        "version": "1.6.0",
+        "projectPath": "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+        "indexPath": "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\.codegraph",
+        "lastIndexed": "2026-10-07T01:53:21.977Z",
+        "fileCount": 88,
+        "nodeCount": 2396,
+        "edgeCount": 4770,
+        "dbSizeBytes": 9977856,
+        "walSizeBytes": 0,
+        "backend": "node-sqlite",
+        "journalMode": "wal",
+        "nodesByKind": {
+          "class": 147,
+          "constant": 92,
+          "enum": 7,
+          "enum_member": 26,
+          "field": 322,
+          "file": 86,
+          "function": 49,
+          "import": 768,
+          "interface": 8,
+          "method": 804,
+          "namespace": 82,
+          "variable": 5
+        },
+        "languages": [
+          "java",
+          "kotlin",
+          "properties",
+          "xml"
+        ],
+        "pendingChanges": {
+          "added": 0,
+          "modified": 0,
+          "removed": 0
+        },
+        "worktreeMismatch": null,
+        "index": {
+          "builtWithVersion": "1.6.0",
+          "builtWithExtractionVersion": 25,
+          "currentExtractionVersion": 25,
+          "reindexRecommended": false,
+          "state": "complete",
+          "pendingRefs": 0
+        }
+      },
+      "coverage_command": [
+        "codegraph",
+        "files",
+        "-p",
+        "dengbei_care",
+        "--format",
+        "flat",
+        "--no-metadata"
+      ],
+      "coverage_exit_code": 0,
+      "excluded_paths_present": [],
+      "explore_command": [
+        "codegraph",
+        "explore",
+        "-p",
+        "dengbei_care",
+        "--max-files",
+        "1",
+        "CloudUploadRepository"
+      ],
+      "explore_exit_code": 0,
+      "explore_stderr": "",
+      "explore_output_sha256": "0b8788c8c269524c9c6d239c415ab1de34e3a12fae3c697bcf20d7f19f79b307",
+      "explore_summary": [
+        "Found 25 symbols across 1 file.",
+        "- `CloudUploadRepository` (app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt:28) — 11 callers in `app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt`; tests: `app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt`, `app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt`",
+        "- `upload` (app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt:40) — 1 caller in `app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt`; tested via callers: `app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt`, `app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt`"
+      ],
+      "source_excerpt": [
+        "27\t */",
+        "28\tclass CloudUploadRepository(",
+        "29\t    private val api: UploadApi,",
+        "30\t    private val outbox: UploadOutbox,",
+        "31\t    private val gate: UploadGate,",
+        "32\t    private val config: Config = Config(),",
+        "33\t    private val now: () -> Long = { System.currentTimeMillis() / 1000 },"
+      ],
+      "source_path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt",
+      "source_git_blob": "ad39b5331d371c7448a11945ccfc5a18073b972f",
+      "source_matches_baseline": true,
+      "verified_at_utc": "2026-10-27T14:40:58.218846+00:00"
+    }
+  ],
+  "database_tracking_check": {
+    "command": "git ls-files -- <three .codegraph directories>",
+    "stdout": ""
+  }
+}
