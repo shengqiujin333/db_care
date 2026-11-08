@@ -1,0 +1,58 @@
+EV-024 raw tool results (embedded_tester), 2026-11-08, all timestamps UTC
+Build = commit 3113a9680985dcaf564839ccbe57bae161a0bcda; axf md5 e56d8d4b48c14ff29ae376781bbdc915
+
+[serial_list_ports] 2026-11-08T07:47:58.119182+00:00
+  COM43  description="Prolific USB-to-Serial Comm Port (COM43)"  hwid="USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2"
+  COM26  description="USB 串行设备 (COM26)"                     hwid="USB VID:PID=C251:F001 SER=87094109484987710672FF50"
+  (COM43 used for all captures at 9600 8N1; COM26 is the debugger CDC, not used)
+
+[usb_list_devices] 2026-11-08T07:47:58.191762+00:00 - 07:48:00.080757+00:00
+  Status=OK Class=USB       VID_C251&PID_F001  SN 87094109484987710672FF50  (CW-DAPLink composite)
+  Status=OK Class=Ports     VID_067B&PID_2303  Prolific USB-to-Serial Comm Port (COM43)
+  Status=OK Class=Ports     VID_C251&PID_F001&MI_00  USB 串行设备 (COM26)
+  Status=OK Class=USBDevice VID_18D1&PID_4EE7  "SDM439-QRD _SN:3AE89DF1" (instance 12F046690506)
+  Status=OK Class=USBDevice VID_04B4&PID_8613  "Unknown Device #1" (Cypress FX2)
+  Status=OK Class=Bluetooth Intel Bluetooth, Camera Chicony USB2.0, HID keyboard/mouse, root hubs
+  (no VDS1022 / oscilloscope / current meter enumerated; absence is not proof of absence)
+
+[sigrok_info] 2026-11-08T07:48:00.162538+00:00
+  enabled=true, executable=D:/Program Files/sigrok/sigrok-cli/sigrok-cli.exe,
+  driver=fx2lafw, connection=2.31, channels=[D0,D1], labels={D0:scl,D1:sda},
+  triggers={D1:f}, samplerate_hz=4000000, max_samplerate_hz=8000000,
+  max_samples=20000000, timeout_sec=240.0, online=not_checked
+
+[mdk_build rebuild] 2026-11-08T07:48:02.447895+00:00 - 07:48:04.241582+00:00
+  *** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+  Rebuild target 'Project' ... linking ...
+  ../USER/src/main.c(245): warning: while loop has empty body [-Wempty-body]
+  Program Size: Code=25912 RO-data=656 RW-data=116 ZI-data=1676
+  ".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+  md5 Project.axf = e56d8d4b48c14ff29ae376781bbdc915
+  md5 Project.hex = d872d703e0ed8ec95bc3dee88f074b33
+  (matches FWI-002 rev 6.2 declaration exactly; deterministic rebuild)
+  git diff --stat HEAD -- USER = empty (HEAD 3113a96)
+
+[mdk_flash] 2026-11-08T07:48:11.045111+00:00 - 07:48:23.246297+00:00
+  Build target 'Project' 0 Error(s), 0 Warning(s)
+  Load "D:\\mypro\\beiwo2\\AIP\\...\\MDK\\output\\exe\\Project.axf"
+  Erase Done.Programming Done.Verify OK.Application running ...
+  Flash Load finished at 15:48:23 (local) = 07:48:23Z
+
+[sigrok_probe] 2026-11-08T09:09:52.644081+00:00 - 09:09:52.686513+00:00
+  command: sigrok-cli --driver fx2lafw:conn=2.31 --show
+  exit_code=1, stderr="No devices found."
+  (no global scan, no EEPROM write, no config change)
+
+[serial_capture] COM43 @ 9600 8N1, 16 x 300 s windows (see capture_windows.txt)
+  All 16 calls: success=true, exit_code=0.  Total bytes 2130.  S cycles 27, G lines 0.
+  Window timestamps as returned by the tool (started_at / finished_at) are recorded in
+  capture_windows.txt alongside byte counts and the k values observed.
+
+[host tests] (local, not device tools)
+  test/build_test.sh                : 46+57+54+28+29 = 214 passed, 0 failed, exit 0
+  host_fw_core_verify_ev            : 59 passed, 0 failed
+  host_sf_i2c_verify_ev             : 51 passed, 0 failed
+  host_gxht40_verify_ev             : 93 passed, 0 failed
+  host_diag_line_verify_ev          : 38 passed, 0 failed
+  host_diag_probe_verify_ev         : 104 passed, 0 failed
+  host_measure_flow_verify_ev       : 79 passed, 0 failed (after EV-024 test-asset repair)

@@ -135,9 +135,12 @@ static void ref_cycle(void)
     gxht40_status_t st = (cyc < scr_n) ? scr_gxht[cyc] : GXHT40_ERR_IO;
     if (st == GXHT40_OK) {
         int16_t cur = scr_t[cyc];
-        bool rep = (cur > SENSOR_REPORT_HIGH_X10) ||
-                   (cur < SENSOR_REPORT_HIGH_X10 && ref_have && dark &&
-                    ((int32_t)ref_prev - (int32_t)cur > SENSOR_REPORT_DROP_X10));
+        /* IC-002 v3.0 / T1: strict >35.0C, or rise >0.9C while dark.
+         * (EV-024 test-asset repair: the old reference model still used the
+         * retired DROP/cooldown direction and no longer compiled.) */
+        bool rep = ((int32_t)cur > (int32_t)SENSOR_REPORT_HIGH_X10) ||
+                   (ref_have && dark &&
+                    ((int32_t)cur - (int32_t)ref_prev > (int32_t)SENSOR_REPORT_RISE_X10));
         ref_rep_now = rep;
         if (rep) ref_report = 1u;
         ref_prev = cur; ref_have = true;
@@ -160,7 +163,7 @@ int main(void)
     const bool    d[MAXC] = { false,false,true,true,true,true,true,false,false,true,false,true,true,false };
     const gxht40_status_t g[MAXC] = { GXHT40_OK,GXHT40_OK,GXHT40_OK,GXHT40_ERR_IO,GXHT40_OK,GXHT40_ERR_CRC,GXHT40_ERR_RANGE,
                                       GXHT40_OK,GXHT40_OK,GXHT40_OK,GXHT40_OK,GXHT40_OK,GXHT40_ERR_CRC,GXHT40_OK };
-    const int16_t t[MAXC] = { 250,240,220,0,210,0,0,351,350,340,330,300,0,280 };
+    const int16_t t[MAXC] = { 250,240,220,0,230,0,0,351,350,340,330,340,0,280 };
     const uint16_t h[MAXC] = { 500,510,600,0,610,0,0,700,710,720,730,740,0,750 };
     scr_n = 14;
     for (int i = 0; i < scr_n; i++) { scr_dark[i] = d[i]; scr_gxht[i] = g[i]; scr_t[i] = t[i]; scr_h[i] = h[i]; }
@@ -222,13 +225,15 @@ int main(void)
     CHECK(report_req == 0u, "final pending-report state matches the model (last cycle decided not to report)");
 
     printf("[S4] failure does not advance the previous valid temperature\n");
-    /* cycle 3 failed (ERR_IO) while prev=240; cycle 4 measured 210 -> drop 30 (>9) and dark -> must report.
-       Had the failed cycle polluted prev (e.g. reset to 0), the drop would be negative and no report. */
+    /* cycle 3 failed (ERR_IO) while prev=220; cycle 4 measured 230 -> rise 10 (>9) and dark
+       -> must report.  Had the failed cycle polluted prev (e.g. reset to 0), the rise would be
+       larger but still report; the decisive check is that prev stayed at the last valid value
+       (220), i.e. the reported rise is measured against the pre-failure sample. */
     CHECK(newly_set[3] == false, "the failed cycle itself raises no report");
-    CHECK(newly_set[4] == true, "the drop after the failed cycle is measured against the pre-failure value");
+    CHECK(newly_set[4] == true, "the rise after the failed cycle is measured against the pre-failure value");
 
     printf("[S5] current-cycle light state is used (no leakage from failed cycles)\n");
-    CHECK(newly_set[11] == true, "dark + drop reports");
+    CHECK(newly_set[11] == true, "dark + rise reports");
     /* cycle 12 failed while dark=true (light result must be discarded); cycle 13 is lit with a drop */
     CHECK(newly_set[12] == false, "a failed cycle raises no report even when dark");
     CHECK(newly_set[13] == false, "the lit cycle after the dark failure does not report");

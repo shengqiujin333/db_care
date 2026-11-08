@@ -1,0 +1,45 @@
+==============================================================================
+EV-024 independent analysis - D2 build (axf e56d8d4b48c14ff29ae376781bbdc915)
+==============================================================================
+capture files       : 16
+total bytes         : 2130
+sum of line bytes   : 2130
+stray bytes         : 0
+S cycles            : 27  (q=1: 27, q=0: 0)
+failure rate        : 0.0%
+G lines             : 0
+
+per-window cycles (k range):
+  cap01.cap: k=3..3 (1 cycles)
+  cap02.cap: k=6..9 (2 cycles)
+  cap03.cap: k=12..15 (2 cycles)
+  cap04.cap: k=18..18 (1 cycles)
+  cap05.cap: k=21..24 (2 cycles)
+  cap06.cap: k=27..30 (2 cycles)
+  cap07.cap: k=33..36 (2 cycles)
+  cap08.cap: k=39..39 (1 cycles)
+  cap09.cap: k=42..45 (2 cycles)
+  cap10.cap: k=48..51 (2 cycles)
+  cap11.cap: k=54..54 (1 cycles)
+  cap12.cap: k=57..60 (2 cycles)
+  cap13.cap: k=63..66 (2 cycles)
+  cap14.cap: k=69..69 (1 cycles)
+  cap15.cap: k=72..75 (2 cycles)
+  cap16.cap: k=78..81 (2 cycles)
+
+k delta: every consecutive observed cycle differs by +3  (OK)
+
+G frames: none (no CRC/read failures observed)
+
+S line samples (first / last):
+  cap01.cap: S k=3 p=214 H=1 V=0 o=8 n=3656 x=3664 a=3660 D=0 t=214 h=405 q=1 r=0 s=0 y=0
+  cap16.cap: S k=81 p=221 H=1 V=0 o=8 n=3185 x=3199 a=3192 D=0 t=221 h=419 q=1 r=0 s=0 y=0
+
+prev-value chain (k, t, p, H) for successful cycles:
+  (3:214/214,H=1), (6:206/206,H=1), (9:203/203,H=1), (12:201/201,H=1), (15:201/201,H=1), (18:208/208,H=1), (21:201/201,H=1), (24:199/199,H=1), (27:199/199,H=1), (30:198/198,H=1), (33:202/202,H=1), (36:198/198,H=1), (39:198/198,H=1), (42:197/197,H=1), (45:197/197,H=1), (48:208/208,H=1), (51:198/198,H=1), (54:197/197,H=1), (57:216/216,H=1), (60:245/245,H=1), (63:218/218,H=1), (66:202/202,H=1), (69:201/201,H=1), (72:200/200,H=1), (75:199/199,H=1), (78:221/221,H=1), (81:221/221,H=1)
+
+baseline (rev 6.1 build 08a4c266): 16/25 failed = 64.0%
+this build (D2)                 : 0/27 failed = 0.0%
+Fisher exact two-sided p        : 1.97e-07
+
+problems: 0

@@ -52,7 +52,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/hos
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_check.c | active | 光照通路实现侧自检（真实 light.c + 影子 MCU）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_verify_ev.c | history | 测试能力 harness，已陈旧不可编译（仍按 T2 之前 light_sample() 的 bool API 编写，且引用已删滞回语义）；结论不采用，待重写
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c | active | measure.c 采样流程与发送路径实现侧自检（T2 冻结/重试/不覆盖/P 行取数）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_verify_ev.c | active | 测试能力独立验证 harness：measure.c 多周期流程模型
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_verify_ev.c | active | 测试能力独立验证 harness：measure.c 多周期流程模型（EV-024 按 T1 升温语义修复参考模型与脚本向量，避免引用已删除的 DROP 常量）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_check.c | active | 空口帧往返 + 网关→Android 映射实现侧自检
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_verify_ev.c | active | 测试能力独立验证 harness：空口帧字段/字节序/篡改拒绝
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_report_verify_ev.c | active | 测试能力独立验证 harness：条件上报发送路径
@@ -208,15 +208,46 @@ evidence/ev023/capC.cap | active | 修复镜像 COM43 原始字节（07:31:08–
 evidence/ev023/capture_analysis.txt | active | parse_ev023.py 输出（6 周期、3 失败帧独立 CRC-8 复算与签名统计）
 evidence/ev023/parse_ev023.py | active | 独立捕获解析与 CRC-8/签名复算脚本（不引用实现常量）
 evidence/ev023/tool_results.txt | active | 本轮 serial_list_ports/usb_list_devices/sigrok_info/sigrok_probe/serial_capture 原始结果与时间戳
+evidence/ev024/ | active | EV-024 修复轮复验原始证据目录：16 份 COM43 原始捕获（覆盖 27 个连续采样周期）、独立解析/CRC/节拍复算脚本与输出、宿主 harness 日志、工具原始结果
+evidence/ev024/EV-024_prototype_section.md | active | EV-024 下载身份段落（已并入 evidence/programmed_prototype.md 顶部）
+evidence/ev024/EV-024_section.md | active | EV-024 证据正文（已并入 evidence/test.md 顶部）
+evidence/ev024/analyze_ev024.py | active | 独立捕获解析：字段/行长、q↔G 配对、k 节拍、独立 CRC-8 复算、与基线 Fisher 精确检验
+evidence/ev024/cap01.cap | active | 下载后 COM43 原始字节（07:48:28–07:53:28Z，k=3 q=1）
+evidence/ev024/cap02.cap | active | 下载后 COM43 原始字节（07:53:34–07:58:34Z，k=6/9 q=1）
+evidence/ev024/cap03.cap | active | 下载后 COM43 原始字节（07:58:38–08:03:38Z，k=12/15 q=1）
+evidence/ev024/cap04.cap | active | 下载后 COM43 原始字节（08:03:42–08:08:42Z，k=18 q=1）
+evidence/ev024/cap05.cap | active | 下载后 COM43 原始字节（08:08:47–08:13:47Z，k=21/24 q=1）
+evidence/ev024/cap06.cap | active | 下载后 COM43 原始字节（08:13:51–08:18:51Z，k=27/30 q=1）
+evidence/ev024/cap07.cap | active | 下载后 COM43 原始字节（08:18:56–08:23:56Z，k=33/36 q=1）
+evidence/ev024/cap08.cap | active | 下载后 COM43 原始字节（08:24:01–08:29:01Z，k=39 q=1）
+evidence/ev024/cap09.cap | active | 下载后 COM43 原始字节（08:29:05–08:34:05Z，k=42/45 q=1）
+evidence/ev024/cap10.cap | active | 下载后 COM43 原始字节（08:34:10–08:39:10Z，k=48/51 q=1）
+evidence/ev024/cap11.cap | active | 下载后 COM43 原始字节（08:39:13–08:44:14Z，k=54 q=1）
+evidence/ev024/cap12.cap | active | 下载后 COM43 原始字节（08:44:18–08:49:18Z，k=57/60 q=1）
+evidence/ev024/cap13.cap | active | 下载后 COM43 原始字节（08:49:23–08:54:23Z，k=63/66 q=1）
+evidence/ev024/cap14.cap | active | 下载后 COM43 原始字节（08:54:27–08:59:27Z，k=69 q=1）
+evidence/ev024/cap15.cap | active | 下载后 COM43 原始字节（08:59:32–09:04:32Z，k=72/75 q=1）
+evidence/ev024/cap16.cap | active | 下载后 COM43 原始字节（09:04:36–09:09:36Z，k=78/81 q=1）
+evidence/ev024/capture_analysis.txt | active | analyze_ev024.py 输出（27 周期 0 失败、0 G、stray 0 B、p=1.97e-07）
+evidence/ev024/capture_windows.txt | active | 16 个捕获窗口起止/字节数/观测 k/窗口间隙与原始文件 md5
+evidence/ev024/host_build_test.log | active | 本轮 test/build_test.sh 原始 stdout（214 项 0 失败）
+evidence/ev024/host_diag_line_verify_ev.log | active | 独立诊断行 harness 输出（38/38）
+evidence/ev024/host_diag_probe_verify_ev.log | active | 独立总线诊断 harness 输出（104/104）
+evidence/ev024/host_fw_core_verify_ev.log | active | 独立 fw_core harness 输出（59/59）
+evidence/ev024/host_gxht40_verify_ev.log | active | 独立 GXHT40 harness 输出（93/93）
+evidence/ev024/host_measure_flow_verify_ev.log | active | 独立采样流程 harness 输出（79/79，修复陈旧语义后）
+evidence/ev024/host_sf_i2c_verify_ev.log | active | 独立软 I²C harness 输出（51/51）
+evidence/ev024/prepend_sections.py | active | 将 EV-024 段落并入 evidence/test.md 与 programmed_prototype.md 的可复跑脚本
+evidence/ev024/tool_results.txt | active | 本轮设备/构建/下载/采集工具原始结果与时间戳
 evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
-evidence/programmed_prototype.md | active | 下载身份记录（EV-022：commit 0f8a8fba / axf md5 08a4c266… 一次 mdk_flash Verify OK；仅证明下载成功，不代表功能合格；EV-018 及更早记录保留为历史）
+evidence/programmed_prototype.md | active | 下载身份记录（EV-024：commit 3113a96 / axf md5 e56d8d4b… 一次 mdk_flash Verify OK；仅证明下载成功，不代表功能合格；EV-022 及更早记录保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
 evidence/software_static_check_server_migration.py | active | 可复跑静态核查（ITEM-004：服务器常量/旧主机分布/XML 放行/兼容面）
 evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）
 evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；退出码 0/1）
-evidence/test.md | active | 嵌入式验证证据 EV-022（当前轮）：TEST_FAIL — 修复镜像 19 周期 6×q=1 / 13×q=0（68.4%），全部 G s=4 温度 CRC 错且湿度 CRC 全对；两项时序 A/B 未改善；T5/INT 未执行、上电行缺失、逻辑分析仪不在线；EV-018 及更早保留为历史
+evidence/test.md | active | 嵌入式验证证据 EV-024（当前轮）：TEST_FAIL（整体）— D2 镜像 27 个连续采样周期全部 q=1、0 次失败（对照上一镜像 16/25=64%，p=1.97e-07），T4-05 实板通过；T4-02 上电行缺失、T5/INT 未执行、逻辑分析仪不在线；EV-022 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-023 置顶，EV-021 原文保留）：GXHT40 温度 CRC 字节间歇性等于温度 MSB 的签名、两项时序 A/B 实测无效、已排除项、竞争假设（H1′/H2′/H5）与责任交接（仅归因，不代表修复或通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）
