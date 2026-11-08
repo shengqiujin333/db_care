@@ -1,0 +1,34 @@
+raw            b0 b1 b2(recv) crc(b0b1) crc(b1b0) hum  b5 crc(hum) b2==b0
+67A667543C5D 67 A6 67      20       08      543C 5D 5D      True
+67176753FA12 67 17 67      AE       6D      53FA 12 12      True
+65356558B51B 65 35 65      93       0A      58B5 1B 1B      True
+6310635E31FF 63 10 63      BA       07      5E31 FF FF      True
+6454645B5002 64 54 64      ED       9A      5B50 02 02      True
+636B635DE85E 63 6B 63      A8       26      5DE8 5E 5E      True
+
+slices whose crc8 == b2 (count over 6 frames):
+  none
+
+bit-level relation b2 vs b0 / b1 / b3:
+  67A667543C5D: b2=01100111 b0=01100111 b1=10100110 b3=01010100  b2^b0=00 b2-b0=0
+  67176753FA12: b2=01100111 b0=01100111 b1=00010111 b3=01010011  b2^b0=00 b2-b0=0
+  65356558B51B: b2=01100101 b0=01100101 b1=00110101 b3=01011000  b2^b0=00 b2-b0=0
+  6310635E31FF: b2=01100011 b0=01100011 b1=00010000 b3=01011110  b2^b0=00 b2-b0=0
+  6454645B5002: b2=01100100 b0=01100100 b1=01010100 b3=01011011  b2^b0=00 b2-b0=0
+  636B635DE85E: b2=01100011 b0=01100011 b1=01101011 b3=01011101  b2^b0=00 b2-b0=0
+
+frame-level: is b2 the previous frame's b0? (successive frames)
+  67A667543C5D: b2=67 prev_b0=-
+  67176753FA12: b2=67 prev_b0=67
+  65356558B51B: b2=65 prev_b0=67
+  6310635E31FF: b2=63 prev_b0=65
+  6454645B5002: b2=64 prev_b0=63
+  636B635DE85E: b2=63 prev_b0=64
+
+physical plausibility of received words (integer x10 conversion):
+  67A667543C5D: raw_t=26534 -> 25.9 C, raw_h=21564 -> 35.1 %RH
+  67176753FA12: raw_t=26391 -> 25.5 C, raw_h=21498 -> 35.0 %RH
+  65356558B51B: raw_t=25909 -> 24.2 C, raw_h=22709 -> 37.3 %RH
+  6310635E31FF: raw_t=25360 -> 22.7 C, raw_h=24113 -> 40.0 %RH
+  6454645B5002: raw_t=25684 -> 23.6 C, raw_h=23376 -> 38.6 %RH
+  636B635DE85E: raw_t=25451 -> 23.0 C, raw_h=24040 -> 39.9 %RH

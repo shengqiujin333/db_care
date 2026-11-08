@@ -1,0 +1,79 @@
+# EV-021 本轮工具原始结果摘要（嵌入式测试）
+
+记录时间：2026-11-08 05:22–05:34 UTC（本地 UTC+8）
+能力：embedded_tester.embedded_failure_analysis
+说明：以下为运行时 MCP 设备后端的实际返回要点；命令参数与实际输出保持一致，未改写。
+
+## 1. serial_list_ports（05:22:14Z）
+
+```json
+[
+  {"port":"COM43","description":"Prolific USB-to-Serial Comm Port (COM43)",
+   "hwid":"USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2","vid":1659,"pid":8963},
+  {"port":"COM26","description":"USB 串行设备 (COM26)",
+   "hwid":"USB VID:PID=C251:F001 SER=87094109484987710672FF50","vid":49745,"pid":61441}
+]
+```
+
+## 2. usb_list_devices（05:22:14Z）
+
+相关条目（其余为摄像头/HID/集线器，省略）：
+
+- `USB\VID_C251&PID_F001\...`（CW-DAPLink 复合设备，Status OK）
+- `USB\VID_18D1&PID_4EE7\12F046690506`（SDM439-QRD，Status OK）
+- `USB\VID_04B4&PID_8613\7&298A15B9&0&4`（FX2，FriendlyName=`Unknown Device #1`，Status OK）
+- `USB\VID_067B&PID_2303\...`（Prolific COM43）
+
+结论边界：枚举只证明连接/身份，不证明协议功能或业务通过。
+
+## 3. serial_capture #1（05:22:23.242Z → 05:27:23.450Z，COM43@9600）
+
+```
+bytes_received=204
+S k=30 p=231 H=1 V=0 o=8 n=3673 x=3681 a=3677 D=0 t=231 h=408 q=0 r=0 s=0 y=0
+G s=4 a44=1 a45=0 rd=0 at=3 raw=6408645AC1FE
+S k=33 p=234 H=1 V=0 o=8 n=3693 x=3702 a=3696 D=0 t=234 h=403 q=1 r=0 s=0 y=0
+```
+
+原始文件：`serial-capture-1794115643449134500.bin` → 复制为 `evidence/ev021/run3_a.cap`
+（204 B，md5 `d6e6997609d39a3ca6ccb87a1247d665`）
+
+## 4. serial_capture #2（05:29:27.805Z → 05:34:28.019Z，COM43@9600）
+
+```
+bytes_received=125
+S k=39 p=234 H=1 V=0 o=8 n=3733 x=3743 a=3736 D=0 t=234 h=403 q=0 r=0 s=0 y=0
+G s=4 a44=1 a45=0 rd=0 at=3 raw=65FC6557E6AF
+```
+
+原始文件：`serial-capture-1794116068019313800.bin` → 复制为 `evidence/ev021/run3_b.cap`
+（125 B，md5 `ee57115525897295f89e59fb685be5f4`）
+
+## 5. sigrok_info（05:28:17.590Z）
+
+```json
+{"enabled":true,"executable":"D:/Program Files/sigrok/sigrok-cli/sigrok-cli.exe",
+ "driver":"fx2lafw","connection":"2.31","channels":["D0","D1"],
+ "signal_labels":{"D0":"scl","D1":"sda"},"triggers":{"D1":"f"},
+ "samplerate_hz":4000000,"max_samplerate_hz":8000000,"max_samples":20000000,
+ "timeout_sec":240.0,"online":"not_checked"}
+```
+
+## 6. sigrok_probe（05:28:17.661Z）
+
+```
+command : sigrok-cli --driver fx2lafw:conn=2.31 --show
+exit_code: 1
+error_code: SIGROK_FAILED
+stderr  : No devices found.
+```
+
+未修改 `connection`、未使用全局扫描、未猜测新地址、未写 EEPROM。
+`sigrok_capture` 因此未执行（同入口，重复调用无新增信息）。
+
+## 7. 串口解析（本轮与 EV-018 合并）
+
+见 `evidence/ev021/parse_captures.py` 输出 `evidence/ev021/capture_analysis.txt`：
+本轮 3 个周期（q=1×1 / q=0×2），2 个失败帧均为温度 CRC 错、湿度 CRC 正常、`raw[2]==raw[0]`；
+合并 EV-018 的 15 个周期与 6 个失败帧后，合计 18 周期 / 7 个失败周期 / 8 个失败帧（含下载前旧镜像），
+签名 8/8 一致。

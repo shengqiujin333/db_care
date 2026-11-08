@@ -1,0 +1,32 @@
+== EV-021 fresh: captures=2 S=3 (q=1:1 q=0:2) G=2 lines>96B=0 bad_lines=0
+   G temp-CRC mismatches=2 hum-CRC mismatches=0 raw[2]==raw[0]=2
+   S run3_a.cap: k=30 p=231 t=231 h=408 q=0 r=0 s=0 y=0
+   S run3_a.cap: k=33 p=234 t=234 h=403 q=1 r=0 s=0 y=0
+   S run3_b.cap: k=39 p=234 t=234 h=403 q=0 r=0 s=0 y=0
+   G run3_a.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=6408645AC1FE T_ok=False H_ok=True dup=True crcT=EE
+   G run3_b.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=65FC6557E6AF T_ok=False H_ok=True dup=True crcT=5C
+
+== EV-018 (reference): captures=10 S=16 (q=1:10 q=0:6) G=6 lines>96B=0 bad_lines=0
+   G temp-CRC mismatches=6 hum-CRC mismatches=0 raw[2]==raw[0]=6
+   S preflash_old_image.cap: k=8673 p=256 t=256 h=372 q=0 r=0 s=0 y=0
+   S run1_a.cap: k=3 p=243 t=243 h=372 q=1 r=0 s=0 y=0
+   S run1_a.cap: k=6 p=243 t=243 h=372 q=0 r=0 s=0 y=0
+   S run1_b.cap: k=9 p=227 t=227 h=401 q=1 r=0 s=0 y=0
+   S run1_c.cap: k=12 p=227 t=227 h=401 q=0 r=0 s=0 y=0
+   S run1_c.cap: k=15 p=227 t=227 h=401 q=0 r=0 s=0 y=0
+   S run1_d.cap: k=21 p=230 t=230 h=375 q=1 r=0 s=0 y=0
+   S run1_e.cap: k=24 p=245 t=245 h=369 q=1 r=0 s=0 y=0
+   S run1_e.cap: k=27 p=245 t=245 h=399 q=1 r=0 s=0 y=0
+   S run2_a.cap: k=3 p=0 t=0 h=0 q=0 r=0 s=0 y=0
+   S run2_a.cap: k=6 p=230 t=230 h=361 q=1 r=0 s=0 y=0
+   S run2_b.cap: k=9 p=259 t=259 h=372 q=1 r=0 s=0 y=0
+   S run2_b.cap: k=12 p=242 t=242 h=376 q=1 r=0 s=0 y=0
+   S run2_boot.cap: k=0 p=0 t=0 h=0 q=0 r=0 s=0 y=0
+   S run2_c.cap: k=15 p=243 t=243 h=377 q=1 r=0 s=0 y=0
+   S run2_c.cap: k=18 p=244 t=244 h=391 q=1 r=0 s=0 y=0
+   G preflash_old_image.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=67A667543C5D T_ok=False H_ok=True dup=True crcT=20
+   G run1_a.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=67176753FA12 T_ok=False H_ok=True dup=True crcT=AE
+   G run1_c.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=65356558B51B T_ok=False H_ok=True dup=True crcT=93
+   G run1_c.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=6310635E31FF T_ok=False H_ok=True dup=True crcT=BA
+   G run2_a.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=636B635DE85E T_ok=False H_ok=True dup=True crcT=A8
+   G run2_boot.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=6454645B5002 T_ok=False H_ok=True dup=True crcT=ED
