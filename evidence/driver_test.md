@@ -1,9 +1,29 @@
-# 驱动测试证据（DRV-002 rev 6.2）
+# 驱动测试证据（DRV-002 rev 6.3）
 
 状态：固件实现证据（负责角色：固件工程）
-本轮范围：**D2 读时钟速率 A/B（半位延时 ×3）**后的宿主机回归：真实 `sf_i2c.c`/`gxht40.c`/`fw_core.c` + mock 总线/UART，保留 T1–T3 自检。**均为宿主机层级，不证明实板失败率。**
-依据：EV-022、EV-023、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
-受测工作树：`0f8a8fb` + 本轮 `measure.c`、`sensor_config.h`；axf md5 `e56d8d4b48c14ff29ae376781bbdc915`
+本轮范围：**E1 `delay()` 修复**后的宿主机回归（真实 `sf_i2c.c`/`gxht40.c`/`fw_core.c` + mock 总线/UART）；同时保留 D2 慢时钟与 T1–T3 自检。**均为宿主机层级，不证明实板延时/失败率。**
+依据：EV-024、EV-025、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
+受测工作树：`3113a96` + 本轮 `main.c`；axf md5 `917bffe63ba0a4945a20a9a51f4a60df`
+
+---
+
+## 本轮 run13：E1 后宿主回归（2026-11-08）
+
+```
+$ sh build_test.sh                    -> 46+57+54+28+29 = 214 passed, 0 failed
+$ ./_hostbin/gxht40_check3.exe        -> 60 passed, 0 failed
+$ ./_hostbin/sf_i2c_check3.exe        -> 42 passed, 0 failed
+$ ./_hostbin/rf_frame_check3.exe      -> 22 passed, 0 failed
+```
+
+合计 **338 项 0 失败**。
+
+- `delay()` 仅在 `main.c`/目标构建中生效；宿主 harness 使用自有 `delay_ms` 桩，因此本轮通过证明的是**未破坏**地址/0xFD/双 CRC/重读重测/重探/总线恢复、读字节与 ACK/NACK、T1 判定、T2 冻结/P、T3 有界等待、空口布局。
+- **宿主不能证明** `delay` 真实毫秒数或不再被优化；后者已由 `fromelf` 反汇编确认（见 `evidence/build.md`），前者需实板位级测量。
+
+### 边界
+
+- 未修改/未运行验证方自有 `*_verify_ev.c`；实板判读见 `artifacts/firmware_implementation.md` §4（先位级 STOP→START，再 ≥10 周期 `q/G`，再做 T5 遮光）。
 
 ---
 

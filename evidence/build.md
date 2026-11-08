@@ -1,9 +1,32 @@
-# 构建证据（BUILD-002 rev 6.2）
+# 构建证据（BUILD-002 rev 6.3）
 
 状态：固件实现证据（负责角色：固件工程）
-本轮范围：**第二次失败修复轮（D2 读时钟速率 A/B）**后的全量重建；记录产物身份。**未下载/未烧录**（本调用无 `mdk_flash`）；构建成功不表示实板功能通过。
-依据：EV-022 `evidence/test.md`、EV-023 `evidence/triage.md`、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
-受测工作树：`0f8a8fb`（rev 6.1）+ 本轮 `measure.c`、`sensor_config.h` 改动
+本轮范围：**E1 `delay_ms()` 空实现修复**后的全量重建；含反汇编验证与产物身份。**未下载/未烧录**（本调用无 `mdk_flash`）；构建成功不表示实板时序/功能通过。
+依据：EV-024 `evidence/test.md`、EV-025 `evidence/triage.md`、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
+受测工作树：`3113a96`（rev 6.2）+ 本轮 `USER/src/main.c` 一处改动
+
+---
+
+## 本轮 run13：E1 全量重建与反汇编验证（2026-11-08）
+
+```
+$ mdk_build {"action":"rebuild"}
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+...
+../USER/src/main.c(254): warning: while loop has empty body [-Wempty-body]
+Program Size: Code=25940 RO-data=656 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+```
+
+| 产物 | md5 |
+|---|---|
+| `MDK/output/exe/Project.axf` | **`917bffe63ba0a4945a20a9a51f4a60df`** |
+| `MDK/output/exe/Project.hex` | `5b017c84d693ce17318fca633b27ad07` |
+
+- 0 Error / 1 既有告警；Code 由 25,912 → **25,940**（+28 B），与恢复延时循环一致。
+- `fromelf --text -c` 确认 `delay`（0x4788）**不是** `bx lr`：存在 `MOVS r1,#0xC7 / LSLS #3 / STR/LDR [sp] / SUBS / BNE` 的内层递减与外层 ms 循环（计数值 1592）。
+- **未执行 `mdk_flash`**：板上镜像、实板 `delay` 实测时长、`q=1` 回归均未取得；不写成已修复。
+- `MDK/build.run10.log` 已删除；工程文件未修改（工具备份在角色工作区）。
 
 ---
 

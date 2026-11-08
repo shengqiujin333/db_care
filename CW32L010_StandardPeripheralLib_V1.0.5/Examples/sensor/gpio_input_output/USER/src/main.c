@@ -86,13 +86,22 @@ void SYSCTRL_Configuration(void)
 
 
 
-void delay(uint16_t ms)
+/*
+ * 忙等待延时 (ms)。
+ * EV-025 发现: 原实现的循环计数 `i` 不是 volatile, 在 ARMCLANG -O2 下整个函数
+ * 被优化为 `bx lr`, 导致所有 delay_ms() 等待实际为 0 (tMEAS/tPU/光敏稳定等)。
+ * 修复: 计数变量加 volatile, 使每次递减都真实执行; 参数类型与 delay.h 一致
+ * (uint32_t), 避免跨编译单元原型不一致。仅恢复配置的等待, 不改变 I2C 速率。
+ */
+void delay(uint32_t ms)
 {
-    uint32_t i;
-    for( ; ms >0; ms--)
-    {
-        i = 796*2;
-        while(i--);
+    volatile uint32_t i;
+
+    for (; ms > 0u; ms--) {
+        i = 796u * 2u;
+        while (i-- > 0u) {
+            ;
+        }
     }
 }
 
