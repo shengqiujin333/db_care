@@ -239,6 +239,21 @@ evidence/ev024/host_measure_flow_verify_ev.log | active | 独立采样流程 har
 evidence/ev024/host_sf_i2c_verify_ev.log | active | 独立软 I²C harness 输出（51/51）
 evidence/ev024/prepend_sections.py | active | 将 EV-024 段落并入 evidence/test.md 与 programmed_prototype.md 的可复跑脚本
 evidence/ev024/tool_results.txt | active | 本轮设备/构建/下载/采集工具原始结果与时间戳
+evidence/ev025/ | active | EV-025 失败归因原始证据目录：2 份 COM43 原始捕获、1 次 fx2lafw I²C 采集的解码注解/参数、独立 CRC/时序复算、交付镜像反汇编与 rev 6.1 同一性快照
+evidence/ev025/Project_0f8a8fb.uvprojx | active | rev 6.1 工程优化设置快照（uAC6=1 / Optim=2，与当前相同）
+evidence/ev025/analyze_capture.py | active | 位级 I²C 独立复算：双字 CRC-8、温湿度换算、事务间隔与 SCL 位周期
+evidence/ev025/capture_analysis.txt | active | analyze_capture.py 输出（双字 CRC 匹配、20.5℃/43.6%RH、命令→读 0.622 ms、SCL≈1.63 kHz）
+evidence/ev025/capture_metadata.json | active | sigrok_capture 实际参数/命令/时间戳（8 M 样点 @4 MS/s，conn=2.27，D1 下降沿触发）
+evidence/ev025/decode_metadata.json | active | sigrok_decode 离线解码参数与输入身份
+evidence/ev025/decoded_i2c.txt | active | 位级 I²C 完整注解（0x44 写 0xFD、0x44 读 6 字节、NACK/STOP，含样点号）
+evidence/ev025/delay_disasm.txt | active | 交付 axf 中 delay 反汇编（空实现 bx lr）
+evidence/ev025/delay_ms_us_disasm.txt | active | 交付 axf 中 delay_ms/delay_us 反汇编
+evidence/ev025/main_c_0f8a8fb.c | active | rev 6.1 受测源码快照（用于证明 delay 函数体与当前逐字相同）
+evidence/ev025/nm_defined.txt | active | 交付 axf 已定义符号表（delay/delay_ms/delay_us 地址）
+evidence/ev025/raw_capture_md5.txt | active | 原始 .sr 的 md5 与 Runtime 工作目录文件名（16 MB 原始文件不入库）
+evidence/ev025/serial_capture_1.bin | active | COM43 原始字节（09:16:13–09:21:13Z，k=90/93 q=1）
+evidence/ev025/serial_capture_2.bin | active | COM43 原始字节（09:25:36–09:30:36Z，k=99/102 q=1）
+evidence/ev025/tool_results.txt | active | 本轮设备工具原始结果（端口/USB/逻辑分析仪探测与采集/串口/镜像身份/delay 反汇编）
 evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
 evidence/programmed_prototype.md | active | 下载身份记录（EV-024：commit 3113a96 / axf md5 e56d8d4b… 一次 mdk_flash Verify OK；仅证明下载成功，不代表功能合格；EV-022 及更早记录保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
@@ -248,7 +263,7 @@ evidence/software_static_check_server_migration.py | active | 可复跑静态核
 evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）
 evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；退出码 0/1）
 evidence/test.md | active | 嵌入式验证证据 EV-024（当前轮）：TEST_FAIL（整体）— D2 镜像 27 个连续采样周期全部 q=1、0 次失败（对照上一镜像 16/25=64%，p=1.97e-07），T4-05 实板通过；T4-02 上电行缺失、T5/INT 未执行、逻辑分析仪不在线；EV-022 及更早保留为历史
-evidence/triage.md | active | 嵌入式测试失败归因证据（EV-023 置顶，EV-021 原文保留）：GXHT40 温度 CRC 字节间歇性等于温度 MSB 的签名、两项时序 A/B 实测无效、已排除项、竞争假设（H1′/H2′/H5）与责任交接（仅归因，不代表修复或通过）
+evidence/triage.md | active | 嵌入式测试失败归因证据（EV-025 置顶，EV-023/EV-021 原文保留）：EV-024 剩余缺口归因、D2 位级 I²C 复核（SCL≈1.63 kHz、双字 CRC 匹配、32 周期 0 失败）、`delay_ms` 空实现的新确认事实与受影响调用点、已排除项、竞争假设与责任交接（仅归因，不代表修复或通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）
 gxht40.pdf | active | GXHT40 数据手册 V2.6（地址仅 0x44/0x45、命令 0xFD/0x94、CRC-8 poly 0x31/init 0xFF、换算 §7.5、t_MEAS/t_PU、VDD 1.6..5.5 V）

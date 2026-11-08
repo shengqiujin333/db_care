@@ -1,0 +1,26 @@
+
+MDK/output/exe/Project.axf:     file format elf32-littlearm
+
+
+Disassembly of section ER_IROM1:
+
+00004792 <delay_us>:
+    4792:	b081      	sub	sp, #4
+    4794:	9000      	str	r0, [sp, #0]
+    4796:	9800      	ldr	r0, [sp, #0]
+    4798:	1e41      	subs	r1, r0, #1
+    479a:	9100      	str	r1, [sp, #0]
+    479c:	2800      	cmp	r0, #0
+    479e:	d1fa      	bne.n	4796 <delay_us+0x4>
+    47a0:	b001      	add	sp, #4
+    47a2:	4770      	bx	lr
+
+MDK/output/exe/Project.axf:     file format elf32-littlearm
+
+
+Disassembly of section ER_IROM1:
+
+0000478a <delay_ms>:
+    478a:	b580      	push	{r7, lr}
+    478c:	f7ff fffc 	bl	4788 <delay>
+    4790:	bd80      	pop	{r7, pc}

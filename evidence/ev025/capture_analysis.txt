@@ -1,0 +1,12 @@
+raw bytes               : 5F C1 89 65 88 60
+temp word / crc calc/recv: 0x5FC1 / 0x89 / 0x89  match=True
+hum  word / crc calc/recv: 0x6588 / 0x60 / 0x60  match=True
+decoded temp_x10 / hum_x10: 205 / 436  (20.5 C, 43.6 %RH)
+
+write transaction span  : 12.046 ms
+command STOP -> read START: 0.622 ms
+read transaction span   : 40.151 ms
+
+read bit periods (us)   : [614.5, 614.2, 614.2, 614.2, 614.2, 614.2, 614.2, 614.2]
+mean bit period         : 614.3 us -> nominal SCL 1628 Hz
+address-ACK -> data gap : 35.5 us (edge handling, not a bus stall)

@@ -1,0 +1,119 @@
+# EV-025 设备工具原始结果（2026-11-08，UTC）
+
+本文件记录本轮失败归因实际执行的设备工具结果与产物；工具成功/枚举在线不等于业务功能通过。
+原始采集/解码文件位于本目录，仪器原始 `.sr` 保留在 Runtime 角色工作目录（见 §4 的 md5 与路径）。
+
+## 1. 串口与 USB 枚举
+
+`serial_list_ports`（09:15:55Z）:
+```json
+[{"port":"COM43","description":"Prolific USB-to-Serial Comm Port (COM43)","hwid":"USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2"},
+ {"port":"COM26","description":"USB 串行设备 (COM26)","hwid":"USB VID:PID=C251:F001 SER=87094109484987710672FF50"}]
+```
+
+`usb_list_devices`（09:15:55Z）关键项:
+```text
+USB\VID_C251&PID_F001          CW-DAPLink（SN 87094109484987710672FF50，同源 COM26）
+USB\VID_18D1&PID_4EE7\12F046690506  Android 手机
+USB\VID_04B4&PID_8613\CYPRESS_FX2   fx2lafw（Status OK；EV-024 时 Windows 名为 "Unknown Device #1"）
+```
+
+## 2. 逻辑分析仪配置与探测
+
+`sigrok_info`（09:15:57Z）:
+```json
+{"enabled":true,"driver":"fx2lafw","connection":"2.27","channels":["D0","D1"],
+ "signal_labels":{"D0":"scl","D1":"sda"},"triggers":{"D1":"f"},
+ "samplerate_hz":4000000,"max_samplerate_hz":8000000,"max_samples":20000000,
+ "timeout_sec":240.0,"online":"not_checked"}
+```
+
+`sigrok_probe`（09:16:08Z）:
+```text
+command: sigrok-cli --driver fx2lafw:conn=2.27 --show
+exit_code: 0
+timed_out: false
+```
+说明：该入口在 EV-024 时（conn=2.31）为 `No devices found`；本轮按当前配置 `2.27` 探测成功。
+
+## 3. COM43 原始捕获
+
+| # | 文件 | 窗口（UTC） | 字节 | 原始行 |
+|---|---|---|---|---|
+| 1 | `serial_capture_1.bin`（md5 `def15587c3dc2a702ba5e5bd1836c617`） | 09:16:13–09:21:13 | 158 | `S k=90 p=221 H=1 V=0 o=8 n=3151 x=3164 a=3155 D=0 t=221 h=404 q=1 r=0 s=0 y=0`<br>`S k=93 p=225 H=1 V=0 o=8 n=3151 x=3163 a=3155 D=0 t=225 h=397 q=1 r=0 s=0 y=0` |
+| 2 | `serial_capture_2.bin`（md5 `31a4dc9e8638d4ed1d5c457af213bb8a`） | 09:25:36–09:30:36 | 159 | `S k=99 p=204 H=1 V=0 o=8 n=3152 x=3167 a=3162 D=0 t=204 h=435 q=1 r=0 s=0 y=0`<br>`S k=102 p=202 H=1 V=0 o=8 n=3151 x=3167 a=3160 D=0 t=202 h=443 q=1 r=0 s=0 y=0` |
+
+- 4 个新周期全部 `q=1`，无 `G`。
+- `k` 从 EV-024 的 81 继续为 90/93/99/102，单调递增（步长 3），期间无复位；两窗口之间与被测固件运行会话一致。
+- 窗口间隙分别为 4 min 23 s 与 4 min 23 s（>180 s 采样间隔，故窗口之间的周期未全部落在捕获内；不影响已观测周期判定）。
+
+## 4. 逻辑采集与 I2C 解码
+
+`sigrok_capture`:
+```json
+{"samples":8000000,"samplerate_hz":4000000,"duration_sec":2.0,
+ "connection":"2.27","channels":["D0","D1"],"trigger":"D1=f",
+ "started_at":"2026-11-08T09:21:20.574572+00:00",
+ "finished_at":"2026-11-08T09:23:41.569222+00:00","exit_code":0}
+```
+- 触发等待约 139 s 后命中下一次 I²C 事务（与 3 分钟采样节拍一致），采集 2.0 s。
+- 原始 `.sr`（16 MB，未纳入 Git）：
+  `...\roles\embedded_tester\work\verification_tools\sigrok_capture_6734cc89f53b4e83a2c293bce7a27f8a\capture.sr`
+  md5 `3eccd0c2c34f8af59719b4350ee0b6e4`。
+- 采样参数/命令原文：`capture_metadata.json`。
+
+`sigrok_decode`（离线，`i2c:scl=D0:sda=D1`，exit 0；完整注解 `decoded_i2c.txt`，md5 `248694c223e9ca96bd2bd5bd26b628e3`）:
+```text
+Start / Address write: 44 / ACK / Data write: FD / ACK / Stop
+Start / Address read: 44 / ACK
+Data read: 5F C1 89 65 88 60 / NACK / Stop
+```
+采样点（4 MHz，样点号 = 名义相对时间）:
+- 写事务 START=15716，STOP=63902 → 12.046 ms
+- 命令 STOP → 读 START=66389 → **0.622 ms**
+- 读事务 START=66389，STOP=226993 → 40.151 ms
+- 读数据 8 个位周期窗口均 ≈2457 样点 = **614.3 µs/bit → SCL ≈ 1.63 kHz**
+
+独立复算（`analyze_capture.py`，输出 `capture_analysis.txt`，不引用固件常量）:
+```text
+raw bytes               : 5F C1 89 65 88 60
+temp word / crc calc/recv: 0x5FC1 / 0x89 / 0x89  match=True
+hum  word / crc calc/recv: 0x6588 / 0x60 / 0x60  match=True
+decoded temp_x10 / hum_x10: 205 / 436  (20.5 C, 43.6 %RH)
+```
+该采集时刻位于 k=93（第二行约 09:21Z 前）与 k=99（09:26Z 前）之间，对应 k=96 周期；k=96 的 `S` 行未被串口窗口覆盖，但解出的 205/436 与相邻 k=99 的 204/435、k=102 的 202/443 连续一致。
+
+## 5. 镜像与源码身份
+
+```text
+HEAD                          520f204（embedded_tester；仅证据/测试资产）
+受测固件提交                  3113a96（firmware_engineer；rev 6.2 D2）
+git diff --stat 3113a96 HEAD -- <FW>/USER     空
+Project.axf md5               e56d8d4b48c14ff29ae376781bbdc915
+Project.hex md5               d872d703e0ed8ec95bc3dee88f074b33
+```
+与 EV-024 下载并 `Verify OK` 的镜像逐字符一致；本轮未下载、未复位。
+
+## 6. 构建优化与 delay 反汇编（本轮关键新增事实）
+
+- Keil 工程保存配置：`<uAC6>1</uAC6>`、`<Optim>2</Optim>`。
+- `arm-none-eabi-objdump -d --disassemble=delay Project.axf`（`delay_disasm.txt`）:
+```text
+00004788 <delay>:
+    4788:  4770   bx  lr
+```
+- `arm-none-eabi-nm --defined-only Project.axf`（`nm_defined.txt`）:
+```text
+00004788 T delay
+0000478a T delay_ms
+00004792 T delay_us
+```
+- `delay_ms()` 仅调用 `delay()`；`delay()` 的计数循环变量为非 volatile，在优化构建中被整体删除 ⇒ **所有 `delay_ms()` 等待在交付镜像中为 0**。
+- 该结论与位级实测一致：配置 `GXHT40_MEASURE_WAIT_MS=20`，实际命令 STOP→读 START 仅 0.622 ms。
+
+受影响调用点（源码）:
+- `gxht40.c:99` tMEAS 等待（20 ms）
+- `gxht40.c:110` 读重试间隔（1 ms）
+- `gxht40.c:185` 上电 tPU 等待（2 ms）
+- `light.c:115` BGR 启动等待（1 ms）、`light.c:166` 分压稳定等待（100 ms）
+- `measure.c:196/203/234/363` 总线诊断/复位等待（1–2 ms）
