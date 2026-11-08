@@ -90,13 +90,19 @@ int main(void)
     printf("[6] T-L0-05 上报判定真值表\n");
     CHECK(sensor_decide_report(0, false, 200, true) == false, "无前值 + cur=200 -> false");
     CHECK(sensor_decide_report(0, false, 351, false) == true, "无前值 + cur=351 -> true");
-    CHECK(sensor_decide_report(300, true, 291, true) == false, "下降 9 (0.9 C) -> false");
-    CHECK(sensor_decide_report(300, true, 290, true) == true, "下降 10 (1.0 C) -> true");
-    CHECK(sensor_decide_report(300, true, 289, true) == true, "下降 11 (1.1 C) -> true");
-    CHECK(sensor_decide_report(300, true, 290, false) == false, "下降满足但非 DARK -> false");
-    CHECK(sensor_decide_report(360, true, 350, true) == false, "cur=350 (恰好 35.0 C) -> false");
+    CHECK(sensor_decide_report(0, false, 350, true) == false, "无前值 + cur=350 (恰好 35.0 C) -> false");
+    CHECK(sensor_decide_report(300, true, 308, true) == false, "升温 8 (0.8 C) -> false");
+    CHECK(sensor_decide_report(300, true, 309, true) == false, "升温 9 (0.9 C) -> false (严格)");
+    CHECK(sensor_decide_report(300, true, 310, true) == true, "升温 10 (1.0 C) 且 DARK -> true");
+    CHECK(sensor_decide_report(300, true, 310, false) == false, "升温满足但非 DARK -> false");
+    CHECK(sensor_decide_report(310, true, 300, true) == false, "降温 10 (方向错误) -> false");
+    CHECK(sensor_decide_report(340, true, 350, true) == true, "34.0->35.0 DARK -> 升温分支 true");
+    CHECK(sensor_decide_report(340, true, 350, false) == false, "34.0->35.0 LIT -> false");
+    CHECK(sensor_decide_report(340, true, 349, true) == false, "34.0->34.9 DARK -> false");
     CHECK(sensor_decide_report(0, false, 351, false) == true, "cur=351 不受光照/前值限制");
     CHECK(sensor_decide_report(300, true, 300, true) == false, "prev==cur -> false");
+    CHECK(sensor_decide_report(32767, true, -32768, true) == false, "int16 极值反向差不溢出");
+    CHECK(sensor_decide_report(-32768, true, 32767, true) == true, "int16 极值正向 -> 超温 branch");
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

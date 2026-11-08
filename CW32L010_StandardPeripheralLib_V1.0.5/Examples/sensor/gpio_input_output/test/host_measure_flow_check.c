@@ -88,6 +88,9 @@ static int      g_enc_calls = 0;
 static int16_t  g_enc_temp  = 0;
 static uint16_t g_enc_hum   = 0;
 static uint16_t g_enc_len   = 0;
+#define ENC_CAP 8
+static int16_t  g_enc_temps[ENC_CAP];
+static uint16_t g_enc_hums[ENC_CAP];
 static uint8_t  g_tx_ok     = 1u;   /* 1=发送成功, 0=失败 */
 static int      g_tx_calls  = 0;
 
@@ -102,6 +105,10 @@ uint8_t app_um2005C_send_data_timeout(uint8_t *d, uint16_t l, uint32_t t)
 void encode_frame10(uint8_t u[10], int16_t t, uint16_t h, uint8_t o[10])
 {
     (void)u; (void)o;
+    if ((g_enc_calls >= 0) && (g_enc_calls < ENC_CAP)) {
+        g_enc_temps[g_enc_calls] = t;
+        g_enc_hums[g_enc_calls]  = h;
+    }
     g_enc_calls++;
     g_enc_temp = t;
     g_enc_hum  = h;
@@ -184,47 +191,53 @@ int main(void)
     CHECK(tempvalue == 200 && huminityvalue == 500, "成功样本写入 tempvalue/huminityvalue");
     CHECK(report_req == 0u, "无前值 + cur=200 -> report_req=0");
 
-    printf("[2] 下降恰好 0.9C (9) -> 不触发\n");
-    cycle(GXHT40_OK, 191, 501, true);
-    CHECK(report_req == 0u, "prev=200,cur=191 (drop 9) -> report_req=0");
+    printf("[2] 升温恰好 0.9C (9) -> 不触发\n");
+    cycle(GXHT40_OK, 209, 501, true);
+    CHECK(report_req == 0u, "prev=200,cur=209 (rise 9) -> report_req=0");
     CHECK(huminityvalue == 501, "成功时更新最近有效湿度");
 
-    printf("[3] 下降 1.0C (10) 且无光 -> 触发; 待上报不被后续无条件下周期清除\n");
-    cycle(GXHT40_OK, 181, 502, true);
-    CHECK(report_req == 1u, "prev=191,cur=181 (drop 10) 且 DARK -> report_req=1");
-    cycle(GXHT40_OK, 181, 502, true);          /* 无上报条件 */
+    printf("[3] 升温 1.1C (11) 且无光 -> 触发并冻结当次样本\n");
+    cycle(GXHT40_OK, 220, 502, true);
+    CHECK(report_req == 1u, "prev=209,cur=220 (rise 11) 且 DARK -> report_req=1");
+
+    printf("[4] 待上报未发送期间的新触发不得覆盖冻结样本\n");
+    cycle(GXHT40_OK, 231, 503, true);          /* 新触发, 但 req 已置位 */
     CHECK(report_req == 1u, "待上报标志保持 (不被无条件下周期清除)");
-    report_req = 0u;
+    g_enc_calls = 0; g_tx_calls = 0; g_tx_ok = 1u;
+    send_data_to_gateway();
+    CHECK(g_enc_calls == 1 && g_enc_temps[0] == 220 && g_enc_hums[0] == 502,
+          "组帧仍使用首次触发的冻结样本 (220/502), 不被新采样 231/503 覆盖");
+    CHECK(report_req == 0u, "发送成功后清除待上报状态");
 
-    printf("[4] 下降满足但有光 -> 不触发\n");
-    cycle(GXHT40_OK, 170, 503, false);
-    CHECK(report_req == 0u, "prev=181,cur=170 (drop 11) 但 LIT -> report_req=0");
+    printf("[5] 升温满足但有光 -> 不触发\n");
+    cycle(GXHT40_OK, 250, 504, false);
+    CHECK(report_req == 0u, "prev=231,cur=250 (rise 19) 但 LIT -> report_req=0");
 
-    printf("[5] 整周期失败: 不上报/不更新前值/不构造 0 值\n");
+    printf("[6] 整周期失败: 不上报/不更新前值/不构造 0 值\n");
     report_req = 0u;
     cycle(GXHT40_ERR_CRC, 50, 999, true);
     CHECK(report_req == 0u, "失败周期不置 report_req");
-    CHECK(tempvalue == 170, "tempvalue 保持上次有效值 170 (未被失败的 50 覆盖)");
-    CHECK(huminityvalue == 503, "huminityvalue 保持上次有效值 503");
+    CHECK(tempvalue == 250, "tempvalue 保持上次有效值 250 (未被失败的 50 覆盖)");
+    CHECK(huminityvalue == 504, "huminityvalue 保持上次有效值 504");
     CHECK(strcmp(g_order, "LT") == 0, "失败周期仍先光照后温湿度");
 
-    printf("[6] 失败不污染前值: 恢复后按失败前的前值判定\n");
-    cycle(GXHT40_OK, 160, 504, true);
-    CHECK(report_req == 1u, "prev=170,cur=160 (drop 10) -> 上报 (证明失败周期未把 prev 改成 50)");
+    printf("[7] 失败不污染前值: 恢复后按失败前的前值判定\n");
+    cycle(GXHT40_OK, 261, 505, true);
+    CHECK(report_req == 1u, "prev=250,cur=261 (rise 11) -> 上报 (证明失败周期未把 prev 改成 50)");
 
-    printf("[7] 超温分支不受前值/光照限制\n");
+    printf("[8] 超温分支不受前值/光照限制\n");
     report_req = 0u;
-    cycle(GXHT40_OK, 351, 505, false);
+    cycle(GXHT40_OK, 351, 506, false);
     CHECK(report_req == 1u, "cur=351 -> report_req=1");
 
-    printf("[8] sample_flag==0 时不采样\n");
+    printf("[9] sample_flag==0 时不采样\n");
     sample_flag = 0u;
     g_ordn = 0; g_order[0] = '\0';
     (void)temperature_process();
     CHECK(g_order[0] == '\0', "无采样动作 (未调用 light/temp)");
 
-    printf("[9] 条件上报发送路径 (ITEM-008)\n");
-    /* 当前最近有效样本 = (351,505) (周期 7) */
+    printf("[10] 条件上报发送路径与冻结/重试语义\n");
+    /* 当前冻结样本 = (351,506) (周期 8) */
     report_req = 0u;
     g_enc_calls = 0; g_tx_calls = 0;
     send_data_to_gateway();
@@ -234,25 +247,42 @@ int main(void)
     g_enc_calls = 0; g_tx_calls = 0; g_tx_ok = 1u;
     send_data_to_gateway();
     CHECK(g_enc_calls == 1 && g_tx_calls == 1, "report_req=1 -> 编码并发送一次");
-    CHECK(g_enc_temp == 351 && g_enc_hum == 505, "编码使用最近一次有效样本 (351/505)");
+    CHECK(g_enc_temp == 351 && g_enc_hum == 506, "编码使用冻结快照 (351/506)");
     CHECK(g_enc_len == SENSOR_RF_FRAME_LEN, "发送长度为 SENSOR_RF_FRAME_LEN(10)");
     CHECK(report_req == 0u, "发送成功后清除待上报状态");
 
-    report_req = 1u;
+    /* 新触发 -> 冻结 (362,600); 连续失败期间跨新采样仍用同一快照 */
+    report_req = 0u;
+    cycle(GXHT40_OK, 362, 600, true);
+    CHECK(report_req == 1u, "prev=351,cur=362 (rise 11) -> 新触发");
     g_tx_ok = 0u; g_tx_calls = 0; g_enc_calls = 0;
     send_data_to_gateway();
     CHECK(g_tx_calls == 1 && report_req == 1u, "发送失败: 保留待上报 (重试)");
+    CHECK(g_enc_temps[0] == 362 && g_enc_hums[0] == 600, "首次尝试使用冻结样本 (362/600)");
+
+    cycle(GXHT40_OK, 373, 601, true);   /* 待上报期间的新采样 */
+    CHECK(report_req == 1u, "待上报期间新采样不改变待上报标志");
     send_data_to_gateway();
     CHECK(g_tx_calls == 2 && report_req == 1u, "第二次失败: 仍保留待上报");
+    CHECK(g_enc_temps[1] == 362 && g_enc_hums[1] == 600,
+          "第二次尝试仍使用冻结样本 (362/600), 不随新采样 373/601 改变");
     send_data_to_gateway();
     CHECK(g_tx_calls == 3 && report_req == 0u, "达到 SENSOR_RF_TX_RETRY(3) 后放弃本轮");
-    g_tx_ok = 1u;
-    report_req = 1u;
-    g_tx_calls = 0;
-    send_data_to_gateway();
-    CHECK(g_tx_calls == 1 && report_req == 0u, "放弃后下一轮重试计数已复位 (1 次即成功)");
+    CHECK(g_enc_temps[2] == 362 && g_enc_hums[2] == 600, "第三次尝试仍使用同一冻结样本");
 
-    printf("[10] T1 诊断快照集成: 失败周期带 G 行数据 / 成功周期不带 (FWR-116)\n");
+    g_tx_ok = 1u; g_tx_calls = 0; g_enc_calls = 0;
+    send_data_to_gateway();
+    CHECK(g_tx_calls == 0 && g_enc_calls == 0, "放弃后无待上报: 不再发送");
+
+    report_req = 0u;
+    cycle(GXHT40_OK, 385, 602, true);
+    CHECK(report_req == 1u, "prev=373,cur=385 (rise 12) -> 新触发");
+    g_tx_calls = 0; g_enc_calls = 0;
+    send_data_to_gateway();
+    CHECK(g_enc_temps[0] == 385 && g_enc_hums[0] == 602 && report_req == 0u,
+          "放弃后下一轮重新冻结新样本 (385/602) 并成功发送");
+
+    printf("[11] T1 诊断快照集成: 失败周期带 G 行数据 / 成功周期不带 (FWR-116)\n");
     report_req = 0u;
     memset(&g_diag, 0, sizeof(g_diag));
     g_diag.status = (uint8_t)GXHT40_ERR_CRC;
@@ -279,7 +309,7 @@ int main(void)
     }
     report_req = 0u;
 
-    printf("[11] T1 上电总线诊断扫描 (只观测; 不写命令/不改业务状态)\n");
+    printf("[12] T1 上电总线诊断扫描 (只观测; 不写命令/不改业务状态)\n");
     {
         debug_trace_bus_t bus;
         memset(&bus, 0xFF, sizeof(bus));
@@ -290,7 +320,7 @@ int main(void)
         CHECK(temp_ptr == i2c_obj_find("i2c0"), "幂等初始化后仍能按名找到同一 I2C 对象");
     }
 
-    printf("[12] E1 上电 I/O 自检: 主机拉低/回读 + 释放 + 角色对调 (E1)\n");
+    printf("[13] E1 上电 I/O 自检: 主机拉低/回读 + 释放 + 角色对调 (E1)\n");
     {
         debug_trace_iotest_t io;
         memset(&io, 0xFF, sizeof(io));
@@ -310,7 +340,7 @@ int main(void)
         g_pin_stuck_high[3] = 0u;
     }
 
-    printf("[13] E1b 事务内逐位回读签名 (IOSIG): 期望值与 H12 负对照\n");
+    printf("[14] E1b 事务内逐位回读签名 (IOSIG): 期望值与 H12 负对照\n");
     {
         debug_trace_iosig_t sig;
         memset(&sig, 0, sizeof(sig));
@@ -325,6 +355,24 @@ int main(void)
               "负对照: SDA 回读恒高时 sda=FFFFF ≠ 30303 (能区分 H12)");
         g_pin_stuck_high[4] = 0u;
     }
+
+    printf("[15] T2 P 行数据: 冻结样本/发送尝试/打印时待上报状态\n");
+    report_req = 0u;
+    g_tx_ok = 1u;
+    cycle(GXHT40_OK, 400, 700, false);      /* 超温分支触发 */
+    CHECK(report_req == 1u, "cur=400 (>350) 且 LIT -> 仍触发, 冻结 (400/700)");
+    g_tx_calls = 0;
+    send_data_to_gateway();
+    {
+        debug_trace_sample_t tr;
+        CHECK(sensor_trace_fetch(&tr) == 1u, "上报周期有轨迹快照");
+        CHECK(tr.report == 1u && tr.send_attempted == 1u && tr.p_rq == 0u,
+              "P 行条件成立 (report=1/send_attempted=1), 打印时 rq=0 (已发送成功)");
+        CHECK(tr.p_temp_x10 == 400 && tr.p_hum_x10 == 700u,
+              "P 行 t/h = 组帧实际使用的冻结样本 (400/700)");
+        CHECK(tr.send == 1u, "P 行 s=1 (发送成功)");
+    }
+    report_req = 0u;
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

@@ -416,6 +416,12 @@ uint8_t sample_flag = 1;       /* 由 RTC 节拍置位 (ITEM-007) */
 uint8_t report_req  = 0;       /* 待上报标志 (置位见 temperature_process) */
 static uint8_t report_retry = 0;
 
+/* T2: 待上报冻结快照 (FD-002 §6.4; 只在无待上报时的新触发处写入,
+ * 组帧只读本快照, 不随新采样/前值推进/最近湿度变化而改变) */
+static int16_t  s_report_temp_x10 = 0;
+static uint16_t s_report_hum_x10  = 0u;
+static uint8_t  s_send_attempted  = 0u;   /* 本周期是否尝试过 433 发送 (P 行) */
+
 static int16_t  s_prev_temp_x10 = 0;    /* 前一有效测量温度 (判定用) */
 static bool     s_have_prev     = false;/* 是否已有前一有效样本 */
 static uint16_t s_last_hum_x10  = 0;    /* 最近有效湿度 */
@@ -487,12 +493,18 @@ uint16_t temperature_process(void)
     s_trace_sample_ok = 0u;
     s_trace_report    = 0u;
     s_trace_diag_valid = 0u;
+    s_send_attempted  = 0u;       /* 新采样周期: 重置发送尝试观测 */
 
     if (measure_sample()) {
         uint8_t rep = sensor_decide_report(s_prev_temp_x10, s_have_prev,
                                            tempvalue, s_light.dark) ? 1u : 0u;
         if (rep != 0u) {
-            report_req = 1u;
+            if (report_req == 0u) {
+                /* T2: 只在无待上报时冻结当次样本; 不得覆盖尚未发送成功的那一笔 */
+                s_report_temp_x10 = tempvalue;
+                s_report_hum_x10  = huminityvalue;
+                report_req = 1u;
+            }
         }
         s_prev_temp_x10 = tempvalue;    /* 仅成功后推进 (失败不污染前值) */
         s_have_prev     = true;
@@ -542,6 +554,10 @@ uint8_t sensor_trace_fetch(debug_trace_sample_t *out)
     out->report        = s_trace_report;
     out->send          = s_last_send_result;
     out->retry         = report_retry;
+    out->send_attempted= s_send_attempted;
+    out->p_rq          = report_req;
+    out->p_temp_x10    = s_report_temp_x10;
+    out->p_hum_x10     = s_report_hum_x10;
 
     /* T1 (FWR-116): 失败周期诊断快照 (成功周期 diag_valid=0 -> 不打印 G 行) */
     out->diag_valid     = s_trace_diag_valid;
@@ -572,9 +588,11 @@ void send_data_to_gateway(void)
         return;                        /* 不满足判据: 不上报 */
     }
 
-    /* 发送最近一次有效样本 (与触发上报的样本一致): encode_frame10 内部组装
+    s_send_attempted = 1u;             /* P 行: 本周期发生过发送尝试 */
+
+    /* T2: 组帧只读冻结快照 (不读会随新采样推进的 s_prev/s_last_hum):
      * uid_pick(4) | temp_x10_LE(2) | hum_x10_LE(2) | crc16_LE(2) 并加密 */
-    encode_frame10(mcu_uid, s_prev_temp_x10, s_last_hum_x10, send_data);
+    encode_frame10(mcu_uid, s_report_temp_x10, s_report_hum_x10, send_data);
 
     if (app_um2005C_send_data_timeout(send_data, SENSOR_RF_FRAME_LEN,
                                       SENSOR_RF_TX_TIMEOUT_MS)) {

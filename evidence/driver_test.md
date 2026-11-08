@@ -1,9 +1,59 @@
-# 驱动测试证据（DRV-002 rev 5.8）
+# 驱动测试证据（DRV-002 rev 6.0）
 
-状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复七**（RESUME；无新上游证据）——**本轮未改代码、未新增用例**；仅登记“用既有实板读数收窄现场定位”的推论及其依据
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；`gxht40.pdf`；上游仍为 `evidence/test.md` EV-017
-受测实现：与最后交付提交相同（`USER/**` = `8ae4a33`）
+状态：固件实现证据（负责角色：固件工程）
+本轮范围：T1–T3 实现后的宿主机自检（真实 `USER/src/*.c` + mock 总线/UART/MCU），包含判定边界、冻结快照/重试、有界 UART 等待，以及 GXHT40/软 I²C/空口帧的回归。**均为宿主机层级，不代表实板通过。**
+依据：FD-002 / FWR-002 / TD-002 rev 6.0、IC-002 v3.0、`gxht40.pdf`
+受测工作树：基于 `6f2388a`（传感器源码等于设计基线 `4918531`）+ 本轮 9 个文件改动；axf md5 `c7ed03b796f2ae438b325c7b9306d836`
+
+---
+
+## 本轮 run10：T1–T3 自检与回归（2026-11-08）
+
+### 1. 单一入口 `test/build_test.sh`
+
+```
+$ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+$ sh build_test.sh
+exit=0
+[1/4] fw_core pure logic  -> 46 passed, 0 failed
+[2/4] measure flow         -> 57 passed, 0 failed
+[3/4] UART1 debug trace    -> 54 passed, 0 failed
+[4/4a] light (uncalibrated)-> 28 passed, 0 failed
+[4/4b] light (calibrated)  -> 29 passed, 0 failed
+```
+
+合计 **214 项 0 失败**。关键新增断言：
+- T1：升温 9（0.9℃）不触发、升温 10（1.0℃）暗触发、降温不触发、34.0→35.0 暗触发 / 明不触发、无前值 35.0 不触发、35.1 触发、int16 极值不溢出。
+- T2：触发后未发送期间的新采样不覆盖冻结样本；连续 3 次失败期间 `encode_frame10` 入参均为同一冻结 t/h；用尽后不假成功；放弃后新触发重新冻结；P 行取数 `rq/s/y/t/h` 与快照一致。
+- T3：S+P 最坏宽度分段 ≤96 B；TXE 永不置位 / TXBUSY 永不清零时有限返回并完成关闭；超时路径不改业务状态、不复位 GPIOA；恢复后重新打印完整行。
+- 既有格式：`BOOT/VDD/IOTEST/IOSIG/BUS/S/G` 字节断言全部保持通过（S 行仅新增可选 P 行）。
+
+### 2. 驱动/总线/帧回归（实现侧）
+
+```
+$ gcc ... host_gxht40_check.c ../USER/src/gxht40.c ../USER/src/sf_i2c.c ../USER/src/fw_core.c
+$ ./_hostbin/gxht40_check.exe
+==== result: 60 passed, 0 failed ====
+
+$ gcc ... host_sf_i2c_bus_check.c ../USER/src/sf_i2c.c
+$ ./_hostbin/sf_i2c_bus_check.exe
+==== result: 42 passed, 0 failed ====
+
+$ gcc ... host_rf_frame_check.c ../USER/src/encrytogate.c <网关 feistel_al.c bleencrypt.c>
+$ ./_hostbin/rf_frame_check.exe
+==== result: 22 passed, 0 failed ====
+```
+
+- GXHT40 驱动本轮**未改动**；60 项回归（地址/CRC/换算/重试/重探/总线恢复/命令白名单）全部通过。
+- 软 I²C 原语/9 脉冲恢复 42 项通过；433 明文 10 B 布局/字节序/CRC 与网关→Android 映射 22 项通过。
+- 合计本轮宿主机自检 **338 项 0 失败**（214+60+42+22）。
+
+### 3. 边界与未覆盖
+
+- 宿主机 mock 只能证明逻辑/流程/软件可见行为；**不能证明**实板 I²C 位时序、供电、射频、BLE、手机显示。
+- `host_gxht40_check` 需 CMSIS Core 头；本轮使用本机已安装的 `C:/Users/kason/AppData/Local/Arm/Packs/ARM/CMSIS/5.9.0/CMSIS/Core/Include`，未修改工程或系统依赖。
+- 本轮未执行测试方自有的 `*_verify_ev.c`、`embedded_verify_*.py`（不在实现职责内；其旧判定/快照断言需由验证方按 IC-002 更新）。
+- 实板 T4/T5 证据未取得，见 `artifacts/firmware_implementation.md` §3。
 
 ---
 

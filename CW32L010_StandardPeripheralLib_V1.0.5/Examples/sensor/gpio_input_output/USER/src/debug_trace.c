@@ -26,14 +26,35 @@
 #include "cw32l010_sysctrl.h"
 
 static uint8_t s_uart_open = 0u;
+static uint8_t s_tx_aborted = 0u;   /* T3: 发送标志等待超时后抑制本行剩余输出 */
 
 /* ==================================================================== */
-/* 输出原语 (轮询, 逐字节有界)                                           */
+/* 输出原语 (轮询, 有界等待)                                             */
 /* ==================================================================== */
+/* T3: 等待 UART 标志的循环必须有界。正常 9600 8N1 下每字符约 1.04 ms,
+ * 单行 <=96 B 约 100 ms; SENSOR_DEBUG_TX_GUARD 远大于正常排空时间。
+ * 超时返回 false, 调用方放弃本行剩余输出/继续关闭流程, 不阻塞采样。 */
+static bool trace_wait_flag(uint16_t flag, FlagStatus want)
+{
+    uint32_t guard = SENSOR_DEBUG_TX_GUARD;
+
+    while (UART_GetFlagStatus(DEBUG_UARTx, flag) != want) {
+        if (guard == 0u) {
+            return false;
+        }
+        guard--;
+    }
+    return true;
+}
+
 static void trace_putc(char c)
 {
-    while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET) {
-        /* 轮询等待发送保持寄存器空; 有界由固定行长保证 */
+    if (s_tx_aborted != 0u) {
+        return;                     /* 已超时: 本行剩余字符不再等待 */
+    }
+    if (!trace_wait_flag(UART_FLAG_TXE, SET)) {
+        s_tx_aborted = 1u;          /* 标志永不就绪: 放弃本行, 不改变业务状态 */
+        return;
     }
     UART_SendData_8bit(DEBUG_UARTx, (uint8_t)c);
 }
@@ -129,6 +150,7 @@ static void trace_uart_open(void)
     uart.UART_Mode                = UART_Mode_Rx | UART_Mode_Tx;
     UART_Init(DEBUG_UARTx, &uart);
 
+    s_tx_aborted = 0u;              /* 新窗口: 允许输出 */
     s_uart_open = 1u;
 }
 
@@ -148,9 +170,12 @@ void debug_trace_flush_close(void)
      * 随后的 UART1 复位会截断仍在移位的尾字节 (实测丢失 S 行末尾 CR+LF)。
      * vendor UART_SendString() 同样以 TXBUSY 排空。
      */
-    while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXE) == RESET) {
+    /* T3: 两个等待各自有界; 超时仍继续关闭, 保证下一次采样/深睡不被阻塞。 */
+    if (!trace_wait_flag(UART_FLAG_TXE, SET)) {
+        s_tx_aborted = 1u;
     }
-    while (UART_GetFlagStatus(DEBUG_UARTx, UART_FLAG_TXBUSY) == SET) {
+    if (!trace_wait_flag(UART_FLAG_TXBUSY, RESET)) {
+        s_tx_aborted = 1u;
     }
 
     /* 只复位/关闭 UART1 外设与时钟; 绝不动 GPIOA 复位或 GPIOA 时钟 */
@@ -168,6 +193,7 @@ void debug_trace_flush_close(void)
     gpio.Mode = GPIO_MODE_INPUT;
     GPIO_Init(DEBUG_UART_RX_GPIO_PORT, &gpio);
 
+    s_tx_aborted = 0u;
     s_uart_open = 0u;
 }
 
@@ -404,6 +430,22 @@ void debug_trace_sample(const debug_trace_sample_t *s)
                 trace_putc('-');
             }
         }
+        trace_puts("\r\n");
+    }
+
+    /*
+     * T2: 待上报冻结观测行 (仅本周期产生上报判定或发生过发送尝试时追加):
+     *   P rq=<0|1> s=<0|1|2> y=<0..3> t=<frozen x10> h=<frozen x10>
+     * rq/s/y 为打印时状态; 首次发送失败时 rq=1/s=2 仅表示本轮未结束。
+     * t/h 为组帧实际使用的冻结快照; 只观测, 不改变任何业务状态。
+     */
+    if ((s->report != 0u) || (s->send_attempted != 0u)) {
+        trace_putc('P');
+        trace_puts(" rq="); trace_u32((uint32_t)((s->p_rq != 0u) ? 1u : 0u), 1u);
+        trace_puts(" s=");  trace_u32((uint32_t)s->send, 1u);
+        trace_puts(" y=");  trace_u32((uint32_t)s->retry, 1u);
+        trace_puts(" t=");  trace_i32((int32_t)s->p_temp_x10);
+        trace_puts(" h=");  trace_u32((uint32_t)s->p_hum_x10, 1u);
         trace_puts("\r\n");
     }
 }

@@ -41,6 +41,7 @@ static int      tc_poll_calls;
 static int      txe_poll_calls;
 static int      txbusy_poll_calls;
 static int      tx_pending;          /* 尚未移出移位寄存器的字节 (mock 每轮询一次移出一字节) */
+static int      mock_tx_stuck;       /* T3: 1 = TXE 永不置位 / TXBUSY 永不清零 */
 static int      pending_at_reset;    /* 复位 UART1 时刻仍在移位的字节数 (必须为 0) */
 static UART_InitTypeDef last_uart_cfg;
 
@@ -91,8 +92,12 @@ FlagStatus UART_GetFlagStatus(uint32_t uart, uint16_t flag)
     (void)uart;
     if (flag == UART_FLAG_TC)     tc_poll_calls++;
     if (flag == UART_FLAG_TXE)    txe_poll_calls++;
+    if (flag == UART_FLAG_TXBUSY) txbusy_poll_calls++;
+    if (mock_tx_stuck != 0) {           /* T3: 标志卡死模型 */
+        if (flag == UART_FLAG_TXE)    return RESET;
+        if (flag == UART_FLAG_TXBUSY) return SET;
+    }
     if (flag == UART_FLAG_TXBUSY) {
-        txbusy_poll_calls++;
         if (tx_pending > 0) {
             tx_pending--;               /* 每次轮询移出一字节 */
             return SET;                 /* 仍在移位 -> 忙 */
@@ -137,7 +142,8 @@ static int pass, fail;
 
 static const char *EXPECT_BOOT = "BOOT fw=FD-002r4 uid=01020304 rst=0001 uart=9600\r\n";
 static const char *EXPECT_WORST =
-    "S k=4294967295 p=-1250 H=1 V=1 o=8 n=4095 x=4095 a=4095 D=1 t=-1250 h=1000 q=0 r=1 s=2 y=2\r\n";
+    "S k=4294967295 p=-1250 H=1 V=1 o=8 n=4095 x=4095 a=4095 D=1 t=-1250 h=1000 q=0 r=1 s=2 y=3\r\n"
+    "P rq=1 s=2 y=3 t=-1250 h=1000\r\n";
 static const char *EXPECT_TYPICAL =
     "S k=3 p=250 H=1 V=1 o=8 n=12 x=15 a=13 D=0 t=456 h=678 q=1 r=0 s=0 y=0\r\n";
 
@@ -183,14 +189,22 @@ int main(void)
     s.tick = 4294967295u; s.prev_temp_x10 = -1250; s.have_prev = 1u;
     s.light_valid = 1u; s.light_ok = 8u; s.light_min = 4095u; s.light_max = 4095u;
     s.light_mean = 4095u; s.light_dark = 1u; s.temp_x10 = -1250; s.hum_x10 = 1000u;
-    s.sample_ok = 0u; s.report = 1u; s.send = 2u; s.retry = 2u;
+    s.sample_ok = 0u; s.report = 1u; s.send = 2u; s.retry = 3u;
+    s.send_attempted = 0u; s.p_rq = 1u; s.p_temp_x10 = -1250; s.p_hum_x10 = 1000u;
     debug_trace_sample(&s);
-    CHECK(strcmp(cap, EXPECT_WORST) == 0, "worst-case line bytes exactly match the frozen format");
+    CHECK(strcmp(cap, EXPECT_WORST) == 0, "worst-case S+P line bytes exactly match the frozen format");
     printf("        |%s", cap);
-    CHECK(strlen(cap) <= (size_t)SENSOR_DEBUG_UART_MAXLINE,
-          "worst-case line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");
-    printf("        len(worst)=%u bytes (budget %u)\n", (unsigned)strlen(cap),
-           (unsigned)SENSOR_DEBUG_UART_MAXLINE);
+    {
+        const char *p   = strstr(cap, "\r\nP ");
+        size_t      slen = (size_t)(p - cap) + 2u;
+        size_t      plen = strlen(p + 2);
+        CHECK(slen <= (size_t)SENSOR_DEBUG_UART_MAXLINE,
+              "worst-case S line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");
+        CHECK(plen <= (size_t)SENSOR_DEBUG_UART_MAXLINE,
+              "worst-case P line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");
+        printf("        len(worst S)=%u bytes, len(worst P)=%u bytes (budget %u)\n",
+               (unsigned)slen, (unsigned)plen, (unsigned)SENSOR_DEBUG_UART_MAXLINE);
+    }
     CHECK(keys_in_order(cap) == 0, "S-line key order is the frozen contract order");
     CHECK(strchr(cap, '.') == NULL && strchr(cap, 'e') == NULL && strchr(cap, 'f') == NULL,
           "integers only (no float/percent formatting)");
@@ -392,6 +406,54 @@ int main(void)
               "worst-case VDD line <= SENSOR_DEBUG_UART_MAXLINE (96) bytes");
         printf("        len(worst VDD)=%u bytes\n", (unsigned)strlen(cap));
     }
+
+    printf("[T14] P 冻结观测行 (T2): 格式/条件/预算\n");
+    cap_reset();
+    memset(&s, 0, sizeof(s));
+    s.tick = 6u; s.temp_x10 = 400; s.hum_x10 = 700u; s.sample_ok = 1u;
+    s.report = 0u; s.send = 2u; s.retry = 1u; s.send_attempted = 1u;
+    s.p_rq = 1u; s.p_temp_x10 = 197; s.p_hum_x10 = 888u;
+    debug_trace_sample(&s);
+    CHECK(strcmp(cap,
+                 "S k=6 p=0 H=0 V=0 o=0 n=0 x=0 a=0 D=0 t=400 h=700 q=1 r=0 s=2 y=1\r\n"
+                 "P rq=1 s=2 y=1 t=197 h=888\r\n") == 0,
+          "send_attempted=1 -> S 行后追加 P 行 (冻结快照/打印时状态)");
+    printf("        |%s", cap);
+
+    cap_reset();
+    s.report = 0u; s.send_attempted = 0u;
+    debug_trace_sample(&s);
+    CHECK(strstr(cap, "\r\nP ") == NULL && cap[0] == 'S',
+          "既无上报判定也无发送尝试 -> 不打印 P 行");
+
+    printf("[T15] T3 TXE/TXBUSY 卡死: 有界返回/关闭/可恢复\n");
+    memset(&s, 0, sizeof(s));
+    s.tick = 7u; s.sample_ok = 1u;
+    mock_tx_stuck = 1;
+    cap_reset();
+    txe_poll_calls = 0; txbusy_poll_calls = 0;
+    uart_reset_calls = 0; uart_clk_disable_calls = 0;
+    pin_mode[5] = 0xFFFFu; pin_mode[6] = 0xFFFFu;
+    debug_trace_sample(&s);            /* 必须有限返回, 不挂死 */
+    CHECK(txe_poll_calls > 0 && (uint32_t)txe_poll_calls >= SENSOR_DEBUG_TX_GUARD,
+          "TXE 永不置位: 等待用满上限后返回");
+    CHECK(cap_n == 0, "标志卡死时不得伪造/部分输出整行");
+
+    debug_trace_flush_close();          /* 同样必须有界并完成关闭 */
+    CHECK((uint32_t)txbusy_poll_calls >= SENSOR_DEBUG_TX_GUARD,
+          "TXBUSY 永不清零: 关闭等待有界");
+    CHECK(uart_reset_calls == 2 && uart_clk_disable_calls == 1,
+          "超时仍完成 UART1 复位/关时钟 (不阻塞深睡)");
+    CHECK(pin_mode[5] == GPIO_MODE_INPUT && pin_mode[6] == GPIO_MODE_INPUT,
+          "超时仍把 PA05/PA06 置输入");
+    CHECK(gpioa_reset_calls == 0 && gpioa_clk_disable_calls == 0,
+          "超时路径不复位 GPIOA / 不关 GPIOA 时钟");
+
+    mock_tx_stuck = 0;
+    cap_reset();
+    debug_trace_sample(&s);
+    CHECK(strncmp(cap, "S k=7 ", 6u) == 0 && strstr(cap, "\r\n") != NULL,
+          "标志恢复后下一次打印可重新初始化并输出完整行");
 
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

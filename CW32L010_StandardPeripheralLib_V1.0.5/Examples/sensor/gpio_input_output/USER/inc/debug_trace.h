@@ -40,6 +40,11 @@ typedef struct {
     uint8_t  report;        /* 本周期条件上报判定结果 (0/1) */
     uint8_t  send;          /* 433 发送结果: 0=未发送 1=成功 2=失败 */
     uint8_t  retry;         /* 待上报重试计数 */
+    /* ---- T2: 待上报冻结快照与 P 行 (只读观测; 不参与判定/发送) ---- */
+    uint8_t  send_attempted;/* 本周期是否发生过至少一次 433 发送尝试 (0/1) */
+    uint8_t  p_rq;          /* P 行打印时的待上报标志 (1=本轮未结束/仍待发) */
+    int16_t  p_temp_x10;    /* 冻结快照温度 x10 (组帧实际使用的值) */
+    uint16_t p_hum_x10;     /* 冻结快照湿度 x10 (组帧实际使用的值) */
 
     /* ---- T1 (FWR-116): 温湿度失败的诊断快照; 仅 diag_valid=1 时追加 G 行 ---- */
     uint8_t  diag_valid;    /* 1 = 本周期温湿度失败且下列字段来自驱动诊断快照 */
@@ -116,7 +121,8 @@ void debug_trace_iosig(const debug_trace_iosig_t *s);
 void debug_trace_vdd(const debug_trace_vdd_t *v);
 
 /* 打印一个采样周期的 S 轨迹行 (要求 UART1 已由 debug_trace_boot 打开);
- * 当 s->diag_valid != 0 时在 S 行之后追加一行 G 失败诊断行 */
+ * 当 s->diag_valid != 0 时在 S 行之后追加一行 G 失败诊断行;
+ * 当 s->report != 0 或 s->send_attempted != 0 时再追加一行 P 冻结观测行 */
 void debug_trace_sample(const debug_trace_sample_t *s);
 
 /* 等待发送完成(TC)后关闭 UART1; 幂等, 可在任意深睡路径前重复调用 */

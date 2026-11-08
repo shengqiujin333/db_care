@@ -1,9 +1,66 @@
-# 固件实现（FWI-002 rev 5.8）
+# 固件实现（FWI-002 rev 6.0）
 
-状态：固件实现（firmware_engineer.firmware_implementation）
-本轮工作项：run8 Runtime 队列 **ITEM-002 复验修复七**（RESUME；无新上游证据 / 无现场动作记录：用**既有实板一手数据**进一步收窄装配/器件侧假设，细化现场 E-b 范围；**无产品代码改动**）
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；`gxht40.pdf`（V2.6）；上游仍为 `evidence/test.md` EV-017
-受测提交：`0539ede`（RESUME 接手时工作区干净；`USER/**` 仍为 `8ae4a33`）
+状态：固件实现（负责角色：固件工程）
+本轮范围：按 FD-002 / FWR-002 / TD-002 rev 6.0 实现 **T1 条件上报判定更正、T2 待上报冻结快照与 P 行、T3 调试发送等待有界化**，并用授权的 Keil 构建与宿主机自检验证。**T4（GXHT40 实板采集恢复）与 T5（全暗基准标定）需要下载/串口/完全遮光实测，本调用仅获 `mdk_build`，未执行、未伪造，保持未完成状态**。
+依据：`readme.txt`、FD-002 rev 6.0、FWR-002 rev 6.0、TD-002 rev 6.0、IC-002 v3.0、`gxht40.pdf`、`sensor_hardware/{pstxnet.dat,MAIN_BOARD.BOM}`
+受测源码：工作树基于 `6f2388a`（传感器源码与设计基线 `4918531` 相同）+ 本轮 9 个文件改动；构建身份：`mdk_build rebuild` 0 Error / 1 既有告警，axf md5 `c7ed03b796f2ae438b325c7b9306d836`（见 `evidence/build.md`）
+
+---
+
+# 本轮 run10：T1–T3 实现与自检（T4/T5 待实板）
+
+## 1. 实际改动（逐项对应任务验收）
+
+| 文件 | 改动 | 对应验收 |
+|---|---|---|
+| `USER/src/fw_core.c` | `sensor_decide_report` 改为：`cur>350` → true；否则要求 `have_prev && dark` 且 `int32(cur)-int32(prev) > 9`。删除 `cur==350` 的整体排除与降温方向；差值 int32。 | T1 全部向量（+0.8/+0.9/+1.0、降温、35.0℃ 边界、无前值、int16 极值） |
+| `USER/inc/sensor_config.h` | `SENSOR_REPORT_DROP_X10` → `SENSOR_REPORT_RISE_X10`（=9）；注释同步为升温语义；新增调试发送等待上限 `SENSOR_DEBUG_TX_GUARD=200000`。 | T1 单一配置点；T3 上限单一来源 |
+| `USER/src/measure.c` | 新增冻结快照 `s_report_temp_x10`/`s_report_hum_x10`：仅当 `rep!=0 && report_req==0` 时写入；`send_data_to_gateway()` 组帧只读快照；新增本周期发送尝试标志与 P 行取数（`p_rq/p_temp/p_hum`）。失败路径仍不推进前值、不构造 0 值、不新建/覆盖快照。 | T2 冻结/不覆盖/仅成功清除/用尽放弃 |
+| `USER/inc/debug_trace.h` | `debug_trace_sample_t` 增加 `send_attempted`、`p_rq`、`p_temp_x10`、`p_hum_x10`（只读观测）。 | T2 P 行 |
+| `USER/src/debug_trace.c` | 新增 `P rq=/s=/y=/t=/h=` 行（`report!=0` 或 `send_attempted!=0` 时紧跟 S/G 打印，≤96 B）；`trace_putc` 的 TXE 等待与 `flush_close` 的 TXE/TXBUSY 等待改为有界（`trace_wait_flag` + 超时抑制标志），超时仍完成 UART1 关闭，不改变业务状态。既有 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 字节格式未改。 | T3 正常字节不变/卡死有界/业务隔离 |
+| `test/host_sensor_core_test.c`、`test/host_fw_core_pure_check.c` | 判定向量改为升温/严格边界，新增 35.0℃ 升温、降温、int16 极值。 | T1 实现侧自检 |
+| `test/host_measure_flow_check.c` | 流程序列改为升温；新增“待上报期间新采样不覆盖冻结样本”“重试三次帧入参均为同一快照”“放弃后重新冻结”“P 行取数”断言；mock 编码器记录逐次 t/h。 | T2 实现侧自检 |
+| `test/host_debug_trace_check.c` | 更新 S 行最坏预算（含 P 行分段检查）；新增 P 行格式/条件测试；新增 TXE 永不置位与 TXBUSY 永不清零的 mock 卡死测试（有限返回、完成关闭、保护 GPIOA、恢复后可再打印）。 | T3 实现侧自检 |
+
+未改动：`gxht40.c`、`sf_i2c.c`、`light.c`、`encrytogate.c`、`main.c`、UM2005C/COMMON/厂商库、网关、Android；空口/BLE 布局与采样节拍不变。
+
+## 2. 构建与自检结果（本轮实际执行）
+
+| 项 | 结果 |
+|---|---|
+| Keil `mdk_build {"action":"rebuild"}` | **0 Error / 1 Warning**（既有 `main.c(245) while(k--);` 空循环体）；`Code=25912 RO-data=656 RW-data=116 ZI-data=1676`；axf md5 `c7ed03b796f2ae438b325c7b9306d836`，hex md5 `79090d64d8e5487ee896983401f828ec` |
+| `test/build_test.sh` | **214 项 0 失败**（fw_core 46、measure flow 57、UART trace 54、light 未标定 28、light 已标定 29） |
+| `host_gxht40_check`（真实驱动 + mock 总线） | **60 项 0 失败**（驱动未改动，回归） |
+| `host_sf_i2c_bus_check` | **42 项 0 失败**（软 I²C 原语/总线恢复回归） |
+| `host_rf_frame_check`（真实传感器编码 + 真实网关解码/组块） | **22 项 0 失败**（10 B 布局/字节序/CRC 未变） |
+| 合计 | **338 项 0 失败** |
+
+关键行为断言（原始输出见 `evidence/driver_test.md`）：
+- T1：30.0→30.9（暗）不报、30.0→31.0（暗）报、30.0→31.0（明）不报、30.0→29.0 不报、34.0→35.0（暗）报、34.0→35.0（明）不报、无前值 35.0 不报、无前值 35.1 报；int16 极值不溢出。
+- T2：触发后连续三次发送失败期间，`encode_frame10` 的 t/h 逐次等于冻结样本，即使中间插入了新采样（373/601）也不变；用尽后 `report_req=0` 且不出现假成功；放弃后的新触发重新冻结新样本；P 行 t/h 与组帧值一致。
+- T3：TXE 永不置位时打印在有限循环后返回且不输出半行；TXBUSY 永不清零时关闭仍有界完成；两条超时路径都不复位 GPIOA/不关 GPIOA 时钟，并把 PA05/PA06 置输入；恢复正常后下一次打印重新初始化并输出完整行。
+
+## 3. 未完成项与原因（不得视为通过）
+
+| 项 | 状态 | 原因与本轮已做的准备 |
+|---|---|---|
+| T4 GXHT40 实板采集恢复 | **未完成** | 本调用授权工具仅 `mdk_build`，无 `mdk_flash`/串口采集；未下载、未取得当前构建的 `BUS/VDD/IOTEST/IOSIG/G/S` 一手数据。历史证据（EV-017：7/7 周期 `q=0`、`BUS ack=none`、器件对任何地址无 ACK、`VDD≈3289 mV`）只作背景；竞争假设（U9 焊点/器件、总线电气、软 I2C 速率/时序、供电瞬态）全部保留，未在无新证据时盲目改驱动/速率。既有失败语义（不上报/不推进前值/不构造 0 值/失败后重探+总线恢复）保持不变。 |
+| T5 全暗基准标定 | **未完成** | 无完全遮光窗口与串口采集，未取得全暗 `o/n/x/a`，因此未回填 `LIGHT_DARK_REF_CODE`，`LIGHT_DARK_CALIBRATED` 仍为 0（未标定门禁有效：升温分支不触发）。未用亮态/满量程/估算值冒充。判据与标定机制已由宿主机未标定/已标定两种变体回归（28+29 项）。 |
+| 实板功能通过 | **未验证** | 本轮只有编译与宿主机自检；编译/自检成功不等于实板 `q=1`、无光判据或跨链路通过。 |
+
+## 4. 交独立验证的刺激与读回方法
+
+1. **部署**：用工程保存的调试器/Flash 算法对当前工作树执行 `mdk_build` + `mdk_flash {}`；记录 axf/hex md5 与 `Verify OK`，确认板上横幅 `fw=FD-002r4` 与 `uid`。
+2. **串口**：**COM43/9600 8N1**（不得用历史 COM42/COM26）。复位后先收 `BOOT/VDD/IOTEST/IOSIG/BUS`，再跨 ≥3 个 3 分钟采样机会收 `S`，失败周期应有紧随的 `G`；上报周期应有紧随的 `P`。
+3. **T1 边界**：用真实温度刺激（明/暗两种）覆盖 30.0→30.9、30.0→31.0、34.0→35.0、35.1；对照 `S` 的 `r/s` 与手机读数。无完全遮光时 `V=0`，升温分支不应触发，超温分支仍应独立生效。
+4. **T2 冻结**：在 `P` 行核对 `t/h` 与当次触发样本一致；若首次发送失败，`P` 显示 `rq=1/s=2` 仅表示本轮未结束（同唤醒后续重试不再打印），不得据此判最终失败；最终以 `report_req` 清除、后续周期行为与手机实收判断。
+5. **T3**：正常路径核对既有各行字节未变；UART 卡死无法在实板主动制造时，以宿主机 mock 证据为准，实板只确认打印不再悬挂（观察复位/唤醒周期是否继续）。
+6. **T5**：完全遮光窗口内取得 ≥1 笔有效 `o/n/x/a`，记录 UID/VDD/遮光方式/时间/样本分布；把原始字节交回实现回填 `C_dark` 并重建，再做有光/遮光/恢复三态复测。
+7. **T4**：若 `q=0` 仍出现，回传原始 `BOOT/VDD/IOTEST/IOSIG/BUS/S/G` 字节与构建 md5；若出现 `ack=44/45` 但读失败/CRC/量程，按结果码分别定位。不得只写“仍失败”。
+
+## 5. 版本与历史
+
+本节替代 rev 5.8 的“无代码改动”状态；rev 5.8 及更早的实板分析、现场动作建议与 EV-012..017 记录继续保留在下方，仅作历史背景，不冒充本轮结果。
 
 ---
 

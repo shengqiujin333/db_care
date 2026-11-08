@@ -1,9 +1,49 @@
-# 构建证据（BUILD-002 rev 5.8）
+# 构建证据（BUILD-002 rev 6.0）
 
-状态：固件实现证据（firmware_engineer.firmware_implementation）
-本轮范围：run8 **ITEM-002 复验修复七**（RESUME；无新上游证据、无现场动作记录）——**本轮未执行构建**（无源码改动），仅作版本注记并确认交付件身份继续有效
-依据：FD-002 rev 5.0、FWR-002 rev 5.0（FWR-116/118）、TD-002 rev 5.0；上游仍为 `evidence/test.md` EV-017
-受测提交：`0539ede`（`USER/**` = `8ae4a33`，`git diff` 为空）
+状态：固件实现证据（负责角色：固件工程）
+本轮范围：T1–T3 实现后的**全量重建**（`mdk_build {"action":"rebuild"}`，授权工具），记录编译器版本、告警、Code/RO/RW/ZI 与产物摘要。**未下载/未烧录**（本调用无 `mdk_flash`）；构建成功不表示实板功能通过。
+依据：FD-002 rev 6.0、FWR-002 rev 6.0、TD-002 rev 6.0、`readme.txt`
+受测工作树：基于 `6f2388a`（传感器源码等于设计基线 `4918531`）+ 本轮 9 个文件改动；产品源码改动见 `artifacts/firmware_implementation.md`
+
+---
+
+## 本轮 run10：T1–T3 全量重建（2026-11-08）
+
+### 1. 原始命令与关键输出
+
+```
+$ mdk_build {"action":"rebuild"}
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Rebuild target 'Project'
+...
+../USER/src/main.c(245): warning: while loop has empty body [-Wempty-body]
+  245 |         while(k--);
+      |                   ^
+...
+Program Size: Code=25912 RO-data=656 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:01
+```
+
+- **退出码 0 / success=true**；`0 Error(s), 1 Warning(s)`；唯一告警为既有模板 `main.c(245) while(k--);` 空循环体，非本轮新增。
+- 编译覆盖 `fw_core.c`、`measure.c`、`debug_trace.c`、`gxht40.c`、`light.c`、`main.c` 等全部工程源文件；链接成功并生成 hex。
+
+### 2. 产物身份
+
+| 产物 | 路径 | md5 |
+|---|---|---|
+| axf | `CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.axf` | `c7ed03b796f2ae438b325c7b9306d836` |
+| hex | 同目录 `Project.hex` | `79090d64d8e5487ee896983401f828ec` |
+
+存储：Code 25,912 B + RO 656 B + RW 116 B = 26,684 B Flash（占用 64 KB 的 40.7%）；RW 116 B + ZI 1,676 B = 1,792 B RAM（占用 4 KB 的 43.8%）。
+
+> 与历史记录（rev 5.8：Code=20100 / axf `5fc16235…`）不同：本轮工作树包含已实现的诊断与 T1–T3 增量，尺寸以**本轮实际构建**为准；历史数字只作背景，不得与本轮镜像混用。
+
+### 3. 未执行与边界
+
+- **未执行 `mdk_flash`**（当前调用工具列表仅 `mdk_build`）⇒ 板上镜像身份、`Verify OK`、串口 `BOOT/VDD/...` 均未在本轮取得，不得写成已下载或已通过。
+- 本构建只证明当前工作树可被工程工具链编译链接；**不证明** `q=1`、判定实板边界、无光标定、433/BLE/手机链路。
+- 构建产生的 `MDK/build.run10.log` 已删除（不纳入交付）；工程文件未被修改（工具自动备份在角色工作区）。
 
 ---
 

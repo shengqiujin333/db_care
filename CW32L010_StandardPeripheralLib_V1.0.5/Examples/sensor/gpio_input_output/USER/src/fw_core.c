@@ -101,23 +101,24 @@ bool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t c_dark)
 }
 
 /* ------------------------------------------------------------------ */
-/* 条件上报判定 (readme 修改点 4; IC-002 §2; FD-002 §6.4)              */
+/* 条件上报判定 (readme 修改点 4; IC-002 §2; FD-002 §6.3)              */
 /* ------------------------------------------------------------------ */
+/* 语义: 温湿度本周期均有效由调用方保证; dark 已包含光照有效性
+ *   report = (cur > 35.0C) 或 (有前值 且 (cur - prev) > 0.9C 且 dark)
+ * 方向为升温; 恰好 +0.9C (差值 9) 与恰好 35.0C 的超温分支均不触发;
+ * 恰好 35.0C 仍可经升温分支上报; 差值用 int32 防 int16 溢出。 */
 bool sensor_decide_report(int16_t prev_temp_x10, bool have_prev,
                           int16_t cur_temp_x10, bool dark)
 {
-    if (cur_temp_x10 > (int16_t)SENSOR_REPORT_HIGH_X10) {
+    if ((int32_t)cur_temp_x10 > (int32_t)SENSOR_REPORT_HIGH_X10) {
         return true;                    /* 超温分支: 不受光照/前值限制 */
     }
-    if (cur_temp_x10 == (int16_t)SENSOR_REPORT_HIGH_X10) {
-        return false;                   /* IC-002: 恰好 35.0 C 时 T<35 与 T>35 均不成立 */
-    }
     if (!have_prev) {
-        return false;                   /* 无前一有效温度: 下降分支恒假 */
+        return false;                   /* 无前一有效温度: 升温分支恒假 */
     }
     if (!dark) {
-        return false;                   /* 需同时无光 */
+        return false;                   /* 需同时无光 (光照无效已折算为 false) */
     }
-    return ((int32_t)prev_temp_x10 - (int32_t)cur_temp_x10)
-           > (int32_t)SENSOR_REPORT_DROP_X10;   /* 下降 > 0.9 C (0.1C 量化下即 >=1.0 C) */
+    return ((int32_t)cur_temp_x10 - (int32_t)prev_temp_x10)
+           > (int32_t)SENSOR_REPORT_RISE_X10;   /* 升温 > 0.9C (0.1C 量化下即 >=1.0C) */
 }
