@@ -368,6 +368,7 @@ evidence/ev029/analyze_ev029.py | active | EV-029 独立解析（CRLF/行长≤9
 evidence/ev029/capture_analysis.txt | active | analyze_ev029.py 输出（2 条 S 全 q=1、0 G、79 B、p(k=30)=t(k=27)）
 evidence/ev029/serial_capture_1204Z.bin | active | COM43 原始字节（12:04:51–12:09:51Z，S k=27/k=30；md5 6522407d…）
 evidence/ev029/tool_results.txt | active | EV-029 设备工具原始结果与时间戳（串口/ USB 枚举/ sigrok probe 失败/串口采集）
+evidence/firmware_assignment_referral.md | active | 固件实现失败分派转交证据（EV-028/029：GXHT40 与 F-1 已修复；剩余 T4-02/T5/INT/T4-07 为采集编排、遮光/刺激与仪器配置条件，非固件代码缺陷；列明责任与前置条件）
 evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
 evidence/programmed_prototype.md | active | 下载身份记录（EV-028：commit bee3d8f / axf md5 a3b08774…，两次 mdk_flash Verify OK；首样本 H=0 p=0 实板成立；仅证明下载成功，不代表功能合格；EV-026/EV-024 及更早记录保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
