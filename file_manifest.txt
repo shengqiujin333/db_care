@@ -75,6 +75,7 @@ artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（
 artifacts/android_tasks.yaml | active | Android 待实现任务清单（4 项：BLE 权限模型、网关身份发现与绑定、BLE 批次转发与零值哨兵、上报规则文案方向；按前置依赖排序）
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
+artifacts/failure_resolution.md | active | 项目协调失败责任与人工交接报告 FR-001：保留 EV-028/EV-029 原失败与版本引用，整理 D2/E1/F-1 已修与固件拒接依据，列明 T4-02 采集编排、T5 遮光标定、INT 联测、T4-07 配置、验收范围冲突等缺项及责任/完成条件；本次结果 REPLAN_REQUIRED，未修产品源码、未重测
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 6.0（当前源码 as-built 核对、判定方向+严格 35℃ 边界、待上报冻结与 P 行、调试等待有界化、GXHT40 证据驱动修复、全暗标定与 1/3 判据、当前构建再观测矩阵）
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 6.4（T1–T3；D2 慢时钟修复 CRC；E1 修复 delay 空实现；F-1 修复 S 行 p/H 为判定前快照；F-3 保留为下限等待；未下载、未声明实板通过；T5 待遮光）
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 6.0（FWR-101..119：GXHT40、光敏 1/3、3 分钟、升温 >0.9℃ 且无光或 >35℃、UART1、失败可诊断、当前构建再观测、调试等待有界；含 as-built 差距与 readme 修改点对应）
