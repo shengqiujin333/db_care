@@ -1,319 +1,427 @@
-# 软件测试设计（TD-SW-002）
+# 软件测试设计（TD-SW-003）
 
-状态：软件测试设计产物（software_tester.software_test_design）
-版本：1.0
-对象：**Android App（`dengbei_care`，Kotlin）** 本次改动（GXHT40 兼容回归、条件上报后的解析/归因/时间戳、告警时间窗、云上传与幂等、服务器迁移、卡片/详情/报告文案），以及 **App ↔ MQTT broker ↔ 云端 `/upload_data`** 的软件链路。
-只做测试设计（范围、环境、方法、数据采集、判定方法），**不执行测试、不修改被测 App 源码、不做固件/硬件/服务器端改动**。执行由后续软件测试执行能力按本计划选取适用项与回归项后承接。
+状态：软件测试设计产物（`software_tester.software_test_design`）
+版本：2.0（替代 TD-SW-002 v1.0）
+对象：**Android App（`dengbei_care`，Kotlin）** 当前候选，含本轮四项增量（G-1 BLE 权限模型、G-2 网关身份发现与绑定、G-3 BLE 批次转发与零值哨兵、G-4 上报规则文案方向）以及完整交付回归。
+只做测试设计（范围、环境、方法、刺激、观测、判据、证据、判定规则），**不执行测试、不修改被测 App 源码、不做固件/硬件/服务器端改动**。执行与逐项判定由后续软件测试执行/验证能力按本设计承接。
 
 上游输入：
-- 需求：`readme.txt`（权威：6 个修改点）
-- Android 设计方案：`artifacts/android_architecture.md`（AA-002，本能力 `subject`）
-- 接口契约：`artifacts/interface_contract.md`（IC-002）
-- 服务器事实：`服务器迁移记录.md`（§二 broker 认证、§三 TLS 证书、§五/§八 App 改动与 `/upload_data` 契约）
-- 实现任务清单：`n007_android_engineer_android_design.tasks`（14 项，有序前置关系）
-- 嵌入式测试设计：`artifacts/test_design.md`（TD-002，提供了 433→BLE→Android 的上游判定与联测边界）
-- as-built 源码：`dengbei_care/`（本文件 §1.2 逐条核定）
+- `readme.txt`（权威需求，八项修改点）
+- `artifacts/android_architecture.md`（AA-003 rev 2.0，本能力 `subject`）
+- `artifacts/android_tasks.yaml`（本轮四项任务与验收条件，`tasks` 输入）
+- `artifacts/android_feasibility.md`（AF-001：Redmi 8A / API 29 只读事实、F-1 权限门、F-2 网关身份）
+- `artifacts/interface_contract.md`（IC-002 v3.0：升温 >0.9℃、严格 >35.0℃、BLE 记录布局、MQTT 批量格式、§7 Android 同步、D-03）
+- `artifacts/firmware_requirements.md` / `artifacts/firmware_design.md`（传感器侧采样与上报语义，用于区分职责边界）
+- `artifacts/test_design.md`（TD-002，嵌入式侧联测边界）
+- as-built 源码 `dengbei_care/`（本文件 §3 逐条核对）
+- 本项目统一环境与授权（`runtime/environment.yaml` / `runtime/permissions.yaml` 的本次合成视图）
 
-覆盖性检查结论：readme 修改点 1–6 在 AA-002 中均有可观测的预期行为且可设计测试；本能力返回 `DESIGN_READY`。AA-002 的设计决策与实现任务清单整体一致、前置顺序可满足；发现若干**可测但任务清单未显式覆盖**的设计行为与一项产品未决项，按 §8 登记为交接/条件项，**不作为阻塞**（不自行修补设计、不弱化需求）。
-
----
-
-## 1. 测试对象、基线与观测点
-
-### 1.1 被测对象与构建/安装
-
-| 对象 | 位置 | 构建方式 | 观测口 |
-|---|---|---|---|
-| Android App 宿主机纯逻辑 | `dengbei_care/app/src/test/`（JUnit4 4.13.2 已在依赖中） | `./gradlew :app:testDebugUnitTest`（`gradle-wrapper 8.4` / AGP 8.3.2 / SDK `D:\mylearn\android_jdk`） | JUnit 报告（`app/build/reports/tests/`）+ stdout |
-| App 设备端功能/存储/UI | `dengbei_care/app/src/androidTest/`（`AndroidJUnitRunner` 已配置）或 debug 包手工驱动 | `./gradlew :app:assembleDebug` + `android_test`（install/launch/screenshot/logcat） | 设备屏幕截图、logcat、App 私有目录数据库、通知 |
-| 云端上传契约 | `POST http://8.140.23.253:5000/upload_data` | 平台 HTTP 客户端 / `curl`（执行阶段按授权） | HTTP 状态码 + 响应体（`inserted` 计数） |
-| MQTT broker | `ssl://8.140.23.253:8883`（EMQX 5.8.0） | App 自身连接；刺激侧用测试 MQTT 发布者（见 §6-4） | App 连通性状态、broker 侧消息、logcat |
-
-> Android 设备端验证仅使用软件工具（adb/截图/logcat/HTTP）。真机 + 真实网关的 BLE 读取联调按 §6-5 与嵌入式能力协作，不在本设计内自造硬件条件。
-
-### 1.2 as-built 事实（测试必须尊重的现状基线）
-
-| 事实 | 位置 | 对测试的意义 |
-|---|---|---|
-| `MqtttService.serverUri = "ssl://117.72.84.210:8883"`；`ZhuCeViewModel.baseUrl = "http://117.72.84.210:5000"` | `MqtttService.kt:105`、`ui/zhuce/ZhuCeViewModel.kt:10` | 本次必须切到 `8.140.23.253`；旧 IP 不得残留 |
-| `network_security_config.xml` 仅放行 `117.72.84.210`、`192.168.4.1` | `app/src/main/res/xml/` | 需追加 `8.140.23.253` 明文，且不得多放行其它主机 |
-| `ApiService` 仅 5 个注册/登录端点，无 `/upload_data` | `ui/zhuce/ApiService.kt` | 既有 5 个端点签名/字段为兼容面，不得变 |
-| BLE 帧：头块 16 B（gwId6 + devCount@6），每设备 16 B 取前 8 B = `id(4)|hum u16be@4|temp s16be@6`；`expected = 16*(1+devCount)` 不足即 `require` 抛错 | `MqtttService.kt:462-494` | 帧长度/字节序/符号回归的期望值来源 |
-| `parseHexData()`（小端 `hum|temp`）存在且**无有效调用点**（仅注释掉的旧码） | `MqtttService.kt:817-838` | 与 IC-002 §4 冲突，必须移除且不得残留第二解释入口 |
-| MQTT 批量载荷 `time:temp1,temp2,...:humi1,humi2,...`，按 `MacIdBook.all()` **位置**归因，用 `minOf` 静默截断并仅打 warning | `MqtttService.kt:1425-1460` | 必须改为数目不一致拒绝整批；不得静默错归因 |
-| 本地库 `TemperatureDatabaseHelper`：`DATABASE_VERSION = 2`，表 `temperature(time, device_id, temperature, humidity, PK(time,device_id))`、`alarm_events(id,time,device_id,type,message)`、两索引；v1→v2 迁移带重建回退 | `TemperatureDatabaseHelper.kt:36-135` | v3 迁移必须保数据；outbox 表为新增 |
-| 入库存档时间戳**按 60 s 回填**：`time = timenow - (size-1-i)*60L`；`storeflag != 1` 直接返回 | `TemperatureDatabaseHelper.kt:147-183` | 必须改为真实采样时间；60 s 回填不得残留 |
-| 守护门控：`HomeViewModel.startData`（`measure_state`/`finish_guard_time` 持久化）；通知/震动/铃声在 `storeflag==1` 时才发 | `MqtttService.kt:988-1010`、`ui/home/HomeFragment.kt:87-167` | 存储/上传门控与通知门控的既有语义 |
-| 告警：`DeviceHistory.data5MinAgo/data10MinAgo/data15MinAgo` 实为**最近第 1/2/3 个样本**（非时间窗）；三种模式下 `drop` 用 `baseline.temp-cur.temp > tempdrop && baseline.humi-cur.humi > humidrop`；阈值用 `>`/`<`（等于不触发）；两种都启用时**先下降后超限，超限文案可覆盖下降文案**；紧急 `temperature > 65f` 每次通知；drop/threshold 通知按设备 `900*1000 ms` 去抖；文案字面值 `温度湿度下降报警`/`温湿度超限报警`/`紧急报警，温度超过65度，谨防火灾`；类型常量 `drop`/`threshold`/`emergency` | `MqtttService.kt:842-1010`、`TemperatureDatabaseHelper.kt:47-51` | 判定语义必须"保持现状"的部分即以此基线为准；时间窗改造是新行为 |
-| 参数默认值：`tempdrop=2`、`humdrop=1`、`tempmax=35`、`tempmin=29`、`hummax=75`、`hummin=40`，均为**工程单位（℃/%RH）**；`dengbeialarm`/`yuzhialarm`/`zhendongalarm`/`xianglingalarm` 为 0/1 | `MqtttService.kt:165-184`、`DeviceParamsBook.kt` | 边界用例的阈值单位不能按 ×10 误设 |
-| 卡片状态 chip：`latestTime==0` → "未收到"；`!state.isOnline()`（>30 min 数据龄）→ **"离线"**；`ALARM`→"紧急"、`WARNING`→"警告"、否则"正常"；未收到时温度/湿度显示 `--` | `ui/home/DeviceCardAdapter.kt:70-100`、`DeviceState.kt` | 条件上报下"离线"是错误信息，必须消失 |
-| 详情图表时间范围硬限 **50 分钟**（Toast "时间范围必须在 50 分钟以内"） | `ui/detail/DeviceDetailFragment.kt:186-194` | 需放宽到 24 h |
-| 报告 `ReportGenerator` 0 样本分支输出 `- 无数据` | `report/ReportGenerator.kt:35` | 需改为"昨日无上报"且统计结构不变 |
-| `MacIdBook` 键为 12 位 HEX 大写（`.all()` 按 name→id 排序返回 `(id,name)`），`macid_name_map` 存于 `MyPrefs`；`mac_addr`、`registerphone` 亦在 `MyPrefs` | `MacIdBox.kt`、`ui/notifications/NotificationsFragment.kt:225-227` | 归因顺序的唯一真相来源；测试数据构造依据 |
-| MQTT 时间戳取自 payload 首段（`parts[0]`），BLE 路径用系统时间 | `MqtttService.kt:842-844`、`1400-1412` | **可由测试控制入库时间**，是时间窗/相对时间用例的关键手段 |
-
-### 1.3 环境就绪性（本能力内经授权的只读枚举 + 已知事实）
-
-| 项 | 结果 | 结论 |
-|---|---|---|
-| Android 目标设备 | `usb_list_devices`：`M2103K19C`（VID 18D1/PID 4EE7，与 runtime 配置的安卓目标一致）在位 | 设备**枚举层面**在位；`adb` 授权状态、系统时间、是否已装 debug 包须在执行阶段确认 |
-| 摄像头/USB 串口 | Chicony USB2.0 Camera、Prolific COM42、WCH 复合设备在枚举层面在位 | 与本软件测试基本无关（串口属嵌入式能力） |
-| Android SDK / 构建 | `local.properties` 指向 `D:\mylearn\android_jdk`；AA-002 记录 `./gradlew :app:testDebugUnitTest` 可离线运行、`assembleDebug` 通过 | 构建类用例可执行（执行阶段复核） |
-| MQTT broker `8.140.23.253:8883` | 本次未授权/未执行网络探测 | **执行前必须确认可达**，否则线上链路用例返回 BLOCKED |
-| `/upload_data`（`8.140.23.253:5000`） | 同上 | 同上 |
-| 真实传感器+网关（BLE 路径刺激源） | 未确认 | BLE 真机用例为前置依赖项，见 §6-5 |
-| 服务器 MySQL `sensor_data` 直查权限 | 本能力工具边界不含 SSH/DB 客户端 | 云落库"行级"证据不可得；只能取 HTTP 响应 `inserted` 计数为证（§5、§8-G6） |
-
-> 本节的枚举事实**不构成任何测试通过**；不具备条件的用例在执行时按 BLOCKED 记录，不得伪造。
+**本版结论**：`DESIGN_READY`。四项增量均有可在宿主机独立断言的纯逻辑目标与可在真机独立观测的接线目标，完整交付有明确的分层用例与最终判定规则。当前环境缺口（真机测试工具未对本能力开放、网关未上电/身份未确认、手机无网络、服务入口未核验）已按 §8/§9 记录为**未满足的执行前置**，不改变用例目标，也不把未执行项写成通过。
 
 ---
 
-## 2. 范围与适用性
+## 1. 本版变更（相对 TD-SW-002 v1.0）
 
-### 2.1 覆盖的产品行为
-
-| 编号 | 行为（来源） |
+| 变更 | 内容 |
 |---|---|
-| S1 | BLE 聚合帧解码与 GXHT40 兼容：头块/devCount/帧长规则、`id|hum u16be|temp s16be`、负温符号、单位不变（readme 1；IC-002 §4；AA-002 §5.1、D-01） |
-| S2 | **单一解析实现**：工程内不再存在小端 `parseHexData` 入口与残留（readme 1；IC-002 §4；AA-002 §5.1） |
-| S3 | MQTT 批量载荷严格归因：数目/空值/非法值不一致→拒绝整批（不落库/不上传/不报警）；一致时按 `MacIdBook` 顺序映射且 devId 随读数下沉（readme 4；IC-002 §5；AA-002 §5.2、D-08） |
-| S4 | 服务器迁移：MQTT `8.140.23.253:8883`、HTTP `8.140.23.253:5000`、明文放行新主机；IP 以外的 TLS/认证/密钥/topic 全部不变（readme 5；AA-002 §5.6、D-13；迁移记录 §五/§八） |
-| S5 | 告警判定改为**时间窗**（5/10/15 min，含上界回溯容差），阈值超限与 >65℃ 紧急语义**保持现状**；无基准不成立下降分支；不写入伪造温度/湿度（readme 4；AA-002 §7、D-04/D-05） |
-| S6 | 本地入库真实采样时间戳：BLE 用接收时刻、MQTT 用 payload 首段；同 `(dev_id,time)` 幂等；`storeflag != 1` 不写；无 60 s 回填（AA-002 §5.4、D-06） |
-| S7 | SQLite v3：既有 `temperature`/`alarm_events` 结构与数据不动，新增待发箱表与索引；迁移异常按既有回退不崩溃（AA-002 §5.4、D-15） |
-| S8 | 云上传：`POST /upload_data` 字段名/单位/归属正确；待发箱 `(dev_id,time)` 幂等入队、成功即删、失败有界退避重试；守护关闭或无手机号不入队不发请求；不阻塞 BLE/MQTT 主链路（迁移记录 §八；AA-002 §5.5、§6、D-07/D-09） |
-| S9 | 卡片状态：不再以 30 min 数据龄显示"离线"，改为相对时间 + 条件上报提示；chip 仍区分 未收到/正常/警告/紧急；未收到温度湿度为 `--`（readme 4；AA-002 §7、D-10） |
-| S10 | 详情与规则呈现：显示"采样周期 3 分钟 + 条件上报规则"只读说明；图表范围上限 24 h；>35.0℃ 高温强调（=35.0 不强调）；**不显示**光照/无光/lux，不给出 App 推断的上报原因（readme 2/3/4；AA-002 §5.3、D-03/D-12/D-14） |
-| S11 | 早报文案：说明"按条件上报、采样条数非等间隔"；某设备当日无上报显示"昨日无上报"；统计字段与报警次数结构不变（AA-002 §4.2、D-03） |
-| S12 | 展示/轮询参数：BLE 读取周期与 3 分钟采样节拍对齐、保留手动立即读取（AA-002 §4.2、D-11） |
-| S13 | 版本与文档：`versionCode`/`versionName` 递增、App 内 readme/用户说明书描述与实现一致（readme 3/4/5；AA-002 §4.2） |
-
-### 2.2 回归范围（改动相邻的既有功能）
-
-- 既有 5 个注册/登录端点（`/sendVerificationCode`、`/verifyCode`、`/register`、`/login`、`/setmac`）签名与数据类字段不变；`setmac` 绑定链路仍可用；
-- 兼容面（AA-002 §9）：AES 密钥与模式、`assets/jd-ca.crt`、`TLSv1.2`、MQTT 用户名=MAC/密码=MAC+`&^!A:z?`、topic 规则 `/$mac/a/r0|r1|s0`、MTU 240、GATT UUID、`0xA1` 写入头、时间校准 payload 模板、65℃ 阈值、900 s 去抖、报警文案字面值、`MyPrefs` key 名、`MacIdBook`/`DeviceParamsBook` 存储格式与 8 位/12 位 HEX 校验；
-- 告警事件表内容与早报统计结构（同批数据统计值应与改动前一致）；
-- 旧库升级路径 v1→v3、v2→v3；
-- 守护开关语义（开关关闭不落库、不通知；开启才记录）；
-- 卡片迷你图容量上限与清屏行为。
-
-### 2.3 明确不在本设计内（归属其他能力/角色）
-
-| 排除项 | 归属 |
-|---|---|
-| MCU/固件/板上验证、433 空口、I²C、光照阈值标定、功耗、烧录 | 嵌入式测试（TD-002，`embedded_tester`） |
-| PCB/电气/EMC/器件 | 硬件测试 |
-| 固件与 App 的实现改动、缺陷修复 | firmware_engineer / android_engineer |
-| 服务器端 `abr.py`/MySQL/EMQX 的部署、配置与代码修复；MySQL 行级直查 | 服务器责任方（本设计只验证 App 侧契约与 HTTP 可观测结果） |
-| iOS App（readme 点 6 本轮不改） | 不在本设计内；仅在线上格式未变的前提下作为登记项 |
+| 对象更新 | 由 AA-002 的 14 项实现改为 AA-003 rev 2.0 的 **G-1…G-4 四项增量 + 既有 as-built 完整回归** |
+| 新增纯逻辑测试面 | `ble/BlePermissionPolicy`、`protocol/GatewayIdentity`、`telemetry/BleBatchForwarding` 的宿主机矩阵与边界 |
+| 新增真机测试面 | API 29 无定位授权直连、API 31+ 运行时权限拒绝/授予/撤销、有界扫描与 `stopScan`、候选呈现与保存、多设备批次发布、首页链路状态 |
+| 修正方向 | 规则文案由“较上次**下降**超过 0.9℃”更正为“较上次**升高**超过 0.9℃”（readme 点 4、IC-002 §2、AA-003 G-4/D-22）；TD-SW-002 的 T-SW-L3-04 等旧表述作废 |
+| 明确判定 | 新增 §10：任一必需项 FAIL / NOT EXECUTED / CONDITIONAL / 原因未知 / 环境缺口均不得判为整体通过 |
+| 保留 | TD-SW-002 中仍适用的 as-built 用例编号（L0-01…L0-14、L0d-01…L0d-07、L1-01…L1-09、L2-01…L2-15、L3-01…L3-08、REG-01…REG-06）继续有效，本版不重复展开其细节，仅在本文件 §6.2/§6.4/§6.5/§6.6/§6.7 给出适用性与新增补充 |
 
 ---
 
-## 3. 测试层次与总体策略
+## 2. 需求与验收追踪矩阵
+
+“必需”列定义本轮**完整交付**判定中的必需项；“证据类别”列区分宿主机（H）、静态（S）、真机软件（D）、真服务（V）。任何 D/V 项不得以 H/S 证据替代。
+
+| ID | 来源 | 要求/验收 | 用例 | 证据类别 | 必需 |
+|---|---|---|---|---|---|
+| R-01 | readme 1 | GXHT40 替换后单位/字节序/负温不变 | T-SW-L0-01..03、REG-02 | H/D | 是 |
+| R-02 | readme 2 | 光照不上空口/BLE，App 不推断、不显示照度或光照状态（规则原文“无光”除外） | T-SW-L1-08、L3-12 | H/S/D | 是 |
+| R-03 | readme 3 | 采样 180 s；App 读取节拍 180 s；无上报属正常 | T-SW-L0-14、L2-32、L3-04/05/07 | H/S/D | 是 |
+| R-04 | readme 4 | 条件上报：本次较上次**升高 >0.9℃ 且无光**，或**>35.0℃**；App 不重算门控、不合成样本 | T-SW-L0-25、L1-14/20、L2-29/32、L3-12 | H/S/D | 是 |
+| R-05 | readme 5 | broker `ssl://8.140.23.253:8883`、HTTP `http://8.140.23.253:5000` 与既有 TLS/认证不变 | T-SW-L1-23、L2-31 | S/D/V | 是 |
+| R-06 | readme 6 | 只改 Android；不改 iOS；帧/服务/schema 保持 | T-SW-L1-18/24 | S | 是 |
+| R-07 | readme 7 | 无光阈值取全暗 1/3 | 嵌入式/硬件责任（TD-002）；App 仅不推断 | —（边界） | 否（非软件项） |
+| R-08 | readme 8 | UART1 调试通道 | 嵌入式责任（TD-002） | —（边界） | 否（非软件项） |
+| G-1 | AA-003 G-1 / D-16 / D-19 | API 26–30 直连 GATT 不再要求 `ACCESS_FINE_LOCATION`；API 31+ 直连需 `BLUETOOTH_CONNECT`；扫描另按 API；缺失状态可见、无静默返回 | T-SW-L0-15..17、L1-12/16、L2-16..20、L3-09 | H/S/D | 是 |
+| G-2 | AA-003 G-2 / D-17 / D-18 | 网关身份经有界发现或手输产生并持久化；硬编码仅一处迁移默认；`gateway_ble_addr` 唯一 GATT 目标；`mac_addr` 语义不变且不互推 | T-SW-L0-18..20、L1-11/15/21/22、L0d-09、L2-21..25、L3-10/11 | H/S/D | 是 |
+| G-3 | AA-003 G-3 / D-20 / D-21 / IC-002 D-03 | 一次读取全部读数按绑定顺序完整转发；数量/ID/顺序不符拒绝且无部分载荷；`0.0/0.0` 为合法读数 | T-SW-L0-21..24、L1-13/19、L0d-10、L2-26..28 | H/S/D | 是 |
+| G-4 | AA-003 G-4 / D-22 / IC-002 §7 | 规则文案逐字为升温方向；严格边界；App 自身“温度湿度下降报警”不变；版本/文档同步 | T-SW-L0-25、L1-14/17、L3-12/13、REG-10 | H/S/D | 是 |
+| T-01a | tasks ITEM-001 验收 1 | 策略纯逻辑；SDK 26/29/30/31/33 × 直连/扫描 × 授予/拒绝矩阵；API<31 直连恒 `canConnect=true` 且缺失项不含定位 | T-SW-L0-15..17 | H | 是 |
+| T-01b | tasks ITEM-001 验收 2 | 直连前置不查 `ACCESS_FINE_LOCATION`；API 31+ 缺 `BLUETOOTH_CONNECT` 按策略拒绝 | T-SW-L1-12、L2-16/17 | S/D | 是 |
+| T-01c | tasks ITEM-001 验收 3 | 按 API 请求已声明权限；仅 31+ 请求蓝牙权限、仅 33+ 请求通知；无不可达分支 | T-SW-L1-16、L2-17/18 | S/D | 是 |
+| T-01d | tasks ITEM-001 验收 4 | 拒绝/不再询问时首页显示缺失项与动作；日志含 `sdkInt`/缺失权限/`needScan`；无单行静默 | T-SW-L2-18/19、L3-09 | D | 是 |
+| T-01e | tasks ITEM-001 验收 5 | 权限恢复无需重启；库与待上传队列不清空 | T-SW-L2-20、L0d-08 | D | 是 |
+| T-01f | tasks ITEM-001 验收 6 | 既有宿主机测试通过、`assembleDebug` 成功、无新增告警 | T-SW-L1-10、L0-26 | H/S | 是 |
+| T-01g | tasks ITEM-001 验收 7 | 真机弹窗/拒绝/GATT 由软件测试独立验收 | T-SW-L2-16..20 | D | 是 |
+| T-02a | tasks ITEM-002 验收 1 | 硬编码 MAC 仅迁移常量一处；连接目标只来自 `gateway_ble_addr`；缺失用默认并标“未确认” | T-SW-L1-11/15、L0d-09、L2-25、L3-11 | H/S/D | 是 |
+| T-02b | tasks ITEM-002 验收 2 | 规范化/校验/排序/去重/绑定状态宿主机覆盖 | T-SW-L0-18..20 | H | 是 |
+| T-02c | tasks ITEM-002 验收 3 | 扫描 ≤10 s；超时/取消/销毁/蓝牙关闭/权限撤销均 `stopScan`，无泄漏 | T-SW-L1-21、L2-21 | S/D | 是 |
+| T-02d | tasks ITEM-002 验收 4 | 无结果显示“未找到网关”并保留手输；不自动连接；多候选显式选择 | T-SW-L2-22/23、L3-10 | D | 是 |
+| T-02e | tasks ITEM-002 验收 5 | 保存后下一轮使用；日志同条记录两地址并标注；不互推/覆盖 | T-SW-L2-24/25、L1-15 | H/S/D | 是 |
+| T-02f | tasks ITEM-002 验收 6 | API<31 仅扫描请求定位并提示总开关；31+ 仅 `BLUETOOTH_SCAN` | T-SW-L0-16、L2-21、L3-10 | H/S/D | 是 |
+| T-02g | tasks ITEM-002 验收 7 | 既有单测通过、构建成功、无新增告警 | T-SW-L1-10、L0-26 | H/S | 是 |
+| T-02h | tasks ITEM-002 验收 8 | 真实广播/候选/保存后重连由真机独立验收 | T-SW-L2-21..25 | D | 是 |
+| T-03a | tasks ITEM-003 验收 1 | 单设备载荷与冻结格式逐字一致 `<epoch>:<temp>:<humi>`（℃/%RH） | T-SW-L0-21、L1-19 | H/S | 是 |
+| T-03b | tasks ITEM-003 验收 2 | 多设备按绑定顺序完整；数量/未知/重复/顺序不符拒绝且无部分载荷 | T-SW-L0-22/23 | H | 是 |
+| T-03c | tasks ITEM-003 验收 3 | 空批次/devCount=0/帧拒绝 → 不发布、不入库、不上传 | T-SW-L0-23、L2-26/27 | H/D | 是 |
+| T-03d | tasks ITEM-003 验收 4 | 转发拒绝只影响发布；本地告警/入库/入队仍执行 | T-SW-L2-27 | D | 是 |
+| T-03e | tasks ITEM-003 验收 5 | 无“最后一笔”状态与 `isZeroValue` 哨兵；`0.0/0.0` 正常处理 | T-SW-L1-13、L0d-10、L2-28 | S/H/D | 是 |
+| T-03f | tasks ITEM-003 验收 6 | Forward/Refuse 全分支宿主机覆盖；既有单测/构建通过 | T-SW-L0-21..24、L1-10 | H/S | 是 |
+| T-03g | tasks ITEM-003 验收 7 | 真实多设备批次与 MQTT 实际发布由真机联调验收 | T-SW-L2-26 | D | 是 |
+| T-04a | tasks ITEM-004 验收 1 | 详情文案逐字为“仅当温度较上次升高超过 0.9℃且无光，或温度超过 35.0℃ 时才上报”，严格边界 | T-SW-L0-25、L3-12 | H/D | 是 |
+| T-04b | tasks ITEM-004 验收 2 | 工程无“较上次下降超过 0.9”；说明书/变更记录同步；App 自身下降报警不变 | T-SW-L1-14、L0-25 | S/H | 是 |
+| T-04c | tasks ITEM-004 验收 3 | 不显示光照/照度/lux 或推断原因；不新增 0.9/35 门控计算 | T-SW-L0-25、L1-20、L3-12 | H/S/D | 是 |
+| T-04d | tasks ITEM-004 验收 4 | 新增/更新宿主机断言；全部通过、构建成功 | T-SW-L0-25/26、L1-10 | H/S | 是 |
+| T-04e | tasks ITEM-004 验收 5 | `versionCode`/`versionName` 递增且产物一致；`file_manifest.txt` 同步 | T-SW-L1-17/24 | S | 是 |
+| T-04f | tasks ITEM-004 验收 6 | 真机界面截图验收 | T-SW-L3-12/13 | D | 是 |
+| C-01 | IC-002 §7 Android 同步 | RF→BLE 向量一致、ID 归因、MQTT 数目拒绝、D-03 多设备、规则文案升温 | T-SW-L2-26..29、L3-12 | H/D | 是 |
+| C-02 | IC-002 D-03 | 不得只保留最后一笔、不得静默错配 | T-SW-L0-21..23、L1-13、L2-26/27 | H/S/D | 是 |
+| DLV-01 | 完整交付 | 正式构建入口成功、APK 可安装启动、资源/依赖装载、关键用户路径可用 | T-SW-REG-07/08 | S/D | 是 |
+| DLV-02 | 完整交付 | 本地库/待发箱/告警/卡片/详情/早报回归不被破坏 | T-SW-REG-03..06、L0-26 | H/D | 是 |
+| DLV-03 | 完整交付 | 真实跨端链路（网关 BLE → App → MQTT → `/upload_data` → 服务持久化与回读） | T-SW-REG-09 | D/V | 是 |
+| DLV-04 | 完整交付 | 版本、APK 身份、文档与清单一致 | T-SW-REG-10、L1-17/24 | S | 是 |
+
+覆盖性结论：readme 的软件相关点（1–6）、AA-003 的 G-1…G-4/D-16…D-23、四项任务的每一条验收条件均有对应用例与证据类别；readme 7/8 与非软件项已在责任边界内标明，不缩成“通过”。无“只针对已实现部分”的裁剪：四项增量在测试设计时尚未实现（见 §3.1），用例按任务验收目标编写。
+
+---
+
+## 3. 被测对象、版本基线与环境事实
+
+### 3.1 版本与 as-built 基线（设计时核对）
+
+| 项 | 事实 | 来源 |
+|---|---|---|
+| 仓库/分支 | `D:\mypro\beiwo2\AIP`，`main`，HEAD `999069b`（工作区干净） | `git status` / `git log` |
+| 源码版本 | `versionCode 9` / `versionName "1.8"`；`minSdk 26`、`targetSdk 34`、`compileSdk 34` | `app/build.gradle.kts` |
+| 四项增量实现状态 | **尚未实现**：`ble/` 目录不存在，`protocol/GatewayIdentity.kt`、`telemetry/BleBatchForwarding.kt` 不存在；`DetailPresentation.REPORT_RULE_TEXT` 仍为“下降” | 源码目录/文件核对 |
+| 当前权限门 | `MqtttService.checkBluetoothPermission()`：API≥31 查 `BLUETOOTH_CONNECT`，否则查 `ACCESS_FINE_LOCATION`；门失败仅一行日志后返回 | `MqtttService.kt:552-590` |
+| 当前连接目标 | 常量 `84:C2:E4:03:02:02`；`getRemoteDevice(...)` 直连；无扫描/绑定/持久化 | `MqtttService.kt:261,598` |
+| 当前批次转发 | 遍历读数时覆盖 `bletime/bleTempData/bleHumiData` 为最后一笔；`isZeroValue` 连续 3 次才处理；发布串为 `time,hum,temp`（逗号分隔） | `MqtttService.kt:743-762,1281-1292` |
+| 当前规则文案 | `DetailPresentation.REPORT_RULE_TEXT` 与 `fragment_device_detail.xml` 的 `tools:text` 仍写“较上次下降超过 0.9℃”；说明书 `:110,:241`、`dengbei_care/readme.txt:26` 同 | 源码/文档核对 |
+| 既有宿主机测试 | 最近一次执行结果：**188 项，0 失败 0 跳过**（24 个套件）；本次复跑 `:app:testDebugUnitTest` 为 `BUILD SUCCESSFUL`（UP-TO-DATE，源码未变） | `app/build/test-results/`；本次命令输出 |
+| 既有验证资产 | `app/src/test/.../verification/` 下 ITEM-001…013 独立验证用例；`evidence/software_verify_*.py`、`software_static_check_*.py` | 仓库文件 |
+| 兼容面 | AES/ECB + `APP_AES_KEY16`、`assets/jd-ca.crt`、`TLSv1.2`、用户名=MAC/密码=MAC+`&^!A:z?`、topic `/<mac>/a/r0|r1|s0`、MTU 240、GATT FFE0/FFE2、`0xA1` 写入头、上传 JSON、SQLite 既有表、65℃、900 s、三条报警文案、`MyPrefs` 既有键 | AA-003 §9、IC-002 §5/§6 |
+
+### 3.2 本次设计时的环境探测（实测，非历史记录）
+
+| 项 | 实测结果 | 证明边界 |
+|---|---|---|
+| 宿主机测试运行器 | `dengbei_care/gradlew --offline :app:testDebugUnitTest` → `BUILD SUCCESSFUL in 18s`（25 tasks up-to-date） | 仅证明运行器可用、源码可编译；不证明新用例存在 |
+| Android 设备（登记入口 `adb -s 12f046690506`） | 在线；`Redmi 8A`，Android 10 / SDK 29 / MIUI V125 | 仅身份与在线；不证明 BLE/业务 |
+| 蓝牙/定位/网络（同一入口） | `bluetooth_on=0`（关闭）、`location_mode=3`（开启）、`Active default network: none`、`pm list packages com.jinyuni` 为空（未安装） | 当前不可执行真机 BLE/UI/MQTT/上传用例 |
+| USB 枚举（`usb_list_devices`） | 手机 `VID_18D1&PID_4EE7` 序列 `12F046690506` 在位；Prolific `COM43` 在位；主机蓝牙适配器在位 | 仅枚举；不证明协议、配对或业务 |
+| 真机测试工具 | `android_app_testing` 对**当前能力** `effective_status = unavailable_for_current_capability`（缺设备工具 `android_test`） | 本能力不能安装/启动/点按；执行能力需该工具 |
+| 只读 ADB | `android_readonly_inspection` 为 `configured_unverified`，本次有界只读查询成功 | 仅身份/状态；不允许安装/改设置 |
+| 网关 | 登记为既有 BLE 网关；上电、无线链路、广播内容、配对与真实地址**均未验证** | 相关用例为 D 类，不可用模拟替代 |
+| broker/HTTP | `8.140.23.253:8883`、`:5000` 已登记为既有服务；本轮无网络且无授权入口，未探测 | V 类证据当前不可得 |
+| 服务端数据库 | 无管理/重部署/DB 直连授权入口 | 行级持久化/回读需获准入口；不得用 App 日志冒充 |
+
+> 以上是“当前条件”，不是测试通过结论。执行阶段的任何用例只有在**当轮**具备前置并产生原始证据后才可判 PASS。
+
+### 3.3 目标设备矩阵与证明边界
+
+| 编号 | 目标 | 可用性 | 能证明 | 不能证明 |
+|---|---|---|---|---|
+| D1 | Redmi 8A / Android 10 / API 29 / 12f046690506 | 在线，未安装 App，蓝牙关、无网络 | API<31 直连权限模型、真实 GATT/扫描（需网关与蓝牙开启）、MIUI 后台长跑、界面 | API 31+ 权限分支；模拟器/主机不能替代 |
+| D2 | Android 12+（API 31+）真机或 API 34 模拟器 | 未确认可用 | `BLUETOOTH_CONNECT/SCAN` 请求/拒绝/设置跳转、通知权限分支 | 模拟器无射频：不能证明真实 GATT、RSSI、配对、MTU |
+| G | 既有 433→BLE 网关 | 上电/身份/广播未确认 | 真实 BLE 读取、候选、多设备批次与发布 | 无法用主机模拟替代“真实链路通过” |
+| S | 已部署 EMQX/HTTP/MySQL | 网络与授权未确认 | MQTT TLS、HTTP 幂等、持久化/回读 | 不能用 App 日志替代服务端持久化 |
+
+---
+
+## 4. 测试层次与总体策略
 
 | 层 | 名称 | 环境 | 目的 |
 |---|---|---|---|
-| L0 | 宿主机纯逻辑 | JVM（`:app:testDebugUnitTest`） | 帧解码/归因/告警时间窗/上传载荷/待发箱编排的确定性与边界，最快回归 |
-| L0d | 设备端存储与接口 | Android 设备（`androidTest` + adb） | SQLite v3 迁移、outbox 幂等、真实时间戳等必须真实 Android 运行时的行为 |
-| L1 | 构建与静态核查 | 本机 Gradle + grep/diff | 可构建、资源合并、兼容面未被改动、旧 IP/死代码/回填消失 |
-| L2 | 服务/链路集成 | Android 设备 + MQTT 刺激 + HTTP 探测 | 解析→归因→告警→落库→上传的真实编排行为与失败不阻塞 |
-| L3 | 展示与文案 | Android 设备（截图/logcat/通知） | 卡片/详情/报告与规则文案的可观测一致性 |
-| E2E | 关键跨系统旅程 | 设备 + broker + 云端 | 见 `artifacts/software_e2e_plan.md`（J-1..J-6），需端到端证据 |
-| REG | 综合回归 | 上述组合 | 既有功能与兼容面不被破坏 |
+| L0 | 宿主机纯逻辑 | JVM `:app:testDebugUnitTest --offline` | 权限策略、网关身份、批次转发、规则文案、既有纯逻辑回归 |
+| L0d | 设备端存储与偏好 | 真机 debug 包（instrumented 或 `run-as` 导出） | SQLite v3、真实时间戳、待发箱、`gateway_ble_addr` 持久化、权限恢复不清库 |
+| L1 | 构建与静态核查 | Gradle + 受限 `rg`/读取 | 可构建、无新增告警、静态禁词/唯一来源/兼容面 |
+| L2 | 设备与链路集成 | D1/D2 + 网关 + broker/HTTP | 权限流程、发现绑定、真实批次、转发拒绝、零值、既有编排回归 |
+| L3 | 展示与文案 | D1/D2 截图 + logcat/uiautomator | 首页链路状态、网关选择、详情规则、报警面板 |
+| REG | 完整交付回归 | 上述组合 | 构建/安装/启动/关键路径 + 既有功能与兼容面 |
+| E2E | 跨系统旅程 | 设备 + 网关 + broker + 服务 | 见 `artifacts/software_e2e_plan.md`（E2E-SW-003） |
 
-原则：先 L0/L0d/L1，再 L2/L3，最后 E2E。凡涉及链路的结论，至少要有两类独立证据（App 侧状态/截图 + 日志或存储或 HTTP 响应），禁止单点证据定罪。刺激优先用**可重复、可脚本化**的软件手段（MQTT 载荷注入、HTTP 探测、adb 截图/logcat），只有 BLE 读取必须依赖真实网关。
+原则：
+
+1. **真实环境优先**：本轮涉及真机、既有网关与已部署服务。具备可访问入口与授权时，必须在该目标上规划当前版本的真实刺激与观察；主机单测/模拟器只用于局部逻辑、边界与故障补充，并逐项注明其不能证明的真实链路。
+2. **两类独立证据**：凡涉及链路的结论，至少两类独立证据（App 状态/截图/日志 + 本地库/HTTP/ broker 侧记录）。
+3. **刺激可重复**：优先使用可脚本化软件手段（MQTT 注入、HTTP 探测、`adb` 截图/logcat、debug 包数据库导出）；真实 BLE 必须使用真实网关，不得以注入替代“BLE 链路通过”。
+4. **范围受限与有限等待**：搜索限定 `dengbei_care/app/src`、排除 `iOS开发资料/`；每条命令设定显式超时（普通只读 ≤60 s，构建/测试按任务规模设上限）；超时即记录，不原样无限重试。
+5. **不伪造**：空抓包、无结果、未执行均如实记录为 NOT EXECUTED/NOT PROVEN，不写成通过。
 
 ---
 
-## 4. 测试设计明细
+## 5. 用例编号约定
 
-用例编号（T-SW-…）仅作本文件内部索引，不代表 Runtime 任务/节点。每项给出行为、前置/资源、方法、证据与判定；前置条件是否满足决定执行时的适用性。
+- 用例编号（`T-SW-*`）仅作本文件内部索引，不代表 Runtime 任务/节点。
+- “前置”决定执行时的适用性，不改变用例目标；前置缺失记 NOT EXECUTED。
+- 既有 TD-SW-002 用例编号继续有效；本版新增从 `L0-15`、`L0d-08`、`L1-10`、`L2-16`、`L3-09`、`REG-07` 起编。
 
-### 4.1 L0 · 宿主机纯逻辑（JVM）
+---
 
-| 编号 | 行为 | 前置/资源 | 方法 | 证据 | 判定 |
+## 6. 用例设计
+
+### 6.1 L0 · 本轮新增纯逻辑（JVM）
+
+| 编号 | 行为 | 前置 | 方法/刺激 | 证据 | 判定 |
 |---|---|---|---|---|---|
-| T-SW-L0-01 | 聚合帧头与帧长规则 | 无（纯函数） | 构造头块 16 B：`gwId6` + `devCount@6`；分别给 `size == 16*(1+devCount)`（恰等）、`size > expected`（协议栈读满尾部填充）、`size < expected`（截断） | JUnit 断言 | 恰等与更长均按 `devCount` 取数成功；不足必须拒绝且**不产生任何读数**（无异常外泄为"成功空结果"或明确拒绝）。**devCount == 0 必须拒绝该帧且无读数**（按任务清单明确要求） |
-| T-SW-L0-02 | 每设备 8 B 字段解码 | 同上 | 取前 8 B：`id(4B 原字节序)`、`hum u16be@4`、`temp s16be@6`。向量：temp `+25.0`(0x00FA)→25.0、`-10.0`(0xFF9C)→-10.0、`0.0`→0.0、`125.0`(0x04E2)→125.0、`-40.0`(0xFE70)→-40.0；hum `0`→0.0、`60.0`(0x0258)→60.0、`100.0`(0x03E8)→100.0；同时校验 devIdHex 为 8 位大写无分隔且与原字节序一致 | 同上 | 每个向量逐位相等；负温必须为负数（不得出现 6 万级大数）；湿度不得与温度互换 |
-| T-SW-L0-03 | 多设备解码与归属透传 | 同上 | 3 台设备的帧（devCount=3，尾部带填充），校验第 i 条读数的 devId 与 i 无关（打乱帧内设备顺序，读数归属随之改变而**不按下标绑定**） | 同上 | 每条读数携带自身 devId；不存在"位置即身份"的隐含依赖 |
-| T-SW-L0-04 | 归因：数目一致 | 无 | `savedIds`（N 个）与 `temps`/`humis` 各 N 个，含负数温度与 0 值 | JUnit 断言 | 得到 N 条 `(devId, temp, humi)`，devId 取自 `savedIds` 顺序且与下标无关地随读数下沉 |
-| T-SW-L0-05 | 归因：拒绝整批 | 无 | ①`temp 多 1`；②`humi 少 1`；③`temps` 为空；④`humis` 为空；⑤含非数值（`"abc"`/空串/多逗号）；⑥时间字段非法或缺失 | 同上 | 六种情形一律**拒绝整批**：返回空结果，且调用方不落库/不上传/不报警（以调用链断言或集成用例验证，见 T-SW-L2-03） |
-| T-SW-L0-06 | 告警：未设置报警 | 无 | 参数 `dengbeialarm=0` 且 `yuzhialarm=0` | 同上 | 文案 `未设置报警`、级别 NORMAL；不落 `alarm_events` |
-| T-SW-L0-07 | 告警：时间窗下降（核心改动） | 无 | 固定 `tempdrop=2`、`humdrop=1`。构造"当前读数 now"与候选历史样本：<br>①基准落在 `[now-5min-slack, now-5min]` 且 `base.temp-cur.temp > 2` 且 `base.humi-cur.humi > 1` → 触发；<br>②基准恰好等于阈值（差 == tempdrop 或 == humdrop）→ **不触发**；<br>③仅温度满足、湿度不满足（或反之）→ **不触发**（AND 语义保持现状）；<br>④基准早于 `now-窗口-slack`（超出回溯容差）→ 5/10/15 均不成立；<br>⑤**负对照**：3 个样本但时间都在最近 1 分钟内（样本条数够、时间窗不够）→ 不触发（证明已从"第 N 个样本"改为时间窗）；<br>⑥无任何历史 → 不触发且不抛错 | 同上 | ①⑤⑥ 与 §2.1-S5 一致；触发时文案 `温度湿度下降报警`、级别 WARNING；判定过程**不产生任何伪造温度/湿度**（输出不含合成样本） |
-| T-SW-L0-08 | 告警：阈值超限（保持现状） | 无 | `tempmax=35`、`tempmin=29`、`hummax=75`、`hummin=40`：`36`/`34.9`/`76`/`39.9` 等超限 → 触发 `温湿度超限报警`；**恰好等于** 35.0 / 29.0 / 75.0 / 40.0 → 不触发 | 同上 | 严格 `>`/`<` 语义；与改动前一致 |
-| T-SW-L0-09 | 告警：优先级与文案（保持现状） | 无 | 两种报警都启用时，构造"下降成立且超限成立"的输入；分别单独成立的两种输入 | 同上 | 单独成立 → 各自文案；同时成立 → **以改动前实现的优先级为基线**（现行为：先下降、后超限，超限文案覆盖下降文案）。若实现给出不同优先级，记录为差异并交需求方确认，**不得由测试自行改判** |
-| T-SW-L0-10 | 告警：紧急（保持现状） | 无 | `65.0`（等于）、`64.9`、`65.1`、`100.0` | 同上 | 仅 `> 65.0` 触发，文案 `紧急报警，温度超过65度，谨防火灾`、级别 ALARM；判定结果标记"每次通知"（去抖不在本层） |
-| T-SW-L0-11 | 上传载荷构造 | 无 | 用归因后的读数集构造请求体 | 同上 | JSON 字段名恰为 `phone`/`mac`/`readings[{devId,time,temperature,humidity}]`；`time` 为 Unix 秒整数；温度为 ℃（x10/10.0 后一位小数内）、湿度为 %RH；`devId` 来自记录自身；空读数集不产生请求 |
-| T-SW-L0-12 | 上传编排（伪 Api + 内存 Outbox） | 无（依赖注入） | ①成功（2xx）→ 记录被删除；②失败（超时/5xx）→ 保留且 `attempts+1`、`next_attempt_at` 落在退避区间（1 min 起、30 min 上限）；③达最大尝试次数后不再自动重试；④单批条数上限（50）分批；⑤守护关闭 → 不入队不发请求；⑥手机号为空 → 不入队不发请求；⑦同一 `(dev_id,time)` 重复入队只保留一条；⑧串行：同一时刻不产生并发重复请求 | 断言 + 伪 Api 调用计数 | ①–⑧ 全部与 §2.1-S8 一致；失败路径对调用方不抛出可见异常 |
-| T-SW-L0-13 | 服务器常量与旧 IP 清零 | 无 | 断言 `MQTT_BROKER_URI == "ssl://8.140.23.253:8883"`、`HTTP_BASE_URL == "http://8.140.23.253:5000"`；全源码/资源不含 `117.72.84.210` | 断言 + `grep` | 全部成立；常量集中一处 |
-| T-SW-L0-14 | 设备状态展示逻辑 | 无（`DeviceState` 逻辑；若 MPAndroidChart 的 `Entry` 在 JVM 加载失败，则下沉到 L0d/L3 验证） | `latestTime==0` → 未收到语义；`latestTime = now-40min` → **不产生"离线"**，产出相对时间标签；`alarmSeverity` 到 未收到/正常/警告/紧急 的映射 | 同上 | 无任何"30 min ⇒ 离线"的分支；相对时间随年龄变化 |
+| T-SW-L0-15 | 权限策略：直连矩阵 | 无（纯函数） | `evaluate(sdk, granted, needScan=false)`，sdk ∈ {26,29,30,31,33}，granted ∈ {∅,{CONNECT},{SCAN},{CONNECT,SCAN},{FINE_LOCATION}} | JUnit 断言 | sdk<31：`canConnect=true` 且 `missing` **不含** `FINE_LOCATION`/`CONNECT`/`SCAN`；sdk≥31：`canConnect == (CONNECT ∈ granted)`，缺失时 `missing` 含 `CONNECT` 且不含 `FINE_LOCATION`。26/29/30 行为一致 |
+| T-SW-L0-16 | 权限策略：扫描矩阵 | 无 | `needScan=true`，同上 sdk/授予组合 | 同上 | sdk<31：`FINE_LOCATION` 未授予 → `missing` 含之，`requiresLocationServices=true`；已授予 → 扫描缺失为空但仍 `requiresLocationServices=true`（调用方须查定位总开关）；`canConnect` 不因扫描权限变化。sdk≥31：`missing` 含 `BLUETOOTH_SCAN`（未授予时），`requiresLocationServices=false`，`canConnect` 仅由 `CONNECT` 决定 |
+| T-SW-L0-17 | 权限策略：纯函数性、提示语义与通知边界 | 无 | 同输入重复调用；反射/字节码检查无 `android.*` 类型；`missing` 各项与 `userMessage` 对应；`POST_NOTIFICATIONS` 拒绝/授予 | 断言 + 反射 | 输出确定、不修改入参；`canConnect=false` 时 `userMessage` 非空且含可执行动作（授权/开蓝牙/开定位/去设置之一）；`missing` 顺序稳定；`POST_NOTIFICATIONS` 不改变 `canConnect`，且不作为 BLE 阻断项；API<33 不请求通知 |
+| T-SW-L0-18 | 网关身份：规范化与校验 | 无 | 向量：`84:c2:e4:3:2:2`、`84C2E4030202`、`84-C2-E4-03-02-02`、首尾空白 → 均为 `84:C2:E4:03:02:02`；非法：空/null/11/13 位/非法字符/段长>2/连续分隔符/首尾分隔符；`.` 分隔按实现文档（若支持须一致） | 同上 | 合法输入规范化后恒为 6 组 2 位大写 HEX；非法输入 `normalize==null` 且 `isValid=false`；合法与非法集合无交集；不产生部分规范化结果 |
+| T-SW-L0-19 | 网关身份：候选排序与去重 | 无 | 乱序候选（含 FFE0 真/假、RSSI 高低、同 MAC 重复、空名、非法 MAC） | 同上 | 按规范化 MAC 唯一；FFE0=true 组优先；组内 RSSI 降序；完全并列按 MAC 升序稳定；重复 MAC 保留最强 RSSI（FFE0 取或）；非法 MAC 不进入可选列表；输入列表不被修改 |
+| T-SW-L0-20 | 网关身份：绑定状态与不互相推导 | 无 | `planBinding(selected, ...)`：null/空白 → 未配置；合法 → 已选择/已保存；非法 → 非法；另测 `mac_addr`（12 位 HEX，如 `1010100000A1`）被设置时 `gateway_ble_addr` 不被写入或推导 | 同上 + 反射 | 三态判定明确且互斥；工程内不存在“平台 MAC ↔ BLE MAC”自动换算 API；`mac_addr` 赋值不改变连接目标；迁移默认值与用户清除可区分（见 T-SW-L0d-09）。`boundIds` 若无可观察语义须由实现说明，测试不臆造 |
+| T-SW-L0-21 | 批次转发：单设备冻结载荷 | 无 | `plan([sample(A,24.5,55.0)], [A], 1699999999)`；另测 T=-3.2、T=0.0/H=0.0 | JUnit 断言 | `Forward("1699999999:24.5:55.0")`；负温保留 `-`；恒一位小数；**冒号分隔、温度在前湿度在后、无空格**；`Refuse` 不得携带载荷字段。**注意 F-01**：当前 as-built 发布串为 `time,hum,temp`，与本冻结格式不一致，实现必须按 IC-002/任务验收改正 |
+| T-SW-L0-22 | 批次转发：多设备按绑定顺序 | 无 | `boundOrder=[A,B,C]`，samples 同序；值含负温/0；时间透传 | 同上 | `Forward("<time>:<ta,tb,tc>:<ha,hb,hc>")`；顺序即绑定顺序；无截断/重排；时间原样 |
+| T-SW-L0-23 | 批次转发：Refuse 全分支 | 无 | ①samples 空；②bound 空；③数量不等；④未知 ID；⑤重复 ID；⑥集合相同但顺序不同；⑦重复且数量不等（优先级） | 同上 | 每种均 `Refuse`，无任何部分载荷；原因与设计枚举一致（`EMPTY_BATCH`/`NO_BOUND_DEVICE`/`COUNT_MISMATCH`/`UNKNOWN_ID`/`DUPLICATE_ID`/`ORDER_MISMATCH`，优先级须文档化）；异常输入不抛未捕获异常 |
+| T-SW-L0-24 | 批次转发：纯度、本地化与确定性 | 无 | 默认 `Locale` 设为 `Locale.GERMANY`/`Locale.CHINA` 各测一次；重复调用；50 台批次；输入列表快照比对 | 同上 | 小数分隔符恒为 `.`（实现须显式 `Locale.ROOT/US`）；同一输入恒同输出；不修改入参；50 台不截断（若设上限须按设计拒绝而非静默截断） |
+| T-SW-L0-25 | 规则文案、禁词与 App 报警边界 | 无 | 读取 `DetailPresentation.REPORT_RULE_TEXT`、详情布局文本、说明书/变更记录规则句、三条报警文案常量 | 断言 + 文件读取 | 规则文案逐字等于 `采样周期 3 分钟。仅当温度较上次升高超过 0.9℃且无光，或温度超过 35.0℃ 时才上报；未满足条件时不会上报，因此可能长时间没有新数据。`；含“升高”，不含 `较上次下降`/`下降超过 0.9`/`下降 >0.9`；含 `35.0℃`；`DetailPresentation` 与详情布局中无 `lux`/`光照`/`照度`（规则原文“无光”允许）；无 App 推断的上报原因（如“因…上报”）；App 自身三条报警文案逐字不变；说明书/变更记录规则句同步为升温且注明严格边界 |
+| T-SW-L0-26 | 既有宿主机用例回归 | 无 | `:app:testDebugUnitTest --offline` | 测试报告 + 退出码 | 退出码 0；**188 项既有 + 本轮新增**全部通过、0 失败 0 跳过；旧方向断言必须被**更正**为升温（`DetailPresentationTest`、`DetailPresentationItem012VerificationTest`），不得以删除/跳过掩盖；任何跳过须逐条说明并视为未验证 |
 
-### 4.2 L0d · 设备端存储与接口（Android 设备）
+### 6.2 L0 · 既有用例的适用性（TD-SW-002 保留）
 
-| 编号 | 行为 | 前置/资源 | 方法 | 证据 | 判定 |
+| 既有用例 | 本轮是否适用 | 说明 |
+|---|---|---|
+| T-SW-L0-01..03（帧解码/多设备归属） | 适用 | 本轮不改字节布局；作为 G-3 的上游输入回归 |
+| T-SW-L0-04..05（MQTT 归因/拒绝整批） | 适用 | G-3 不得破坏 MQTT 路径；与 `BleBatchForwarding` 互不影响 |
+| T-SW-L0-06..10（告警） | 适用 | App 自身下降报警/阈值/紧急语义保持；D-22 要求不被文案改动污染 |
+| T-SW-L0-11..12（上传载荷/编排） | 适用 | 完整交付回归 |
+| T-SW-L0-13（服务器常量） | 适用 | 本轮不应改服务器地址；L1-23 复核 |
+| T-SW-L0-14（卡片状态逻辑） | 适用 | 完整交付回归 |
+
+### 6.3 L1 · 构建与静态核查
+
+| 编号 | 行为 | 前置 | 方法 | 证据 | 判定 |
 |---|---|---|---|---|---|
-| T-SW-L0d-01 | v2 → v3 迁移保数据 | 已授权设备；instrumented 测试或 debug 包 + adb | 构造 v2 库（写入若干 `temperature` 行与 `alarm_events` 行）→ 以 v3 打开 | 迁移前后行内容/计数、`PRAGMA table_info`/`index_list` | 历史温湿度与报警记录可查且值不变；`pending_uploads` 存在且 `PK(dev_id,time)`；`next_attempt_at` 索引存在；反复打开不报错 |
-| T-SW-L0d-02 | v1 → v3 迁移 | 同上 | 构造 v1 库（`temperatureA` 结构）→ 打开 v3 | 同上 | 走既有回退/迁移路径，不崩溃；结果可查询（数据可能按既有策略回填/重建，记录实际结果而非假定保留） |
-| T-SW-L0d-03 | 迁移异常回退不崩溃 | 同上 | 制造冲突对象使迁移路径抛错（例如预置与 `pending_uploads` 同名的视图/表） | logcat + 重新打开成功 | 捕获异常、按既有回退策略处理、App 不崩溃、后续读写可用 |
-| T-SW-L0d-04 | 单条真实时间戳写入 | 同上 | 以 `(devId, time=T, temp, humi, storeflag=1)` 写入 | 查询行的 `time` | `time == T`；**不存在 `T-60`/`T-120` 等回填**；库中同 `(devId,time)` 重复写入仅一行；`storeflag != 1` 写入 0 行 |
-| T-SW-L0d-05 | 待发箱幂等与有序 | 同上 | 同 `(dev_id,time)` 入队两次；入队多条不同 `next_attempt_at`；`peekBatch` 后 `ack`；`markFailed` | 行数与字段 | 重复入队仅 1 行；`peekBatch` 按 `next_attempt_at` 有序且不超过批上限；`ack` 后行消失；`markFailed` 递增 `attempts` 并推后 `next_attempt_at` |
-| T-SW-L0d-06 | 既有查询 API 未破坏 | 同上 | 调用图表范围查询、`getAllDevicesLatest`、`getSparkline`、`getDailyStats`、`getAlarmEvents` | 返回结果 | 与 v2 基线在相同数据下结果一致（结构/数量/值） |
-| T-SW-L0d-07 | 既有 5 个端点契约 | 同上（Retrofit 接口反射/静态断言） | 断言 5 个端点路径、方法、数据类字段名 | 断言结果 | 与 §1.2 基线逐字段一致；新增 `/upload_data` 为纯追加 |
+| T-SW-L1-10 | 构建、全量单测、告警、产物 | Gradle/JDK/SDK | `./gradlew :app:testDebugUnitTest --offline`、`:app:assembleDebug --offline`、`:app:compileDebugKotlin --offline --rerun` | 原始日志、退出码、APK 列表、JUnit XML | 两条 Gradle 命令退出码 0；新增用例全部通过；编译告警集合与基线（既有 11 条）一致，无新增；APK 生成 |
+| T-SW-L1-11 | 硬编码 MAC 唯一迁移常量 | 源码 | 在 `app/src/main` 检索 `84:C2:E4:03:02:02`（仅作字面核对，范围受限） | 命中位置与上下文 | 恰 1 处，位于迁移默认常量定义；`connectToBluetoothDevice`/连接入口不直接引用该常量，而引用 `gateway_ble_addr` 读取结果；`app/src/test`、`iOS开发资料/` 不计入产品判定但须分别记录 |
+| T-SW-L1-12 | 直连路径权限口径唯一、无静默返回 | 源码 | 检索 `ACCESS_FINE_LOCATION`、`checkBluetoothPermission`、`isBluetoothBusy`、`connectToBluetoothDevice`、`Bluetooth permission not granted` | 关键行 + 代码路径审阅 | `MqtttService` 直连路径不以 `ACCESS_FINE_LOCATION` 为前置（扫描流程除外）；`checkBluetoothPermission/isBluetoothBusy/connectToBluetoothDevice` 共用同一策略结果；权限失败时写入可读状态且日志含 `sdkInt`/缺失权限/`needScan`；不存在“仅一行日志后 return”的路径 |
+| T-SW-L1-13 | 无“最后一笔”与零值哨兵 | 源码 | 检索 `bleTempData`/`bleHumiData`/`bletime`/`bletimebkp`/`isZeroValue`/`bleZeroCount` | 命中 | `app/src/main` 0 命中；转发状态只存在于 `BleBatchForwarding` 的纯函数结果中；`0.0/0.0` 无特殊分支 |
+| T-SW-L1-14 | 规则方向禁词与文档同步 | 源码 + 文档 | 精确检索：`较上次下降`、`下降超过 0.9`、`下降 >0.9`；允许 `温度湿度下降报警`、`tempdrop` 等 App 报警语境 | 命中清单 | 规则语境 0 命中；App 报警语境保留；`用户使用说明书.md`、`dengbei_care/readme.txt` 的规则句为升温且含严格边界；`SensorCadence` 等注释同步 |
+| T-SW-L1-15 | 连接身份唯一、两身份不互推 | 源码 | 检索 `gateway_ble_addr`、`mac_addr`、`getRemoteDevice`；审阅写入点 | 写入/读取点清单 | `gateway_ble_addr` 是唯一 GATT 目标来源；`mac_addr` 仅用于 topic 与 `/upload_data.mac`；无任何代码路径由一方写另一方；日志同条记录两者并分别标注 |
+| T-SW-L1-16 | 权限请求集合与 Manifest 一致、无不可达分支 | 源码 + Manifest | 对照 `requestPermissions` 调用与 `<uses-permission>`；按 API 条件审阅 | 集合对照表 | 请求集合 ⊆ Manifest 已声明；`BLUETOOTH_CONNECT/SCAN` 仅 sdk≥31；`POST_NOTIFICATIONS` 仅 sdk≥33；`ACCESS_FINE_LOCATION` 仅用于 API<31 扫描流程；无“通知回调里再请求定位”等不可达/无关分支 |
+| T-SW-L1-17 | 版本与清单 | 构建脚本/APK/清单 | 读取 `versionCode/versionName`；解包 APK 的 `AndroidManifest.xml`；核对 `file_manifest.txt` | 值 + APK 摘要 + 清单条目 | `versionCode>9` 且 `versionName>1.8`；APK 内版本与源码一致；`file_manifest.txt` 已登记本轮新增/修改文件且 active 路径存在 |
+| T-SW-L1-18 | 兼容面 diff | 改动前后源码/资源 | 对比 AES/模式/密钥、`jd-ca.crt` 摘要、`TLSv1.2`、用户名/密码拼接、topic、MTU、GATT UUID、`0xA1` 头、上传 JSON、SQLite 既有 DDL、65℃、900 s、三条报警文案、既有 `MyPrefs` 键 | diff/摘要 | 全部与基线一致；任何差异须有设计决策支撑，否则记为偏差 |
+| T-SW-L1-19 | BLE 转发载荷格式契约核对 | 源码 | 读取 `BleBatchForwarding` 与 `connectToBroker` 发布串；与 IC-002 §6/任务验收比对 | 逐字字符串 | 发布串为 `<epoch>:<temps>:<humis>`，冒号分隔、温度在前；**当前 as-built 的 `time,hum,temp` 不得保留**（F-01）；小数点为 `.` |
+| T-SW-L1-20 | 无第二套上报门控 | 源码 | 检索 App 中 `0.9`/`9`/`35` 相关比较；审阅 `processTemperatureHumidityData` | 命中清单 | App 不实现“传感器是否上报”的门控；`35.0` 仅用于详情高温强调；App 自身报警阈值（默认 35/29 等）属既有功能，保持不变且不冒充实测上报判据 |
+| T-SW-L1-21 | 扫描有界与停止路径静态核对 | 源码 | 审阅 `GatewayDiscovery` 的启动/超时/取消/`onDestroy`/蓝牙关闭/权限撤销/异常分支 | 分支清单 | 每条结束路径都有 `stopScan` 与回调释放；存在 ≤10 s 上限常量；无未取消的延时任务；不因无结果自动重试成无限扫描 |
+| T-SW-L1-22 | 扫描唯一性 | 源码 | 检索 `BluetoothLeScanner`/`startScan`/`ScanFilter`；区分既有 Wi-Fi 扫描 | 命中 | BLE 扫描只存在于 `GatewayDiscovery`；不新增第二处 BLE 扫描；既有 Wi-Fi 配网扫描不受本项影响 |
+| T-SW-L1-23 | 服务常量与网络安全配置未变 | 源码/资源 | 检索 `8.140.23.253`、`network_security_config.xml` 放行域 | 命中 | 服务器地址仍只在 `CloudConfig` 定义；明文放行集合仍为既有 3 个主机，无新增；旧主机不成为连接目标 |
+| T-SW-L1-24 | 清单与仓库卫生 | 仓库 | 逐行检查 `file_manifest.txt` active 条目路径存在（排除 coarse 目录）；`git status` 无未提交人工作业（由 Runtime 提交前核对） | 检查输出 | 0 条无效 active 路径；无八进制转义残留；本轮修改文件均已登记 |
 
-### 4.3 L1 · 构建与静态核查
+### 6.4 L0d · 设备端存储与偏好
 
-| 编号 | 行为 | 前置/资源 | 方法 | 证据 | 判定 |
+既有 T-SW-L0d-01..07 继续适用。本轮新增：
+
+| 编号 | 行为 | 前置 | 方法 | 证据 | 判定 |
 |---|---|---|---|---|---|
-| T-SW-L1-01 | 构建通过 | Gradle + JDK + SDK | `./gradlew :app:assembleDebug` | 构建日志、产物 APK | BUILD SUCCESSFUL；资源合并无错（可捕获 `network_security_config.xml` 语法问题） |
-| T-SW-L1-02 | 宿主机单测通过 | 同上 | `./gradlew :app:testDebugUnitTest` | 测试报告、通过/失败计数、退出码 | 退出码 0；本次新增用例全部通过；无跳过掩盖 |
-| T-SW-L1-03 | 单一解析入口 | 源码 | `grep -rn "parseHexData"`；核对 BLE 与 MQTT 两条入口均只经帧解码模块 | grep 输出 | 定义与调用点均为 0（含注释残留；如保留注释须单独说明并由实现侧决定，测试以"无功能入口"为准） |
-| T-SW-L1-04 | 无 60 s 回填残留 | 源码 | `grep -rn "\* 60L\|60L)"` 定位入库时间戳路径 | grep 输出 | 时间戳构造不再含 60 s 间隔回填 |
-| T-SW-L1-05 | 旧 IP 清零 | 源码/资源 | `grep -rn "117.72.84.210"` 全工程 | grep 输出 | 0 命中 |
-| T-SW-L1-06 | 明文放行最小化 | `network_security_config.xml` | 解析并枚举放行域 | 文件内容 | 含 `8.140.23.253`，且仍含 `117.72.84.210`、`192.168.4.1`（按设计"追加"）或按实现说明；**不得新增其它主机** |
-| T-SW-L1-07 | 兼容面 diff | 改动前后源码 | 对比：AES 密钥/模式、`jd-ca.crt` 内容摘要、TLS 版本、用户名/密码拼接、topic 模板、MTU、GATT UUID、`0xA1` 头、时间校准 payload、65℃ 阈值、900 s、报警文案字面值、`MyPrefs` key、`ApiService` 既有 5 端点 | diff + 摘要 | 全部与基线一致；任何差异需有对应设计决策支持 |
-| T-SW-L1-08 | 无光照信息呈现 | 源码/资源 | `grep` 光照/lux/无光 相关字符串与字段；确认 App 未出现光照门控重算 | grep + 关键函数审阅 | 界面与逻辑中不出现光照/lux/无光判定；不出现第二套 0.9℃/35℃ 门控计算 |
-| T-SW-L1-09 | 版本与文档 | `app/build.gradle.kts`、`dengbei_care/readme.txt`、`用户使用说明书.md`、`file_manifest.txt` | 读取并比对 | 文件内容 | `versionCode`/`versionName` 递增；文档描述了 3 分钟采集与条件上报、云同步；清单已登记新增/修改文件 |
+| T-SW-L0d-08 | 权限变化不清空本地数据 | 真机 debug 包；库中有 `temperature`/`alarm_events`/`pending_uploads` 行 | 记录三类行数 → 撤销/授予蓝牙权限（或停止/恢复守护）→ 等待至少一轮 → 再查 | `run-as` 导出 DB + 查询结果 | 三类行数与内容不变；服务继续轮询；无 `DROP`/`DELETE`/重建 |
+| T-SW-L0d-09 | `gateway_ble_addr` 持久化、迁移与清除区分 | 真机 debug 包 | ①升级/首次运行（键从未存在）→ 读默认并标注“未确认”；②保存候选/手输 → 键为规范化值；③清除 → 回到未配置，**不得**静默回到旧常量；④重启 App → 读取已保存值 | `MyPrefs` XML/`run-as` + 界面 | 四步行为符合 D-17/§6.2；迁移默认只在“从未迁移”时生效（需迁移标记，见 F-02）；保存值规范化为大写冒号 MAC |
+| T-SW-L0d-10 | `0.0/0.0` 正常入库 | 真机 debug 包；守护开 | 以 `(devId, time=T, 0.0, 0.0, storeflag=1)` 写入一次并重复一次；再以 `storeflag≠1` 写入 | 查询行 | 首次写入 1 行且 `time==T`；重复写入仍 1 行；守护关闭 0 行；无“连续 3 次”条件 |
 
-### 4.4 L2 · 服务与链路集成（设备 + MQTT/HTTP 探测）
+### 6.5 L2 · 设备与链路集成
 
-前置：设备已授权、已装 debug 包、已注册手机号且 `mac_addr` 已绑定至少 1 个设备 ID（`MacIdBook` 非空）、守护开关状态可控、`adb` 可截图与抓 logcat。
+前置（逐用例可收窄，但不得替代）：D1 或 D2 已安装**当前版本** debug 包；蓝牙/GATT 与网络按用例开启；测试账号/绑定数据为非生产；网关按用例上电；所有设备状态改变由获准执行者完成并记录。当前能力无 `android_app_testing`，故本组在**本设计阶段均未执行**。
 
-| 编号 | 行为 | 前置/资源 | 方法 | 证据 | 判定 |
+| 编号 | 行为 | 前置 | 刺激/步骤 | 证据 | 判定 |
 |---|---|---|---|---|---|
-| T-SW-L2-01 | 新 broker 连通与认证 | 设备联网；测试 MQTT 客户端（或真实网关） | 启动 App，观察连接过程 | logcat、界面"网关：已联网"（`_mqtt_broker_state`） | 连接 `ssl://8.140.23.253:8883` 成功；TLS 校验基于 `jd-ca.crt`；用户名/密码规则不变；失败时状态为"断网"而非静默 |
-| T-SW-L2-02 | MQTT 载荷正常摄入 | 测试发布者（凭据/主题见 §6-4） | 发布 `T:24.5:55.0`（单设备绑定） | logcat、卡片显示、入库行 `time == T` | 解析成功、按绑定 ID 归因、入库时间为 payload 首段 |
-| T-SW-L2-03 | 数目不一致拒绝整批 | 同上 | 发布 `T:24.5,25.5:55.0`（温度 2 个、湿度 1 个、绑定 1 个） | logcat（应为拒绝整批）+ 入库行数 + 卡片 + 上传 | **无新增入库行**、无上传请求、无告警、卡片不被错误更新；日志明确拒绝而非仅 warning |
-| T-SW-L2-04 | 非法数值拒绝整批 | 同上 | 发布 `T:abc:55.0`、`T::55.0`、`T:24.5,` 等 | 同上 | 一律拒绝整批，不落库不上传 |
-| T-SW-L2-05 | 负温与 0 值路径 | 同上 | 发布 `T:-3.2:55.0`，以及 `T:0.0:0.0` | 同上 + 上传载荷 | 负温正确显示与入库；`0.0/0.0` 的行为按设计 §8"不以 0/0 作为无数据哨兵"验证（**条件项，见 §8-G1**：若实现保留"连续 3 次 0 值才处理"的旧门控，应记录实现与设计不一致，测试不得据未确认的产品语义单独判缺陷） |
-| T-SW-L2-06 | 越界读数处理 | 同上 | 发布 `T:130.0:55.0`、`T:24.5:120.0` | 同上 | 按设计 §8 记录日志并丢弃该条（不落库/不上传）——**条件项，见 §8-G2** |
-| T-SW-L2-07 | 守护关闭门控 | App 内关闭守护 | 发布读数 | 入库/待发箱/上传/通知 | 不落库、不入队、不请求、不通知；已存在历史不回溯删除 |
-| T-SW-L2-08 | 无手机号门控 | 清空 `registerphone`（仅测试设备） | 发布读数 | 待发箱/上传 | 不入队、不发起请求 |
-| T-SW-L2-09 | 断网不丢读数（待发箱） | 可断网（飞行模式） | 守护开启下发布多条读数（不同 `(dev_id,time)`）→ 观察待发箱 → 恢复网络 | 待发箱行数、恢复后行数、HTTP 响应、logcat | 断网期间读数进入待发箱且不丢失；App 不崩溃、BLE/MQTT 主链路继续（前台服务存活）；恢复后成功上传并删除；重复上传由服务端唯一键兜底 |
-| T-SW-L2-10 | 重试退避与上限 | 同上 + 可控失败（指向不可达/超时） | 使上传持续失败，观察 `attempts`/`next_attempt_at` 与请求间隔 | 待发箱字段 + 请求时序（logcat/服务器访问日志） | 退避随次数增长且不超上限；达上限后停止自动重试并保留数据；对用户不产生阻塞或崩溃 |
-| T-SW-L2-11 | 上传不阻塞主链路 | 同上 | 上传失败状态下继续注入读数 | logcat 时序、界面可用性 | 读数处理与告警仍按时发生；上传失败不抛出到主链路 |
-| T-SW-L2-12 | 云上传契约与幂等 | `/upload_data` 可达 | 以构造载荷直接 `POST`：①新 `(devId,time)`；②同一载荷重复一次；③字段名/单位核对 | HTTP 状态码 + 响应体（`inserted`） | ①成功且 `inserted=1`（或等价成功语义）；②重复请求 `inserted=0` 且不报错；③字段名/单位与 §2.1-S8 一致 |
-| T-SW-L2-13 | 时间窗下降告警（集成） | 同上 | 通过 MQTT 注入带受控时间戳的读数：先 `T-30min` 温度 30.0/湿度 60.0，再 `T` 温度 27.0/湿度 55.0（差 3.0℃/5.0%RH > 阈值）且无更近基准 | 卡片/通知、`alarm_events`、logcat | 触发 `温度湿度下降报警`（WARNING）、事件按 devId 落库；再构造"样本够但时间不够"的负对照 → 不触发 |
-| T-SW-L2-14 | 阈值/紧急与去抖（保持现状） | 同上 | 注入 `36.0℃`（超限）、`66.0℃`（紧急）、900 s 内两次下降/超限 | 通知次数（logcat/通知栏）、`alarm_events` | 超限文案不变；紧急每次通知、不受去抖限制；下降/超限在 900 s 内仅一次通知；三种类型落库正确 |
-| T-SW-L2-15 | 无基准不成立且不伪造 | 同上 | 单条读数（无历史）注入 | 告警结果、卡片 | 不产生下降报警；**界面不出现伪造的 0℃/0%RH 或上一笔数值** |
+| T-SW-L2-16 | API 29 直连不受定位权限阻断（G-1 核心） | D1；App 未授予定位；蓝牙开；网关上电或在范围内；守护开 | 冷启动 → 开启守护 → 观察策略与连接尝试。**不**授予定位 | logcat（策略字段与连接尝试）、`pm dump` 权限、截图 | 日志显示 `sdkInt=29`、`needScan=false`、缺失项为空、`canConnect=true`；出现对 `gateway_ble_addr` 的 `connectGatt` 尝试；**不出现**仅 “Bluetooth permission not granted” 即返回；手机未授予定位仍可尝试。连接是否成功取决于网关，单列判定 |
+| T-SW-L2-17 | API 31+ 直连权限拒绝/授予/撤销（G-1） | D2 | ①首次开启守护，拒绝 `BLUETOOTH_CONNECT`；②系统设置授予；③运行中撤销 | logcat + 截图 + 权限状态 | ①不发起连接，首页显示缺失项与动作；②下一轮（≤180 s 或立即读取）恢复连接尝试，**不重启进程**；③下一轮停止连接并显示状态；日志含 `sdkInt`/缺失项/`needScan` |
+| T-SW-L2-18 | 拒绝与“不再询问”动作（G-1/D-19） | D1/D2 | 拒绝权限；选择“不再询问”后再次触发；点“去授权/系统设置” | 截图 + logcat | 首页状态区显示**具体**缺失项与可执行动作；点击动作进入系统弹窗或应用设置；无静默空转；不出现每 180 s 仅一行日志 |
+| T-SW-L2-19 | 蓝牙关闭与未配置状态（D-19） | D1/D2 | 关闭蓝牙；清除/不设置网关；清除平台 MAC 身份（测试账号） | 截图 + logcat | 分别显示“蓝牙未开启”“未配置网关/使用默认（未确认）”“未配置平台身份”等真实原因；不把数据龄当连通性；不静默返回 |
+| T-SW-L2-20 | 权限恢复不清数据（T-01e） | D1/D2；库与待发箱有测试数据 | 撤销权限 → 恢复 → 观察下一轮 | 截图 + DB 行数 + logcat | 无需重启进程即可继续；`temperature`/`alarm_events`/`pending_uploads` 计数与内容不变 |
+| T-SW-L2-21 | 有界扫描与 `stopScan` 全路径（G-2） | D1（定位权限/总开关）与 D2（`BLUETOOTH_SCAN`）；网关上电 | ①正常扫描；②10 s 超时；③用户取消；④页面销毁；⑤扫描中关蓝牙；⑥扫描中撤销权限 | logcat 时间戳 + 回调计数 + 等待 ≥15 s 的静默观察 | 每次扫描从开始到 `stopScan` ≤10 s；停止后无新回调（≥15 s）；无持续扫描/泄漏；API<31 无定位权限时不执行无效扫描并提示；API31+ 仅请求 `BLUETOOTH_SCAN` |
+| T-SW-L2-22 | 候选呈现、排序、去重、不自动连接（G-2） | 网关上电；D1/D2 | 扫描；观察候选名称/MAC/RSSI；若网关不广播 FFE0，执行显式无过滤回退扫描 | 截图 + logcat + 网关侧身份记录 | 候选去重、FFE0 优先、RSSI 降序（与 L0-19 一致）；无自动连接；多候选由用户显式选择；记录网关实际是否广播 FFE0/名称（U-1 未证实） |
+| T-SW-L2-23 | 无候选与手动输入（G-2） | 网关不上电/不在范围 | 扫描至超时；手动输入合法/非法 MAC | 截图 + logcat | 显示“未找到网关”并保留手动输入；合法保存成功；非法输入明确拒绝、不崩溃、不写入；不自动连接其他设备 |
+| T-SW-L2-24 | 保存后下一轮使用、日志双地址（G-2/D-18） | D1/D2；网关上电 | 选择候选保存 → 触发下一轮读取 → 重启 App 再读 | `MyPrefs` + logcat + 截图 | `gateway_ble_addr` 持久化为规范化 MAC；下一轮与重启后使用该地址；同条日志含 `gateway_ble_addr` 与 `mac_addr` 且分别标注用途；修改 `mac_addr` 不改变 `gateway_ble_addr` |
+| T-SW-L2-25 | 默认值“未确认”与清除后不回退（G-2/D-17） | 从旧版本升级场景或键从未存在；另测用户清除 | ①首次升级读取默认 → 观察标注；②用户清除 → 观察是否回到默认 | 截图 + `MyPrefs` | ①标注“使用默认网关地址（未确认）”，允许尝试但不宣称已确认；②清除后为未配置，**不静默回退**到旧常量（否则判 FAIL，见 F-02） |
+| T-SW-L2-26 | 真实多设备 BLE 批次：本地逐条 + 完整发布（G-3/D-03） | 真实网关带 ≥2 设备；`MacIdBook` 顺序与帧一致；broker 可达；独立 MQTT 订阅端 | 触发一次真实读取；记录 App 解析、本地库/待发箱、broker 收到的发布串 | logcat + DB 导出 + broker 原文 + 时间线 | 每条读数按自身 ID 完成告警/入库/入队；发布串按绑定顺序包含全部读数；格式/单位与 T-SW-L0-21/22 一致；客户端发布时间与读取时间对应 |
+| T-SW-L2-27 | 转发拒绝不影响本地处理（G-3） | 同上；用测试账号把 `MacIdBook` 调成与帧数量/顺序不一致（记录并复原） | 触发读取；观察发布与本地库/待发箱 | broker 静默 + DB 行 + logcat | 无任何发布；日志给出拒绝原因；本次全部读数仍按各自 ID 完成告警、入库（真实接收时刻）与入队；不产生部分载荷；测试后恢复绑定 |
+| T-SW-L2-28 | `0.0/0.0` 正常处理（G-3） | D1/D2；MQTT 注入可达；BLE 0.0 源按可得性 | ①MQTT 注入 `T:0.0:0.0`（测试绑定、守护开、报警开关可关以隔离）；②真实 BLE 帧含 0.0 时观察（若有源） | DB 行 + logcat + 待发箱 + broker | 首次即进入处理路径：入库/入队/卡片更新；无“连续 3 次”门槛；BLE 0.0/0.0 的真实端到端若无可控源，按 §9 记 NOT EXECUTED，不得用 MQTT 结果冒充 |
+| T-SW-L2-29 | MQTT/BLE 既有格式与归因回归 | broker/测试客户端可达 | 注入正常/负温/零值/数目不符/非法值；BLE 真实帧 | logcat + DB + 待发箱 | 正常载荷按 `MacIdBook` 顺序归因；数目不符/非法整批拒绝；负温/0 值正确；既有 topic 与 JSON 不变 |
+| T-SW-L2-30 | 告警/入库/上传既有编排回归 | 守护开；网络可用 | 注入下降触发/阈值/紧急/900 s 内重复；断网与恢复 | 通知/截图 + `alarm_events` + 待发箱 + HTTP | 时间窗下降、阈值、`>65℃` 每次通知、900 s 去抖、`(dev_id,time)` 幂等、门控与失败不阻塞主链路均保持 |
+| T-SW-L2-31 | 服务链路：MQTT TLS 与 `/upload_data` 幂等 | D1/D2 联网；服务入口获准 | 启动 App 观察 TLS 连接；构造载荷 `POST /upload_data` 两次；核对响应 | logcat/状态 + HTTP 状态码/响应体 | 连接 `ssl://8.140.23.253:8883` 且信任锚仍为 `jd-ca.crt`；2xx 成功；重复 `(dev_id,time)` 不产生第二行（`inserted=0` 或等价）；失败可观测、可退避 |
+| T-SW-L2-32 | 3 分钟节拍与前台服务长跑 | D1（MIUI） | 守护开，息屏/充电/省电模式连续 ≥2 个周期（≥6 min），记录读取时刻与服务存活 | logcat 时序 + `dumpsys activity services` + 截图 | 读取间隔 ≈180 s（允许调度抖动并记录）；服务不被杀；无网络/无上报时不空转刷屏；周期内无崩溃 |
+| T-SW-L2-33 | 守护关闭/无手机号门控 | D1/D2 | 关闭守护；清空 `registerphone`（测试设备） | DB/待发箱/HTTP/通知 | 不落库、不入队、不发请求、不通知；历史不回溯删除 |
+| T-SW-L2-34 | 断网累积与恢复补传 | D1/D2 | 飞行模式注入多条 → 恢复网络 | 待发箱/HTTP/logcat | 断网读数保留；恢复后补传；每 `(dev_id,time)` 仅一行；退避有界；不阻塞主链路 |
 
-### 4.5 L3 · 展示与文案（设备）
+### 6.6 L3 · 展示与文案（真机截图 + logcat/uiautomator）
 
-| 编号 | 行为 | 前置/资源 | 方法 | 证据 | 判定 |
+界面视觉/交互的专业评审属 UI 能力；本节只做**功能呈现核对**（文案、状态、可执行动作、数据与规则一致性），不代替 UI 专业评审。所有 L3 用例同时保留 logcat/文本 dump，避免只凭截图下结论。
+
+| 编号 | 行为 | 前置 | 方法 | 证据 | 判定 |
 |---|---|---|---|---|---|
-| T-SW-L3-01 | 卡片不再显示"离线" | 已授权设备 | 注入一条 `time = now-40min` 的读数（MQTT 路径可控）→ 打开卡片墙截图 | 截图 + logcat | 卡片**不出现"离线"**；显示最近上报相对时间与条件上报提示；chip 属 未收到/正常/警告/紧急 之一 |
-| T-SW-L3-02 | 未收到设备 | 存在未产生数据的绑定设备 | 打开卡片墙截图 | 截图 | chip = "未收到"；温度/湿度显示 `--` |
-| T-SW-L3-03 | chip 配色语义不变 | 构造 正常/警告/紧急 三种状态 | 截图对比 | 截图 | 未收到/正常/警告/紧急 的文案与配色语义与改动前一致 |
-| T-SW-L3-04 | 详情规则说明 | 打开设备详情 | 截图 | 截图 + 文案核对 | 呈现"采样周期 3 分钟 + 条件上报规则（下降超过 0.9℃且无光，或超过 35.0℃）"；**不出现**光照/无光/lux；不出现 App 推断的上报原因 |
-| T-SW-L3-05 | 图表范围 24 h | 数据库中存在跨越数小时的样本 | 选择 1 h/6 h/24 h 范围查询；尝试 >24 h | 截图 + Toast 文案 | 24 h 内可查询并出图；超过上限被拒绝且提示文案与上限一致（不再是 50 分钟） |
-| T-SW-L3-06 | 高温强调边界 | 构造 35.0 与 35.1 两条读数 | 截图对比 | 截图 | 仅 `> 35.0` 强调；`= 35.0` 不强调 |
-| T-SW-L3-07 | 早报文案与统计 | 构造"某设备有数据、另一设备 0 样本"的一天 | 生成早报（触发/等待 Worker） | 报告文本 + 通知 | 无上报设备显示"昨日无上报"（不是"无数据"）；文案说明按条件上报/非等间隔；统计字段与报警次数结构与改动前一致（同批数据统计值相等） |
-| T-SW-L3-08 | 手动立即读取保留 | 打开守护界面 | 触发"立刻读取"通道 | logcat/界面 | 手动读取通道存在且可用（不依赖 3 分钟周期） |
+| T-SW-L3-09 | 首页链路状态区 | D1/D2 | 构造：权限缺失（API29 扫描场景/API31+ 直连）、蓝牙关闭、未配置网关、默认网关未确认 | 截图 + 文本 dump | 每种状态显示**具体原因**与可执行动作；不显示“离线”作为链路状态；权限缺失/蓝牙关闭不被静默吞掉 |
+| T-SW-L3-10 | 网关选择页 | D1/D2；网关上电 | 进入选择页 → 扫描 → 候选列表 → 手动输入 → 无结果 | 截图 + 文本 | 显示名称/MAC/RSSI 与 FFE0 标记；支持手动输入；无结果显示“未找到网关”并保留输入；不自动连接 |
+| T-SW-L3-11 | 默认网关“未确认”标注 | 迁移场景 | 打开首页/设置 | 截图 | 标注明确，不与“已确认/已连接”混淆；`mac_addr` 与 `gateway_ble_addr` 分开展示 |
+| T-SW-L3-12 | 详情规则文案（G-4 核心） | D1/D2 | 打开设备详情 | 截图 + 文本 dump | 规则句逐字为升温方向（T-SW-L0-25 的冻结文本）；严格边界可见（“超过 0.9℃/超过 35.0℃”）；无光照/照度/lux；无推断原因 |
+| T-SW-L3-13 | App 自身报警面板不变 | D1/D2 | 打开报警设置/触发下降报警 | 截图 + 通知 | “温度湿度下降报警”面板、阈值、去抖、三条文案均与改动前一致 |
+| T-SW-L3-14 | 既有卡片/详情/早报回归 | D1/D2 | 卡片墙、未收到、40 min 无数据、24 h 图表、35.0/35.1、早报 | 截图 + 通知 | 不出现“离线”；未收到显示 `--`；24 h 上限；仅 >35.0 强调；早报“昨日无上报/非等间隔” |
 
-### 4.6 REG · 综合回归
+### 6.7 REG · 完整交付回归
 
 | 编号 | 内容 | 适用性 | 方法 | 判定 |
 |---|---|---|---|---|
-| T-SW-REG-01 | 既有 5 个端点 | 服务器可达 | 调用 `/login`（无效数据，避免真实短信/写库）与 `/setmac`（测试号码） | 端点存活、响应结构与基线一致，签名未变 |
-| T-SW-REG-02 | BLE 解码兼容 | 有真实网关（联测） | 触发一次真实上报，核对 App 解析值与网关记录一致 | 与 IC-002 §4 逐位一致；负温正确；无温湿度互换 |
-| T-SW-REG-03 | 旧库升级与既有查询 | 设备 | 见 T-SW-L0d-01/02/06 | 全部通过 |
-| T-SW-REG-04 | 告警/报告/文案/参数键 | 设备 | 见 T-SW-L2-14、T-SW-L3-07、T-SW-L1-07 | 全部通过 |
-| T-SW-REG-05 | 守护开关与卡片交互 | 设备 | 开关开/关各注入数据；卡片点击进详情；触屏清除报警 | 语义与改动前一致 |
-| T-SW-REG-06 | 兼容面静态 diff | 本机 | 见 T-SW-L1-07 | 全部一致 |
+| T-SW-REG-01 | 既有 5 个端点 | 服务可达 | 无效数据调用 `/login`、`/setmac`（测试号码，避免真实短信/写库） | 端点存活、签名/结构与基线一致 |
+| T-SW-REG-02 | BLE 解码兼容 | 真实网关 | 一次真实上报与网关记录逐字段对照 | 与 IC-002 §4 逐位一致；负温正确；无温湿度互换 |
+| T-SW-REG-03 | 旧库升级与既有查询 | 设备 | T-SW-L0d-01/02/06 | 全部通过；数据不丢 |
+| T-SW-REG-04 | 告警/报告/文案/参数键 | 设备 | T-SW-L2-30、L3-07、L3-13、L1-18 | 全部通过 |
+| T-SW-REG-05 | 守护开关与卡片交互 | 设备 | 开关开/关注入；卡片进详情；清除报警 | 语义与改动前一致 |
+| T-SW-REG-06 | 兼容面静态 diff | 本机 | T-SW-L1-18 | 全部一致 |
+| T-SW-REG-07 | 完整交付门禁 | 本机 | 正式构建入口 + 全量宿主机测试 + 静态核查 + APK 身份 | `assembleDebug` 成功；188 项既有 + 本轮新增全部通过；静态项全 PASS；APK 版本/摘要记录；无新增告警 |
+| T-SW-REG-08 | 应用级关键用户路径 | D1（必要时 D2） | 安装当前 debug APK → 启动 → 隐私政策 → 首页 → 开启守护 → 权限处理 → 选择/确认网关 → 收到读数 → 卡片/详情显示 → 上传触发 | 每一步有截图/logcat；应用可启动、依赖/资源装载正常、无崩溃；失败步骤记录为 FAIL/NOT EXECUTED |
+| T-SW-REG-09 | 真实跨端链路 | 网关 + D1/D2 + broker + 服务 | 真实传感器/网关 → BLE → App → MQTT → `/upload_data` → 服务持久化与回读 | 逐字段一致（devId/time/temperature/humidity）；服务端持久化/回读需获准入口，缺失则 NOT EXECUTED，不得以 HTTP 2xx 单独宣告持久化通过 |
+| T-SW-REG-10 | 版本与文档一致性 | 本机 | `versionCode/versionName`、APK、`file_manifest.txt`、说明书/变更记录 | 版本递增且一致；文档规则句为升温；清单同步 |
 
 ---
 
-## 5. 数据采集与证据规范
+## 7. 数据采集与证据规范
 
 | 数据 | 采集方式 | 保存要求 |
 |---|---|---|
-| 宿主机单测结果 | Gradle 报告 + stdout | 原始文本/报告路径 + 退出码 + 执行时间 + 代码版本 |
-| 设备端 instrumented 结果 | `androidTest` 报告 | 同上 |
-| 构建结果 | Gradle 日志 + APK 产物信息 | 原始日志 + 产物摘要 |
-| App 运行日志 | `adb logcat`（按 tag 过滤：`MqttService`/`TempDb`/`DataProcessor`/上传与归因相关 tag） | 原始日志 + 起止时间 + 关键行标注 |
-| 界面状态 | `adb` 截图（卡片墙/详情/报告/通知） | PNG + 操作步骤与时间 |
-| 本地库内容 | debug 包 `run-as` 导出数据库文件后宿主机只读解析，或 instrumented 断言输出 | 导出文件摘要 + 查询结果表（行数/时间戳/字段值） |
-| MQTT 刺激 | 测试发布者的原始 payload + 发布时刻 | payload 原文 + 主题 + 时间 + 发布端日志 |
-| 云上传 | App 侧待发箱变化 + HTTP 请求/响应 | 请求体、状态码、响应体（`inserted`）、时间；**不保存真实用户隐私数据**（测试号码/测试 devId 除外） |
-| 判定 | 每用例：期望、实测、结论、证据路径 | 失败项需含最小复现步骤与现象时间点 |
+| 宿主机测试 | Gradle 报告/JUnit XML + stdout | 原始报告路径、退出码、执行时间、**被测提交号**、测试总数/失败/跳过 |
+| 构建 | Gradle 日志 + APK | 原始日志、APK 路径、SHA-256、`versionCode/versionName`（从 APK 内读取） |
+| 设备运行日志 | `adb -s <serial> logcat`（按 `MqttService`/`DataProcessor`/权限/扫描相关 tag 过滤） | 原始日志文件 + 起止时间 + 关键行标注；不得只保存截取后的结论行 |
+| 界面状态 | `adb exec-out screencap` / uiautomator dump | PNG/XML + 操作步骤 + 时间；截图须含状态区/规则文案原文 |
+| 本地库/偏好 | debug 包 `run-as` 导出 DB 与 `MyPrefs` XML 后只读解析 | 文件摘要 + 查询结果（行数/时间戳/字段值）+ 操作前后对比 |
+| MQTT 刺激与观测 | 独立 `clientId` 的测试客户端；发布/订阅原文 | topic、payload 原文、时间、客户端日志；禁止冒用真实网关 `clientId` |
+| broker 侧发布观测 | 测试订阅端订阅对应 topic | 原始消息（含时间戳）+ 订阅端日志；与 App 发布时间对齐 |
+| 云上传 | App 待发箱变化 + HTTP 请求/响应 | 请求体、状态码、响应体、时间；测试数据限定测试号码/devId，不保存真实用户隐私 |
+| 判定 | 每用例：期望、实测、结论、证据路径、版本/设备/网络/网关状态 | 失败项含最小复现步骤、现象时间点、日志片段；未执行项写明缺失前置 |
 
-证据要求：每个结论必须能由保存的证据复现；不保存凭印象的结论；一次操作同时产生"界面 + 日志/存储/HTTP"时须注明对应关系与时间基准。
+证据要求：
 
----
+- 每个结论必须能由保存的原始证据复现；不保存“凭印象”的结论。
+- 每条链路结论至少两类独立证据（§4 原则 2）。
+- 真实 BLE、真实服务、模拟器、主机单测四类证据**分开标注**，不得混写为同一结论。
+- 版本三元组必须可关联：被测提交/APK 摘要 + 设备型号/API + 网关身份（若适用）+ broker/服务版本（若适用）。
 
-## 6. 前置条件、依赖与交接
+### 7.1 清理要求（每用例执行后）
 
-1. **设备与授权**：Android 目标设备在位（§1.3）；执行前确认 `adb` 授权、设备时间正确、debug 包已安装（instrumented 测试与 `run-as` 需要 debug 包）。设备系统时间被改动会同时影响 TLS 与相对时间用例，须记录。
-2. **测试账号与绑定数据**：一个可用的已注册手机号（`registerphone`）、一个已绑定的网关 MAC（`mac_addr`）与至少一个设备 ID（`MacIdBook`）。为避免污染生产数据，使用测试专用手机号/设备 ID，并确认服务端 `UNIQUE(dev_id,time)` 对测试数据同样生效。
-3. **服务端可观测能力**：`/upload_data` 的 HTTP 响应（含 `inserted` 计数）是本能力可获得的云侧证据上限；**MySQL 行级直查**在本能力工具边界之外，属服务器责任方，见 §8-G6。
-4. **MQTT 刺激手段（软件替代硬件）**：使用测试 MQTT 发布者向网关遥测主题发布构造载荷，凭据规则为 用户名=网关 MAC、密码=MAC+`&^!A:z?`（迁移记录 §二），使用**独立 clientId**，禁止冒用真实网关 clientId（会挤掉在线网关）。**风险**：App 收到消息后会向控制主题回发时间校准消息，若真实网关在线可能被影响；执行时优先在无真实网关在线或独立测试 MAC 的环境下进行，并记录环境状态。
-5. **BLE 真机路径**：BLE 读取（GATT FFE0/FFE2）需要真实网关，属与嵌入式能力协作的前置项；无条件时该组用例标记 BLOCKED，不得用 App 侧解析单测替代"BLE 联调通过"的结论。
-6. **构建/测试依赖**：`gradle-wrapper 8.4`、AGP 8.3.2、JDK（AA-002 记录 JDK 21 可构建）、SDK `D:\mylearn\android_jdk`。当前 `androidTestImplementation` 仅有 `androidx.test.ext:junit` 与 espresso；若实现侧希望引入 JVM HTTP stub（如 MockWebServer）或 Robolectric 以覆盖上传/存储，属实现侧改动，本设计不要求新增依赖（可用接口注入 + 设备端 instrumented 覆盖）。
-7. **测试数据构造依赖**：`MacIdBook.all()` 的顺序是 MQTT 归因的唯一真相来源；构造"数目不一致"用例时不得改动生产绑定，使用测试设备的 `MyPrefs`（可通过 `adb` 在 debug 包上设置测试值，需记录变更并复原）。
-8. **上游判定边界**：传感器是否上报、光照阈值、0.9℃ 边界等由固件与嵌入式测试负责（TD-002 §4.7/§7）；本设计只验证"App 收到什么就正确处理什么"，不重算传感器门控。
+| 对象 | 清理动作 |
+|---|---|
+| 测试偏好/绑定 | 复原 `MacIdBook`、`mac_addr`、`gateway_ble_addr`、`registerphone` 与报警参数到执行前快照；不得留下测试值污染后续用例 |
+| 本地库/待发箱 | 仅对测试账号/测试 devId 的数据做清理；删除前先导出；不得清空用户真实数据 |
+| 设备状态 | 关闭测试用扫描、断开 GATT、恢复蓝牙/定位/网络到记录的原状态；不卸载用户应用、不清应用数据 |
+| 测试 MQTT 客户端 | 断开并释放独立 `clientId`；确认无残留订阅（避免继续接收/发布） |
+| 服务端 | 不调用删除/管理接口；测试数据按服务端责任方约定处理；不修改生产配置 |
+| 进程/后台任务 | 结束本次自建的测试进程与临时服务；确认无遗留扫描回调、定时器或后台命令；记录已停止 |
+| 证据 | 清理前后各留一份关键状态证据（行数/偏好/设备状态），证明清理完成且未误删 |
 
----
+## 8. 前置条件、依赖与环境缺口
 
-## 7. 风险与限制
+### 8.1 当前能力可执行与不可执行
 
-| 风险 | 影响 | 缓解 |
-|---|---|---|
-| 无服务器 DB 直查权限 | 无法证明 MySQL 行级落库/唯一键实际生效 | 用 HTTP `inserted` 计数 + App 待发箱双重证据；DB 行级核对登记为服务器责任方前置 |
-| MQTT 注入会影响真实网关 | 误改在线设备状态 | 独立 clientId + 测试 MAC/无真实网关环境 + 记录环境状态；必要时改用真实网关路径 |
-| 设备时间被用于 TLS 与相对时间 | 时间被改动导致证书/相对时间结论失真 | 用例间记录并复原系统时间；相对时间用例优先用"payload 时间戳"而非改系统时间 |
-| 条件上报导致数据稀疏 | 部分展示/告警用例不易构造自然数据 | 用 MQTT 受控时间戳注入构造；明确标注为"注入数据"，不代表真实上报节奏 |
-| 真实 BLE/网关不可得 | BLE 联调用例不可执行 | 标 BLOCKED；同时以 L0 帧解码单测 + 与嵌入式能力的兼容向量交叉验证 |
-| 存储/上传模块若未按设计接口化 | L0 上传编排用例无法在 JVM 覆盖 | 降级到设备端 instrumented；如仍不可，记录实现与设计 D-02 的一致性差异 |
-| 单点证据 | 误判 | 每条链路用例至少两类独立证据（§3 原则） |
-| 生产服务器/生产用户数据 | 隐私与数据污染 | 仅用测试号码/测试 devId；不上传真实用户数据；测试记录中不含凭据明文 |
-
----
-
-## 8. 覆盖性检查、缺口与交接
-
-### 8.1 需求覆盖（readme → 可观测行为）
-
-| readme 点 | 覆盖状态 | 由哪些行为/用例承接 |
-|---|---|---|
-| 1 温度传感器改 GXHT40 | 覆盖 | S1/S2；T-SW-L0-01..03、L1-03、REG-02（单位与字节序不变） |
-| 2 新增光敏分压 | 覆盖（App 侧约束） | S10；T-SW-L1-08、L3-04（不显示/不推断光照） |
-| 3 采集时间改为 3 分钟 | 覆盖 | S12/S6/S11；T-SW-L3-04、L3-07、L3-08、L0d-04 |
-| 4 条件上报规则 | 覆盖 | S3/S5/S9/S10/S11；T-SW-L0-04..10、L2-03..06、L2-13..15、L3-01、L3-04、L3-06、L3-07 |
-| 5 broker 服务器信息 | 覆盖 | S4/S8；T-SW-L0-13、L1-05、L1-06、L2-01、L2-12 |
-| 6 同步 Android / 不改 iOS | 覆盖（范围约束） | §2.3 排除项；S13；T-SW-L1-09（版本/文档） |
-| 服务器迁移记录 §八 云上传 | 覆盖 | S8；T-SW-L0-11/12、L0d-05、L2-09..12、E2E 计划 J-1/J-3/J-5 |
-
-**结论**：无缺失、无矛盾、无不可测任务；前置顺序（纯逻辑 → 迁移/上传载荷 → 持久化 → 上传链路 → Service 编排 → UI → 文档）在实现任务清单中可满足。
-
-### 8.2 非阻塞缺口与交接（不自行修补设计）
-
-| ID | 内容 | 影响 | 处置 |
+| 项 | 当前状态 | 影响 | 恢复/交接 |
 |---|---|---|---|
-| G1 | 设计 §8 规定"BLE 读到 0/0 不再作为无数据哨兵、不再连续 3 次才处理"，但实现任务清单未显式包含移除该门控的目标 | T-SW-L2-05 的期望值取决于实现是否采纳 | 交接实现能力确认并按其结论选择期望分支；测试按"设计行为"与"实现实际"分别记录，不据此单方面判缺陷 |
-| G2 | 设计 §8 规定读数越界（>125.0℃、<0 %RH 等）记录并丢弃，任务清单未显式覆盖 | T-SW-L2-06 期望值 | 同上；并记录实际行为 |
-| G3 | 设计 §6 列出 4 个上传触发点（入队后、每轮 BLE 开始、网络恢复、App 冷启动），任务清单仅泛化描述上传编排 | 触发点覆盖不完整 | 交接实现能力确认实际触发点；测试按确认结果选取适用项，未实现项记为差异而非缺陷 |
-| G4 | 设计提到为告警时间窗提供"按 devId + 时间范围查样本"的查询能力，任务清单未显式列出该查询 API | 时间窗基准来源（库 vs 内存）无法从任务清单验证 | 交接实现能力确认；测试通过"进程重启后仍可判定"的用例（T-SW-L2-13 扩展）间接验证基准来自库 |
-| G5 | 产品未决项 U-2（守护关闭期间是否应上传） | 门控期望值可能变化 | 测试按设计 D-09 期望"守护关闭不入队"；若需求方改变语义，用例结构不变、期望值改一处，须需求方确认 |
-| G6 | MySQL 行级核对不在本能力工具边界 | 云落库证据强度受限 | 已登记为服务器责任方前置（§6-3）；E2E 只以 HTTP 响应与待发箱为证 |
-| G7 | 设计 D-09 与 `MyPrefs` 键名（`registerphone`/`mac_addr`/`measure_state`）为兼容面，测试需直接构造 | 测试会写入测试设备偏好 | 执行后复原；不得改动生产用户数据 |
+| 宿主机测试运行器 | **可用**（本次 `BUILD SUCCESSFUL`） | L0/L1 可执行 | 执行能力直接使用；新增测试/夹具可写入 `app/src/test` |
+| 只读 ADB | **可用**（configured_unverified，本次查询成功） | 身份/状态/日志查询可执行 | 不改设备设置；安装/点按不可 |
+| `android_app_testing` | 对当前能力 **unavailable**（缺 `android_test`） | L2/L3/REG-08 无法在本能力执行 | 执行阶段需该工具；本设计不修改权限文件 |
+| 设备当前状态 | App 未安装、蓝牙关、无网络、定位开 | 真机用例前置不满足 | 由获准执行者安装当前 APK、开蓝牙/网络、记录状态 |
+| 真实网关 | 上电/广播/身份/配对未验证 | 真实 BLE/多设备用例不可执行 | 人工上电与范围内确认；身份经 App 发现流程确认（U-1..U-3） |
+| API 31+ 设备/模拟器 | 未确认 | 31+ 权限分支无法验证 | 提供真机或 AVD；模拟器结论仅限权限/UI |
+| broker/HTTP | 未探测（无网络/无授权；本次 allowed_external_actions 为空） | MQTT/上传用例不可执行 | 执行阶段需网络与授权入口 |
+| 服务端持久化/回读 | 无 DB/管理授权入口 | 跨端“持久化”证据不可得 | 需获准服务入口；否则 DLV-03/NOT EXECUTED |
+| instrumented SQLite | 历史记录 UTP 依赖缺失/无外网 | 设备端行级验证可能受阻 | 优先 `run-as` 导出 + 宿主机只读解析；不得以宿主机单测替代 |
 
-以上均属"设计与任务清单之间的可追溯性说明"或"产品未决项"，不构成 `BLOCKED`/`INPUT_INVALID`/`REPLAN_REQUIRED` 的理由。
+### 8.2 测试环境自修复边界
+
+- 本轮 `environment_repair` 范围为 test，`allow_target_changes=false`、`allow_system_packages=false`。可准备：宿主测试脚本、夹具、数据构造脚本、证据解析脚本、隔离测试配置；不可：安装系统包、改设备/目标设置、刷机、改网络/驱动、修改权限文件。
+- 已确认宿主运行器可用，无需修复；缺 `android_test` 属工具授权/配置缺口，不由本能力自行扩大。
+- 任何自修复尝试须限时、保留可恢复配置，并记录原因/命令/版本/改动/复核结果；次数不超过 `max_attempts_per_issue=3`。
+
+### 8.3 最小恢复顺序（执行阶段）
+
+0. **有界探测**（每项设显式超时，只读优先）：`adb devices`/系统属性/蓝牙与网络状态（≤30 s）；broker 端口与 HTTP 健康探测（≤10 s/次，有限次数）；网关是否在 BLE 广播中出现（≤10 s 扫描，须先具备扫描权限）。探测失败只记录，不推断设备损坏或功能失败。
+1. 为软件测试执行授予 `android_app_testing`；确认 D1 在线。
+2. 用当前源码构建 debug APK，记录提交号与 APK SHA-256。
+3. 安装并启动；接受隐私政策；确认应用可运行（REG-08 前半）。
+4. 开启蓝牙与网络；给网关上电并确认在范围内。
+5. 先跑 L0/L1（当前即可），再跑 D1 的 API 29 权限/发现链路，再跑真实网关批次，最后跑服务链路。
+6. 需要 API 31+ 分支时启用 D2；需要多设备时准备 ≥2 台已绑定设备且顺序可控。
+7. 服务端行级持久化需单独获准入口；未获准前保持 NOT EXECUTED。
 
 ---
 
-## 9. 准入与退出准则
+## 9. 覆盖性检查、发现与交接
 
-**准入（开始执行的条件）**
-- App 实现完成且宿主机单测/构建可运行（T-SW-L1-01/02 可执行）；
-- 设备已授权并安装 debug 包；测试账号/绑定数据齐备；
-- broker `8.140.23.253:8883` 与 `/upload_data` 可达（否则对应链路用例标 BLOCKED，不得伪造）；
-- MQTT 注入的凭据/主题与独立 clientId 已确认，且已确认对真实网关无副作用或环境无真实网关在线。
+### 9.1 覆盖性自检
 
-**退出（本测试设计交付的判定依据）**
-- 适用用例的期望与实际一致 → 通过；
-- 期望与实际不一致 → 记为缺陷（含最小复现、证据、时间点）；
-- 前置条件缺失（无设备/未授权/网络不可达/无真实网关）→ 对应用例返回 BLOCKED，不得记为通过；
-- 需求未定义项（守护关闭是否上传、0/0 语义、越界丢弃、上传触发点）→ 只记录实测与偏差，提交需求方/实现责任方确认，不自行判定合格。
+- [x] readme 软件相关点（1–6）均有可观测行为与用例；点 7/8 明确归属固件/嵌入式，不从软件测试范围删除也不由本设计判通过。
+- [x] AA-003 G-1…G-4、D-16…D-23 逐条落到用例。
+- [x] 四项任务的每一条验收条件在 §2 映射到用例与证据类别。
+- [x] 正常路径（连接/发现/转发/文案）与异常路径（权限拒绝/不再询问/蓝牙关闭/无候选/扫描取消/数量不符/未知 ID/重复/顺序错/空批次/服务不可达）均有用例。
+- [x] 真实环境与主机/模拟证据分开，逐项注明主机/模拟不能证明的真实链路。
+- [x] 完整交付（构建、安装、启动、关键用户路径、既有回归、跨端链路）有独立用例。
+- [x] 未把“未执行/无前置/原因未知”写成通过。
 
-## 10. 停止条件
+### 9.2 设计发现（交实现与执行阶段，不在此判产品缺陷）
 
-本能力在 `artifacts/software_test_design.md`（本文件）、`artifacts/software_e2e_plan.md` 产出并登记 `file_manifest.txt` 后结束，返回 `DESIGN_READY`。测试执行、缺陷修复、App 实现改动、固件/服务器改动均不属本能力；发现需要改动时按 §8 登记交接后停止在能力边界。
+| ID | 发现 | 影响 | 处置 |
+|---|---|---|---|
+| F-01 | as-built BLE 发布串为 `time,hum,temp`（逗号、湿度在前），而 IC-002 §6 与 tasks ITEM-003 验收冻结为 `<epoch>:<temp>:<humi>`（冒号、温度在前） | 若实现“保持现状”，转发数据无法被自身 `ReadingAttribution` 或契约消费者解析，且 T-03a 必失败 | 实现按冻结格式改正；测试以冻结格式断言（T-SW-L0-21、L1-19） |
+| F-02 | “迁移默认值”与“用户清除后不回退”需要区分“键从未存在”和“键被清除”；仅凭键缺失无法区分 | 用户清除后可能静默回到 `84:C2:E4:03:02:02`，违反 AA-003 §6.2 第 5 步 | 实现需迁移标记（如一次性迁移键）；测试按 T-SW-L0d-09/T-SW-L2-25 两路径判定 |
+| F-03 | 现有测试与文档仍写“下降”：`DetailPresentation.kt`、`fragment_device_detail.xml`、`用户使用说明书.md:110/241`、`dengbei_care/readme.txt:26`、`SensorCadence.kt` 注释、`DetailPresentationTest` 注释、`DetailPresentationItem012VerificationTest` 断言 | 只改产品文案会使旧测试失败；删除测试又会掩盖回归 | 实现更正产品/文档/实现侧测试；测试能力在验证阶段把独立验证用例的期望值更正为升温，不得删除或跳过 |
+| F-04 | AA-003 `planBinding(selected, boundIds)` 的 `boundIds` 语义未定义（设备 ID 与网关 MAC 不是同一集合） | 绑定状态判定可能无法从外部断言 | 实现须说明该参数的可观察语义；测试只断言 §6.2 明确的未配置/已保存/非法三态，不臆造网关绑定模型 |
+| F-05 | BLE 分支的 `0.0/0.0` 端到端只有在可控 BLE 源时才可实测；主机/静态与 MQTT 路径不能替代 | 该真实链路可能保持未验证 | 执行阶段如实记 NOT EXECUTED；不以 MQTT 注入结果冒充 BLE 链路通过 |
+| F-06 | `isBluetoothBusy()` 当前在权限缺失时返回 `true`，与“权限缺失”语义混淆 | 可能继续造成静默返回 | 实现须统一使用策略对象并输出真实原因；T-SW-L1-12/T-SW-L2-19 检查 |
+| F-07 | App 自身“温度湿度下降报警”与传感器“升温上报”是不同语义，禁词检查若粗暴匹配“下降”会误伤既有功能 | 可能误改报警功能 | 静态检查只禁“较上次下降/下降超过 0.9/下降 >0.9”等上报规则语境；`温度湿度下降报警`、`tempdrop` 等保留并单独断言 |
+
+### 9.3 不阻塞但需执行阶段确认的未知项
+
+| ID | 未知 | 用例处置 |
+|---|---|---|
+| U-1 | 网关是否广播 FFE0 服务与设备名 | 以“FFE0 过滤优先 + 用户显式无过滤回退”覆盖；记录实际广播；不因未广播判网关故障 |
+| U-2 | `mac_addr` 与 BLE MAC 是否同一物理地址 | 两者分别展示与验证，不互推；不把未证实假设写成规则 |
+| U-3 | 默认值 `84:C2:E4:03:02:02` 的真实网关是否存在 | 仅作迁移默认并标“未确认”；不作为连接成功判据 |
+| U-4 | MIUI 12.5 后台/省电对 180 s 轮询的影响 | T-SW-L2-32 真机长跑；模拟器不能替代 |
+| U-5 | `/upload_data` 与 MySQL 持久化/回读 | T-SW-L2-31/REG-09；无获准入口时 NOT EXECUTED |
+| U-6 | 固件判据仍与需求冲突（AA-003 U-6） | 固件责任；App 不变更门控；跨端条件上报的“真实触发”结论需固件修复后另测 |
+| U-7 | 设备端 instrumented 依赖受阻 | 用 `run-as` 导出替代；仍不可执行则 NOT EXECUTED |
+| U-8 | 全暗标定/真实光照证据 | 固件/硬件责任；App 无光照字段 |
+
+---
+
+## 10. 准入与退出准则（最终判定规则）
+
+### 10.1 准入（开始执行的条件）
+
+- 本轮四项实现已完成并有可构建的当前候选；`file_manifest.txt` 已同步。
+- L0/L1 可运行（宿主运行器已验证可用）。
+- D1/D2、网关、broker/服务按用例前置确认；设备状态在每轮开始与结束时记录。
+- 测试数据使用测试账号/测试 devId；不污染生产数据；MQTT 注入使用独立 `clientId`。
+
+### 10.2 逐用例判定
+
+- **PASS**：期望与实际一致，且保存了原始证据；真实链路用例须具备 D/V 证据。
+- **FAIL**：期望与实际不一致；附最小复现、现象时间点、日志/截图/数据。
+- **NOT EXECUTED**：前置缺失（无工具/未安装/无网关/无网络/无授权/设备状态不满足）；不得记为通过。
+- **CONDITIONAL**：期望值依赖未确认产品/实现语义（如 F-04 的 `boundIds`）；记录实测与偏差，保留为未满足项。
+- **UNKNOWN CAUSE**：现象异常但根因未定位；保留为未满足项，不归因于“外部条件”。
+
+### 10.3 最终判定（不得豁免）
+
+1. **局部任务**按其自身明确目标判定：该任务的全部必需用例 PASS 才算该任务通过；任一必需用例 FAIL/NOT EXECUTED/CONDITIONAL/UNKNOWN → 该任务**不通过**。
+2. **完整交付**只有在**全部必需项**（§2 中“必需=是”）均为 PASS 且证据可复现时才能判为通过；**不得**以“适用用例通过”解释为排除不可执行必需项后的通过。
+3. 任何本轮必需项失败、未执行或未验证，由执行测试者返回 **TEST_FAIL**，附当前版本 test 失败报告交实现调查；环境缺口与实现缺陷分别标注，但都保留为未满足项。
+4. 真实 BLE / 真实服务链路不得由宿主机单测、模拟器、MQTT 注入或 HTTP 2xx 单独替代结论；对应证据缺失即该必需项未通过。
+5. 原因未知不等于外部条件缺失；不得据此提前终止或改写目标。
+
+### 10.4 缺陷归属
+
+- 功能失败、文案/逻辑/接线与验收不符 → 交 Android 实现调查。
+- 固件判据、光照标定、433 空口、UART1 → 交固件/嵌入式（TD-002）。
+- 电气/器件/上电/信号 → 交硬件测试。
+- 服务端部署/数据库/管理配置 → 交服务器责任方；需获准入口。
+- 测试工具/依赖/夹具问题 → 本能力按其 test 范围有限修复；超出授权的缺项如实登记。
+
+---
+
+## 11. 停止条件
+
+本能力在 `artifacts/software_test_design.md`（本文件）、`artifacts/software_e2e_plan.md`（E2E-SW-003）产出并登记 `file_manifest.txt` 后结束，返回 `DESIGN_READY`。测试执行、缺陷修复、App 实现、固件/硬件/服务器改动均不属本能力；发现需改动时按 §9 登记交接后停止在能力边界。
