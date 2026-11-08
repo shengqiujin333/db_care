@@ -1,9 +1,36 @@
-# 驱动测试证据（DRV-002 rev 6.0）
+# 驱动测试证据（DRV-002 rev 6.1）
 
 状态：固件实现证据（负责角色：固件工程）
-本轮范围：T1–T3 实现后的宿主机自检（真实 `USER/src/*.c` + mock 总线/UART/MCU），包含判定边界、冻结快照/重试、有界 UART 等待，以及 GXHT40/软 I²C/空口帧的回归。**均为宿主机层级，不代表实板通过。**
-依据：FD-002 / FWR-002 / TD-002 rev 6.0、IC-002 v3.0、`gxht40.pdf`
-受测工作树：基于 `6f2388a`（传感器源码等于设计基线 `4918531`）+ 本轮 9 个文件改动；axf md5 `c7ed03b796f2ae438b325c7b9306d836`
+本轮范围：**失败分派修复轮**——读采样点后移与转换等待 20 ms 两项时序 A/B 后的宿主机回归（真实 `sf_i2c.c`/`gxht40.c`/`fw_core.c` + mock 总线/UART），并保留 T1–T3 自检。**均为宿主机层级，不代表实板 CRC 失败率或功能通过。**
+依据：EV-018 `evidence/test.md`、EV-021 `evidence/triage.md`、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
+受测工作树：`7bfd248` + 本轮 `sf_i2c.c`、`sensor_config.h` 改动；axf md5 `08a4c266af6a0f058821ec809d38f78d`
+
+---
+
+## 本轮 run11：时序 A/B 回归（2026-11-08）
+
+```
+$ cd CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test
+$ sh build_test.sh
+exit=0
+[1/4] 46 passed  [2/4] 57 passed  [3/4] 54 passed  [4/4a] 28 passed  [4/4b] 29 passed   (0 failed)
+
+$ ./_hostbin/gxht40_check2.exe    -> 60 passed, 0 failed
+$ ./_hostbin/sf_i2c_check2.exe    -> 42 passed, 0 failed
+$ ./_hostbin/rf_frame_check2.exe  -> 22 passed, 0 failed
+```
+
+合计 **338 项 0 失败**。覆盖：
+- `i2c_read_byte` 采样点后移后，位级 mock 从机的读字节/ACK/NACK/STOP 序列仍逐位正确；读地址 NACK 仍返回超时并释放总线。
+- `GXHT40_MEASURE_WAIT_MS=20` 后，驱动仍只发 0xFD、等待/读取/双 CRC/有效域/有界重读重测/失败重探与总线恢复行为不变（60 项）。
+- T1 判定向量、T2 冻结/P 行、T3 有界等待与既有行格式回归全部通过（214 项）。
+- 帧布局/字节序/CRC 未变（22 项）。
+
+### 边界
+
+- mock 从机在 SCL 上升沿更新 SDA，采样点后移不改变其数据；因此不能由宿主测试证明实板 CRC 失败率下降或根因。
+- 未执行验证方自有 `*_verify_ev.c` 与实板采集；未改商户与工程配置。
+- 实板 A/B 判读见 `artifacts/firmware_implementation.md` §4（≥10 周期，统计 `q` 与 `raw[2]==raw[0]` 签名）。
 
 ---
 

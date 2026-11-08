@@ -1,9 +1,33 @@
-# 构建证据（BUILD-002 rev 6.0）
+# 构建证据（BUILD-002 rev 6.1）
 
 状态：固件实现证据（负责角色：固件工程）
-本轮范围：T1–T3 实现后的**全量重建**（`mdk_build {"action":"rebuild"}`，授权工具），记录编译器版本、告警、Code/RO/RW/ZI 与产物摘要。**未下载/未烧录**（本调用无 `mdk_flash`）；构建成功不表示实板功能通过。
-依据：FD-002 rev 6.0、FWR-002 rev 6.0、TD-002 rev 6.0、`readme.txt`
-受测工作树：基于 `6f2388a`（传感器源码等于设计基线 `4918531`）+ 本轮 9 个文件改动；产品源码改动见 `artifacts/firmware_implementation.md`
+本轮范围：**失败分派修复轮**（EV-018/EV-021 温度 CRC 间歇错误）——对读采样点与转换等待两项时序 A/B 后的全量重建；记录产物身份。**未下载/未烧录**（本调用无 `mdk_flash`）；构建成功不表示实板功能通过。
+依据：`evidence/test.md` EV-018、`evidence/triage.md` EV-021、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
+受测工作树：`7bfd248`（T1–T3 交付）+ 本轮 `sf_i2c.c`、`sensor_config.h` 两个文件改动
+
+---
+
+## 本轮 run11：修复 A/B 全量重建（2026-11-08）
+
+```
+$ mdk_build {"action":"rebuild"}
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Rebuild target 'Project'
+...
+../USER/src/main.c(245): warning: while loop has empty body [-Wempty-body]
+Program Size: Code=25912 RO-data=656 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:01
+```
+
+| 产物 | md5 |
+|---|---|
+| `MDK/output/exe/Project.axf` | **`08a4c266af6a0f058821ec809d38f78d`** |
+| `MDK/output/exe/Project.hex` | `8fcfa1da9b7b204d83d36faf97b267e4` |
+
+- 退出码 0；`0 Error / 1 Warning`（既有 `main.c(245)`）；Code/RO/RW/ZI 与上一交付相同（仅时序常量与采样点改变，不增加代码尺寸）。
+- **未执行 `mdk_flash`** ⇒ 板上镜像、`Verify OK`、实板 CRC 失败率均未在本轮取得；不得写成已修复或已通过。
+- 构建产生的 `MDK/build.run10.log` 已删除；工程文件未修改（工具备份在角色工作区）。
 
 ---
 

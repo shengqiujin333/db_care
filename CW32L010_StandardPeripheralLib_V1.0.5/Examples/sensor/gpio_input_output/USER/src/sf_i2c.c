@@ -256,9 +256,12 @@ uint8_t i2c_read_byte(const i2c_dev *dev, uint8_t ack)
         I2C_PIN_SCL_LOW(dev);
         i2c_delay(dev);
         I2C_PIN_SCL_HIGH(dev);
+        /* 采样点放在 SCL 高电平的保持段末尾: 给从机 SDA 建立/上升时间留出
+         * 整个高电平半位, 避免在 SCL 上升沿后立即采样造成位值不确定。
+         * (EV-018/EV-021 温度 CRC 字节异常的 H2 时序 A/B; 半位总长不变) */
+        i2c_delay(dev);
         if (I2C_PIN_SDA_READ(dev))
             byte |= 0x01;
-        i2c_delay(dev);
     }
     if (ack)
         i2c_ack(dev);

@@ -26,7 +26,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/light.h | active | 光照通路接口（light_result_t、light_init/light_sample、light_read_vdd_mv 供电轨测量）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/main.h | active | 主程序接口
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/measure.h | active | 采样/上报接口 + 上电诊断（sensor_bus_diag_scan、sensor_io_diag_scan、sensor_io_sig_scan）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h | active | 唯一配置点：引脚、GXHT40 地址/命令/重试/等待、180 s 节拍、SENSOR_REPORT_RISE_X10/HIGH_X10、1/3 无光常量、UART1 调试与行预算/发送等待上限、总线诊断常量、general call 复位常量；LIGHT_DARK_* 仍未标定（=0）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h | active | 唯一配置点：引脚、GXHT40 地址/命令/重试/等待（含修复轮 A/B 的 20 ms 转换等待）、180 s 节拍、SENSOR_REPORT_RISE_X10/HIGH_X10、1/3 无光常量、UART1 调试与行预算/发送等待上限、总线诊断常量、general call 复位常量；LIGHT_DARK_* 仍未标定（=0）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sf_i2c.h | active | 软 I2C 接口（命令写/连续读、i2c_probe_addr、i2c_bus_recover）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c | active | UART1 调试通道实现（各行渲染与 ≤96 B 行预算、P 冻结观测行、TXE/TXBUSY 有界等待、关闭语义）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/encrytogate.c | active | 433 空口帧加密实现
@@ -36,7 +36,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c | active | 光照通路实现（PB05 供电→稳定→PB04/AIN11 多次转换→均值/有效性/暗判据；light_read_vdd_mv 用 ADC 内部 BGR1.2V 反推 VDD）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c | active | 主循环/RTC 节拍；上电顺序 BOOT→VDD→IOTEST→IOSIG→BUS，每周期 S 行
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c | active | 采样流程与条件上报；T2 待上报冻结快照 + P 行取数；上电一次性总线诊断（含 general call 复位尝试）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 软 I2C 实现（位时序、ACK 判定、地址探测、≤9 脉冲 + STOP 的总线恢复）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 软 I2C 实现（位时序、SCL 高电平末段采样 SDA 的读字节路径、ACK 判定、地址探测、≤9 脉冲 + STOP 的总线恢复）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/codegraph.json | active | ?????????????????????????
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh | active | GNU 交叉编译脚本（cw32l010.ld / startup_cw32l010.S 同目录）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
@@ -76,7 +76,7 @@ artifacts/android_tasks.yaml | active | Android 待实现任务清单（4 项：
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 6.0（当前源码 as-built 核对、判定方向+严格 35℃ 边界、待上报冻结与 P 行、调试等待有界化、GXHT40 证据驱动修复、全暗标定与 1/3 判据、当前构建再观测矩阵）
-artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 6.0（T1 判定更正、T2 冻结+P 行、T3 有界等待已实现并自检；T4 实板采集/T5 全暗标定未执行并说明原因）
+artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 6.1（T1–T3 实现；修复轮针对 EV-018/021 温度 CRC 间歇错误做读采样点后移 + 20 ms 转换等待 A/B 并重建；未下载、未声明修复；T5 未执行）
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 6.0（FWR-101..119：GXHT40、光敏 1/3、3 分钟、升温 >0.9℃ 且无光或 >35℃、UART1、失败可诊断、当前构建再观测、调试等待有界；含 as-built 差距与 readme 修改点对应）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 6.0（裸机超级循环 + RTC 深睡；上电四类诊断、S/G/P 轨迹、冻结快照、有界等待、资源与不变量）
 artifacts/firmware_tasks.yaml | active | 固件实现任务清单（结构化 5 项：T1 条件上报判定更正、T2 待上报冻结与 P 行、T3 调试发送等待有界化、T4 GXHT40 实板采集恢复、T5 全暗基准标定与 1/3 生效）
@@ -123,10 +123,10 @@ dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.8）
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002
-evidence/build.md | active | 构建证据 BUILD-002 rev 6.0（T1–T3 后 mdk_build rebuild 0 Error/1 既有告警、Code/RO/RW/ZI、axf/hex md5；未下载）
+evidence/build.md | active | 构建证据 BUILD-002 rev 6.1（修复轮全量 rebuild 0 Error/1 既有告警、Code/RO/RW/ZI、新 axf md5 08a4c266…；未下载）
 evidence/codegraph_dengbei11_validation.json | active | ????????? status?????????? explore ???????????
 evidence/codegraph_validation.md | history | CodeGraph 历史可用性验证证据（索引 complete、无 pending/drift）
-evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.0（T1–T3 宿主自检 214 项、GXHT40/软 I2C/空口帧回归 60/42/22，合计 338 项 0 失败）
+evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.1（修复轮宿主回归：读采样点/20 ms 等待改动后 214+60+42+22=338 项 0 失败；不证明实板 CRC 失败率）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检
 evidence/embedded_verify_uart_trace_item001.py | active | 实板 UART1 调试串口独立复核脚本（ITEM-001：S 行字段/时序）

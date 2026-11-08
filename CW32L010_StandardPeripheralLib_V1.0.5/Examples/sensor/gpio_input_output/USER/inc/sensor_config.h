@@ -47,8 +47,11 @@
 /* 测量返回: 2B 温度 + 1B CRC + 2B 湿度 + 1B CRC (手册 §7.2) */
 #define GXHT40_RESULT_LEN               6u
 
-/* 时序: 高重复率 tMEAS.H 最大 8.3 ms (VDD=1.6V), 取 10 ms 余量 (FD-002 §11.3) */
-#define GXHT40_MEASURE_WAIT_MS          10u
+/* 时序: 高重复率 tMEAS.H 最大 8.3 ms (VDD=1.6V), 原取 10 ms 余量。
+ * EV-018/EV-021 出现「温度 CRC 字节间歇等于温度 MSB」, 且 3 次重测均复现;
+ * 按 H1(器件输出/CRC 加载竞争) 做一次有界 A/B: 将转换等待加大到 20 ms
+ * (仍远大于手册最大值, 仅增加等待, 不改变 CRC/量程/命令/帧格式)。 */
+#define GXHT40_MEASURE_WAIT_MS          20u
 /* 读请求 NACK = 转换未完成; 等待后重读 */
 #define GXHT40_READ_RETRY               5u
 #define GXHT40_READ_RETRY_DELAY_MS      1u
