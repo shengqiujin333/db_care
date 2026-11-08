@@ -1,0 +1,58 @@
+EV-023 tool results (raw, as returned by the device backend)
+Times are UTC, 2026-11-08. Capability: embedded_tester.embedded_failure_analysis.
+No runtime/environment.yaml or permissions file was modified; no flash/reset was performed.
+
+[1] serial_list_ports  07:19:44Z
+{"port":"COM43","description":"Prolific USB-to-Serial Comm Port (COM43)","hwid":"USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2","vid":1659,"pid":8963,"serial_number":""}
+{"port":"COM26","description":"USB 串行设备 (COM26)","hwid":"USB VID:PID=C251:F001 SER=87094109484987710672FF50","vid":49745,"pid":61441,"serial_number":"87094109484987710672FF50"}
+-> COM43 in place (Prolific); COM26 is the DAPLink CDC interface, not used.
+
+[2] usb_list_devices  07:19:44Z (relevant entries; host also lists camera/HID/root hubs)
+USB\VID_C251&PID_F001 (COM26 + HID MI_02)      CW-DAPLink composite device
+USB\VID_18D1&PID_4EE7\12F046690506            SDM439-QRD (phone)
+USB\VID_04B4&PID_8613\...                     "Unknown Device #1" (Cypress FX2, no usable interface/driver)
+-> FX2 is electrically enumerated but exposes no usable interface; this is the same condition as EV-021/EV-022.
+
+[3] sigrok_info  07:19:46Z
+configuration: enabled=true, executable="D:/Program Files/sigrok/sigrok-cli/sigrok-cli.exe",
+driver=fx2lafw, connection="2.31", channels=["D0","D1"], signal_labels={D0:"scl",D1:"sda"},
+triggers={D1:"f"}, samplerate_hz=4000000, max_samplerate_hz=8000000,
+max_samples=20000000, timeout_sec=240.0
+online="not_checked"; functional_verdict="not_evaluated"
+
+[4] sigrok_probe  07:19:53Z
+command: sigrok-cli --driver fx2lafw:conn=2.31 --show
+exit_code=1, timed_out=false, error_code=SIGROK_FAILED
+stderr: "No devices found."
+-> Configured entry is unreachable. No new address was guessed, no driver installed, no config changed.
+-> Consequence: bit-level SDA/SCL evidence for the failing read transaction could NOT be obtained in this round.
+
+[5] serial_capture (COM43, 9600, 8N1)  — three 300 s windows
+capA  window 07:20:00.776Z - 07:25:00.979Z  bytes=158
+      preview:
+      S k=84 p=226 H=1 V=0 o=8 n=3743 x=3752 a=3747 D=0 t=226 h=390 q=1 r=0 s=0 y=0
+      S k=87 p=226 H=1 V=0 o=8 n=3732 x=3745 a=3737 D=0 t=226 h=402 q=1 r=0 s=0 y=0
+capB  window 07:25:25.826Z - 07:30:26.029Z  bytes=204
+      preview:
+      S k=90 p=222 H=1 V=0 o=8 n=3720 x=3733 a=3725 D=0 t=222 h=415 q=1 r=0 s=0 y=0
+      S k=93 p=222 H=1 V=0 o=8 n=3711 x=3722 a=3716 D=0 t=222 h=415 q=0 r=0 s=0 y=0
+      G s=4 a44=1 a45=0 rd=0 at=3 raw=60DC60618309
+capC  window 07:31:08.254Z - 07:36:08.460Z  bytes=250
+      preview:
+      S k=96 p=222 H=1 V=0 o=8 n=3705 x=3718 a=3712 D=0 t=222 h=415 q=0 r=0 s=0 y=0
+      G s=4 a44=1 a45=0 rd=0 at=3 raw=64326459FC5A
+      S k=99 p=222 H=1 V=0 o=8 n=3689 x=3697 a=3692 D=0 t=222 h=415 q=0 r=0 s=0 y=0
+      G s=4 a44=1 a45=0 rd=0 at=3 raw=62F8625F5838
+
+Copied into the project repository as:
+  evidence/ev023/capA.cap  md5 5f2674084ea8d9d7d04c322ec255342c  158 B
+  evidence/ev023/capB.cap  md5 cda784821a653d8376436fb40ac072b2  204 B
+  evidence/ev023/capC.cap  md5 be9d8cad86d86fe0ca9d2eb25a9afc61  250 B
+Each file's byte count equals the sum of the complete CRLF-terminated lines it contains
+(no half lines, no truncation).
+
+[6] Project state at the time of these measurements
+git HEAD = cc84be4 (tester evidence commit); product firmware commit = 0f8a8fb.
+git diff --stat 0f8a8fb HEAD -- CW32L010_.../USER  -> empty (product source unchanged since the build under test).
+The board was not flashed and not reset in this round (this capability has no mdk_flash).
+k sequence continuity shows the same boot session as EV-022 (see triage §1).

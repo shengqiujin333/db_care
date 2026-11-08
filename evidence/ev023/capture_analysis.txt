@@ -1,0 +1,23 @@
+== capA.cap  158 bytes
+   79 B  S k=84 p=226 H=1 V=0 o=8 n=3743 x=3752 a=3747 D=0 t=226 h=390 q=1 r=0 s=0 y=0
+   79 B  S k=87 p=226 H=1 V=0 o=8 n=3732 x=3745 a=3737 D=0 t=226 h=402 q=1 r=0 s=0 y=0
+
+== capB.cap  204 bytes
+   79 B  S k=90 p=222 H=1 V=0 o=8 n=3720 x=3733 a=3725 D=0 t=222 h=415 q=1 r=0 s=0 y=0
+   79 B  S k=93 p=222 H=1 V=0 o=8 n=3711 x=3722 a=3716 D=0 t=222 h=415 q=0 r=0 s=0 y=0
+   46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=60DC60618309
+
+== capC.cap  250 bytes
+   79 B  S k=96 p=222 H=1 V=0 o=8 n=3705 x=3718 a=3712 D=0 t=222 h=415 q=0 r=0 s=0 y=0
+   46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=64326459FC5A
+   79 B  S k=99 p=222 H=1 V=0 o=8 n=3689 x=3697 a=3692 D=0 t=222 h=415 q=0 r=0 s=0 y=0
+   46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=62F8625F5838
+
+=== G-frame independent decode (this EV-023 capture) ===
+k   raw          T_word  T(0.1C)  Tcrc_calc Tcrc_rx  eq_raw0  dMSB  H_word  H(0.1%%)  Hcrc_ok  s a44 a45 rd at
+93  60DC60618309  0x60DC     212  0xAD      0x60     YES       +0  0x6183     416   YES     4 1  0  0  3
+96  64326459FC5A  0x6432     235  0xF0      0x64     YES       +0  0x59FC     379   YES     4 1  0  0  3
+99  62F8625F5838  0x62F8     227  0x36      0x62     YES       +0  0x5F58     406   YES     4 1  0  0  3
+
+cycles=6  q=0 cycles=3  q=1 cycles=3
+G frames=3  temp CRC bad=3  hum CRC bad=0  raw[2]==raw[0]=3
