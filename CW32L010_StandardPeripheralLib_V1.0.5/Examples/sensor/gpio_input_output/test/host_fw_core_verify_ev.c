@@ -17,11 +17,11 @@
  *
  * T2/T4 sync note: the light criterion changed in T2 from the two-state hysteresis
  * (light_code_is_dark) to the readme-point-7 form light_is_dark(mean,valid,c_dark) =
- * valid && 3*mean >= c_dark; T7/T7b below were re-derived for it. T8/T8b characterise
- * the AS-BUILT report decision, which still uses the cooling direction
- * ((prev-cur) > 9) - that is the registered deviation D-01 in TD-002 rev 5.0; the
- * readme's rising direction is pending firmware task T4 and this harness will need
- * re-derivation when it lands.
+ * valid && 3*mean >= c_dark; T7/T7b below were re-derived for it. EV-022 sync:
+ * T8/T8b were re-derived for the frozen rising direction
+ * (report = (cur>350) || (have && dark && cur-prev>9)); the reference FNV-1a
+ * hash 0xA524C2E9 comes from evidence/ev022/ref_report_hash.py (independent
+ * Python model over the same 572-vector grid).
  *
  * Build (from gpio_input_output/):
  *   gcc -std=c11 -Wall -Wextra -I USER/inc -I COMMON test/host_fw_core_verify_ev.c \
@@ -42,7 +42,7 @@ static uint32_t fnv_u16(uint32_t h, uint16_t v) { h = fnv(h, (uint8_t)(v & 0xFFu
 #define REF_TEMP_HASH   0xBB0C5ABBu
 #define REF_HUM_HASH    0x5F674BC5u
 #define REF_CRC8_HASH   0x7CC4B9C5u
-#define REF_REPORT_HASH 0xF7D66E3Eu
+#define REF_REPORT_HASH 0xA524C2E9u   /* EV-022 independent reference (rising direction) */
 
 static int pass, fail;
 #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
@@ -167,10 +167,11 @@ int main(void)
           "c_dark straddling 3*mean flips the decision (stateless, per-sample)");
 
     /* ---- T8: exhaustive report decision over a structured grid ----
-     * NOTE: the hash below characterises the AS-BUILT cooling direction (registered
-     * deviation D-01); the readme's rising direction is firmware task T4 and will
-     * require a new reference hash here once it lands. */
-    printf("[T8] exhaustive report decision grid (as-built, D-01)\n");
+     * EV-022: reference re-derived for the frozen rising direction
+     *   report = (cur > 350) || (have_prev && dark && (cur - prev) > 9)
+     * Hash computed by the independent Python model
+     * evidence/ev022/ref_report_hash.py (same 572-vector grid, unbounded ints). */
+    printf("[T8] exhaustive report decision grid (rising direction, T1)\n");
     { static const int16_t PREVS[] = {-32768,-1000,-400,-1,0,9,10,100,300,350,351,1000,32767};
       static const int16_t CURS[]  = {-32768,-1000,-400,0,100,291,300,350,351,1000,32767};
       uint32_t h = FNV_INIT; int n = 0;
@@ -183,26 +184,27 @@ int main(void)
                 n++;
             }
       printf("    report hash = 0x%08X (ref 0x%08X) over %d combinations\n", h, REF_REPORT_HASH, n);
-      CHECK(h == REF_REPORT_HASH, "all grid decisions match the as-built rule report=(cur>350)||(cur<350&&have&&dark&&(prev-cur>9)) [D-01: cooling direction]"); }
+      CHECK(h == REF_REPORT_HASH, "all grid decisions match report=(cur>350)||(have&&dark&&(cur-prev>9)) [rising direction]"); }
 
-    printf("[T8b] report truth table (as-built, D-01; readme's rising direction pending T4)\n");
+    printf("[T8b] report truth table (rising direction, T1)\n");
     CHECK(sensor_decide_report(0, false, 200, true) == false, "no prev, cur=200 -> false");
     CHECK(sensor_decide_report(0, false, 350, true) == false, "no prev, cur=350 (exactly 35.0C) -> false");
     CHECK(sensor_decide_report(0, false, 351, false) == true, "no prev, cur=351 -> true (light-independent)");
-    CHECK(sensor_decide_report(300, true, 291, true) == false, "drop exactly 9 (0.9C) -> false (strict)");
-    CHECK(sensor_decide_report(300, true, 290, true) == true, "drop 10 (1.0C) + DARK -> true");
-    CHECK(sensor_decide_report(300, true, 290, false) == false, "drop 10 but LIT -> false");
-    CHECK(sensor_decide_report(360, true, 350, true) == false, "cur=350 with large drop -> false");
-    CHECK(sensor_decide_report(360, true, 351, true) == true, "cur=351 -> true regardless of drop");
+    CHECK(sensor_decide_report(300, true, 309, true) == false, "rise exactly 9 (0.9C) + DARK -> false (strict)");
+    CHECK(sensor_decide_report(300, true, 310, true) == true, "rise 10 (1.0C) + DARK -> true");
+    CHECK(sensor_decide_report(300, true, 310, false) == false, "rise 10 but LIT -> false");
+    CHECK(sensor_decide_report(349, true, 350, true) == false, "34.9 -> 35.0 DARK -> false (no rise branch, not over 35.0)");
+    CHECK(sensor_decide_report(360, true, 350, true) == false, "exactly 35.0C + no rise -> false (strict >35.0)");
+    CHECK(sensor_decide_report(360, true, 351, true) == true, "cur=351 -> true regardless of light/prev");
     CHECK(sensor_decide_report(300, true, 300, true) == false, "prev==cur -> false");
-    CHECK(sensor_decide_report(300, true, 320, true) == false, "temperature rise -> false");
-    CHECK(sensor_decide_report(-100, true, -120, true) == true, "negative temps: -10.0 -> -12.0 C drop 2.0C -> true");
-    CHECK(sensor_decide_report(32767, true, -32768, true) == true, "int16 extremes do not overflow (drop computed in 32-bit)");
-    CHECK(sensor_decide_report(1000, true, 350, true) == false,
-          "exactly 35.0C + large drop + DARK -> no report (IC-002 T<35 conjunct)");
-    CHECK(sensor_decide_report(1000, true, 349, true) == true,
-          "34.9C + large drop + DARK -> report");
-    CHECK(sensor_decide_report(-32768, true, -32768, true) == false, "int16 min, no drop -> false");
+    CHECK(sensor_decide_report(300, true, 290, true) == false, "cooling 1.0C + DARK -> false (rising direction only)");
+    CHECK(sensor_decide_report(300, true, 291, true) == false, "cooling 0.9C + DARK -> false");
+    CHECK(sensor_decide_report(-100, true, -120, true) == false, "negative temps -10.0 -> -12.0 C cooling -> false");
+    CHECK(sensor_decide_report(32767, true, -32768, true) == false, "int16 extremes, downward -> false (int32 math)");
+    CHECK(sensor_decide_report(-32768, true, 32767, true) == true, "int16 extremes, upward over-temp -> true");
+    CHECK(sensor_decide_report(1000, true, 350, true) == false, "exactly 35.0C, no rise -> no report (strict T>35)");
+    CHECK(sensor_decide_report(1000, true, 340, true) == false, "34.0C cooling + DARK -> no report");
+    CHECK(sensor_decide_report(-32768, true, -32768, true) == false, "int16 min, no rise -> false");
     CHECK(sensor_decide_report(32767, true, 32767, true) == true, "int16 max -> over-temp branch -> true");
 
     printf("==== result: %d passed, %d failed ====\n", pass, fail);

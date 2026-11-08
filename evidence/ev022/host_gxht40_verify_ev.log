@@ -1,0 +1,123 @@
+==== independent GXHT40 driver verification (embedded_tester) ====
+[T1] manual reference frame 0xBEEF/0x1234
+    PASS  returns GXHT40_OK
+    PASS  temp_x10=855, hum_x10=29 (manual vector)
+    PASS  exactly one command byte 0xFD
+    PASS  write address byte 0x88 used
+    PASS  read address byte 0x89 used
+    PASS  detected address cached as 0x44
+    PASS  one tMEAS wait of the configured 10 ms
+[T2] conversion: room / negative / humidity clamp
+    PASS  25.0 C / 50.0 %RH -> 250 / 500
+    PASS  -10.0 C / 0 %RH -> -100 / 0 (sign preserved)
+    PASS  humidity raw 0xFFFF clamped to 1000 (not an error)
+    PASS  humidity raw 0 -> 0
+[T3] address probe: device only at 0x45, then cached
+    PASS  measure succeeds via second address
+    PASS  probe order 0x88 then 0x8A
+    PASS  read address 0x8B for the 0x45 variant
+    PASS  detected address cached as 0x45
+    PASS  second measurement uses the cached 0x8A without re-probing 0x88
+[T4] read NACK x2 then ready
+    PASS  succeeds after two read NACKs
+    PASS  command NOT re-sent while waiting for conversion
+    PASS  three read attempts seen (2 NACK + 1 ACK)
+    PASS  two 1 ms retry waits
+[T5] read NACK beyond the retry bound
+    returned status = 3
+    PASS  the period is reported as a failure
+    PASS  status is one of the acquisition failure codes
+    PASS  outputs NOT modified on failure
+    PASS  command attempts bounded (<= MEAS_RETRY x 3 candidates)
+    PASS  read attempts bounded (<= MEAS_RETRY x 2 x READ_RETRY)
+[T6] CRC error paths
+    PASS  temperature-word CRC error -> GXHT40_ERR_CRC
+    PASS  outputs NOT modified
+    PASS  re-measured exactly GXHT40_MEAS_RETRY times
+    PASS  humidity-word CRC error also detected
+    PASS  outputs NOT modified
+[T7] out-of-range conversion
+    PASS  raw 0 (-45.0 C) -> GXHT40_ERR_RANGE
+    PASS  outputs NOT modified
+    PASS  125.1 C -> GXHT40_ERR_RANGE
+    PASS  outputs NOT modified
+[T8] no device on either address
+    PASS  returns GXHT40_ERR_NO_DEVICE
+    PASS  both 0x44 and 0x45 probed
+    PASS  outputs NOT modified
+    PASS  probe attempts bounded
+[T9] parameter checks
+    PASS  NULL temp pointer -> GXHT40_ERR_PARAM
+    PASS  NULL humidity pointer -> GXHT40_ERR_PARAM
+    PASS  unbound bus -> GXHT40_ERR_PARAM
+[T10] command whitelist over every command ever sent (24 total)
+    PASS  every command byte sent was 0xFD
+    PASS  commands were actually exercised
+[T11] FWR-118: failure on the cached address -> both candidates re-probed
+    PASS  baseline period succeeds on 0x44
+    PASS  address 0x44 is cached
+    PASS  failing period reports a failure (no fabricated success)
+    PASS  outputs NOT modified on the failing period
+    PASS  stale cached address invalidated immediately
+    PASS  both candidates 0x44 and 0x45 were re-probed inside the failing period
+    PASS  re-probe attempts stay bounded
+    PASS  next period recovers and returns a valid reading
+    PASS  recovery period re-probes from 0x44 instead of using a stale cache
+    PASS  address re-cached after the successful re-probe
+[T12] FWR-118: cached 0x44 dies, device answers at 0x45
+    PASS  cached on 0x44
+    PASS  device found at 0x45: not permanently lost
+    PASS  both candidates probed after the stale cache failed
+    PASS  cache updated to 0x45
+    PASS  the stale-cache failure invoked the recovery before re-probing
+    PASS  the successful path still performed the tMEAS wait
+[T13] FWR-118: bounded recovery is invoked before the re-probe
+    PASS  baseline succeeds and caches 0x44
+    transcript[T13]: START TX(88) NACK STOP RECOV START TX(88) NACK STOP START TX(8A) ACK ACK STOP START TX(8B) ACK RX(66) M-ACK RX(66) M-ACK RX(93) M-ACK RX(72) M-ACK RX(B0) M-ACK RX(DC) M-NACK STOP
+    ordering: recovery call at event #4, next 0x88 probe at #6, 0x8A probe at #10
+    PASS  the period still succeeds via the other candidate
+    PASS  the driver invoked the bounded bus recovery on the failure path
+    PASS  the re-probe of 0x44 happened AFTER the recovery, not before
+    PASS  the second candidate was probed after the first, in order
+    PASS  recovery invoked exactly once for this one failure
+[T14] tPU margin on the first access only
+    PASS  first measure after gxht40_init succeeds
+    PASS  exactly one tPU margin on the first access
+    PASS  tMEAS still waited exactly once
+    PASS  tPU margin is at least the datasheet 1 ms
+    PASS  second measure succeeds
+    PASS  tPU margin is NOT repeated on later accesses
+    PASS  tMEAS waited exactly once again
+[T15] result code reconciles with the address-ACK facts (OBS-2)
+    snapshot: status=3 ack44=1 ack45=0 read_retry=5 attempt=3 raw_valid=0
+    UART rendering would be: 'G s=3 a44=1 a45=0 rd=5 at=3 raw=------------'
+    PASS  corner established: exactly one candidate ACKed
+    PASS  a candidate ACKed but no read completed -> ERR_IO, not NO_DEVICE (s/a44 no longer contradict)
+    PASS  outputs untouched in this corner too
+    absent-device snapshot: status=2 ack44=0 ack45=0
+    PASS  negative control corner: neither candidate ACKed
+    PASS  no candidate ACKed -> NO_DEVICE still reported (rule is not 'always ERR_IO')
+    PASS  outputs untouched when the device is absent
+[T17] FWR-118: after a CRC failure the next period must re-probe both candidates
+    PASS  CRC-error period is reported as GXHT40_ERR_CRC
+    PASS  outputs NOT modified on the CRC-error period
+    cached address after the CRC failure = 0x00
+    PASS  FWR-118: the cached address is invalidated by a CRC failure (not only by a read failure)
+    transcript[T17-crc]: RECOV START TX(88) ACK ACK STOP START TX(89) ACK RX(66) M-ACK RX(66) M-ACK RX(93) M-ACK RX(72) M-ACK RX(B0) M-ACK RX(DC) M-NACK STOP START TX(8A) NACK STOP
+    next-period probes: 0x88=1 0x8A=1 recovery_calls=1
+    PASS  the next period reads normally again
+    PASS  FWR-118: the period after a CRC failure re-probes BOTH candidate addresses
+    PASS  FWR-118: the re-probe after a CRC failure is preceded by the bounded bus recovery
+    PASS  FWR-118: recovery call precedes the first re-probe byte in the wire transcript
+[T17b] FWR-118: after a range failure the next period must re-probe both candidates
+    PASS  range-invalid period is reported as GXHT40_ERR_RANGE
+    PASS  outputs NOT modified on the range-invalid period
+    PASS  FWR-118: the cached address is invalidated by a range failure too
+    next-period probes: 0x88=1 0x8A=1 recovery_calls=1
+    PASS  FWR-118: the period after a range failure re-probes BOTH candidate addresses
+    PASS  FWR-118: the re-probe after a range failure is preceded by the bounded bus recovery
+[T16] command whitelist re-check over the whole run (47 commands)
+    PASS  commands were actually exercised (non-empty set)
+    PASS  every command byte sent in every test was 0xFD
+    PASS  soft reset 0x94 never appears in any path
+==== result: 93 passed, 0 failed ====

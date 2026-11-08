@@ -41,3 +41,5 @@ Thumbs.db
 # Keil/hardware-verification build tool logs written into the repo root by mdk_build
 # (also seen as build_<timestamp>.log / build1.log variants)
 /build*.log
+# same tool logs when mdk_build/mdk_flash run with the MDK project as cwd
+**/MDK/build*.log

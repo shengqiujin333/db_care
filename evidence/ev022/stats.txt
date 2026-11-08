@@ -1,0 +1,26 @@
+failure-rate comparison (same board, same COM43 chain)
+  previous image (10 ms wait, early SDA sample): 7/18 = 38.9%
+  this image     (20 ms wait, end-of-high sample): 13/19 = 68.4%
+  Fisher exact two-sided p = 0.1031 (no evidence of a change in rate)
+  one-sided test for IMPROVEMENT: the new rate is not lower, so no improvement is shown.
+
+cycles observed this round: 19 (k = 3,6,9,12,15,18,24,27,30,33,36,39,42,45,48,51,54,57,60)
+k values not observed in the capture windows: [0, 21] (k=0 was before the first window; k=21 has no line inside an otherwise continuous window)
+
+failure frames decoded (CRC-8 recomputed independently):
+  k    raw           T_raw   T(0.1C)  T_crc_calc T_crc_rx  diff_rx_minus_Tmsb  H_raw   RH(0.1%%)  H_crc_ok
+  3    682568579EEE  0x6825      262   0x90       0x68      +0                0x579E      368   YES
+  6    64D1645CAF00  0x64D1      239   0x62       0x64      +0                0x5CAF      393   YES
+  15   6433645F5E9E  0x6433      235   0xC1       0x64      +0                0x5F5E      406   YES
+  18   6504655E8213  0x6504      241   0x67       0x65      +0                0x5E82      401   YES
+  36   6B046A53D7D8  0x6B04      282   0x0A       0x6A      -1                0x53D7      349   YES
+  39   6A4F6A590461  0x6A4F      277   0x29       0x6A      +0                0x5904      375   YES
+  42   6B556B5727D9  0x6B55      284   0x45       0x6B      +0                0x5727      366   YES
+  45   6B096B51091A  0x6B09      282   0x46       0x6B      +0                0x5109      336   YES
+  48   6A376A550D5D  0x6A37      276   0x68       0x6A      +0                0x550D      355   YES
+  51   6AF86B5482FD  0x6AF8      281   0x01       0x6B      +1                0x5482      353   YES
+  54   6B7E6B5062BF  0x6B7E      285   0x29       0x6B      +0                0x5062      332   YES
+  57   6BCA6B5139DF  0x6BCA      287   0x52       0x6B      +0                0x5139      337   YES
+  60   6B5C6B503556  0x6B5C      284   0xCD       0x6B      +0                0x5035      332   YES
+  frames with raw[2] == raw[0]: 11/13; the other 2 differ by one LSB of the MSB.
+  temperature CRC mismatches: 13/13; humidity CRC mismatches: 0/13

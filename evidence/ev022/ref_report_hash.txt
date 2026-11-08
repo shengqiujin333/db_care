@@ -1,0 +1,13 @@
+reference rule: report = (cur>350) || (have && dark && cur-prev>9)
+vectors: 572
+REF_REPORT_HASH = 0xA524C2E9
+  300    -> 309    have=1 dark=1  got=0 exp=0  OK rise exactly 9 (0.9C) -> no report (strict)
+  300    -> 310    have=1 dark=1  got=1 exp=1  OK rise 10 (1.0C) + DARK -> report
+  300    -> 310    have=1 dark=0  got=0 exp=0  OK rise 10 but LIT -> no report
+  349    -> 350    have=1 dark=1  got=0 exp=0  OK 34.9 -> 35.0 DARK -> no report
+  300    -> 291    have=1 dark=1  got=0 exp=0  OK cooling 0.9C -> no report
+  300    -> 290    have=1 dark=1  got=0 exp=0  OK cooling 1.0C -> no report (rising direction only)
+  -100   -> -120   have=1 dark=1  got=0 exp=0  OK negative cooling -> no report
+  32767  -> -32768 have=1 dark=1  got=0 exp=0  OK int16 extremes, downward -> no report (int32 math)
+  -32768 -> 32767  have=1 dark=1  got=1 exp=1  OK int16 extremes, upward over-temp -> report
+  1000   -> 350    have=1 dark=1  got=0 exp=0  OK exactly 35.0C, no rise -> no report

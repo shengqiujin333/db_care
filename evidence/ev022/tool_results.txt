@@ -1,0 +1,90 @@
+EV-022 tool results (embedded_tester.embedded_verification), 2026-11-08 (UTC dates as reported by the backend)
+
+Working tree at start
+  commit 0f8a8fbaa8e20f4aaaeb067a74af8084e0c0034c  "2026-11-08 13:51:57 +0800 [role:firmware_engineer]"
+  git status --short: clean (only later this round's own evidence/test-asset changes appear)
+  git diff --stat 7bfd248 HEAD -- <FW>/USER:
+     .../USER/inc/sensor_config.h | 7 +++++--
+     .../USER/src/sf_i2c.c        | 5 ++++-
+     2 files changed, 9 insertions(+), 3 deletions(-)
+
+serial_list_ports  (2026-11-08T05:54:20Z)
+  COM43  Prolific USB-to-Serial Comm Port  USB VID:PID=067B:2303 LOCATION=1-9.4.2
+  COM26  "USB 串行设备"  USB VID:PID=C251:F001 SER=87094109484987710672FF50
+
+usb_list_devices  (2026-11-08T05:54:25Z)
+  C251:F001 (CW-DAPLink composite)  present
+  067B:2303 (COM43 USB-TTL)         present
+  18D1:4EE7 instance 12F046690506 (Redmi 8A)  present
+  04B4:8613 "Unknown Device #1" (Cypress FX2) present
+  VDS1022 / oscilloscope / current meter     NOT enumerated
+
+mdk_build {"action":"rebuild"}  (05:55:07Z-05:55:10Z)
+  "*** Using Compiler 'V6.24'"
+  "../USER/src/main.c(245): warning: while loop has empty body [-Wempty-body]"  (existing)
+  Program Size: Code=25912 RO-data=656 RW-data=116 ZI-data=1676
+  ".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+  Independent rebuild produces:
+    Project.axf md5 08a4c266af6a0f058821ec809d38f78d
+    Project.hex md5 8fcfa1da9b7b204d83d36faf97b267e4
+
+serial_capture COM43@9600 (pre-flash window, 120 s, 05:55:21-05:57:22Z)
+  bytes_received=125
+  S k=63 p=229 H=1 V=0 o=8 n=3720 x=3729 a=3724 D=0 t=229 h=381 q=0 r=0 s=0 y=0
+  G s=4 a44=1 a45=0 rd=0 at=3 raw=6A7A6A4FF013
+
+mdk_flash {}  (05:57:22Z-05:57:34Z)
+  build: 0 Error(s), 0 Warning(s)
+  Erase Done.Programming Done.Verify OK.Application running ...
+  Flash Load finished at 13:57:34 (local, UTC+8) = 05:57:34Z
+
+serial_capture windows after the flash (COM43 @ 9600 8N1, 300 s each)
+  cap02 05:57:45-06:02:46Z  118 B  S k=3 q=0 + G
+  cap03 06:02:53-06:07:53Z  196 B  S k=6 q=0 + G; S k=9 q=1
+  cap04 06:07:59-06:12:59Z  204 B  S k=12 q=1; S k=15 q=0 + G
+  cap05 06:13:04-06:18:04Z  125 B  S k=18 q=0 + G
+  cap06 06:18:09-06:23:09Z   79 B  S k=24 q=1        (k=21 not observed)
+  cap07 06:23:30-06:28:30Z  158 B  S k=27 q=1; S k=30 q=1
+  cap08 06:28:36-06:33:36Z  204 B  S k=33 q=1; S k=36 q=0 + G
+  cap09 06:33:43-06:38:44Z  125 B  S k=39 q=0 + G
+  cap10 06:38:49-06:43:49Z  250 B  S k=42 q=0 + G; S k=45 q=0 + G
+  cap11 06:43:55-06:48:55Z  250 B  S k=48 q=0 + G; S k=51 q=0 + G
+  cap12 06:49:12-06:54:12Z  250 B  S k=54 q=0 + G; S k=57 q=0 + G
+  cap13 06:54:19-06:59:19Z  125 B  S k=60 q=0 + G
+  (raw captures copied verbatim into evidence/ev022/cap01.cap .. cap13.cap;
+   cap01 is the pre-flash window)
+
+sigrok_info  (07:08:14Z)
+  enabled=true driver=fx2lafw connection=2.31 channels=[D0,D1] labels={D0:scl,D1:sda}
+  triggers={D1:f} samplerate_hz=4000000 online=not_checked
+
+sigrok_probe  (07:08:14Z)
+  command: sigrok-cli --driver fx2lafw:conn=2.31 --show
+  exit_code=1  stderr: "No devices found."   error_code=SIGROK_FAILED
+  -> configured entry not reachable; configuration NOT modified and no other
+     USB address guessed (environment constraint).
+
+Host-side verification (this round, current source)
+  test/build_test.sh                      exit 0  46+57+54+28+29 = 214 passed, 0 failed
+  host_sf_i2c_verify_ev (independent)     51 passed, 0 failed
+  host_gxht40_verify_ev (independent)     93 passed, 0 failed
+  host_diag_line_verify_ev (independent)  38 passed, 0 failed  (after test-asset repair, see below)
+  host_diag_probe_verify_ev (independent) 104 passed, 0 failed
+  host_fw_core_verify_ev (independent)    59 passed, 0 failed  (after test-asset repair, see below)
+  t1_independent_check (independent)      1764 vectors, 0 mismatches
+
+Test-asset repairs performed this round (tester-owned assets; no product source changed)
+  1) test/host_diag_line_verify_ev.c [S2]: the harness predated the T2 `P` line and
+     judged the whole capture (S+P) against the per-line 96 B budget; failed for
+     harness-staleness, not product behavior. Now checks each emitted line for
+     <=96 B and CRLF (no assertion relaxed): 38/38.
+  2) test/host_fw_core_verify_ev.c [T8/T8b]: expectations still encoded the old
+     cooling direction (D-01). Reference re-derived independently
+     (evidence/ev022/ref_report_hash.py, FNV-1a over the same 572-vector grid ->
+     0xA524C2E9, equal to the implementation's observed hash): 59/59.
+  Both repairs are recorded by scripts evidence/ev022/patch_diag_line_harness.py
+  and evidence/ev022/patch_fw_core_harness.py.
+
+Build-time artifacts left by the flashing tool in the product tree
+  MDK/build.run10.log, MDK/build.run10_1794117442157757100.log (untracked; .gitignore
+  now ignores **/MDK/build*.log so they cannot be swept into a capability commit).

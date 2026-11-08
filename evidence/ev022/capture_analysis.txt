@@ -1,0 +1,91 @@
+EV-022 independent capture analysis
+build under test: commit 0f8a8fba, axf md5 08a4c266af6a0f058821ec809d38f78d
+decoder: CRC-8 poly=0x31 init=0xFF (independent implementation)
+
+== cap01.cap  05:55:21-05:57:22  125 bytes  (pre-flash old image (7bfd248 build c7ed03b7))
+    79 B  S k=63 p=229 H=1 V=0 o=8 n=3720 x=3729 a=3724 D=0 t=229 h=381 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6A7A6A4FF013
+
+== cap02.cap  05:57:45-06:02:46  118 bytes  (after flash 08a4c266)
+    72 B  S k=3 p=0 H=0 V=0 o=8 n=3748 x=3755 a=3750 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=682568579EEE
+
+== cap03.cap  06:02:53-06:07:53  196 bytes  (after flash 08a4c266)
+    72 B  S k=6 p=0 H=0 V=0 o=8 n=3705 x=3715 a=3710 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=64D1645CAF00
+    78 B  S k=9 p=239 H=1 V=0 o=8 n=3739 x=3748 a=3743 D=0 t=239 h=407 q=1 r=0 s=0 y=0
+
+== cap04.cap  06:07:59-06:12:59  204 bytes  (after flash 08a4c266)
+    79 B  S k=12 p=219 H=1 V=0 o=8 n=3738 x=3750 a=3744 D=0 t=219 h=432 q=1 r=0 s=0 y=0
+    79 B  S k=15 p=219 H=1 V=0 o=8 n=3670 x=3684 a=3675 D=0 t=219 h=432 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6433645F5E9E
+
+== cap05.cap  06:13:04-06:18:04  125 bytes  (after flash 08a4c266)
+    79 B  S k=18 p=219 H=1 V=0 o=8 n=3676 x=3689 a=3683 D=0 t=219 h=432 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6504655E8213
+
+== cap06.cap  06:18:09-06:23:09  79 bytes  (after flash 08a4c266)
+    79 B  S k=24 p=253 H=1 V=0 o=8 n=3671 x=3684 a=3679 D=0 t=253 h=371 q=1 r=0 s=0 y=0
+
+== cap07.cap  06:23:30-06:28:30  158 bytes  (after flash 08a4c266)
+    79 B  S k=27 p=248 H=1 V=0 o=8 n=3663 x=3675 a=3669 D=0 t=248 h=390 q=1 r=0 s=0 y=0
+    79 B  S k=30 p=248 H=1 V=0 o=8 n=3658 x=3668 a=3662 D=0 t=248 h=380 q=1 r=0 s=0 y=0
+
+== cap08.cap  06:28:36-06:33:36  204 bytes  (after flash 08a4c266)
+    79 B  S k=33 p=249 H=1 V=0 o=8 n=3718 x=3729 a=3723 D=0 t=249 h=372 q=1 r=0 s=0 y=0
+    79 B  S k=36 p=249 H=1 V=0 o=8 n=3693 x=3702 a=3697 D=0 t=249 h=372 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6B046A53D7D8
+
+== cap09.cap  06:33:43-06:38:44  125 bytes  (after flash 08a4c266)
+    79 B  S k=39 p=249 H=1 V=0 o=8 n=3738 x=3749 a=3743 D=0 t=249 h=372 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6A4F6A590461
+
+== cap10.cap  06:38:49-06:43:49  250 bytes  (after flash 08a4c266)
+    79 B  S k=42 p=249 H=1 V=0 o=8 n=3722 x=3729 a=3725 D=0 t=249 h=372 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6B556B5727D9
+    79 B  S k=45 p=249 H=1 V=0 o=8 n=3672 x=3684 a=3677 D=0 t=249 h=372 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6B096B51091A
+
+== cap11.cap  06:43:55-06:48:55  250 bytes  (after flash 08a4c266)
+    79 B  S k=48 p=249 H=1 V=0 o=8 n=3690 x=3697 a=3692 D=0 t=249 h=372 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6A376A550D5D
+    79 B  S k=51 p=249 H=1 V=0 o=8 n=3689 x=3696 a=3692 D=0 t=249 h=372 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6AF86B5482FD
+
+== cap12.cap  06:49:12-06:54:12  250 bytes  (after flash 08a4c266)
+    79 B  S k=54 p=249 H=1 V=0 o=8 n=3696 x=3705 a=3700 D=0 t=249 h=372 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6B7E6B5062BF
+    79 B  S k=57 p=249 H=1 V=0 o=8 n=3704 x=3713 a=3707 D=0 t=249 h=372 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6BCA6B5139DF
+
+== cap13.cap  06:54:19-06:59:19  125 bytes  (after flash 08a4c266)
+    79 B  S k=60 p=249 H=1 V=0 o=8 n=3704 x=3711 a=3706 D=0 t=249 h=372 q=0 r=0 s=0 y=0
+    46 B  G s=4 a44=1 a45=0 rd=0 at=3 raw=6B5C6B503556
+
+==============================================================================
+S lines (current build only, excluding pre-flash cap01):
+  current build: 19 cycles, q=1: 6, q=0: 13 (68.4% fail)
+  pre-flash image: 1 cycles, q=1: 0, q=0: 1
+
+G lines (current build):
+  cap     k(from prior S)  raw           T_word  T_crc_calc  T_crc_rx  eq_raw0  H_word  H_crc_calc  H_crc_rx  H_ok
+  cap02.cap 3               0x682568579EEE  0x6825  0x90        0x68      YES     0x579E  0xEE        0xEE      YES
+  cap03.cap 6               0x64D1645CAF00  0x64D1  0x62        0x64      YES     0x5CAF  0x00        0x00      YES
+  cap04.cap 15              0x6433645F5E9E  0x6433  0xC1        0x64      YES     0x5F5E  0x9E        0x9E      YES
+  cap05.cap 18              0x6504655E8213  0x6504  0x67        0x65      YES     0x5E82  0x13        0x13      YES
+  cap08.cap 36              0x6B046A53D7D8  0x6B04  0x0A        0x6A      NO      0x53D7  0xD8        0xD8      YES
+  cap09.cap 39              0x6A4F6A590461  0x6A4F  0x29        0x6A      YES     0x5904  0x61        0x61      YES
+  cap10.cap 42              0x6B556B5727D9  0x6B55  0x45        0x6B      YES     0x5727  0xD9        0xD9      YES
+  cap10.cap 45              0x6B096B51091A  0x6B09  0x46        0x6B      YES     0x5109  0x1A        0x1A      YES
+  cap11.cap 48              0x6A376A550D5D  0x6A37  0x68        0x6A      YES     0x550D  0x5D        0x5D      YES
+  cap11.cap 51              0x6AF86B5482FD  0x6AF8  0x01        0x6B      NO      0x5482  0xFD        0xFD      YES
+  cap12.cap 54              0x6B7E6B5062BF  0x6B7E  0x29        0x6B      YES     0x5062  0xBF        0xBF      YES
+  cap12.cap 57              0x6BCA6B5139DF  0x6BCA  0x52        0x6B      YES     0x5139  0xDF        0xDF      YES
+  cap13.cap 60              0x6B5C6B503556  0x6B5C  0xCD        0x6B      YES     0x5035  0x56        0x56      YES
+
+  G totals (current build): 13 frames, temp CRC bad: 13, humidity CRC bad: 0, raw[2]==raw[0]: 11
+
+Line-budget / format problems: 0
+
+k sequence (current build): 3, 6, 9, 12, 15, 18, 24, 27, 30, 33, 36, 39, 42, 45, 48, 51, 54, 57, 60
+V/D/o per cycle (current build): 3:0/0/8, 6:0/0/8, 9:0/0/8, 12:0/0/8, 15:0/0/8, 18:0/0/8, 24:0/0/8, 27:0/0/8, 30:0/0/8, 33:0/0/8, 36:0/0/8, 39:0/0/8, 42:0/0/8, 45:0/0/8, 48:0/0/8, 51:0/0/8, 54:0/0/8, 57:0/0/8, 60:0/0/8

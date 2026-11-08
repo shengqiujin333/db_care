@@ -225,11 +225,28 @@ int main(void)
         s.send = 2; s.retry = 3;
         s.diag_valid = 0;
         capture_mark(); debug_trace_sample(&s);
-        printf("      worst-case S: %d bytes\n", captured_len());
-        CHECK(captured_len() <= (int)SENSOR_DEBUG_UART_MAXLINE, "worst-case S line fits the 96-byte budget");
+        /* T2: report!=0 makes the same call emit S followed by P; the 96-byte
+         * budget must therefore be judged per LINE, not per call. */
         {
-            int crlf, barelf; count_eol(&crlf, &barelf);
-            CHECK(crlf == 1 && barelf == 0, "worst-case S line terminated by exactly one CRLF");
+            const char *p = captured();
+            int ok_len = 1, ok_eol = 1, lines = 0;
+            printf("      worst-case capture: %d bytes\n", captured_len());
+            while (*p) {
+                const char *e = strstr(p, "\r\n");
+                if (e == NULL) { ok_eol = 0; break; }
+                if ((int)(e - p) + 2 > (int)SENSOR_DEBUG_UART_MAXLINE) ok_len = 0;
+                printf("      line %d: %d bytes\n", lines + 1, (int)(e - p) + 2);
+                lines++;
+                p = e + 2;
+            }
+            CHECK(lines >= 1, "worst case produced at least one line");
+            CHECK(ok_len, "every emitted line fits the 96-byte budget");
+            CHECK(ok_eol, "every emitted line is CRLF-terminated");
+        }
+        {
+            int crlf, barelf;
+            count_eol(&crlf, &barelf);
+            CHECK(barelf == 0, "no bare LF in worst-case capture");
         }
     }
 

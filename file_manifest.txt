@@ -1,6 +1,6 @@
 # Project File Manifest
 # path | status | purpose
-.gitignore | active | 忽略规则：构建产物（含 *.bin/*.hex/*.elf/*.exe、/build*.log）、IDE 用户态、.codegraph、缓存
+.gitignore | active | 忽略规则：构建产物（含 *.bin/*.hex/*.elf/*.exe、/build*.log、**/MDK/build*.log）、IDE 用户态、.codegraph、缓存
 CH592EVT/EVT/20240119105503_8338.zip | coarse | 沁恒官方归档样例
 CH592EVT/EVT/EXAM/ | coarse | 沁恒官方其它示例（间接参考，不逐文件展开）
 CH592EVT/EVT/EXAM/BLE/HAL/ | coarse | CH592 HAL 驱动（网关编译依赖）
@@ -42,10 +42,10 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/buil
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh | active | 宿主机测试单一入口（纯逻辑 + 光照等阶段；含 -DLIGHT_BGR_TRIM_MV 覆盖）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c | active | UART1 调试通道实现侧自检（行格式/预算、P 行、TXE/TXBUSY 卡死有界路径）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_line_verify_ev.c | active | 测试能力独立验证 harness：BUS/G/S 行逐字节与 96 B 预算
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_line_verify_ev.c | active | 测试能力独立验证 harness：BUS/G/S/P 行逐字节、逐行 96 B 预算与 CRLF（EV-022 起预算按单行判定，兼容 T2 P 行）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_probe_verify_ev.c | active | 测试能力独立验证 harness：BUS 扫描/general call 分支/诊断快照传播
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_pure_check.c | active | fw_core 纯逻辑自检（含 T1 升温/严格边界向量）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_verify_ev.c | active | 测试能力独立验证 harness：fw_core 穷举（65536 温度/湿度字、CRC、1-3 判据网格）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_verify_ev.c | active | 测试能力独立验证 harness：fw_core 穷举（65536 温度/湿度字、CRC、1-3 判据网格、升温方向 572 组判定哈希 0xA524C2E9）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gw_compat_verify_ev.c | active | 测试能力独立验证 harness：传感器→网关→Android 全链兼容
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_check.c | active | GXHT40 驱动实现侧自检（mock 从机）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_verify_ev.c | active | 测试能力独立验证 harness：GXHT40 驱动（位级 mock 总线/从机、重探、总线恢复、命令白名单）
@@ -164,15 +164,51 @@ evidence/ev021/parse_captures.py | active | 本轮与 EV-018 原始帧的独立 
 evidence/ev021/run3_a.cap | active | 本轮 COM43@9600 原始字节（05:22:23–05:27:23Z，含 k=30 失败帧与 k=33 成功帧）
 evidence/ev021/run3_b.cap | active | 本轮 COM43@9600 原始字节（05:29:27–05:34:28Z，含 k=39 失败帧）
 evidence/ev021/tool_results.txt | active | 本轮 serial_list_ports/usb_list_devices/serial_capture/sigrok_info/sigrok_probe 原始结果摘要
+evidence/ev022/ | active | EV-022 修复轮复验原始证据目录：13 份 COM43 原始捕获、独立解析/统计/参考哈希脚本与输出、测试资产修复脚本、宿主 harness 日志、工具原始结果
+evidence/ev022/EV-022_section.md | active | EV-022 证据正文（已并入 evidence/test.md 顶部）
+evidence/ev022/analyze_ev022.py | active | 独立捕获解析：逐行字段/行长、独立 CRC-8 复算、失败签名统计
+evidence/ev022/cap01.cap | active | 下载前旧镜像 COM43 原始字节（05:55:21–05:57:22Z，k=63 q=0）
+evidence/ev022/cap02.cap | active | 下载后 COM43 原始字节（05:57:45–06:02:46Z，k=3 q=0）
+evidence/ev022/cap03.cap | active | 下载后 COM43 原始字节（06:02:53–06:07:53Z，k=6 q=0、k=9 q=1）
+evidence/ev022/cap04.cap | active | 下载后 COM43 原始字节（06:07:59–06:12:59Z，k=12 q=1、k=15 q=0）
+evidence/ev022/cap05.cap | active | 下载后 COM43 原始字节（06:13:04–06:18:04Z，k=18 q=0）
+evidence/ev022/cap06.cap | active | 下载后 COM43 原始字节（06:18:09–06:23:09Z，k=24 q=1；k=21 未观测）
+evidence/ev022/cap07.cap | active | 下载后 COM43 原始字节（06:23:30–06:28:30Z，k=27/30 q=1）
+evidence/ev022/cap08.cap | active | 下载后 COM43 原始字节（06:28:36–06:33:36Z，k=33 q=1、k=36 q=0）
+evidence/ev022/cap09.cap | active | 下载后 COM43 原始字节（06:33:43–06:38:44Z，k=39 q=0）
+evidence/ev022/cap10.cap | active | 下载后 COM43 原始字节（06:38:49–06:43:49Z，k=42/45 q=0）
+evidence/ev022/cap11.cap | active | 下载后 COM43 原始字节（06:43:55–06:48:55Z，k=48/51 q=0）
+evidence/ev022/cap12.cap | active | 下载后 COM43 原始字节（06:49:12–06:54:12Z，k=54/57 q=0）
+evidence/ev022/cap13.cap | active | 下载后 COM43 原始字节（06:54:19–06:59:19Z，k=60 q=0）
+evidence/ev022/capture_analysis.txt | active | analyze_ev022.py 输出（13 份捕获逐行 + G 帧 CRC 复算表 + 统计）
+evidence/ev022/dump_t8_region.py | active | T8 段落字节转储辅助脚本（一次性，用于精确修补测试资产）
+evidence/ev022/ev022_stats.py | active | 失败率对照（旧镜像 7/18 vs 本轮 13/19）、Fisher 检验与失败帧温湿度换算
+evidence/ev022/fix_capture_extensions.py | active | 将 EV-022 捕获引用统一为 .cap（仓库 .gitignore 忽略 *.bin），一次性且可复跑
+evidence/ev022/host_build_test.log | active | 本轮 test/build_test.sh 原始 stdout（214 项 0 失败）
+evidence/ev022/host_diag_line_verify_ev.log | active | 独立诊断行 harness 输出（38/38，修复测试资产后）
+evidence/ev022/host_diag_probe_verify_ev.log | active | 独立总线诊断 harness 输出（104/104）
+evidence/ev022/host_fw_core_verify_ev.log | active | 独立 fw_core harness 输出（59/59，修复测试资产后）
+evidence/ev022/host_gxht40_verify_ev.log | active | 独立 GXHT40 harness 输出（93/93）
+evidence/ev022/host_sf_i2c_verify_ev.log | active | 独立软 I²C harness 输出（51/51）
+evidence/ev022/patch_diag_line_harness.py | active | 测试资产修复脚本：诊断行 harness 的 96 B 预算改为逐行判定（兼容 T2 P 行）
+evidence/ev022/patch_fw_core_harness.py | active | 测试资产修复脚本：fw_core harness 期望改为升温方向并更新参考哈希
+evidence/ev022/prepend_sections.py | active | 将 EV-022 段落并入 evidence/test.md 与 programmed_prototype.md 的可复跑脚本
+evidence/ev022/programmed_prototype_section.md | active | EV-022 下载身份段落（已并入 evidence/programmed_prototype.md 顶部）
+evidence/ev022/ref_report_hash.py | active | T8 判定网格独立参考（升温方向，572 向量 FNV-1a）
+evidence/ev022/ref_report_hash.txt | active | 参考哈希 0xA524C2E9 与边界向量输出
+evidence/ev022/stats.txt | active | ev022_stats.py 输出
+evidence/ev022/t1_independent_check.txt | active | T1 独立复核输出（1764 向量 0 不一致）
+evidence/ev022/t8_region_dump.txt | active | 上述脚本输出
+evidence/ev022/tool_results.txt | active | 本轮设备/构建/采集工具原始结果与时间戳
 evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
-evidence/programmed_prototype.md | active | 下载身份记录（EV-018：当前提交 7bfd248 / axf md5 c7ed03b7… 两次 mdk_flash Verify OK；仅证明下载成功，不代表功能合格；EV-017 及更早记录保留为历史）
+evidence/programmed_prototype.md | active | 下载身份记录（EV-022：commit 0f8a8fba / axf md5 08a4c266… 一次 mdk_flash Verify OK；仅证明下载成功，不代表功能合格；EV-018 及更早记录保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
 evidence/software_static_check_server_migration.py | active | 可复跑静态核查（ITEM-004：服务器常量/旧主机分布/XML 放行/兼容面）
 evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）
 evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；退出码 0/1）
-evidence/test.md | active | 嵌入式验证证据 EV-018（当前轮）：TEST_FAIL — 当前构建 15 周期 10×q=1/5×q=0；失败均为 G s=4 温度 CRC 错且 raw[2]==raw[0]、湿度 CRC 正常；上电诊断行不完整、T5/INT 未执行、逻辑分析仪入口不在线；含 EV-012..EV-017 历史轮记录
+evidence/test.md | active | 嵌入式验证证据 EV-022（当前轮）：TEST_FAIL — 修复镜像 19 周期 6×q=1 / 13×q=0（68.4%），全部 G s=4 温度 CRC 错且湿度 CRC 全对；两项时序 A/B 未改善；T5/INT 未执行、上电行缺失、逻辑分析仪不在线；EV-018 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-021）：GXHT40 温度 CRC 字节间歇性等于温度 MSB 的签名、已排除项、竞争假设与责任交接（仅归因，不代表修复或通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）
