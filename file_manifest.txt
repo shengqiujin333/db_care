@@ -363,6 +363,11 @@ evidence/ev028/run_host_harnesses.sh | active | 测试侧独立 harness 复跑�
 evidence/ev028/sigrok_capture_stderr.log | active | fx2lafw conn=2.27 采集失败原始 stderr（No devices found）
 evidence/ev028/sigrok_probe_stderr.log | active | fx2lafw conn=2.27 探测失败原始 stderr（No devices found）
 evidence/ev028/tool_results.txt | active | EV-028 工具调用原始结果、时间戳、构建/下载/串口身份与执行顺序观察
+evidence/ev029/ | active | EV-029 原始证据目录：COM43 单窗口原始字节、独立解析脚本与输出、本轮设备工具结果
+evidence/ev029/analyze_ev029.py | active | EV-029 独立解析（CRLF/行长≤96、字段集合/顺序、q/G、k 步长、F-1 p 链）
+evidence/ev029/capture_analysis.txt | active | analyze_ev029.py 输出（2 条 S 全 q=1、0 G、79 B、p(k=30)=t(k=27)）
+evidence/ev029/serial_capture_1204Z.bin | active | COM43 原始字节（12:04:51–12:09:51Z，S k=27/k=30；md5 6522407d…）
+evidence/ev029/tool_results.txt | active | EV-029 设备工具原始结果与时间戳（串口/ USB 枚举/ sigrok probe 失败/串口采集）
 evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
 evidence/programmed_prototype.md | active | 下载身份记录（EV-028：commit bee3d8f / axf md5 a3b08774…，两次 mdk_flash Verify OK；首样本 H=0 p=0 实板成立；仅证明下载成功，不代表功能合格；EV-026/EV-024 及更早记录保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
@@ -372,7 +377,7 @@ evidence/software_static_check_server_migration.py | active | 可复跑静态核
 evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）
 evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；退出码 0/1）
 evidence/test.md | active | 嵌入式验证证据 EV-028（当前轮）：TEST_FAIL（整体）— F-1 S 行前值语义修复实板成立（首样本 H=0 p=0；后续 p=上一周期 t 且 p≠t；7 条 S 全 q=1、0 G、行长 76–79 B）；T4-02 上电五行/uid、T5 全暗标定、INT 上报/跨链路未执行；T4-07 位级因配置地址 2.27 不解析本轮不可用；EV-026 及更早保留为历史
-evidence/triage.md | active | 嵌入式测试失败归因证据（EV-027 置顶，EV-025/EV-023/EV-021 原文保留）：EV-026 剩余缺口归因——E1 修复在长时运行后仍成立、确认 F-1 S 行前值为更新后值（责任固件实现）、delay_ms≈1.626× 基线偏差、首间隔重估、T4-02/T5/INT 条件缺口；**顶部已登记 EV-028 后续状态：F-1 修复（bee3d8f）已实板复验成立**（仅归因，不代表整体通过）
+evidence/triage.md | active | 嵌入式测试失败归因证据（EV-029 置顶，EV-027/EV-025/EV-023/EV-021 原文保留）：EV-028 TEST_FAIL 剩余原因归因——F-1 修复在实板保持（p=上一周期 t）；T4-02 采集编排、T5/INT 物理条件、T4-07 位级入口（FX2 登记地址 2.27 过期）为剩余缺口；无新功能缺陷（仅归因，不代表整体通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）
 gxht40.pdf | active | GXHT40 数据手册 V2.6（地址仅 0x44/0x45、命令 0xFD/0x94、CRC-8 poly 0x31/init 0xFF、换算 §7.5、t_MEAS/t_PU、VDD 1.6..5.5 V）

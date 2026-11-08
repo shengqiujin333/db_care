@@ -1,0 +1,53 @@
+EV-029 嵌入式失败归因 — 本轮设备工具原始结果（Windows 主机，时间为 UTC）
+分析对象：evidence/test.md EV-028（TEST_FAIL）；受测实现 artifacts/firmware_implementation.md（FWI-002 rev 6.4，提交 bee3d8f，axf md5 a3b08774e764f174eac318f6771d0c42）
+说明：本轮未下载、未复位、未修改产品源码/环境/权限配置。
+
+[1] serial_list_ports
+started_at=2026-11-08T12:04:42.002700+00:00 finished_at=2026-11-08T12:04:42.007231+00:00 exit_code=0
+stdout:
+[
+  {"port":"COM43","description":"Prolific USB-to-Serial Comm Port (COM43)","hwid":"USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2","vid":1659,"pid":8963,"serial_number":""},
+  {"port":"COM26","description":"USB 串行设备 (COM26)","hwid":"USB VID:PID=C251:F001 SER=87094109484987710672FF50","vid":49745,"pid":61441,"serial_number":"87094109484987710672FF50"}
+]
+判读：COM43（Prolific 067B:2303）在位；COM26 为调试器 CDC（C251:F001），未使用。
+
+[2] usb_list_devices
+started_at=2026-11-08T12:04:42.076938+00:00 finished_at=2026-11-08T12:04:44.417356+00:00 exit_code=0
+关键条目（其余为本机外设，略）：
+- CW-DAPLink: USB\VID_C251&PID_F001\87094109484987710672FF50 (OK)
+- 手机: USB\VID_18D1&PID_4EE7\12F046690506, FriendlyName "SDM439-QRD _SN:3AE89DF1" (OK)
+- FX2: USB\VID_04B4&PID_8613\CYPRESS_FX2, FriendlyName "fx2lafw" (OK)
+判读：逻辑分析仪 USB 身份仍在枚举；但 usb_list_devices 不提供 sigrok 所需的 bus.address，不能据此推断新地址。
+
+[3] sigrok_info
+started_at=2026-11-08T12:04:44.489895+00:00 finished_at=2026-11-08T12:04:44.492868+00:00 exit_code=0
+configuration: enabled=true, executable=D:/Program Files/sigrok/sigrok-cli/sigrok-cli.exe, driver=fx2lafw, connection="2.27",
+               channels=[D0,D1], signal_labels={D0:scl,D1:sda}, triggers={D1:"f"}, samplerate_hz=4000000, max_samples=20000000
+online=not_checked; functional_verdict=not_evaluated
+
+[4] sigrok_probe（只访问配置登记的 USB bus.address=2.27；未改配置、未猜地址）
+started_at=2026-11-08T12:04:46.431751+00:00 finished_at=2026-11-08T12:04:46.469742+00:00
+command: sigrok-cli --driver fx2lafw:conn=2.27 --show
+exit_code=1 timed_out=false error_code=SIGROK_FAILED
+stderr: No devices found.
+stdout/metadata: sigrok_probe_606877342be94e57917b7e3f085da4fc/metadata.json
+判读：配置入口 2.27 当前不可达；FX2 设备身份仍在 USB 中枚举（见 [2]）⇒ 与 EV-028 相同，USB 地址已变化/配置登记过期。未执行 sigrok_capture（probe 已证明该入口不可达，重复采集无新增信息）；未换用其他连接通道。
+
+[5] serial_capture COM43 @ 9600 8N1
+started_at=2026-11-08T12:04:51.089846+00:00 finished_at=2026-11-08T12:09:51.284776+00:00
+duration_sec=300 exit_code=0 bytes_received=158
+原始文件: serial-capture-1794139791284776200.bin
+          已复制到项目仓库 evidence/ev029/serial_capture_1204Z.bin
+          md5 6522407d2058a1f3ced6edef9662c314（158 B）
+preview（逐字节解析见 capture_analysis.txt）:
+S k=27 p=263 H=1 V=0 o=8 n=3731 x=3737 a=3735 D=0 t=272 h=375 q=1 r=0 s=0 y=0\r\n
+S k=30 p=272 H=1 V=0 o=8 n=3730 x=3734 a=3732 D=0 t=277 h=352 q=1 r=0 s=0 y=0\r\n
+判读：2 条完整 S 行，均 q=1、无 G；行长 79 B（含 CRLF）≤96；p(k=30)=272=t(k=27) 且 p≠t；
+      处于 EV-028 B 会话延续（flash#2 于 11:39:47Z Application running，k=18 已见于 11:54–11:59Z，本轮 k=27/30 与分钟节拍一致，无回零）。
+
+[6] 未执行的设备动作
+- mdk_flash / 复位：当前能力允许工具列表不含 mdk_flash，environment 中 sensor_programming 对本能力为 unavailable_for_current_capability
+  （missing device_tools=[mdk_flash]、external_actions=[flash_device]）⇒ 无法主动复位以在端口打开前取得上电五行。
+- sigrok_capture/decode：配置入口不可达（见 [4]），本轮无位级补充。
+- 手机/网关操作：android_app_testing 对本能力为 unavailable_for_current_capability（device_tools 缺 android_test）；
+  网关无独立管理入口；本轮未做跨链路观测。

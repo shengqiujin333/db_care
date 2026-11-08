@@ -1,0 +1,9 @@
+file=serial_capture_1204Z.bin bytes=158 md5=6522407d2058a1f3ced6edef9662c314
+ends_with_crlf=True
+lines=2 stray_or_unknown=0
+[1] len_with_crlf=79 raw='S k=27 p=263 H=1 V=0 o=8 n=3731 x=3737 a=3735 D=0 t=272 h=375 q=1 r=0 s=0 y=0'
+[2] len_with_crlf=79 raw='S k=30 p=272 H=1 V=0 o=8 n=3730 x=3734 a=3732 D=0 t=277 h=352 q=1 r=0 s=0 y=0'
+    k_step=3 (expect 3)
+    F-1: p=272 prev.t=272 cur.t=277 H=1 -> OK
+
+RESULT: all framing/field/range/q and F-1 chain checks passed
