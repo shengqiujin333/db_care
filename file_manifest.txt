@@ -69,10 +69,10 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_mcu/ | active | 实现侧影子 MCU 层（供 measure.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/ | active | 实现侧影子 MCU 层（供 debug_trace.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_vdd_ev/ | active | 测试能力自建影子 MCU 层（供电轨测量 harness，mock_bgr_trim_value 替身修调值）
-artifacts/android_architecture.md | active | Android 方案设计 AA-002（需求 6 点落点、分层/模块/接口、SQLite v3 与 /upload_data 幂等、异常边界、未决项）
+artifacts/android_architecture.md | active | Android 方案设计 AA-003 rev 2.0（as-built 已实现项与证据边界、上报方向更正为升温、BLE 权限策略/网关发现绑定/批次转发/零值哨兵/规则文案四项增量、兼容面与设备层交接）
 artifacts/android_feasibility.md | active | Android 真机/模拟环境可行性探索 AF-001（Redmi 8A Android 10/API 29 只读事实、API<31 定位权限门阻断、硬编码网关 MAC、AVD API 34 对照与差异、未证实项与最小下一步）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加）
-artifacts/android_tasks.yaml | active | Android 实现任务清单（14 项，按前置依赖排序）
+artifacts/android_tasks.yaml | active | Android 待实现任务清单（4 项：BLE 权限模型、网关身份发现与绑定、BLE 批次转发与零值哨兵、上报规则文案方向；按前置依赖排序）
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 6.0（当前源码 as-built 核对、判定方向+严格 35℃ 边界、待上报冻结与 P 行、调试等待有界化、GXHT40 证据驱动修复、全暗标定与 1/3 判据、当前构建再观测矩阵）
