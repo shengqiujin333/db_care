@@ -1,0 +1,46 @@
+== decoded annotation summary ==
+    8239-8239     Start
+   10715-27912    Address write: 44
+   30411-32867    ACK
+   32964-52618    Data write: FD
+   52660-55117    ACK
+   56423-56423    Stop
+  186487-186487   Start
+  188963-206162   Address read: 44
+  208661-211119   ACK
+  211260-230919   Data read: 60
+  230975-233433   ACK
+  233503-253160   Data read: 30
+  253217-255674   ACK
+  255746-275404   Data read: 11
+  275462-277919   ACK
+  277990-297650   Data read: 6B
+  297706-300164   ACK
+  300234-319893   Data read: 65
+  319951-322408   ACK
+  322479-342136   Data read: 80
+  343414-345871   NACK
+  347106-347106   Stop
+
+== timing ==
+write START..STOP      :   48184 samples = 12.046 ms
+command STOP->read START: 130064 samples = 32.516 ms
+read START..STOP       :  160619 samples = 40.155 ms
+data bit-cell widths   : [(2457, 50), (2458, 16), (2456, 6)] samples -> 614.2 us (~1.628 kHz)
+
+== transaction content ==
+address write: ['Address write: 44']  data write: ['Data write: FD']
+address read : ['Address read: 44']  data read : ['Data read: 60', 'Data read: 30', 'Data read: 11', 'Data read: 6B', 'Data read: 65', 'Data read: 80']
+raw frame    : 60 30 11 6B 65 80
+T word 0x6030 crc calc 0x11 recv 0x11 MATCH -> 20.8 C
+H word 0x6B65 crc calc 0x80 recv 0x80 MATCH -> 42.0 %RH
+
+== serial captures ==
+-- cap01_k75.bin (79 bytes)
+    S k=75 p=225 H=1 V=0 o=8 n=3192 x=3203 a=3197 D=0 t=225 h=436 q=1 r=0 s=0 y=0
+    p=225 t=225 p==t (post-update prev field) H=1 q=1
+-- cap02_k84_k87.bin (158 bytes)
+    S k=84 p=212 H=1 V=0 o=8 n=3203 x=3211 a=3206 D=0 t=212 h=459 q=1 r=0 s=0 y=0
+    p=212 t=212 p==t (post-update prev field) H=1 q=1
+    S k=87 p=221 H=1 V=0 o=8 n=3197 x=3208 a=3202 D=0 t=221 h=458 q=1 r=0 s=0 y=0
+    p=221 t=221 p==t (post-update prev field) H=1 q=1

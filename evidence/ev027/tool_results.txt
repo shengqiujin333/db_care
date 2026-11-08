@@ -1,0 +1,57 @@
+EV-027 raw tool results (embedded tester, 2026-11-08 UTC; Windows host clock)
+All device access went through the mounted hardware_verification MCP tools only.
+No flash, build, reset, driver install, or configuration change was performed in this round.
+
+[serial_list_ports] 2026-11-08T10:58:43.224-10:58:43.235Z
+  COM43  Prolific USB-to-Serial Comm Port  USB VID:PID=067B:2303 LOCATION=1-9.4.2
+  COM26  USB serial device  USB VID:PID=C251:F001 SN=87094109484987710672FF50 (debugger CDC, not used)
+
+[serial_capture #1] 2026-11-08T10:58:51.440861-11:03:51.679927Z  COM43 @ 9600 8N1
+  bytes_received=79
+  raw:  S k=75 p=225 H=1 V=0 o=8 n=3192 x=3203 a=3197 D=0 t=225 h=436 q=1 r=0 s=0 y=0
+  local artifact copied to evidence/ev027/cap01_k75.bin  md5 5258efdbf1d8eb6d4763f195e97fab24
+
+[sigrok_capture] 2026-11-08T11:03:51.816202-11:04:39.678796Z  exit_code=0
+  command: sigrok-cli.exe --driver fx2lafw:conn=2.27 --config samplerate=4000000
+           --channels D0,D1 --samples 8000000 --wait-trigger --triggers D1=f
+           --output-format srzip --output-file .../capture.sr
+  session: sample_count=8000000 samplerate_hz=4000000 sample_interval_sec=2.5e-07
+           duration_sec=2.0 channels=[D0,D1] timing="sample index / nominal device rate"
+  trigger wait ~45.86 s; nominal sampling start 11:04:37.679Z; I2C START at sample 8239
+  = 11:04:37.681Z (wall-clock inference, not a device timestamp)
+  raw .sr md5 = b085d9b6ca15faa836dd05beb2a7835b (copy evidence/ev027/raw_i2c_capture.sr)
+
+[sigrok_decode] 2026-11-08T11:04:58.233-11:04:58.457Z  exit_code=0  annotations_present=true
+  command: sigrok-cli.exe --input-file .../capture.sr --protocol-decoders i2c:scl=D0:sda=D1
+           --protocol-decoder-samplenum
+  decoded: Start / Address write: 44 / ACK / Data write: FD / ACK / Stop
+           Start / Address read: 44 / ACK / Data read: 60 30 11 6B 65 80 / NACK / Stop
+  (full annotation text with sample numbers: evidence/ev027/decoded_i2c.txt)
+
+[serial_capture #2] 2026-11-08T11:08:52.182211-11:13:52.390332Z  COM43 @ 9600 8N1
+  bytes_received=158
+  raw:  S k=84 p=212 H=1 V=0 o=8 n=3203 x=3211 a=3206 D=0 t=212 h=459 q=1 r=0 s=0 y=0
+        S k=87 p=221 H=1 V=0 o=8 n=3197 x=3208 a=3202 D=0 t=221 h=458 q=1 r=0 s=0 y=0
+  local artifact copied to evidence/ev027/cap02_k84_k87.bin  md5 69e1176e44354dc52c7a624f167e222c
+
+[execution-order observation]
+  serial_capture #1 and sigrok_capture were issued together in one turn, but the backend
+  executed them strictly sequentially: sigrok_capture started 11:03:51.816Z, 0.137 s after
+  serial_capture #1 finished (11:03:51.680Z). No overlapping serial/I2C observation was
+  therefore possible; the bit-level transaction cannot be paired to an S row in the same
+  capture window. This is the same class of orchestration limit as serial_capture + mdk_flash.
+
+[independent re-analysis] evidence/ev027/analyze_ev027.py -> capture_analysis.txt  exit=0
+  write START..STOP       48184 samples = 12.046 ms
+  command STOP->read START 130064 samples = 32.516 ms
+  read START..STOP       160619 samples = 40.155 ms
+  SCL bit-cell mode       2457 samples = 614.25 us (~1.628 kHz)
+  6-byte frame 60 30 11 6B 65 80:
+    T word 0x6030 CRC calc 0x11 = rx -> 20.8 C
+    H word 0x6B65 CRC calc 0x80 = rx -> 42.0 %RH
+
+[identity context, not re-measured this round]
+  Product source: git diff d871957..HEAD -- .../USER = empty (only test evidence committed since).
+  EV-026 recorded commit d871957, axf md5 917bffe63ba0a4945a20a9a51f4a60df, two mdk_flash
+  Verify OK. This round observed no k reset (k=57 -> 75 -> 84 -> 87), so the board is still in
+  the boot session created by the EV-026 second download. Not a re-download identity check.
