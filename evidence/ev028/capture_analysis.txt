@@ -1,0 +1,46 @@
+== byte / line budget ==
+cap01 cap01_k3_postflash.bin bytes=78 non_ascii=0 crlf_terminated=True lines=1 stray=0
+   S    len=78  S k=3 p=236 H=1 V=0 o=8 n=3243 x=3255 a=3249 D=0 t=213 h=451 q=1 r=0 s=0 y=0
+cap02 cap02_k6_k9.bin bytes=156 non_ascii=0 crlf_terminated=True lines=2 stray=0
+   S    len=78  S k=6 p=213 H=1 V=0 o=8 n=3301 x=3309 a=3304 D=0 t=243 h=400 q=1 r=0 s=0 y=0
+   S    len=78  S k=9 p=243 H=1 V=0 o=8 n=3276 x=3286 a=3279 D=0 t=250 h=394 q=1 r=0 s=0 y=0
+cap03 cap03_reset_bus_k0_k3.bin bytes=185 non_ascii=0 crlf_terminated=True lines=3 stray=0
+   BUS  len=31  BUS idle=3 scl=1 sda=1 ack=44
+   S    len=76  S k=0 p=0 H=0 V=0 o=8 n=3295 x=3304 a=3299 D=0 t=263 h=371 q=1 r=0 s=0 y=0
+   S    len=78  S k=3 p=263 H=1 V=0 o=8 n=3295 x=3304 a=3298 D=0 t=262 h=369 q=1 r=0 s=0 y=0
+cap04 cap04_k9_after_reset.bin bytes=78 non_ascii=0 crlf_terminated=True lines=1 stray=0
+   S    len=78  S k=9 p=260 H=1 V=0 o=8 n=3218 x=3227 a=3221 D=0 t=241 h=398 q=1 r=0 s=0 y=0
+cap05 cap05_k18.bin bytes=79 non_ascii=0 crlf_terminated=True lines=1 stray=0
+   S    len=79  S k=18 p=245 H=1 V=0 o=8 n=3332 x=3337 a=3335 D=0 t=242 h=400 q=1 r=0 s=0 y=0
+
+== S records ==
+tag  k    p    H V o n    x    a    D t    h    q r s y
+cap01 3    236  1 0 8 3243 3255 3249 0 213  451  1 0 0 0
+cap02 6    213  1 0 8 3301 3309 3304 0 243  400  1 0 0 0
+cap02 9    243  1 0 8 3276 3286 3279 0 250  394  1 0 0 0
+cap03 0    0    0 0 8 3295 3304 3299 0 263  371  1 0 0 0
+cap03 3    263  1 0 8 3295 3304 3298 0 262  369  1 0 0 0
+cap04 9    260  1 0 8 3218 3227 3221 0 241  398  1 0 0 0
+cap05 18   245  1 0 8 3332 3337 3335 0 242  400  1 0 0 0
+
+== checks ==
+q=1 all / no G ........... True / True
+t range ................. True ([213, 243, 250, 263, 262, 241, 242])
+h range ................. True ([451, 400, 394, 371, 369, 398, 400])
+V=0 D=0 (uncalibrated) .. True
+k values ................ [3, 6, 9, 0, 3, 9, 18] (all multiples of 3: True)
+
+== F-1 prev-value chain (grouped by boot session) ==
+A (flash 1) k=3 first-in-session p=236 H=1
+A (flash 1) k=6 p=213  prev-captured(k=3) t=213  consecutive-match=True
+A (flash 1) k=9 p=243  prev-captured(k=6) t=243  consecutive-match=True
+B (flash 2) k=0 first-in-session p=0 H=0
+B (flash 2) k=3 p=263  prev-captured(k=0) t=263  consecutive-match=True
+B (flash 2) k=9 p=260  (gap of 6 ticks; p != t required)  ok=True
+B (flash 2) k=18 p=245  (gap of 9 ticks; p != t required)  ok=True
+
+NOTE: in session B the k=6 and k=15 lines fell outside the capture windows;
+      p(k=9)=260 and p(k=18)=245 prove those cycles' t values were the
+      judgement basis for the following cycle (no line was fabricated).
+
+RESULT: PASS (format/budget/field checks)

@@ -1,3 +1,34 @@
+# ProgrammedPrototypeArtifact（EV-028 / F-1 `S` 行前值语义修复镜像）
+
+本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。功能判定见 `evidence/test.md` EV-028：**整体 `TEST_FAIL`**（T4-02 上电五行仍不完整、T5 全暗标定、INT 上报/跨链路未执行）；本轮修复目标已在实板上成立：复位后首条 `S k=0` 为 **`H=0 p=0`**，后续周期 `p` 为上一周期 `t` 且 `p≠t`，7 条有原始行证据的 `S` 全部 `q=1`、0 条 `G`。
+
+## 本次下载的固件身份
+
+| 项 | 值 |
+|---|---|
+| 受测提交 | **`bee3d8f`**（`[role:firmware_engineer]`；接手时工作区干净） |
+| 受测源码增量（相对 `d871957`） | `USER/src/measure.c` **+8/−2**：推进前值前缓存判定所用 `prev/have` 供 `S` 行观测；判定逻辑不变。实现侧 `test/host_measure_flow_check.c` +12 |
+| 构建方式 | `mdk_build {"action":"rebuild"}`（Keil MDK / ARMCLANG **V6.24**，工程保存配置）+ `mdk_flash {}`（先编译再下载） |
+| 构建结果 | `0 Error(s), 1 Warning(s)`（既有 `main.c(254) while(k--);` 空循环体）；`Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676` |
+| 镜像路径 | `CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.axf` |
+| 镜像 md5 | **`a3b08774e764f174eac318f6771d0c42`**（本能力独立 rebuild 与 FWI-002 rev 6.4 / BUILD-002 rev 6.4 声明逐字符一致） |
+| 附带 hex md5 | `546ce20a718fa69b40177cce0145f4b5`（`Project.hex`） |
+
+## 下载目标与下载校验
+
+| 项 | 值 |
+|---|---|
+| 目标器件 | CW32L010（U7），传感器板（GXHT40 U9 同板） |
+| 调试串口 | **COM43** = Prolific USB-to-Serial（VID:PID `067B:2303`），9600 8N1 |
+| 下载探针 | CW-DAPLink `USB VID:PID=C251:F001`（SN `87094109484987710672FF50`，同源 COM26） |
+| 下载方式 | `mdk_flash {}`（工程保存的调试器/Flash 算法；先编译再下载） |
+| 下载结果 | **2 次成功**：2026-11-08 11:28:38–11:28:51Z 与 11:39:34–11:39:47Z，均为 `Erase Done.Programming Done.Verify OK.Application running ...`；日志 `evidence/ev028/flash_1.log`、`flash_2.log` |
+| 运行证明 | 第二次下载后 0.073 s 建立的串口会话：`BUS idle=3 scl=1 sda=1 ack=44`、`S k=0 … H=0 p=0 q=1`，随后 `S k=3`、`k=9`、`k=18`（全部 `q=1`、0 `G`）→ 新镜像已在目标运行 |
+
+`Verify OK` 只证明**下载内容的回读校验一致**。本运行时 `serial_capture` 与 `mdk_flash` 严格串行，串口会话在 `Application running` 后约 **73 ms** 才建立，**本轮只捕获到 `BUS` 与首条 `S`，未取得 `BOOT/VDD/IOTEST/IOSIG` 四行与横幅 `uid`**；不得用后续周期行或历史 `uid` 替代。原始结果：`evidence/ev028/tool_results.txt`、`capture_analysis.txt`；原始捕获：`evidence/ev028/cap01_k3_postflash.bin` … `cap05_k18.bin`。
+
+---
+
 # ProgrammedPrototypeArtifact（EV-026 / E1 `delay_ms()` 修复镜像）
 
 本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。功能判定见 `evidence/test.md` EV-026：**整体 `TEST_FAIL`**（T4-02 上电五行/横幅不完整、T5 全暗标定、INT 上报/跨链路未执行）；但本轮修复目标已在实板上成立：`delay()` 不再为空实现，位级 STOP→读 START **32.525 ms**（修前 0.622 ms），15 条串口 `S`（k=0…57）全部 `q=1`、0 条 `G`。

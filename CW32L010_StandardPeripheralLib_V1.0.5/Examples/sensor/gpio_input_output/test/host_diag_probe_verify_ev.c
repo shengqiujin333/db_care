@@ -547,8 +547,28 @@ int main(void)
         CHECK(tr.sample_ok == 1 && tr.diag_valid == 0,
               "successful cycle -> sample_ok=1 and diag_valid=0 (no G line emitted)");
         CHECK(tr.temp_x10 == 250 && tr.hum_x10 == 500, "measured values appear in the S fields");
+        /* F-1 (rev 6.4): p/H in the S row must be the judgement basis (pre-update), not
+         * the value measured this cycle. The preceding [F1] failure did not advance the
+         * previous value, so this first valid cycle must still report H=0 p=0. */
+        CHECK(tr.have_prev == 0 && tr.prev_temp_x10 == 0,
+              "S p/H are the pre-update judgement basis (H=0 p=0), not this cycle's value");
+    }
+
+    printf("[F2b] next valid cycle: p/H carry the previous cycle's temperature, p != t\n");
+    {
+        bus_reset(); slave_present = 1; slave_a7 = 0x44;
+        /* Real-target frame (EV-026/EV-027 bit-level capture): T=0x6030 -> 20.8 C. */
+        set_frame((const uint8_t[]){ 0x60, 0x30, 0x11, 0x6B, 0x65, 0x80 });
+        sample_flag = 1;
+        temperature_process();
+        debug_trace_sample_t tr; memset(&tr, 0, sizeof tr);
+        CHECK(sensor_trace_fetch(&tr) == 1, "one trace snapshot pending");
+        CHECK(tr.sample_ok == 1, "second valid cycle succeeds");
+        CHECK(tr.temp_x10 == 208, "new measurement appears in t (208, IV-002 formula)");
         CHECK(tr.have_prev == 1 && tr.prev_temp_x10 == 250,
-              "previous value advanced to the measurement taken this cycle");
+              "p=250 is the previous cycle's t used for judgement (F-1)");
+        CHECK(tr.prev_temp_x10 != tr.temp_x10,
+              "p != t: the S row no longer echoes the current measurement");
     }
 
     printf("[F3] a failing cycle must not advance the previous valid temperature\n");
