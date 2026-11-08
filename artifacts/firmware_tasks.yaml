@@ -1,10 +1,242 @@
 items:
-  - "GXHT40 温湿度采集失败在真实目标上可诊断（不依赖逻辑分析仪的实板一手数据）：上电横幅之后、任何 I2C 事务之前，先读取 PA03(SCL)/PA04(SDA) 的空闲电平，再对 7bit 地址 0x08..0x77 逐地址做有界探测（START + 地址写字节 + ACK 判定 + STOP，只发地址、不写任何命令、不读数据、NACK 后必须释放总线），把空闲电平位掩码与收到 ACK 的地址集合（无则 none，最多列 8 个，超出以 + 结尾）打印为一条 BUS 诊断行；温湿度测量失败的周期在该周期 S 轨迹行之后追加一条 G 诊断行，给出本轮结果码（取驱动结果码：1=入参/2=无器件/3=读失败/4=CRC 错/5=量程无效）、0x44 与 0x45 各自本轮是否收到地址 ACK、最近一次读事务消耗的重读次数、本轮整帧重测次数、最近一次成功读回的 6 字节（未读成功则打印 12 个 -）；每条诊断行不超过 96 字节、只用整数与大写十六进制；成功且未上报周期的输出与既有 S 行逐字节相同，采样间期仍无任何字节；新增地址探测原语不得改变既有软 I2C 函数语义；诊断不得改变采样、判定、上报与冻结状态，SENSOR_DEBUG_UART=0 时全部为空实现。可观察：COM42@9600 复位后在横幅后可见一条 BUS 行（空闲电平与 ACK 地址集合），GXHT40 失败周期可见该周期 S 行（q=0）后紧跟一条 G 行，且 G 行的结果码、地址 ACK、重读/重测次数与原始字节与本周期实际失败原因自洽；正常周期仍只有一条 S 行。"
+  - objective: >-
+      更正传感器条件上报判定为需求规定的升温方向与严格边界：判定语义为“本次比上次升高超过 0.9℃ 且无光，或本次严格超过 35.0℃ 才上报”；report 仅在温湿度本周期均有效时成立，
+      判定式冻结为：report = int32(cur_temp_x10) > 350，或（have_prev 且 int32(cur_temp_x10)-int32(prev_temp_x10) > 9 且光照有效且 dark）；无前值时仅超温分支可用；
+      差值必须用 int32；恰好 +0.9℃（差值 9）、恰好 35.0℃ 且无升温、任何降温都不得触发；恰好 35.0℃ 仍可经升温分支上报；无前一有效温度时只允许超温分支；
+      光照无效或非无光只关闭升温分支，不关闭超温分支。判定常量在唯一配置点 sensor_config.h 中以 SENSOR_REPORT_RISE_X10（=9）与 SENSOR_REPORT_HIGH_X10（=350）维护，
+      删除旧的 SENSOR_REPORT_DROP_X10/降温语义；不得改动空口/BLE 布局、S 行格式、采样节拍、前值推进语义（成功才推进、失败不推进）与冻结/发送行为。
+      同步更新实现侧自有宿主机自检（host_sensor_core_test.c、host_fw_core_pure_check.c 及必要的流程自检），使断言改为升温/严格边界；不得修改验证角色自有的 test/*_verify_ev.c、test/mock_*_ev/ 与 evidence/embedded_verify_*.py。
+      交付需能由 MDK/IAR/gcc 构建入口重建，并给出宿主机自检与构建结果。
+    input_refs:
+      - readme.txt
+      - artifacts/firmware_design.md
+      - artifacts/firmware_requirements.md
+      - artifacts/interface_contract.md
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/fw_core.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_pure_check.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh
+    acceptance:
+      - "正常向量：30.0→30.8℃（D=8）暗、有前值 → 不上报；30.0→30.9℃（D=9）暗 → 不上报；30.0→31.0℃（D=10）暗 → 上报；30.1→31.0℃（D=9）暗 → 不上报。"
+      - "方向向量：30.0→29.0℃（D=-10）暗、有前值 → 不上报；任何本次低于上次的组合都不得触发升温分支。"
+      - "边界向量：34.0→35.0℃ 暗、有前值 → 上报；34.0→35.0℃ 明/光照无效 → 不上报；无前值且 35.0℃ → 不上报；无前值且 35.1℃、明或光照无效 → 上报；34.0→34.9℃ 暗 → 不上报。"
+      - "异常/极端输入：int16 极值（32767 与 -32768）差值不溢出且结果符合 32 位算术；非暗只关闭升温分支，超温仍独立生效。"
+      - "接口与常量：sensor_config.h 只保留单一组上报常量（RISE=9、HIGH=350），源码与注释中不再存在 DROP/降温判定；S 行字段集合与顺序、433/BLE 布局、前值推进语义、失败不推进语义均未改变。"
+      - "测试资产边界：实现侧自有宿主机自检已更新并通过；验证角色自有的 test/*_verify_ev.c、test/mock_*_ev/、evidence/embedded_verify_*.py 未被修改（其旧断言同步需求记录在交付说明中）。"
+      - "证据类别：宿主机自检逐项输出（含九组规范向量与边界）与构建入口 0 Error 记录；真实目标上的 r/s 边界证据属于后续实板观测，不得用宿主机结果冒充。"
+    metadata:
+      increment: T1
+      title: 条件上报判定更正（升温方向 + 严格 35.0℃ 边界）
+      priority: highest
+      depends_on: []
+      files_expected:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_pure_check.c
+      evidence_class: host_self_test_and_build
+      external_prereq: none
+      do_not_touch:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/*_verify_ev.c
+        - CH592EVT/EVT/EXAM/BLE/beiwov2/
+        - dengbei_care/
 
-  - "GXHT40 温湿度采集在真实目标上恢复有效：依据上一增量在实板上取得的 BUS/G 原始数据定位失败环节（器件不应答或地址变体、读请求 NACK 未就绪、CRC 错、量程无效、总线被拉低卡死）并在驱动/总线层按证据修复；保留温度字与湿度字的双字 CRC-8 校验、整数 x10 换算与有效域、有界读重读与有界整帧重测，周期路径不得使用软复位 0x94 或加热命令，不得为通过而放宽或绕过 CRC、有效域与校验；任一失败周期仍不上报、不推进前一有效温度、不构造 0 值；任何失败（含缓存地址读失败）后下一周期必须重新探测 0x44/0x45 两个候选地址，并在重探前做有界总线恢复（例如 9 个 SCL 脉冲后发 STOP），不得因缓存地址失效让器件永久失联；等待与重试下限不低于器件手册的高重复率测量时间。可观察：真实目标每个 3 分钟采样周期的 S 行 q=1，t/h 落在有效域（温度 -40.0..125.0℃、湿度 0..100.0%RH）且与环境相符，连续多个周期稳定；满足上报条件时手机端显示的温湿度与该周期 S 行的 t/h 为同一笔读数；不得用宿主机 mock、桩或历史日志代替本轮实板观测。"
+  - objective: >-
+      为条件上报补齐“待上报样本冻结 + 可观测 P 行”：在判定触发且当前没有待上报样本时，把本周期温湿度冻结为 report_temp_x10/report_hum_x10 并置 report_req；
+      组帧 encode_frame10 只允许读冻结快照，不得再读会随新采样推进的 s_prev_temp_x10/s_last_hum_x10；待上报未清除期间新的触发不得覆盖原冻结样本；
+      发送成功才清除并复位重试计数，按 SENSOR_RF_TX_RETRY 用尽则放弃本轮且不得伪造成功；重试期间（含若待上报跨越采样周期）帧的 ID/温度/湿度/CRC 必须逐字节一致；
+      帧布局、字节序、单位、Feistel 加密与 433 超时参数均不变。为观测冻结事实，在调试通道增加一条 P 行（仅本周期产生上报判定 r=1 或发生过至少一次发送尝试时打印，紧跟 S 行；若同周期有 G 行则在 G 之后），
+      字段固定为 P rq=<0|1> s=<0|1|2> y=<0..3> t=<冻结温度 x10> h=<冻结湿度 x10>，其中 t/h 必须是本周期组帧实际使用的值、rq 为本条 P 行打印时是否仍待上报（1=本轮未结束/仍待发，0=已清除或已放弃）；
+      P 行 ≤96 字节（含 CRLF）、仅整数、不改变 report_req/前值/快照/发送结果、不进入空口或 BLE；SENSOR_DEBUG_UART=0 时全部为空实现。S 行与既有 VDD/IOTEST/IOSIG/BUS/G 行格式逐字节不变。
+      同步实现侧自检：mock 发送桩逐次记录组帧入参，验证重试期间与跨采样后帧内容不变、新触发不覆盖、用尽放弃不假成功、P 行字段与快照一致且行预算内；不得修改验证角色自有的 test/*_verify_ev.c。
+    input_refs:
+      - readme.txt
+      - artifacts/firmware_design.md
+      - artifacts/firmware_requirements.md
+      - artifacts/interface_contract.md
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/measure.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/debug_trace.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh
+    acceptance:
+      - "正常路径：触发周期冻结当次 t/h；组帧入参与该周期采样值一致；首次发送成功则 report_req=0、retry=0，P 行显示 rq=0、s=1、t/h=冻结样本。"
+      - "重试路径：强制首次及后续发送失败，重试期间的编码入参逐次相同（t/h/帧字节不变），不因新采样或前值推进而改变；用尽后 report_req=0 且不出现“成功”结果。若首次失败，该周期 P 行按打印时状态显示 rq=1、s=2、y>=1，仅表示本轮未结束，不得记为最终失败；宿主序列须继续验证后续成功或耗尽后的最终状态。"
+      - "覆盖路径：待上报未清除时发生新的触发，原冻结样本不被覆盖；仅发送成功或用尽放弃后，下一次触发才写入新快照。"
+      - "接口不变：433 明文仍为 uid4/T s16LE/RH u16LE/CRC16LE 共 10 B；不新增字段；S 行与既有诊断行字节不变；P 行最坏不超过 96 字节且仅含整数/十进制。"
+      - "失败/关闭路径：温湿度失败周期不新建、不覆盖快照、不发送；SENSOR_DEBUG_UART=0 时 P 行无输出且不引入 UART 符号。"
+      - "副作用：P 行打印前后 report_req、前值、冻结快照、发送结果均无变化；打印不进入 433/BLE/平台载荷。"
+      - "证据类别：宿主机流程/格式化自检输出（含重试与跨采样序列）与构建 0 Error 记录；真实目标 P 行证据由后续实板观测取得，不得用宿主 mock 冒充。"
+    metadata:
+      increment: T2
+      title: 待上报冻结快照与 P 观测行
+      priority: high
+      depends_on:
+        - T1
+      files_expected:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/measure.h
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/debug_trace.h
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c
+      evidence_class: host_self_test_and_build
+      external_prereq: none
+      do_not_touch:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/*_verify_ev.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_*_ev/
+        - CH592EVT/EVT/EXAM/BLE/beiwov2/
+        - dengbei_care/
 
-  - "光照完全无光基准在真实目标上标定并让 1/3 判据生效：在标定前保持未标定门禁（LIGHT_DARK_CALIBRATED=0 时 S 行 V=0、D=0，升温分支不触发），不得伪造或跳过；用当前交付构建在完全遮光（用不透光遮蔽物完全包住光敏器件及其受光路径，不按压器件、不遮挡调试排针）条件下取得 PB04/AIN11 原始样本（S 行的 o/n/x/a，供电、建立等待与取样次数与量产一致），并记录板件标识（BOOT 横幅 UID）、供电、遮光方式、原始样本分布（最小/最大/均值）、实际取样次数与配置版本；以实测全暗样本回填唯一配置点 LIGHT_DARK_REF_CODE 并置 LIGHT_DARK_CALIBRATED=1 后重新构建；判据保持 dark = valid 且 3*mean_adc_code >= C_dark（uint32 乘法、边界相等为暗、每笔独立、无滞回、无历史暗态），不支持满量程或亮态读数替代 C_dark；标定过程不得自行新增固定样本数量、额外仪器或额外遮光时长作为通过门槛。可观察：未标定构建在有光环境下 V=0、D=0 且 o=8；标定后构建在有光环境 V=1、D=0 且均值明显低于 ceil(C_dark/3)；完全遮光时同一或紧接的周期 V=1、D=1 且 3*mean_adc_code >= C_dark；移开遮蔽后恢复 V=1、D=0；若有光读数与 ceil(C_dark/3) 分离不足，如实记录原始数值并按阈值/器件问题登记，不得改判据或改期望。"
+  - objective: >-
+      消除 UART1 调试通道的无界等待，使诊断故障不得阻塞采样与深睡：把 debug_trace.c 中 trace_putc 等 TXE、debug_trace_flush_close 等 TXE/TXBUSY 的 while 循环改为带计数上限的有界等待；
+      上限常量集中放在唯一配置点 sensor_config.h，取值按 9600 8N1 下每字符约 1.04 ms、单行 ≤96 B 约 100 ms 推算并保留余量。正常硬件路径下所有既有行（BOOT/VDD/IOTEST/IOSIG/BUS/S/G）与新增 P 行的输出字节必须保持不变；
+      等待超时时放弃本行剩余输出并继续执行 UART1 关闭流程（复位/关闭 UART1、PA05/PA06 置输入），返回主循环继续采样/发送/深睡；超时不得修改 report_req、前值、冻结快照、发送结果，不得复位 GPIOA/关 GPIOA 时钟，不得改动 PA03/PA04/PA07/PA08。
+      同步实现侧自检：用 mock UART 让 TXE 永不置位、TXBUSY 永不清零，验证打印函数在有限循环内返回、关闭流程完成、后续采样/发送流程仍可继续；正常 mock 下既有格式化断言逐字节通过。不得修改验证角色自有的 test/*_verify_ev.c。
+    input_refs:
+      - artifacts/firmware_design.md
+      - artifacts/firmware_requirements.md
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/debug_trace.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh
+    acceptance:
+      - "正常路径：在 TXE/TXBUSY 正常翻转的 mock 下，BOOT/VDD/IOTEST/IOSIG/BUS/S/G/P 各行字节与冻结格式逐字节一致，现有格式化自检全部通过。"
+      - "异常路径：TXE 永不置位时，任意行打印在有限循环内返回；TXBUSY 永不清零时，flush/close 在有限循环内完成关闭并返回；不出现无界 while/TXE/TXBUSY 等待。"
+      - "业务隔离：等待超时场景下 report_req、前值、冻结快照、发送结果保持不变；关闭后 UART1 外设关闭、PA05/PA06 为输入、GPIOA 未被复位、PA03/PA04/PA07/PA08 未被改写。"
+      - "可配置：等待上限只来自 sensor_config.h 的单一常量，文件内不散落魔法数；SENSOR_DEBUG_UART=0 时仍为空实现且不引入 UART 符号。"
+      - "证据类别：宿主机 mock 自检（正常/标志卡死两组）输出与构建 0 Error 记录；真实硬件下的排空行为由后续实板观测核对，不得以宿主模拟代替。"
+    metadata:
+      increment: T3
+      title: 调试发送等待有界化
+      priority: high
+      depends_on: []
+      files_expected:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/
+      evidence_class: host_self_test_and_build
+      external_prereq: none
+      do_not_touch:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/*_verify_ev.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c
+        - CH592EVT/EVT/EXAM/BLE/beiwov2/
+        - dengbei_care/
 
-  - "条件上报判定按升温方向与严格边界：report = 温湿度均有效 且 ((存在前一有效温度 且 int32(本次温度 x10 - 前次温度 x10) > 9 且 光照有效 且 无光) 或 本次温度 x10 > 350)；方向为升温（本次比上次高），差值用 int32 防溢出；恰好 +0.9℃（差为 9）不触发；恰好 35.0℃（等于 350）不满足超温分支但若同时满足升温分支仍须触发，不得再对 350 做整体排除；无前一有效温度时仅超温分支可触发；光照无效或非无光时只关闭升温分支，超温分支独立生效；前一有效温度只在温湿度采样成功后推进，失败周期不推进、不构造 0 值；判定常量更名后在唯一配置点维护，接口契约 IC-002 的九组规范向量逐条一致。可观察：有光（D=0）或未标定时同样升温的周期 S 行 r=0 且无发送记录；遮光且本次比上次升温至少 1.0℃ 时 r=1 且该周期出现发送记录（s=1）；温度严格超过 35.0℃ 时即使有光或无前值也 r=1；恰好 35.0℃ 且无升温时不发送。"
+  - objective: >-
+      用当前交付构建在真实目标上定位并修复 GXHT40 温湿度采集失败，恢复每 3 分钟采样周期的有效温湿度读数。先取得并记录一手判别证据：
+      受测提交与构建产物摘要、下载校验结果、COM43@9600 8N1 上电段（BOOT/VDD/IOTEST/IOSIG/BUS）与各周期 S 行（失败周期附 G 行）；证据必须能区分“总线空闲电平异常 / 任何地址无 ACK / 地址有 ACK 但读失败或 CRC 错 / 量程无效 / 偶发”这些失败环节。
+      保留多个竞争假设（U9 焊点连通性或器件本体、总线电气与上拉、固件软 I2C 速率/建立保持/上电余量/引脚映射、供电瞬态），按证据逐项收敛，不得预设单一结论，不得把 MCU 侧 VDD 正常当作 U9 焊点导通的证明。
+      允许的固件侧修复限于：在器件手册范围内调整软 I2C 半位延时/总线速率、上电与转换等待余量、探测/重试/总线恢复的有界策略、按网表核对并修正引脚与地址配置；必须保留双字 CRC-8、整数换算与有效域、有界重读/整帧重测，
+      周期路径不得使用软复位 0x94 或加热命令，不得为通过而放宽或绕过 CRC/量程/判据；任何失败周期仍不上报、不推进前一有效温度、不构造 0 值、不冻结快照，下一周期仍重探 0x44/0x45 并做有界总线恢复。
+      若一手证据指向板级/器件原因，必须提交可复现的判别证据、已尝试的固件侧措施及其结果、所需外部处置与复测条件，不得宣告不可修复，也不得改判据/伪造读数；任务只有在真实目标连续多个 3 分钟周期 q=1 且读数有效后才可视为通过。
+    input_refs:
+      - readme.txt
+      - artifacts/firmware_design.md
+      - artifacts/firmware_requirements.md
+      - artifacts/interface_contract.md
+      - artifacts/system_analysis.md
+      - gxht40.pdf
+      - sensor_hardware/pstxnet.dat
+      - sensor_hardware/MAIN_BOARD.BOM
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/gxht40.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_check.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_bus_check.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c
+      - evidence/test.md
+    acceptance:
+      - "证据先行：当前构建下载后，COM43 上电段包含 BOOT/VDD/IOTEST/IOSIG/BUS 各一次；采集窗口跨至少 3 个采样机会；每条失败周期 S 行后紧跟 G 行；原始字节、构建摘要、下载校验记录与板件 UID 一并入库。"
+      - "判别完整：报告明确给出本轮失败环节（空闲电平位、各地址 ACK 集合、结果码、读重读/整帧重测次数、原始 6 字节）以及被排除/保留的假设；不得只写“仍失败”。"
+      - "成功判据（唯一通过条件）：真实目标连续至少 3 个 3 分钟周期 S 行 q=1，t 在 -40.0..125.0℃、h 在 0..100.0%RH 且与环境相符；相邻 k 差值为 3；读数稳定，不是偶发单周期。"
+      - "失败语义：所有失败周期 q=0 且不上报、不推进前值、不构造 0 值、不冻结快照；下一周期仍可见两地址重探与有界总线恢复；不得使用 0x94 或加热命令。"
+      - "修复边界：双字 CRC-8、整数换算、有效域、有界重读/重测未被放宽或绕过；速率/等待/地址变更仅来自单一配置点；空口/BLE 布局、S 行格式不变。"
+      - "异常与硬件分支：若证据指向 U9 焊点/器件/总线电气，提交可复现的判别证据、所需外部处置与复测条件，并保持失败路径不变；不得宣告不可修复、不得把假设写成实测事实、不得以 hardware 原因关闭任务。"
+      - "跨链路（在触发上报的周期）：手机端显示的温湿度与该周期 S 行/冻结 P 行样本一致；不一致时登记为跨链路问题，不得只改固件期望值。"
+      - "证据类别：当前构建的实板原始捕获（串口字节）、下载校验记录、构建产物摘要、宿主机驱动/流程自检结果；历史 EV-017 及 COM42 记录只能作背景。"
+    metadata:
+      increment: T4
+      title: GXHT40 实板采集恢复（证据驱动定位与修复）
+      priority: highest
+      depends_on:
+        - T1
+        - T2
+        - T3
+      files_expected:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/gxht40.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/gxht40.h
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_check.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_bus_check.c
+      evidence_class: current_build_real_board_capture
+      external_prereq:
+        - 传感器 Keil 工程构建与下载授权（工程保存的调试器/Flash 算法）
+        - COM43 串口有界采集
+        - 可选：登记的逻辑分析仪被动 I2C 采集（本能力不可用，需具备该入口的职责方执行）
+      do_not_touch:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/*_verify_ev.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_*_ev/
+        - CH592EVT/EVT/EXAM/BLE/beiwov2/
+        - dengbei_care/
 
-  - "触发的待上报样本被冻结后再发送：置待上报时把当次温度与湿度冻结为快照，组帧只读该快照（明文 10 字节：sensor_id 4 字节 | 温度 x10 小端 2 字节 | 湿度 x10 小端 2 字节 | CRC16-CCITT-FALSE 小端 2 字节），沿用既有 Feistel 加密与 433 有界超时发送；重试期间（含跨 3 分钟周期）帧内容与快照逐字节一致，不随新采样、前一有效温度推进或最近有效湿度变化，且待上报未清除期间新的触发不得覆盖原有冻结样本；仅在发送成功时清除待上报，按上限重试用尽则放弃本轮且不伪造成功；帧布局、字节序、单位不变，不新增光照、原因、时间或序号字段；为可观测性增加一条 P 行（仅在本周期产生上报判定或发生过发送尝试时打印，紧跟 S 行，字段为本周期发送后的待上报标志、发送结果、重试计数与冻结快照的温度/湿度），P 行同样不超过 96 字节、不改变任何业务状态，SENSOR_DEBUG_UART=0 时为空实现。可观察：触发上报的周期 S 行 r=1、s=1 且 P 行显示组帧实际使用的冻结样本与当次触发样本一致；发送失败重试或跨周期重试时 P 行显示同一冻结温度/湿度，而 S 行的 t/h 随新采样变化；宿主机发送桩逐次核对重试期间帧字节不变、用尽后不放行假成功；真实目标上不得伪造发送失败或成功。"
+  - objective: >-
+      完成完全遮光基准标定，使 readme 修改点 7 的“无光阈值取完全无光时的 1/3”真正生效。标定前必须保持现有未标定门禁：LIGHT_DARK_CALIBRATED=0 时 S 行 V=0、D=0，升温分支不触发，不得伪造或跳过。
+      用当前交付构建（SENSOR_DEBUG_UART=1）先在有光环境记录 S 行 o/n/x/a；再用完全不透光遮蔽物完全包住 J4 光敏器件及其受光路径（不按压器件、不遮挡 SWD 排针），跨过下一次采样机会并至少再保持一个采样周期，记录各周期 o/n/x/a；
+      取得至少 1 笔有效全暗样本即可作为候选 C_dark（均值或稳健中位；样本分散时记录 min/max 与取值理由），不新增固定样本数、额外仪器或额外遮光时长作为通过门槛。标定记录必须含板件 UID、VDD 供电、遮光方式与时间窗口、原始样本分布（min/max/mean）、实际取样次数、配置版本与构建摘要。
+      移开遮蔽确认恢复到有光水平后，把 C_dark 回填唯一配置点 LIGHT_DARK_REF_CODE（1..4095）并置 LIGHT_DARK_CALIBRATED=1，重新构建。判据保持 dark = valid && (uint32)3*mean_adc_code >= C_dark（边界相等为暗、每笔独立、无滞回、无历史暗态），不得改用满量程、旧 350/250、有光读数或估算值。
+      标定后复测三态：有光 V=1 D=0 且 mean < ceil(C_dark/3)；完全遮光 V=1 D=1 且 3*mean >= C_dark；移开恢复 D=0。若 ADC 全部超时仍须 valid=false、dark=false、不合成满量程；若有光均值与 ceil(C_dark/3) 分离不足，如实记录原始数值并按阈值/器件问题登记，不得修改判据或期望来凑通过。
+    input_refs:
+      - readme.txt
+      - artifacts/firmware_design.md
+      - artifacts/firmware_requirements.md
+      - artifacts/interface_contract.md
+      - sensor_hardware/pstxnet.dat
+      - sensor_hardware/MAIN_BOARD.BOM
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/light.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_check.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c
+      - evidence/build.md
+      - evidence/test.md
+    acceptance:
+      - "未标定门禁：回填前构建在有光环境 S 行 V=0、D=0、o=8（或实际成功样本数）；升温分支不触发；不得出现伪造的 C_dark 或跳过门禁。"
+      - "标定证据：完全遮光期间至少 1 笔有效全暗样本；记录 UID、VDD、遮光方式与时间、o/n/x/a 原始值、min/max/mean、取样次数、配置版本与构建摘要；若无有效样本（o=0）必须记录为标定未完成，不得用 0 或满量程代替。"
+      - "配置正确：C_dark 为 1..4095 的实测值并回填唯一配置点，LIGHT_DARK_CALIBRATED=1；判据仍为 3*mean >= C_dark（uint32、边界相等为暗、无滞回），源码中不再保留旧 350/250 阈值。"
+      - "三态复测：有光 V=1、D=0 且 mean < ceil(C_dark/3)；完全遮光 V=1、D=1 且 3*mean >= C_dark；移开遮蔽后的下一周期恢复 V=1、D=0。"
+      - "异常路径：ADC 全部转换超时 → samples_ok=0、adc_ok=0、mean/min/max=0、valid=0、dark=0（不得合成暗态）；部分成功按实际成功样本均值并记录 o；光照无效只关闭升温分支，超温分支仍独立生效。"
+      - "分离度：有光读数与 ceil(C_dark/3) 的间隔以原始数值报告；分离不足时登记为阈值/器件问题并保留判据不变，不得调低/调高阈值掩盖。"
+      - "证据类别：当前构建的 COM43 原始串口字节（有光/遮光/恢复三态与未标定态）、标定记录、回填后的配置版本与构建/下载身份；不得用宿主 mock、历史日志或估算值替代实板标定。"
+    metadata:
+      increment: T5
+      title: 全暗基准标定与 1/3 无光判据生效
+      priority: high
+      depends_on: []
+      files_expected:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+      evidence_class: current_build_real_board_capture
+      external_prereq:
+        - 完全遮光条件与现场操作窗口（用户配合）
+        - 传感器 Keil 工程构建与下载授权
+        - COM43 串口有界采集
+      note: 与 T4 无功能依赖，可在遮光窗口具备时先行执行；建议与 T1–T3 使用同一候选构建以便一次性完成三态复测。
+      do_not_touch:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/*_verify_ev.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_*_ev/
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c
+        - CH592EVT/EVT/EXAM/BLE/beiwov2/
+        - dengbei_care/
