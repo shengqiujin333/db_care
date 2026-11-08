@@ -94,7 +94,7 @@ void i2c0_scl_pin_dir_output(void)
 
 static i2c_dev i2c0_dev = {
     .name                    = "i2c0",
-    .speed                   = 100,
+    .speed                   = SENSOR_I2C_DELAY_LOOPS,
     .port.sda_pin_out_low    = i2c0_sda_pin_out_low,
     .port.sda_pin_out_high   = i2c0_sda_pin_out_high,
     .port.scl_pin_out_low    = i2c0_scl_pin_out_low,
@@ -112,7 +112,7 @@ static i2c_dev i2c0_dev = {
 #if SENSOR_DEBUG_UART
 static i2c_dev i2c0_swap_dev = {
     .name                    = "i2c0swap",
-    .speed                   = 100,
+    .speed                   = SENSOR_I2C_DELAY_LOOPS,
     .port.sda_pin_out_low    = i2c0_scl_pin_out_low,     /* 影子 SDA = PA03 */
     .port.sda_pin_out_high   = i2c0_scl_pin_out_high,
     .port.scl_pin_out_low    = i2c0_sda_pin_out_low,     /* 影子 SCL = PA04 */
@@ -258,7 +258,7 @@ uint8_t sensor_io_diag_scan(debug_trace_iotest_t *out)
  */
 static void i2c0_halfbit_delay(void)
 {
-    volatile uint32_t i = 100u;   /* 与 sf_i2c 的 i2c_delay(speed=100) 等价 */
+    volatile uint32_t i = SENSOR_I2C_DELAY_LOOPS;   /* 与 sf_i2c 的 i2c_delay 等价 */
     while (i != 0u) {
         i--;
     }

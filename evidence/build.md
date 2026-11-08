@@ -1,9 +1,30 @@
-# 构建证据（BUILD-002 rev 6.1）
+# 构建证据（BUILD-002 rev 6.2）
 
 状态：固件实现证据（负责角色：固件工程）
-本轮范围：**失败分派修复轮**（EV-018/EV-021 温度 CRC 间歇错误）——对读采样点与转换等待两项时序 A/B 后的全量重建；记录产物身份。**未下载/未烧录**（本调用无 `mdk_flash`）；构建成功不表示实板功能通过。
-依据：`evidence/test.md` EV-018、`evidence/triage.md` EV-021、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
-受测工作树：`7bfd248`（T1–T3 交付）+ 本轮 `sf_i2c.c`、`sensor_config.h` 两个文件改动
+本轮范围：**第二次失败修复轮（D2 读时钟速率 A/B）**后的全量重建；记录产物身份。**未下载/未烧录**（本调用无 `mdk_flash`）；构建成功不表示实板功能通过。
+依据：EV-022 `evidence/test.md`、EV-023 `evidence/triage.md`、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
+受测工作树：`0f8a8fb`（rev 6.1）+ 本轮 `measure.c`、`sensor_config.h` 改动
+
+---
+
+## 本轮 run12：D2 A/B 全量重建（2026-11-08）
+
+```
+$ mdk_build {"action":"rebuild"}
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+...
+Program Size: Code=25912 RO-data=656 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+```
+
+| 产物 | md5 |
+|---|---|
+| `MDK/output/exe/Project.axf` | **`e56d8d4b48c14ff29ae376781bbdc915`** |
+| `MDK/output/exe/Project.hex` | `d872d703e0ed8ec95bc3dee88f074b33` |
+
+- 0 Error / 1 既有告警（`main.c(245)`）；Code/RO/RW/ZI 不变（仅 `speed` 常量与两处引用）。
+- **未执行 `mdk_flash`**：板上镜像、实板 `q=0` 率、签名是否变化均未取得；不得写成已修复。
+- `MDK/build.run10.log` 已删除；工程文件未修改（工具备份在角色工作区）。
 
 ---
 

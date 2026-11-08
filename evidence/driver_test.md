@@ -1,9 +1,27 @@
-# 驱动测试证据（DRV-002 rev 6.1）
+# 驱动测试证据（DRV-002 rev 6.2）
 
 状态：固件实现证据（负责角色：固件工程）
-本轮范围：**失败分派修复轮**——读采样点后移与转换等待 20 ms 两项时序 A/B 后的宿主机回归（真实 `sf_i2c.c`/`gxht40.c`/`fw_core.c` + mock 总线/UART），并保留 T1–T3 自检。**均为宿主机层级，不代表实板 CRC 失败率或功能通过。**
-依据：EV-018 `evidence/test.md`、EV-021 `evidence/triage.md`、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
-受测工作树：`7bfd248` + 本轮 `sf_i2c.c`、`sensor_config.h` 改动；axf md5 `08a4c266af6a0f058821ec809d38f78d`
+本轮范围：**D2 读时钟速率 A/B（半位延时 ×3）**后的宿主机回归：真实 `sf_i2c.c`/`gxht40.c`/`fw_core.c` + mock 总线/UART，保留 T1–T3 自检。**均为宿主机层级，不证明实板失败率。**
+依据：EV-022、EV-023、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
+受测工作树：`0f8a8fb` + 本轮 `measure.c`、`sensor_config.h`；axf md5 `e56d8d4b48c14ff29ae376781bbdc915`
+
+---
+
+## 本轮 run12：D2 A/B 回归（2026-11-08）
+
+```
+$ sh build_test.sh                         -> 46+57+54+28+29 = 214 passed, 0 failed
+$ ./_hostbin/gxht40_check3.exe             -> 60 passed, 0 failed
+$ ./_hostbin/sf_i2c_check3.exe             -> 42 passed, 0 failed
+$ ./_hostbin/rf_frame_check3.exe           -> 22 passed, 0 failed
+```
+
+合计 **338 项 0 失败**。覆盖：地址/0xFD/双 CRC/换算/重读重测/重探/总线恢复；读字节与 ACK/NACK 序列；T1 判定、T2 冻结/P 行、T3 有界等待；空口帧布局。`SENSOR_I2C_DELAY_LOOPS` 仅改变延时循环次数，位序列与协议语义未变。
+
+### 边界
+
+- mock 不模拟真实半位时长与器件内部输出时序，故不能由宿主测试判断“降速是否有用”或根因。
+- 未修改/未运行验证方自有 `*_verify_ev.c`；实板判读见 `artifacts/firmware_implementation.md` §4（≥10 周期，统计 `q=0` 与 `raw[2]−raw[0]`）。
 
 ---
 
