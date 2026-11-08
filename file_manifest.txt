@@ -135,16 +135,36 @@ evidence/ev013/ | history | EV-013 原始证据目录（4 份 .cap、下载日�
 evidence/ev014/ | history | EV-014 原始证据目录（用户重焊 U9 后复测：6 份 .cap、手册 KAT、harness 记录、摘要脚本）
 evidence/ev015/ | history | EV-015 原始证据目录（3 份 .cap、harness_run.sh、判定输出）
 evidence/ev016/ | history | EV-016 原始证据目录（4 份 .cap、IOTEST gc 字段、判定输出）
-evidence/ev017/ | active | EV-017 当前轮原始证据目录（4 份 .cap + 工具元数据 .json、image_identity.txt 三处 md5 一致、harness/判定/selftest 输出、seq/collect/summarize 脚本）
+evidence/ev017/ | history | EV-017 原始证据目录（4 份 .cap + 工具元数据 .json、image_identity.txt 三处 md5 一致、harness/判定/selftest 输出、seq/collect/summarize 脚本）
+evidence/ev018/ | active | EV-018 当前轮原始证据目录：10 份 COM43 .cap（含下载前旧镜像对照）、2 份 mdk_flash 日志、宿主自检日志、capture_windows.txt、parse_captures.py 与 capture_analysis.txt（独立 CRC-8 复算）、t1_independent_check.c/.py（T1 独立复核）
+evidence/ev018/capture_analysis.txt | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/capture_windows.txt | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/com43_300s.bin | history | 2026-10-21 的 COM43 历史采集片段（非本轮，未用于本轮任何判定）
+evidence/ev018/flash_1.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/flash_2.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/host_build_test.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/parse_captures.py | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/preflash_old_image.cap | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/run1_a.cap | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/run1_b.cap | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/run1_c.cap | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/run1_d.cap | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/run1_e.cap | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/run2_a.cap | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/run2_b.cap | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/run2_boot.cap | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/run2_c.cap | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/t1_independent_check.c | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev018/t1_independent_check.py | active | 由 embedded_tester 新增或修改的项目相关文件
 evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
-evidence/programmed_prototype.md | active | 下载身份记录（EV-017：mdk_flash Verify OK，axf md5 5fc16235… 可由当前工作树确定性重建；仅证明下载成功，不代表功能合格）
+evidence/programmed_prototype.md | active | 下载身份记录（EV-018：当前提交 7bfd248 / axf md5 c7ed03b7… 两次 mdk_flash Verify OK；仅证明下载成功，不代表功能合格；EV-017 及更早记录保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
 evidence/software_static_check_server_migration.py | active | 可复跑静态核查（ITEM-004：服务器常量/旧主机分布/XML 放行/兼容面）
 evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）
 evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；退出码 0/1）
-evidence/test.md | active | 嵌入式验证证据 EV-017（当前轮）：TEST_FAIL — 7/7 周期 q=0、BUS ack=none、gc=3、VDD ok=1 code=1480 bgrmv=1189 mv=3289；含 EV-012..016 历史轮记录
+evidence/test.md | active | 嵌入式验证证据 EV-018（当前轮）：TEST_FAIL — 当前构建 15 周期 10×q=1/5×q=0；失败均为 G s=4 温度 CRC 错且 raw[2]==raw[0]、湿度 CRC 正常；上电诊断行不完整、T5/INT 未执行、逻辑分析仪入口不在线；含 EV-012..EV-017 历史轮记录
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）
 gxht40.pdf | active | GXHT40 数据手册 V2.6（地址仅 0x44/0x45、命令 0xFD/0x94、CRC-8 poly 0x31/init 0xFF、换算 §7.5、t_MEAS/t_PU、VDD 1.6..5.5 V）

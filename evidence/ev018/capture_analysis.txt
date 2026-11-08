@@ -1,0 +1,32 @@
+OBS run2_boot.cap: BUS idle=3 scl=1 sda=1 ack=44  [31 B]
+
+captures=10 S=16 (q=1:10 q=0:6) G=6 P=0
+G raw temperature-CRC mismatches=6 humidity-CRC mismatches=0
+G raw where byte2==byte0 (beyond temp-CRC mismatch)=6
+lines over 96 B (incl CRLF)=0
+
+S sequence:
+  preflash_old_image.cap: k=8673 p=256 H=1 V=0 o=8 a=3099 D=0 t=256 h=372 q=0 r=0 s=0 y=0
+  run1_a.cap: k=3 p=243 H=1 V=0 o=8 a=3113 D=0 t=243 h=372 q=1 r=0 s=0 y=0
+  run1_a.cap: k=6 p=243 H=1 V=0 o=8 a=3690 D=0 t=243 h=372 q=0 r=0 s=0 y=0
+  run1_b.cap: k=9 p=227 H=1 V=0 o=8 a=3688 D=0 t=227 h=401 q=1 r=0 s=0 y=0
+  run1_c.cap: k=12 p=227 H=1 V=0 o=8 a=3682 D=0 t=227 h=401 q=0 r=0 s=0 y=0
+  run1_c.cap: k=15 p=227 H=1 V=0 o=8 a=3688 D=0 t=227 h=401 q=0 r=0 s=0 y=0
+  run1_d.cap: k=21 p=230 H=1 V=0 o=8 a=3679 D=0 t=230 h=375 q=1 r=0 s=0 y=0
+  run1_e.cap: k=24 p=245 H=1 V=0 o=8 a=3694 D=0 t=245 h=369 q=1 r=0 s=0 y=0
+  run1_e.cap: k=27 p=245 H=1 V=0 o=8 a=3726 D=0 t=245 h=399 q=1 r=0 s=0 y=0
+  run2_a.cap: k=3 p=0 H=0 V=0 o=8 a=3757 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+  run2_a.cap: k=6 p=230 H=1 V=0 o=8 a=3752 D=0 t=230 h=361 q=1 r=0 s=0 y=0
+  run2_b.cap: k=9 p=259 H=1 V=0 o=8 a=3753 D=0 t=259 h=372 q=1 r=0 s=0 y=0
+  run2_b.cap: k=12 p=242 H=1 V=0 o=8 a=3749 D=0 t=242 h=376 q=1 r=0 s=0 y=0
+  run2_boot.cap: k=0 p=0 H=0 V=0 o=8 a=3744 D=0 t=0 h=0 q=0 r=0 s=0 y=0
+  run2_c.cap: k=15 p=243 H=1 V=0 o=8 a=3761 D=0 t=243 h=377 q=1 r=0 s=0 y=0
+  run2_c.cap: k=18 p=244 H=1 V=0 o=8 a=3741 D=0 t=244 h=391 q=1 r=0 s=0 y=0
+
+G detail (raw / tempCRC_ok / humCRC_ok / byte2==byte0):
+  preflash_old_image.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=67A667543C5D T=False H=True dup=True
+  run1_a.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=67176753FA12 T=False H=True dup=True
+  run1_c.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=65356558B51B T=False H=True dup=True
+  run1_c.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=6310635E31FF T=False H=True dup=True
+  run2_a.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=636B635DE85E T=False H=True dup=True
+  run2_boot.cap: s=4 a44=1 a45=0 rd=0 at=3 raw=6454645B5002 T=False H=True dup=True

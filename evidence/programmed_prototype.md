@@ -1,3 +1,35 @@
+# ProgrammedPrototypeArtifact（EV-018 / 当前交付构建 T1–T5 复验）
+
+本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。功能判定见 `evidence/test.md` EV-018（结论 **`TEST_FAIL`**：当前构建 15 个采样周期中 10 次 `q=1`、5 次 `q=0`；全部失败为 `G s=4` 温度 CRC 错，6/6 失败帧呈现“温度 CRC 字节 = 温度 MSB、湿度 CRC 正常”的同一签名；T5 全暗标定与 INT 上报未执行）。
+
+## 本次下载的固件身份
+
+| 项 | 值 |
+|---|---|
+| 受测提交 | `7bfd248`（HEAD；`git status` 干净；本轮**产品源码零改动**） |
+| 受测源码版本 | `git log -1 -- <FW>/USER` = `7bfd248`；交付增量 = `USER/{fw_core.c,measure.c,debug_trace.c,debug_trace.h,sensor_config.h}`（T1 判定、T2 冻结+P 行、T3 有界等待） |
+| 构建方式 | `mdk_build {action:rebuild}`（Keil MDK / ARMCLANG **V6.24**，工程保存配置）；`mdk_flash {}` 内含增量构建 |
+| 构建结果 | `0 Error(s), 1 Warning(s)`（既有 `main.c(245) while(k--);` 空循环体）；`Program Size: Code=25912 RO-data=656 RW-data=116 ZI-data=1676` |
+| 镜像路径 | `CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.axf` |
+| 镜像 md5 | **`c7ed03b796f2ae438b325c7b9306d836`**（与实现 `evidence/build.md` 声明逐字符一致） |
+| 附带 hex md5 | `79090d64d8e5487ee896983401f828ec`（`Project.hex`） |
+
+## 下载目标与下载校验
+
+| 项 | 值 |
+|---|---|
+| 目标器件 | CW32L010（U7），传感器板（GXHT40 U9 同板） |
+| 调试口 | **COM43** = Prolific USB-to-Serial（VID:PID `067B:2303`），9600 8N1 |
+| 下载探针 | CW-DAPLink `USB VID:PID=C251:F001`（SN `87094109484987710672FF50`，同源 COM26） |
+| 下载方式 | `mdk_flash {}`（工程保存的调试器/Flash 算法；先编译再下载） |
+| 下载结果 | **2 次均成功**：`Erase Done.Programming Done.Verify OK.Application running ...`（本地 2026-11-08 12:24:48、12:53:41）；两次下载的 axf md5 相同 |
+
+`Verify OK` 只证明**下载内容的回读校验一致**。本轮板上行为自证：下载后 COM43 上出现当前构建的 `BUS idle=3 scl=1 sda=1 ack=44` 与 `S/G` 采样行（含 `G s=4 … raw=…`；旧镜像在下载前也可见同类行，但 `ack` 与周期编号不同）。**本轮未捕获 `BOOT` 横幅**，因此未重新读取 MCU `uid`；历史 EV-017 的 `uid=6A002C00` 仅作同板背景，不作本轮身份证据。原始日志：`evidence/ev018/flash_1.log`、`flash_2.log`；采集窗口：`evidence/ev018/capture_windows.txt`。
+
+---
+
+# 历史记录（EV-017 / run8 ITEM-002）
+
 # ProgrammedPrototypeArtifact（EV-017 / run8 ITEM-002）
 
 本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。本项的功能判定见 `evidence/test.md` EV-017（结论 **`TEST_FAIL`**：7/7 采样周期 `q=0`、器件对 112 个合法地址与 general call `0x00` 均不应答（`gc=3`），而**供电轨实测 ≈3.289 V 为正常量级**，失败形态逐字节稳定）。

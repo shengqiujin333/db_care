@@ -1,0 +1,22 @@
+EV-018 COM43 capture windows (all times UTC; local = UTC+8)
+Target build: commit 7bfd248, axf md5 c7ed03b796f2ae438b325c7b9306d836
+Port: COM43, 9600 8N1. Capture tool: serial_capture (bounded 60-300 s).
+
+file                     start (UTC)           end (UTC)             note
+preflash_old_image.cap   04:22:06.490          04:24:36.694          pre-flash image (old on-board build), k=8673
+flash_1.log              -                     -                     mdk_flash #1, Verify OK, 04:24:36-04:24:48
+run1_a.cap               04:25:22.120          04:30:22.328          k=3(q=1), k=6(q=0)
+run1_b.cap               04:30:37.964          04:35:38.174          k=9(q=1)
+run1_c.cap               04:35:51.999          04:40:52.183          k=12(q=0), k=15(q=0)
+run1_d.cap               04:42:52.578          04:47:52.783          k=21(q=1); k=18 fell in gap
+run1_e.cap               04:48:00.652          04:53:00.860          k=24(q=1), k=27(q=1)
+flash_2.log              -                     -                     mdk_flash #2, Verify OK, 04:53:29-04:53:41
+run2_boot.cap            04:53:41.841          04:54:42.074          boot tail: BUS idle=3 scl=1 sda=1 ack=44; k=0(q=0)
+run2_a.cap               04:55:04.815          05:00:05.014          k=3(q=0), k=6(q=1)
+run2_b.cap               05:01:26.831          05:06:27.033          k=9(q=1), k=12(q=1)
+run2_c.cap               05:06:31.253          05:11:31.475          k=15(q=1), k=18(q=1)
+
+Gaps between consecutive capture windows: 0.4-15 s inside a run; 120 s between run1_d/run1_e
+(one sample k=18 missed there), 16 s before run2_b, 4 s before run2_c.
+No capture gap exceeds one 180 s sampling interval except the run1_d/run1_e gap (120 s,
+still < 180 s but k=18 landed inside it).
