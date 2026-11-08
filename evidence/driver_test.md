@@ -1,9 +1,30 @@
-# 驱动测试证据（DRV-002 rev 6.3）
+# 驱动测试证据（DRV-002 rev 6.4）
 
 状态：固件实现证据（负责角色：固件工程）
-本轮范围：**E1 `delay()` 修复**后的宿主机回归（真实 `sf_i2c.c`/`gxht40.c`/`fw_core.c` + mock 总线/UART）；同时保留 D2 慢时钟与 T1–T3 自检。**均为宿主机层级，不证明实板延时/失败率。**
-依据：EV-024、EV-025、FD-002 / FWR-002 / TD-002 rev 6.0、`gxht40.pdf` V2.6
-受测工作树：`3113a96` + 本轮 `main.c`；axf md5 `917bffe63ba0a4945a20a9a51f4a60df`
+本轮范围：**F-1 `S` 行前值语义修复**后的宿主回归（真实 `measure.c`/`sf_i2c.c`/`gxht40.c` + mock MCU/总线/UART），保留 D2/E1/T1–T3。**宿主机层级，不证明实板首行或失败率。**
+依据：EV-026、EV-027、FD-002 / FWR-002 / TD-002 rev 6.0
+受测工作树：`d871957` + 本轮 `measure.c`/测试；axf md5 `a3b08774e764f174eac318f6771d0c42`
+
+---
+
+## 本轮 run14：F-1 后宿主回归（2026-11-08）
+
+```
+$ sh build_test.sh                    -> 46+61+54+28+29 = 218 passed, 0 failed
+$ ./_hostbin/gxht40_check4.exe        -> 60 passed, 0 failed
+$ ./_hostbin/sf_i2c_check4.exe        -> 42 passed, 0 failed
+$ ./_hostbin/rf_frame_check4.exe      -> 22 passed, 0 failed
+```
+
+合计 **342 项 0 失败**。关键新增断言：
+- 首样本 `sensor_trace_fetch()` 返回 `H=0/p=0`（判定无前值）；
+- 第二周期 `p=200`（上一周期），`t=209`，证明 `p/H` 不再被本周期推进覆盖；
+- 判定本身仍用推进前前值（原流程断言全部保持）。
+
+### 边界
+
+- 宿主无法制造“复位后首个 S 行”，首行 `H=0` 必须由实板下载/复位窗口验证。
+- 未修改/未运行验证方自有 `*_verify_ev.c`；实板复验见 `artifacts/firmware_implementation.md` §5。
 
 ---
 

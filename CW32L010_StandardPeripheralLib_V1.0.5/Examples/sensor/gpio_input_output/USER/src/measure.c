@@ -438,6 +438,8 @@ static int16_t  s_trace_temp_x10 = 0;   /* 本周期展示用温度 (失败周�
 static uint16_t s_trace_hum_x10  = 0u;  /* 本周期展示用湿度 */
 static uint8_t  s_trace_sample_ok = 0u; /* 本周期温湿度采样是否有效 */
 static uint8_t  s_trace_report    = 0u; /* 本周期条件上报判定结果 */
+static int16_t  s_trace_prev_x10  = 0;  /* 本周期判定所用前值 (推进前的快照) */
+static uint8_t  s_trace_have_prev = 0u; /* 本周期判定所用 have_prev (推进前) */
 static uint8_t  s_last_send_result = 0u;/* 最近一次 433 发送结果: 0=未发送 1=成功 2=失败 */
 
 /* ==================================================================== */
@@ -494,6 +496,10 @@ uint16_t temperature_process(void)
     s_trace_report    = 0u;
     s_trace_diag_valid = 0u;
     s_send_attempted  = 0u;       /* 新采样周期: 重置发送尝试观测 */
+    /* F-1: 在推进前值之前缓存判定实际使用的前值, 供 S 行 p/H 观测;
+     * 否则 sensor_trace_fetch() 会读到本周期更新后的值, 无法复核判定基准。 */
+    s_trace_prev_x10  = s_prev_temp_x10;
+    s_trace_have_prev = s_have_prev ? 1u : 0u;
 
     if (measure_sample()) {
         uint8_t rep = sensor_decide_report(s_prev_temp_x10, s_have_prev,
@@ -540,8 +546,8 @@ uint8_t sensor_trace_fetch(debug_trace_sample_t *out)
     s_trace_pending = 0u;
 
     out->tick          = (uint32_t)SENSOR_SAMPLE_TICKS;
-    out->prev_temp_x10 = s_prev_temp_x10;
-    out->have_prev     = s_have_prev ? 1u : 0u;
+    out->prev_temp_x10 = s_trace_prev_x10;
+    out->have_prev     = s_trace_have_prev;
     out->light_valid   = s_light.valid ? 1u : 0u;
     out->light_ok      = s_light.samples_ok;
     out->light_min     = s_light.code_min;

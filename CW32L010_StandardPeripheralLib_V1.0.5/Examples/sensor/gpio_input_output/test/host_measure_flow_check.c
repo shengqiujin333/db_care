@@ -190,11 +190,23 @@ int main(void)
     CHECK(strcmp(g_order, "LT") == 0, "调用顺序 = light_sample -> gxht40_measure (\"LT\")");
     CHECK(tempvalue == 200 && huminityvalue == 500, "成功样本写入 tempvalue/huminityvalue");
     CHECK(report_req == 0u, "无前值 + cur=200 -> report_req=0");
+    {
+        debug_trace_sample_t tr;
+        CHECK(sensor_trace_fetch(&tr) == 1u, "首样本有轨迹快照");
+        CHECK(tr.have_prev == 0u && tr.prev_temp_x10 == 0,
+              "F-1: 首样本 S 行 H=0/p=0 (判定所用推进前快照)");
+    }
 
     printf("[2] 升温恰好 0.9C (9) -> 不触发\n");
     cycle(GXHT40_OK, 209, 501, true);
     CHECK(report_req == 0u, "prev=200,cur=209 (rise 9) -> report_req=0");
     CHECK(huminityvalue == 501, "成功时更新最近有效湿度");
+    {
+        debug_trace_sample_t tr;
+        CHECK(sensor_trace_fetch(&tr) == 1u, "第二周期有轨迹快照");
+        CHECK(tr.have_prev == 1u && tr.prev_temp_x10 == 200 && tr.temp_x10 == 209,
+              "F-1: S 行 p=上一周期 200, 不被本周期 209 覆盖");
+    }
 
     printf("[3] 升温 1.1C (11) 且无光 -> 触发并冻结当次样本\n");
     cycle(GXHT40_OK, 220, 502, true);
