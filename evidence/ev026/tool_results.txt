@@ -1,0 +1,75 @@
+EV-026 raw tool results (embedded_tester, 2026-11-08 UTC; Windows host clock)
+All device access went through the mounted hardware_verification MCP tools only.
+
+[serial_list_ports] 2026-11-08T09:43:30.43Z
+  COM43  Prolific USB-to-Serial Comm Port  USB VID:PID=067B:2303 LOCATION=1-9.4.2
+  COM26  USB serial device  USB VID:PID=C251:F001 SN=87094109484987710672FF50 (debugger CDC, not used)
+
+[usb_list_devices] 2026-11-08T10:46:10.80Z
+  Status OK: USB\VID_C251&PID_F001 (CW-DAPLink composite, SN 87094109484987710672FF50)
+  Status OK: USB\VID_067B&PID_2303 (COM43)
+  Status OK: USB\VID_18D1&PID_4EE7\12F046690506 (SDM439-QRD, target phone)
+  Status OK: USB\VID_04B4&PID_8613\CYPRESS_FX2  FriendlyName "fx2lafw" (logic analyser bound)
+
+[sigrok_info] 2026-11-08T09:48:57.47Z
+  enabled=true driver=fx2lafw connection=2.27 channels=[D0,D1]
+  signal_labels={D0:scl,D1:sda} triggers={D1:f} samplerate_hz=4000000
+  max_samplerate_hz=8000000 max_samples=20000000 timeout_sec=240 online=not_checked
+
+[sigrok_probe] 2026-11-08T09:48:57.60-09:48:57.65Z  exit_code=0
+  command: sigrok-cli.exe --driver fx2lafw:conn=2.27 --show
+
+[sigrok_capture] 2026-11-08T09:49:05.58-09:49:56.31Z  exit_code=0
+  command: sigrok-cli.exe --driver fx2lafw:conn=2.27 --config samplerate=4000000 \
+           --channels D0,D1 --samples 8000000 --wait-trigger --triggers D1=f \
+           --output-format srzip --output-file .../sigrok_capture_86e80bbabf314eb7970fa2a7e5276a97/capture.sr
+  session: sample_count=8000000 samplerate_hz=4000000 sample_interval_sec=2.5e-07
+           duration_sec=2.0 channels=[D0,D1] timing="sample index / nominal device rate"
+  raw .sr md5 = a450e3969392cf75a854749b90a2e345 (copy at evidence/ev026/raw_i2c_capture.sr)
+
+[sigrok_decode] 2026-11-08T09:50:06.90Z  exit_code=0  annotations_present=true
+  command: sigrok-cli.exe --input-file .../capture.sr --protocol-decoders i2c:scl=D0:sda=D1 \
+           --protocol-decoder-samplenum
+  decoded: Start / Address write 0x44 / ACK / Data write 0xFD / ACK / Stop
+           Start / Address read 0x44 / ACK / Data read 65 BF 32 55 22 F5 / NACK / Stop
+  (full annotation text: evidence/ev026/decoded_i2c.txt)
+
+[mdk_build rebuild] 2026-11-08T09:43:37.82-09:43:39.67Z  success=true exit_code=0
+  "*** Using Compiler 'V6.24' ... Rebuild target 'Project' ... main.c(254): warning:
+   while loop has empty body ... Program Size: Code=25940 RO-data=656 RW-data=116
+   ZI-data=1676 ... 0 Error(s), 1 Warning(s)."
+  Project.axf md5 = 917bffe63ba0a4945a20a9a51f4a60df (deterministic rebuild; identical to the
+  firmware_engineer build evidence BUILD-002 rev 6.3)
+  Project.hex md5 = 5b017c84d693ce17318fca633b27ad07
+
+[mdk_flash #1] 2026-11-08T09:46:29.11-09:46:41.50Z  success=true exit_code=0
+  "Load ...Project.axf / Erase Done.Programming Done.Verify OK.Application running ..."
+  (capture was still running and ended 0.06 s before this flash; this reset was not observed
+   on COM43; the second flash below is the session used for all serial evidence)
+
+[mdk_flash #2] 2026-11-08T09:47:13.50-09:47:25.96Z  success=true exit_code=0
+  "Load ...Project.axf / Erase Done.Programming Done.Verify OK.Application running ..."
+  axf md5 unchanged 917bffe63ba0a4945a20a9a51f4a60df; flash logs:
+  evidence/ev026/flash_1.log, evidence/ev026/flash_2.log
+
+[serial_capture] eight post-flash invocations + one pre-flash invocation, COM43 @9600 8N1.
+  Windows, durations, observed rows and md5s: evidence/ev026/capture_windows.txt,
+  evidence/ev026/md5_list.txt. Raw bytes: evidence/ev026/cap00..cap10 .cap.
+  Result: 15 post-flash S rows (k=0..57, multiples of 3) + k=3 seen on the analyser; all q=1,
+  no G, t=203..241 (20.3-24.1 C), h=375..477 (37.5-47.7 %RH), V=0 D=0 o=8, r=0 s=0 y=0.
+
+[host tests] 2026-11-08T10:23-10:25Z (local build/run, product sources unmodified)
+  test/build_test.sh: 46+57+54+28+29 = 214 passed, 0 failed (exit 0)
+  tester harnesses: fw_core 59, gxht40 93, sf_i2c 51, diag_line 38, diag_probe 104,
+                    measure_flow 79, rf_frame 10, gw_compat 11, rtc 17, vdd 31
+                    => 493 passed, 0 failed (all exit 0)
+  stale tester assets (old API, not used as evidence): host_rf_report_verify_ev.c
+    (bool light_sample vs light_result_t), host_light_verify_ev.c (old mock headers)
+
+[logic analyser timing recomputation] evidence/ev026/capture_analysis.txt
+  write START 13733 -> STOP 61930  = 12.049 ms
+  command STOP 61930 -> read START 192030 = 130100 samples = 32.525 ms
+  read START 192030 -> STOP 352678 = 40.162 ms
+  dominant SCL bit period 2458 samples = 614.5 us (~1627 Hz); second mode 2457 samples
+  6-byte frame 65 BF 32 55 22 F5: temp word 0x65BF CRC calc 0x32 = rx; hum word 0x5522
+  CRC calc 0xF5 = rx -> 24.6 C / 35.6 %RH (independent CRC-8 poly 0x31 init 0xFF)

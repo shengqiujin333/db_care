@@ -254,15 +254,74 @@ evidence/ev025/raw_capture_md5.txt | active | 原始 .sr 的 md5 与 Runtime 工
 evidence/ev025/serial_capture_1.bin | active | COM43 原始字节（09:16:13–09:21:13Z，k=90/93 q=1）
 evidence/ev025/serial_capture_2.bin | active | COM43 原始字节（09:25:36–09:30:36Z，k=99/102 q=1）
 evidence/ev025/tool_results.txt | active | 本轮设备工具原始结果（端口/USB/逻辑分析仪探测与采集/串口/镜像身份/delay 反汇编）
+evidence/ev026/ | active | EV-026 E1 修复轮复验原始证据目录：11 份 COM43 捕获（k=0…57）、1 次位级 I²C 采集/离线解码、交付 axf 反汇编与符号、独立分析/宿主 harness 脚本与日志
+evidence/ev026/EV-026_prototype_section.md | active | EV-026 下载身份段落（已并入 evidence/programmed_prototype.md 顶部）
+evidence/ev026/EV-026_section.md | active | EV-026 证据正文（已并入 evidence/test.md 顶部）
+evidence/ev026/Project.axf | active | 本轮下载受测镜像副本（md5 917bffe63ba0a4945a20a9a51f4a60df）
+evidence/ev026/analyze_ev026.py | active | 独立解析：S/G 行/行长/字段域、I²C 事务时序与 SCL 位周期、双字 CRC-8 与换算（不引用实现常量）
+evidence/ev026/cap00_preflash_old_image.cap | active | 下载前旧镜像 COM43 原始字节（k=117）
+evidence/ev026/cap01_postflash_bus_k0.cap | active | 第二次下载后 COM43：BUS ack=44 + S k=0
+evidence/ev026/cap02_k6_k9.cap | active | 下载后 COM43 原始字节（k=6/9）
+evidence/ev026/cap03_k12.cap | active | 下载后 COM43 原始字节（k=12）
+evidence/ev026/cap04_k18.cap | active | 下载后 COM43 原始字节（k=18）
+evidence/ev026/cap05_k21_k24.cap | active | 下载后 COM43 原始字节（k=21/24）
+evidence/ev026/cap06_k27_k30.cap | active | 下载后 COM43 原始字节（k=27/30）
+evidence/ev026/cap07_k33.cap | active | 下载后 COM43 原始字节（k=33）
+evidence/ev026/cap08_k45.cap | active | 下载后 COM43 原始字节（k=45）
+evidence/ev026/cap09_k48_k51.cap | active | 下载后 COM43 原始字节（k=48/51）
+evidence/ev026/cap10_k54_k57.cap | active | 下载后 COM43 原始字节（k=54/57）
+evidence/ev026/capture_analysis.txt | active | analyze_ev026.py 输出（16 周期 q=1、32.525 ms、614.5 µs、双 CRC 匹配）
+evidence/ev026/capture_metadata.json | active | sigrok_capture 实际参数/命令/时间戳
+evidence/ev026/capture_windows.txt | active | 11 个捕获窗口起止/时长/间隙、观测 k、节拍边界推算与行长统计
+evidence/ev026/decode_metadata.json | active | sigrok_decode 离线解码参数与输入身份
+evidence/ev026/decoded_i2c.txt | active | 位级 I²C 完整注解（0x44 写 0xFD、读 6 字节、NACK/STOP，含样点号）
+evidence/ev026/delay_disasm.txt | active | delay/delay_ms 反汇编与 gxht40_measure 调用点摘录
+evidence/ev026/disasm_stderr.txt | active | fromelf 反汇编 stderr（空）
+evidence/ev026/disasm_text.txt | active | fromelf --text -c 全量反汇编
+evidence/ev026/flash_1.log | active | 第一次 mdk_flash 原始日志（Verify OK / Application running）
+evidence/ev026/flash_2.log | active | 第二次 mdk_flash 原始日志（Verify OK；本轮证据会话）
+evidence/ev026/host_build_test.log | active | 实现侧 test/build_test.sh 原始 stdout（46+57+54+28+29=214 项 0 失败）
+evidence/ev026/host_diag_line_verify_ev.build.log | active | 诊断行 harness 编译日志（0 error）
+evidence/ev026/host_diag_line_verify_ev.log | active | 独立诊断行 harness 输出（38/38）
+evidence/ev026/host_diag_probe_verify_ev.build.log | active | 总线诊断 harness 编译日志（0 error）
+evidence/ev026/host_diag_probe_verify_ev.log | active | 独立总线诊断 harness 输出（104/104）
+evidence/ev026/host_fw_core_verify_ev.build.log | active | fw_core harness 编译日志（0 error）
+evidence/ev026/host_fw_core_verify_ev.log | active | 独立 fw_core harness 输出（59/59）
+evidence/ev026/host_gw_compat_verify_ev.build.log | active | 网关兼容 harness 编译日志（0 error）
+evidence/ev026/host_gw_compat_verify_ev.log | active | 独立网关兼容 harness 输出（11/11）
+evidence/ev026/host_gxht40_verify_ev.build.log | active | GXHT40 harness 编译日志（0 error）
+evidence/ev026/host_gxht40_verify_ev.log | active | 独立 GXHT40 harness 输出（93/93）
+evidence/ev026/host_harness_rerun_full.txt | active | 修正网关路径后的完整重跑原始输出（rf_frame 10/10、gw_compat 11/11）
+evidence/ev026/host_harness_summary.txt | active | 宿主 harness 汇总输出（493 项 0 失败 + 陈旧资产记录）
+evidence/ev026/host_light_verify_ev.build.log | active | 陈旧测试资产编译记录（旧 mock 头，不计入证据）
+evidence/ev026/host_measure_flow_verify_ev.build.log | active | 采样流程 harness 编译日志（0 error）
+evidence/ev026/host_measure_flow_verify_ev.log | active | 独立采样流程 harness 输出（79/79）
+evidence/ev026/host_rf_frame_verify_ev.build.log | active | 空口帧 harness 编译日志（0 error）
+evidence/ev026/host_rf_frame_verify_ev.log | active | 独立空口帧 harness 输出（10/10）
+evidence/ev026/host_rf_report_verify_ev.build.log | active | 陈旧测试资产编译记录（旧 bool light_sample API，不计入证据）
+evidence/ev026/host_rtc_cadence_verify_ev.harness.build.log | active | RTC 节拍 harness 编译日志（0 error）
+evidence/ev026/host_rtc_cadence_verify_ev.link.log | active | RTC 节拍 harness 链接日志（0 error）
+evidence/ev026/host_rtc_cadence_verify_ev.log | active | 独立 RTC 节拍 harness 输出（17/17）
+evidence/ev026/host_rtc_cadence_verify_ev.main.build.log | active | RTC 节拍 harness 的 main.c 编译日志（0 error）
+evidence/ev026/host_sf_i2c_verify_ev.build.log | active | 软 I²C harness 编译日志（0 error）
+evidence/ev026/host_sf_i2c_verify_ev.log | active | 独立软 I²C harness 输出（51/51）
+evidence/ev026/host_vdd_verify_ev.build.log | active | VDD 测量 harness 编译日志（0 error）
+evidence/ev026/host_vdd_verify_ev.log | active | 独立 VDD 测量 harness 输出（31/31）
+evidence/ev026/md5_list.txt | active | 原始捕获、原始 .sr 与交付 axf 的 md5
+evidence/ev026/nm_defined.txt | active | 交付 axf 符号表
+evidence/ev026/prepend_sections.py | active | 将 EV-026 段落并入 evidence/test.md 与 programmed_prototype.md 的可复跑脚本
+evidence/ev026/raw_i2c_capture.sr | active | 本轮位级 I²C 原始采集（8,000,000 样点 @4 MS/s，D0=SCL/D1=SDA，conn=2.27）
+evidence/ev026/run_host_harnesses.sh | active | 宿主 harness 构建/运行可复跑脚本
+evidence/ev026/tool_results.txt | active | 本轮 serial/USB/sigrok/mdk_build/mdk_flash/serial_capture/宿主测试原始结果与时间戳
 evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
-evidence/programmed_prototype.md | active | 下载身份记录（EV-024：commit 3113a96 / axf md5 e56d8d4b… 一次 mdk_flash Verify OK；仅证明下载成功，不代表功能合格；EV-022 及更早记录保留为历史）
+evidence/programmed_prototype.md | active | 下载身份记录（EV-026：commit d871957 / axf md5 917bffe6…，两次 mdk_flash Verify OK；仅证明下载成功，不代表功能合格；EV-022/EV-024 及更早记录保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
 evidence/software_static_check_server_migration.py | active | 可复跑静态核查（ITEM-004：服务器常量/旧主机分布/XML 放行/兼容面）
 evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）
 evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；退出码 0/1）
-evidence/test.md | active | 嵌入式验证证据 EV-024（当前轮）：TEST_FAIL（整体）— D2 镜像 27 个连续采样周期全部 q=1、0 次失败（对照上一镜像 16/25=64%，p=1.97e-07），T4-05 实板通过；T4-02 上电行缺失、T5/INT 未执行、逻辑分析仪不在线；EV-022 及更早保留为历史
+evidence/test.md | active | 嵌入式验证证据 EV-026（当前轮）：TEST_FAIL（整体）— E1 `delay()` 修复实板成立（STOP→读 START 32.525 ms vs 修前 0.622 ms，SCL 614.5 µs，位级双 CRC 匹配），15 条 S（k=0…57）全 q=1、0 G；T4-02 上电五行/横幅、T5 全暗标定、INT 上报/跨链路未执行；新登记 p/H 轨迹语义与首间隔 148 s 观测；EV-024 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-025 置顶，EV-023/EV-021 原文保留）：EV-024 剩余缺口归因、D2 位级 I²C 复核（SCL≈1.63 kHz、双字 CRC 匹配、32 周期 0 失败）、`delay_ms` 空实现的新确认事实与受影响调用点、已排除项、竞争假设与责任交接（仅归因，不代表修复或通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）

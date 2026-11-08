@@ -1,0 +1,107 @@
+==============================================================================
+1. COM43 raw capture analysis (bytes, lines, S/G fields, line budget)
+==============================================================================
+
+-- cap00_preflash_old_image.cap: 80 bytes, md5=see md5_list.txt
+   [ 80 B incl CRLF] S k=117 p=220 H=1 V=0 o=8 n=3158 x=3173 a=3166 D=0 t=220 h=402 q=1 r=0 s=0 y=0
+
+-- cap01_postflash_bus_k0.cap: 109 bytes, md5=see md5_list.txt
+   [ 31 B incl CRLF] BUS idle=3 scl=1 sda=1 ack=44
+   [ 78 B incl CRLF] S k=0 p=241 H=1 V=0 o=8 n=3193 x=3200 a=3195 D=0 t=241 h=375 q=1 r=0 s=0 y=0
+
+-- cap02_k6_k9.cap: 156 bytes, md5=see md5_list.txt
+   [ 78 B incl CRLF] S k=6 p=227 H=1 V=0 o=8 n=3178 x=3187 a=3183 D=0 t=227 h=392 q=1 r=0 s=0 y=0
+   [ 78 B incl CRLF] S k=9 p=206 H=1 V=0 o=8 n=3182 x=3192 a=3186 D=0 t=206 h=436 q=1 r=0 s=0 y=0
+
+-- cap03_k12.cap: 79 bytes, md5=see md5_list.txt
+   [ 79 B incl CRLF] S k=12 p=217 H=1 V=0 o=8 n=3180 x=3189 a=3184 D=0 t=217 h=413 q=1 r=0 s=0 y=0
+
+-- cap04_k18.cap: 79 bytes, md5=see md5_list.txt
+   [ 79 B incl CRLF] S k=18 p=205 H=1 V=0 o=8 n=3189 x=3199 a=3194 D=0 t=205 h=437 q=1 r=0 s=0 y=0
+
+-- cap05_k21_k24.cap: 158 bytes, md5=see md5_list.txt
+   [ 79 B incl CRLF] S k=21 p=217 H=1 V=0 o=8 n=3185 x=3194 a=3188 D=0 t=217 h=408 q=1 r=0 s=0 y=0
+   [ 79 B incl CRLF] S k=24 p=205 H=1 V=0 o=8 n=3189 x=3196 a=3192 D=0 t=205 h=440 q=1 r=0 s=0 y=0
+
+-- cap06_k27_k30.cap: 158 bytes, md5=see md5_list.txt
+   [ 79 B incl CRLF] S k=27 p=203 H=1 V=0 o=8 n=3192 x=3202 a=3196 D=0 t=203 h=449 q=1 r=0 s=0 y=0
+   [ 79 B incl CRLF] S k=30 p=203 H=1 V=0 o=8 n=3189 x=3199 a=3194 D=0 t=203 h=457 q=1 r=0 s=0 y=0
+
+-- cap07_k33.cap: 79 bytes, md5=see md5_list.txt
+   [ 79 B incl CRLF] S k=33 p=203 H=1 V=0 o=8 n=3191 x=3201 a=3196 D=0 t=203 h=464 q=1 r=0 s=0 y=0
+
+-- cap08_k45.cap: 79 bytes, md5=see md5_list.txt
+   [ 79 B incl CRLF] S k=45 p=204 H=1 V=0 o=8 n=3193 x=3201 a=3196 D=0 t=204 h=473 q=1 r=0 s=0 y=0
+
+-- cap09_k48_k51.cap: 158 bytes, md5=see md5_list.txt
+   [ 79 B incl CRLF] S k=48 p=204 H=1 V=0 o=8 n=3193 x=3204 a=3199 D=0 t=204 h=477 q=1 r=0 s=0 y=0
+   [ 79 B incl CRLF] S k=51 p=219 H=1 V=0 o=8 n=3195 x=3202 a=3197 D=0 t=219 h=441 q=1 r=0 s=0 y=0
+
+-- cap10_k54_k57.cap: 158 bytes, md5=see md5_list.txt
+   [ 79 B incl CRLF] S k=54 p=208 H=1 V=0 o=8 n=3192 x=3203 a=3198 D=0 t=208 h=464 q=1 r=0 s=0 y=0
+   [ 79 B incl CRLF] S k=57 p=205 H=1 V=0 o=8 n=3195 x=3206 a=3199 D=0 t=205 h=474 q=1 r=0 s=0 y=0
+
+-- S-row summary
+   count=16
+   cap00_preflash_old_image.cap k=117 t=220   h=402  q=1 r=0 s=0 y=0 V=0 D=0
+   cap01_postflash_bus_k0.cap   k=0   t=241   h=375  q=1 r=0 s=0 y=0 V=0 D=0
+   cap02_k6_k9.cap              k=6   t=227   h=392  q=1 r=0 s=0 y=0 V=0 D=0
+   cap02_k6_k9.cap              k=9   t=206   h=436  q=1 r=0 s=0 y=0 V=0 D=0
+   cap03_k12.cap                k=12  t=217   h=413  q=1 r=0 s=0 y=0 V=0 D=0
+   cap04_k18.cap                k=18  t=205   h=437  q=1 r=0 s=0 y=0 V=0 D=0
+   cap05_k21_k24.cap            k=21  t=217   h=408  q=1 r=0 s=0 y=0 V=0 D=0
+   cap05_k21_k24.cap            k=24  t=205   h=440  q=1 r=0 s=0 y=0 V=0 D=0
+   cap06_k27_k30.cap            k=27  t=203   h=449  q=1 r=0 s=0 y=0 V=0 D=0
+   cap06_k27_k30.cap            k=30  t=203   h=457  q=1 r=0 s=0 y=0 V=0 D=0
+   cap07_k33.cap                k=33  t=203   h=464  q=1 r=0 s=0 y=0 V=0 D=0
+   cap08_k45.cap                k=45  t=204   h=473  q=1 r=0 s=0 y=0 V=0 D=0
+   cap09_k48_k51.cap            k=48  t=204   h=477  q=1 r=0 s=0 y=0 V=0 D=0
+   cap09_k48_k51.cap            k=51  t=219   h=441  q=1 r=0 s=0 y=0 V=0 D=0
+   cap10_k54_k57.cap            k=54  t=208   h=464  q=1 r=0 s=0 y=0 V=0 D=0
+   cap10_k54_k57.cap            k=57  t=205   h=474  q=1 r=0 s=0 y=0 V=0 D=0
+   k sequence (observed): [117, 0, 6, 9, 12, 18, 21, 24, 27, 30, 33, 45, 48, 51, 54, 57]
+   q=1: 16 / 16
+   G rows: 0
+   non-q=1 cycles: none
+   observed k deltas: [6, 3, 3, 6, 3, 3, 3, 3, 3, 12, 3, 3, 3, 3] (all multiples of 3: True)
+
+==============================================================================
+2. I2C bit-level decode (raw annotations, 4 MS/s -> 0.25 us/sample)
+==============================================================================
+   sample   13733  Start                  t=     3.433 ms
+   sample   33411  Write                  t=     8.353 ms
+   sample   16210  Address write: 44      t=     4.053 ms
+   sample   35911  ACK                    t=     8.978 ms
+   sample   38464  Data write: FD         t=     9.616 ms
+   sample   58167  ACK                    t=    14.542 ms
+   sample   61930  Stop                   t=    15.482 ms
+   sample  192030  Start                  t=    48.008 ms
+   sample  211707  Read                   t=    52.927 ms
+   sample  194506  Address read: 44       t=    48.627 ms
+   sample  214206  ACK                    t=    53.551 ms
+   sample  216806  Data read: 65          t=    54.202 ms
+   sample  236525  ACK                    t=    59.131 ms
+   sample  239054  Data read: BF          t=    59.764 ms
+   sample  258773  ACK                    t=    64.693 ms
+   sample  261302  Data read: 32          t=    65.326 ms
+   sample  281021  ACK                    t=    70.255 ms
+   sample  283550  Data read: 55          t=    70.888 ms
+   sample  303269  ACK                    t=    75.817 ms
+   sample  305798  Data read: 22          t=    76.450 ms
+   sample  325516  ACK                    t=    81.379 ms
+   sample  328045  Data read: F5          t=    82.011 ms
+   sample  348985  NACK                   t=    87.246 ms
+   sample  352678  Stop                   t=    88.169 ms
+
+   transaction: starts=2 stops=2 acks=8 nacks=1
+   write addr=['Address write: 44'] data=['FD']
+   read  addr=['Address read: 44'] data=['65', 'BF', '32', '55', '22', 'F5']
+   command STOP sample 61930 -> read START sample 192030 = 130100 samples = 32.525 ms
+   write transaction (START->STOP) = 12.049 ms
+   read  transaction (START->STOP) = 40.162 ms
+   bit windows sorted=72  period distribution (top5 samples): [(2458, 38), (2457, 25), (5044, 4), (5053, 1), (138839, 1)]
+   dominant SCL bit period = 2458 samples = 614.500 us -> 1627.3 Hz (38/71 of observed periods)
+
+   raw6 = 65 BF 32 55 22 F5
+   temp word=0x65BF crc calc=0x32 rx=0x32 -> MATCH  x10=246
+   hum  word=0x5522 crc calc=0xF5 rx=0xF5 -> MATCH  x10=356

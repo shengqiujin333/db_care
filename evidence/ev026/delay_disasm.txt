@@ -1,0 +1,96 @@
+        0x00004780:    00000000    ....    DCD    0
+    __arm_cp.6_8
+        0x00004784:    000066be    .f..    DCD    26302
+    $t
+    delay
+        0x00004788:    b081        ..      SUB      sp,sp,#4
+        0x0000478a:    2800        .(      CMP      r0,#0
+        0x0000478c:    d009        ..      BEQ      0x47a2 ; delay + 26
+        0x0000478e:    21c7        .!      MOVS     r1,#0xc7
+        0x00004790:    00c9        ..      LSLS     r1,r1,#3
+        0x00004792:    9100        ..      STR      r1,[sp,#0]
+        0x00004794:    9900        ..      LDR      r1,[sp,#0]
+        0x00004796:    1e4a        J.      SUBS     r2,r1,#1
+        0x00004798:    9200        ..      STR      r2,[sp,#0]
+        0x0000479a:    2900        .)      CMP      r1,#0
+        0x0000479c:    d1fa        ..      BNE      0x4794 ; delay + 12
+        0x0000479e:    1e40        @.      SUBS     r0,r0,#1
+        0x000047a0:    d1f5        ..      BNE      0x478e ; delay + 6
+        0x000047a2:    b001        ..      ADD      sp,sp,#4
+        0x000047a4:    4770        pG      BX       lr
+    delay_ms
+        0x000047a6:    b580        ..      PUSH     {r7,lr}
+        0x000047a8:    f7ffffee    ....    BL       delay ; 0x4788
+        0x000047ac:    bd80        ..      POP      {r7,pc}
+    delay_us
+        0x000047ae:    b081        ..      SUB      sp,sp,#4
+        0x000047b0:    9000        ..      STR      r0,[sp,#0]
+        0x000047b2:    9800        ..      LDR      r0,[sp,#0]
+        0x000047b4:    1e41        A.      SUBS     r1,r0,#1
+        0x000047b6:    9100        ..      STR      r1,[sp,#0]
+        0x000047b8:    2800        .(      CMP      r0,#0
+        0x000047ba:    d1fa        ..      BNE      0x47b2 ; delay_us + 4
+        0x000047bc:    b001        ..      ADD      sp,sp,#4
+        0x000047be:    4770        pG      BX       lr
+    encode_frame10
+        0x00004a8e:    9004        ..      STR      r0,[sp,#0x10]
+        0x00004a90:    f7fbfb7c    ..|.    BL       __aeabi_memclr ; 0x18c
+        0x00004a94:    4897        .H      LDR      r0,[pc,#604] ; [0x4cf4] = 0x200004bc
+        0x00004a96:    7801        .x      LDRB     r1,[r0,#0]
+        0x00004a98:    2201        ."      MOVS     r2,#1
+        0x00004a9a:    9206        ..      STR      r2,[sp,#0x18]
+        0x00004a9c:    2900        .)      CMP      r1,#0
+        0x00004a9e:    d104        ..      BNE      0x4aaa ; gxht40_measure + 70
+        0x00004aa0:    9906        ..      LDR      r1,[sp,#0x18]
+        0x00004aa2:    7001        .p      STRB     r1,[r0,#0]
+        0x00004aa4:    2002        .       MOVS     r0,#2
+        0x00004aa6:    f7fffe7e    ..~.    BL       delay_ms ; 0x47a6
+        0x00004aaa:    a809        ..      ADD      r0,sp,#0x24
+        0x00004aac:    1cc0        ..      ADDS     r0,r0,#3
+        0x00004aae:    9003        ..      STR      r0,[sp,#0xc]
+        0x00004ab0:    2500        .%      MOVS     r5,#0
+        0x00004ab2:    e007        ..      B        0x4ac4 ; gxht40_measure + 96
+        0x00004ab4:    4990        .I      LDR      r1,[pc,#576] ; [0x4cf8] = 0x200004a8
+        0x00004ab6:    9806        ..      LDR      r0,[sp,#0x18]
+        0x00004ab8:    9d07        ..      LDR      r5,[sp,#0x1c]
+        0x00004aba:    2200        ."      MOVS     r2,#0
+        0x00004abc:    700a        .p      STRB     r2,[r1,#0]
+        0x00004abe:    2800        .(      CMP      r0,#0
+        0x00004ac0:    d100        ..      BNE      0x4ac4 ; gxht40_measure + 96
+        0x00004ac2:    e10f        ..      B        0x4ce4 ; gxht40_measure + 640
+        0x00004ac4:    2d02        .-      CMP      r5,#2
+        0x00004ac6:    d900        ..      BLS      0x4aca ; gxht40_measure + 102
+        0x00004ac8:    e0f7        ..      B        0x4cba ; gxht40_measure + 598
+        0x00004aca:    9705        ..      STR      r7,[sp,#0x14]
+        0x00004acc:    1c6d        m.      ADDS     r5,r5,#1
+        0x00004ace:    4888        .H      LDR      r0,[pc,#544] ; [0x4cf0] = 0x200004b0
+        0x00004ad0:    9507        ..      STR      r5,[sp,#0x1c]
+        0x00004ad2:    7105        .q      STRB     r5,[r0,#4]
+        0x00004ad4:    4888        .H      LDR      r0,[pc,#544] ; [0x4cf8] = 0x200004a8
+        0x00004ad6:    7806        .x      LDRB     r6,[r0,#0]
+        0x00004ad8:    2e00        ..      CMP      r6,#0
+        0x00004ada:    d039        9.      BEQ      0x4b50 ; gxht40_measure + 236
+        0x00004adc:    6820         h      LDR      r0,[r4,#0]
+        0x00004ade:    0075        u.      LSLS     r5,r6,#1
+        0x00004ae0:    b2e9        ..      UXTB     r1,r5
+        0x00004ae2:    22fd        ."      MOVS     r2,#0xfd
+        0x00004ae4:    f000fb8c    ....    BL       i2c_write_cmd ; 0x5200
+        0x00004ae8:    2800        .(      CMP      r0,#0
+        0x00004aea:    d12e        ..      BNE      0x4b4a ; gxht40_measure + 230
+        0x00004aec:    2e44        D.      CMP      r6,#0x44
+        0x00004aee:    9804        ..      LDR      r0,[sp,#0x10]
+        0x00004af0:    d003        ..      BEQ      0x4afa ; gxht40_measure + 150
+        0x00004af2:    2e45        E.      CMP      r6,#0x45
+        0x00004af4:    d103        ..      BNE      0x4afe ; gxht40_measure + 154
+        0x00004af6:    487e        ~H      LDR      r0,[pc,#504] ; [0x4cf0] = 0x200004b0
+        0x00004af8:    1c80        ..      ADDS     r0,r0,#2
+        0x00004afa:    2101        .!      MOVS     r1,#1
+        0x00004afc:    7001        .p      STRB     r1,[r0,#0]
+        0x00004afe:    2014        .       MOVS     r0,#0x14
+        0x00004b00:    f7fffe51    ..Q.    BL       delay_ms ; 0x47a6
+        0x00004b04:    2601        .&      MOVS     r6,#1
+        0x00004b06:    4335        5C      ORRS     r5,r5,r6
+        0x00004b08:    2700        .'      MOVS     r7,#0
+        0x00004b0a:    b2ed        ..      UXTB     r5,r5
+        0x00004b0c:    e003        ..      B        0x4b16 ; gxht40_measure + 178
+        0x00004b0e:    1c78        x.      ADDS     r0,r7,#1

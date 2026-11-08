@@ -1,0 +1,60 @@
+{
+  "tool": "sigrok_decode",
+  "started_at": "2026-11-08T09:50:06.898437+00:00",
+  "configuration": {
+    "enabled": true,
+    "executable": "D:/Program Files/sigrok/sigrok-cli/sigrok-cli.exe",
+    "driver": "fx2lafw",
+    "connection": "2.27",
+    "channels": [
+      "D0",
+      "D1"
+    ],
+    "signal_labels": {
+      "D0": "scl",
+      "D1": "sda"
+    },
+    "triggers": {
+      "D1": "f"
+    },
+    "samplerate_hz": 4000000,
+    "max_samplerate_hz": 8000000,
+    "max_samples": 20000000,
+    "timeout_sec": 240.0
+  },
+  "arguments": {
+    "capture_file": "sigrok_capture_86e80bbabf314eb7970fa2a7e5276a97/capture.sr",
+    "channel_map": {
+      "scl": "D0",
+      "sda": "D1"
+    },
+    "decoder": "i2c",
+    "options": {}
+  },
+  "functional_verdict": "not_evaluated",
+  "session": {
+    "sample_count": 8000000,
+    "samplerate_hz": 4000000.0,
+    "sample_interval_sec": 2.5e-07,
+    "duration_sec": 2.0,
+    "channels": [
+      "D0",
+      "D1"
+    ],
+    "unitsize": 2,
+    "timing": "sample index / nominal device rate; not host timestamps"
+  },
+  "command": [
+    "D:/Program Files/sigrok/sigrok-cli/sigrok-cli.exe",
+    "--input-file",
+    "D:\\mylearn\\restlessdream_vnext_r4_60_runtime_manifest_codegraph_rl_20260911_DELIVERY\\build\\worktrees\\codex-flow-check-20261105\\projects\\dengbei13\\roles\\embedded_tester\\work\\verification_tools\\sigrok_capture_86e80bbabf314eb7970fa2a7e5276a97\\capture.sr",
+    "--protocol-decoders",
+    "i2c:scl=D0:sda=D1",
+    "--protocol-decoder-samplenum"
+  ],
+  "exit_code": 0,
+  "timed_out": false,
+  "error_code": null,
+  "annotations_present": true,
+  "annotation_note": "no annotations does not establish functional success"
+}

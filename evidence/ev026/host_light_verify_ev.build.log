@@ -1,0 +1,122 @@
+test/host_light_verify_ev.c: In function 'main':
+test/host_light_verify_ev.c:118:17: error: incompatible types when initializing type '_Bool' using type 'light_result_t'
+  118 |     bool dark = light_sample();
+      |                 ^~~~~~~~~~~~
+test/host_light_verify_ev.c:120:11: warning: implicit declaration of function 'light_last_code' [-Wimplicit-function-declaration]
+  120 |     CHECK(light_last_code() == 100, "averaged code exposed as 100");
+      |           ^~~~~~~~~~~~~~~
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:133:12: error: incompatible types when assigning to type '_Bool' from type 'light_result_t'
+  133 |     dark = light_sample();
+      |            ^~~~~~~~~~~~
+test/host_light_verify_ev.c:141:14: error: incompatible types when assigning to type '_Bool' from type 'light_result_t'
+  141 |       dark = light_sample();
+      |              ^~~~~~~~~~~~
+test/host_light_verify_ev.c:148:5: warning: implicit declaration of function 'light_reset_state' [-Wimplicit-function-declaration]
+  148 |     light_reset_state();
+      |     ^~~~~~~~~~~~~~~~~
+test/host_light_verify_ev.c:150:26: error: invalid operands to binary == (have 'light_result_t' and 'int')
+  150 |     CHECK(light_sample() == true, "reset -> first sample 400 -> DARK");
+      |           ~~~~~~~~~~~~~~ ^~
+      |           |
+      |           light_result_t
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:152:26: error: invalid operands to binary == (have 'light_result_t' and 'int')
+  152 |     CHECK(light_sample() == true, "DARK then code=300 (inside band) stays DARK");
+      |           ~~~~~~~~~~~~~~ ^~
+      |           |
+      |           light_result_t
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:154:26: error: invalid operands to binary == (have 'light_result_t' and 'int')
+  154 |     CHECK(light_sample() == false, "code=250 (<= EXIT) turns LIT");
+      |           ~~~~~~~~~~~~~~ ^~
+      |           |
+      |           light_result_t
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:156:26: error: invalid operands to binary == (have 'light_result_t' and 'int')
+  156 |     CHECK(light_sample() == false, "LIT then code=300 (< ENTER) stays LIT");
+      |           ~~~~~~~~~~~~~~ ^~
+      |           |
+      |           light_result_t
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:158:26: error: invalid operands to binary == (have 'light_result_t' and 'int')
+  158 |     CHECK(light_sample() == true, "code=350 (= ENTER) turns DARK");
+      |           ~~~~~~~~~~~~~~ ^~
+      |           |
+      |           light_result_t
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:160:26: error: invalid operands to binary == (have 'light_result_t' and 'int')
+  160 |     CHECK(light_sample() == true, "code=349 (> EXIT) stays DARK");
+      |           ~~~~~~~~~~~~~~ ^~
+      |           |
+      |           light_result_t
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:167:14: error: incompatible types when assigning to type '_Bool' from type 'light_result_t'
+  167 |       dark = light_sample();
+      |              ^~~~~~~~~~~~
+test/host_light_verify_ev.c:175:12: error: incompatible types when assigning to type '_Bool' from type 'light_result_t'
+  175 |     dark = light_sample();
+      |            ^~~~~~~~~~~~
+test/host_light_verify_ev.c:177:32: error: 'LIGHT_ADC_FULL_SCALE' undeclared (first use in this function)
+  177 |     CHECK(light_last_code() == LIGHT_ADC_FULL_SCALE, "fallback code = 4095");
+      |                                ^~~~~~~~~~~~~~~~~~~~
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:177:32: note: each undeclared identifier is reported only once for each function it appears in
+  177 |     CHECK(light_last_code() == LIGHT_ADC_FULL_SCALE, "fallback code = 4095");
+      |                                ^~~~~~~~~~~~~~~~~~~~
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:192:26: error: invalid operands to binary == (have 'light_result_t' and 'int')
+  192 |     CHECK(light_sample() == false, "after reset the first sample uses the ENTER threshold (300 -> LIT)");
+      |           ~~~~~~~~~~~~~~ ^~
+      |           |
+      |           light_result_t
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:194:26: error: invalid operands to binary == (have 'light_result_t' and 'int')
+  194 |     CHECK(light_sample() == true, "then 350 -> DARK");
+      |           ~~~~~~~~~~~~~~ ^~
+      |           |
+      |           light_result_t
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+test/host_light_verify_ev.c:198:11: warning: implicit declaration of function 'light_code_is_dark'; did you mean 'light_is_dark'? [-Wimplicit-function-declaration]
+  198 |     CHECK(light_code_is_dark(0u, false) == false && light_code_is_dark(349u, false) == false, "LIT: 0/349 -> LIT");
+      |           ^~~~~~~~~~~~~~~~~~
+test/host_light_verify_ev.c:91:30: note: in definition of macro 'CHECK'
+   91 | #define CHECK(c, m) do { if (c) { pass++; printf("    PASS  %s\n", m); } \
+      |                              ^
+USER/src/light.c: In function 'light_read_vdd_mv':
+USER/src/light.c:109:36: error: 'ADC_InputVref1P2' undeclared (first use in this function); did you mean 'ADC_InputCH11'?
+  109 |     adc.ADC_IN0.ADC_InputChannel = ADC_InputVref1P2;   /* 内部 BGR1.2V */
+      |                                    ^~~~~~~~~~~~~~~~
+      |                                    ADC_InputCH11
+USER/src/light.c:109:36: note: each undeclared identifier is reported only once for each function it appears in
+USER/src/light.c:114:11: error: 'mock_adc_regs_t' has no member named 'CR_f'
+  114 |     CW_ADC->CR_f.BGREN = 1u;      /* 使能 BGR (厂商: 启动约 30 us) */
+      |           ^~
+USER/src/light.c:121:19: error: 'mock_adc_regs_t' has no member named 'CR_f'
+  121 |             CW_ADC->CR_f.BGREN = 0u;
+      |                   ^~
+USER/src/light.c:132:11: error: 'mock_adc_regs_t' has no member named 'CR_f'
+  132 |     CW_ADC->CR_f.BGREN = 0u;      /* 关闭 BGR (低功耗) */
+      |           ^~
