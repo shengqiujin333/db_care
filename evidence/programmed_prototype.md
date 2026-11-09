@@ -1,3 +1,34 @@
+# ProgrammedPrototypeArtifact（EV-030 / 当前交付镜像完整交付复核）
+
+本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。功能判定见 `evidence/test.md` EV-030：**整体 `TEST_FAIL`**（上电五行/`uid`、T5 全暗标定、触发/跨链路/功耗未完成）；本轮已在实板确认：连续 3 个采样周期 `q=1`、位级 I²C 双字 CRC 匹配、首样本 `H=0 p=0`。
+
+## 本次下载的固件身份
+
+| 项 | 值 |
+|---|---|
+| 受测提交 | **`f978a01`**（`[role:firmware_engineer]`；接手时工作区干净；本轮产品源码零改动） |
+| 产品源码差异 | `git diff --stat ef5caa6 HEAD -- .../USER .../test` **为空** |
+| 构建方式 | `mdk_build {"action":"rebuild"}`（Keil MDK / ARMCLANG **V6.24**，工程保存配置）+ `mdk_flash {}`（先编译再下载） |
+| 构建结果 | `0 Error(s), 1 Warning(s)`（既有 `main.c(254) while(k--);` 空循环体）；`Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676` |
+| 镜像路径 | `CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.axf` |
+| 镜像 md5 | **`a3b08774e764f174eac318f6771d0c42`**（本能力独立 rebuild，与 FWI-002 rev 7 / TD-002 rev 7 期望逐字符一致） |
+| 附带 hex md5 | `546ce20a718fa69b40177cce0145f4b5`（`Project.hex`） |
+
+## 下载目标与下载校验
+
+| 项 | 值 |
+|---|---|
+| 目标器件 | CW32L010（U7），传感器板（GXHT40 U9 同板） |
+| 调试串口 | **COM43** = Prolific USB-to-Serial（VID:PID `067B:2303`），9600 8N1 |
+| 下载探针 | CW-DAPLink `USB VID:PID=C251:F001`（SN `87094109484987710672FF50`，同源 COM26） |
+| 下载方式 | `mdk_flash {}`（工程保存的调试器/Flash 算法；先编译再下载） |
+| 下载结果 | **1 次成功**：2026-11-09 08:22:23.679–08:22:36.147Z，`Erase Done.Programming Done.Verify OK.Application running ...`；日志见 `evidence/ev030/tool_results.txt` §7 |
+| 运行证明 | 下载后 0.208 s 建立的串口会话：`BUS idle=3 scl=1 sda=1 ack=44`、`S k=0 … H=0 p=0 q=1`；随后 `k=6/9/12` 连续 `q=1`、`k=18` `q=1`，0 条 `G` → 新镜像已在目标运行 |
+
+`Verify OK` 只证明**下载内容的回读校验一致**。本运行时 `serial_capture` 与 `mdk_flash` 严格串行，串口会话在 `Application running` 后约 **0.208 s** 才建立，**本轮只捕获到 `BUS` 与首条 `S`，未取得 `BOOT/VDD/IOTEST/IOSIG` 四行与横幅 `uid`**；不得用后续周期行或历史 `uid` 替代。原始结果：`evidence/ev030/tool_results.txt`、`capture_windows.txt`、`capture_analysis.txt`；原始捕获：`evidence/ev030/cap01_boot_bus_k0.cap` … `cap04_k18.cap`；位级 I²C：`raw_i2c_capture.sr`、`decoded_i2c.txt`。
+
+---
+
 # ProgrammedPrototypeArtifact（EV-028 / F-1 `S` 行前值语义修复镜像）
 
 本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。功能判定见 `evidence/test.md` EV-028：**整体 `TEST_FAIL`**（T4-02 上电五行仍不完整、T5 全暗标定、INT 上报/跨链路未执行）；本轮修复目标已在实板上成立：复位后首条 `S k=0` 为 **`H=0 p=0`**，后续周期 `p` 为上一周期 `t` 且 `p≠t`，7 条有原始行证据的 `S` 全部 `q=1`、0 条 `G`。

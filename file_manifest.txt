@@ -394,6 +394,45 @@ evidence/ev029/analyze_ev029.py | active | EV-029 独立解析（CRLF/行长≤9
 evidence/ev029/capture_analysis.txt | active | analyze_ev029.py 输出（2 条 S 全 q=1、0 G、79 B、p(k=30)=t(k=27)）
 evidence/ev029/serial_capture_1204Z.bin | active | COM43 原始字节（12:04:51–12:09:51Z，S k=27/k=30；md5 6522407d…）
 evidence/ev029/tool_results.txt | active | EV-029 设备工具原始结果与时间戳（串口/ USB 枚举/ sigrok probe 失败/串口采集）
+evidence/ev030/ | active | EV-030 当前交付镜像完整交付复核原始证据目录：4 份 COM43 原始捕获（.cap）、1 次 fx2lafw:2.32 位级 I²C 采集/离线解码、独立解析与宿主 harness 日志、本轮设备/构建/下载工具原始结果
+evidence/ev030/analyze_ev030.py | active | 独立解析/CRC-8 复算/时序计算（不引用实现常量）
+evidence/ev030/cap01_boot_bus_k0.cap | active | 下载后 COM43 原始字节（08:22:36–08:24:36Z，BUS ack=44 + S k=0 H=0 p=0）
+evidence/ev030/cap02_k6.cap | active | COM43 原始字节（08:25:02–08:30:02Z，S k=6 q=1）
+evidence/ev030/cap03_k9_k12.cap | active | COM43 原始字节（08:30:17–08:35:18Z，S k=9/k=12 q=1）
+evidence/ev030/cap04_k18.cap | active | COM43 原始字节（08:37:28–08:42:28Z，S k=18 q=1）
+evidence/ev030/capture_analysis.txt | active | analyze_ev030.py 输出（5 周期 q=1、连续 3 周期、双 CRC 匹配、32.528 ms、614.25 µs）
+evidence/ev030/capture_metadata.json | active | sigrok_capture 实际参数/命令/时间戳
+evidence/ev030/capture_windows.txt | active | 4 个捕获窗口起止/字节数/观测行、未采集间隙与位级配对说明
+evidence/ev030/decode_metadata.json | active | sigrok_decode 离线解码参数与输入身份
+evidence/ev030/decoded_i2c.txt | active | 位级 I²C 完整注解（0x44 写 0xFD、0x44 读 65 7B B1 4E 1B CC、NACK/STOP，含样点号）
+evidence/ev030/host_build_test.log | active | 实现侧 test/build_test.sh 原始输出（218 项 0 失败）
+evidence/ev030/host_diag_line_verify_ev.build.log | active | 诊断行 harness 编译日志（0 error）
+evidence/ev030/host_diag_line_verify_ev.log | active | 独立诊断行 harness 输出（38/38）
+evidence/ev030/host_diag_probe_verify_ev.build.log | active | 总线诊断 harness 编译日志（0 error）
+evidence/ev030/host_diag_probe_verify_ev.log | active | 独立总线诊断 harness 输出（109/109）
+evidence/ev030/host_fw_core_verify_ev.build.log | active | fw_core harness 编译日志（0 error）
+evidence/ev030/host_fw_core_verify_ev.log | active | 独立 fw_core harness 输出（59/59）
+evidence/ev030/host_gw_compat_verify_ev.build.log | active | 网关兼容 harness 编译日志（0 error）
+evidence/ev030/host_gw_compat_verify_ev.log | active | 独立网关兼容 harness 输出（11/11）
+evidence/ev030/host_gxht40_verify_ev.build.log | active | GXHT40 harness 编译日志（0 error）
+evidence/ev030/host_gxht40_verify_ev.log | active | 独立 GXHT40 harness 输出（93/93）
+evidence/ev030/host_light_verify_ev.build.log | active | 陈旧测试资产编译记录（旧 mock 头，不计入证据）
+evidence/ev030/host_measure_flow_verify_ev.build.log | active | 采样流程 harness 编译日志（0 error）
+evidence/ev030/host_measure_flow_verify_ev.log | active | 独立采样流程 harness 输出（79/79）
+evidence/ev030/host_rf_frame_verify_ev.build.log | active | 空口帧 harness 编译日志（0 error）
+evidence/ev030/host_rf_frame_verify_ev.log | active | 独立空口帧 harness 输出（10/10）
+evidence/ev030/host_rf_report_verify_ev.build.log | active | 陈旧测试资产编译记录（旧 light_sample API，不计入证据）
+evidence/ev030/host_rtc_cadence_verify_ev.harness.build.log | active | RTC 节拍 harness 编译日志（0 error）
+evidence/ev030/host_rtc_cadence_verify_ev.link.log | active | RTC 节拍 harness 链接日志（0 error）
+evidence/ev030/host_rtc_cadence_verify_ev.log | active | 独立 RTC 节拍 harness 输出（17/17）
+evidence/ev030/host_rtc_cadence_verify_ev.main.build.log | active | RTC 节拍 harness 的 main.c 编译日志（0 error）
+evidence/ev030/host_sf_i2c_verify_ev.build.log | active | 软 I²C harness 编译日志（0 error）
+evidence/ev030/host_sf_i2c_verify_ev.log | active | 独立软 I²C harness 输出（51/51）
+evidence/ev030/host_vdd_verify_ev.build.log | active | VDD 测量 harness 编译日志（0 error）
+evidence/ev030/host_vdd_verify_ev.log | active | 独立 VDD 测量 harness 输出（31/31）
+evidence/ev030/raw_i2c_capture.sr | active | 本轮位级 I²C 原始采集（8,000,000 样点 @4 MS/s，D0=SCL/D1=SDA，conn=2.32，md5 365feb35…）
+evidence/ev030/run_host_harnesses.sh | active | 测试侧独立 harness 复跑脚本（本机 MinGW-w64 gcc）
+evidence/ev030/tool_results.txt | active | 本轮设备/构建/下载/采集/宿主测试工具原始结果与时间戳
 evidence/firmware_assignment_referral.md | active | 固件实现失败分派转交证据（EV-028/029：GXHT40 与 F-1 已修复；剩余 T4-02/T5/INT/T4-07 为采集编排、遮光/刺激与仪器配置条件，非固件代码缺陷；列明责任与前置条件）
 evidence/firmware_exploration/ | active | FW-EXP-002 原始证据目录：COM43 三个窗口（含用户确认无光后的 15:24 窗口）、独立分析、FX2 2.32 原始 .sr/解码、构建与工具返回、参数文件
 evidence/firmware_exploration/analyze_fw_exploration.py | active | FW-EXP-002 独立解析脚本（不引用固件常量）
@@ -450,14 +489,14 @@ evidence/fw_impl_20261109/host_sf_i2c_check.log | active | `host_sf_i2c_bus_chec
 evidence/fw_impl_20261109/mdk_rebuild.result.txt | active | `mdk_build {"action":"rebuild"}` 原始返回与构建日志
 evidence/fw_impl_20261109/mdk_rebuild.stderr.txt | active | 由 firmware_engineer 新增或修改的项目相关文件
 evidence/interface_contract_validation.md | active | 接口契约 IC-002 v3.0 自检证据
-evidence/programmed_prototype.md | active | 下载身份记录（EV-028：commit bee3d8f / axf md5 a3b08774…，两次 mdk_flash Verify OK；首样本 H=0 p=0 实板成立；仅证明下载成功，不代表功能合格；EV-026/EV-024 及更早记录保留为历史）
+evidence/programmed_prototype.md | active | 下载身份记录（EV-030 置顶：HEAD f978a01 / axf md5 a3b08774…、mdk_flash Verify OK、目标运行证据；仅证明下载成功，不代表功能合格；EV-028/026/024 及更早保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
 evidence/software_static_check_server_migration.py | active | 可复跑静态核查（ITEM-004：服务器常量/旧主机分布/XML 放行/兼容面）
 evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）
 evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；退出码 0/1）
-evidence/test.md | active | 嵌入式验证证据 EV-028（当前轮）：TEST_FAIL（整体）— F-1 S 行前值语义修复实板成立（首样本 H=0 p=0；后续 p=上一周期 t 且 p≠t；7 条 S 全 q=1、0 G、行长 76–79 B）；T4-02 上电五行/uid、T5 全暗标定、INT 上报/跨链路未执行；T4-07 位级因配置地址 2.27 不解析本轮不可用；EV-026 及更早保留为历史
+evidence/test.md | active | 嵌入式验证证据 EV-030（当前轮，置顶）：TEST_FAIL（整体）— 连续 3 周期 q=1、位级 I²C 双 CRC 匹配、首样本 H=0 p=0、宿主 218+498 项 0 失败；T4-01 上电五行/uid、T5 双态标定、T4-03 失败路径、触发/跨链路、功耗未满足；EV-028 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-029 置顶，EV-027/EV-025/EV-023/EV-021 原文保留）：EV-028 TEST_FAIL 剩余原因归因——F-1 修复在实板保持（p=上一周期 t）；T4-02 采集编排、T5/INT 物理条件、T4-07 位级入口（FX2 登记地址 2.27 过期）为剩余缺口；无新功能缺陷（仅归因，不代表整体通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）

@@ -1,3 +1,141 @@
+# 嵌入式验证证据（EV-030 / 当前交付镜像完整交付复核）
+
+状态：`embedded_tester.embedded_verification` 独立验证证据（本轮独立全量 rebuild、下载当前交付提交、在真实目标上取得 4 个 COM43 原始字节窗口与 1 次位级 I²C 被动采集/离线解码）
+输入：`runtime.artifacts.delivered.g006.implementation` = `artifacts/firmware_implementation.md`（FWI-002 **rev 7**）；测试方案 = `artifacts/test_design.md`（TD-002 rev 7.0，`verification_scope=complete_delivery`）
+负责角色：嵌入式测试
+
+**结论：`TEST_FAIL`（完整交付）**
+
+1. **受测身份闭合**：HEAD `f978a01`；`git diff --stat ef5caa6 HEAD -- USER test` 为空（产品源码与测试资产零变化）；独立 rebuild **0 Error / 1 既有 warning**，`Code=25964 RO=656 RW=116 ZI=1676`；`Project.axf` md5 **`a3b08774e764f174eac318f6771d0c42`**、`Project.hex` md5 `546ce20a718fa69b40177cce0145f4b5`；`mdk_flash {}` **`Verify OK / Application running`**。`Verify OK` 只证明下载校验。
+2. **FW-REG-GXHT40 正常路径成立**：复位后取得 `S k=0`，随后 `k=6/9/12` 为**连续 3 个 3 分钟周期 `q=1`**，另有 `k=18`；共 5 个有原始行证据的周期全部 `q=1`、**0 条 `G`**；`t=243..247`（24.3–24.7 ℃）、`h=321..328`（32.1–32.8 %RH）均在有效域；行长 76–79 B（含 CRLF）≤96、CRLF 完整、无 NUL/杂散字节、采样间期无输出。
+3. **F-1 语义在本次下载的新启动会话上继续成立**：首样本 `S k=0` 为 **`H=0 p=0`**；`p(k=9)=247=t(k=6)`、`p(k=12)=247=t(k=9)`，且 `p(k=12)=247 ≠ t(k=12)=246`。
+4. **位级 I²C 证据（T4-04）本轮取得**：`fx2lafw:conn=2.32` 探测 exit 0，被动采集 8,000,000 样点 @4 MS/s（2.0 s），离线解码为 `0x44` 写 `0xFD` → `0x44` 读 6 字节 `65 7B B1 4E 1B CC` → NACK/STOP；独立复算双字 CRC-8 **均匹配**（温度 244 = 24.4 ℃、湿度 321 = 32.1 %RH）；命令 STOP→读 START **32.528 ms**、SCL 位周期 **614.25 µs（≈1.628 kHz）**。与 `BUS ack=44` 不矛盾。
+5. **FW-REG-ASBUILT / FW-REG-REPORT 局部通过**：实现侧 `build_test.sh` **218 项 0 失败**；测试侧独立 harness **498 项 0 失败**（fw_core 59、gxht40 93、sf_i2c 51、diag_line 38、diag_probe 109、measure_flow 79、rf_frame 10、rtc 17、gw_compat 11、vdd 31）。静态不变量（T1 常量/升温方向、无旧通路、引脚所有权、有界等待、无浮点/动态内存、433 10 B / BLE 8 B 布局）保持。
+6. **未满足的完整交付项**：
+   - **FW-DIAG-BOOT / T4-01 横幅**：本运行时 `serial_capture` 与 `mdk_flash` 严格串行——串口会话在 `Application running` 后 **0.208 s** 才建立，仅捕获 `BUS` 与 `S k=0`；`BOOT/VDD/IOTEST/IOSIG` 四行与横幅 `uid` **未取得**。pyocd 未安装（`No module named pyocd`），未执行复位编排。
+   - **FW-T5-LIGHT**：`LIGHT_DARK_CALIBRATED=0`、`REF_CODE=0`，全部周期 `V=0 D=0 o=8`（未标定门禁按设计工作）；无受光 + 受控全遮光**双态**窗口，未回填 `C_dark`。
+   - **FW-E2E-POWER / T4-06 / E2E-03**：无遮光 + ≥1.0 ℃ 升温或稳定 >35 ℃ 刺激，无网关/手机同窗观测（本能力无 `android_test` 入口），全部周期 `r=0 s=0 y=0`、无 `P`、无发送。
+   - **T4-03 失败路径**：本轮无 `q=0` 周期，失败语义与失败后重探未在板上触发（宿主证据只作背景）。
+   - **E2E-04 功耗**：无电流表/SMU/示波器入口，未执行。
+7. **证据缺口与功能失败分开记录**：本轮未发现新的固件功能缺陷签名（5/5 周期 `q=1`、双字 CRC 匹配、I²C 事务完整）；上述未满足项为采集编排、物理刺激/标定、跨链路与功耗仪器条件。按 TD-002 §6.7/§8，完整交付不能据此判通过。
+
+---
+
+## 1. 被测身份、构建与部署（本轮实际执行）
+
+| 项 | 原始结果 |
+|---|---|
+| 受测提交 | **`f978a01`**（`[role:firmware_engineer]`；接手时 `git status` 干净） |
+| 产品源码增量 | `git diff --stat ef5caa6 HEAD -- .../USER .../test` **为空**；实现记录声明本轮产品源码/工程/测试断言零改动 |
+| 独立构建 | `mdk_build {"action":"rebuild"}`（08:22:12.896–08:22:14.880Z）→ **0 Error / 1 Warning**（既有 `main.c(254) while(k--);` 空循环体）；`Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676` |
+| 产物身份（本能力独立复算） | `Project.axf` md5 **`a3b08774e764f174eac318f6771d0c42`**、`Project.hex` md5 `546ce20a718fa69b40177cce0145f4b5`——与 FWI-002 rev 7 / TD-002 rev 7 期望逐字符一致 |
+| 部署 | `mdk_flash {}`（08:22:23.679–08:22:36.147Z）：`Erase Done.Programming Done.Verify OK.Application running ...`。**只证明下载校验** |
+| 调试串口 | `serial_list_ports`（08:21:57Z）：`COM43` = Prolific `067B:2303` 在位（9600 8N1）；`COM26` = `C251:F001`（调试器 CDC，未使用） |
+| 探针/手机/仪器 | `usb_list_devices`（08:21:58–08:22:00Z）：CW-DAPLink `C251:F001`、手机 `18D1:4EE7` SN `12F046690506`、FX2 `04B4:8613`（`fx2lafw`）在位；未枚举到示波器/电流表 |
+| 逻辑分析仪 | `sigrok_probe`（08:22:08Z）`--driver fx2lafw:conn=2.32 --show` **exit 0**；随后 `sigrok_capture`/`sigrok_decode` 均 exit 0 |
+
+## 2. 真实目标串口周期（COM43 @ 9600 8N1）
+
+原始：`evidence/ev030/cap01_boot_bus_k0.cap` … `cap04_k18.cap`、`capture_windows.txt`、`tool_results.txt`；独立解析：`analyze_ev030.py` → `capture_analysis.txt`（不引用实现常量，全部检查通过）。
+
+| 窗口（UTC） | 原始行（逐字节见 capture_analysis.txt） | 判读 |
+|---|---|---|
+| 08:22:36–08:24:36 | `BUS idle=3 scl=1 sda=1 ack=44`；`S k=0 p=0 H=0 V=0 o=8 n=3987 x=3995 a=3990 D=0 t=247 h=328 q=1 r=0 s=0 y=0` | 复位后首样本 `H=0 p=0`；`q=1`、无 `G` |
+| 08:25:02–08:30:02 | `S k=6 p=248 H=1 V=0 o=8 n=3991 x=3996 a=3993 D=0 t=247 h=325 q=1 r=0 s=0 y=0` | `q=1`；`p` 指向未捕获的 k=3 |
+| 08:30:17–08:35:18 | `S k=9 p=247 … t=247 h=322 q=1 …`；`S k=12 p=247 … t=246 h=324 q=1 …` | **`p(k=9)=247=t(k=6)`**；**`p(k=12)=247=t(k=9)`** 且 `p≠t` |
+| 08:37:28–08:42:28 | `S k=18 p=244 H=1 … t=243 h=321 q=1 r=0 s=0 y=0` | `q=1`；`p` 指向未捕获的 k=15 |
+
+判读：
+1. **正常路径**：`k=6 → 9 → 12` 为连续 3 个采样周期（相邻 `k` 差 3），全部 `q=1`；另有 `k=0`、`k=18`，共 5/5 成功、0 条 `G`。
+2. **有效域/格式**：`t=243..247`、`h=321..328` 在有效域；`S` 15 字段顺序与冻结格式一致；行长 76–79 B（含 CRLF）≤96；CRLF 完整、无 NUL、采样间期无输出。
+3. **未标定门禁**：全部周期 `V=0 D=0`，`LIGHT_DARK_CALIBRATED=0` 门禁按设计工作；**不构成 T5 通过**。
+4. **无触发**：全部周期 `r=0 s=0 y=0`，无 `P` 行；本轮未观测到上报/发送。
+
+## 3. 位级 I²C（T4-04）
+
+采集参数：`fx2lafw:conn=2.32`、D0=SCL、D1=SDA、触发 D1 下降沿、8,000,000 样点 @4 MS/s（2.0 s），工具时间 08:35:43.570–08:36:53.397Z；原始 `.sr` 为 `evidence/ev030/raw_i2c_capture.sr`（md5 `365feb35fb722225f4aeb5f79147fe7a`），离线 `i2c` 解码输出 `decoded_i2c.txt`。
+
+```text
+Start / Address write: 44 / ACK / Data write: FD / ACK / Stop
+Start / Address read : 44 / ACK
+Data read: 65 7B B1 4E 1B CC / NACK / Stop
+```
+
+| 测量 | 本轮值 | 说明 |
+|---|---|---|
+| 温度字 / CRC | `0x657B` / 计算 `0xB1` = 收到 `0xB1` ✅ | 换算 244 = 24.4 ℃ |
+| 湿度字 / CRC | `0x4E1B` / 计算 `0xCC` = 收到 `0xCC` ✅ | 换算 321 = 32.1 %RH |
+| 写事务 START→STOP | 12.050 ms | 0x44 地址 + 0xFD |
+| 命令 STOP→读 START | **32.528 ms** | 与 F-3 已登记基线一致（配置 20 ms 的下限等待，方向安全） |
+| 读事务 START→STOP | 40.162 ms | 6 字节 + NACK + STOP |
+| SCL 位周期 | **614.25 µs（≈1.628 kHz）** | D2 慢时钟设定保持 |
+
+该事务墙钟落在 cap03 结束与 cap04 开始之间（对应未采集的 k=15 周期）；解码值 244/321 介于 k=12（246/324）与 k=18（243/321）之间，属一致性推断，**不是同一窗口直接配对**。数字采样只证明逻辑电平与采样分辨率内时序，不证明模拟幅度/上升沿。
+
+## 4. 宿主证据（同一源码）
+
+| 入口 | 结果 |
+|---|---|
+| `test/build_test.sh`（实现侧，4 阶段） | 46+61+54+28+29 = **218 passed / 0 failed**，exit 0 |
+| 测试侧独立 harness | fw_core 59、gxht40 93、sf_i2c 51、diag_line 38、diag_probe 109、measure_flow 79、rf_frame 10、rtc 17、gw_compat 11、vdd 31 = **498 passed / 0 failed** |
+| 陈旧资产（历史登记，不计入证据） | `host_rf_report_verify_ev.c`（旧 `light_sample` API）编译失败；`host_light_verify_ev.c`（旧 mock 头 `ADC_InputCH11`/`CR_f`）编译失败 |
+
+覆盖：T1 九组向量/严格边界/int32 极值、T2 冻结/重试/跨采样/不覆盖/P 行、T3 TXE/TXBUSY 卡死有界、T4 GXHT40 地址/CRC/换算/重探/恢复、1/3 判据与未标定门禁、433→网关→BLE→Android 字段映射、RTC 3 分钟节拍、VDD 反推公式。
+
+## 5. 静态不变量（ASB-04 / T1-04 / T4-05 / BLD-04/05 / REG-07）
+
+| 检查 | 结果 |
+|---|---|
+| 上报常量 | 仅 `sensor_config.h`：`SENSOR_REPORT_RISE_X10=9`、`SENSOR_REPORT_HIGH_X10=350`；无 `SENSOR_REPORT_DROP_X10`、无 `cur==350` 整体排除 |
+| 判定方向 | `fw_core.c`：`cur > 350` 超温分支 + `(cur-prev) > 9` 升温分支；int32 差值 |
+| 旧通路 | `hall/optcfg/params/history` 仅出现在退役说明注释，无活动引用 |
+| 引脚所有权 | PA03/PA04 仅软 I²C（`measure.c`）；PB05 光照供电、PB04/AIN11 光照 ADC（`light.c`）；PA05/PA06 仅 UART1（`debug_trace.c`）；PB06 未使用 |
+| 有界等待 | `debug_trace.c::trace_wait_flag` 使用 `SENSOR_DEBUG_TX_GUARD=200000`；无无界 `while(TXE/TXBUSY)` |
+| 命令边界 | 周期路径只用 `0xFD`；`0x94` 软复位仅定义未使用；general call `0x00/0x06` 仅上电一次性恢复（`measure.c:227-230`） |
+| 浮点/动态内存 | `USER/src` 无 `float/double`、无 `malloc/calloc/realloc` |
+| 接口/节拍 | `SENSOR_RF_FRAME_LEN=10`、`SENSOR_SAMPLE_TICKS=3`；433/BLE 布局由宿主 harness 逐字节验证 |
+| 验证资产边界 | `git diff ef5caa6..HEAD` 对 `test/*_verify_ev.c`、`test/mock_*_ev/*`、`evidence/embedded_verify_*.py` 为空 |
+
+## 6. 验收目标 → 本轮结果
+
+| 任务 | 本轮结果 | 依据 |
+|---|---|---|
+| FW-REG-ASBUILT | **局部通过** | ASB-01..06：构建身份、宿主 218/0、独立 498/0、静态不变量、源码零功能改动、验证资产未改 |
+| FW-REG-REPORT | **局部通过** | T1/T2/T3 宿主向量与卡死路径全部通过；T1-04/05、T3-05 静态通过 |
+| FW-REG-GXHT40 | **失败（完整交付必需项未齐）** | T4-02 连续 3 周期 `q=1` ✅；T4-04 位级 ✅；T4-05 ✅；T4-01 横幅 `uid` 未取得；T4-03 无 `q=0` 未执行；T4-06 跨链路未执行 |
+| FW-T5-LIGHT | **未执行（条件未满足）** | `V=0 D=0`；无双态/遮光窗口；`CALIBRATED=0` 未回填 |
+| FW-DIAG-BOOT | **失败/未执行** | 仅取得 `BUS`；`BOOT/VDD/IOTEST/IOSIG` 与 `uid` 缺失；pyocd 未安装 |
+| FW-E2E-POWER | **未执行** | 无遮光+升温/超温刺激、无网关/手机同窗、无功耗仪器 |
+
+## 7. 失败报告（逐项关联目标、用例、身份与原始证据）
+
+| # | 目标/用例 | 预期 | 实际 | 原始证据 | 已尝试措施 | 尚未排除的假设 | 最小下一步 |
+|---|---|---|---|---|---|---|---|
+| F-1 | FW-DIAG-BOOT / T4-01、BOOT-01/02 | 同一 COM43 窗口取得 `BOOT→VDD→IOTEST→IOSIG→BUS` 五行及 `fw/uid` | 仅 `BUS idle=3 scl=1 sda=1 ack=44` 与 `S k=0`；前四行在端口打开前已输出 | `cap01_boot_bus_k0.cap`、`tool_results.txt` §7–8 | 本轮 `mdk_flash` 已授权并与 `serial_capture` 同批发起；后端仍严格串行，端口在 `Application running` 后 0.208 s 建立；检查 pyocd → 未安装 | 是否存在本能力未登记、可“先开端口后复位”的编排入口（当前无） | 运行编排提供并发/预打开端口 + 窗口内复位；不得用后续 `S` 或历史 `uid` 替代 |
+| F-2 | FW-T5-LIGHT / T5-01..09 | 受光 + 受控全遮光双态原始 `o/n/x/a`，满足 `受光 mean < ceil(C_dark/3)` 且 `全遮光 3*mean >= C_dark` 后由实现回填 | 全部周期 `V=0 D=0 o=8 n=3987..3992 x=3995..3998 a=3990..3994`；`CALIBRATED=0`、`REF_CODE=0` | `capture_analysis.txt`、`capture_windows.txt` | 记录当前原始光敏读数与门禁行为；未伪造暗态、未回填 | 现场当前光照状态无法由未标定固件分类；受光/全遮光窗口未提供 | 用户约定遮光开始/结束与恢复窗口（≥2 个采样周期）→ 记录 `o/n/x/a` 与遮光方式 → 实现回填 `C_dark` 并重建 → 三态复测 |
+| F-3 | FW-E2E-POWER / E2E-01..06、T4-06 | 暗 + 升温 >0.9 ℃ 或 >35.0 ℃ 时 `r=1`、`P` 冻结、`s=1`，手机同笔一致 | 全部周期 `r=0 s=0 y=0`，无 `P`、无发送 | 同上 | 未构造刺激；本能力无 `android_test` 入口 | 网关/手机链路是否可用（未观测） | 遮光 + 局部升温/稳定 >35 ℃ + 网关/手机同窗；实板不伪造发送成功/失败 |
+| F-4 | FW-REG-GXHT40 / T4-03 | `q=0` 周期后紧跟 `G`，失败零副作用，下一周期重探 0x44/0x45 并有界恢复 | 本轮 5/5 `q=1`、0 条 `G`，未触发失败路径 | `capture_analysis.txt` | 持续捕获 4 个窗口；无失败事件 | 失败路径是否在更长运行/不同供电条件下出现（未观测） | 出现真实 `q=0` 时按 `G` 原文取证；不得人为制造失败或改判据 |
+| F-5 | E2E-04 | CR2032 采样峰值/深睡电流实测值与测量条件 | 未执行 | `tool_results.txt` §2 | 枚举未发现电流表/SMU/示波器 | 是否存在未登记测量入口（无） | 硬件测试在仪器具备时测量并记录量程/接线/电池电压 |
+
+## 8. 证据局限（如实登记）
+
+1. 串口窗口为分区 120/300 s，窗口之间存在未采集间隙；`k=3`、`k=15` 的 `S` 行未取得，节拍仅按已捕获 `k` 的步长与连续性判读。
+2. 位级 I²C 仅 1 个事务（对应未直接配对的 k=15 周期），且为数字采样（4 MS/s、250 ns 分辨率），不证明模拟幅度/上升沿/上拉强度。
+3. 上电五行与 `uid` 未取得；`BOOT` 横幅无法与产物摘要交叉核对（下载日志与 md5 已闭合）。
+4. 无受光/全遮光双态、无升温/超温、无网关/手机同窗、无功耗仪器；相应任务记未执行，不写通过。
+5. 陈旧测试资产 `host_rf_report_verify_ev.c`、`host_light_verify_ev.c` 编译失败，不计入本轮通过证据；相关独立回归覆盖为零。
+6. 所有时间为 Windows 主机 UTC；串口行无设备时间戳，`k` 与墙钟的对应为推断；位级时间为“样点号 / 名义采样率”，不能跨设备同步。
+
+## 9. 本轮实际改动（只增测试侧证据）
+
+- 新增：`evidence/ev030/cap01_boot_bus_k0.cap`、`cap02_k6.cap`、`cap03_k9_k12.cap`、`cap04_k18.cap`
+- 新增：`evidence/ev030/raw_i2c_capture.sr`、`decoded_i2c.txt`、`capture_metadata.json`、`decode_metadata.json`
+- 新增：`evidence/ev030/analyze_ev030.py`、`capture_analysis.txt`、`capture_windows.txt`、`tool_results.txt`、`run_host_harnesses.sh` 及宿主日志
+- 更新：`evidence/test.md`（本段置顶；EV-028 及更早原文保留）、`evidence/programmed_prototype.md`、`file_manifest.txt`
+- **未修改**：`USER/**` 产品源码、Keil/IAR 工程、网关与 Android、`runtime/permissions.yaml`、`runtime/environment.yaml`；未安装/卸载软件或驱动
+
+---
+
 # 嵌入式验证证据（EV-028 / F-1 `S` 行前值语义修复轮复验）
 
 状态：`embedded_tester.embedded_verification` 独立验证证据（本轮独立全量 rebuild、两次下载当前交付提交、在真实目标上连续 5 个 COM43 原始字节窗口，并尝试位级 I²C 被动采集）

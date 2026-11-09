@@ -1,0 +1,93 @@
+EV-030 本轮设备/构建/下载/采集工具原始结果与时间戳
+时间基准：工具返回的 started_at/finished_at 为 UTC；本地 Windows 为 CST(UTC+8)。2026-11-09。
+
+[1] serial_list_ports  started=2026-11-09T08:21:57.609179+00:00  finished=08:21:57.626272+00:00  exit=0
+COM43  description="Prolific USB-to-Serial Comm Port (COM43)"  hwid="USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2"
+COM26  description="USB 串行设备 (COM26)"  hwid="USB VID:PID=C251:F001 SER=87094109484987710672FF50"
+结论：配置登记的传感器调试入口 COM43 在位；COM26 为调试器 CDC，未使用。枚举不证明目标在线或波特率正确。
+
+[2] usb_list_devices  started=08:21:57.960440+00:00  finished=08:22:00.575228+00:00  exit=0
+C251:F001 复合设备(HID + Ports/COM26)  SN=87094109484987710672FF50
+067B:2303 = COM43
+18D1:4EE7  InstanceId 含 12F046690506（SDM439-QRD）= 目标手机
+04B4:8613  FriendlyName="fx2lafw"（Cypress FX2）Status=OK
+未枚举到示波器/VDS1022/电流表。USB 枚举只证明连接/身份，不证明协议或业务功能。
+
+[3] sigrok_info  started=08:22:00.838779+00:00  finished=08:22:00.855833+00:00  exit=0
+enabled=true  driver=fx2lafw  connection=2.32  channels=[D0,D1]
+signal_labels={D0:scl,D1:sda}  triggers={D1:f}  samplerate_hz=4000000  max_samplerate_hz=8000000
+max_samples=20000000  timeout_sec=240.0  online=not_checked
+说明：info 不访问 USB。
+
+[4] sigrok_probe  started=08:22:08.053263+00:00  finished=08:22:08.116349+00:00  exit=0
+command = sigrok-cli.exe --driver fx2lafw:conn=2.32 --show
+结论：登记入口 2.32 本轮可解析。probe 可能加载临时 RAM 固件并改变 USB 地址；后续采集仍按同一登记入口执行且成功。
+
+[5] mdk_build {"action":"rebuild"}  started=08:22:12.895548+00:00  finished=08:22:14.879560+00:00  exit=0
+Compiler 'V6.24' (ARMCLANG)
+"../USER/src/main.c(254): warning: while loop has empty body [-Wempty-body]"
+Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+
+[6] 产物 md5（本能力独立计算，本地 16:22）
+a3b08774e764f174eac318f6771d0c42 *output/exe/Project.axf
+546ce20a718fa69b40177cce0145f4b5 *output/exe/Project.hex
+与 FWI-002 rev 7 / TD-002 rev 7 期望逐字符一致。
+
+[7] mdk_flash {}  started=08:22:23.678557+00:00  finished=08:22:36.147486+00:00  exit=0
+Load "...\MDK\output\exe\Project.axf"
+Erase Done.Programming Done.Verify OK.Application running ...
+Flash Load finished at 16:22:36
+结论：Verify OK 仅证明下载校验；不表示功能合格。
+
+[8] serial_capture #1  COM43 9600 8N1  started=08:22:36.355291+00:00  finished=08:24:36.577068+00:00  exit=0
+bytes_received=107
+preview:
+BUS idle=3 scl=1 sda=1 ack=44\r\n
+S k=0 p=0 H=0 V=0 o=8 n=3987 x=3995 a=3990 D=0 t=247 h=328 q=1 r=0 s=0 y=0\r\n
+说明：端口在 mdk_flash 返回后约 0.208 s 才建立；BOOT/VDD/IOTEST/IOSIG 已在此之前输出。
+
+[9] serial_capture #2  started=08:25:02.722539+00:00  finished=08:30:02.961987+00:00  exit=0
+bytes_received=78
+S k=6 p=248 H=1 V=0 o=8 n=3991 x=3996 a=3993 D=0 t=247 h=325 q=1 r=0 s=0 y=0\r\n
+
+[10] serial_capture #3  started=08:30:17.954542+00:00  finished=08:35:18.164098+00:00  exit=0
+bytes_received=157
+S k=9 p=247 H=1 V=0 o=8 n=3991 x=3996 a=3993 D=0 t=247 h=322 q=1 r=0 s=0 y=0\r\n
+S k=12 p=247 H=1 V=0 o=8 n=3992 x=3998 a=3994 D=0 t=246 h=324 q=1 r=0 s=0 y=0\r\n
+
+[11] sigrok_capture  started=08:35:43.570264+00:00  finished=08:36:53.396848+00:00  exit=0
+command: sigrok-cli --driver fx2lafw:conn=2.32 --config samplerate=4000000 --channels D0,D1
+         --samples 8000000 --wait-trigger --triggers D1=f --output-format srzip
+session: sample_count=8000000 samplerate_hz=4000000 duration_sec=2.0 channels=[D0,D1] unitsize=2
+timing="sample index / nominal device rate; not host timestamps"
+触发命中后采集 2.0 s；原始文件 16,695 B，md5=365feb35fb722225f4aeb5f79147fe7a。
+
+[12] sigrok_decode (offline)  started=08:37:13.871242+00:00  finished=08:37:14.058065+00:00  exit=0
+command: sigrok-cli --input-file capture.sr --protocol-decoders i2c:scl=D0:sda=D1 --protocol-decoder-samplenum
+annotations_present=true
+解码：Start / Address write: 44 / ACK / Data write: FD / ACK / Stop
+      Start / Address read: 44 / ACK
+      Data read: 65 7B B1 4E 1B CC / NACK / Stop
+
+[13] serial_capture #4  started=08:37:28.593916+00:00  finished=08:42:28.801223+00:00  exit=0
+bytes_received=79
+S k=18 p=244 H=1 V=0 o=8 n=3990 x=3995 a=3993 D=0 t=243 h=321 q=1 r=0 s=0 y=0\r\n
+
+[14] 宿主测试（本机 MinGW-w64 gcc 12.2.0）
+test/build_test.sh: exit 0，四阶段 46+61+54+28+29=218 passed / 0 failed
+独立 harness: fw_core 59、gxht40 93、sf_i2c 51、diag_line 38、diag_probe 109、measure_flow 79、
+              rf_frame 10、rtc 17、gw_compat 11、vdd 31 = 498 passed / 0 failed
+陈旧资产（不计入证据）：host_rf_report_verify_ev.c 编译失败（旧 light_sample API）；
+              host_light_verify_ev.c 编译失败（旧 mock 头，ADC_InputCH11/CR_f 不存在）。
+
+[15] pyocd 可用性检查（只读，未访问目标）
+C:/Users/kason/anaconda3/python.exe -m pyocd --version
+输出：No module named pyocd
+结论：pyocd 未安装，未作为本能力可用入口；未执行 reset/上电编排。
+
+[16] 源码身份
+HEAD=f978a0115cfed3592e6ac8041182b0425e30c053
+git diff --stat ef5caa6 HEAD -- .../USER .../test  → 空（产品源码与测试资产零变化）
+git diff --stat ef5caa6 HEAD -- .../test/*_verify_ev.c .../test/mock_*_ev/* evidence/embedded_verify_*.py → 空
+git status --porcelain → 空（接手时干净）

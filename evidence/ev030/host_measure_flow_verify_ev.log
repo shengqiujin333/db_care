@@ -1,0 +1,102 @@
+==== independent measure.c flow verification (embedded_tester) ====
+  cycle  0: dark=0 gxht=0 -> tempvalue=250 hum=500 report_req=0 (ref decision=0)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle  1: dark=0 gxht=0 -> tempvalue=240 hum=510 report_req=0 (ref decision=0)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle  2: dark=1 gxht=0 -> tempvalue=220 hum=600 report_req=0 (ref decision=0)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle  3: dark=1 gxht=3 -> tempvalue=220 hum=600 report_req=0 (ref decision=0)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle  4: dark=1 gxht=0 -> tempvalue=230 hum=610 report_req=1 (ref decision=1)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle  5: dark=1 gxht=4 -> tempvalue=230 hum=610 report_req=0 (ref decision=0)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle  6: dark=1 gxht=5 (pending-report cycle) -> report_req=1 tempvalue=230 hum=610
+    PASS  a failing cycle does not clear an already pending report
+    PASS  state unchanged on the pending-report failure cycle
+    PASS  sample flag consumed after the cycle
+  cycle  7: dark=0 gxht=0 -> tempvalue=351 hum=700 report_req=1 (ref decision=1)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle  8: dark=0 gxht=0 -> tempvalue=350 hum=710 report_req=0 (ref decision=0)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle  9: dark=1 gxht=0 -> tempvalue=340 hum=720 report_req=0 (ref decision=0)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle 10: dark=0 gxht=0 -> tempvalue=330 hum=730 report_req=0 (ref decision=0)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle 11: dark=1 gxht=0 -> tempvalue=340 hum=740 report_req=1 (ref decision=1)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle 12: dark=1 gxht=4 -> tempvalue=340 hum=740 report_req=0 (ref decision=0)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+  cycle 13: dark=0 gxht=0 -> tempvalue=280 hum=750 report_req=0 (ref decision=0)
+    PASS  last valid temperature matches the reference model
+    PASS  last valid humidity matches the reference model
+    PASS  a report is raised exactly when the successful cycle decides to
+    PASS  sample flag consumed after the cycle
+[S1] lazy init and per-cycle primitive usage
+    PASS  light_init/gxht40_init called exactly once (lazy init)
+    PASS  I2C phy configured exactly once
+    PASS  i2c_obj_find("i2c0") returned a bound device
+    PASS  light sampled in every cycle (including failed ones)
+    PASS  temperature/humidity attempted once per cycle
+    PASS  GPIO activity observed
+    PASS  debug UART not configured by the sampling path (low power)
+[S2] light is always sampled BEFORE temperature/humidity
+    PASS  one light + one gxht call per cycle
+    PASS  every cycle's call order is light -> gxht
+[S3] failure cycles do not fabricate values
+    PASS  scripted failures were exercised (ERR_IO/ERR_CRC/ERR_RANGE)
+    PASS  reference model holds a non-zero valid temperature
+    PASS  tempvalue equals the last successful measurement (never 0/never a failure artifact)
+    PASS  huminityvalue equals the last successful measurement
+    PASS  final pending-report state matches the model (last cycle decided not to report)
+[S4] failure does not advance the previous valid temperature
+    PASS  the failed cycle itself raises no report
+    PASS  the rise after the failed cycle is measured against the pre-failure value
+[S5] current-cycle light state is used (no leakage from failed cycles)
+    PASS  dark + rise reports
+    PASS  a failed cycle raises no report even when dark
+    PASS  the lit cycle after the dark failure does not report
+[S6] go_to_sleep gating
+    PASS  pending report blocks deep sleep
+    PASS  pending sample blocks deep sleep
+    PASS  idle state enters deep sleep
+[S7] sample flag gating
+    PASS  no sampling when the flag is clear
+    PASS  no state change when the flag is clear
+==== result: 79 passed, 0 failed ====

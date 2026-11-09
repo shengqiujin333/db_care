@@ -1,0 +1,79 @@
+=== EV-030 independent capture analysis ===
+
+--- cap01_boot_bus_k0.cap  window 08:22:36.355..08:24:36.577  107 bytes  md5=80391fbcb4522f83b7a58a12359ff84b
+PASS  cap01_boot_bus_k0.cap line 31B <= 96B: BUS idle=3 scl=1 sda=1 ack=44
+PASS  cap01_boot_bus_k0.cap no NUL byte
+PASS  cap01_boot_bus_k0.cap BUS field order
+      BUS: BUS idle=3 scl=1 sda=1 ack=44
+PASS  cap01_boot_bus_k0.cap line 76B <= 96B: S k=0 p=0 H=0 V=0 o=8 n=3987 x=3995 a=39
+PASS  cap01_boot_bus_k0.cap no NUL byte
+PASS  cap01_boot_bus_k0.cap S field set/order ['k', 'p', 'H', 'V', 'o', 'n', 'x', 'a', 'D', 't', 'h', 'q', 'r', 's', 'y']
+PASS  cap01_boot_bus_k0.cap S k=0 t=247 in [-400,1250]
+PASS  cap01_boot_bus_k0.cap S k=0 h=328 in [0,1000]
+PASS  cap01_boot_bus_k0.cap S k=0 q in {0,1}
+
+--- cap02_k6.cap  window 08:25:02.723..08:30:02.962  78 bytes  md5=3a3183fec3cd76d4ab1001fb7d2ba56a
+PASS  cap02_k6.cap line 78B <= 96B: S k=6 p=248 H=1 V=0 o=8 n=3991 x=3996 a=
+PASS  cap02_k6.cap no NUL byte
+PASS  cap02_k6.cap S field set/order ['k', 'p', 'H', 'V', 'o', 'n', 'x', 'a', 'D', 't', 'h', 'q', 'r', 's', 'y']
+PASS  cap02_k6.cap S k=6 t=247 in [-400,1250]
+PASS  cap02_k6.cap S k=6 h=325 in [0,1000]
+PASS  cap02_k6.cap S k=6 q in {0,1}
+
+--- cap03_k9_k12.cap  window 08:30:17.955..08:35:18.164  157 bytes  md5=b6f10a31daa707f1fe7660d0a918c661
+PASS  cap03_k9_k12.cap line 78B <= 96B: S k=9 p=247 H=1 V=0 o=8 n=3991 x=3996 a=
+PASS  cap03_k9_k12.cap no NUL byte
+PASS  cap03_k9_k12.cap S field set/order ['k', 'p', 'H', 'V', 'o', 'n', 'x', 'a', 'D', 't', 'h', 'q', 'r', 's', 'y']
+PASS  cap03_k9_k12.cap S k=9 t=247 in [-400,1250]
+PASS  cap03_k9_k12.cap S k=9 h=322 in [0,1000]
+PASS  cap03_k9_k12.cap S k=9 q in {0,1}
+PASS  cap03_k9_k12.cap line 79B <= 96B: S k=12 p=247 H=1 V=0 o=8 n=3992 x=3998 a
+PASS  cap03_k9_k12.cap no NUL byte
+PASS  cap03_k9_k12.cap S field set/order ['k', 'p', 'H', 'V', 'o', 'n', 'x', 'a', 'D', 't', 'h', 'q', 'r', 's', 'y']
+PASS  cap03_k9_k12.cap S k=12 t=246 in [-400,1250]
+PASS  cap03_k9_k12.cap S k=12 h=324 in [0,1000]
+PASS  cap03_k9_k12.cap S k=12 q in {0,1}
+
+--- cap04_k18.cap  window 08:37:28.594..08:42:28.801  79 bytes  md5=d704e139b3256781deacf70f81c6b824
+PASS  cap04_k18.cap line 79B <= 96B: S k=18 p=244 H=1 V=0 o=8 n=3990 x=3995 a
+PASS  cap04_k18.cap no NUL byte
+PASS  cap04_k18.cap S field set/order ['k', 'p', 'H', 'V', 'o', 'n', 'x', 'a', 'D', 't', 'h', 'q', 'r', 's', 'y']
+PASS  cap04_k18.cap S k=18 t=243 in [-400,1250]
+PASS  cap04_k18.cap S k=18 h=321 in [0,1000]
+PASS  cap04_k18.cap S k=18 q in {0,1}
+
+=== S/G pairing and cadence ===
+  k=0   q=1 p=0    H=0 t=247  h=328
+  k=6   q=1 p=248  H=1 t=247  h=325
+  k=9   q=1 p=247  H=1 t=247  h=322
+  k=12  q=1 p=247  H=1 t=246  h=324
+  k=18  q=1 p=244  H=1 t=243  h=321
+PASS  no G lines (all observed cycles succeeded)
+PASS  k step 0 -> 6 is multiple of 3
+PASS  k step 6 -> 9 is multiple of 3
+PASS  k step 9 -> 12 is multiple of 3
+PASS  k step 12 -> 18 is multiple of 3
+PASS  F-1 chain k=9 p=247 == t(k=6)=247
+PASS  F-1 chain k=12 p=247 == t(k=9)=247
+PASS  first sample k=0 has H=0 p=0
+PASS  >=3 consecutive q=1 cycles (best run=3)
+
+=== Bit-level I2C (independent recompute) ===
+  bytes read: 65 7B B1 4E 1B CC
+PASS  6 data bytes read
+  temp word=0x657B crc calc=0xB1 recv=0xB1 -> 244 (x10)
+  hum  word=0x4E1B crc calc=0xCC recv=0xCC -> 321 (x10)
+PASS  temperature CRC-8 matches
+PASS  humidity CRC-8 matches
+PASS  decoded temperature in valid range
+PASS  decoded humidity in valid range
+PASS  address write 0x44
+PASS  measure command 0xFD
+PASS  address read 0x44
+PASS  read ends NACK + Stop
+  write START->STOP: 12.050 ms
+  command STOP->read START: 32.528 ms
+  read START->STOP: 40.162 ms
+  SCL bit period: 2457 samples = 614.250 us (~1.628 kHz)
+
+=== RESULT: ALL CHECKS PASSED ===
