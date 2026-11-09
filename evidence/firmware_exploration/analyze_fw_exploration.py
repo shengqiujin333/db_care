@@ -73,7 +73,7 @@ def main():
     out = []
     out.append("== raw serial captures ==")
     all_means = []
-    for name in ("serial_capture_200s.bin", "serial_capture_220s.bin"):
+    for name in ("serial_capture_200s.cap", "serial_capture_220s.cap", "serial_capture_dark_1522Z.cap"):
         p = HERE / name
         data, records = parse_s_records(p)
         out.append(f"{name}: bytes={len(data)} md5={__import__('hashlib').md5(data).hexdigest()}")
@@ -150,11 +150,13 @@ def main():
     out.append("  EV-026 17:43-18:46 local: 3166,3183,3184,3186,3188,3192,3194,3195,3196,3197,3198,3199")
     out.append("  EV-028 19:28-19:59 local: 3249,3304,3279,3299,3298,3221,3335")
     out.append("  EV-029 20:04 local: 3735,3732")
-    out.append("  this run 14:33/14:41 local: " + ",".join(str(x) for x in all_means))
+    out.append("  this run 14:33/14:41/15:24 local: " + ",".join(str(x) for x in all_means))
     out.append("")
-    out.append("NOTE: the current 3914/3915 reading is at the dark end of the designed polarity.")
-    out.append("Without a controlled light/dark stimulus and C_dark, the cause (sensor in darkness,")
-    out.append("open/unpopulated light input, or ADC/divider fault) cannot be distinguished.")
+    out.append("NOTE: the current 3914/3915/3932 readings are at the dark end of the designed polarity.")
+    out.append("User reply (2026-11-09T07:22:45Z) states the site currently has no light and the README")
+    out.append("'there is light' wording was wrong; therefore the high code is consistent with a dark")
+    out.append("condition. A light-state reading and a controlled full-cover distribution are still")
+    out.append("unmeasured; the cause of any future lit-state high code would need a separate test.")
 
     text = "\n".join(out) + "\n"
     (HERE / "capture_analysis.txt").write_text(text, encoding="utf-8")
