@@ -1,0 +1,70 @@
+== raw serial captures ==
+serial_capture_200s.bin: bytes=81 md5=6ad6b190d2bc6c8c6dfed9a23afb5a2f
+  len=81 tag=S S k=1140 p=252 H=1 V=0 o=8 n=3913 x=3917 a=3914 D=0 t=252 h=326 q=1 r=0 s=0 y=0
+    fields: k=1140 p=252 H=1 V=0 o=8 n=3913 x=3917 a=3914 D=0 t=252 h=326 q=1 r=0 s=0 y=0
+    checks: CRLF=yes len<=96=True V/D=(0,0) light_valid_gate_expect_V=0 -> OK
+serial_capture_220s.bin: bytes=81 md5=bca2808010bb5f7bdbd982f95726f517
+  len=81 tag=S S k=1146 p=250 H=1 V=0 o=8 n=3913 x=3918 a=3915 D=0 t=249 h=329 q=1 r=0 s=0 y=0
+    fields: k=1146 p=250 H=1 V=0 o=8 n=3913 x=3918 a=3915 D=0 t=249 h=329 q=1 r=0 s=0 y=0
+    checks: CRLF=yes len<=96=True V/D=(0,0) light_valid_gate_expect_V=0 -> OK
+
+== I2C decode (sigrok, D0=SCL D1=SDA, 4 MS/s, 5.0 s) ==
+annotations=96
+     9548-9548    Start
+    12025-29225   Address write: 44
+    31725-34182   ACK
+    34278-53938   Data write: FD
+    53981-56438   ACK
+    57744-57744   Stop
+   187850-187850  Start
+   190326-207525  Address read: 44
+   210024-212481  ACK
+   212624-232282  Data read: 66
+   232340-234797  ACK
+   234868-254529  Data read: 66
+   254585-257043  ACK
+   257114-276774  Data read: 93
+   276831-279289  ACK
+   279359-299018  Data read: 4F
+   299076-301533  ACK
+   301604-321263  Data read: 25
+   321321-323778  ACK
+   323849-343510  Data read: E2
+   344787-347245  NACK
+   348480-348480  Stop
+address_write=['44'] data_write=['FD'] address_read=['44'] data_read=['66', '66', '93', '4F', '25', 'E2']
+raw=(66 66 93 4F 25 E2)
+temp: raw=26214 calc_crc=0x93 recv_crc=0x93 match=True -> t_x10=250
+hum : raw=20261 calc_crc=0xE2 recv_crc=0xE2 match=True -> h_x10=326
+
+== timing (sample index / 4 MS/s; nominal, not host timestamps) ==
+write START=9548 STOP=57744 duration=12.049 ms
+read  START=187850 STOP=348480 duration=40.157 ms
+command STOP -> read START = 32.526 ms
+
+== light reading and the 1/3 dark criterion (hypothetical C_dark) ==
+Current firmware has LIGHT_DARK_CALIBRATED=0, so all V=0/D=0 regardless of C_dark.
+Table is arithmetic sensitivity analysis, not a calibration result.
+mean_adc_code | C_dark | threshold=ceil(C/3) | dark=(3*mean>=C)
+         3914 |   4095 |                1365 | True
+         3915 |   4095 |                1365 | True
+         3914 |   4000 |                1334 | True
+         3915 |   4000 |                1334 | True
+         3914 |   3915 |                1305 | True
+         3915 |   3915 |                1305 | True
+         3914 |   3500 |                1167 | True
+         3915 |   3500 |                1167 | True
+
+Maximum C_dark representable by the 12-bit ADC is 4095.
+mean=3914: not-dark requires C_dark > 3*3914 = 11742; possible_with_12bit_C_dark=False
+mean=3915: not-dark requires C_dark > 3*3915 = 11745; possible_with_12bit_C_dark=False
+
+Historical light means from prior evidence (same firmware polarity; not re-measured here):
+  EV-026 17:43-18:46 local: 3166,3183,3184,3186,3188,3192,3194,3195,3196,3197,3198,3199
+  EV-028 19:28-19:59 local: 3249,3304,3279,3299,3298,3221,3335
+  EV-029 20:04 local: 3735,3732
+  this run 14:33/14:41 local: 3914,3915
+
+NOTE: the current 3914/3915 reading is at the dark end of the designed polarity.
+Without a controlled light/dark stimulus and C_dark, the cause (sensor in darkness,
+open/unpopulated light input, or ADC/divider fault) cannot be distinguished.
