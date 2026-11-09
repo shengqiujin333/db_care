@@ -1,0 +1,18 @@
+# HTTP route existence probe (GET only, read-only, loopback on the host)
+started_utc=2026-11-09T06:26:44Z
+host=8.140.23.253 port=22 transport=paramiko/2.8.1
+method_note=no POST executed; write endpoint never invoked
+server_host_key=ssh-ed25519 fingerprint_sha256=ty/ysZ6Z9cvGUtYfQ26082EJXBWFFzU9pYBm2tXPbJQ
+connect_result=OK
+
+$ printf '%s ' '/login'; curl -s -o /dev/null -D - --max-time 5 -X GET http://127.0.0.1:5000/login | tr -d '\r' | awk 'NR==1{code=$2} /^Allow:/{allow=$0} END{printf "status=%s %s\n", code, allow}'; printf '%s ' '/upload_data'; curl -s -o /dev/null -D - --max-time 5 -X GET http://127.0.0.1:5000/upload_data | tr -d '\r' | awk 'NR==1{code=$2} /^Allow:/{allow=$0} END{printf "status=%s %s\n", code, allow}'; printf '%s ' '/sendVerificationCode'; curl -s -o /dev/null -D - --max-time 5 -X GET http://127.0.0.1:5000/sendVerificationCode | tr -d '\r' | awk 'NR==1{code=$2} /^Allow:/{allow=$0} END{printf "status=%s %s\n", code, allow}'; printf '%s ' '/verifyCode'; curl -s -o /dev/null -D - --max-time 5 -X GET http://127.0.0.1:5000/verifyCode | tr -d '\r' | awk 'NR==1{code=$2} /^Allow:/{allow=$0} END{printf "status=%s %s\n", code, allow}'; printf '%s ' '/register'; curl -s -o /dev/null -D - --max-time 5 -X GET http://127.0.0.1:5000/register | tr -d '\r' | awk 'NR==1{code=$2} /^Allow:/{allow=$0} END{printf "status=%s %s\n", code, allow}'; printf '%s ' '/setmac'; curl -s -o /dev/null -D - --max-time 5 -X GET http://127.0.0.1:5000/setmac | tr -d '\r' | awk 'NR==1{code=$2} /^Allow:/{allow=$0} END{printf "status=%s %s\n", code, allow}'; printf '%s ' '/doesNotExist'; curl -s -o /dev/null -D - --max-time 5 -X GET http://127.0.0.1:5000/doesNotExist | tr -d '\r' | awk 'NR==1{code=$2} /^Allow:/{allow=$0} END{printf "status=%s %s\n", code, allow}'
+exit=0 elapsed_ms=515
+stdout:
+/login status=405 Allow: OPTIONS, POST
+/upload_data status=405 Allow: OPTIONS, POST
+/sendVerificationCode status=405 Allow: OPTIONS, POST
+/verifyCode status=405 Allow: OPTIONS, POST
+/register status=405 Allow: OPTIONS, POST
+/setmac status=405 Allow: OPTIONS, POST
+/doesNotExist status=404
+finished_utc=2026-11-09T06:26:44Z total_s=0.5

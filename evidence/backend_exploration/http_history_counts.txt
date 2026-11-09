@@ -1,0 +1,23 @@
+# HTTP request history counts (read-only)
+started_utc=2026-11-09T06:27:43Z
+host=8.140.23.253 port=22 transport=paramiko/2.8.1
+server_host_key=ssh-ed25519 fingerprint_sha256=ty/ysZ6Z9cvGUtYfQ26082EJXBWFFzU9pYBm2tXPbJQ
+connect_result=OK
+
+--- [earliest_entry] $ journalctl -u user_script --no-pager -o short-iso 2>&1 | head -2
+exit=0
+stdout:
+2026-09-25T22:16:33+08:00 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Started user_script.service - user add Python Script.
+2026-09-25T22:16:33+08:00 iZ2zeih0gmrk47og5r4z7sZ python[408022]:  * Serving Flask app 'abr'
+
+--- [history_counts] $ journalctl -u user_script --no-pager 2>&1 | awk 'BEGIN{req=0;post=0;get=0} /HTTP\/1\.1/{req++} /"POST /{post++} /"GET /{get++} END{printf "request_lines=%d post_lines=%d get_lines=%d\n", req, post, get}'
+exit=0
+stdout:
+request_lines=26 post_lines=14 get_lines=11
+
+--- [history_lines_total] $ journalctl -u user_script --no-pager 2>&1 | wc -l
+exit=0
+stdout:
+218
+
+finished_utc=2026-11-09T06:27:44Z total_s=1.0

@@ -1,336 +1,395 @@
-# 后端可行性探索报告（BE-EXP-001）
+# 后端可行性探索报告（BE-EXP-002）
 
 责任角色：后端工程
-日期：2026-11-09（Asia/Shanghai）
-结论：**WORK_FAILED** —— 契约层结论为“本轮无需改服务端”，但既有已部署服务的运行行为与关键数据约束在本轮**未成立**（无服务端源码、无获准的联网/回读入口）；本地隔离桩只固定契约与风险模型，不能替代真实依据。
+检查时点：2026-11-09 14:24–14:28（Asia/Shanghai）＝ 06:24–06:28 UTC
+结论代码：**EXPLORATION_COMPLETE**（本轮授权范围内的只读核验目标已全部执行并取得真实证据）
+结论边界：**不是**“服务端到端通过”。上传写入、幂等与持久化回读按用户安排在端到端阶段执行，本报告把它们的未知项与判别方法固定下来。
 
-被测产品源码：`D:\mypro\beiwo2\AIP`，接手 HEAD `8b0b2d1`（首次 `git status --porcelain` 为空）
-关联输入：`readme.txt`、`服务器迁移记录.md`、`artifacts/interface_contract.md`（IC-002 v3.0）、`artifacts/system_analysis_current.md`、Android `cloud/*` 与 `MqtttService.kt`、网关 `APP/app_um2006A.c`
-实验原始输出：`evidence/backend_exploration/upload_contract_observations.txt`
-可复跑脚本：`evidence/backend_exploration/upload_contract_stub.py`
+被测产品源码：`D:\mypro\beiwo2\AIP`，接手 HEAD `6967c47`（首次 `git status --porcelain` 仅有本能力新建的未跟踪证据文件）
+唯一环境/授权依据：本次 Unified 汇总（`existing_service_ssh_inspection`＝enabled，`allowed_external_actions=[inspect_existing_service_readonly]`，30 s 上限）
 
 ---
 
 ## 0. 结论摘要
 
-| 可行性问题 | 本轮结论 | 依据 / 边界 |
+| 可行性问题 | 本轮结论 | 依据 |
 |---|---|---|
-| 本轮需求是否要求改后端代码、表结构或重新部署 | **不要求**（契约层） | 上报字段、单位、端点、表结构均不变；新增的“升温 >0.9℃ 且无光 / >35.0℃”是传感器侧筛选，服务端不重算；`readme` 八点无新增持久化字段 |
-| 既有 `POST /upload_data` 是否真实在线、可用、幂等 | **未核验 → 不成立** | 用户声明已部署；环境未登记联网入口、`allowed_external_actions` 为空；仓库无服务端源码（`abr.py` 从未提交）。本轮未访问 `8.140.23.253` |
-| `UNIQUE(dev_id,time)` + `INSERT IGNORE` 是否满足客户端重试幂等 | **契约语义上可用，运行未证** | 本地桩：相同批次重试 `inserted=0`、行数不变；同键不同值静默丢弃（first-wins）；秒级键无法区分同秒两个真实样本 |
-| 云端写入量是否被“条件上报”降低 | **不会**（按当前 as-built） | 网关 BLE 读取返回每设备最近一次缓存值，Android 每 180 s 读一次并按**接收时刻**入库/上传：上界 480 行/设备/日，与传感器是否新上报无关 |
-| `mac` 能否用于来源网关审计 | **不能** | 文档 `sensor_data` 表无 `mac` 列；请求中的 `mac` 不落库 |
-| 手机号/网关/设备绑定与写接口鉴权 | **未知** | 迁移记录只描述字段与 `INSERT IGNORE`，未声明鉴权/归属校验；本轮无法核验 |
-| 服务中断后的数据恢复 | **客户端约 8 h 后停止自动重试** | `maxAttempts=20` + 60→1800 s 退避；达上限行保留但不再自动重试；后端无补偿/重放入口证据 |
-| 容量（1000 设备） | **约 12–26 GB/年**（算术区间） | 480 行/设备/日上限；与迁移记录 1 分钟估算交叉核对；非实测磁盘 |
-| 可否直接进入后端实现 | **不需要实现**；需要先补“服务核验入口” | 复用是唯一可在本仓库落地的路径；任何服务端改造都缺源码与部署/数据库授权 |
+| 既有服务是否真实在线、端口是否与资料一致 | **已核验成立** | 22/1883/3306/5000/8083/8084/8883/18083 全部 TCP 可连；`ss -lntp` 列出监听与进程归属 |
+| EMQX 运行版本 | **已核验成立 = 5.8.0** | `dpkg -l emqx` + `emqx ctl broker`；`systemctl` active/enabled |
+| 注册/上传服务是否在跑 | **已核验成立** | `user_script.service` active/enabled，pid 20644 = `python /root/abr.py`，监听 0.0.0.0:5000 |
+| 客户端 6 个接口路径是否存在 | **已核验成立（全 6 个）** | GET 探测：6 个均 405 + `Allow: OPTIONS, POST`；`/doesNotExist` 404 作对照 |
+| `/upload_data` 是否仍按资料“无鉴权”工作 | **已否证“无鉴权”** | 部署日志 2026-10-22T19:32:28 三次 `POST /upload_data` 中两次 **401**、一次 200 |
+| 当前 App 是否带该鉴权 | **否** | `ApiService.uploadData` 仅 `Content-Type`，全工程无 `Authorization`/token 使用；`LoginResponse.token` 解析后未使用 |
+| 本轮是否要求改服务端代码/表/部署 | **契约层仍不要求**，但**复核门禁新增 1 项** | readme 八点不上传新字段；新增门禁＝上述 401 与客户端不一致，须在端到端阶段定性 |
+| `UNIQUE(dev_id,time)`+`INSERT IGNORE` 是否成立 | **仍未核验（本轮不授权 DB 直连）** | 资料声明；DB 直连与写接口调用均未授权 |
+| 真实上传/幂等/持久化回读 | **未执行（按用户安排属端到端阶段）** | 本报告 §9 给出可直接执行的最小实验；缺条件项记未执行，不以桩或 2xx 代替 |
+| 服务是否被真实业务占用 | **除本次探测外，近 18 天无任何 HTTP 请求；近 16 天无任何 MQTT 连接** | journal 全量 218 行仅 26 条请求行（末次业务 POST 2026-10-22）；EMQX metrics 全 0 |
+| 复用结论 | **“存活+端口+路由存在”成立；“上传可用”未成立（未执行，且存在 401 反向证据待定性）** | 不缺部署，缺的是上传链路的真实依据；不需要重建/重部署 |
 
-判定说明：这不是“服务故障”。本轮没有获得任何真实服务响应，也没有服务端源码；因此既不能宣布复用通过，也不能把缺口推给“部署/外部依赖”后当作完成。`WORK_FAILED` 的原因是**关键服务行为与数据约束缺少本轮真实依据**，缺口与最小区分实验见 §9。
+判定说明：上一轮（BE-EXP-001，`WORK_FAILED`）没有登记入口，一条真实依据都拿不到。本轮授权变化后已实际连上服务器并取得可复现原始输出，因此不再是“无依据”；但**上传路径出现了与文档不一致的实际行为（401）**，这一项的定性必须由端到端阶段用隔离测试身份完成，本报告不替它下结论，也不把缺口推给“部署/外部依赖”移出目标。
 
 ---
 
-## 1. 目标、方法与授权边界
+## 1. 本轮目标与授权边界
 
-### 1.1 本次要回答的关键可行性目标
+### 1.1 关键可行性目标（本轮）
 
-| ID | 目标 | 为什么影响后端方案 |
+| ID | 目标 | 结果 |
 |---|---|---|
-| Q1 | 本轮是否产生服务端增量（端点/字段/表/迁移） | 决定“复用”还是“最小改造” |
-| Q2 | 既有 `/upload_data` 契约能否承载本轮读数（负温、35.1℃、0.1℃ 精度、50 条批） | 决定是否需要改服务端校验/类型 |
-| Q3 | `(dev_id,time)` 幂等语义是否足以支撑客户端重试/补传 | 决定是否会重复入库或静默丢数 |
-| Q4 | 写入量、单行体积与容量是否需要后端改造 | 决定是否需要分区/清理/扩容 |
-| Q5 | 身份、归属与写权限是否为复用前提 | 决定是否必须加鉴权/绑定校验 |
-| Q6 | 服务/数据库的可核验入口是否存在 | 决定本轮能否给出“复用成立”的结论 |
+| Q1 | 既有服务是否在线、运行版本是什么 | **成立**（§3） |
+| Q2 | 文档所列监听端口是否真的在监听、由哪个进程占用 | **成立**（§3） |
+| Q3 | 客户端编码的 6 个 HTTP 路径在当前部署里是否仍存在 | **成立**（§4） |
+| Q4 | 部署版本是否仍与 `服务器迁移记录.md` 描述一致 | **不一致（已定位差异）**（§5 F1/F2） |
+| Q5 | 本轮 readme 八点是否产生服务端增量 | **不产生**（契约层，§6） |
+| Q6 | 现有服务近期是否被真实业务使用过 | **没有**（§4.3） |
+| Q7 | 上传写入/幂等/持久化 | **阶段外，未执行**（§9 给方法） |
 
-### 1.2 实际执行的方法（有界）
+### 1.2 实际执行的内容（有界、只读）
 
-1. 读 `readme.txt`、`file_manifest.txt`、最近提交、`服务器迁移记录.md`、IC-002 §6、`system_analysis_current.md`。
-2. 静态核对 Android 上传链路：`CloudConfig.kt`、`ApiService.kt`、`UploadPayload.kt`、`CloudUploadRepository.kt`、`UploadOutbox.kt`、`MqtttService.kt`（BLE 轮询、入库/上传触发、网关缓存复读）。
-3. 静态核对网关聚合/缓存路径：`CH592EVT/EVT/EXAM/BLE/beiwov2/APP/app_um2006A.c`（`sensorres[]` 与 `build_padded_frame_blocks`）。
-4. 确认仓库是否存在服务端源码：工作树无 `abr.py`，`git log --all --diff-filter=A` 亦无 `abr.py` 历史。
-5. 在**本机 127.0.0.1 临时端口**运行 Flask+SQLite 桩，按迁移记录声明的 DDL/语义执行 13 个有界请求（§4）。
-6. 由代码常量与表结构做容量/恢复的算术推导（§10），不冒充实测。
+1. 读 `readme.txt`、`服务器迁移记录.md`、`artifacts/system_analysis_current.md`、`artifacts/interface_contract.md` §6、`artifacts/software_e2e_plan.md`（E2E-07）、`file_manifest.txt`、最近提交。
+2. 定点读取客户端契约源码：`cloud/CloudConfig.kt`、`ui/zhuce/ApiService.kt`、`cloud/CloudUploadRepository.kt`；全工程检索 `Authorization|token|Bearer|@Header`。
+3. 本机 → 服务器 8 个端口的有界 TCP 连通性探测（仅 connect/close，无应用层载荷）：`evidence/backend_exploration/ssh_tcp_probe.py`。
+4. 通过已登记 SSH 入口做 6 组只读检查（每次单命令 ≤15 s、整轮 ≤150 s、失败即记录）：
+   - `ssh_readonly_probe.py` → `ssh_readonly_inspection.txt`（身份/unit 状态/监听/docker/进程/路由探测/文件元数据/日志/版本/磁盘）
+   - `ssh_readonly_probe_followup.py` → `ssh_readonly_inspection_2.txt`（journal 保留期/端口进程映射/EMQX listeners/镜像身份/OS）
+   - `ssh_readonly_probe_emqx.py` → `ssh_readonly_inspection_3.txt`（broker 版本与运行时长、统计、metrics、clients、journal 跨度）
+   - `ssh_readonly_probe_routes.py` → `http_route_existence.txt`（6 路径 + 1 对照路径，**仅 GET**）
+   - `ssh_readonly_probe_http_history.py` → `http_history_counts.txt`（请求行计数、journal 起点）
+   - `ssh_readonly_probe_http_requests.py` → `http_request_history.txt`（26 条请求行原文；仅 method/path/status）
+5. 在**本机 127.0.0.1** 重跑既有桩实验确认可复现：`upload_contract_stub.py` → `upload_contract_observations_rerun.txt`（13 用例 / 11×2xx / 2×4xx / 538 行 / 61440 B，与上一轮逐项一致）。
 
-### 1.3 明确未执行的通道及原因
+### 1.3 明确未执行的动作及原因（保持授权边界）
 
-| 通道 | 状态 | 原因 |
-|---|---|---|
-| `ssl://8.140.23.253:8883` MQTT 探测/认证 | 未执行 | 环境 `existing_service` 未登记联网入口，`allowed_external_actions` 为空；不猜凭据、不使用迁移记录中的真实设备/root 凭据 |
-| `http://8.140.23.253:5000/upload_data` 请求 | 未执行 | 同上；且写入为生产副作用，需隔离测试账号与清理授权 |
-| MySQL 直连 / 回读 | 未执行 | 管理、重部署、数据库直连入口均未确认；无授权 |
-| 服务器版本/运行状态（emqx status、容器、systemd） | 未执行 | 同上 |
-| `蹬被子报警器服务器部署方法.png` | 未读取 | 当前模型不支持图像输入；未据此推断任何配置 |
-| 任何服务端源码审查 | 不可执行 | 仓库无 `abr.py` 或其它服务端源码 |
-
-没有访问未授权数据、没有写生产记录、没有部署/迁移、没有使用文档中的凭据。
-
----
-
-## 2. 已核验事实（本轮，静态/本地）
-
-| 事实 | 证据位置 |
+| 动作 | 未执行原因 |
 |---|---|
-| 仓库无服务端源码；`abr.py` 在全部 Git 历史中从未出现 | `find` 无匹配；`git log --all --diff-filter=A --name-only` 中 `abr.py` 路径数 = 0 |
-| HTTP 基址与 broker 地址集中在 `CloudConfig`：`ssl://8.140.23.253:8883`、`http://8.140.23.253:5000` | `cloud/CloudConfig.kt` |
-| 上传端点 `POST /upload_data`，请求体 `{phone,mac,readings[{devId,time,temperature,humidity}]}`；2xx 视为成功 | `ui/zhuce/ApiService.kt`、`cloud/UploadPayload.kt`、`cloud/CloudUploadRepository.kt:RetrofitUploadApi` |
-| 单批上限 50；失败退避 60→1800 s；`maxAttempts=20`；成功即逐行删除；上传在独立作用域串行 | `CloudUploadRepository.Config`、`uploadPendingOnce` |
-| 本地待发箱 `pending_uploads` 以 `(device_id,time)` 去重；`attempts>=20` 的行不再自动重试 | `UploadOutbox.dueRows`、`SqliteUploadOutboxStore` |
-| BLE 每 180 s 读一次，手动"立即读取"可提前触发 | `SensorCadence.SAMPLE_PERIOD_MS`、`MqtttService` 的 `READ_INTERVAL_MS`/`wakeReadNow` |
-| BLE 路径的 `time` = 手机接收时刻（`System.currentTimeMillis()/1000`），不是传感器采样时刻 | `MqtttService.processTemperatureHumidityData`（BLE 调用不传 `timeOverride`） |
-| 网关为每个已绑定设备保存最近一次有效值（`sensorres[]`），收到 RF 后重建并写入 BLE 特征值；GATT 读取只是取回该缓存，无新鲜度标志/采样时间 | `APP/app_um2006A.c`（`sensorres`、`build_padded_frame_blocks`、`SimpleProfile_SetParameter`） |
-| `0.0/0.0` 仍走"连续 3 次才处理"的旧哨兵分支（与本轮无直接关系，但影响首次读数延迟） | `MqtttService.kt:743-761` |
-| 环境未登记任何指向 `existing_service` 的网络/回读入口 | Unified 环境 `targets.existing_service` 无 `access` 条目；`current_capability_permissions.allowed_external_actions=[]` |
-
-仅用户声明、本轮未核验的内容（来源均为 `服务器迁移记录.md`）：
-
-- EMQX 5.8.0，端口 1883/8883/8083/8084/18083，内置 mnesia 认证（用户名=MAC，密码=MAC+固定后缀）；
-- MySQL 9.0.1（Docker，3306），库 `bwusernamebase`、表 `user_table`（109 行）；`sensor_data` 的 DDL 与 `UNIQUE(dev_id,time)`、`INSERT IGNORE`；
-- `abr.py` 端口 5000，`/login` + `/upload_data`；`user_script.service` 开机自启；证书链 md5 与 TLS 握手曾验证；
-- 迁移记录中的端到端 MQTT 测试与 `curl` 幂等测试为**迁移时**的结果，不是本轮证据。
-
-迁移记录含明文账号/口令/AccessKey。本报告不复制、不使用；任何后续核验必须使用与生产隔离的测试账号。
+| `POST /upload_data`、`POST /login`、`/register`、`setmac` 等任何写/变更类接口 | 授权明确“不调用写入接口”；本轮全部改用 GET 观察 `Allow` 头判断路由存在性 |
+| MySQL 直连、`docker exec mysql ...`、任何 SQL | 授权明确“不直连数据库”；表结构与 `UNIQUE`/`INSERT IGNORE` 仍为资料声明 |
+| 读取 `/root/abr.py` 文件内容 | 授权范围限定“状态、监听端口、必要近期日志”；只取 `stat`/`ls` 元数据，未读内容（因此 401 的代码原因未定性） |
+| `sudo`、任何文件/配置/数据修改、启停重启、部署、迁移 | 授权明确禁止 |
+| 修改服务器时间、日志级别、防火墙 | 非本能力职责 |
+| 使用/回显资料中的任何口令、AccessKey、设备凭据 | 脚本运行时从资料正则读取连接口令并只用于认证；证据文件与报告均脱敏，不含明文 |
+| 手机、串口、烧录、逻辑分析仪 | 不属本能力；对应入口在本能力下为 unavailable |
 
 ---
 
-## 3. 本轮增量与接口差异
+## 2. 原始证据索引（全部为本轮新产出）
 
-| 变更点（readme） | 对后端可见的线上差异 | 是否需要后端改动 |
+| 文件 | 内容 | 复跑命令 |
 |---|---|---|
-| 1 GXHT40、2 光敏分压 | 无：光照/判据不上空口、不进请求体 | 否 |
-| 3 采集改 3 分钟 | 无协议字段变化；影响**请求节奏**，不影响 schema | 否 |
-| 4 条件上报（升温且无光 / >35℃） | 无：筛选在传感器侧；请求体仍是同一 5 字段 | 否 |
-| 5 复用平台服务器 | 地址/端口/证书不变 | 否（前提是服务行为经核验成立） |
-| 6 Android 同步、退役光通信/霍尔 | `mac` 语义不变；无新端点/新字段 | 否 |
-| 7 全暗阈值 1/3 | 无：不上传光照 | 否 |
+| `evidence/backend_exploration/ssh_tcp_probe_output.txt` | 8 端口 TCP 可达性（2026-11-09T06:24:26Z） | `python evidence/backend_exploration/ssh_tcp_probe.py` |
+| `evidence/backend_exploration/ssh_readonly_inspection.txt` | 会话 1 全量 stdout/stderr/exit | `python evidence/backend_exploration/ssh_readonly_probe.py` |
+| `evidence/backend_exploration/ssh_readonly_inspection_2.txt` | 会话 2 | `python evidence/backend_exploration/ssh_readonly_probe_followup.py` |
+| `evidence/backend_exploration/ssh_readonly_inspection_3.txt` | 会话 3（EMQX） | `python evidence/backend_exploration/ssh_readonly_probe_emqx.py` |
+| `evidence/backend_exploration/http_route_existence.txt` | 7 条路径的状态码与 `Allow` | `python evidence/backend_exploration/ssh_readonly_probe_routes.py` |
+| `evidence/backend_exploration/http_history_counts.txt` | 请求行/方法计数、journal 起点 | `python evidence/backend_exploration/ssh_readonly_probe_http_history.py` |
+| `evidence/backend_exploration/http_request_history.txt` | 26 条请求行原文 | `python evidence/backend_exploration/ssh_readonly_probe_http_requests.py` |
+| `evidence/backend_exploration/upload_contract_observations_rerun.txt` | 本地桩复跑 | `python evidence/backend_exploration/upload_contract_stub.py` |
+
+会话指纹（两次独立连接一致）：`ssh-ed25519` host key SHA-256 `ty/ysZ6Z9cvGUtYfQ26082EJXBWFFzU9pYBm2tXPbJQ`。该指纹只证明本轮两次连接到同一主机，**没有**与任何权威清单比对，不能作为主机身份认证结论。
+
+---
+
+## 3. 运行期核验结果（已取得真实响应）
+
+| 项 | 实测值 | 证据 |
+|---|---|---|
+| 主机 / 内核 | `iZ2zeih0gmrk47og5r4z7sZ` / `Linux 6.8.0-136-generic x86_64` | 会话 1 `identity` |
+| 发行版 | Ubuntu 24.04.4 LTS | 会话 2 `os_release` |
+| 时间基准 | 服务器 UTC `2026-11-09T06:24:44Z`；与资料时区（CST）一致 | 会话 1 |
+| `emqx.service` | `active`/`enabled`，`SubState=running`，`NRestarts=0`，启动于 2026-10-24 06:29:44 CST | 会话 1 `systemd_units/systemd_detail` |
+| `user_script.service` | `active`/`enabled`，`NRestarts=0`，启动于 2026-10-24 06:29:40 CST，`ExecStart=/root/venv/bin/python /root/abr.py` | 同上 |
+| EMQX 版本 / 运行时长 | `5.8.0`（dpkg `ii emqx 5.8.0 amd64`）；uptime 16 天 7 小时 56 分 | 会话 1 `emqx_version`、会话 3 `emqx_broker` |
+| EMQX 监听 | 1883/8883/8083/8084 全部 `running: true`、`acceptors: 16`、`current_conn: 0` | 会话 2 `emqx_listeners` |
+| HTTP 服务 | 0.0.0.0:5000，pid 20644 `python`（`abr.py`）；banner `Werkzeug/3.1.8 Python/3.12.3` | 会话 1 `http_upload_route`、会话 2 `port_process_map` |
+| MySQL | 容器 `mysql` 运行中（Up 2 weeks），镜像 `mysql:latest`，id `sha256:d7f7ebf3…00b5`，digest 同值，image created 2024-07-22；`restart_policy=unless-stopped`，**无 healthcheck** | 会话 1 `docker_ps/mysql_container`、会话 2 `mysql_image/mysql_uptime_state` |
+| 磁盘 / 内存 | `/` 79 G，已用 7.1 G，可用 68 G（10%）；Mem 3499 MiB，可用 1917 MiB；**无 swap** | 会话 1 `disk` |
+| 其他共租服务（非本项目，仅记录存在） | caddy(80/443/2019)、postgres(127.0.0.1:5432)、RustDesk hbbs/hbbr(21115–21119)、next-server(127.0.0.1:3000)、containerd、hbrclient | 会话 2 `port_process_map` |
+| `/root/abr.py` | 存在，8949 B，mtime **2026-10-22 19:31:04 +0800**；备份 `abr.py.bak_20260926` 7048 B（2026-09-26 08:57） | 会话 1 `abr_files` |
+
+对外 TCP 可达性（本机 → 8.140.23.253，单次 5 s 上限）：22/1883/3306/5000/8083/8084/8883/18083 **全部 TCP_OPEN**（15 ms 内）。
+
+> 由此可确认：**既有服务确实存在且在运行**，与“用户已部署”一致；同时 3306 绑定 `0.0.0.0`（`docker-proxy`），MySQL 端口对公网开放（§5 F7）。
+
+---
+
+## 4. 接口资料核对
+
+### 4.1 路由存在性（GET 只读探测，未调用写逻辑）
+
+| 路径 | 客户端是否使用 | 实测 | 判读 |
+|---|---|---|---|
+| `/login` | 是（`ApiService.login`） | 405 + `Allow: OPTIONS, POST` | 路由存在 |
+| `/upload_data` | 是（`ApiService.uploadData`） | 405 + `Allow: OPTIONS, POST` | 路由存在 |
+| `/sendVerificationCode` | 是 | 405 + `Allow: OPTIONS, POST` | 路由存在 |
+| `/verifyCode` | 是 | 405 + `Allow: OPTIONS, POST` | 路由存在 |
+| `/register` | 是 | 405 + `Allow: OPTIONS, POST` | 路由存在 |
+| `/setmac` | 是 | 405 + `Allow: OPTIONS, POST` | 路由存在 |
+| `/doesNotExist`（对照） | — | 404 | 探测方法有效（404≠405 可区分） |
+
+结论：**当前部署的 `abr.py` 仍暴露客户端编码的全部 6 个 POST 路由**，HTTP 基址 `http://8.140.23.253:5000`、明文端口与资料一致；响应头含 `Access-Control-Allow-Origin: *`（存在 CORS 中间件）。
+
+### 4.2 部署版本与资料不一致（关键）
+
+| 事实 | 值 |
+|---|---|
+| 资料（`服务器迁移记录.md` §八）描述 | `INSERT IGNORE` + `UNIQUE(dev_id,time)`，**未提任何鉴权** |
+| 部署文件时间 | `abr.py` mtime 2026-10-22 19:31:04，比迁移记录（2026-09-26）晚 26 天；体积 7048 → 8949 B |
+| 部署日志中的上传请求 | 2026-10-22T19:32:28 同一秒三次 `POST /upload_data`：**401、401、200** |
+| 客户端发送的凭证 | 无。`ApiService.uploadData` 仅设 `Content-Type: application/json`；全工程检索 `Authorization|Bearer|@Header` 无命中；`LoginResponse.token` 解析后未被任何代码使用 |
+| `/login` 同期表现 | 2026-10-22 17:28–18:12 出现 400/415/500/500，说明当日处于改动与调试窗口 |
+
+同一秒“两次 401 + 一次 200”最合理的解释是**上传路径新增了身份/归属校验，带正确身份的那一次才通过**。但本能力未读 `abr.py` 内容、也没有 401 响应体，**不能**据此断定具体机制（token？手机号已注册？MAC 归属？）。这属于必须由端到端阶段用隔离测试身份定性的项（§9 D1）。
+
+### 4.3 业务活跃度（真实且负面）
+
+| 观察 | 值 | 含义 |
+|---|---|---|
+| `user_script` journal 起点 | 2026-09-25T22:16:33+08:00（unit 首启），全量 218 行 | 日志保留覆盖整个部署期 |
+| 请求行总数 | 26 行（POST 14、GET 11、HEAD 1） | 全部请求可枚举 |
+| 最后一次业务 `POST` | 2026-10-22T19:32:28（3 次 upload_data） | 之后 18 天无任何 POST |
+| 本次探测之外的最近请求 | 2026-10-22T19:32:28 | 说明 10-22 之后服务零业务流量 |
+| EMQX metrics（自 10-24 重启起） | `client.connect=0`、`authentication.success/failure=0`、`messages.*=0`、`bytes.received/sent=0`、`connections.count=0`、`clients list: No clients` | **16 天 7 小时内没有任何 MQTT 客户端连接过** |
+| EMQX `retained.count` | 3 | 3 条重启前遗留的保留消息（未读取内容，超出只读范围） |
+
+结论：整条“传感器→网关→App→服务”链路在当前窗口内**没有任何真实运行证据**；本轮无法用历史流量推断上传、幂等或持久化行为，也无法推断 MQTT 认证是否仍按“MAC/ MAC+后缀”工作。
+
+---
+
+## 5. 差异与风险清单（本轮实际观测）
+
+| ID | 观测 | 影响 | 处置责任/阶段 |
+|---|---|---|---|
+| **F1** | `/upload_data` 在 2026-10-22 出现过 **401**，当前 App 不带任何凭证 | 若该门禁仍在，App 上传将恒失败：客户端把非 2xx 当失败，按 60→1800 s 退避重试 20 次后**行滞留待发箱、不再自动重试** | 端到端阶段定性（§9 D1）；若确认为新增鉴权，属**服务端/客户端契约变更**，需明确授权后才改 |
+| **F2** | 部署 `abr.py` 晚于资料 26 天、体积 +1901 B；资料未提及该变更 | 资料已不是当前部署的准确描述；“按资料复用”存在盲区 | 后续任何依赖接口细节的设计/测试必须以运行时证据或授权源码审查为准，不得只引资料 |
+| **F3** | `POST /login` 在 10-22 出现 500×2、415×1 | 登录链路当时不稳定；当前无流量无法判断是否已修 | 端到端阶段随注册/登录旅程一并复验 |
+| **F4** | HTTP 服务是 `Werkzeug/3.1.8` **开发服务器**，单进程，无生产 WSGI | 并发/长连接能力未测；1000 设备规模下的稳定性无依据（不能据 4 核/3.5 G 推断） | 若端到端压测暴露问题，属**部署形态**变更，需另行授权；本轮不建议改 |
+| **F5** | MySQL 镜像为浮动 tag `mysql:latest`，无 healthcheck | 无法从外部确认实际 server 版本是否仍为资料所写 9.0.1；重拉镜像会产生不可预期的升级 | 记录为运维风险；**不要**为此重部署或拉镜像 |
+| **F6** | 4 个 MQTT listener `acceptors=16`、`current_conn=0`；`max_conns=infinity` | 容量参数不是当前瓶颈；但也说明从未在现网负载下验证 | 端到端阶段用真实设备/隔离客户端验证即可 |
+| **F7** | MySQL 3306 绑定 `0.0.0.0` 且 Docker 直接发布到公网 | 暴露面风险（与资料“仅内部使用”不一致） | 属安全/运维变更，需明确授权；本轮不改防火墙 |
+| **F8** | HTTP 明文 5000 + `Access-Control-Allow-Origin: *` | 现状如此（App 已配 `network_security_config` 放行）；不构成本轮改造理由 | 保持现状，不在探索阶段改协议 |
+| **F9** | 服务与 caddy/postgres/RustDesk/next-server 共租同一主机（总内存 3.5 G，核数未查） | 资源竞争存在；容量估算不能只看本项目 | 容量结论只作量级参考 |
+
+---
+
+## 6. 本轮需求（readme 八点）对服务端的增量
+
+| 变更点 | 对线上可见差异 | 需后端改动 |
+|---|---|---|
+| 1 GXHT40、2 光敏分压 | 无（不上空口、不进请求体） | 否 |
+| 3 采集 3 分钟 | 请求体不变，只影响节奏 | 否 |
+| 4 升温 >0.9℃ 且无光 / >35℃ 才上报 | 筛选在传感器侧；服务端不重算 | 否 |
+| 5 复用平台服务器 | 地址/端口/证书不变（本轮已实测端口与路由） | 否（但须过 §9 D1 门禁） |
+| 6 Android 同步、退役光通信/霍尔 | `mac` 语义不变 | 否 |
+| 7 全暗阈值 1/3 | 不上传光照 | 否 |
 | 8 UART1 调试 | 无 | 否 |
 
-**但有一个反直觉的量级差异**：条件上报只减少 433 空口帧，**不减少云端行数**。当前 as-built 下 Android 每 180 s 从网关缓存读取一次，并按接收时刻入库+上传；网关没有“是否有新样本”的标志，也没有采样时间。因此只要守护运行、BLE 读成功，每设备每天最多 480 行（正常单手机路径；MQTT 回环/多手机共享网关可能额外增行，未核验），即使传感器当天一次都没有触发上报。这属于后端容量与数据语义的输入，不是后端可单独修复的缺陷（修复点在网关/App 的新鲜度或去重语义），本轮不实施。
+**结论**：本轮需求本身不产生端点、字段、表结构或部署增量。真正需要后端关注的是**既有部署已偏离资料**（F1/F2），这不是 readme 要求的新功能。
 
 ---
 
-## 4. 本地隔离实验（桩）
-
-### 4.1 参数与规模
-
-| 项 | 值 |
-|---|---|
-| 时间 | 2026-11-09T05:16:02Z（脚本打印） |
-| 运行时 | Python 3.10.9 / Flask 2.2.2 / Werkzeug 开发服务器 |
-| 存储 | 临时 SQLite 文件（`UNIQUE(dev_id,time)` + `INSERT OR IGNORE`），实验后删除 |
-| 监听 | `127.0.0.1` 临时端口（本次 56840），**未触外网** |
-| 请求数 | 13 个（11×2xx，2×400） |
-| 数据量 | 538 行；SQLite 15 页 × 4096 B ≈ 61 KB（仅供量级参考） |
-| 命令 | `python evidence/backend_exploration/upload_contract_stub.py` |
-
-### 4.2 预期与实际（节选；完整原始输出见同目录 observations 文件）
-
-| 用例 | 预期 | 实际 | 支持/不支持的结论 |
-|---|---|---|---|
-| 既有负温向量 `-5.0/60.0` | 接收 | `200 inserted=1`，存储 `-5,60` | 契约类型/单位兼容（桩内） |
-| 升温分支值 `31.0/60.0` | 接收 | `200 inserted=1` | 服务端不需要理解判据 |
-| 超温分支值 `35.1/55.0` | 接收 | `200 inserted=1` | 严格 35.0 边界在传感器侧 |
-| 50 条批 | 一个请求，全部入库 | `3757 B`，`200 inserted=50` | 客户端批上限与请求体规模 |
-| 同批重试 | 不重复 | `inserted=0, ignored=50`，行数不变 | 桩内幂等成立 |
-| 批内同键不同值 | 先到先得 | `inserted=1, ignored=1`，保留 30.0 | 冲突无感知、无版本 |
-| 已存在键改值重试 | 保留原值 | `inserted=0`，键行仍为 `31.0/60` | 静默 first-wins，客户端仍会删待发箱行 |
-| 同设备相邻秒两笔 | 两行 | `inserted=2` | 秒级粒度可容纳不同秒读数 |
-| 同秒两笔（批内） | 只一行 | 见上 | 同秒多个真实样本不可区分 |
-| 未知 `mac` | 落库（表无 mac 列） | `200` 且无 mac 存储 | 无法审计来源网关 |
-| `25.555/60.004` | 桩保留原值 | 存储原值 | **不能外推** MySQL `DECIMAL(6,2)` 的四舍五入 |
-| 空 `readings` | 桩策略 | `200 inserted=0` | 真实服务策略未知 |
-| 缺 `phone` / 非 JSON | 桩返回 400 | `400` | 真实服务状态码/响应体未知 |
-| 1 设备 1 天（480 次） | 480 行 | 480 行，DB≈61 KB | 行数上界可被表结构容纳；体积非 InnoDB |
-
-### 4.3 桩的结论边界（必须随结论一起引用）
-
-- **已证实（仅桩内）**：本轮请求体可被这份 DDL/语义接收；重试不重复；同键冲突 first-wins；`mac` 不在表中；480 行/日/设备的规模可被该表结构容纳。
-- **未证实**：真实服务是否存在该端点、真实响应码与 `inserted` 计数、真实 MySQL 的 `INSERT IGNORE` 全语义（MySQL 会把部分非约束错误降级为 warning，SQLite 不会）、事务边界/部分成功、鉴权与 `phone/mac/dev_id` 归属校验、持久化与回读、服务并发能力。
-- 因此本实验只用于**固定契约与风险模型**，不作为“已部署服务可用”的证据。
-
----
-
-## 5. 关键假设与证据状态
-
-| # | 假设 | 状态 | 影响 / 若为假 |
-|---|---|---|---|
-| A1 | 已部署服务仍有 `POST /upload_data`，且接受本文请求体 | 用户声明，**未核验** | 复用前提；若缺失/改签名，需要服务端源码与部署授权 |
-| A2 | `sensor_data` 存在，`UNIQUE(dev_id,time)` + `INSERT IGNORE` 生效 | 用户声明，**未核验** | 决定重试是否幂等；若 UNIQUE 缺失，重试会产生重复行 |
-| A3 | 服务对重复键返回 2xx（`inserted:0`），客户端据此删待发箱 | 用户声明，**未核验** | 若返回非 2xx，客户端将无限重试到 20 次后滞留 |
-| A4 | 同键不同值只保留第一笔 | 桩内成立；真实语义未核验 | 秒级冲突/缓存复读会静默丢新值，且无告警 |
-| A5 | 上传不需要鉴权，`phone/mac/dev_id` 不做归属校验 | 文档未声明；**未知** | 任意客户端可写任意手机号/设备；复用风险评估的一部分 |
-| A6 | 表无 `mac` 列 | 文档声明；**静态成立** | 不能按网关审计；跨网关/换绑排查只能靠 App 侧 |
-| A7 | 单请求 50 行、平均 ~5.6 请求/s（1000 设备）可被 Flask 服务承受 | 未测 | 服务端并发/连接池能力未知；不据此扩容 |
-| A8 | 客户端重试窗口足够覆盖真实断网 | 静态：约 8 h 后停止 | 长断网/长停机后云端永久缺行，后端无补偿入口 |
-| A9 | 180 s 轮询 + 缓存复读 → 480 行/设备/日 | 静态代码成立 | 容量估算与“无新数据”语义 |
-| A10 | 数值域：温度 ±3276.7℃、湿度 ≤6553.5%RH，`DECIMAL(6,2)` 可容纳 | 静态算术 | 非法/异常值也会被存成“合法”数值；服务端域校验未知 |
-
-交易/一致性：服务端是否把一批 50 行放在单事务、部分失败如何返回，**未知**；客户端只按 2xx 整批 ack，若服务端出现“部分写入 + 2xx”，则未写入行会被客户端删除。
-并发：两个客户端同 `(dev_id,time)` 并发写入时由唯一键决定胜负，**无冲突检测/合并**；并发下谁的请求先到不确定。
-恢复：EMQX/MySQL/abr.py 的开机自启只是迁移记录声明；备份、恢复演练、数据库迁移回滚均无证据。
-
----
-
-## 6. 复用 vs 最小改造 vs 重建
-
-| 方案 | 内容 | 本轮可实施性 | 结论 |
-|---|---|---|---|
-| A 复用既有服务（推荐） | 不改端点/schema/部署，按现有契约上传 | **可实施**（客户端已按此编码） | 唯一可落地的路径；但 A1–A3 必须先核验，否则只是未证假设 |
-| B 最小改造 | 增加写鉴权/归属校验、冲突上报、批次事务、返回逐行结果、增加 `mac`/采样时间列 | **不可实施**：仓库无服务端源码，且无部署/DB 授权 | 需求未要求；只有核验发现必须时才提出，需另行授权 |
-| C 重建/替换后端 | 重写 Flask/迁移数据库/重新部署 | 明确禁止且无依据 | 否决 |
-
-即使选择 B，也必须先有 A1–A3 的核验结果，否则无法定义“最小”。本轮**不写任何服务端代码**（也没有可写的源码）。
-
----
-
-## 7. 给下游的 service_context（复用契约）
-
-```yaml
-service_context:
-  mode: reuse_existing_deployment          # 本轮无服务端源码可改；不重部署、不重建
-  source_of_truth: 服务器迁移记录.md        # 仅资料声明；运行状态未核验
-  broker:
-    uri: ssl://8.140.23.253:8883
-    alt_ports_not_for_app: [1883, 8083, 8084, 18083]
-    auth_model: "username=gateway_mac; password=gateway_mac + fixed_suffix"   # 原样保持
-    trust_anchor: dengbei_care/app/src/main/assets/jd-ca.crt                  # 原样保持
-    topics_unchanged: ["/<mac>/a/r0", "/<mac>/a/r1", "/<mac>/a/s0"]
-  http:
-    base: http://8.140.23.253:5000
-    upload: "POST /upload_data"
-    request: {phone: string, mac: string, readings: [{devId: "8-hex upper", time: unix_seconds, temperature: "degC", humidity: "%RH"}]}
-    client_batch_limit: 50
-    client_success_rule: "any 2xx => ack+delete outbox rows"
-    response_body_used_by_client: false
-  storage:
-    database: bwusernamebase
-    table: sensor_data
-    declared_columns: [id, phone, dev_id, time, temperature, humidity]
-    declared_unique: "(dev_id, time)"
-    declared_write: "INSERT IGNORE"
-    mac_persisted: false
-    sample_time_semantics: "Android receive time (BLE) / gateway epoch (MQTT); not sensor sample time"
-  invariants_to_preserve:
-    - 请求字段名/单位/端点不变（IC-002 §6；Android 兼容面）
-    - MQTT topic 与载荷格式不变
-    - 不在 App 或服务端新增未约定的判据/字段
-  must_not:
-    - 不因客户端需联调而重建或重新部署服务
-    - 不在探索/实现阶段写生产数据或执行生产迁移
-    - 不在缺少源码与授权时声称已完成服务端改造
-  required_before_acceptance: [D1, D2, D3, D4, D5]   # §9
-```
-
-对后端设计的下游含义：
-
-1. 本轮没有“服务端实现任务”可排；若设计文档仍要写后端章节，应写成**复用 + 核验门禁**，不得写成“已完成/已联调”。
-2. 任何“服务端加固”（鉴权、归属、冲突、事务、采样时间）都是**条件性增量**，触发条件是 §9 的核验结果，而不是本轮 readme 的直接要求。
-3. 客户端 E2E（E2E-SW-002 J-1/J-5）仍需真实服务与隔离测试账号；后端探索不替代它。
-
----
-
-## 8. 已核验 / 仅声明 / 未知 / 不满足
+## 7. 已核验 / 仅声明 / 未知 / 不满足
 
 | 项 | 分类 |
 |---|---|
-| 请求体字段、单位、批上限、重试与退避常量、`(dev_id,time)` 客户端幂等 | **已核验（静态）** |
-| 网关缓存复读、180 s 轮询、BLE 接收时刻语义 | **已核验（静态）** |
-| 仓库无服务端源码、无 `abr.py` 历史 | **已核验（本地）** |
-| 契约可被同构 DDL/语义接收、重试不增行、同键 first-wins | **已核验（本地桩，不可外推）** |
-| EMQX/MySQL/abr.py 版本、端口、表、DDL、自启、迁移时测试 | **仅用户声明（资料）** |
-| 服务当前在线、`/upload_data` 存在且响应 `inserted` | **未知** |
-| `UNIQUE`/`INSERT IGNORE` 在真实 MySQL 的实际行为、事务边界 | **未知** |
-| 鉴权/归属/`phone` 校验、滥用面 | **未知** |
-| 持久化与回读一致、备份恢复、磁盘余量 | **未知** |
-| 桩实验结果代表生产服务 | **不满足 / 明确禁止** |
-| 复用既有服务的运行期成立 | **不满足（本轮无依据）** |
+| 服务在线、systemd unit 状态、启动时间、NRestarts | **已核验（本轮原始输出）** |
+| 8 个端口监听与进程归属、对外 TCP 可达 | **已核验** |
+| EMQX 版本 5.8.0、uptime、4 个 listener running | **已核验** |
+| 6 个 HTTP 路由存在（405+Allow）、未知路径 404 | **已核验** |
+| HTTP 栈为 Werkzeug 开发服务器、Python 3.12.3 | **已核验** |
+| MySQL 容器运行、镜像 id/digest、无 healthcheck、浮动 tag | **已核验** |
+| 磁盘 68 G 可用、内存 1.9 G 可用、无 swap | **已核验** |
+| 部署日志存在 401/500/415 历史（含 upload_data 的 401） | **已核验** |
+| 近 18 天无 HTTP 业务请求、近 16 天无 MQTT 客户端 | **已核验** |
+| 客户端请求体字段/单位/批上限/待发箱与退避常量 | **已核验（静态源码）** |
+| `sensor_data` 表、`UNIQUE(dev_id,time)`、`INSERT IGNORE` | **仅资料声明**（DB 未授权连接） |
+| 401 的具体机制（token/归属/注册态） | **未知**（未读源码、无响应体） |
+| 上传成功响应体与 `inserted` 计数 | **未知**（未调用写接口） |
+| 事务边界、部分成功、MySQL `IGNORE` 全语义 | **未知** |
+| MQTT 认证仍为“用户名=MAC、密码=MAC+后缀” | **未知**（无客户端连接、未读配置） |
+| 备份/恢复演练、监控告警 | **未知**（未查到相关证据） |
+| 实际 server 版本 9.0.1 | **仅资料声明**（浮动 tag，无外部可见版本） |
+| 本地桩结果代表生产服务 | **不满足/明确禁止** |
+| 上传、幂等、持久化回读的端到端成立 | **未执行（阶段外）** |
 
 ---
 
-## 9. 真实服务的最小区分实验（未执行；需授权）
+## 8. 复用 vs 最小改造（更新）
 
-> 目标：用最少写入、可回滚的方式，把 A1–A5 从“声明/未知”变成“成立/否定”。全部实验只使用**与生产隔离的测试手机号、测试网关 MAC、测试 dev_id 和合成温湿度**；不得使用文档中的真实账号或任何真实用户数据。执行前需确认网络入口、测试账号、写入与回读授权、清理方式。
+| 方案 | 内容 | 本轮可实施性 | 结论 |
+|---|---|---|---|
+| A 复用既有服务 | 不改端点/schema/部署，按现有契约上传 | 存活/端口/路由已成立；**上传可用性待 D1** | 仍是首选，但不能宣称“已可用” |
+| B 最小改造 | 若 D1 证实新增了鉴权：服务端补“兼容旧客户端”或客户端补 token；另可加 `mac`/采样时间列、冲突上报、批次事务 | 需源码 + 部署 + DB 授权，本轮全部未获准 | 条件性增量，触发条件＝D1 结果 |
+| C 重建/替换 | 重写 Flask/重部署/迁库 | 无依据且被禁止 | 否决 |
 
-| ID | 对象与有界动作 | 原始证据 | 验收依据 | 所需授权/前置 |
-|---|---|---|---|---|
-| D1 | 对 `8.140.23.253:8883` 用 `jd-ca.crt` 做一次 TLS 握手 + MQTT CONNECT（**测试**用户名，非真实设备凭据），有限等待 10 s | 证书链、`CONNACK`、时间戳 | 证书链与信任锚一致；认证结果可解释；失败原因可复现 | 联网入口 + 测试 broker 账号 |
-| D2 | 不写库的存活探测：`POST /login` 传无效测试数据（迁移记录称返回 400），有限等待 10 s | HTTP 状态码、响应体原文 | 端点存在且可处理请求；不据此判断上传/持久化 | 联网入口 |
-| D3 | 用测试 `(phone, dev_id)` 与未来时间戳连续 POST `/upload_data` 两次（相同载荷），再按获准只读入口回读 | 两次状态码/`inserted`、回读行、行数 | 第一次 `inserted=1`；第二次 `inserted=0` 且行数不变；回读值/时间与请求逐字段一致 | 联网入口 + 测试账号 + 写入授权 + 只读回读 + 清理 `DELETE` 授权 |
-| D4 | 同键不同值、批内一项非法、空 `readings`、缺 `phone` 各一次 | 状态码/响应体、回读行、服务日志（若获准） | 冲突取舍、部分成功/原子性、4xx 边界有明确可复现结论 | 同 D3 |
-| D5 | 未知 `phone`/`mac`/`dev_id` 与不带鉴权的请求各一次（仅合成数据） | 状态码/响应体、是否落库 | 归属/鉴权是否存在；是否存在任意写 | 同 D3；不触真实用户数据 |
-
-通过这些实验后，复用结论才能从“契约层可行”升级为“运行期成立”；若 D3/D4 否定幂等或事务假设，再评估 §6 方案 B，并明确所需源码与部署授权。
+不因客户端要联调就重做服务或部署；F1 未定性前不写任何服务端代码（也没有可写的源码）。
 
 ---
 
-## 10. 容量与恢复的算术（非实测）
+## 9. 端到端阶段必须执行的最小区分实验
 
-**云端行数上界**
+> 全部使用**与生产隔离的测试手机号、测试网关 MAC、测试 dev_id、合成温湿度**；不得使用资料中的真实设备凭据与任何真实用户数据。执行前须落实：网络入口（本轮 SSH 只读之外的 HTTP 写授权）、测试身份、写入授权、只读回读入口、清理方式。
+> 缺任一项即记 **NOT EXECUTED 及原因**，不得以 HTTP 2xx 替代持久化结论。
 
-```
-每设备每日读取次数 = 86400 / 180 = 480
-1000 设备每日行数 ≈ 480,000
-1000 设备每年行数 ≈ 175,200,000
-```
+| ID | 有界动作 | 原始证据 | 验收依据 |
+|---|---|---|---|
+| **D1（最高优先）** | 用测试载荷 `POST /upload_data` 一次，**不带**任何凭证；再用 `/login` 得到的 token（若存在）重试一次 | 两次状态码 + 响应体原文（脱敏） | 若第一次 401 且第二次 2xx → 确认存在鉴权，须给出“谁改谁补”的结论；若都 2xx → 401 属历史其他逻辑，记录排除依据 |
+| D2 | 相同 `(dev_id,time)` 连续 POST 两次（相同值） | 两次状态码/响应体、回读行、行数 | 第一次 `inserted=1`；第二次 `inserted=0` 且行数不变 |
+| D3 | 同键不同值 1 次；批内一项非法 1 次；空 `readings` 1 次 | 状态码/响应体、回读行 | 冲突取舍（first-wins？覆盖？）、原子性、4xx 边界有可复现结论 |
+| D4 | 按获准只读入口回读 `(dev_id,time,temperature,humidity)` | 回读行原文 | 与请求逐字段一致（含 `DECIMAL(6,2)` 舍入）；无回读入口 → 持久化子项 NOT EXECUTED |
+| D5 | 未知 `phone`/`mac`/`dev_id` 各 1 次（仅合成） | 状态码/响应体 | 归属/鉴权是否存在、是否可任意写 |
+| D6 | 一次真实 App 上传（真机）在服务端日志与回读两侧对账 | logcat、服务日志行、回读行 | 2xx 与落库同时成立；顺带确认 F1 在真实客户端上的表现 |
 
-前提：守护运行、BLE 读成功、网关持续返回缓存值；按正常单手机路径计。传感器条件上报只影响空口帧，不改变该上界（§3）。MQTT 回环/多手机共享网关可能额外增行，未核验，不并入本上界。
-
-**体积估算（区间，按 InnoDB 经验值，不是实测）**
-
-```
-行体（phone≤20 + dev_id8 + time8 + 2×DECIMAL(6,2) + 头/空位图） ≈ 46–70 B
-再加唯一索引 (dev_id,time) 与页开销 → 约 66–150 B/行
-480,000 行/日 × 66–150 B ≈ 32–72 MB/日
-→ 约 12–26 GB/年（1000 设备）
-```
-
-交叉核对：迁移记录按 1 分钟/条给出“1000 设备半年 26 GB”（≈259,200 行/设备/半年、约 200 B/行）；按 180 s 折算为 1/3 行数 ⇒ 约 8.6 GB/半年、约 17 GB/年。与上式同量级。80 GB 系统盘对一年内规模可行，但需监控磁盘、索引膨胀与备份空间；3 年以上或设备数上升需重新评估（不据此扩容）。
-
-**客户端恢复窗口**
-
-```
-退避序列（attempts 1..20）：60,120,240,480,960,1800×15
-累计 ≈ 28,860 s ≈ 8.0 h
-达 20 次后：行保留在 pending_uploads，但不再满足 dueRows 条件 → 无自动重试
-```
-
-因此服务端停机 > ~8 h 会产生云端缺行，且后端没有重放/补偿入口的证据；这属于客户端重试策略与运维恢复的边界，不能由服务端“自动补回”。
+D1 可与 D6 合并执行以减少写入次数；清理只删本实验的测试行，删除动作需单独授权。
 
 ---
 
-## 11. 结论与请求的下一步
+## 10. 容量与恢复（算术 + 本轮实测资源）
 
-1. **设计结论（可支持）**：本轮 readme 的八点不要求服务端代码、表结构或部署变更；复用既有 `POST /upload_data` 是唯一与本仓库能力相符的路径。此为契约层结论，不等于服务已可用。
-2. **不成立的项**：既有服务的运行期行为、真实 `UNIQUE`/`INSERT IGNORE`、鉴权/归属、持久化与回读，本轮均无真实依据；本地桩不能替代。按能力契约返回 **WORK_FAILED**。
-3. **请求的最小外部操作**：提供与生产隔离的**测试服务入口/测试账号**及获准的只读回读（或明确授权在测试窗口内写入并清理合成数据），以执行 §9 的 D1–D5。对象、动作、证据与验收依据已列明；未获授权前不连接、不写库、不猜凭据。
-4. **不需要做的事**：不需要重做服务、不需要重新部署、不需要为“联调”修改服务端；在 D1–D5 没有否定 A1–A4 之前，也不应新增服务端功能。
+**行数上界**（沿用 as-built：BLE 每 180 s 读一次网关缓存，按接收时刻入库）
+
+```
+每设备每日 = 86400/180 = 480 行
+1000 设备每日 ≈ 480,000 行；每年 ≈ 175,200,000 行
+```
+
+前提：守护运行、BLE 读成功、网关持续返回缓存值。条件上报只减少 433 空帧，**不减少**云端行数。
+
+**体积**：按 InnoDB 经验 66–150 B/行 ⇒ 32–72 MB/日 ⇒ 约 **12–26 GB/年**（1000 设备）。
+**本轮实测资源**：`/` 79 G、可用 68 G（10%）、内存 1.9 G 可用、无 swap，且与 caddy/postgres/RustDesk 共租。据此：一年量级可容纳；三年以上或设备数上升需重新评估，并需监控磁盘与内存（本项目服务与其它服务共享主机，不能只看本表）。
+
+**客户端恢复窗口**（静态）：退避 60,120,…,1800 s×15，`maxAttempts=20` ⇒ 约 8.0 h 后停止自动重试，行保留但不重发；服务端无重放入口证据。叠加 F1：
+```
+若 /upload_data 恒返回 401 → 每次上传 20 次退避内全部失败 → 约 8 h 后全部滞留，云端 0 行
+```
+这是当前最需要先排除的单点风险。
 
 ---
 
-## 附录 A：本次确认的文件身份（SHA-256）
+## 11. 给下游的 service_context（以本轮实测更新）
+
+```yaml
+service_context:
+  mode: reuse_existing_deployment        # 不重建、不重部署；本轮无服务端源码
+  verified_at: "2026-11-09T06:24–06:28Z (SSH read-only, paramiko; host key sha256 ty/ysZ6…bJQ)"
+  broker:
+    uri: ssl://8.140.23.253:8883
+    version_verified: "EMQX 5.8.0"
+    listeners_verified: {1883: tcp, 8883: ssl, 8083: ws, 8084: wss, 18083: dashboard}
+    listeners_running: true
+    current_connections: 0
+    auth_model: "资料声明 username=MAC / password=MAC+固定后缀；本轮无客户端连接，机制未核验"
+    trust_anchor: dengbei_care/app/src/main/assets/jd-ca.crt   # md5 f1a8212e3c690d57894b8a3a5fd901ab，与资料一致
+    topics_unchanged: ["/<mac>/a/r0", "/<mac>/a/r1", "/<mac>/a/s0"]
+  http:
+    base: http://8.140.23.253:5000
+    runtime: "Werkzeug/3.1.8 dev server, Python 3.12.3, systemd unit user_script.service, pid 20644"
+    code_on_disk: "/root/abr.py size=8949 mtime=2026-10-22T19:31:04+08:00"
+    routes_verified_exist: ["/login", "/upload_data", "/sendVerificationCode", "/verifyCode", "/register", "/setmac"]
+    route_probe_method: "GET only -> 405 + Allow: OPTIONS, POST; unknown path -> 404"
+    upload_request: {phone: string, mac: string, readings: [{devId: "8-hex", time: unix_seconds, temperature: degC, humidity: "%RH"}]}
+    upload_auth: "unknown_and_disputed: observed HTTP 401 on 2026-10-22 (2x) then 200; client sends no credential; resolve at E2E-D1"
+    client_batch_limit: 50
+    client_success_rule: "any 2xx => ack+delete outbox rows"
+  storage:
+    database: bwusernamebase
+    table: sensor_data            # 资料声明，本轮未连接 DB
+    declared_unique: "(dev_id, time)"
+    declared_write: "INSERT IGNORE"
+    mac_persisted: false
+    server_version: "资料声明 MySQL 9.0.1；实测镜像 mysql:latest id sha256:d7f7ebf3…00b5（2024-07-22），版本未能从外部确认"
+    container: "Up, restart=unless-stopped, no healthcheck, 3306 published on 0.0.0.0"
+  host_resources: {disk_total: "79G", disk_avail: "68G", mem_available_mib: 1917, swap: none, co_tenants: [caddy, postgres, rustdesk, next-server]}
+  activity_evidence:
+    http_requests_total_in_journal: 26      # since 2026-09-25; last business POST 2026-10-22T19:32:28+08:00
+    mqtt_clients_since_2026-10-24_restart: 0
+    note: "近 18 天无 HTTP 业务流量、近 16 天无 MQTT 连接；不能据历史推断上传/幂等/持久化"
+  invariants_to_preserve:
+    - 请求字段名/单位/端点不变（IC-002 §6）
+    - MQTT topic 与载荷格式不变
+    - 不新增未约定的判据/字段
+    - 不因联调而重建/重新部署
+  must_not:
+    - 不在探索/实现阶段写生产数据、执行迁移、直连数据库
+    - 不在缺少源码与授权时声称服务端改造完成
+    - 不把 2xx 当作持久化通过
+  blockers_for_design_signoff: [D1]      # 上传鉴权定性前，不得写“服务端复用已通过”
+  required_at_e2e: [D1, D2, D3, D4, D5]
+```
+
+**对后端设计的直接含义**
+
+1. 本轮**没有服务端实现任务**可排；后端章节应写成“复用 + 门禁（D1）”，不能写成“已联调/已通过”。
+2. D1 未定性前，任何“上传链路可用”的结论都不成立；这是当前唯一会改变结论的未知项。
+3. 服务端加固（鉴权/归属/冲突上报/事务/采样时间列）仍是**条件性增量**，触发条件只有 D1–D3 的结果，不是 readme 的直接要求。
+4. 不重部署、不重拉镜像、不改防火墙、不直连数据库；F5/F7 记录为运维风险并转相应责任方。
+
+---
+
+## 12. 结论
+
+1. **成立**：既有服务真实存在并在运行；EMQX 5.8.0 与 4 个 listener 正常；`user_script`/`abr.py` 在 5000 端口服务；客户端使用的 6 个 POST 路由全部存在；磁盘/内存余量可容纳一年量级数据；本轮 readme 八点不产生服务端增量。
+2. **不成立/已否证**：资料所述“上传无鉴权”与部署日志不符（出现 401）；“近期有真实业务流量”不成立（18 天无 POST、16 天无 MQTT 连接）。
+3. **未知（阶段外，已给判别方法）**：上传是否可用、`UNIQUE`+`INSERT IGNORE` 真实语义、事务边界、持久化与回读、MQTT 认证机制。
+4. **不需要做**：不需要重做服务、不需要重新部署、不需要为联调改服务端；D1 未定性前不应新增服务端功能。
+5. **下一授权动作**：在端到端阶段执行 §9 的 D1（必要时合并 D6），并落实隔离测试身份、写入授权与（若有）只读回读入口；缺条件的子项记未执行及原因。
+
+---
+
+## 附录 A：本次确认的文件身份（SHA-256，本机计算）
+
+检查时点：2026-11-09T06:28Z（06:24–06:28 会话）。摘要只标识本次读取的对象内容，**不证明**远端或板上对象未变化；远端 `abr.py` 等只能给出 `size/mtime`，未取内容摘要。
 
 | 文件 | SHA-256 |
 |---|---|
 | `readme.txt` | `c6f19954d54c29136db95d75dcc28816d84d5ce57ea449714a0c58ba80a1e6dd` |
 | `服务器迁移记录.md` | `e883e4df73b109dd7ac08c862e350ed9b11372a9e073930dd7bcf9e4749811ed` |
 | `artifacts/interface_contract.md` | `6af5f0a65c819033390e94099c77ede83af53b6a2750edf55debd9fe42d2ff22` |
-| `artifacts/system_analysis_current.md` | `2645bbffc048fbbe5ed8781ec5365a1b5d8cbc17fa9279364d5e16a803bc31a5` |
-| `dengbei_care/.../cloud/CloudConfig.kt` | `d7daae2db108ec9b8f349ec61a9148bfd762e58d3fdd78e110fd81a7279b6cfb` |
-| `dengbei_care/.../cloud/UploadPayload.kt` | `c0fff0ed06404895c52b216d4ce0c31657c2c4a6a509f29d015e6d579a6d98a9` |
-| `dengbei_care/.../cloud/CloudUploadRepository.kt` | `c221de8da8d78ecc4b41e341daca69ece754fe8e18fd95920cdb065612b84a1c` |
-| `dengbei_care/.../cloud/UploadOutbox.kt` | `63d06a21e4f2c22d9e77580b81fc6056fe523d8e17ddfef6c6246a6da543dbf7` |
-| `dengbei_care/.../ui/zhuce/ApiService.kt` | `7d9fd0d15994174f13857fff29db880edd697f156fbfc4bbc4316237aab7b444` |
-| `dengbei_care/.../MqtttService.kt` | `dd3847ff2fec80289f0e82282140fab77b8f0c78e85e59ff6a94040b934a88ac` |
+| `dengbei_care/app/src/main/assets/jd-ca.crt` | md5 `f1a8212e3c690d57894b8a3a5fd901ab`（与资料一致） |
 | `evidence/backend_exploration/upload_contract_stub.py` | `5134c6200ba42fed4ee43adcac2e28c1c7454db0042d3c5ff97bdacef4629a8a` |
-| `evidence/backend_exploration/upload_contract_observations.txt` | `8f200994dcc3b338aff1f74cf4ed5b81faa8a046aa5a62c45cd50027a3e153e1` |
+| `evidence/backend_exploration/upload_contract_observations.txt` | `8f200994dcc3b338aff1f74cf4ed5b81faa8a046aa5a62c45cd50027a3e153e1`（未改动） |
+| `evidence/backend_exploration/upload_contract_observations_rerun.txt` | `2001d7d8d68dc548d21ad7d399aa75d14139e6a6075645ee438b5f1da483d9ad` |
+| `evidence/backend_exploration/ssh_tcp_probe.py` | `7ff0137ad5c6c637f77f888345bddf6d8eabd84b9cb081a1bc44fa88ed1cb909` |
+| `evidence/backend_exploration/ssh_tcp_probe_output.txt` | `076565b3e2cebb5099728df7b0ad3f228a89faa2f296a105ec5de5a29c0bfb58` |
+| `evidence/backend_exploration/ssh_readonly_probe.py` | `a181e5417c5c74dc98c29b40adf6513fd13fa6e4dcf7288b74517566eea6ebd3` |
+| `evidence/backend_exploration/ssh_readonly_inspection.txt` | `cea6dd4da0363cd892efa9ba9eb96e12143490df49b88f9e2e39ea5ad38e66be` |
+| `evidence/backend_exploration/ssh_readonly_probe_followup.py` | `ff88b7c4ac8bfee853964a1b0c558df257894e93a00ec0e7e1e210db4ef93755` |
+| `evidence/backend_exploration/ssh_readonly_inspection_2.txt` | `051055532ef507560244e80231cacf11fb4c7a1866dc335b4e0d27f13001dda3` |
+| `evidence/backend_exploration/ssh_readonly_probe_emqx.py` | `5c66bc91028f8e3c1939fe8ab4b9bb20f1b22986ec57abd9ff65500e97b6a051` |
+| `evidence/backend_exploration/ssh_readonly_inspection_3.txt` | `13f87c3faa662664c3ecdb227e66d98811abdf8d250821c0e3153b37f3b59b28` |
+| `evidence/backend_exploration/ssh_readonly_probe_routes.py` | `cced0b9ac222e19a0ca5e629fe17cf3aac4681d3469031053196080ef3a39dad` |
+| `evidence/backend_exploration/http_route_existence.txt` | `6c037a66849fb03d6a7021564e0d3256200dd52d677b4eab202db3d063256a77` |
+| `evidence/backend_exploration/ssh_readonly_probe_http_history.py` | `70ce72e2686183a362c69392559c77f462b5c13332c0d5886dd744fab9b2cda3` |
+| `evidence/backend_exploration/http_history_counts.txt` | `7192ae78a28913c9fe61f550d526e8a7c07400b178357e7210eda767ca5c2fb9` |
+| `evidence/backend_exploration/ssh_readonly_probe_http_requests.py` | `5adc4492c6aa4b4aeebc32f2047ebbc708bc2b6215f3ad0fdc4765bf87234975` |
+| `evidence/backend_exploration/http_request_history.txt` | `85e2f7752012b8efb86926adabc1ad2297e0b2ca32321deba56c84e437ae78d6` |
 
-检查时点：2026-11-09T05:16Z（实验）/ 13:16+08:00。摘要只标识本次读取的对象内容，不证明远端服务或板上对象未变化。
+本报告自身不含摘要（无法自引用），其对象身份由本次 Git 提交记录标识。
 
-## 附录 B：实验可复跑性
+---
+
+## 附录 B：可复跑性
 
 ```
 cd D:\mypro\beiwo2\AIP
+python evidence/backend_exploration/ssh_tcp_probe.py
+python evidence/backend_exploration/ssh_readonly_probe.py
+python evidence/backend_exploration/ssh_readonly_probe_followup.py
+python evidence/backend_exploration/ssh_readonly_probe_emqx.py
+python evidence/backend_exploration/ssh_readonly_probe_routes.py
+python evidence/backend_exploration/ssh_readonly_probe_http_history.py
+python evidence/backend_exploration/ssh_readonly_probe_http_requests.py
 python evidence/backend_exploration/upload_contract_stub.py
-# 预期：EXIT=0，13 个用例，11×2xx / 2×400，538 行；仅监听 127.0.0.1
 ```
 
-脚本不使用外部网络、不读取凭据、不写仓库外持久文件（临时 SQLite 在退出时删除）；Flask/Werkzeug 为迁移记录之外的本机开发依赖（已存在，未安装/升级）。
+- 脚本从 `服务器迁移记录.md` 正则读取主机/账号/口令，**不在命令行或代码中硬编码、不打印**；写证据文件前统一脱敏（口令、AccessKey、手机号）。
+- 依赖：本机 Anaconda `python`（3.x）+ 已存在的 `paramiko 2.8.1`、`flask`、`requests`；本轮未安装/升级任何依赖、未改系统包。
+- 每个 SSH 会话单命令 ≤15 s、整轮 ≤150 s；无后台任务、无遗留进程。
+- 桩脚本仍只监听 `127.0.0.1` 临时端口，退出时删除临时 SQLite；**不得**用它替代真实服务结论。
+
+---
+
+## 附录 C：历史记录（保留，不重写）
+
+**BE-EXP-001（2026-11-09 13:19，提交 `06f9c59`）结果 `WORK_FAILED`**：当时环境未登记任何服务端访问入口、`allowed_external_actions` 为空，因此没有任何真实服务响应；契约层结论为“本轮无需改服务端”，并用本地桩固定契约与风险模型（13 请求、538 行、first-wins 等）。
+
+本轮变化：Unified 汇总已登记 `existing_service_ssh_inspection`（enabled，动作 `inspect_existing_service_readonly`，30 s），上一轮“无入口”的原因消失；本次已实际连接并取得原始输出。**上一轮的桩结论与其边界不变，旧证据文件未修改**（摘要见附录 A）。上一轮“迁移记录仅声明、运行期未证”的条目中：在线、版本、端口、路由存在性已由本轮转为**已核验**；`UNIQUE`/`INSERT IGNORE`、鉴权机制、持久化仍为**未核验**，并新增“401 与客户端不一致”这一实测差异。

@@ -1,0 +1,178 @@
+# third bounded read-only SSH probe (EMQX traffic counters)
+started_utc=2026-11-09T06:25:47Z
+host=8.140.23.253 port=22 transport=paramiko/2.8.1
+server_host_key=ssh-ed25519 fingerprint_sha256=ty/ysZ6Z9cvGUtYfQ26082EJXBWFFzU9pYBm2tXPbJQ
+connect_result=OK
+
+--- [emqx_broker] $ emqx ctl broker 2>&1 | head -25
+exit=0 elapsed_ms=1366
+stdout:
+sysdescr  : EMQX
+version   : 5.8.0
+datetime  : 2026-11-09T14:25:49.096694284+08:00
+uptime    : 16 days, 7 hours, 56 minutes, 2 seconds
+
+--- [emqx_broker_stats] $ emqx ctl broker stats 2>&1 | head -40
+exit=0 elapsed_ms=903
+stdout:
+channels.count                : 0
+channels.max                  : 0
+cluster_sessions.count        : 0
+cluster_sessions.max          : 0
+connections.count             : 0
+connections.max               : 0
+delayed.count                 : 0
+delayed.max                   : 0
+durable_subscriptions.count   : 0
+durable_subscriptions.max     : 0
+live_connections.count        : 0
+live_connections.max          : 0
+retained.count                : 3
+retained.max                  : 3
+sessions.count                : 0
+sessions.max                  : 0
+suboptions.count              : 0
+suboptions.max                : 0
+subscribers.count             : 0
+subscribers.max               : 0
+subscriptions.count           : 0
+subscriptions.max             : 0
+subscriptions.shared.count    : 0
+subscriptions.shared.max      : 0
+topics.count                  : 0
+topics.max                    : 0
+
+--- [emqx_broker_metrics] $ emqx ctl broker metrics 2>&1 | head -60
+exit=0 elapsed_ms=905
+stdout:
+authentication.failure        : 0
+authentication.success        : 0
+authentication.success.anonymo: 0
+authorization.allow           : 0
+authorization.cache_hit       : 0
+authorization.cache_miss      : 0
+authorization.deny            : 0
+authorization.matched.allow   : 0
+authorization.matched.deny    : 0
+authorization.nomatch         : 0
+authorization.superuser       : 0
+bytes.received                : 0
+bytes.sent                    : 0
+client.auth.anonymous         : 0
+client.authenticate           : 0
+client.authorize              : 0
+client.connack                : 0
+client.connect                : 0
+client.connected              : 0
+client.disconnected           : 0
+client.subscribe              : 0
+client.unsubscribe            : 0
+delivery.dropped              : 0
+delivery.dropped.expired      : 0
+delivery.dropped.no_local     : 0
+delivery.dropped.qos0_msg     : 0
+delivery.dropped.queue_full   : 0
+delivery.dropped.too_large    : 0
+messages.acked                : 0
+messages.delayed              : 0
+messages.delivered            : 0
+messages.dropped              : 0
+messages.dropped.await_pubrel_: 0
+messages.dropped.no_subscriber: 0
+messages.forward              : 0
+messages.persisted            : 0
+messages.publish              : 0
+messages.qos0.received        : 0
+messages.qos0.sent            : 0
+messages.qos1.received        : 0
+messages.qos1.sent            : 0
+messages.qos2.received        : 0
+messages.qos2.sent            : 0
+messages.received             : 0
+messages.sent                 : 0
+messages.transformation_failed: 0
+messages.transformation_succee: 0
+messages.validation_failed    : 0
+messages.validation_succeeded : 0
+overload_protection.delay.ok  : 0
+overload_protection.delay.time: 0
+overload_protection.gc        : 0
+overload_protection.hibernatio: 0
+overload_protection.new_conn  : 0
+packets.auth.received         : 0
+packets.auth.sent             : 0
+packets.connack.auth_error    : 0
+packets.connack.error         : 0
+packets.connack.sent          : 0
+packets.connect.received      : 0
+
+--- [emqx_clients] $ emqx ctl clients list 2>&1 | head -20
+exit=0 elapsed_ms=913
+stdout:
+No clients.
+
+--- [emqx_journal_span] $ journalctl -u emqx --no-pager -n 3 --reverse 2>&1; journalctl -u emqx --since '-30 days' --no-pager 2>&1 | wc -l; journalctl -u emqx --since '-30 days' --no-pager -n 12 2>&1 | tail -12
+exit=0 elapsed_ms=110
+stdout:
+Oct 24 06:29:49 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: EMQX 5.8.0 is running now!
+Oct 24 06:29:49 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: Listener http:dashboard on :18083 started.
+Oct 24 06:29:48 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: Listener wss:default on 0.0.0.0:8084 started.
+45
+Oct 24 06:29:44 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: emqx.service: Consumed 9min 56.930s CPU time, 346.1M memory peak, 0B memory swap peak.
+Oct 24 06:29:44 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Started emqx.service - emqx daemon.
+Oct 24 06:29:45 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: WARNING: Default (insecure) Erlang cookie is in use.
+Oct 24 06:29:45 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: WARNING: Configure node.cookie in /etc/emqx/emqx.conf or override from environment variable EMQX_NODE__COOKIE
+Oct 24 06:29:45 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: WARNING: NOTE: Use the same cookie for all nodes in the cluster.
+Oct 24 06:29:46 iZ2zeih0gmrk47og5r4z7sZ emqx[21140]: EXEC: /usr/lib/emqx/erts-14.2.5.2/bin/erlexec -enable-feature maybe_expr -noinput -noshell +Bd -boot /usr/lib/emqx/releases/5.8.0/start -boot_var RELEASE_LIB /usr/lib/emqx/lib -boot_var ERTS_LIB_DIR /usr/lib/emqx/lib -mode embedded -config /var/lib/emqx/configs/app.2026.10.24.06.29.45.config -args_file /var/lib/emqx/configs/vm.2026.10.24.06.29.45.args -start_epmd false -epmd_module ekka_epmd -proto_dist ekka -- foreground -ekka_proto_dist inet_tcp -emqx_data_dir /var/lib/emqx
+Oct 24 06:29:48 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: Listener tcp:default on 0.0.0.0:1883 started.
+Oct 24 06:29:48 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: Listener ssl:default on 0.0.0.0:8883 started.
+Oct 24 06:29:48 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: Listener ws:default on 0.0.0.0:8083 started.
+Oct 24 06:29:48 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: Listener wss:default on 0.0.0.0:8084 started.
+Oct 24 06:29:49 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: Listener http:dashboard on :18083 started.
+Oct 24 06:29:49 iZ2zeih0gmrk47og5r4z7sZ bash[20845]: EMQX 5.8.0 is running now!
+
+--- [emqx_conf_listeners] $ emqx ctl conf show listeners 2>&1 | head -40
+exit=0 elapsed_ms=914
+stdout:
+listeners {
+  ssl {
+    default {
+      acceptors = 16
+      access_rules = [
+        "allow all"
+      ]
+      bind = "0.0.0.0:8883"
+      enable = true
+      enable_authn = true
+      max_conn_rate = infinity
+      max_connections = infinity
+      mountpoint = ""
+      proxy_protocol = false
+      proxy_protocol_timeout = "3s"
+      ssl_options {
+        cacertfile = "/var/lib/emqx/certs/listeners/ssl/default/cacert-613B9023E1E698F0"
+        certfile = "/var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA"
+        ciphers = []
+        client_renegotiation = true
+        depth = 10
+        enable_crl_check = false
+        fail_if_no_peer_cert = false
+        gc_after_handshake = false
+        handshake_timeout = "15s"
+        hibernate_after = "5s"
+        honor_cipher_order = true
+        keyfile = "/var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948"
+        log_level = notice
+        ocsp {
+          enable_ocsp_stapling = false
+          refresh_http_timeout = "15s"
+          refresh_interval = "5m"
+        }
+        reuse_sessions = true
+        secure_renegotiate = true
+        verify = verify_none
+        versions = [
+          "tlsv1.3",
+          "tlsv1.2"
+
+finished_utc=2026-11-09T06:25:52Z total_s=5.4
