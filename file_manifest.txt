@@ -90,7 +90,7 @@ artifacts/software_e2e_plan.md | active | 软件端到端测试计划 E2E-SW-003
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-003 rev 2.0（AA-003 G-1..G-4 用例、完整交付回归、证据边界与最终判定规则；升温方向已更正）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
 artifacts/system_analysis_current.md | active | 系统架构：当前需求约束与候选摘要、历史失败边界、既有服务器只读探索与端到端上传/幂等/持久化回读分工、集成缺口分析
-artifacts/test_design.md | active | 嵌入式测试设计 TD-002 rev 6.0（T1–T5 验收追踪矩阵与正常/异常用例、COM43 实板观测、BUS/VDD/IOTEST/IOSIG/S/G/P 判据、全暗标定三态、FX2 逻辑分析仪可选补充判别、退出准则；只做设计不执行）
+artifacts/test_design.md | active | 嵌入式测试设计 TD-002 rev 7.0（FW-REG-ASBUILT/REPORT/GXHT40、FW-T5-LIGHT、FW-DIAG-BOOT、FW-E2E-POWER 六项验收追踪矩阵与正常/异常用例、COM43 实板观测、BUS/VDD/IOTEST/IOSIG/S/G/P 判据、暗态/受光/全遮光标定门禁、fx2lafw:2.32 可选补充判别、pyocd 上电编排候选、退出准则；只做设计不执行）
 dengbei_care/ | active | Android App 工程根（Gradle/Kotlin；本轮按 readme 第 6 点同步修改）
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
 dengbei_care/app/build.gradle.kts | active | App 模块构建脚本（versionCode 9 / versionName 1.8；宿主机单测 isReturnDefaultValues）
