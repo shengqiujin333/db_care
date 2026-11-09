@@ -77,7 +77,7 @@ artifacts/backend_feasibility.md | active | 后端可行性探索 BE-EXP-002（�
 artifacts/codegraph_current_index.md | active | 代码智能：当前三个子工程 CodeGraph 入口、覆盖与排除范围、源码版本、同步与查询证据引用及变更后同步方法
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
-artifacts/failure_resolution.md | active | 项目协调失败责任与人工交接报告 FR-001：保留 EV-028/EV-029 原失败与版本引用，整理 D2/E1/F-1 已修与固件拒接依据，列明 T4-02 采集编排、T5 遮光标定、INT 联测、T4-07 配置、验收范围冲突等缺项及责任/完成条件；本次结果 REPLAN_REQUIRED，未修产品源码、未重测
+artifacts/failure_resolution.md | active | 项目协调失败责任与人工交接报告 FR-003（EV-030 完整交付失败/固件再次拒接）：保留 EV-030/EV-031 原失败与版本引用、D2/E1/F-1 已修与两次拒接依据，区分上电段采集编排（串口晚开 0.208 s、pyocd 未登记/无 CW32 目标）、T5 双态现场条件、跨链路联测阶段、功耗仪器等缺项及责任/完成条件；指出验收阶段冲突与测试资产缺口；结果 REPLAN_REQUIRED，未改产品源码/配置/验收文档，未烧录或重测；FR-001 原文保留在后
 artifacts/failure_resolution_backend_service.md | active | 项目协调失败责任与人工交接报告 FR-002（既有服务运行期核验）：保留 g002 WORK_FAILED 原失败与版本引用，区分契约层“无需改服务端”与运行期未证，列明服务访问连接未登记、网络动作未授权、测试身份未准备、回读/清理未授权、验收分界未定等缺项及责任/完成条件；本次结果 REPLAN_REQUIRED，未联网、未写库、未改配置或产品源码
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 7（基于 FW-EXP-002 rev 2：确认 T1–T4/F-1 已实现、GXHT40 当前构建 q=1；用户更正“现场无光”；保持 CALIBRATED=0，T5 需受光/全遮光双态；更新资源、验证矩阵与 6 项任务交接）
 artifacts/firmware_feasibility.md | active | 固件可行性探索 FW-EXP-002 rev 2：构建/UART1/GXHT40 I²C（0x44/0xFD、双 CRC、时序）与 3 分钟节拍已证实；用户确认现场无光并更正 README“有光”描述，3914/3915/3932 与暗态极性一致；受光低码与受控 C_dark 分布未测，结论 EXPLORATION_COMPLETE（设计可继续，R2/R4/R7 未通过）；列明测试/标定门禁
