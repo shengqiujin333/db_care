@@ -1,0 +1,39 @@
+EV-031 嵌入式失败归因：本轮最小实测工具原始结果
+分析对象：FWI-002 rev 7（受测提交 f978a01，axf md5 a3b08774e764f174eac318f6771d0c42；EV-030 独立 rebuild + mdk_flash Verify OK）
+本轮时间均为 Windows 主机 UTC（本地 = UTC+8，已另记）。
+本轮未烧录、未复位、未下载、未修改 runtime 配置；pyocd 仅做只读枚举（未访问目标、未执行 reset）。
+
+1) serial_list_ports  started_at=2026-11-09T08:51:57.440802+00:00  finished_at=2026-11-09T08:51:57.453332+00:00  exit 0
+   COM43 = "Prolific USB-to-Serial Comm Port (COM43)", USB VID:PID=067B:2303, LOCATION=1-9.4.2
+   COM26 = "USB 串行设备 (COM26)", USB VID:PID=C251:F001（调试器 CDC，未使用）
+
+2) usb_list_devices  started_at=2026-11-09T08:51:57.666189+00:00  finished_at=2026-11-09T08:51:59.851293+00:00  exit 0
+   在位：Prolific COM43（067B:2303）、CW-DAPLink 复合设备（C251:F001, SN 87094109484987710672FF50）、
+         手机 SDM439-QRD SN 12F046690506（18D1:4EE7）、FX2 fx2lafw（04B4:8613, CYPRESS_FX2）
+   未枚举到示波器/电流表/SMU。
+
+3) sigrok_info  started_at=2026-11-09T08:52:00.049892+00:00  exit 0（只读配置，不访问 USB）
+   enabled=true, driver=fx2lafw, connection=2.32, channels=[D0,D1], labels D0=scl/D1=sda, trigger D1=f,
+   samplerate=4,000,000, max_samples=20,000,000, timeout=240 s, online=not_checked
+   注：本轮未执行 sigrok_probe/capture；EV-030 已在 conn=2.32 下 probe/capture/decode exit 0。
+
+4) serial_capture  port=COM43 baudrate=9600
+   started_at=2026-11-09T08:52:50.106093+00:00  finished_at=2026-11-09T08:57:50.334205+00:00  exit 0
+   bytes_received=158
+   file=evidence/ev031/serial_capture_0852Z.bin  md5=8559c0278503afcb2563d871b975797e
+   原始内容（逐字节，CRLF 完整）：
+   S k=33 p=242 H=1 V=0 o=8 n=3993 x=3998 a=3995 D=0 t=245 h=322 q=1 r=0 s=0 y=0\r\n
+   S k=36 p=245 H=1 V=0 o=8 n=3994 x=3999 a=3996 D=0 t=246 h=320 q=1 r=0 s=0 y=0\r\n
+   行长（含 CRLF）：79 B、79 B；NUL/杂散字节：无；采样间期无输出。
+
+5) pyocd 只读可用性核对（未访问目标，未 reset；不属于本轮已登记/获授权的目标操作入口）
+   pyocd CLI = C:/Users/kason/AppData/Roaming/Python/Python311/Scripts/pyocd
+   `pyocd --version` -> 0.36.0（exit 0）
+   `pyocd list` -> 0  P&S CW-DAPLINK(CMSIS-DAP)  87094109484987710672FF50  Target=n/a（exit 0）
+   `pyocd list --targets --name CW32` -> 空表（exit 0，即 pyocd 当前无 CW32 目标定义）
+   配置的 python（C:/Users/kason/anaconda3/python.exe）`import pyocd` -> ModuleNotFoundError（EV-030 的“pyocd 未安装”仅对该解释器成立）
+   Arm pack 存储存在 WHXY.CW32L010_DFP 1.0.2（.pdsc/.pack/FlashCW32L010.FLM/SVD），但 pyocd 未加载该 DFP。
+   结论：pyocd 工具与探针均可用；缺“已登记的 pyocd 目标访问入口 + 加载 DFP + 目标操作授权”，本轮不猜配置、不执行 reset。
+
+6) 主机时间记录
+   date -u = 2026-11-09T09:00:19Z；本地 = 2026-11-09 17:00:19
