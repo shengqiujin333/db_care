@@ -1,0 +1,54 @@
+[1] T-L0-01 fw_crc8_gxht (poly 0x31, init 0xFF)
+  PASS  {0xBE,0xEF} -> 0x92 (手册参考向量)
+  PASS  {0x00} -> 0xAC (init 0xFF 走移位链)
+  PASS  空长度 -> init 0xFF
+[2] T-L0-02 温度换算与合法域
+  PASS  S=1872 -> -400 (-40.0 C 边界)
+  PASS  S=16855 -> 0 (0.0 C)
+  PASS  S=26214 -> 250 (25.0 C)
+  PASS  S=63664 -> 1250 (125.0 C 边界)
+  PASS  S=0 -> -450 (纯换算, 超有效域)
+  PASS  S=0xFFFF -> 1300 (纯换算, 超有效域)
+  PASS  有效域端点 -400/1250 合法
+  PASS  -450/1251/1300 判为无效
+[3] T-L0-03 湿度换算与截断 (0..1000)
+  PASS  S=0 -> 0 (原始 -60 截断)
+  PASS  S=2247 -> 0 (0 %RH)
+  PASS  S=29360 -> 500 (50 %RH)
+  PASS  S=55575 -> 1000 (100 %RH)
+  PASS  S=0xFFFF -> 1000 (原始 1190 截断)
+[4] 组合换算 gxht40_raw_to_x10: 有效才写输出
+  PASS  有效温度 -> true
+  PASS  输出 temp_x10=250 / hum_x10=500
+  PASS  无效温度 -> false
+  PASS  无效时不写输出
+[5] T-L0-04 光照: 完全无光基准 1/3 判据 (light_is_dark)
+  PASS  valid=false -> 恒 false (即使 3*mean>=C_dark)
+  PASS  valid=false + 满量程 -> false (不合成暗态)
+  PASS  C_dark=1: 3*0=0 < 1 -> false
+  PASS  C_dark=1: 3*1=3 >= 1 -> true
+  PASS  C_dark=4095: 3*1364=4092 < 4095 -> false
+  PASS  C_dark=4095: 3*1365=4095 = C_dark -> true (相等为暗)
+  PASS  C_dark=4095: 满量程 -> true
+  PASS  C_dark=3000: 边界相等为暗, 低 1 不为暗
+  PASS  每笔独立: 同输入同输出 (无滞回/无历史暗态)
+  PASS  本交付件为未标定状态 (C_dark 占位 0, 不得当作已验收)
+  PASS  C_dark=1..4095 全量: mean=ceil(C/3) 为暗, 再低 1 不是暗
+[6] T-L0-05 上报判定真值表
+  PASS  无前值 + cur=200 -> false
+  PASS  无前值 + cur=351 -> true
+  PASS  无前值 + cur=350 (恰好 35.0 C) -> false
+  PASS  升温 8 (0.8 C) -> false
+  PASS  升温 9 (0.9 C) -> false (严格)
+  PASS  升温 10 (1.0 C) 且 DARK -> true
+  PASS  升温满足但非 DARK -> false
+  PASS  降温 10 (方向错误) -> false
+  PASS  34.0->35.0 DARK -> 升温分支 true
+  PASS  34.0->35.0 LIT -> false
+  PASS  34.0->34.9 DARK -> false
+  PASS  cur=351 不受光照/前值限制
+  PASS  prev==cur -> false
+  PASS  int16 极值反向差不溢出
+  PASS  int16 极值正向 -> 超温 branch
+
+==== result: 46 passed, 0 failed ====

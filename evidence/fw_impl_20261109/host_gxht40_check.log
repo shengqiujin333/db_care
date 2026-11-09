@@ -1,0 +1,77 @@
+[1] 手册参考向量: T=0xBEEF(CRC 0x92) / RH=0x1234
+  PASS  返回 GXHT40_OK
+  PASS  temp_x10 == 855
+  PASS  hum_x10 == 29
+  PASS  发送命令 0xFD 一次
+  PASS  首次访问完整重探: 0x88(命令) + 0x89(读) 后仍探 0x8A (FWR-118)
+  PASS  缓存地址 = 0x44
+  PASS  只有被 ACK 的 0xFD 计入命令 (B 候选未被 ACK)
+  PASS  三次事务各一次 START; 4 次 STOP = A 命令 1 + A 读取 1 + B 探测 2 (NACK 路径先发 STOP 再补 STOP, 既有写法)
+  PASS  诊断: 成功轮 status=OK/attempt=1/read_retry=0
+  PASS  诊断: 0x44 收到地址 ACK, 0x45 未被探测到 ACK
+  PASS  诊断: raw 为最近一次成功读回的 6 字节
+[2] 25.0C / 50.0%RH
+  PASS  temp_x10=250, hum_x10=500
+[3] 负温 -10.0C / 0.0%RH
+  PASS  temp_x10=-100 (保留符号), hum_x10=0
+[4] 地址探测与缓存: 器件仅在 0x45
+  PASS  在 0x45 上测量成功
+  PASS  依次 0x88 -> 0x8A -> 0x8B
+  PASS  缓存地址 = 0x45
+  PASS  第二次直接使用缓存 0x8A/0x8B (不再探测 0x88)
+[5] 读 NACK(转换未完成) 有界重读
+  PASS  重读后成功 (2 次 NACK 被容忍)
+  PASS  读 NACK 不重发命令 (仅 1 次 0xFD, 同一次测量内重读)
+  PASS  诊断: 读事务消耗的失败重读次数 = 2 (前 2 次 NACK)
+[6] CRC 错误: 重测用尽后返回失败且不改输出
+  PASS  返回 GXHT40_ERR_CRC
+  PASS  输出未被修改
+  PASS  整帧重测次数 == GXHT40_MEAS_RETRY
+  PASS  诊断: CRC 错 - status=4 且 attempt=GXHT40_MEAS_RETRY
+  PASS  诊断: 保留最近一次成功读回的原始 6 字节 (供独立 CRC-8 复算)
+[7] 无器件: 返回 NO_DEVICE 且不改输出
+  PASS  返回 GXHT40_ERR_NO_DEVICE
+  PASS  输出未被修改
+  PASS  两个候选地址 0x88/0x8A 都被探测过
+  PASS  诊断: 无器件 - status=2 且两候选地址 ACK 均为 0
+  PASS  诊断: 未读成功时 raw_valid=0 (打印时用占位)
+[8] 换算超范围: -45.0C 与 125.1C 视为无效
+  PASS  T=-45.0C -> GXHT40_ERR_RANGE
+  PASS  输出未被修改
+  PASS  T=125.1C -> GXHT40_ERR_RANGE
+  PASS  诊断: 量程无效 - status=5 且保留原始 6 字节
+[9] 入参非法: 未绑定总线
+  PASS  返回 GXHT40_ERR_PARAM
+  PASS  输出未被修改
+[10] 周期路径命令白名单: 只允许 0xFD
+  PASS  所有已发命令均为 0xFD (无 0x94 软复位/加热器命令)
+[11] FWR-118: 缓存地址读失败后必须重探两个候选地址
+  PASS  器件在 0x45 上测量成功并缓存
+  PASS  读 NACK 用尽 -> GXHT40_ERR_IO
+  PASS  失败仍不修改输出
+  PASS  缓存地址在任一失败后被清空 (FWR-118)
+  PASS  缓存地址(0x45)读失败后仍重探了 0x44 (不再提前返回)
+  PASS  下一轮重新探测后测量成功
+  PASS  重新探测后缓存更新为 0x44
+  PASS  重探从 0x44 开始 (0x88/0x89) 并把 0x45 也探完 (0x8A, FWR-118)
+[12] 首次访问前 tPU 上电余量 (只一次, 不进周期路径)
+  PASS  首测成功
+  PASS  首次访问前恰好一次 GXHT40_POWER_ON_WAIT_MS (手册 tPU)
+
+  PASS  tMEAS 等待仍为 1 次 10 ms (>= 手册 8.3 ms 上限)
+  PASS  后续测量不再重复上电余量 (仅首访)
+[13] FWR-118/TD-002 B18: CRC 失败后下一轮完整重探两候选地址
+  PASS  基线: 缓存地址 0x44 测量成功
+  PASS  CRC 错周期返回 GXHT40_ERR_CRC
+  PASS  CRC 错周期不修改输出
+  PASS  CRC 错后缓存地址失效 (不再保留 0x44)
+  PASS  下一轮恢复正常读数
+  PASS  CRC 失败后的下一轮重探了 0x44 与 0x45 两个候选地址
+[14] FWR-118/TD-002 B18: 量程无效后下一轮完整重探两候选地址
+  PASS  基线: 缓存地址 0x44 测量成功
+  PASS  量程无效周期返回 GXHT40_ERR_RANGE
+  PASS  量程无效后缓存地址失效
+  PASS  下一轮恢复正常读数
+  PASS  量程无效后的下一轮重探了 0x44 与 0x45 两个候选地址
+
+==== result: 60 passed, 0 failed ====

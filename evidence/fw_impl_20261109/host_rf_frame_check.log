@@ -1,0 +1,30 @@
+[1] T-L0i-01 向量往返 (传感器 encode -> 网关 decode)
+  PASS  temp_x10=-400, hum=0
+  PASS  temp_x10=-100, hum=0 (负温符号)
+  PASS  temp_x10=0, hum=0
+  PASS  temp_x10=250, hum=550
+  PASS  temp_x10=350, hum=1000
+  PASS  temp_x10=1250, hum=1000
+  PASS  int16 域外低 -450
+  PASS  int16 域外高 1300
+  PASS  int16/uint16 上极值
+  PASS  int16 下极值
+[2] 伪随机向量往返 (128 组)
+  PASS  128 组随机 (temp,hum) 全部往返一致
+[3] 帧布局与字节序 (LE, 字段位置)
+  PASS  temp=-100/hum=0x1234 往返 -> 温度在 p[4..5] 小端、湿度在 p[6..7] 小端
+[4] 密文篡改 -> CRC 拒绝
+  PASS  10 个字节逐一翻转后 decode 均返回 false
+[5] 编码确定性
+  PASS  同一输入两次编码逐字节相同
+[6] ITEM-012 网关记录组装 + Android 解析映射
+  PASS  传感器编码 -> 网关 decode: temp=-100 / hum=0x1234
+  PASS  build_device_block: 前 8B = payload8 直拷
+  PASS  Android devId(0..3) 一致
+  PASS  Android humi = u16be@4 一致
+  PASS  Android temp = s16be@6 一致 (负温符号保持)
+  PASS  build_padded_frame_blocks: 1 设备 -> 32 B
+  PASS  Header: gwid6 + devCount@6
+  PASS  Android 从 offset 16 解析: id/hum/temp 全部一致
+
+==== result: 22 passed, 0 failed ====

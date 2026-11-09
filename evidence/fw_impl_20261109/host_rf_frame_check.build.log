@@ -1,0 +1,4 @@
+../../../../../CH592EVT/EVT/EXAM/BLE/beiwov2/APP/bleencrypt.c: In function 'build_padded_frame_blocks':
+../../../../../CH592EVT/EVT/EXAM/BLE/beiwov2/APP/bleencrypt.c:73:19: warning: comparison is always false due to limited range of data type [-Wtype-limits]
+   73 |     if (dev_count > MAX_DEV_COUNT) return 0;
+      |                   ^

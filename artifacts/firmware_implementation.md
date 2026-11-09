@@ -1,11 +1,74 @@
-# 固件实现（FWI-002 rev 6.4）
+# 固件实现（FWI-002 rev 7）
 
 状态：固件实现（负责角色：固件工程）
-本轮范围：**EV-026/EV-027 修复轮（F-1）**——EV-026 已在实板确认 E1 有效（`delay` 非空、STOP→读 START 32.5 ms、16/16 `q=1`），整体 `TEST_FAIL` 的剩余原因中仅 **F-1（`S` 行 `p/H` 为更新后前值）**属固件观测缺陷。本轮在 `temperature_process()` 推进前值前缓存判定所用的 `prev/have`，供 `sensor_trace_fetch()` 输出；**仍无下载/串口授权，未烧录、不声明实板通过**。F-3（`delay_ms` 约 1.63× 名义值）保留为“下限等待”并记录决策；F-2（首间隔）不改；T5 仍需遮光窗口。
-依据：EV-026 `evidence/test.md`、EV-027 `evidence/triage.md`、FD-002 / FWR-002 / TD-002 rev 6.0、IC-002 v3.0、`gxht40.pdf` V2.6
-受测源码：`d871957`（rev 6.3）+ 本轮 `measure.c`、实现侧自检一处改动；构建身份：`mdk_build rebuild` 0 Error / 1 既有告警，axf md5 `a3b08774e764f174eac318f6771d0c42`（见 `evidence/build.md`）
+本轮范围：2026-11-09 当前轮 **FW-REG-ASBUILT / FW-REG-REPORT 回归**——确认 as-built 源码已实现 T1–T4/F-1；重建 Keil 工程并完成实现侧宿主自检。**未修改产品源码、未烧录/下载、未做 COM43 实板/跨链路验证**；FW-REG-GXHT40、FW-T5-LIGHT、FW-DIAG-BOOT、FW-E2E-POWER 因当前能力无设备/现场条件未执行，交测试能力按 TD-002 rev 7 执行。
+依据：FD-002 rev 7、FWR-002 rev 7、FW-EXP-002 rev 2、TD-002 rev 7、IC-002 v3.0、`gxht40.pdf` V2.6
 
 ---
+
+## 1. 当前轮身份与范围
+
+| 项 | 值 |
+|---|---|
+| 仓库 HEAD | `fdfcd852b6282987d022ac7936bc8ba0d6cba5d9` |
+| sensor 工程 tree | `09bef6581f39ca50ba2ecfbaa5c77ef9accd68a5` |
+| `USER/` tree | `746a72d4cc995490341270441792cae85727e923` |
+| 与设计基线 `ef5caa6` 的产品源码差异 | `git diff --stat ef5caa6 HEAD -- USER/ test/` 为空 |
+| 本轮任务 | FW-REG-ASBUILT、FW-REG-REPORT（其余任务不属于本能力当前可执行条件） |
+| 未执行 | 下载/复位/COM43/逻辑分析仪/手机/网关/功耗测量；当前能力仅授权 `mdk_build` |
+
+当前源码已包含（静态核对，未重写）：
+- T1：`sensor_decide_report` 升温方向、严格 `>35.0℃`、int32 差值；常量 `SENSOR_REPORT_RISE_X10=9`、`SENSOR_REPORT_HIGH_X10=350`。
+- T2：`measure.c` 冻结 `s_report_temp_x10/s_report_hum_x10`，组帧只读快照；`debug_trace.c` 输出 `P` 行。
+- T3：`debug_trace.c` 的 `TXE/TXBUSY` 等待使用 `SENSOR_DEBUG_TX_GUARD` 有界。
+- T4/F-1：GXHT40 0x44/0x45 探测、0xFD、6 B、双 CRC、有效域、重探/恢复；`S` 行 `p/H` 为判定前快照。
+- 未标定门禁：`LIGHT_DARK_REF_CODE=0`、`LIGHT_DARK_CALIBRATED=0` 保持；暗态 3914/3915/3932 仅作候选，不据此回填。
+
+## 2. 实际改动
+
+**产品源码、固件工程配置、实现侧测试断言、验证角色资产：本轮零改动。**
+
+- 没有重写已符合项；没有改 CRC/量程/判据/空口/BLE/UART 格式。
+- 未修改 `test/*_verify_ev.c`、`test/mock_*_ev/`、`evidence/embedded_verify_*.py`。
+- 仅新增本实现记录与 `evidence/fw_impl_20261109/` 构建/宿主自检证据。
+- `host_fw_core_pure_check` 的编译使用 `-include ../USER/inc/sensor_config.h`（该 harness 注释的编译行缺此头），未改测试文件；`host_rf_frame_check` 链接补齐既有 `bleencrypt.c`，未改产品源码。
+
+## 3. 构建结果
+
+| 项 | 结果 |
+|---|---|
+| 命令 | `mdk_build {"action":"rebuild"}` |
+| 编译器 | ARMCLANG V6.24 |
+| 结果 | **0 Error / 1 Warning**（`main.c(254)` 空循环体，既有） |
+| 资源 | `Code=25964 RO-data=656 RW-data=116 ZI-data=1676` |
+| 产物 | `Project.axf` md5 `a3b08774e764f174eac318f6771d0c42`；`Project.hex` md5 `546ce20a718fa69b40177cce0145f4b5` |
+| 原始日志 | `evidence/fw_impl_20261109/mdk_rebuild.result.txt`、`build_evidence.md` |
+
+与 FW-EXP-002 rev 2 记录一致；因产品源码未改，重建可复现同一摘要。构建成功不等于实板功能通过。
+
+## 4. 实现侧宿主自检
+
+| 入口 | 结果 |
+|---|---|
+| `test/build_test.sh` | **218 passed / 0 failed**（46+61+54+28+29），exit 0 |
+| `host_gxht40_check` | **60 / 0** |
+| `host_sf_i2c_bus_check` | **42 / 0** |
+| `host_rf_frame_check` | **22 / 0** |
+| `host_fw_core_pure_check` | **46 / 0** |
+| **合计** | **388 passed / 0 failed** |
+
+覆盖 T1 九组向量/严格边界/int16 极值、T2 冻结/重试/跨采样/不覆盖/P 行、T3 卡死有界、T4/F-1 地址/CRC/换算/重探、光照未标定门禁与 1/3 边界、空口寄存器布局/网关 8 B 映射。原始日志与可复跑命令见 `evidence/fw_impl_20261109/driver_test_evidence.md`。
+
+## 5. 未执行与交接
+
+- **FW-REG-GXHT40**：当前构建真实目标连续多周期 `q=1`/失败路径需 `mdk_flash` + COM43，本能力无入口，未执行；不得用宿主结果替代。
+- **FW-T5-LIGHT**：现场无光、无受光/遮光双态；保持 `0/0`，暗态候选不回填；待测试阶段按 TD-002 §5.4 执行。
+- **FW-DIAG-BOOT / FW-E2E-POWER**：需先开捕获窗口复位、网关/手机同窗、功耗仪器；本能力未执行。
+- 交接给测试：按 TD-002 rev 7 的 ASB-01..06、T1/T2/T3、T4/T5/E2E 用例复验；实现侧产物摘要/构建日志/宿主自检日志已入库。
+
+---
+
+> 以下 `# 修复轮 run14` 起为历史记录（rev 6.3/6.4，EV-026/EV-027/EV-028），保留原窗口、版本和结论；不得用历史 PASS 替代本轮实板结果。
 
 # 修复轮 run14：`S` 行前值语义修正（F-1）
 

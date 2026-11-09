@@ -1,0 +1,54 @@
+[1] i2c_write_cmd: START -> 0x88 -> 0xFD -> STOP
+  PASS  返回 SF_I2C_SUCCESS (命令被 ACK)
+  PASS  恰好 1 个 START 与 1 个 STOP
+  PASS  线上字节为 地址+W(0x88) 后接 命令(0xFD), 无寄存器地址
+  PASS  总线空闲释放(SCL/SDA 均为高)
+[2] i2c_read_bytes: START -> 0x89 -> 6B(ACKx5,NACK) -> STOP
+  PASS  返回 SF_I2C_SUCCESS
+  PASS  恰好 1 个 START 与 1 个 STOP
+  PASS  仅先发读地址字节 0x89
+  PASS  读回 6 字节与从机数据逐字节一致
+  PASS  前 5 字节主机 ACK、第 6 字节主机 NACK
+[3] 从机不响应: ACK 失败作为返回值
+  PASS  i2c_write_cmd 返回 SF_I2C_TIMEOUT
+  PASS  超时路径已发出 STOP 释放总线
+  PASS  i2c_read_bytes 返回 SF_I2C_TIMEOUT (读地址未 ACK)
+  PASS  超时路径已发出 STOP 释放总线
+[4] length==0: 无总线动作
+  PASS  返回 SF_I2C_SUCCESS
+  PASS  未产生任何 START/STOP
+[5] i2c_probe_addr: 只发地址字节的有界探测 (FWR-116)
+  PASS  器件在 0x44: 返回 SF_I2C_SUCCESS (地址被 ACK)
+  PASS  恰好 1 个 START 与 1 个 STOP
+  PASS  线上只有地址写字节 0x88 (无命令字节/无数据)
+  PASS  探测后总线释放(SCL/SDA 均为高)
+[6] i2c_probe_addr: 无器件地址返回超时且释放总线
+  PASS  0x45 无器件: 返回 SF_I2C_TIMEOUT
+  PASS  NACK 后已发出 STOP 释放总线
+  PASS  线上只有地址写字节 0x8A, 未继续写命令
+  PASS  超时后总线仍释放
+[7] i2c_bus_recover: 空闲总线不产生时钟/STOP
+  PASS  总线空闲: 返回 SF_I2C_SUCCESS
+  PASS  空闲总线不产生 START
+  PASS  空闲总线未额外打时钟 (仅释放 SCL 的一次置高)
+  PASS  恢复后双线均高 (总线空闲)
+[8] i2c_bus_recover: SDA 被从机持续拉低 -> 9 个 SCL 脉冲 + STOP, 仍有界返回
+  PASS  SDA 仍被拉低: 返回 SF_I2C_TIMEOUT (不无限等待)
+  PASS  脉冲数有界: 释放 1 + 9 个恢复脉冲 + STOP 1 = 11 个 SCL 上升沿
+  PASS  恢复后补发合法 STOP
+  PASS  恢复过程不发起任何 I2C 事务 (无 START/地址/命令)
+[9] i2c_bus_recover: 从机在第 4 个上升沿前释放 SDA -> 提前结束并成功
+  PASS  从机释放 SDA 后返回 SF_I2C_SUCCESS
+  PASS  提前结束: 释放 1 + 3 个脉冲 + STOP 1 = 5 个上升沿 (未用满 9 个)
+  PASS  结束前仍补发 STOP
+  PASS  恢复后总线空闲
+[10] 通用调用复位序列: 地址 0x00 + 命令 0x06 (手册 §7.7)
+  PASS  0x00/0x06 序列被从机 ACK: 返回 SF_I2C_SUCCESS
+  PASS  恰好 1 个 START 与 1 个 STOP
+  PASS  线上字节为 0x00 后接 0x06 (general call reset)
+  PASS  复位序列后总线释放
+  PASS  0x00 无应答: 返回 SF_I2C_TIMEOUT
+  PASS  0x00 未被 ACK 时不再写 0x06
+  PASS  无应答后已释放总线
+
+==== result: 42 passed, 0 failed ====
