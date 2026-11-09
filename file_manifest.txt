@@ -69,10 +69,10 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_mcu/ | active | 实现侧影子 MCU 层（供 measure.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/ | active | 实现侧影子 MCU 层（供 debug_trace.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_vdd_ev/ | active | 测试能力自建影子 MCU 层（供电轨测量 harness，mock_bgr_trim_value 替身修调值）
-artifacts/android_architecture.md | active | Android 方案设计 AA-003 rev 2.0（as-built 已实现项与证据边界、上报方向更正为升温、BLE 权限策略/网关发现绑定/批次转发/零值哨兵/规则文案四项增量、兼容面与设备层交接）
+artifacts/android_architecture.md | active | Android 方案设计 AA-004 rev 3.0（as-built 与证据边界；六项增量：BLE 权限策略、网关发现绑定、批次转发与载荷格式、网关全零占位、上传失败分类与 401 可观测、升温规则文案；兼容面、宿主机/真机验证分工与未决项交接）
 artifacts/android_feasibility.md | active | Android 真机/模拟环境可行性探索 AF-001（Redmi 8A Android 10/API 29 只读事实、API<31 定位权限门阻断、硬编码网关 MAC、AVD API 34 对照与差异、未证实项与最小下一步）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加）
-artifacts/android_tasks.yaml | active | Android 待实现任务清单（4 项：BLE 权限模型、网关身份发现与绑定、BLE 批次转发与零值哨兵、上报规则文案方向；按前置依赖排序）
+artifacts/android_tasks.yaml | active | Android 待实现任务清单（6 项：BLE 权限模型、网关身份发现与绑定、BLE 批次转发与载荷格式、观测有效性与全零占位、上传失败分类与 401 阻塞、升温规则文案；按前置依赖排序）
 artifacts/backend_feasibility.md | active | 后端可行性探索 BE-EXP-002（已登记只读 SSH 入口对既有服务实测：EMQX 5.8.0/端口/unit/6 路由存在性/401 差异/18 天无业务流量/磁盘内存；资料声明与未核验项分开、service_context、端到端 D1–D6 最小实验；历史 BE-EXP-001 WORK_FAILED 与桩边界保留不改写）
 artifacts/codegraph_current_index.md | active | 代码智能：当前三个子工程 CodeGraph 入口、覆盖与排除范围、源码版本、同步与查询证据引用及变更后同步方法
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
