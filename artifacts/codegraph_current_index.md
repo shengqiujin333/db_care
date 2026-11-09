@@ -1,52 +1,62 @@
-# 当前 CodeGraph 入口
+# Current CodeGraph entry
 
-责任角色：代码智能。
+Responsible role: Code intelligence.
 
-本文件取代旧 `codegraph_dengbei11_index.md` 的当前入口用途；旧记录保留为历史。产品容器 `D:\mypro\beiwo2\AIP` 无根索引，消费者必须指定下面的子工程 projectPath，不能在容器根查询并推断子工程无索引。
+Scope was checked against the complete root readme.txt including supplementary test arrangements, file_manifest.txt, the registered three source roots, project entry documentation and each root codegraph.json. The product container D:\mypro\beiwo2\AIP has no root index: consumers must select one of the exact projectPath values below. No container-wide indexing was performed.
 
-本轮依据 `file_manifest.txt`、`readme.txt`、`项目地址.txt` 和已有子工程配置确定范围。使用现有 @colbymchenry/codegraph 1.6.0，未安装、升级或重建。接手时 Git 工作区干净，源码基线为 `56aba831fc74e5d416688558c44898d7b861afce`；各子工程相对 HEAD 无未提交差异。下述版本是索引验证时的源码版本，不是将来的交接提交。
+Source baseline: `2e3c2df6fc25b7eb0388975e5096502e5f750740`. Initial Git worktree was clean; all three source roots have no differences from HEAD. Existing @colbymchenry/codegraph 1.6.0 was reused. All incremental sync operations returned Already up to date. No init, rebuild, install or upgrade was performed. Previous evidence remains at evidence/codegraph_current_validation.json; the previous entry is preserved in Git history.
 
-## 网关
+## gateway
 
-- projectPath：`D:\mypro\beiwo2\AIP\CH592EVT\EVT\EXAM\BLE\beiwov2`
-- 索引位置：`D:\mypro\beiwo2\AIP\CH592EVT\EVT\EXAM\BLE\beiwov2\.codegraph`
-- 覆盖 APP/、Profile/ 的 C 源码及头文件，共 34 文件、508 节点、1066 边。仅用于接收、解码和 BLE 兼容性查询；本轮没有修改网关。
-- `codegraph.json` 排除 .settings/、.idea/、obj/、Debug/、Release/、build/；根外 SDK、HAL、预编译 BLE 库及其他示例不在此图内。
-- 子工程最近提交：`4d101ae6459f89fa7f26f0d437d1d86a8be7a369`。实际查询定位 `APP/feistel_al.c:119` 的 `decode_frame10`，返回当前行号源码，并指出调用者位于 `APP/app_um2006A.c`。
-- 同步完成：2026-11-09 05:00:55.548 UTC；查询完成：05:00:56 UTC 左右（精确时间见证据）。同步结果 Already up to date；lastIndexed 保持 2026-10-02T12:17:46.875Z，这不是本轮验证时间。
-- 最小查询：`codegraph explore -p "D:\mypro\beiwo2\AIP\CH592EVT\EVT\EXAM\BLE\beiwov2" --max-files 1 "decode_frame10"`
-- 证据：`../evidence/codegraph_current_validation.json` 中 `roots[name=gateway]` 的 before/sync/after/explore/files/queried_source。
+- projectPath: `D:\mypro\beiwo2\AIP\CH592EVT\EVT\EXAM\BLE\beiwov2`
+- Index: `D:\mypro\beiwo2\AIP\CH592EVT\EVT\EXAM\BLE\beiwov2\.codegraph`
+- Coverage: APP/ and Profile/ C sources and headers. External HAL, BLE binary libraries, SDKs and other examples are outside this graph.
+- Exclude: `[".settings/", ".idea/", "obj/", "Debug/", "Release/", "build/"]`. Deprioritize: `[]`.
+- Files / nodes / edges: 34 / 508 / 1066. Every path from files was checked and hashed; indexed_files_sha256 identifies the sorted path/content set without exporting the graph.
+- Latest source-root commit: `4d101ae6459f89fa7f26f0d437d1d86a8be7a369`. Queried source SHA-256: `b1c14ae82067a4ef5ba69d3c6bd04aa8fdec7524a07a58d28cf5c5df2d6ad300`.
+- Sync finished UTC: 2026-11-09T06:17:39.489136+00:00. Explore finished UTC: 2026-11-09T06:17:39.947544+00:00.
+- Database lastIndexed: 2026-10-02T12:17:46.875Z. This is not the current verification time.
+- Actual current-source result: APP/feistel_al.c:119 (decode_frame10), caller in APP/app_um2006A.c.
+- Minimal query: `codegraph explore -p "D:\mypro\beiwo2\AIP\CH592EVT\EVT\EXAM\BLE\beiwov2" --max-files 1 "decode_frame10"`.
+- MCP equivalent: codegraph_explore with the exact projectPath above, query=decode_frame10, maxFiles=1.
+- [Raw evidence](../evidence/codegraph_verified_validation.json): roots[name=gateway], including before/sync/after/explore/files, source_commit/source_diff, queried_source and indexed_files_sha256.
 
-## 传感器
+## sensor
 
-- projectPath：`D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output`
-- 索引位置：`D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\.codegraph`
-- 覆盖 USER/、COMMON/、UM2005C/、rfconfig.h 和 test/ 的 C 源码及头文件，共 99 文件、1255 节点、3476 边。test/ 含 mock，与实板源码须按路径区分；配置将 test/ 降低查询优先级。
-- 排除 MDK/RTE/、MDK/output/、EWARM/Debug/、EWARM/Release/、obj/、build/；整个外层标准外设 SDK、其他示例和归档不建立索引。此图不能替代 Keil/IAR 编译依赖闭包。
-- 子工程最近提交：`ccf403113f25fe405f33c2ad972b5ac8327d290f`。实际查询定位 `USER/src/gxht40.c:170` 的 `gxht40_measure`，返回当前源码，关联 `USER/src/measure.c:460` 的 `measure_sample`；旧交接的该调用者行号为 452，不能沿用。
-- 同步前 15 个 modified；正常 sync 更新 15 文件，未重建。同步完成：2026-11-09 05:00:56.080 UTC；lastIndexed：2026-11-09T05:00:55.777Z；查询随后完成，精确时间见证据。
-- 最小查询：`codegraph explore -p "D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output" --max-files 1 "gxht40_measure"`
-- 证据：`../evidence/codegraph_current_validation.json` 中 `roots[name=sensor]` 的 before/sync/after/explore/files/queried_source。
+- projectPath: `D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output`
+- Index: `D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\.codegraph`
+- Coverage: USER/, COMMON/, UM2005C/, rfconfig.h and test/ C sources and headers. Tests include mocks: distinguish their paths from production sources. Outer SDKs, other examples and archives are outside this graph. This is not the Keil/IAR build dependency closure.
+- Exclude: `["MDK/RTE/", "MDK/output/", "EWARM/Debug/", "EWARM/Release/", "obj/", "build/"]`. Deprioritize: `["test/"]`.
+- Files / nodes / edges: 99 / 1255 / 3476. Every path from files was checked and hashed; indexed_files_sha256 identifies the sorted path/content set without exporting the graph.
+- Latest source-root commit: `ccf403113f25fe405f33c2ad972b5ac8327d290f`. Queried source SHA-256: `250fa66939838f28bb16748a036deab3fd00d7e5a6b07f03c1c734fb538356e9`.
+- Sync finished UTC: 2026-11-09T06:17:39.511474+00:00. Explore finished UTC: 2026-11-09T06:17:39.990145+00:00.
+- Database lastIndexed: 2026-11-09T05:00:55.777Z. This is not the current verification time.
+- Actual current-source result: USER/src/gxht40.c:170 (gxht40_measure), related measure_sample at USER/src/measure.c:460.
+- Minimal query: `codegraph explore -p "D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output" --max-files 1 "gxht40_measure"`.
+- MCP equivalent: codegraph_explore with the exact projectPath above, query=gxht40_measure, maxFiles=1.
+- [Raw evidence](../evidence/codegraph_verified_validation.json): roots[name=sensor], including before/sync/after/explore/files, source_commit/source_diff, queried_source and indexed_files_sha256.
 
-## Android
+## android
 
-- projectPath：`D:\mypro\beiwo2\AIP\dengbei_care`
-- 索引位置：`D:\mypro\beiwo2\AIP\dengbei_care\.codegraph`
-- 覆盖 app/src/main/ Kotlin/Java、AndroidManifest.xml、测试及工具支持的 Gradle/属性文件，共 88 文件、2396 节点、4770 边。内嵌 Paho 库仍在图内，作为 MQTT 调用上下文；配置将测试及 Paho 路径降低优先级。
-- 排除 iOS开发资料/、.idea/、.gradle/、build/、app/build/。未索引 iOS、外部 Android SDK、Gradle 依赖缓存或生成产物。
-- 子工程最近提交：`4d101ae6459f89fa7f26f0d437d1d86a8be7a369`。实际查询定位 `app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt:28`，返回类及上传方法源码，并指出 MqtttService 调用者和相关测试。
-- 同步完成：2026-11-09 05:00:55.589 UTC；查询随后完成，精确时间见证据。同步结果 Already up to date；lastIndexed 保持 2026-10-07T01:53:21.977Z。
-- 最小查询：`codegraph explore -p "D:\mypro\beiwo2\AIP\dengbei_care" --max-files 1 "CloudUploadRepository"`
-- 证据：`../evidence/codegraph_current_validation.json` 中 `roots[name=android]` 的 before/sync/after/explore/files/queried_source。
+- projectPath: `D:\mypro\beiwo2\AIP\dengbei_care`
+- Index: `D:\mypro\beiwo2\AIP\dengbei_care\.codegraph`
+- Coverage: App Kotlin/Java, AndroidManifest.xml, tests and supported Gradle/properties files. Embedded Paho provides MQTT context. External Android SDKs, dependency caches and generated artifacts are excluded.
+- Exclude: `["iOS开发资料/", ".idea/", ".gradle/", "build/", "app/build/"]`. Deprioritize: `["app/src/test/", "app/src/androidTest/", "app/src/main/java/org/eclipse/paho/"]`.
+- Files / nodes / edges: 88 / 2396 / 4770. Every path from files was checked and hashed; indexed_files_sha256 identifies the sorted path/content set without exporting the graph.
+- Latest source-root commit: `4d101ae6459f89fa7f26f0d437d1d86a8be7a369`. Queried source SHA-256: `c221de8da8d78ecc4b41e341daca69ece754fe8e18fd95920cdb065612b84a1c`.
+- Sync finished UTC: 2026-11-09T06:17:39.537675+00:00. Explore finished UTC: 2026-11-09T06:17:40.045192+00:00.
+- Database lastIndexed: 2026-10-07T01:53:21.977Z. This is not the current verification time.
+- Actual current-source result: app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt:28, related MqtttService and CloudUploadRepositoryTest.
+- Minimal query: `codegraph explore -p "D:\mypro\beiwo2\AIP\dengbei_care" --max-files 1 "CloudUploadRepository"`.
+- MCP equivalent: codegraph_explore with the exact projectPath above, query=CloudUploadRepository, maxFiles=1.
+- [Raw evidence](../evidence/codegraph_verified_validation.json): roots[name=android], including before/sync/after/explore/files, source_commit/source_diff, queried_source and indexed_files_sha256.
 
-## 使用与证据边界
+## Validation and maintenance
 
-三个根的 sync、status、explore、files 均退出 0 且 stderr 为空；最终 index.state=complete、pendingRefs=0、pendingChanges 全零、worktreeMismatch=null、reindexRecommended=false。每个根均已取得能定位当前源码的 explore 结果，不以数据库存在或时间戳代替查询。JSON 保存命令、开始/结束时间、退出码、原始 stdout/stderr、查询源码 SHA-256/Git blob，以及按已索引文件路径和内容摘要排序后计算的集合摘要，供来源核对；并非全图导出。
+All three known relevant local roots returned current line-numbered source and caller relationships through explore. Each recorded command exited 0 with empty stderr. Each index is complete, pendingRefs=0, pendingChanges all zero, worktreeMismatch=null, reindexRecommended=false. Each subprocess had a 60-second timeout and has exited; no diagnostic background process remains. Existing Git ignore rules cover all three local .codegraph directories; databases are not delivered.
 
-已确认的三个本地相关代码根均完成验证，无遗漏的已知必需本地根。共享清单和入口资料未提供独立服务端源码根；服务器迁移说明属于配置资料，未据其地址访问远端或声称服务端代码已索引。若后续提供服务端源码根，应由代码智能按范围补充本地索引与查询证据。硬件资料、SDK/无关示例、归档和 iOS 不属于本轮索引范围。图不跨子工程自动连接 RF/BLE/HTTP 边界，不是业务、硬件、服务器运行或测试通过证据。
+There are no unverified known required local roots. No separate server source root was supplied in the resource index or project entry documents, so server code is not indexed. Server connection documentation is not source code. Hardware materials, iOS, unrelated SDKs/examples and archives are out of scope. No remote access, device operation or product-source changes were performed. This evidence does not establish firmware, Android, upload idempotency, persistence readback or server runtime acceptance.
 
-消费者优先调用 `codegraph_explore`，将 projectPath 设为上述精确路径，query 使用对应符号；也可运行最小 CLI 查询。直接使用返回源码和调用关系，不重复读取已返回文件。C 文件部分非 UTF-8 注释在 CLI 中显示替换字符，未修改原编码；语义核对以标识符、行号和源码摘要为依据。mock 调用和图中未发现测试不能分别等同实板路径或不存在测试。
+Graphs do not automatically join RF/BLE/HTTP boundaries across projects. Mock paths are not evidence of hardware execution. Some non-UTF-8 C comments render as replacement characters; original source encoding was not changed. Use returned source and relationships directly. A graph reporting no tests does not prove tests are absent.
 
-源码变化后依次运行 `codegraph sync "<projectPath>"`、`codegraph status --json "<projectPath>"`，再执行该根最小 explore；确认 complete、无 pending/drift 并更新证据，不能直接沿用旧结果。新目录或排除项变化时另检查 `codegraph files -p "<projectPath>" --format flat --no-metadata`，按实际范围维护该根 codegraph.json，避免无故全量重建。所有命令本轮均设 60 秒上限并已退出，无遗留后台诊断任务。
-
-三个 .codegraph/ 均被已有 Git 忽略规则覆盖；数据库仅保留本地，不提交。此次仅交付本入口文件、查询证据和清单更新，产品源码与已有配置未变。
+After source changes, run `codegraph sync "<projectPath>"`, then `codegraph status --json "<projectPath>"`, then the minimal explore query for that exact root. Confirm complete state with no pending changes or drift and refresh the evidence before reuse. After scope changes inspect `codegraph files -p "<projectPath>" --format flat --no-metadata` and maintain that root codegraph.json as needed; do not rebuild without a reason. A subsequently supplied backend source root needs its own scoped index and source-returning query.

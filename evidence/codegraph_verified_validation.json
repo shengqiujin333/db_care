@@ -1,0 +1,499 @@
+{
+  "responsible_role": "Code intelligence",
+  "head": {
+    "command": [
+      "git",
+      "rev-parse",
+      "HEAD"
+    ],
+    "started_utc": "2026-11-09T06:17:38.804675+00:00",
+    "finished_utc": "2026-11-09T06:17:38.822315+00:00",
+    "exit_code": 0,
+    "stdout": "2e3c2df6fc25b7eb0388975e5096502e5f750740\n",
+    "stderr": ""
+  },
+  "initial_status": {
+    "command": [
+      "git",
+      "status",
+      "--short"
+    ],
+    "started_utc": "2026-11-09T06:17:38.822315+00:00",
+    "finished_utc": "2026-11-09T06:17:38.854697+00:00",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "version": {
+    "command": [
+      "D:\\Program Files\\nodejs\\node.exe",
+      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+      "--version"
+    ],
+    "started_utc": "2026-11-09T06:17:38.854697+00:00",
+    "finished_utc": "2026-11-09T06:17:38.962242+00:00",
+    "exit_code": 0,
+    "stdout": "1.6.0\n",
+    "stderr": ""
+  },
+  "roots": [
+    {
+      "name": "gateway",
+      "projectPath": "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2",
+      "indexPath": "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2\\.codegraph",
+      "query": "decode_frame10",
+      "source_commit": {
+        "command": [
+          "git",
+          "log",
+          "-1",
+          "--format=%H",
+          "--",
+          "CH592EVT/EVT/EXAM/BLE/beiwov2"
+        ],
+        "started_utc": "2026-11-09T06:17:38.964884+00:00",
+        "finished_utc": "2026-11-09T06:17:38.988428+00:00",
+        "exit_code": 0,
+        "stdout": "4d101ae6459f89fa7f26f0d437d1d86a8be7a369\n",
+        "stderr": ""
+      },
+      "source_diff": {
+        "command": [
+          "git",
+          "diff",
+          "HEAD",
+          "--",
+          "CH592EVT/EVT/EXAM/BLE/beiwov2"
+        ],
+        "started_utc": "2026-11-09T06:17:38.988428+00:00",
+        "finished_utc": "2026-11-09T06:17:39.012254+00:00",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "before": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "status",
+          "--json",
+          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2"
+        ],
+        "started_utc": "2026-11-09T06:17:39.012254+00:00",
+        "finished_utc": "2026-11-09T06:17:39.250839+00:00",
+        "exit_code": 0,
+        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CH592EVT\\\\EVT\\\\EXAM\\\\BLE\\\\beiwov2\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CH592EVT\\\\EVT\\\\EXAM\\\\BLE\\\\beiwov2\\\\.codegraph\",\"lastIndexed\":\"2026-10-02T12:17:46.875Z\",\"fileCount\":34,\"nodeCount\":508,\"edgeCount\":1066,\"dbSizeBytes\":1167360,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"constant\":35,\"enum\":18,\"enum_member\":78,\"file\":34,\"function\":154,\"import\":79,\"struct\":9,\"type_alias\":4,\"variable\":97},\"languages\":[\"c\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
+        "stderr": ""
+      },
+      "sync": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "sync",
+          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2"
+        ],
+        "started_utc": "2026-11-09T06:17:39.250839+00:00",
+        "finished_utc": "2026-11-09T06:17:39.489136+00:00",
+        "exit_code": 0,
+        "stdout": "T  Syncing CodeGraph\n|\nScanning files...\n|\n•  Already up to date\n|\n—  Done\n\n",
+        "stderr": ""
+      },
+      "after": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "status",
+          "--json",
+          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2"
+        ],
+        "started_utc": "2026-11-09T06:17:39.489136+00:00",
+        "finished_utc": "2026-11-09T06:17:39.713574+00:00",
+        "exit_code": 0,
+        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CH592EVT\\\\EVT\\\\EXAM\\\\BLE\\\\beiwov2\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CH592EVT\\\\EVT\\\\EXAM\\\\BLE\\\\beiwov2\\\\.codegraph\",\"lastIndexed\":\"2026-10-02T12:17:46.875Z\",\"fileCount\":34,\"nodeCount\":508,\"edgeCount\":1066,\"dbSizeBytes\":1167360,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"constant\":35,\"enum\":18,\"enum_member\":78,\"file\":34,\"function\":154,\"import\":79,\"struct\":9,\"type_alias\":4,\"variable\":97},\"languages\":[\"c\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
+        "stderr": ""
+      },
+      "explore": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "explore",
+          "-p",
+          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2",
+          "--max-files",
+          "1",
+          "decode_frame10"
+        ],
+        "started_utc": "2026-11-09T06:17:39.713574+00:00",
+        "finished_utc": "2026-11-09T06:17:39.947544+00:00",
+        "exit_code": 0,
+        "stdout": "**Exploration: decode_frame10**\n\nFound 9 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `decode_frame10` (APP/feistel_al.c:119) — 1 caller in `APP/app_um2006A.c`; no tests found within 3 caller hops\n\n**Source Code**\n\n> The code below is the **verbatim, current on-disk source** of these files — re-read from disk on this call and line-numbered, byte-for-byte identical to what the Read tool returns. It is NOT a summary, outline, or stale cache. Treat each block as a Read you have already performed: do not Read a file shown here.\n\n**`APP/feistel_al.c`** — decode_frame10(function), feistel10_decrypt(function), crc16_ccitt(function), subkeys_gen(function), permute10(function), +4 more\n\n```c\n1\t#include <stdio.h>\r\n2\t#include <stdint.h>\r\n3\t#include <string.h>\r\n4\t#include <stdbool.h>\r\n5\t\r\n6\t/*================== ���ã��豸/�������˱���һ�£� ==================*/\r\n7\t// �̶�ϵͳ��Կ��16B���������������ֵ�滻\r\n8\tstatic const uint8_t K_SYS[16] = {\r\n9\t  0xB1,0x13,0x27,0x58,0x9A,0xCD,0xEF,0x01,0x22,0x44,0x66,0x88,0xAA,0xCC,0xEE,0x00\r\n10\t};\r\n11\t\r\n12\t// �� UID10 ȡ�� 4 ���ֽ��� uid_pick\r\n13\tstatic const uint8_t UID_IDX[4] = {1,3,7,9};\r\n14\t\r\n15\t// 10 �ֽ��û������棺����ǰ�� P������ǰ�� P^-1����/��������ٸ���һ�Σ��Գƣ�\r\n16\tstatic const uint8_t PERM[10]  = {3, 8, 1, 5, 0, 9, 4, 7, 2, 6};\r\n17\tstatic const uint8_t IPERM[10] = {4, 2, 8, 0, 6, 3, 9, 7, 1, 5};\r\n18\t\r\n19\t// �������ɵ� 6/8/10���������ָ���ȫ������ʱ\r\n20\t#define ROUNDS 8\r\n21\t\r\n22\t/*================== ���ߣ�CRC16-CCITT ==================*/\r\n23\tstatic uint16_t crc16_ccitt(const uint8_t *p, size_t n){\r\n24\t  uint16_t crc = 0xFFFF;\r\n25\t  for(size_t i=0;i<n;i++){\r\n26\t    crc ^= (uint16_t)p[i] << 8;\r\n27\t    for(int b=0;b<8;b++)\r\n28\t      crc = (crc & 0x8000) ? (uint16_t)((crc<<1) ^ 0x1021) : (uint16_t)(crc<<1);\r\n29\t  }\r\n30\t  return crc;\r\n31\t}\r\n32\t\r\n33\t/*================== ���� S-Box��4bit�� ==================*/\r\n34\t// ѡ��һ�������� 4bit SBox��ֻ���ڻ�����Feistel �²����� SBox��\r\n35\tstatic const uint8_t S4[16] = {\r\n36\t  0xC,0x5,0x6,0xB,0x9,0x0,0xA,0xD,0x3,0xE,0xF,0x8,0x4,0x7,0x1,0x2\r\n37\t};\r\n38\tstatic inline uint8_t sbox_byte(uint8_t x){\r\n39\t  return (uint8_t)((S4[x>>4]<<4) | S4[x & 0xF]);\r\n40\t}\r\n41\t\r\n42\t/*================== �ֽ��û� ==================*/\r\n43\tstatic void permute10(const uint8_t in[10], uint8_t out[10], const uint8_t p[10]){\r\n44\t  for(int i=0;i<10;i++) out[i] = in[p[i]];\r\n45\t}\r\n46\t\r\n47\t/*================== ����Կ���ȣ����� ==================*/\r\n48\t/* ���� ROUNDS �� 5 �ֽ�����Կ��Ϊ��ʡ�磬�������� KDF��\r\n49\t   - �� K_SYS ���� 16 �ֽ�ѭ����\r\n50\t   - ÿ��ȡ 5 �ֽڲ���һ���ֳ�����Ȼ����һ���ֽ���ת\r\n51\t*/\r\n52\tstatic void subkeys_gen(uint8_t sk[ROUNDS][5]){\r\n53\t  uint8_t pool[16];\r\n54\t  memcpy(pool, K_SYS, 16);\r\n55\t  for(int r=0;r<ROUNDS;r++){\r\n56\t    // ȡ 5 �ֽ� + �����ֳ���\r\n57\t    for(int i=0;i<5;i++){\r\n58\t      sk[r][i] = (uint8_t)(pool[(r+i) & 15] ^ (uint8_t)(0xA5 ^ (r*13 + i*7)));\r\n59\t    }\r\n60\t    // ��΢���裺�� pool ��һ��ѭ������ 1 �ֽ�\r\n61\t    uint8_t t = pool[0];\r\n62\t    memmove(pool, pool+1, 15);\r\n63\t    pool[15] = t ^ (uint8_t)(0x5A ^ r);\r\n64\t  }\r\n65\t}\r\n66\t\r\n67\t/*================== �ֺ��� F������ 5 �ֽ� R����� 5 �ֽ� ==================*/\r\n68\t/* ���Ŀ�꣺��������ֻ�� XOR��ѭ����λ��4bit SBox���ӷ� */\r\n69\tstatic void F_func(const uint8_t R[5], const uint8_t rk[5], uint8_t out[5], uint8_t round_idx){\r\n70\t  uint8_t x[5];\r\n71\t  // 1) ������Կ���\r\n72\t  for(int i=0;i<5;i++) x[i] = (uint8_t)(R[i] ^ rk[i]);\r\n73\t  // 2) �����ԣ����ֽ� 4bit SBox\r\n74\t  for(int i=0;i<5;i++) x[i] = sbox_byte(x[i]);\r\n75\t  // 3) ������ɢ���ֽ�������ֽڵ���ת+���\r\n76\t  //    �����ֽڿ��� 40 λ�Ĵ�����ѭ������ (round_idx+1) λ\r\n77\t  uint64_t acc = ((uint64_t)x[0]) | ((uint64_t)x[1]<<8) | ((uint64_t)x[2]<<16) | ((uint64_t)x[3]<<24) | ((uint64_t)x[4]<<32);\r\n78\t  uint8_t rot = (uint8_t)((round_idx + 1) % 40);\r\n79\t  uint64_t y = (acc << rot) | (acc >> (40 - rot));\r\n80\t  out[0] = (uint8_t)(y & 0xFF);\r\n81\t  out[1] = (uint8_t)((y>>8) & 0xFF);\r\n82\t  out[2] = (uint8_t)((y>>16)& 0xFF);\r\n83\t  out[3] = (uint8_t)((y>>24)& 0xFF);\r\n84\t  out[4] = (uint8_t)((y>>32)& 0xFF);\r\n85\t  // 4) �ټ�һ����ֽڻ��\r\n86\t  out[0] ^= (uint8_t)(out[4] + 0x3D);\r\n87\t  out[2] ^= (uint8_t)(out[0] + out[1]);\r\n88\t}\r\n89\t\r\n90\t\r\n91\t\r\n92\tstatic void feistel10_decrypt(uint8_t block[10]){\r\n93\t  uint8_t L[5], R[5], tmp[5], rk[ROUNDS][5];\r\n94\t  subkeys_gen(rk);\r\n95\t\r\n96\t  // ���������û����棺���� IPERM\r\n97\t  uint8_t buf[10]; permute10(block, buf, IPERM);\r\n98\t  // buf = R||L ����Ϊ������󽻻�����\r\n99\t  memcpy(R, buf, 5);\r\n100\t  memcpy(L, buf+5, 5);\r\n101\t\r\n102\t  // �����֣�����Կ����\r\n103\t  for(int r=ROUNDS-1; r>=0; r--){\r\n104\t    // �潻�����������һ���� swap(L,R)������ʱ�� swap ����\r\n105\t    uint8_t t5[5]; memcpy(t5, L, 5); memcpy(L, R, 5); memcpy(R, t5, 5);\r\n106\t    F_func(R, rk[r], tmp, (uint8_t)r);\r\n107\t    for(int i=0;i<5;i++) L[i] ^= tmp[i];\r\n108\t  }\r\n109\t  // ��ԭΪ L||R�������ǰ���û����棨IPERM��\r\n110\t  for(int i=0;i<5;i++){ buf[i] = L[i]; buf[5+i] = R[i]; }\r\n111\t\r\n112\t  uint8_t out[10]; permute10(buf, out, IPERM);\r\n113\t  memcpy(block, out, 10);\r\n114\t}\r\n115\t\r\n116\t\r\n117\t\r\n118\t/* ���룺�ɹ����� true������� uid_pick/temp/hum */\r\n119\tbool decode_frame10(uint8_t in10[10], uint8_t uid_pick_out[4], int16_t *temp_out, uint16_t *hum_out){\r\n120\t  uint8_t p[10]; memcpy(p, in10, 10);\r\n121\t  feistel10_decrypt(p);\r\n122\t\r\n123\t  // CRC У��\r\n124\t  uint16_t c_calc = crc16_ccitt(p, 8);\r\n125\t  uint16_t c_recv = (uint16_t)p[8] | ((uint16_t)p[9]<<8);\r\n126\t  if (c_calc != c_recv) return false;\r\n127\t\r\n128\t  if (uid_pick_out) for(int i=0;i<4;i++) uid_pick_out[i] = p[i];\r\n129\t  if (temp_out) *temp_out = (int16_t)(p[4] | ((int16_t)p[5]<<8));\r\n130\t  if (hum_out)  *hum_out  = (uint16_t)(p[6] | ((uint16_t)p[7]<<8));\r\n131\t  return true;\r\n132\t}\r\n133\t\r\n134\t/*================== С���ߣ���ӡ & ������ UID4 �� HEX ==================*/\r\n135\tstatic void print_hex(const char* title, const uint8_t* b, size_t n){\r\n136\t  printf(\"%s\", title);\r\n137\t  for(size_t i=0;i<n;i++) printf(\"%02X \", b[i]); printf(\"\\n\");\r\n138\t}\r\n139\tstatic void uid4_hex(const uint8_t u4[4], char out9[9]){\r\n140\t  static const char hex[]=\"0123456789ABCDEF\";\r\n141\t  for(int i=0;i<4;i++){ out9[2*i]=hex[(u4[i]>>4)&0xF]; out9[2*i+1]=hex[u4[i]&0xF]; }\r\n142\t  out9[8]='\\0';\r\n143\t}\r\n144\t\r\n145\t\r\n```\n\n**Not shown above — explore these names for their source**\n\n- APP/app_um2006A.c: app_um2006A_run:98, encrypt_frame_ecb_inplace:71, get_temperature_task_process_event:269, ble_send_bf:85, APP_AES_KEY16:81, temperature_task_idx:22, +1 more\n- APP/um2006A.c: um2006A_read_reg:87, um2006A_set_sdo_sel:216, um2006A_set_gpio0_sel:232, um2006A_set_gpio1_sel:248, um2006A_set_clkout:264, um2006A_set_freq:278, +28 more\n- APP/um2006A_hal.c: spi_cs_enable:126, spi_write_byte:151, spi_read_byte:179, spi_cs_disable:138, um2006A_hal_get_flag:45, um2006A_hal_clear_flag:57\n- APP/bleencrypt.c: build_padded_frame_blocks:66, frame_len_from_devcount:6, build_header_block:12, build_device_block:42\n- Profile/gattprofile.c: SimpleProfile_SetParameter:354, simpleProfileChar5:128, simpleProfileChar4:113, simpleProfileChar3:104, simpleProfileChar2:95, simpleProfileChar1:86\n- APP/measure.c: temperature_task_process_event:125, temperature_task_process_event2:293\n- APP/peripheral.c: Peripheral_Init:191, simpleProfileChangeCB:714\n- APP/radio.c: radio_recv_data:47\n- APP/app_uart.c: app_uart_recv_bytes:122\n",
+        "stderr": ""
+      },
+      "files": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "files",
+          "-p",
+          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2",
+          "--format",
+          "flat",
+          "--no-metadata"
+        ],
+        "started_utc": "2026-11-09T06:17:39.947544+00:00",
+        "finished_utc": "2026-11-09T06:17:40.164818+00:00",
+        "exit_code": 0,
+        "stdout": "\nFiles (34):\n\n  APP/app_ev1527.c\n  APP/app_ev1527.h\n  APP/app_i2c.c\n  APP/app_i2c.h\n  APP/app_uart.c\n  APP/app_uart.h\n  APP/app_um2006A.c\n  APP/app_um2006A.h\n  APP/bleencrypt.c\n  APP/bleencrypt.h\n  APP/feistel_al.c\n  APP/feistel_al.h\n  APP/include/peripheral.h\n  APP/measure.c\n  APP/measure.h\n  APP/peripheral_main.c\n  APP/peripheral.c\n  APP/radio.c\n  APP/radio.h\n  APP/rfconfig.h\n  APP/rfconfigbkp.h\n  APP/rfconfigok.h\n  APP/sf_i2c.c\n  APP/sf_i2c.h\n  APP/type.h\n  APP/um2006A_defs.h\n  APP/um2006A_hal.c\n  APP/um2006A_hal.h\n  APP/um2006A.c\n  APP/um2006A.h\n  Profile/devinfoservice.c\n  Profile/gattprofile.c\n  Profile/include/devinfoservice.h\n  Profile/include/gattprofile.h\n\n",
+        "stderr": ""
+      },
+      "queried_source": {
+        "path": "APP/feistel_al.c",
+        "sha256": "b1c14ae82067a4ef5ba69d3c6bd04aa8fdec7524a07a58d28cf5c5df2d6ad300",
+        "git_blob": {
+          "command": [
+            "git",
+            "hash-object",
+            "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2\\APP\\feistel_al.c"
+          ],
+          "started_utc": "2026-11-09T06:17:40.164818+00:00",
+          "finished_utc": "2026-11-09T06:17:40.184497+00:00",
+          "exit_code": 0,
+          "stdout": "94e58f7025f4df5e061427c6f63c319596042a5c\n",
+          "stderr": ""
+        }
+      },
+      "config": {
+        "exclude": [
+          ".settings/",
+          ".idea/",
+          "obj/",
+          "Debug/",
+          "Release/",
+          "build/"
+        ]
+      },
+      "ignored": {
+        "command": [
+          "git",
+          "check-ignore",
+          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2\\.codegraph"
+        ],
+        "started_utc": "2026-11-09T06:17:40.186541+00:00",
+        "finished_utc": "2026-11-09T06:17:40.206604+00:00",
+        "exit_code": 0,
+        "stdout": "\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CH592EVT\\\\EVT\\\\EXAM\\\\BLE\\\\beiwov2\\\\.codegraph\"\n",
+        "stderr": ""
+      },
+      "indexed_files_sha256": "4e1837de0b8fe53aab8db121a884d6eb1614280e5964fd60587de31ce7cb28f9",
+      "indexed_file_count_checked": 34
+    },
+    {
+      "name": "sensor",
+      "projectPath": "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+      "indexPath": "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\.codegraph",
+      "query": "gxht40_measure",
+      "source_commit": {
+        "command": [
+          "git",
+          "log",
+          "-1",
+          "--format=%H",
+          "--",
+          "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output"
+        ],
+        "started_utc": "2026-11-09T06:17:38.964884+00:00",
+        "finished_utc": "2026-11-09T06:17:38.988428+00:00",
+        "exit_code": 0,
+        "stdout": "ccf403113f25fe405f33c2ad972b5ac8327d290f\n",
+        "stderr": ""
+      },
+      "source_diff": {
+        "command": [
+          "git",
+          "diff",
+          "HEAD",
+          "--",
+          "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output"
+        ],
+        "started_utc": "2026-11-09T06:17:38.988428+00:00",
+        "finished_utc": "2026-11-09T06:17:39.012254+00:00",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "before": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "status",
+          "--json",
+          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
+        ],
+        "started_utc": "2026-11-09T06:17:39.013254+00:00",
+        "finished_utc": "2026-11-09T06:17:39.261369+00:00",
+        "exit_code": 0,
+        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\\\\.codegraph\",\"lastIndexed\":\"2026-11-09T05:00:55.777Z\",\"fileCount\":99,\"nodeCount\":1255,\"edgeCount\":3476,\"dbSizeBytes\":3444736,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"constant\":18,\"enum\":41,\"enum_member\":117,\"file\":99,\"function\":464,\"import\":291,\"struct\":51,\"variable\":174},\"languages\":[\"c\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
+        "stderr": ""
+      },
+      "sync": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "sync",
+          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
+        ],
+        "started_utc": "2026-11-09T06:17:39.261369+00:00",
+        "finished_utc": "2026-11-09T06:17:39.511474+00:00",
+        "exit_code": 0,
+        "stdout": "T  Syncing CodeGraph\n|\nScanning files...\n|\n•  Already up to date\n|\n—  Done\n\n",
+        "stderr": ""
+      },
+      "after": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "status",
+          "--json",
+          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
+        ],
+        "started_utc": "2026-11-09T06:17:39.511474+00:00",
+        "finished_utc": "2026-11-09T06:17:39.746478+00:00",
+        "exit_code": 0,
+        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\\\\.codegraph\",\"lastIndexed\":\"2026-11-09T05:00:55.777Z\",\"fileCount\":99,\"nodeCount\":1255,\"edgeCount\":3476,\"dbSizeBytes\":3444736,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"constant\":18,\"enum\":41,\"enum_member\":117,\"file\":99,\"function\":464,\"import\":291,\"struct\":51,\"variable\":174},\"languages\":[\"c\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
+        "stderr": ""
+      },
+      "explore": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "explore",
+          "-p",
+          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+          "--max-files",
+          "1",
+          "gxht40_measure"
+        ],
+        "started_utc": "2026-11-09T06:17:39.746478+00:00",
+        "finished_utc": "2026-11-09T06:17:39.990145+00:00",
+        "exit_code": 0,
+        "stdout": "**Exploration: gxht40_measure**\n\nFound 12 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `gxht40_measure` (USER/src/gxht40.c:170) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `gxht40_init` (USER/src/gxht40.c:63) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `measure_sample` (USER/src/measure.c:460) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `gxht40_acquire` (USER/src/gxht40.c:124) — 1 caller in `USER/src/gxht40.c`; no tests found within 3 caller hops\n- `gxht40_diag_clear` (USER/src/gxht40.c:20) — 2 callers in `USER/src/gxht40.c`; no tests found within 3 caller hops\n\n**Source Code**\n\n> The code below is the **verbatim, current on-disk source** of these files — re-read from disk on this call and line-numbered, byte-for-byte identical to what the Read tool returns. It is NOT a summary, outline, or stale cache. Treat each block as a Read you have already performed: do not Read a file shown here.\n\n**`USER/src/gxht40.c`** — gxht40_measure(function), gxht40_init(function), gxht40_acquire(function), gxht40_diag_clear(function), gxht40_diag_fetch(function), +7 more\n\n```c\n1\t/*\n2\t * gxht40.c - GXHT40 温湿度传感器驱动 (readme 修改点 1; gxht40.pdf; FD-002 §3.1/§6/§10)\n3\t *\n4\t * 纯协议实现: 只依赖 sf_i2c (软 I²C 原语)、sensor_config.h (唯一配置点) 与 delay_ms。\n5\t * 不使用软复位/加热器命令, 不在周期路径写 Flash (FD-002 §11)。\n6\t */\n7\t#include \"gxht40.h\"\n8\t#include \"sensor_config.h\"\n9\t#include \"fw_core.h\"      /* 纯逻辑: fw_crc8_gxht / gxht40_raw_to_x10 (ITEM-005) */\n10\t#include \"delay.h\"\n11\t\n12\t/* 绑定总线与地址探测缓存 */\n13\tstatic i2c_dev *s_dev = NULL;\n14\tstatic uint8_t  s_addr7 = 0u;   /* 0 = 未探测到 */\n15\tstatic uint8_t  s_first_access = 1u;  /* 首次访问前需 tPU 上电余量 (GXHT40_POWER_ON_WAIT_MS) */\n16\t\n17\t/* 诊断快照 (FWR-116): 只读观测, 不参与判定/重试/输出写入 */\n18\tstatic gxht40_diag_t s_diag;\n19\t\n20\tstatic void gxht40_diag_clear(void)\n21\t{\n22\t    uint8_t i;\n23\t\n24\t    s_diag.status     = (uint8_t)GXHT40_ERR_IO;   /* 尚未被填入时的占位 */\n25\t    s_diag.ack44      = 0u;\n26\t    s_diag.ack45      = 0u;\n27\t    s_diag.read_retry = 0u;\n28\t    s_diag.attempt    = 0u;\n29\t    s_diag.raw_valid  = 0u;\n30\t    for (i = 0u; i < (uint8_t)GXHT40_RESULT_LEN; i++) {\n31\t        s_diag.raw[i] = 0u;\n32\t    }\n33\t}\n34\t\n35\tstatic void gxht40_diag_note_ack(uint8_t addr7)\n36\t{\n37\t    if (addr7 == (uint8_t)GXHT40_ADDR_7BIT_A) {\n38\t        s_diag.ack44 = 1u;\n39\t    } else if (addr7 == (uint8_t)GXHT40_ADDR_7BIT_B) {\n40\t        s_diag.ack45 = 1u;\n41\t    }\n42\t}\n43\t\n44\tstatic void gxht40_diag_note_read(const uint8_t *buf, uint8_t failed_reads)\n45\t{\n46\t    uint8_t i;\n47\t\n48\t    s_diag.read_retry = failed_reads;\n49\t    s_diag.raw_valid  = 1u;\n50\t    for (i = 0u; i < (uint8_t)GXHT40_RESULT_LEN; i++) {\n51\t        s_diag.raw[i] = buf[i];\n52\t    }\n53\t}\n54\t\n55\tvoid gxht40_diag_fetch(gxht40_diag_t *out)\n56\t{\n57\t    if (out == NULL) {\n58\t        return;\n59\t    }\n60\t    *out = s_diag;\n61\t}\n62\t\n63\tvoid gxht40_init(i2c_dev *dev)\n64\t{\n65\t    s_dev = dev;\n66\t    s_addr7 = 0u;\n67\t    s_first_access = 1u;\n68\t    gxht40_diag_clear();\n69\t}\n70\t\n71\tuint8_t gxht40_detected_addr7(void)\n72\t{\n73\t    return s_addr7;\n74\t}\n75\t\n76\t/* ------------------------------------------------------------------ */\n77\t/* 纯计算 (整数, 无浮点; FD-002 §6.1/§6.2)                             */\n78\t/* ------------------------------------------------------------------ */\n79\t\n80\t/* ------------------------------------------------------------------ */\n81\t/* 总线时序                                                            */\n82\t/* ------------------------------------------------------------------ */\n83\t\n84\t/*\n85\t * 在指定 7bit 地址上: 发 0xFD -> 等待 tMEAS 上限 -> 读 6 字节(读 NACK 有界重读)。\n86\t * 返回 GXHT40_OK / GXHT40_ERR_NO_DEVICE (命令未被 ACK) / GXHT40_ERR_IO (读失败)。\n87\t */\n88\tstatic gxht40_status_t gxht40_start_and_read(uint8_t addr7, uint8_t *buf)\n89\t{\n90\t    sf_i2c_err e;\n91\t    uint8_t r;\n92\t\n93\t    e = i2c_write_cmd(s_dev, (uint8_t)(addr7 << 1), GXHT40_CMD_MEASURE_HIGH_REP);\n94\t    if (e != SF_I2C_SUCCESS) {\n95\t        return GXHT40_ERR_NO_DEVICE;    /* 地址/命令未被 ACK: 该地址无器件 */\n96\t    }\n97\t    gxht40_diag_note_ack(addr7);        /* 诊断: 该候选地址本轮收到地址 ACK */\n98\t\n99\t    delay_ms(GXHT40_MEASURE_WAIT_MS);   /* tMEAS.H max 8.3 ms (VDD=1.6V) -> 10 ms */\n100\t\n101\t    for (r = 0u; r < GXHT40_READ_RETRY; r++) {\n102\t        e = i2c_read_bytes(s_dev, (uint8_t)((addr7 << 1) | 0x01u),\n103\t                           buf, GXHT40_RESULT_LEN);\n104\t        if (e == SF_I2C_SUCCESS) {\n105\t            gxht40_diag_note_read(buf, r);   /* 诊断: 重读次数 + 原始 6 字节 */\n106\t            return GXHT40_OK;\n107\t        }\n108\t        /* 读地址 NACK = 转换未完成 (手册 §7.1); 等待后重读 */\n109\t        if ((uint8_t)(r + 1u) < GXHT40_READ_RETRY) {\n110\t            delay_ms(GXHT40_READ_RETRY_DELAY_MS);\n111\t        }\n112\t    }\n113\t    s_diag.read_retry = (uint8_t)GXHT40_READ_RETRY;   /* 诊断: 读重试用尽 */\n114\t    return GXHT40_ERR_IO;\n115\t}\n116\t\n117\t/*\n118\t * 地址探测:\n119\t *   - 稳态快路径 (有缓存地址 且 上轮未失败): 只试缓存地址; 失败则转入完整重探。\n120\t *   - 完整重探 (首次访问 / 上轮失败): 先做有界总线恢复, 再**依次探测 0x44 与 0x45 两个候选**;\n121\t *     即使 0x44 已成功也要把 0x45 探完 (FWR-118 / TD-002 B18: 任一失败后的下一周期必须重探两地址)。\n122\t *   - 两候选均失败时返回最后一次探测的结果码 (既有语义, 与地址 ACK 诊断字段一致)。\n123\t */\n124\tstatic gxht40_status_t gxht40_acquire(uint8_t *buf)\n125\t{\n126\t    gxht40_status_t st;\n127\t    gxht40_status_t st_b;\n128\t    uint8_t buf_b[GXHT40_RESULT_LEN];\n129\t    uint8_t have_a = 0u;\n130\t\n131\t    /* 1) 稳态快路径 (仅当缓存有效且上一轮未失败) */\n132\t    if (s_addr7 != 0u) {\n133\t        st = gxht40_start_and_read(s_addr7, buf);\n134\t        if (st == GXHT40_OK) {\n135\t            return GXHT40_OK;\n136\t        }\n137\t        s_addr7 = 0u;               /* 缓存地址失败: 本轮转入完整重探 */\n138\t    }\n139\t\n140\t    /* 2) 完整重探: 重探前先做有界总线恢复, 再依次探测 0x44 -> 0x45 */\n141\t    (void)i2c_bus_recover(s_dev);\n142\t\n143\t    st = gxht40_start_and_read(GXHT40_ADDR_7BIT_A, buf);\n144\t    if (st == GXHT40_OK) {\n145\t        s_addr7 = GXHT40_ADDR_7BIT_A;\n146\t        have_a = 1u;\n147\t    }\n148\t\n149\t    st_b = gxht40_start_and_read(GXHT40_ADDR_7BIT_B, buf_b);\n150\t    if (st_b == GXHT40_OK) {\n151\t        if (have_a == 0u) {\n152\t            uint8_t i;\n153\t            for (i = 0u; i < (uint8_t)GXHT40_RESULT_LEN; i++) {\n154\t                buf[i] = buf_b[i];  /* 用 B 的帧 (不直接读入 buf, 避免破坏 A 的结果) */\n155\t            }\n156\t            s_addr7 = GXHT40_ADDR_7BIT_B;\n157\t        }\n158\t        return GXHT40_OK;\n159\t    }\n160\t\n161\t    if (have_a != 0u) {\n162\t        return GXHT40_OK;           /* A 成功且 B 未应答: A 的帧仍然有效 */\n163\t    }\n164\t    return st_b;                    /* 两候选均失败: 沿用“最后一次探测结果码”语义 */\n165\t}\n166\t\n167\t/* ------------------------------------------------------------------ */\n168\t/* 对外: 一次测量                                                      */\n169\t/* ------------------------------------------------------------------ */\n170\tgxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10)\n171\t{\n172\t    uint8_t buf[GXHT40_RESULT_LEN];\n173\t    uint8_t attempt;\n174\t    gxht40_status_t last = GXHT40_ERR_IO;\n175\t\n176\t    if ((s_dev == NULL) || (temp_x10 == NULL) || (hum_x10 == NULL)) {\n177\t        return GXHT40_ERR_PARAM;\n178\t    }\n179\t\n180\t    gxht40_diag_clear();      /* 诊断快照只服务本轮; 不改变失败语义 */\n181\t\n182\t    /* FD-002 §2.2 / 手册 tPU: 首次访问前留出器件上电稳定余量 (不进入周期路径) */\n183\t    if (s_first_access != 0u) {\n184\t        s_first_access = 0u;\n185\t        delay_ms(GXHT40_POWER_ON_WAIT_MS);\n186\t    }\n187\t\n188\t    for (attempt = 0u; attempt < GXHT40_MEAS_RETRY; attempt++) {\n189\t        gxht40_status_t st;\n190\t        uint16_t raw_t, raw_h;\n191\t        int16_t t;\n192\t        uint16_t h;\n193\t\n194\t        s_diag.attempt = (uint8_t)(attempt + 1u);\n195\t\n196\t        st = gxht40_acquire(buf);\n197\t        if (st != GXHT40_OK) {\n198\t            last = st;\n199\t            continue;\n200\t        }\n201\t\n202\t        /* 温度字 (buf[0..1]) 与湿度字 (buf[3..4]) 各带一个 CRC */\n203\t        if ((fw_crc8_gxht(&buf[0], 2u) != buf[2]) ||\n204\t            (fw_crc8_gxht(&buf[3], 2u) != buf[5])) {\n205\t            last = GXHT40_ERR_CRC;\n206\t            s_addr7 = 0u;           /* FWR-118: 任一测量失败都失效缓存地址 */\n207\t            continue;               /* 丢弃整帧, 重测 */\n208\t        }\n209\t\n210\t        raw_t = (uint16_t)(((uint16_t)buf[0] << 8) | (uint16_t)buf[1]);\n211\t        raw_h = (uint16_t)(((uint16_t)buf[3] << 8) | (uint16_t)buf[4]);\n212\t\n213\t        /* 整数换算 + 有效域判定 (纯逻辑在 fw_core.c; 无效时不写输出) */\n214\t        if (!gxht40_raw_to_x10(raw_t, raw_h, &t, &h)) {\n215\t            last = GXHT40_ERR_RANGE;\n216\t            s_addr7 = 0u;           /* FWR-118: 任一测量失败都失效缓存地址 */\n217\t            continue;               /* 超出 -40.0..125.0 C: 视为无效测量 */\n218\t        }\n219\t\n220\t        /* 仅在完全成功时写输出 (失败不修改输出) */\n221\t        *temp_x10 = t;\n222\t        *hum_x10  = h;\n223\t        s_diag.status = (uint8_t)GXHT40_OK;\n224\t        return GXHT40_OK;\n225\t    }\n226\t\n227\t    /*\n228\t     * 结果码与地址 ACK 事实自洽 (OBS-2, 由本能力决定): 两个候选都探完后, 若本轮\n229\t     * 有任一候选地址应答过(器件在总线上)则不得报“无器件”; 此时更准确的码是\n230\t     * “器件在但读不通”(ERR_IO)。这样 G 行的 s= 与 a44/a45 不会再互相矛盾。\n231\t     */\n232\t    if ((last == GXHT40_ERR_NO_DEVICE) &&\n233\t        ((s_diag.ack44 != 0u) || (s_diag.ack45 != 0u))) {\n234\t        last = GXHT40_ERR_IO;\n235\t    }\n236\t\n237\t    /* FWR-118: 本轮测量失败 -> 下一轮必须重新探测 0x44/0x45 (重探前做有界总线恢复) */\n238\t    s_addr7 = 0u;\n239\t    s_diag.status = (uint8_t)last;\n240\t    return last;\n241\t}\n```\n\n**Not shown above — explore these names for their source**\n\n- USER/src/measure.c: measure_sample:460, sensor_io_diag_scan:169, sensor_bus_diag_scan:347, bsp_i2c_init:143, temperature_process:489, s_sensor_ready:429, +21 more\n- USER/inc/gxht40.h: gxht40_diag_t:54\n- USER/src/fw_core.c: fw_crc8_gxht:36, gxht40_raw_to_x10:78, gxht40_temp_raw_to_x10:53, gxht40_temp_x10_valid:72, sensor_decide_report:110\n- USER/src/light.c: light_read_vdd_mv:89, light_sample:147, light_init:41, light_adc_config:25\n- USER/src/sf_i2c.c: i2c_bus_recover:422, i2c_init:110, i2c_obj_find:90, i2c_write_cmd:342, i2c_read_bytes:367, i2c_delay:77\n- COMMON/delay.c: delay_ms:97\n- USER/src/main.c: delay:96, main:183\n- UM2005C/radio.c: radio_into_tx:131\n- UM2005C/app_um2005C.c: app_um2005C_send_data_timeout:55\n- test/host_debug_trace_check.c: GPIO_Init:57, GPIO_WritePin:64\n- ... and 5 more files\n",
+        "stderr": ""
+      },
+      "files": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "files",
+          "-p",
+          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+          "--format",
+          "flat",
+          "--no-metadata"
+        ],
+        "started_utc": "2026-11-09T06:17:39.990145+00:00",
+        "finished_utc": "2026-11-09T06:17:40.207608+00:00",
+        "exit_code": 0,
+        "stdout": "\nFiles (99):\n\n  COMMON/convert.c\n  COMMON/convert.h\n  COMMON/delay.c\n  COMMON/delay.h\n  COMMON/type.h\n  rfconfig.h\n  test/host_debug_trace_check.c\n  test/host_diag_line_verify_ev.c\n  test/host_diag_probe_verify_ev.c\n  test/host_fw_core_pure_check.c\n  test/host_fw_core_verify_ev.c\n  test/host_gw_compat_verify_ev.c\n  test/host_gxht40_check.c\n  test/host_gxht40_verify_ev.c\n  test/host_light_check.c\n  test/host_light_verify_ev.c\n  test/host_measure_flow_check.c\n  test/host_measure_flow_verify_ev.c\n  test/host_rf_frame_check.c\n  test/host_rf_frame_verify_ev.c\n  test/host_rf_report_verify_ev.c\n  test/host_rtc_cadence_verify_ev.c\n  test/host_sensor_core_test.c\n  test/host_sf_i2c_bus_check.c\n  test/host_sf_i2c_verify_ev.c\n  test/host_vdd_verify_ev.c\n  test/mock_diagline_ev/cw32l010_adc.h\n  test/mock_diagline_ev/cw32l010_gpio.h\n  test/mock_diagline_ev/cw32l010_sysctrl.h\n  test/mock_diagline_ev/cw32l010_uart.h\n  test/mock_diagline_ev/mock_diagline_hw.h\n  test/mock_light/cw32l010_adc.h\n  test/mock_light/cw32l010_gpio.h\n  test/mock_light/cw32l010_sysctrl.h\n  test/mock_light/mock_light_hw.h\n  test/mock_main_ev/cw32l010_adc.h\n  test/mock_main_ev/cw32l010_digitalsign.h\n  test/mock_main_ev/cw32l010_flash.h\n  test/mock_main_ev/cw32l010_gpio.h\n  test/mock_main_ev/cw32l010_rtc.h\n  test/mock_main_ev/cw32l010_sysctrl.h\n  test/mock_main_ev/cw32l010_systick.h\n  test/mock_main_ev/cw32l010_uart.h\n  test/mock_main_ev/cw32l010.h\n  test/mock_main_ev/interrupts_cw32l010.h\n  test/mock_main_ev/mock_main_hw.h\n  test/mock_main_ev/system_cw32l010.h\n  test/mock_mcu/cw32l010_adc.h\n  test/mock_mcu/cw32l010_gpio.h\n  test/mock_mcu/cw32l010_sysctrl.h\n  test/mock_mcu/mock_cw32.h\n  test/mock_measure_ev/cw32l010_adc.h\n  test/mock_measure_ev/cw32l010_gpio.h\n  test/mock_measure_ev/cw32l010_sysctrl.h\n  test/mock_measure_ev/cw32l010_uart.h\n  test/mock_measure_ev/mock_measure_hw.h\n  test/mock_measure_mcu/cw32l010_gpio.h\n  test/mock_measure_mcu/cw32l010_sysctrl.h\n  test/mock_measure_mcu/cw32l010_uart.h\n  test/mock_trace/cw32l010_adc.h\n  test/mock_trace/cw32l010_gpio.h\n  test/mock_trace/cw32l010_sysctrl.h\n  test/mock_trace/cw32l010_uart.h\n  test/mock_trace/mock_trace_hw.h\n  test/mock_vdd_ev/cw32l010_adc.h\n  test/mock_vdd_ev/cw32l010_gpio.h\n  test/mock_vdd_ev/cw32l010_sysctrl.h\n  test/mock_vdd_ev/mock_vdd_hw.h\n  UM2005C/app_gtimer.c\n  UM2005C/app_gtimer.h\n  UM2005C/app_um2005C.c\n  UM2005C/app_um2005C.h\n  UM2005C/radio.c\n  UM2005C/radio.h\n  UM2005C/rfconfig.h\n  UM2005C/um2005C_defs.h\n  UM2005C/um2005C_hal.c\n  UM2005C/um2005C_hal.h\n  UM2005C/um2005C.c\n  UM2005C/um2005C.h\n  USER/inc/debug_trace.h\n  USER/inc/encrytogate.h\n  USER/inc/fw_core.h\n  USER/inc/gxht40.h\n  USER/inc/interrupts_cw32l010.h\n  USER/inc/light.h\n  USER/inc/main.h\n  USER/inc/measure.h\n  USER/inc/sensor_config.h\n  USER/inc/sf_i2c.h\n  USER/src/debug_trace.c\n  USER/src/encrytogate.c\n  USER/src/fw_core.c\n  USER/src/gxht40.c\n  USER/src/interrupts_cw32l010.c\n  USER/src/light.c\n  USER/src/main.c\n  USER/src/measure.c\n  USER/src/sf_i2c.c\n\n",
+        "stderr": ""
+      },
+      "queried_source": {
+        "path": "USER/src/gxht40.c",
+        "sha256": "250fa66939838f28bb16748a036deab3fd00d7e5a6b07f03c1c734fb538356e9",
+        "git_blob": {
+          "command": [
+            "git",
+            "hash-object",
+            "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\USER\\src\\gxht40.c"
+          ],
+          "started_utc": "2026-11-09T06:17:40.207608+00:00",
+          "finished_utc": "2026-11-09T06:17:40.227023+00:00",
+          "exit_code": 0,
+          "stdout": "c95b7b504fabf7b53b834aa86e1c817e4127049a\n",
+          "stderr": ""
+        }
+      },
+      "config": {
+        "exclude": [
+          "MDK/RTE/",
+          "MDK/output/",
+          "EWARM/Debug/",
+          "EWARM/Release/",
+          "obj/",
+          "build/"
+        ],
+        "deprioritize": [
+          "test/"
+        ]
+      },
+      "ignored": {
+        "command": [
+          "git",
+          "check-ignore",
+          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\.codegraph"
+        ],
+        "started_utc": "2026-11-09T06:17:40.227023+00:00",
+        "finished_utc": "2026-11-09T06:17:40.248297+00:00",
+        "exit_code": 0,
+        "stdout": "\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\\\\.codegraph\"\n",
+        "stderr": ""
+      },
+      "indexed_files_sha256": "7539024ded41bd802365453194b2664af353ea6fc3643e32773be1bb805d6f77",
+      "indexed_file_count_checked": 99
+    },
+    {
+      "name": "android",
+      "projectPath": "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+      "indexPath": "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\.codegraph",
+      "query": "CloudUploadRepository",
+      "source_commit": {
+        "command": [
+          "git",
+          "log",
+          "-1",
+          "--format=%H",
+          "--",
+          "dengbei_care"
+        ],
+        "started_utc": "2026-11-09T06:17:38.964884+00:00",
+        "finished_utc": "2026-11-09T06:17:38.989428+00:00",
+        "exit_code": 0,
+        "stdout": "4d101ae6459f89fa7f26f0d437d1d86a8be7a369\n",
+        "stderr": ""
+      },
+      "source_diff": {
+        "command": [
+          "git",
+          "diff",
+          "HEAD",
+          "--",
+          "dengbei_care"
+        ],
+        "started_utc": "2026-11-09T06:17:38.989428+00:00",
+        "finished_utc": "2026-11-09T06:17:39.013254+00:00",
+        "exit_code": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      "before": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "status",
+          "--json",
+          "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
+        ],
+        "started_utc": "2026-11-09T06:17:39.013254+00:00",
+        "finished_utc": "2026-11-09T06:17:39.274935+00:00",
+        "exit_code": 0,
+        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\",\"lastIndexed\":\"2026-10-07T01:53:21.977Z\",\"fileCount\":88,\"nodeCount\":2396,\"edgeCount\":4770,\"dbSizeBytes\":9977856,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"class\":147,\"constant\":92,\"enum\":7,\"enum_member\":26,\"field\":322,\"file\":86,\"function\":49,\"import\":768,\"interface\":8,\"method\":804,\"namespace\":82,\"variable\":5},\"languages\":[\"java\",\"kotlin\",\"properties\",\"xml\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
+        "stderr": ""
+      },
+      "sync": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "sync",
+          "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
+        ],
+        "started_utc": "2026-11-09T06:17:39.274935+00:00",
+        "finished_utc": "2026-11-09T06:17:39.537675+00:00",
+        "exit_code": 0,
+        "stdout": "T  Syncing CodeGraph\n|\nScanning files...\n|\n•  Already up to date\n|\n—  Done\n\n",
+        "stderr": ""
+      },
+      "after": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "status",
+          "--json",
+          "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
+        ],
+        "started_utc": "2026-11-09T06:17:39.537675+00:00",
+        "finished_utc": "2026-11-09T06:17:39.786295+00:00",
+        "exit_code": 0,
+        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\",\"lastIndexed\":\"2026-10-07T01:53:21.977Z\",\"fileCount\":88,\"nodeCount\":2396,\"edgeCount\":4770,\"dbSizeBytes\":9977856,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"class\":147,\"constant\":92,\"enum\":7,\"enum_member\":26,\"field\":322,\"file\":86,\"function\":49,\"import\":768,\"interface\":8,\"method\":804,\"namespace\":82,\"variable\":5},\"languages\":[\"java\",\"kotlin\",\"properties\",\"xml\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
+        "stderr": ""
+      },
+      "explore": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "explore",
+          "-p",
+          "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+          "--max-files",
+          "1",
+          "CloudUploadRepository"
+        ],
+        "started_utc": "2026-11-09T06:17:39.786295+00:00",
+        "finished_utc": "2026-11-09T06:17:40.045192+00:00",
+        "exit_code": 0,
+        "stdout": "**Exploration: CloudUploadRepository**\n\nFound 25 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `CloudUploadRepository` (app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt:28) — 11 callers in `app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt`; tests: `app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt`, `app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt`\n- `upload` (app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt:40) — 1 caller in `app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt`; tested via callers: `app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt`, `app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt`\n\n**Source Code**\n\n> The code below is the **verbatim, current on-disk source** of these files — re-read from disk on this call and line-numbered, byte-for-byte identical to what the Read tool returns. It is NOT a summary, outline, or stale cache. Treat each block as a Read you have already performed: do not Read a file shown here.\n\n**`app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt`** — CloudUploadRepository(class), upload(method), UploadApi(interface), UploadGate(interface), uploadPendingOnce(method), +19 more\n\n```kotlin\n1\tpackage com.jinyuni.dengbei_care.cloud\n2\t\n3\timport android.content.SharedPreferences\n4\timport android.util.Log\n5\timport com.jinyuni.dengbei_care.ui.zhuce.ApiService\n6\timport com.jinyuni.dengbei_care.ui.zhuce.SensorReading\n7\timport com.jinyuni.dengbei_care.ui.zhuce.SensorUploadData\n8\timport kotlinx.coroutines.CoroutineScope\n9\timport kotlinx.coroutines.Dispatchers\n10\timport kotlinx.coroutines.Job\n11\timport kotlinx.coroutines.SupervisorJob\n12\timport kotlinx.coroutines.launch\n13\timport kotlinx.coroutines.sync.Mutex\n14\timport retrofit2.Retrofit\n15\timport retrofit2.converter.gson.GsonConverterFactory\n16\t\n17\t/**\n18\t * 云上传编排（AA-002 §5.5/§6、D-07/D-09）。\n19\t *\n20\t * 职责：门控（守护中 + 已注册手机号）→ 幂等入队 → 在**独立作用域**取批上传 → 成功删除 / 失败退避记账。\n21\t * 失败不抛出到调用方，也不阻塞 BLE 与 MQTT 主链路（上传在 [scope] 上执行，与业务循环解耦）。\n22\t *\n23\t * 幂等：本地待发箱以 `(dev_id, time)` 去重，服务端以 `UNIQUE(dev_id, time)` + `INSERT IGNORE` 兜底，\n24\t * 因此重试/补传（含超时后服务端其实已入库的情形）不会产生重复数据。\n25\t *\n26\t * 参数集中在 [Config]（单批条数、退避起止、最大尝试次数）。\n27\t */\n28\tclass CloudUploadRepository(\n29\t    private val api: UploadApi,\n30\t    private val outbox: UploadOutbox,\n31\t    private val gate: UploadGate,\n32\t    private val config: Config = Config(),\n33\t    private val now: () -> Long = { System.currentTimeMillis() / 1000 },\n34\t    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)\n35\t) {\n36\t\n37\t    /** 上传接口抽象（生产实现见 [RetrofitUploadApi]；测试可注入伪实现） */\n38\t    interface UploadApi {\n39\t        /** @return true 表示 HTTP 2xx（视为成功） */\n40\t        suspend fun upload(data: SensorUploadData): Boolean\n41\t    }\n42\t\n43\t    /** 门控与身份来源（生产实现见 [PrefsUploadGate]） */\n44\t    interface UploadGate {\n45\t        fun guardActive(): Boolean\n46\t        fun phone(): String\n47\t        fun gatewayMac(): String\n48\t    }\n49\t\n50\t    /** 上传参数（唯一常量来源） */\n51\t    data class Config(\n52\t        val batchLimit: Int = DEFAULT_BATCH_LIMIT,\n53\t        val initialBackoffSeconds: Long = DEFAULT_INITIAL_BACKOFF_SECONDS,\n54\t        val maxBackoffSeconds: Long = DEFAULT_MAX_BACKOFF_SECONDS,\n55\t        val maxAttempts: Int = DEFAULT_MAX_ATTEMPTS\n56\t    ) {\n57\t        /** 指数退避：`initial * 2^(attempts-1)`，上限 [maxBackoffSeconds] */\n58\t        fun backoffSeconds(attempts: Int): Long {\n59\t            if (attempts <= 1) return initialBackoffSeconds\n60\t            var seconds = initialBackoffSeconds\n61\t            repeat(attempts - 1) {\n62\t                if (seconds >= maxBackoffSeconds) return maxBackoffSeconds\n63\t                seconds *= 2\n64\t            }\n65\t            return seconds.coerceAtMost(maxBackoffSeconds)\n66\t        }\n67\t    }\n68\t\n69\t    /** 一次上传尝试的结果（用于日志/测试断言） */\n70\t    data class UploadOutcome(\n71\t        val attempted: Int,\n72\t        val uploaded: Int,\n73\t        val failed: Int,\n74\t        val skipped: String? = null\n75\t    )\n76\t\n77\t    private val mutex = Mutex()\n78\t\n79\t    /** 门控：守护中且已注册手机号；否则不入队、不发起请求（D-09） */\n80\t    fun isGateOpen(): Boolean = gate.guardActive() && gate.phone().isNotBlank()\n81\t\n82\t    /**\n83\t     * 业务侧入口：门控通过后幂等入队，并异步触发一次上传（不阻塞调用线程）。\n84\t     * @return true 表示本次新入队\n85\t     */\n86\t    fun enqueueAndUpload(\n87\t        devId: String,\n88\t        time: Long,\n89\t        temperature: Double,\n90\t        humidity: Double\n91\t    ): Boolean {\n92\t        if (!isGateOpen()) {\n93\t            Log.i(TAG, \"upload gated off (guard=${gate.guardActive()}, phoneRegistered=${gate.phone().isNotBlank()})\")\n94\t            return false\n95\t        }\n96\t        val enqueued = outbox.enqueue(devId, time, temperature, humidity)\n97\t        if (!enqueued) {\n98\t            Log.i(TAG, \"duplicate reading ignored by outbox: devId=$devId time=$time\")\n99\t        }\n100\t        triggerUpload()\n101\t        return enqueued\n102\t    }\n103\t\n104\t    /** 触发一次上传（入队后 / 每轮 BLE 开始 / 网络恢复 / App 冷启动，见 ITEM-010 接线） */\n105\t    fun triggerUpload(): Job = scope.launch { uploadPendingOnce() }\n106\t\n107\t    /**\n108\t     * 取一批到期行上传一次（串行，同一时刻不产生并发重复请求）。\n109\t     * 成功 → 逐行删除；失败 → 逐行 `attempts+1` 并推后退避时间；到 `maxAttempts` 的行保留但不再自动重试。\n110\t     */\n111\t    suspend fun uploadPendingOnce(): UploadOutcome {\n112\t        if (!isGateOpen()) return UploadOutcome(0, 0, 0, \"gate_closed\")\n113\t        if (!mutex.tryLock()) return UploadOutcome(0, 0, 0, \"busy\")\n114\t        try {\n115\t            val batch = outbox.dueBatch(config.maxAttempts, config.batchLimit)\n116\t            if (batch.isEmpty()) return UploadOutcome(0, 0, 0, \"empty\")\n117\t\n118\t            val payload = UploadPayload.build(\n119\t                phone = gate.phone(),\n120\t                mac = gate.gatewayMac(),\n121\t                readings = batch.map { SensorReading(it.devId, it.time, it.temperature, it.humidity) }\n122\t            ) ?: return UploadOutcome(0, 0, 0, \"empty_payload\")\n123\t\n124\t            val ok = try {\n125\t                api.upload(payload)\n126\t            } catch (e: Exception) {\n127\t                Log.w(TAG, \"upload failed: ${e.message}\")\n128\t                false\n129\t            }\n130\t\n131\t            return if (ok) {\n132\t                batch.forEach { outbox.ack(it) }\n133\t                Log.i(TAG, \"uploaded ${batch.size} reading(s)\")\n134\t                UploadOutcome(batch.size, batch.size, 0)\n135\t            } else {\n136\t                batch.forEach { outbox.markFailed(it, config.backoffSeconds(it.attempts + 1)) }\n137\t                Log.w(TAG, \"upload failed for ${batch.size} reading(s); will retry with backoff\")\n138\t                UploadOutcome(batch.size, 0, batch.size, \"upload_failed\")\n139\t            }\n140\t        } finally {\n141\t            mutex.unlock()\n142\t        }\n143\t    }\n144\t\n145\t    companion object {\n146\t        private const val TAG = \"CloudUpload\"\n147\t\n148\t        /** 单批最多上传条数 */\n149\t        const val DEFAULT_BATCH_LIMIT = 50\n150\t\n151\t        /** 首次失败后的退避（秒） */\n152\t        const val DEFAULT_INITIAL_BACKOFF_SECONDS = 60L\n153\t\n154\t        /** 退避上限（秒，30 分钟） */\n155\t        const val DEFAULT_MAX_BACKOFF_SECONDS = 1800L\n156\t\n157\t        /** 最大尝试次数；达到后保留在待发箱但不再自动重试 */\n158\t        const val DEFAULT_MAX_ATTEMPTS = 20\n159\t    }\n160\t}\n161\t\n162\t/**\n163\t * 生产门控实现：从 `MyPrefs` 读取守护状态与身份。\n164\t *\n165\t * 注意 as-built 约定（`HomeFragment.restoreGuardState`）：`measure_state == \"stopping\"` 表示守护**运行中**，\n166\t * `\"starting\"` 表示已停止；`registerphone` 为已注册手机号，`mac_addr` 为网关 MAC。\n167\t */\n168\tclass PrefsUploadGate(private val prefs: SharedPreferences) : CloudUploadRepository.UploadGate {\n169\t\n170\t    override fun guardActive(): Boolean = prefs.getString(KEY_MEASURE_STATE, \"\") == STATE_GUARD_RUNNING\n171\t\n172\t    override fun phone(): String = prefs.getString(KEY_REGISTER_PHONE, \"\").orEmpty()\n173\t\n174\t    override fun gatewayMac(): String = prefs.getString(KEY_MAC_ADDR, \"\").orEmpty()\n175\t\n176\t    private companion object {\n177\t        const val KEY_MEASURE_STATE = \"measure_state\"\n178\t        const val STATE_GUARD_RUNNING = \"stopping\"\n179\t        const val KEY_REGISTER_PHONE = \"registerphone\"\n180\t        const val KEY_MAC_ADDR = \"mac_addr\"\n181\t    }\n182\t}\n183\t\n184\t/** 仅依赖服务器基址的 Retrofit 客户端（基址集中于 [CloudConfig]） */\n185\tobject CloudApiClient {\n186\t\n187\t    val apiService: ApiService by lazy {\n188\t        Retrofit.Builder()\n189\t            .baseUrl(CloudConfig.HTTP_BASE_URL)\n190\t            .addConverterFactory(GsonConverterFactory.create())\n191\t            .build()\n192\t            .create(ApiService::class.java)\n193\t    }\n194\t}\n195\t\n196\t/**\n197\t * 生产上传实现：`POST /upload_data`，HTTP 2xx 视为成功（AA-002 §5.5）。\n198\t * 网络/解析异常不在此处吞掉，由 [CloudUploadRepository.uploadPendingOnce] 统一按失败退避处理。\n199\t */\n200\tclass RetrofitUploadApi(\n201\t    private val apiService: ApiService = CloudApiClient.apiService\n202\t) : CloudUploadRepository.UploadApi {\n203\t\n204\t    override suspend fun upload(data: SensorUploadData): Boolean =\n205\t        apiService.uploadData(data).isSuccessful\n206\t}\n```\n\n**Not shown above — explore these names for their source**\n\n- app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt: UploadOutbox:45, dueBatch:64, ack:68, markFailed:71, enqueue:51, pendingCount:78, +4 more\n- app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt: uploadData:29, ApiService:8, SensorReading:42, SensorUploadData:50\n- app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt: build:57\n- app/src/androidTest/java/com/jinyuni/dengbei_care/verification/UploadOutboxItem009VerificationTest.kt: com.jinyuni.dengbei_care.verification:1, policyOverSqlite_enqueuesOnce_acksAndAccountsFailure:99\n- app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt: com.jinyuni.dengbei_care:1\n",
+        "stderr": ""
+      },
+      "files": {
+        "command": [
+          "D:\\Program Files\\nodejs\\node.exe",
+          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\npm-shim.js",
+          "files",
+          "-p",
+          "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+          "--format",
+          "flat",
+          "--no-metadata"
+        ],
+        "started_utc": "2026-11-09T06:17:40.045192+00:00",
+        "finished_utc": "2026-11-09T06:17:40.265568+00:00",
+        "exit_code": 0,
+        "stdout": "\nFiles (88):\n\n  app/build.gradle.kts\n  app/src/androidTest/java/com/jinyuni/dengbei_care/ExampleInstrumentedTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/UploadOutboxItem009VerificationTest.kt\n  app/src/main/AndroidManifest.xml\n  app/src/main/java/com/jinyuni/dengbei_care/BaseActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt\n  app/src/main/java/com/jinyuni/dengbei_care/DeviceParamsBook.kt\n  app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MainActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MyApplication.kt\n  app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/DailyReportWorker.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportScheduler.kt\n  app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt\n  app/src/main/java/com/jinyuni/dengbei_care/SensorIdAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt\n  app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/denglu/DengLuFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/AlarmEventAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DeviceDetailFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/sensorid/SensorIdListFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/PrivacyPolicyActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/TermsOfServiceActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt\n  app/src/main/java/org/eclipse/paho/android/service/AlarmPingSender.java\n  app/src/main/java/org/eclipse/paho/android/service/DatabaseMessageStore.java\n  app/src/main/java/org/eclipse/paho/android/service/MessageStore.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttAndroidClient.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttConnection.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttDeliveryTokenAndroid.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttService.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttServiceBinder.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttServiceConstants.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttTokenAndroid.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttTraceHandler.java\n  app/src/main/java/org/eclipse/paho/android/service/ParcelableMqttMessage.java\n  app/src/main/java/org/eclipse/paho/android/service/Status.java\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadPayloadTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt\n  app/src/test/java/com/jinyuni/dengbei_care/db/TemperatureWriteItem007Test.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ExampleUnitTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/report/ReportGeneratorTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ui/home/DeviceStateTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/AlarmEvaluatorItem005VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/DeviceStateItem011VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/PlayerDegradationItem010VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/ReadingAttributionItem003VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/ReportGeneratorItem013VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/UploadPayloadItem008VerificationTest.kt\n  build.gradle.kts\n  gradle.properties\n  gradle/wrapper/gradle-wrapper.properties\n  settings.gradle.kts\n\n",
+        "stderr": ""
+      },
+      "queried_source": {
+        "path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt",
+        "sha256": "c221de8da8d78ecc4b41e341daca69ece754fe8e18fd95920cdb065612b84a1c",
+        "git_blob": {
+          "command": [
+            "git",
+            "hash-object",
+            "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\app\\src\\main\\java\\com\\jinyuni\\dengbei_care\\cloud\\CloudUploadRepository.kt"
+          ],
+          "started_utc": "2026-11-09T06:17:40.265568+00:00",
+          "finished_utc": "2026-11-09T06:17:40.282942+00:00",
+          "exit_code": 0,
+          "stdout": "ad39b5331d371c7448a11945ccfc5a18073b972f\n",
+          "stderr": ""
+        }
+      },
+      "config": {
+        "exclude": [
+          "iOS开发资料/",
+          ".idea/",
+          ".gradle/",
+          "build/",
+          "app/build/"
+        ],
+        "deprioritize": [
+          "app/src/test/",
+          "app/src/androidTest/",
+          "app/src/main/java/org/eclipse/paho/"
+        ]
+      },
+      "ignored": {
+        "command": [
+          "git",
+          "check-ignore",
+          "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\.codegraph"
+        ],
+        "started_utc": "2026-11-09T06:17:40.282942+00:00",
+        "finished_utc": "2026-11-09T06:17:40.300766+00:00",
+        "exit_code": 0,
+        "stdout": "\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\"\n",
+        "stderr": ""
+      },
+      "indexed_files_sha256": "c28fb65ee5cd689341d5cf42da754b04a1246a4b2196febcf4cbe979b58225c8",
+      "indexed_file_count_checked": 88
+    }
+  ],
+  "validation": "All three roots: sync and source-returning explore succeeded; complete, no pending changes/refs, no worktree mismatch; no subprocess remains."
+}
