@@ -437,6 +437,7 @@ evidence/ev031/ | active | EV-031 失败归因最小实测原始证据目录：�
 evidence/ev031/serial_capture_0852Z.bin | active | COM43 原始字节（08:52:50–08:57:50Z，S k=33/k=36，均 q=1；158 B；md5 8559c027…）
 evidence/ev031/tool_results.txt | active | EV-031 串口/USB/sigrok 只读配置/COM43 采集/pyocd 只读枚举原始结果与时间戳
 evidence/firmware_assignment_referral.md | active | 固件实现失败分派转交证据（EV-028/029：GXHT40 与 F-1 已修复；剩余 T4-02/T5/INT/T4-07 为采集编排、遮光/刺激与仪器配置条件，非固件代码缺陷；列明责任与前置条件）
+evidence/firmware_assignment_referral_ev030.md | active | EV-030 失败分派转交报告：固件 5/5+2/2 周期 q=1、0 G、I2C 双 CRC、F-1 保持；未满足项为上电五行采集编排、T5 双态物理条件、跨链路/刺激、功耗仪器；结论 ASSIGNMENT_DECLINED，未改产品源码
 evidence/firmware_exploration/ | active | FW-EXP-002 原始证据目录：COM43 三个窗口（含用户确认无光后的 15:24 窗口）、独立分析、FX2 2.32 原始 .sr/解码、构建与工具返回、参数文件
 evidence/firmware_exploration/analyze_fw_exploration.py | active | FW-EXP-002 独立解析脚本（不引用固件常量）
 evidence/firmware_exploration/analyze_stderr.txt | active | 由 firmware_engineer 新增或修改的项目相关文件
