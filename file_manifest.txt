@@ -73,7 +73,8 @@ artifacts/android_architecture.md | active | Android 方案设计 AA-004 rev 3.0
 artifacts/android_feasibility.md | active | Android 真机/模拟环境可行性探索 AF-001（Redmi 8A Android 10/API 29 只读事实、API<31 定位权限门阻断、硬编码网关 MAC、AVD API 34 对照与差异、未证实项与最小下一步）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加）
 artifacts/android_tasks.yaml | active | Android 待实现任务清单（6 项：BLE 权限模型、网关身份发现与绑定、BLE 批次转发与载荷格式、观测有效性与全零占位、上传失败分类与 401 阻塞、升温规则文案；按前置依赖排序）
-artifacts/backend_feasibility.md | active | 后端可行性探索 BE-EXP-002（已登记只读 SSH 入口对既有服务实测：EMQX 5.8.0/端口/unit/6 路由存在性/401 差异/18 天无业务流量/磁盘内存；资料声明与未核验项分开、service_context、端到端 D1–D6 最小实验；历史 BE-EXP-001 WORK_FAILED 与桩边界保留不改写）
+artifacts/backend_feasibility.md | history | 后端可行性探索 BE-EXP-002（2026-11-09 只读 SSH 实测：EMQX 5.8.0/端口/unit/6 路由/401/零业务流量；历史记录保留不改写，当前入口见 backend_feasibility_current.md）
+artifacts/backend_feasibility_current.md | active | 后端可行性探索 BE-EXP-003（2026-11-10 重新只读核验：同一 abr.py 8949B/2026-10-22 未变、EMQX 5.8.0 uptime 17d、6 路由 405、OPTIONS 无鉴权头提示、10-22 的 200 已进入 mysql.connect、仍无业务流量；资料/已核验/未知分开、service_context 与端到端 D1–D6；上传受理条件仍未定性）
 artifacts/codegraph_current_index.md | active | 代码智能：当前三个子工程 CodeGraph 入口、覆盖与排除范围、源码版本、同步与查询证据引用及变更后同步方法
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
@@ -129,16 +130,18 @@ dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.8）
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002
-evidence/backend_exploration/ | active | 后端可行性探索原始证据目录（本地 Flask+SQLite 桩；以及本轮对既有服务的只读 SSH 探测脚本与原始输出，仅状态/端口/日志，未写数据、未直连 DB）
+evidence/backend_exploration/ | active | 后端可行性探索原始证据目录（本地 Flask+SQLite 桩；对既有服务的只读 SSH 探测脚本与原始输出，仅状态/端口/日志，未写数据、未直连 DB）
 evidence/backend_exploration/http_history_counts.txt | active | 请求行 26（POST 14/GET 11）、journal 自 2026-09-25 起的原始计数
 evidence/backend_exploration/http_request_history.txt | active | 关键实测：2026-10-22T19:32:28 三次 POST /upload_data 为 401/401/200；此后至本轮无任何 POST
 evidence/backend_exploration/http_route_existence.txt | active | 6 路径均 405 Allow: OPTIONS,POST；对照路径 404 的原始输出
 evidence/backend_exploration/ssh_readonly_inspection.txt | active | 会话 1 原始 stdout/stderr/exit 与主机 ed25519 指纹
 evidence/backend_exploration/ssh_readonly_inspection_2.txt | active | 会话 2 原始输出
 evidence/backend_exploration/ssh_readonly_inspection_3.txt | active | 会话 3 原始输出
+evidence/backend_exploration/ssh_readonly_inspection_g002.txt | active | BE-EXP-003 原始输出：本轮 6.9 s 会话（23:14:02–23:14:09Z）、ed25519 主机指纹、EMQX 17 d uptime/0 连接、6 路由 405+Allow、OPTIONS 200、journal 14 条 POST/末次 2026-10-22 19:32:28 401-401-200 与 mysql.connect 行
 evidence/backend_exploration/ssh_readonly_probe.py | active | 只读 SSH 会话 1：身份、systemd 状态、ss -lnt、docker ps/inspect、进程、6 路径 GET 探测、abr.py 元数据、近 4 天日志、EMQX 版本、磁盘内存；含脱敏与总时限
 evidence/backend_exploration/ssh_readonly_probe_emqx.py | active | 只读 SSH 会话 3：EMQX broker 版本/uptime、broker stats、metrics（显示自 2026-10-24 重启起零连接零消息）、clients list
 evidence/backend_exploration/ssh_readonly_probe_followup.py | active | 只读 SSH 会话 2：journal 保留期、端口→进程映射、EMQX listeners、MySQL 镜像身份/重启策略、OS 版本
+evidence/backend_exploration/ssh_readonly_probe_g002.py | active | BE-EXP-003 只读 SSH 复检脚本：identity/unit/ss/docker ps/stat/emqx ctl/GET|OPTIONS 路由/journal 计数与 10-22 窗口/df/free；脱敏、单命令≤12 s、无写动作
 evidence/backend_exploration/ssh_readonly_probe_http_history.py | active | 只读 SSH 会话 5：统计 user_script journal 的请求行/POST/GET 数量与 journal 最早条目
 evidence/backend_exploration/ssh_readonly_probe_http_requests.py | active | 只读 SSH 会话 6：导出 26 条请求行原文（仅 method/path/status，无请求体）
 evidence/backend_exploration/ssh_readonly_probe_routes.py | active | 只读 SSH 会话 4：对 6 个客户端 POST 路径 + 1 个对照路径做 GET 探测，用 405+Allow 判定路由存在、404 作对照（不调用写逻辑）

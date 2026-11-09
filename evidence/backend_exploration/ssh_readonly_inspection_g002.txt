@@ -1,0 +1,319 @@
+# read-only SSH re-inspection of the existing service (current run)
+started_utc=2026-11-09T23:14:02Z
+host=8.140.23.253 port=22 account=<redacted-account> transport=paramiko/2.8.1
+scope=identity,unit_state,listening_ports,process_owner,container_state,service_metadata,emqx_version/listeners/stats,GET|OPTIONS route probes,recent_logs,resources
+forbidden_in_this_run=write_endpoints,database_access,sudo,mutation,start/stop/restart,deploy
+
+--- [local_tcp_probe] connect/close only, 5 s per port
+port=22 TCP_OPEN 22ms
+port=1883 TCP_OPEN 1ms
+port=3306 TCP_OPEN 15ms
+port=5000 TCP_OPEN 1ms
+port=8083 TCP_OPEN 2ms
+port=8883 TCP_OPEN 13ms
+port=18083 TCP_OPEN 1ms
+
+server_host_key=ssh-ed25519 fingerprint_sha256=ty/ysZ6Z9cvGUtYfQ26082EJXBWFFzU9pYBm2tXPbJQ
+connect_result=OK after=0.3s
+
+--- [identity] $ date -u +%Y-%m-%dT%H:%M:%SZ; hostname; uname -srm; cat /etc/os-release | head -2
+exit=0 elapsed_ms=547
+stdout:
+2026-11-09T23:14:03Z
+iZ2zeih0gmrk47og5r4z7sZ
+Linux 6.8.0-136-generic x86_64
+PRETTY_NAME="Ubuntu 24.04.4 LTS"
+NAME="Ubuntu"
+
+--- [systemd_units] $ for u in emqx user_script; do echo "$u active=$(systemctl is-active $u 2>&1) enabled=$(systemctl is-enabled $u 2>&1)"; done
+exit=0 elapsed_ms=109
+stdout:
+emqx active=active enabled=enabled
+user_script active=active enabled=enabled
+
+--- [systemd_detail] $ systemctl show emqx user_script -p Id -p ActiveState -p SubState -p ExecMainStartTimestamp -p ExecMainPID -p NRestarts 2>&1
+exit=0 elapsed_ms=105
+stdout:
+NRestarts=0
+ExecMainStartTimestamp=Sat 2026-10-24 06:29:44 CST
+ExecMainPID=20845
+Id=emqx.service
+ActiveState=active
+SubState=running
+
+NRestarts=0
+ExecMainStartTimestamp=Sat 2026-10-24 06:29:40 CST
+ExecMainPID=20644
+Id=user_script.service
+ActiveState=active
+SubState=running
+
+--- [listening_ports] $ ss -lnt 2>&1 | head -40
+exit=0 elapsed_ms=105
+stdout:
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      511        127.0.0.1:3000       0.0.0.0:*          
+LISTEN 0      1024         0.0.0.0:8883       0.0.0.0:*          
+LISTEN 0      128          0.0.0.0:5000       0.0.0.0:*          
+LISTEN 0      4096         0.0.0.0:22         0.0.0.0:*          
+LISTEN 0      4096       127.0.0.1:39091      0.0.0.0:*          
+LISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*          
+LISTEN 0      4096       127.0.0.1:32969      0.0.0.0:*          
+LISTEN 0      128          0.0.0.0:4370       0.0.0.0:*          
+LISTEN 0      1024         0.0.0.0:18083      0.0.0.0:*          
+LISTEN 0      4096       127.0.0.1:2019       0.0.0.0:*          
+LISTEN 0      200        127.0.1.1:5432       0.0.0.0:*          
+LISTEN 0      4096      127.0.0.54:53         0.0.0.0:*          
+LISTEN 0      1024         0.0.0.0:8084       0.0.0.0:*          
+LISTEN 0      1024         0.0.0.0:8083       0.0.0.0:*          
+LISTEN 0      1024         0.0.0.0:1883       0.0.0.0:*          
+LISTEN 0      4096         0.0.0.0:3306       0.0.0.0:*          
+LISTEN 0      5            0.0.0.0:5370       0.0.0.0:*          
+LISTEN 0      200        127.0.0.1:5432       0.0.0.0:*          
+LISTEN 0      128                *:21118            *:*          
+LISTEN 0      128                *:21119            *:*          
+LISTEN 0      128                *:21116            *:*          
+LISTEN 0      128                *:21117            *:*          
+LISTEN 0      128                *:21115            *:*          
+LISTEN 0      4096            [::]:22            [::]:*          
+LISTEN 0      4096               *:80               *:*          
+LISTEN 0      4096               *:443              *:*          
+LISTEN 0      4096            [::]:3306          [::]:*
+
+--- [process_owner] $ pgrep -af 'abr.py' 2>&1; ss -lntp 2>/dev/null | grep -E ':(5000|8883|3306)\b' 2>&1
+exit=0 elapsed_ms=117
+stdout:
+20644 /root/venv/bin/python /root/abr.py
+165713 bash -c pgrep -af 'abr.py' 2>&1; ss -lntp 2>/dev/null | grep -E ':(5000|8883|3306)\b' 2>&1
+LISTEN 0      1024         0.0.0.0:8883       0.0.0.0:*    users:(("beam.smp",pid=20845,fd=35))                     
+LISTEN 0      128          0.0.0.0:5000       0.0.0.0:*    users:(("python",pid=20644,fd=3))                        
+LISTEN 0      4096         0.0.0.0:3306       0.0.0.0:*    users:(("docker-proxy",pid=1721,fd=7))                   
+LISTEN 0      4096            [::]:3306          [::]:*    users:(("docker-proxy",pid=1727,fd=7))
+
+--- [docker_ps] $ docker ps --format '{{.Names}}|{{.Image}}|{{.Status}}|{{.Ports}}' 2>&1
+exit=0 elapsed_ms=112
+stdout:
+mysql|mysql:latest|Up 2 weeks|0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp, 33060/tcp
+
+--- [abr_metadata] $ stat -c '%n size=%s mtime=%y' /root/abr.py /root/abr.py.bak_20260926 2>&1
+exit=0 elapsed_ms=94
+stdout:
+/root/abr.py size=8949 mtime=2026-10-22 19:31:04.322027530 +0800
+/root/abr.py.bak_20260926 size=7048 mtime=2026-09-26 08:57:58.183538672 +0800
+
+--- [emqx_version] $ dpkg -l emqx 2>&1 | tail -2; emqx ctl status 2>&1 | head -12
+exit=0 elapsed_ms=913
+stdout:
++++-==============-============-============-===============================================================================
+ii  emqx           5.8.0        amd64        EMQX, a distributed, massively scalable, highly extensible MQTT message broker.
+Node 'emqx@127.0.0.1' 5.8.0 is started
+
+--- [emqx_broker] $ emqx ctl broker 2>&1 | head -8
+exit=0 elapsed_ms=902
+stdout:
+sysdescr  : EMQX
+version   : 5.8.0
+datetime  : 2026-11-10T07:14:06.061959542+08:00
+uptime    : 17 days, 0 hours, 44 minutes, 19 seconds
+
+--- [emqx_listeners] $ emqx ctl listeners 2>&1 | head -80
+exit=0 elapsed_ms=911
+stdout:
+tcp:default
+  listen_on       : 0.0.0.0:1883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+ssl:default
+  listen_on       : 0.0.0.0:8883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+ws:default
+  listen_on       : 0.0.0.0:8083
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+wss:default
+  listen_on       : 0.0.0.0:8084
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+
+--- [emqx_clients] $ emqx ctl clients list 2>&1 | head -20
+exit=0 elapsed_ms=903
+stdout:
+No clients.
+
+--- [emqx_broker_stats] $ emqx ctl broker stats 2>&1 | head -30
+exit=0 elapsed_ms=901
+stdout:
+channels.count                : 0
+channels.max                  : 0
+cluster_sessions.count        : 0
+cluster_sessions.max          : 0
+connections.count             : 0
+connections.max               : 0
+delayed.count                 : 0
+delayed.max                   : 0
+durable_subscriptions.count   : 0
+durable_subscriptions.max     : 0
+live_connections.count        : 0
+live_connections.max          : 0
+retained.count                : 3
+retained.max                  : 3
+sessions.count                : 0
+sessions.max                  : 0
+suboptions.count              : 0
+suboptions.max                : 0
+subscribers.count             : 0
+subscribers.max               : 0
+subscriptions.count           : 0
+subscriptions.max             : 0
+subscriptions.shared.count    : 0
+subscriptions.shared.max      : 0
+topics.count                  : 0
+topics.max                    : 0
+
+--- [route_existence_get_only] $ for p in /login /upload_data /sendVerificationCode /verifyCode /register /setmac /doesNotExist; do code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 "http://127.0.0.1:5000$p"); allow=$(curl -s -I -o /dev/null -w '%{http_code}' --max-time 5 -X GET "http://127.0.0.1:5000$p" 2>/dev/null); echo "GET $p -> $code"; curl -s -i --max-time 5 "http://127.0.0.1:5000$p" 2>/dev/null | grep -i '^allow:' | tr -d '\r' | sed "s|^|  $p |"; done
+exit=0 elapsed_ms=236
+stdout:
+GET /login -> 405
+  /login Allow: OPTIONS, POST
+GET /upload_data -> 405
+  /upload_data Allow: OPTIONS, POST
+GET /sendVerificationCode -> 405
+  /sendVerificationCode Allow: OPTIONS, POST
+GET /verifyCode -> 405
+  /verifyCode Allow: OPTIONS, POST
+GET /register -> 405
+  /register Allow: OPTIONS, POST
+GET /setmac -> 405
+  /setmac Allow: OPTIONS, POST
+GET /doesNotExist -> 404
+
+--- [http_headers_root] $ curl -s -i --max-time 5 http://127.0.0.1:5000/ 2>&1 | head -12
+exit=0 elapsed_ms=85
+stdout:
+HTTP/1.1 404 NOT FOUND
+Server: Werkzeug/3.1.8 Python/3.12.3
+Date: Mon, 09 Nov 2026 23:14:09 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 207
+Access-Control-Allow-Origin: *
+Connection: close
+
+<!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+
+--- [http_options_upload] $ curl -s -i --max-time 5 -X OPTIONS http://127.0.0.1:5000/upload_data 2>&1 | head -20
+exit=0 elapsed_ms=108
+stdout:
+HTTP/1.1 200 OK
+Server: Werkzeug/3.1.8 Python/3.12.3
+Date: Mon, 09 Nov 2026 23:14:09 GMT
+Content-Type: text/html; charset=utf-8
+Allow: OPTIONS, POST
+Access-Control-Allow-Origin: *
+Content-Length: 0
+Connection: close
+
+--- [http_journal_counts] $ echo -n 'request_lines_total='; journalctl -u user_script --no-pager 2>/dev/null | grep -cE '"(POST|GET|HEAD) ' ; echo -n 'post_lines_total='; journalctl -u user_script --no-pager 2>/dev/null | grep -cE '"POST ' ; echo 'last_post_lines:'; journalctl -u user_script --no-pager 2>/dev/null | grep -E '"POST ' | tail -5 ; echo 'last_non_probe_request:'; journalctl -u user_script --no-pager 2>/dev/null | grep -E '"(POST|GET|HEAD) ' | grep -v '127.0.0.1 - - \[10/Nov/2026 07:0' | tail -4
+exit=0 elapsed_ms=143
+stdout:
+request_lines_total=92
+post_lines_total=14
+last_post_lines:
+Oct 22 18:27:51 iZ2zeih0gmrk47og5r4z7sZ python[644445]: 127.0.0.1 - - [22/Oct/2026 18:27:51] "POST /upload_data HTTP/1.1" 400 -
+Oct 22 18:27:51 iZ2zeih0gmrk47og5r4z7sZ python[644445]: 127.0.0.1 - - [22/Oct/2026 18:27:51] "POST /login HTTP/1.1" 400 -
+Oct 22 19:32:28 iZ2zeih0gmrk47og5r4z7sZ python[647759]: 127.0.0.1 - - [22/Oct/2026 19:32:28] "POST /upload_data HTTP/1.1" 401 -
+Oct 22 19:32:28 iZ2zeih0gmrk47og5r4z7sZ python[647759]: 127.0.0.1 - - [22/Oct/2026 19:32:28] "POST /upload_data HTTP/1.1" 401 -
+Oct 22 19:32:28 iZ2zeih0gmrk47og5r4z7sZ python[647759]: 127.0.0.1 - - [22/Oct/2026 19:32:28] "POST /upload_data HTTP/1.1" 200 -
+last_non_probe_request:
+Nov 10 07:14:09 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:09] "GET /doesNotExist HTTP/1.1" 404 -
+Nov 10 07:14:09 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:09] "GET /doesNotExist HTTP/1.1" 404 -
+Nov 10 07:14:09 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:09] "GET /doesNotExist HTTP/1.1" 404 -
+Nov 10 07:14:09 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:09] "GET / HTTP/1.1" 404 -
+
+--- [journal_20261022_upload_window] $ journalctl -u user_script --since '2026-10-22 19:31:00' --until '2026-10-22 19:33:30' --no-pager 2>&1 | head -60
+exit=0 elapsed_ms=102
+stdout:
+Oct 22 19:31:04 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Stopping user_script.service - user add Python Script...
+Oct 22 19:31:04 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: user_script.service: Deactivated successfully.
+Oct 22 19:31:04 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Stopped user_script.service - user add Python Script.
+Oct 22 19:31:04 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Started user_script.service - user add Python Script.
+Oct 22 19:31:05 iZ2zeih0gmrk47og5r4z7sZ python[647759]:  * Serving Flask app 'abr'
+Oct 22 19:31:05 iZ2zeih0gmrk47og5r4z7sZ python[647759]:  * Debug mode: off
+Oct 22 19:31:05 iZ2zeih0gmrk47og5r4z7sZ python[647759]: WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+Oct 22 19:31:05 iZ2zeih0gmrk47og5r4z7sZ python[647759]:  * Running on all addresses (0.0.0.0)
+Oct 22 19:31:05 iZ2zeih0gmrk47og5r4z7sZ python[647759]:  * Running on http://127.0.0.1:5000
+Oct 22 19:31:05 iZ2zeih0gmrk47og5r4z7sZ python[647759]:  * Running on http://172.31.81.253:5000
+Oct 22 19:31:05 iZ2zeih0gmrk47og5r4z7sZ python[647759]: Press CTRL+C to quit
+Oct 22 19:32:28 iZ2zeih0gmrk47og5r4z7sZ python[647759]: 127.0.0.1 - - [22/Oct/2026 19:32:28] "POST /upload_data HTTP/1.1" 401 -
+Oct 22 19:32:28 iZ2zeih0gmrk47og5r4z7sZ python[647759]: 127.0.0.1 - - [22/Oct/2026 19:32:28] "POST /upload_data HTTP/1.1" 401 -
+Oct 22 19:32:28 iZ2zeih0gmrk47og5r4z7sZ python[647759]: /root/abr.py:222: DeprecationWarning: 'db' is deprecated, use 'database'
+Oct 22 19:32:28 iZ2zeih0gmrk47og5r4z7sZ python[647759]:   conn = mysql.connect()
+Oct 22 19:32:28 iZ2zeih0gmrk47og5r4z7sZ python[647759]: 127.0.0.1 - - [22/Oct/2026 19:32:28] "POST /upload_data HTTP/1.1" 200 -
+
+--- [recent_service_log] $ journalctl -u user_script --since '-3 days' --no-pager -n 30 2>&1 | tail -30
+exit=0 elapsed_ms=102
+stdout:
+Nov 10 07:09:39 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:09:39] "GET /setmac HTTP/1.1" 405 -
+Nov 10 07:09:39 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:09:39] "GET /setmac HTTP/1.1" 405 -
+Nov 10 07:09:39 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:09:39] "GET /doesNotExist HTTP/1.1" 404 -
+Nov 10 07:09:39 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:09:39] "GET /doesNotExist HTTP/1.1" 404 -
+Nov 10 07:09:39 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:09:39] "GET /doesNotExist HTTP/1.1" 404 -
+Nov 10 07:09:39 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:09:39] "GET / HTTP/1.1" 404 -
+Nov 10 07:09:39 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:09:39] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /login HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /login HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /login HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /upload_data HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /upload_data HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /upload_data HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /sendVerificationCode HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /sendVerificationCode HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /sendVerificationCode HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /verifyCode HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /verifyCode HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /verifyCode HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /register HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /register HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /register HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /setmac HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /setmac HTTP/1.1" 405 -
+Nov 10 07:14:08 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:08] "GET /setmac HTTP/1.1" 405 -
+Nov 10 07:14:09 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:09] "GET /doesNotExist HTTP/1.1" 404 -
+Nov 10 07:14:09 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:09] "GET /doesNotExist HTTP/1.1" 404 -
+Nov 10 07:14:09 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:09] "GET /doesNotExist HTTP/1.1" 404 -
+Nov 10 07:14:09 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:09] "GET / HTTP/1.1" 404 -
+Nov 10 07:14:09 iZ2zeih0gmrk47og5r4z7sZ python[20644]: 127.0.0.1 - - [10/Nov/2026 07:14:09] "OPTIONS /upload_data HTTP/1.1" 200 -
+
+--- [resources] $ df -h / 2>&1; free -m 2>&1 | head -3
+exit=0 elapsed_ms=103
+stdout:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda3        79G  7.1G   68G  10% /
+               total        used        free      shared  buff/cache   available
+Mem:            3499        1546         247          59        2054        1952
+Swap:              0           0           0
+
+finished_utc=2026-11-09T23:14:09Z total_s=6.9
