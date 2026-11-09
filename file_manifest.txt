@@ -79,12 +79,12 @@ artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ??????
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
 artifacts/failure_resolution.md | active | 项目协调失败责任与人工交接报告 FR-001：保留 EV-028/EV-029 原失败与版本引用，整理 D2/E1/F-1 已修与固件拒接依据，列明 T4-02 采集编排、T5 遮光标定、INT 联测、T4-07 配置、验收范围冲突等缺项及责任/完成条件；本次结果 REPLAN_REQUIRED，未修产品源码、未重测
 artifacts/failure_resolution_backend_service.md | active | 项目协调失败责任与人工交接报告 FR-002（既有服务运行期核验）：保留 g002 WORK_FAILED 原失败与版本引用，区分契约层“无需改服务端”与运行期未证，列明服务访问连接未登记、网络动作未授权、测试身份未准备、回读/清理未授权、验收分界未定等缺项及责任/完成条件；本次结果 REPLAN_REQUIRED，未联网、未写库、未改配置或产品源码
-artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 6.0（当前源码 as-built 核对、判定方向+严格 35℃ 边界、待上报冻结与 P 行、调试等待有界化、GXHT40 证据驱动修复、全暗标定与 1/3 判据、当前构建再观测矩阵）
+artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 7（基于 FW-EXP-002 rev 2：确认 T1–T4/F-1 已实现、GXHT40 当前构建 q=1；用户更正“现场无光”；保持 CALIBRATED=0，T5 需受光/全遮光双态；更新资源、验证矩阵与 6 项任务交接）
 artifacts/firmware_feasibility.md | active | 固件可行性探索 FW-EXP-002 rev 2：构建/UART1/GXHT40 I²C（0x44/0xFD、双 CRC、时序）与 3 分钟节拍已证实；用户确认现场无光并更正 README“有光”描述，3914/3915/3932 与暗态极性一致；受光低码与受控 C_dark 分布未测，结论 EXPLORATION_COMPLETE（设计可继续，R2/R4/R7 未通过）；列明测试/标定门禁
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 6.4（T1–T3；D2 慢时钟修复 CRC；E1 修复 delay 空实现；F-1 修复 S 行 p/H 为判定前快照；F-3 保留为下限等待；未下载、未声明实板通过；T5 待遮光）
-artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 6.0（FWR-101..119：GXHT40、光敏 1/3、3 分钟、升温 >0.9℃ 且无光或 >35℃、UART1、失败可诊断、当前构建再观测、调试等待有界；含 as-built 差距与 readme 修改点对应）
-artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 6.0（裸机超级循环 + RTC 深睡；上电四类诊断、S/G/P 轨迹、冻结快照、有界等待、资源与不变量）
-artifacts/firmware_tasks.yaml | active | 固件实现任务清单（结构化 5 项：T1 条件上报判定更正、T2 待上报冻结与 P 行、T3 调试发送等待有界化、T4 GXHT40 实板采集恢复、T5 全暗基准标定与 1/3 生效）
+artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 7（FWR-101..120：GXHT40、光敏 1/3、3 分钟、升温 >0.9℃ 且无光或 >35℃、UART1、失败可诊断、当前构建再观测、调试等待有界、受光/全遮光双态门禁；含 as-built 对照、用户“现场无光”更正与未决项）
+artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 7（裸机超级循环 + RTC 深睡；T1–T4/F-1 已实现；上电诊断、S/G/P 轨迹、冻结快照、有界等待、当前构建资源与不变量；T5 待双态标定）
+artifacts/firmware_tasks.yaml | active | 固件设计与回归任务清单（6 项：FW-REG-ASBUILT 候选回归、FW-REG-REPORT T1/T2/T3 向量、FW-REG-GXHT40 实板回归、FW-T5-LIGHT 条件标定、FW-DIAG-BOOT 上电五行、FW-E2E-POWER 触发/跨链路/功耗）
 artifacts/interface_contract.md | active | 接口契约 IC-002 v3.0（升温 >0.9℃ 且有效无光 或 >35.0℃、180 s 采样、全暗 ADC 码 1/3、433/BLE/平台兼容与实现交接；CONTRACT_READY）
 artifacts/software_e2e_plan.md | active | 软件端到端测试计划 E2E-SW-003 rev 2.0（权限/发现/BLE 批次/完整交付/服务七段旅程；只做计划不执行）
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-003 rev 2.0（AA-003 G-1..G-4 用例、完整交付回归、证据边界与最终判定规则；升温方向已更正）
