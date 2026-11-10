@@ -18,38 +18,38 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/EWARM/pr
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/Project.uvprojx | active | 传感器 Keil MDK 工程（构建入口；mdk_build 使用）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/UM2005C/ | active | UM2005C 433MHz 发射驱动与收发（radio、app_gtimer、app_um2005C、um2005C 及 HAL）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/ | active | 传感器用户头文件（与 USER/src 一一对应）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/debug_trace.h | active | UART1 调试通道接口（BOOT/VDD/BUS/G/IOTEST/IOSIG/S 行结构与字段，T2 新增 P 行取数字段）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/debug_trace.h | active | UART1 调试通道接口（BOOT/VDD/BUS/G/IOTEST/IOSIG/S 行结构与字段、P 行冻结样本字段；light_valid/light_dark 语义为 LIGHT-DEF-2）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/encrytogate.h | active | 433 空口帧加密封装接口（与网关 feistel_al/bleencrypt 兼容）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/fw_core.h | active | 纯逻辑接口（CRC16/CRC-8、GXHT40 x10 换算与有效域、light_is_dark 1/3 判据、sensor_decide_report）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/fw_core.h | active | 纯逻辑接口（CRC16/CRC-8、GXHT40 x10 换算与有效域、light_is_dark 绝对阈值判据 LIGHT-DEF-2、sensor_decide_report）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/gxht40.h | active | GXHT40 驱动接口（init/measure/detected_addr7、结果码、只读诊断快照 gxht40_diag_t + gxht40_diag_fetch）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/interrupts_cw32l010.h | active | 中断入口声明
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/light.h | active | 光照通路接口（light_result_t、light_init/light_sample、light_read_vdd_mv 供电轨测量）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/light.h | active | 光照通路接口（light_result_t 的 valid/dark 语义按 LIGHT-DEF-2、light_init/light_sample、light_read_vdd_mv 供电轨测量）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/main.h | active | 主程序接口
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/measure.h | active | 采样/上报接口 + 上电诊断（sensor_bus_diag_scan、sensor_io_diag_scan、sensor_io_sig_scan）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h | active | 唯一配置点：引脚、GXHT40 地址/命令/重试/等待（含修复轮 20 ms 转换等待）、软 I2C 半位延时（D2 A/B=300）、180 s 节拍、SENSOR_REPORT_RISE_X10/HIGH_X10、1/3 无光常量、UART1 调试与行预算/发送等待上限、总线诊断常量、general call 复位常量；LIGHT_DARK_* 仍未标定（=0）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h | active | 唯一配置点：引脚、GXHT40 地址/命令/重试/等待（20 ms）、软 I2C 半位延时（300）、180 s 节拍、SENSOR_REPORT_RISE_X10/HIGH_X10、LIGHT_DARK_THRESHOLD_CODE 无光阈值（0=未启用，候选 3590 未回填）、UART1 调试与行预算/发送等待上限、总线诊断与 general call 常量
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sf_i2c.h | active | 软 I2C 接口（命令写/连续读、i2c_probe_addr、i2c_bus_recover）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c | active | UART1 调试通道实现（各行渲染与 ≤96 B 行预算、P 冻结观测行、TXE/TXBUSY 有界等待、关闭语义）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/encrytogate.c | active | 433 空口帧加密实现
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c | active | 纯逻辑实现（CRC/换算/有效域/light_is_dark/sensor_decide_report；T1 已改为升温方向 + 严格 >35℃；不引 MCU 头，可宿主机编译）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c | active | 纯逻辑实现（CRC/换算/有效域/light_is_dark 绝对阈值 T=0/1..4095 边界相等为暗/sensor_decide_report 升温方向 + 严格 >35℃；不引 MCU 头，可宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/gxht40.c | active | GXHT40 驱动实现（0x44/0x45 探测与缓存、0xFD 测量、6B 读取、双字 CRC-8、x10 换算、有界重读重测、失败后重探 + 总线恢复、诊断快照）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/interrupts_cw32l010.c | active | 中断服务实现
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c | active | 光照通路实现（PB05 供电→稳定→PB04/AIN11 多次转换→均值/有效性/暗判据；light_read_vdd_mv 用 ADC 内部 BGR1.2V 反推 VDD）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c | active | 光照通路实现（PB05 供电→稳定→PB04/AIN11 多次转换→均值；valid=adc_ok 且判据已启用、dark=mean>=T LIGHT-DEF-2；light_read_vdd_mv 用 ADC 内部 BGR1.2V 反推 VDD）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c | active | 主循环/RTC 节拍；上电顺序 BOOT→VDD→IOTEST→IOSIG→BUS，每周期 S 行；`delay()` 计数为 volatile（修复 -O2 将延时消除）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c | active | 采样流程与条件上报；T2 待上报冻结快照 + P 行取数；F-1 在推进前缓存判定所用 prev/have 供 S 行；软 I2C 设备速度取自 SENSOR_I2C_DELAY_LOOPS；上电一次性总线诊断（含 general call 复位尝试）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c | active | 软 I2C 实现（位时序、SCL 高电平末段采样 SDA 的读字节路径、ACK 判定、地址探测、≤9 脉冲 + STOP 的总线恢复）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/codegraph.json | active | ?????????????????????????
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh | active | GNU 交叉编译脚本（cw32l010.ld / startup_cw32l010.S 同目录）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh | active | 宿主机测试单一入口（纯逻辑 + 光照等阶段；含 -DLIGHT_BGR_TRIM_MV 覆盖）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh | active | 宿主机测试单一入口（5 阶段 222 项；光照判据未启用与 -DLIGHT_DARK_THRESHOLD_CODE=3590 启用变体；-DLIGHT_BGR_TRIM_MV 覆盖）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c | active | UART1 调试通道实现侧自检（行格式/预算、P 行、TXE/TXBUSY 卡死有界路径）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_line_verify_ev.c | active | 测试能力独立验证 harness：BUS/G/S/P 行逐字节、逐行 96 B 预算与 CRLF（EV-022 起预算按单行判定，兼容 T2 P 行）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_probe_verify_ev.c | active | 测试能力独立验证 harness：BUS 扫描/general call 分支/诊断快照传播
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_pure_check.c | active | fw_core 纯逻辑自检（含 T1 升温/严格边界向量）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_pure_check.c | active | fw_core 纯逻辑自检（含 T1 升温/严格边界、LIGHT-DEF-2 阈值形制全量向量）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_verify_ev.c | active | 测试能力独立验证 harness：fw_core 穷举（65536 温度/湿度字、CRC、1-3 判据网格、升温方向 572 组判定哈希 0xA524C2E9）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gw_compat_verify_ev.c | active | 测试能力独立验证 harness：传感器→网关→Android 全链兼容
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_check.c | active | GXHT40 驱动实现侧自检（mock 从机）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_verify_ev.c | active | 测试能力独立验证 harness：GXHT40 驱动（位级 mock 总线/从机、重探、总线恢复、命令白名单）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_check.c | active | 光照通路实现侧自检（真实 light.c + 影子 MCU）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_check.c | active | 光照通路实现侧自检（真实 light.c + 影子 MCU；判据未启用/启用两变体、T 边界与实测参考值）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_verify_ev.c | history | 测试能力 harness，已陈旧不可编译（仍按 T2 之前 light_sample() 的 bool API 编写，且引用已删滞回语义）；结论不采用，待重写
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c | active | measure.c 采样流程与发送路径实现侧自检（T2 冻结/重试/不覆盖/P 行取数；F-1 首样本 H=0 与 p=上一周期断言）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_verify_ev.c | active | 测试能力独立验证 harness：measure.c 多周期流程模型（EV-024 按 T1 升温语义修复参考模型与脚本向量，避免引用已删除的 DROP 常量）
@@ -57,7 +57,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/hos
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_verify_ev.c | active | 测试能力独立验证 harness：空口帧字段/字节序/篡改拒绝
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_report_verify_ev.c | active | 测试能力独立验证 harness：条件上报发送路径
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rtc_cadence_verify_ev.c | active | 测试能力独立验证 harness：3 分钟 RTC 节拍门控
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c | active | 宿主机纯逻辑综合套件（CRC/换算/有效域/1-3 判据/升温上报判定）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c | active | 宿主机纯逻辑综合套件（CRC/换算/有效域/LIGHT-DEF-2 阈值判据/升温上报判定）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_bus_check.c | active | 软 I2C 位级 mock 总线自检（含探测与总线恢复线序）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_verify_ev.c | active | 测试能力独立验证 harness：软 I2C 原语与 i2c_bus_recover
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_vdd_verify_ev.c | active | 测试能力独立验证 harness：light_read_vdd_mv 供电轨测量（含公式/超时/不伪造）
@@ -85,7 +85,7 @@ artifacts/failure_resolution_backend_service.md | active | 项目协调失败责
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 8（据最新 readme 与 FW-EXP-003：退役 1/3 无光判据并给出绝对阈值形制 LIGHT-DEF-2、候选 3590/可用带 (3514,3660]、启用门禁与失败安全方向；T1–T4/F-1 冻结为回归；本阶段不安排调温/调光/功耗实验；含资源/接口/异常/验证矩阵与 6 项任务交接）
 artifacts/firmware_feasibility.md | history | 固件可行性探索 FW-EXP-002 rev 2（历史，不改写；当前入口见 firmware_feasibility_current.md）：构建/UART1/GXHT40 I²C（0x44/0xFD、双 CRC、时序）与 3 分钟节拍已证实；用户确认现场无光并更正 README“有光”描述，3914/3915/3932 与暗态极性一致；受光低码与受控 C_dark 分布未测，结论 EXPLORATION_COMPLETE（设计可继续，R2/R4/R7 未通过）；列明测试/标定门禁
 artifacts/firmware_feasibility_current.md | active | 固件可行性探索 FW-EXP-003 rev 6（2026-11-10，结果 WORK_FAILED）：含 §0 一页决策摘要；实测 直射 3061/3083/3095、房间灯 3514、同会话无光 3750、历史无光 3914–3932；穷举 C_dark 全判 dark；rev 3 电阻比 + rev 6 数值扫描（R3=10 kΩ…1 GΩ）确认对同会话暗态任何 R3 不可行，并修正“所有基准”的过度说法（对历史更暗基准需 R3≈376–383 MΩ，不实际）；rev 4 比率式 ADC 与温度混杂（同温对照 431 码、−17…−22 codes/℃）；rev 5 as-built 5 周期均 r=0/s=0/y=0；用户已“跳过此项验证”；列 P1–P4 及各自所需输入；未改判据/未烧录/未标定
-artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 7（2026-11-09 as-built 回归：产品源码零改动；Keil 0E/1W、axf/hex md5 与 EV-028 一致；实现侧宿主自检 388/0；FW-REG-GXHT40/T5/BOOT/E2E 未执行并交测试；rev 6.4 历史保留）
+artifacts/firmware_implementation.md | active | 固件实现记录 FWI-003 rev 8（2026-11-10：as-built 基线重建摘要一致；落地无光判据 LIGHT-DEF-2 绝对阈值、单一常量默认 T=0、旧宏删除；Keil 0E/1W axf b6a15fed…、gcc 0 error、宿主 222/0；未下载/未实板观测；列明验证资产同步清单与未执行条件；FWI-002 rev 7 历史保留）
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 8（FWR-101..123：GXHT40、光照采样、3 分钟、升温 >0.9℃ 且无光或 >35℃、UART1、失败可诊断、当前构建再观测、有界等待、LIGHT-DEF-2 绝对阈值形制与启用门禁、旧 1/3 退役可复核、本阶段禁止调温/调光/功耗实验；含 as-built 对照与 12 项未决项）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 8（裸机超级循环 + RTC 深睡；T1–T4/F-1 冻结；光照分类改为无状态 LIGHT-DEF-2、未启用即 V=0/D=0；上电诊断、S/G/P 轨迹、冻结快照、有界等待、资源与不变量；功耗只作估算且本阶段不测量）
 artifacts/firmware_tasks.yaml | active | 固件任务清单 rev 8（6 项：FW-REG-ASBUILT 回归、FW-REG-REPORT T1/T2/T3 向量、FW-LIGHT-DEF2-MECH 判据形制落地门禁关闭、FW-OBS-PASSIVE COM43 被动观测、FW-LIGHT-DEF2-ENABLE 数值接受后启用取证、FW-DIAG-BOOT 上电五行与 pyocd 复位候选；均禁调温/改变光强/遮光刺激/功耗测量）
@@ -553,6 +553,20 @@ evidence/fw_impl_20261109/host_sf_i2c_check.build.log | active | 由 firmware_en
 evidence/fw_impl_20261109/host_sf_i2c_check.log | active | `host_sf_i2c_bus_check` 原始输出（42/0）
 evidence/fw_impl_20261109/mdk_rebuild.result.txt | active | `mdk_build {"action":"rebuild"}` 原始返回与构建日志
 evidence/fw_impl_20261109/mdk_rebuild.stderr.txt | active | 由 firmware_engineer 新增或修改的项目相关文件
+evidence/fw_impl_20261110/ | active | 固件实现 FWI-003 rev 8 证据目录：as-built 基线重建/宿主自检、LIGHT-DEF-2 改动后 Keil 与 GNU 双构建、宿主 222 项自检、产物与源文件 md5、工具参数
+evidence/fw_impl_20261110/args/mdk_build_baseline.json | active | 基线构建参数 {"action":"rebuild"}
+evidence/fw_impl_20261110/args/mdk_build_lightdef2.json | active | 改动后构建参数 {"action":"rebuild"}
+evidence/fw_impl_20261110/build_evidence.md | active | 构建证据 BUILD-003：基线摘要 a3b08774… 与历史交付一致；改动后 axf b6a15fed…/hex 4d728dec…、Code 25964/RO 656/RW 116/ZI 1676；gcc FLASH 34836→34840 B；未下载边界
+evidence/fw_impl_20261110/driver_test_evidence.md | active | 实现侧自检证据 DRV-003：5 阶段 218→222 项 0 失败；LIGHT-DEF-2 形制/接线/边界/全超时/未启用等价性逐条对照；跨角色同步清单与宿主机边界
+evidence/fw_impl_20261110/gcc_build_baseline.log | active | 基线 gcc/build.sh 原始输出（0 error/27 warning、FLASH 34836 B）
+evidence/fw_impl_20261110/gcc_build_lightdef2.log | active | LIGHT-DEF-2 后 gcc/build.sh 原始输出（0 error/27 warning、FLASH 34840 B）
+evidence/fw_impl_20261110/host_build_test_baseline.log | active | 基线 test/build_test.sh 原始输出（218 项 0 失败）
+evidence/fw_impl_20261110/host_build_test_lightdef2.log | active | LIGHT-DEF-2 后 test/build_test.sh 原始输出（222 项 0 失败）
+evidence/fw_impl_20261110/md5_list.txt | active | 本轮构建产物与 10 个改动源文件的 md5 清单
+evidence/fw_impl_20261110/mdk_build_baseline.err.txt | active | 基线构建 stderr（空）
+evidence/fw_impl_20261110/mdk_build_baseline.out.json | active | 基线 mdk_build rebuild 工具原始返回（0E/1W、Code 25964）
+evidence/fw_impl_20261110/mdk_build_lightdef2.err.txt | active | LIGHT-DEF-2 构建 stderr（空）
+evidence/fw_impl_20261110/mdk_build_lightdef2.out.json | active | LIGHT-DEF-2 后 mdk_build rebuild 工具原始返回（0E/1W、Code 25964）
 evidence/interface_contract_validation.md | active | 系统架构：IC-002 v4.0源码核对与CRC/65536温度字/12资格向量/容量/缓存键算术自检、当前对象摘要和未验证边界
 evidence/programmed_prototype.md | active | 下载身份记录（EV-030 置顶：HEAD f978a01 / axf md5 a3b08774…、mdk_flash Verify OK、目标运行证据；仅证明下载成功，不代表功能合格；EV-028/026/024 及更早保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）

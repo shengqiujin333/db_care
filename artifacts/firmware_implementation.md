@@ -1,4 +1,141 @@
-# 固件实现（FWI-002 rev 7）
+# 固件实现（FWI-003 rev 8）
+
+状态：固件实现（负责角色：固件工程）
+本轮范围：2026-11-10 **FW-REG-ASBUILT → FW-REG-REPORT → FW-LIGHT-DEF2-MECH**：先用当前源码重建确认 as-built 基线身份（未改源码时产物摘要与历史交付逐字符一致），再按 FD-002 rev 8 §6.2 实现无光判据形制 **LIGHT-DEF-2**（绝对阈值、单一配置常量、交付默认 `T=0` 即判据未启用），并同步实现侧自检。**未改空口/BLE 布局、采样节拍、`S/G/P` 行格式、引脚所有权；未烧录/下载/复位；未做 COM43 实板观测、判据启用、上电五行与跨链路。**FW-OBS-PASSIVE / FW-LIGHT-DEF2-ENABLE / FW-DIAG-BOOT 不在本能力当前可执行条件内（§6）。
+依据：`artifacts/firmware_design.md`（FD-002 rev 8 §3.2/§6.2/§12/§13）、`artifacts/firmware_requirements.md`（FWR-002 rev 8，FWR-110/120/121/122/123）、IC-002 v4.0 §4.2、`artifacts/test_design.md`（截至 HEAD，含 MCH/ASB/EN 用例）、`gxht40.pdf` V2.6、网表/BOM 原文。
+
+---
+
+## 0. 本轮结论（一页）
+
+| 项 | 结果 |
+|---|---|
+| 设计增量是否已实现 | **是**：`light_is_dark` 由 1/3 形制改为绝对阈值形制；配置收敛为单一常量 `LIGHT_DARK_THRESHOLD_CODE`（0=未启用）；旧宏已删 |
+| 交付行为是否改变 | **否**：`T=0` ⇒ `valid=false`、`dark=false`，与 as-built（`LIGHT_DARK_CALIBRATED=0`）等价；判定/上报/空口/节拍/格式/资源未变 |
+| 是否启用无光判据 | **否**：`T` 保持 0。启用需判据数值接受记录 + 同机同位置被动双态证据（FWR-120），本轮不具备 |
+| 构建 | Keil `0 Error / 1 既有 Warning`；`Code=25964 RO=656 RW=116 ZI=1676`；axf `b6a15fed…`、hex `4d728dec…`（基线 `a3b08774…`/`546ce20a…`）。`gcc/build.sh` 0 error（27 项既有 warning），FLASH 34840 B |
+| 实现侧自检 | 宿主 5 阶段 **222 项 0 失败**（基线 218/0） |
+| 实板/下载 | **未执行**：`mdk_flash`/`flash_device` 与本能力 `sensor_programming` 入口均为 `unavailable_for_current_capability`；`serial_capture` 同样未授予 |
+| 已知跨角色影响 | `test/host_fw_core_verify_ev.c`（旧 1/3 断言将失败）与 `test/host_vdd_verify_ev.c`（引用已删宏，将编译失败）需验证角色同步；本轮未修改其资产 |
+
+## 1. 本轮任务与身份
+
+| 项 | 值 |
+|---|---|
+| 接手仓库 HEAD | `ef5d1af`（接手时 `git status --porcelain` 为空） |
+| 产品源码起点 | 与 HEAD 一致、无本地改动（基线重建摘要 `a3b08774…` 证明，见 `evidence/fw_impl_20261110/build_evidence.md` §2） |
+| 本轮任务（按依赖顺序） | FW-REG-ASBUILT → FW-REG-REPORT → FW-LIGHT-DEF2-MECH |
+| 授权工具 | `mdk_build`（设备后端）；原生 read/edit/write/grep/find/ls/bash（编译与局部自测） |
+| 未授权的相关入口 | `mdk_flash`（下载）、`serial_capture`（COM43）、`sigrok_capture`、`android_test`、`inspect_existing_service_readonly`、`flash_device`/`operate_test_equipment`（外部动作） |
+
+## 2. 本轮实际改动
+
+产品源码（6 个文件；行为仅在 `T!=0` 时不同，`T=0` 时对外等价）：
+
+| 文件 | 改动 |
+|---|---|
+| `USER/inc/sensor_config.h` | 删除 `LIGHT_DARK_REF_CODE`/`LIGHT_DARK_CALIBRATED`；新增 `LIGHT_DARK_THRESHOLD_CODE`（默认 `0u`＝未启用，`1..4095`＝阈值），注释写明形制、来源、候选 3590／带 (3514,3660]、启用门禁与禁用语义 |
+| `USER/src/fw_core.c` | `light_is_dark(mean, valid, threshold_code)`：`!valid`→false；`threshold==0`→false（防御）；`mean >= threshold`（边界相等为暗） |
+| `USER/inc/fw_core.h` | 接口注释改为 LIGHT-DEF-2 语义，参数名改为 `threshold_code` |
+| `USER/src/light.c` | `valid = adc_ok && (LIGHT_DARK_THRESHOLD_CODE != 0)`；`dark = light_is_dark(mean, valid, (uint16_t)LIGHT_DARK_THRESHOLD_CODE)`；文件头说明更新 |
+| `USER/inc/light.h` | `light_result_t` 字段语义注释更新（`valid` = adc_ok 且判据已启用） |
+| `USER/inc/debug_trace.h` | 两处字段注释更新为阈值语义（仅注释，不改格式） |
+
+实现侧自检（4 个文件，属实现角色资产）：
+
+| 文件 | 改动 |
+|---|---|
+| `test/host_fw_core_pure_check.c` | `[5]` 段改为阈值形制向量（`T=0`、`T=1`、`T=3590` 边界、实测 3514/3987、`T=4095`、`T=1..4095` 全量）；交付常量断言改为 `== 0u` |
+| `test/host_sensor_core_test.c` | `test_light()` 同步为阈值形制向量 |
+| `test/host_light_check.c` | 打印行改为 `LIGHT_DARK_THRESHOLD_CODE`；`[5]` 段改为「未启用门禁 vs 启用后阈值」，启用变体新增 `mean==T`/`mean==T-1` 与实测参考值断言 |
+| `test/build_test.sh` | `[4/4b]` 变体改用 `-DLIGHT_DARK_THRESHOLD_CODE=3590u`；`[1/4]`/`[4/4a]` 描述同步 |
+
+明确未改动：`measure.c`/`debug_trace.c`/`main.c`/`gxht40.c`/`sf_i2c.c`/`encrytogate.c`、`UM2005C/*`、工程文件（`Project.uvprojx`/`.ewp`）、网表/BOM、网关工程、Android 工程；验证角色资产 `test/*_verify_ev.c`、`test/mock_*_ev/`、`evidence/embedded_verify_*.py` 零修改。
+
+行为差异说明：`T=0` 时唯一路径变化是 `light_is_dark` 多了 `threshold==0` 的提前返回——该分支与随后分支返回值都是 `false`，因此 `light_result_t.valid/dark`、`S` 行 `V/D`、`r/s/y`、冻结与发送、节拍均与 as-built 相同。
+
+## 3. 构建与自检
+
+| 项 | 基线（未改源码） | 本轮（LIGHT-DEF-2） |
+|---|---|---|
+| Keil rebuild | 0E/1W；`25964/656/116/1676`；axf `a3b08774e764f174eac318f6771d0c42`、hex `546ce20a718fa69b40177cce0145f4b5` | 0E/1W（同一既有 `main.c(254)` 告警）；`25964/656/116/1676`；axf `b6a15fed2ed5e3d0c4adc51ac87a4830`、hex `4d728dec9b0d28a352c46436b7586c72` |
+| `gcc/build.sh` | 0 error / 27 warning；FLASH 34836 B / RAM 1816 B | 0 error / 27 warning；FLASH 34840 B / RAM 1816 B |
+| `test/build_test.sh` | 218 项 0 失败（46+61+54+28+29） | **222 项 0 失败（48+61+54+28+31）** |
+
+证据：`evidence/fw_impl_20261110/build_evidence.md`（BUILD-003）、`driver_test_evidence.md`（DRV-003）、`md5_list.txt`、`mdk_build_*.out.json`、`gcc_build_*.log`、`host_build_test_*.log`、`args/*.json`。
+
+## 4. 与设计验收项逐项对照（ITEM-003 / MCH）
+
+| 验收项 | 结果 | 依据 |
+|---|---|---|
+| 形制向量：`T=0`→false；`mean=T-1/T`→false/true；`T=4095` 仅满量程；`valid=false` 恒 false | 通过 | 宿主 `[1/4]` 48 项（含 `T=1..4095` 全量） |
+| 接线 `valid=adc_ok&&(T!=0)`、`dark=light_is_dark(mean,valid,T)` | 通过 | `light.c` diff + 宿主 `[4/4a]/[4/4b]` 59 项 |
+| ADC 全超时 → `valid=false/dark=false`，不合成满量程 | 通过（宿主） | `[4/4a]/[4/4b]` 全超时用例 |
+| 未启用等价性（`V=0 D=0`、格式/时序/布局不变） | 通过（源码+宿主）；实板未复观测 | §2 说明 + `measure.c`/`debug_trace.c` 零 diff；实板属 FW-OBS-PASSIVE（未执行） |
+| 旧宏清除（`USER/` 与实现侧测试无残留、无同义别名） | 通过 | grep 无命中；`debug_trace.h` 遗留注释已改 |
+| 不引入滞回/温补/自适应/跨周期状态 | 通过 | `light_is_dark` 纯比较；`light_result_t` 未增字段 |
+| 三套构建 0 Error | 通过 | §3 |
+| 未修改验证资产 | 通过 | `git status`：仅 10 个文件改动，其中 0 个 `*_verify_ev.c`/`mock_*_ev/` |
+
+## 5. 跨角色同步清单（本轮只登记，不代改）
+
+| 资产/文档 | 现状 | 需要的动作 |
+|---|---|---|
+| `test/host_fw_core_verify_ev.c` | 按 `3*mean >= c_dark` 断言（含 `c_dark=0 → 每个 valid 样本 DARK`、1365 边界、穷举网格） | 验证角色按 FWR-121 改为 `mean >= T` 向量；否则将出现非产品缺陷的失败 |
+| `test/host_vdd_verify_ev.c:261` | 引用 `LIGHT_DARK_CALIBRATED` | 改为 `LIGHT_DARK_THRESHOLD_CODE == 0 ? (r.valid == false) : true`，否则编译失败 |
+| `test/host_light_verify_ev.c`、`test/host_rf_report_verify_ev.c` | 此前已登记为陈旧不可编译 | 与本轮无关，仍待重写 |
+| `artifacts/interface_contract.md` §4.2/§10 | 仍描述旧判据且声明“不批准替代阈值” | 判据被接受后由系统架构同步；固件在同步前保持 `T=0` |
+| 测试侧 `test_design.md` | 已由测试角色同步至 LIGHT-DEF-2 | 无需本角色动作 |
+
+## 6. 未执行项、原因与所需条件
+
+| 项 | 状态 | 原因/所需条件 |
+|---|---|---|
+| 下载/烧录（`mdk_flash`） | 未执行 | `sensor_programming` 对当前能力 `unavailable_for_current_capability`（缺 `mdk_flash` 设备工具 + `flash_device` 外部动作）；未申请、未绕过 |
+| COM43 实板观测（FW-OBS-PASSIVE） | 未执行 | `serial_capture` 未授予；且需先下载新镜像，二者都不在本能力条件内 |
+| 判据启用（FW-LIGHT-DEF2-ENABLE） | 未执行 | 前置不满足：无判据形制/数值接受记录（IC-002 §4.2 未同步），也无同机同位置被动双态证据；按 FWR-120 保持 `T=0` |
+| 上电五行/`uid`（FW-DIAG-BOOT） | 未执行 | 属测试/调试编排；pyocd 复位入口未在 `runtime/environment.yaml` 登记 |
+| 真实升温/`>35.0℃` 触发、跨链路、功耗 | 未安排 | 用户约束：不得调温/改变光强/测功耗；跨链路按用户安排进入后续联调阶段 |
+| 判据分离度实板复核 | 未执行 | 需被动观测窗口内的 `a` 与 `V/D`；本轮只提供数据来源与判据 |
+
+## 7. 独立复验方式（给测试者）
+
+1. **构建/自检复跑**（无需设备）：
+
+```text
+bash CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh
+  期望：5 阶段 222 项 0 失败、退出码 0
+bash CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh
+  期望：0 error（27 项既有 warning）；FLASH 34840 B / RAM 1816 B
+mdk_build {"action":"rebuild"}
+  期望：0 Error/1 既有 Warning；axf md5 b6a15fed2ed5e3d0c4adc51ac87a4830
+```
+
+2. **形制向量单独复核**（不依赖本角色断言时）：
+   - `light_is_dark(4095u, true, 0u) == false`（未启用）；
+   - `light_is_dark(3589u, true, 3590u) == false`、`light_is_dark(3590u, true, 3590u) == true`；
+   - `light_is_dark(4094u, true, 4095u) == false`、`light_is_dark(4095u, true, 4095u) == true`；
+   - `light_is_dark(x, false, T) == false`（任意 `x/T`）。
+
+3. **实板（需先取得下载与 COM43 采集授权）**：下载 `b6a15fed…` 对应镜像后，在**不改变光强/温度**的前提下被动采集 `S` 行：`T=0` 预期 `V=0 D=0`、`q=1`、`k` 步长 3、`r/s/y=0`，`a` 记录实际码值；若观察到 `V=1` 或 `D=1`，即为交付语义不符，必须带原始捕获回退。
+
+4. **禁用做法**：不要用验证角色旧 harness 的 1/3 断言作为新判据的通过依据（见 §5）；不要以修改 `sensor_config.h` 阈值来让实板观测“看起来通过”。
+
+## 8. 尝试记录与本轮自我限制
+
+| # | 动作 | 结果 |
+|---|---|---|
+| 1 | 基线重建（未改源码） | 0E/1W，摘要与历史交付一致 → 起点身份成立 |
+| 2 | 基线宿主自检 | 218/0（含旧 1/3 向量） → 回归基线成立 |
+| 3 | 实现 LIGHT-DEF-2（源码 + 实现侧自检） | 完成；宿主 222/0；Keil/gcc 双构建 0 error |
+| 4 | 下载/COM43 | 未执行（授权缺项，见 §6） |
+| 5 | 判据启用 | 未执行（接受记录与双态证据缺项） |
+
+本轮没有重复历史已否定的修复（未重写 GXHT40 驱动、未改 `delay`、未改 FX2 地址、未改 1/3 阈值拟合）；没有为了通过自检而降低断言或修改验证资产。
+
+---
+
+# 固件实现（FWI-002 rev 7，历史保留，不改写）
 
 状态：固件实现（负责角色：固件工程）
 本轮范围：2026-11-09 当前轮 **FW-REG-ASBUILT / FW-REG-REPORT 回归**——确认 as-built 源码已实现 T1–T4/F-1；重建 Keil 工程并完成实现侧宿主自检。**未修改产品源码、未烧录/下载、未做 COM43 实板/跨链路验证**；FW-REG-GXHT40、FW-T5-LIGHT、FW-DIAG-BOOT、FW-E2E-POWER 因当前能力无设备/现场条件未执行，交测试能力按 TD-002 rev 7 执行。

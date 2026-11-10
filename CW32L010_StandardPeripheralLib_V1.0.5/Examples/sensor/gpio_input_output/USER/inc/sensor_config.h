@@ -105,24 +105,28 @@
 #define LIGHT_SETTLE_MS                 100u
 #define LIGHT_IDLE_POWER_OFF            1               /* 1 = 非采样期 PB05 输出低 */
 
-/* 无光判据: 完全无光基准 1/3 (readme 修改点 7; FD-002 rev 4.0 §6.3)
- *   dark  = valid && (uint32)3*mean_adc_code >= C_dark    (整数乘法, 边界相等为暗)
- *   valid = adc_ok(samples_ok>0) && LIGHT_DARK_CALIBRATED
- *   每笔独立判断, 无滞回/无历史暗态。
+/* 无光判据 LIGHT-DEF-2 (readme 修改点 4/7; FD-002 rev 8 §6.2)
+ *   形制: 绝对阈值, 每笔独立, 无滞回/无温补/无学习
+ *   dark  = valid && (mean_adc_code >= LIGHT_DARK_THRESHOLD_CODE)
+ *   valid = adc_ok(samples_ok>0) && (LIGHT_DARK_THRESHOLD_CODE != 0)
+ *   整数比较; 边界相等(mean == T)为暗; 单周期量, 不保存跨周期状态。
  *
- * C_dark = 完全遮光、与量产一致的供电/建立等待/取样次数下的实板实测有效均值码 (1..4095)。
- * !! 未标定状态: LIGHT_DARK_CALIBRATED = 0 时 valid 恒为 false -> 升温分支不触发,
- *    不得宣称"无光判定已验收", 也不得用满量程/旧默认 350/250/亮态读数冒充 C_dark。
- *    标定记录须含: 板件标识、供电、遮光方式、原始样本分布(最小/最大/均值)、
- *    取样次数与配置版本 (FD-002 §6.3; TD-002 T-L3-05/07)。
- *    回填: 置 LIGHT_DARK_REF_CODE = 全暗实测均值(或稳健中位), LIGHT_DARK_CALIBRATED = 1。
- * 注: 两个宏允许构建期覆盖 (-D), 供宿主机 harness 验证标定后的判据; 交付件用本文件值。
+ * 为何不用旧 1/3 形制: `3*mean >= C_dark` 要求受光 mean <= C_dark/3 <= 1365 码,
+ *   而实测声明受光最低 3061、房间灯 3514 (去重 103 条 S 行统计,
+ *   evidence/firmware_design_lightdef/lightdef_analysis.txt §4) -> 无任何合法参数。
+ *   旧形制与旧宏已退役, 不得恢复。
+ *
+ * LIGHT_DARK_THRESHOLD_CODE:
+ *   0        = 判据未启用(交付默认): valid=false, dark=false -> 升温分支不触发,
+ *              只保留 >35.0 C 分支。不得把该状态解释为"已识别有光", 也不得据此
+ *              宣称无光判定已验收。
+ *   1..4095  = 阈值 T(启用)。候选值 3590、可用带 (3514, 3660] (设计 §6.2);
+ *              仅当存在判据形制/数值的接受记录并取得同机同位置被动双态证据时才可
+ *              回填(FWR-120 门禁)。
+ * 注: 允许构建期覆盖 (-D), 供宿主机 harness 验证启用后的判据; 交付件用本文件值。
  */
-#ifndef LIGHT_DARK_REF_CODE
-#define LIGHT_DARK_REF_CODE             0u              /* 0 = 未标定占位 (标定后回填 1..4095) */
-#endif
-#ifndef LIGHT_DARK_CALIBRATED
-#define LIGHT_DARK_CALIBRATED           0               /* 0 = 未标定 (本轮无实板全暗数据, 未验收) */
+#ifndef LIGHT_DARK_THRESHOLD_CODE
+#define LIGHT_DARK_THRESHOLD_CODE       0u              /* 0 = 未启用 (唯一禁用值) */
 #endif
 
 /* ==================================================================== */

@@ -31,13 +31,14 @@ bool gxht40_temp_x10_valid(int16_t temp_x10);
 bool gxht40_raw_to_x10(uint16_t raw_t, uint16_t raw_rh,
                        int16_t *temp_x10, uint16_t *hum_x10);
 
-/* ---------------- 无光判据: 完全无光基准 1/3 (readme 2/7; FD-002 rev 4.0 §6.3) ---------------- */
+/* ---------------- 无光判据 LIGHT-DEF-2: 绝对阈值 (readme 4/7; FD-002 rev 8 §6.2) ---------------- */
 /*
- * dark = valid && (uint32)3*mean_adc_code >= c_dark   (uint32 整数乘法, 边界相等为暗)
- * valid=false 时不得判暗 (光照无效不能证明无光); 每笔独立, 无滞回/无历史暗态。
- * c_dark 为全暗基准 LIGHT_DARK_REF_CODE (1..4095); 未标定时由调用方传 valid=false。
+ * dark = valid && threshold_code != 0 && mean_adc_code >= threshold_code
+ *   整数比较, 边界相等(mean == threshold)为暗; 每笔独立, 无滞回/无温补/无跨周期状态。
+ * valid=false 或 threshold_code=0(判据未启用) 时一律不得判暗。
+ * threshold_code 为 LIGHT_DARK_THRESHOLD_CODE (0=未启用, 1..4095=启用后的阈值)。
  */
-bool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t c_dark);
+bool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t threshold_code);
 
 /* ---------------- 条件上报判定 (readme 4; IC-002 §2; FD-002 §6.4) ---------------- */
 /* report = ((prev - cur) > 0.9C 且 DARK) 或 (cur > 35.0C); 无前值时下降分支恒假 */

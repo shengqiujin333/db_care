@@ -24,7 +24,7 @@ build() {
     }
 }
 
-echo "== [1/4] fw_core pure logic: CRC16/CRC-8/convert/light(1/3)/report =="
+echo "== [1/4] fw_core pure logic: CRC16/CRC-8/convert/light(LIGHT-DEF-2)/report =="
 build "$BIN/core_check.exe" -std=c11 -Wall -Wextra -I../USER/inc \
     host_sensor_core_test.c ../USER/src/fw_core.c -lm
 "$BIN/core_check.exe"
@@ -42,17 +42,17 @@ build "$BIN/debug_trace_check.exe" -std=c11 -Wall -Wextra -DSENSOR_DEBUG_UART=1 
     -Imock_trace -I../USER/inc host_debug_trace_check.c ../USER/src/debug_trace.c
 "$BIN/debug_trace_check.exe"
 
-# T2: 光照通路自检 (真实 light.c; 未标定变体 + 标定后变体)
+# T2: 光照通路自检 (真实 light.c; 判据未启用变体 + 启用后变体)
 #  -DLIGHT_BGR_TRIM_MV=1200u: 宿主机覆盖出厂修调值, 避免访问 0x001007D2 绝对地址
-echo "== [4/4a] light channel (mock ADC, uncalibrated delivery default) =="
+echo "== [4/4a] light channel (mock ADC, gate disabled delivery default T=0) =="
 build "$BIN/light_check.exe" -std=c11 -Wall -Wextra -Imock_light \
     -DLIGHT_BGR_TRIM_MV=1200u \
     -I../USER/inc -I../COMMON host_light_check.c ../USER/src/light.c ../USER/src/fw_core.c
 "$BIN/light_check.exe"
 
-echo "== [4/4b] light channel (calibrated variant: -DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000) =="
+echo "== [4/4b] light channel (enabled variant: -DLIGHT_DARK_THRESHOLD_CODE=3590) =="
 build "$BIN/light_check_cal.exe" -std=c11 -Wall -Wextra -Imock_light \
     -DLIGHT_BGR_TRIM_MV=1200u \
-    -I../USER/inc -I../COMMON -DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000u \
+    -I../USER/inc -I../COMMON -DLIGHT_DARK_THRESHOLD_CODE=3590u \
     host_light_check.c ../USER/src/light.c ../USER/src/fw_core.c
 "$BIN/light_check_cal.exe"

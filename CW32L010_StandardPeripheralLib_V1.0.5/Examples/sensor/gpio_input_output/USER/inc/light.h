@@ -16,14 +16,14 @@
 #include <stdbool.h>
 
 /*
- * 一次光照采样的结构化结果 (FD-002 rev 4.0 §6.3; T2):
- *   valid  = adc_ok && LIGHT_DARK_CALIBRATED     (未标定/全部转换超时 -> false)
- *   dark   = valid && (uint32)3*mean_adc_code >= C_dark   (边界相等为暗, 每笔独立无滞回)
+ * 一次光照采样的结构化结果 (FD-002 rev 8 §6.2; LIGHT-DEF-2):
+ *   valid  = adc_ok && (LIGHT_DARK_THRESHOLD_CODE != 0)   (未启用/全部转换超时 -> false)
+ *   dark   = valid && mean_adc_code >= LIGHT_DARK_THRESHOLD_CODE  (边界相等为暗, 每笔独立无滞回)
  * 全部转换超时: adc_ok=false、mean/min/max=0、valid=false、dark=false,
  * 不得用满量程合成暗态。
  */
 typedef struct {
-    bool     valid;          /* 光照是否可证明无光 (adc_ok 且已标定) */
+    bool     valid;          /* 光照分类是否有依据 (adc_ok 且判据已启用) */
     bool     adc_ok;         /* samples_ok > 0 */
     uint8_t  samples_ok;     /* 成功转换样本数 0..LIGHT_ADC_SAMPLES */
     uint16_t mean_adc_code;  /* 成功样本算术均值 (adc_ok==false 时为 0) */

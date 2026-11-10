@@ -6,9 +6,10 @@
  *
  * 低功耗 (FD-002 §11.5): 非采样期 PB05 = 低(分压无电流), ADC 使能位关闭。
  *
- * T2 (rev 4.0): 结果改为结构化 light_result_t{valid,adc_ok,samples_ok,mean,min,max,dark}；
- *   无光判据 = 完全无光基准 1/3 (light_is_dark)；删除旧 350/250 滞回与满量程回退。
- *   未标定 (LIGHT_DARK_CALIBRATED=0) 时 valid=false -> 不得判暗。
+ * T2 (rev 4.0): 结果改为结构化 light_result_t{valid,adc_ok,samples_ok,mean,min,max,dark};
+ *   LIGHT-DEF-2 (FD-002 rev 8 §6.2): 绝对阈值判据 light_is_dark(mean, valid, T);
+ *   判据未启用 (LIGHT_DARK_THRESHOLD_CODE=0) 时 valid=false -> 不得判暗。
+ *   旧 1/3 形制已退役 (要求受光 <= C_dark/3 <= 1365 码, 实测受光 >= 3061)。
  */
 #include "light.h"
 #include "sensor_config.h"
@@ -198,9 +199,9 @@ light_result_t light_sample(void)
         r.code_max      = vmax;
     }
 
-    /* 有效性门禁: ADC 成功 且 全暗基准已标定 */
-    r.valid = r.adc_ok && (LIGHT_DARK_CALIBRATED != 0);
-    r.dark  = light_is_dark(r.mean_adc_code, r.valid, (uint16_t)LIGHT_DARK_REF_CODE);
+    /* 有效性门禁: ADC 成功 且 无光判据已启用 (LIGHT-DEF-2; T=0 -> 不得判暗) */
+    r.valid = r.adc_ok && (LIGHT_DARK_THRESHOLD_CODE != 0);
+    r.dark  = light_is_dark(r.mean_adc_code, r.valid, (uint16_t)LIGHT_DARK_THRESHOLD_CODE);
 
     return r;
 }

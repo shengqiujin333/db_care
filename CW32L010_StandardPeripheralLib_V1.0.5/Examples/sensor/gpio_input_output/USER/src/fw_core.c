@@ -89,15 +89,17 @@ bool gxht40_raw_to_x10(uint16_t raw_t, uint16_t raw_rh,
 }
 
 /* ------------------------------------------------------------------ */
-/* 无光判据: 完全无光基准 1/3 (readme 修改点 7; FD-002 rev 4.0 §6.3)      */
+/* 无光判据 LIGHT-DEF-2: 绝对阈值 (FD-002 rev 8 §6.2)                    */
 /* ------------------------------------------------------------------ */
-bool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t c_dark)
+bool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t threshold_code)
 {
     if (!valid) {
-        return false;                       /* 光照无效不能证明无光 */
+        return false;                       /* 无读数依据或判据未启用: 不能证明无光 */
     }
-    /* uint32 乘法, 不得先做整数除法截断; 等价于 mean >= ceil(c_dark/3), 边界相等为暗 */
-    return (((uint32_t)3u * (uint32_t)mean_adc_code) >= (uint32_t)c_dark);
+    if (threshold_code == 0u) {
+        return false;                       /* 防御: 0 是"未启用", 不是合法阈值 */
+    }
+    return (mean_adc_code >= threshold_code);   /* 边界相等为暗 */
 }
 
 /* ------------------------------------------------------------------ */

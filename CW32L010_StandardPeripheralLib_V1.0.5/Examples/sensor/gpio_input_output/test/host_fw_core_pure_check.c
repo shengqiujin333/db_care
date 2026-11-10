@@ -62,29 +62,29 @@ int main(void)
     CHECK(gxht40_raw_to_x10(0u, 29360u, &t, &h) == false, "无效温度 -> false");
     CHECK(t == 1234 && h == 4321, "无效时不写输出");
 
-    printf("[5] T-L0-04 光照: 完全无光基准 1/3 判据 (light_is_dark)\n");
-    CHECK(light_is_dark(0u, false, 1u) == false, "valid=false -> 恒 false (即使 3*mean>=C_dark)");
-    CHECK(light_is_dark(4095u, false, 1u) == false, "valid=false + 满量程 -> false (不合成暗态)");
-    CHECK(light_is_dark(0u, true, 1u) == false, "C_dark=1: 3*0=0 < 1 -> false");
-    CHECK(light_is_dark(1u, true, 1u) == true, "C_dark=1: 3*1=3 >= 1 -> true");
-    CHECK(light_is_dark(1364u, true, 4095u) == false, "C_dark=4095: 3*1364=4092 < 4095 -> false");
-    CHECK(light_is_dark(1365u, true, 4095u) == true, "C_dark=4095: 3*1365=4095 = C_dark -> true (相等为暗)");
-    CHECK(light_is_dark(4095u, true, 4095u) == true, "C_dark=4095: 满量程 -> true");
-    CHECK(light_is_dark(1000u, true, 3000u) == true && light_is_dark(999u, true, 3000u) == false,
-          "C_dark=3000: 边界相等为暗, 低 1 不为暗");
+    printf("[5] T-L0-04 光照: LIGHT-DEF-2 绝对阈值判据 (light_is_dark)\n");
+    CHECK(light_is_dark(4095u, false, 1u) == false, "valid=false -> 恒 false");
+    CHECK(light_is_dark(4095u, true, 0u) == false, "threshold=0 (判据未启用) -> false");
+    CHECK(light_is_dark(0u, true, 1u) == false, "T=1: mean=0 < 1 -> false");
+    CHECK(light_is_dark(1u, true, 1u) == true, "T=1: mean=1 >= 1 -> true (边界相等为暗)");
+    CHECK(light_is_dark(3589u, true, 3590u) == false, "T=3590: mean=3589 -> false");
+    CHECK(light_is_dark(3590u, true, 3590u) == true, "T=3590: mean=3590 -> true");
+    CHECK(light_is_dark(3514u, true, 3590u) == false, "T=3590: 实测房间灯 3514 -> LIT");
+    CHECK(light_is_dark(3987u, true, 3590u) == true, "T=3590: 实测近饱和 3987 -> DARK");
+    CHECK(light_is_dark(4094u, true, 4095u) == false, "T=4095: mean=4094 -> false");
+    CHECK(light_is_dark(4095u, true, 4095u) == true, "T=4095: 仅满量程为暗");
     CHECK(light_is_dark(300u, true, 1000u) == light_is_dark(300u, true, 1000u),
           "每笔独立: 同输入同输出 (无滞回/无历史暗态)");
-    CHECK(LIGHT_DARK_CALIBRATED == 0 && LIGHT_DARK_REF_CODE == 0u,
-          "本交付件为未标定状态 (C_dark 占位 0, 不得当作已验收)");
+    CHECK(LIGHT_DARK_THRESHOLD_CODE == 0u,
+          "本交付件判据未启用 (T=0, 不得当作已启用/已验收)");
     {
-        uint16_t cd;
+        uint16_t th;
         int bad = 0;
-        for (cd = 1u; cd <= 4095u; cd++) {
-            uint32_t thr = ((uint32_t)cd + 2u) / 3u;          /* ceil(C_dark/3) */
-            if (light_is_dark((uint16_t)(thr - 1u), true, cd) != false) bad++;
-            if (light_is_dark((uint16_t)thr, true, cd) != true) bad++;
+        for (th = 1u; th <= 4095u; th++) {
+            if (light_is_dark((uint16_t)(th - 1u), true, th) != false) bad++;
+            if (light_is_dark(th, true, th) != true) bad++;
         }
-        CHECK(bad == 0, "C_dark=1..4095 全量: mean=ceil(C/3) 为暗, 再低 1 不是暗");
+        CHECK(bad == 0, "T=1..4095 全量: mean=T 为暗, 再低 1 不是暗");
     }
 
     printf("[6] T-L0-05 上报判定真值表\n");

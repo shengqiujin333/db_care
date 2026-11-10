@@ -8,15 +8,15 @@
  *   - 结果 {valid, adc_ok, samples_ok, mean, min, max, dark}: 均值/极值只取成功样本;
  *   - 全部转换超时 -> adc_ok=false/valid=false/dark=false, mean=min=max=0,
  *     **不得**用满量程 4095 合成暗态;
- *   - 有效性门禁: 未标定 (LIGHT_DARK_CALIBRATED=0) 时 valid 恒 false -> dark=false;
- *     标定后 (编译期 -DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=...) dark = 3*mean>=C_dark;
+ *   - 有效性门禁: 判据未启用 (LIGHT_DARK_THRESHOLD_CODE=0) 时 valid 恒 false -> dark=false;
+ *     启用后 (编译期 -DLIGHT_DARK_THRESHOLD_CODE=...) dark = mean >= T (边界相等为暗);
  *   - 每笔独立: 同脚本两次采样结果相同 (无滞回/无历史暗态)。
  *
  * 构建 (从 gpio_input_output/):
  *   gcc -std=c11 -Wall -Wextra -Itest/mock_light -IUSER/inc -ICOMMON \
  *       test/host_light_check.c USER/src/light.c USER/src/fw_core.c -o host_light_check
  *   ./host_light_check                       # 未标定变体 (交付件默认)
- *   gcc ... -DLIGHT_DARK_CALIBRATED=1 -DLIGHT_DARK_REF_CODE=3000 ...   # 标定后变体
+ *   gcc ... -DLIGHT_DARK_THRESHOLD_CODE=3000 ...   # 启用后变体
  */
 #include <stdio.h>
 #include <stdint.h>
@@ -110,8 +110,8 @@ int main(void)
 {
     light_result_t r;
 
-    printf("==== light.c self-check (T2, LIGHT_DARK_CALIBRATED=%d, C_dark=%u) ====\n",
-           (int)LIGHT_DARK_CALIBRATED, (unsigned)LIGHT_DARK_REF_CODE);
+    printf("==== light.c self-check (LIGHT-DEF-2, LIGHT_DARK_THRESHOLD_CODE=%u) ====\n",
+           (unsigned)LIGHT_DARK_THRESHOLD_CODE);
 
     printf("[1] light_init: 引脚配置与 ADC 关闭\n");
     init_calls = 0; adc_enabled = 1;
@@ -153,29 +153,46 @@ int main(void)
     CHECK(r.valid == false && r.dark == false, "valid=false, dark=false on total timeout");
     CHECK(pb05_state == GPIO_Pin_RESET && adc_enabled == 0, "PB05 low and ADC off after timeout too");
 
-    printf("[5] 有效性/无光判定 (未标定门禁 vs 标定后 1/3 判据)\n");
-#if LIGHT_DARK_CALIBRATED == 0
+    printf("[5] 有效性/无光判定 (判据未启用门禁 vs 启用后 LIGHT-DEF-2 阈值)\n");
+#if LIGHT_DARK_THRESHOLD_CODE == 0
     script_begin();
     script_add(4095); script_add(4095); script_add(4095); script_add(4095);
     script_add(4095); script_add(4095); script_add(4095); script_add(4095);
     r = light_sample();
     CHECK(r.adc_ok == true && r.valid == false,
-          "uncalibrated: adc_ok=true but valid=false (cannot prove darkness)");
-    CHECK(r.dark == false, "uncalibrated: dark=false even at full-scale reading");
+          "T=0: adc_ok=true but valid=false (cannot prove darkness)");
+    CHECK(r.dark == false, "T=0: dark=false even at full-scale reading");
 #else
-    script_begin();
-    script_add(1000); script_add(1000); script_add(1000); script_add(1000);
-    script_add(1000); script_add(1000); script_add(1000); script_add(1000);
-    r = light_sample();
-    CHECK(r.valid == true, "calibrated: valid=true when ADC succeeds");
-    CHECK(r.dark == (((uint32_t)3u * 1000u) >= (uint32_t)LIGHT_DARK_REF_CODE),
-          "dark = (3*mean >= C_dark) at mean=1000");
-    script_begin();
-    script_add(999); script_add(999); script_add(999); script_add(999);
-    script_add(999); script_add(999); script_add(999); script_add(999);
-    r = light_sample();
-    CHECK(r.dark == (((uint32_t)3u * 999u) >= (uint32_t)LIGHT_DARK_REF_CODE),
-          "dark = (3*mean >= C_dark) at mean=999 (one below)");
+    {
+        uint16_t T = (uint16_t)LIGHT_DARK_THRESHOLD_CODE;
+        script_begin();
+        script_add((int)T); script_add((int)T); script_add((int)T); script_add((int)T);
+        script_add((int)T); script_add((int)T); script_add((int)T); script_add((int)T);
+        r = light_sample();
+        CHECK(r.valid == true, "T!=0: valid=true when ADC succeeds");
+        CHECK(r.dark == true, "mean == T -> DARK (边界相等为暗)");
+
+        script_begin();
+        script_add((int)T - 1); script_add((int)T - 1); script_add((int)T - 1); script_add((int)T - 1);
+        script_add((int)T - 1); script_add((int)T - 1); script_add((int)T - 1); script_add((int)T - 1);
+        r = light_sample();
+        CHECK(r.dark == false, "mean == T-1 -> LIT (低 1 不为暗)");
+
+        /* 设计 §6.2 实测参考值: 房间灯 3514 应 LIT, 近饱和 3987 应 DARK (仅当 T 位于带上时成立) */
+        if (T > 3514u && T <= 3987u) {
+            script_begin();
+            script_add(3514); script_add(3514); script_add(3514); script_add(3514);
+            script_add(3514); script_add(3514); script_add(3514); script_add(3514);
+            r = light_sample();
+            CHECK(r.valid == true && r.dark == false, "实测房间灯 3514 -> LIT");
+
+            script_begin();
+            script_add(3987); script_add(3987); script_add(3987); script_add(3987);
+            script_add(3987); script_add(3987); script_add(3987); script_add(3987);
+            r = light_sample();
+            CHECK(r.valid == true && r.dark == true, "实测近饱和 3987 -> DARK");
+        }
+    }
 #endif
 
     printf("[6] 每笔独立 (无滞回/无历史暗态)\n");
