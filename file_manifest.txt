@@ -75,9 +75,10 @@ artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（
 artifacts/android_tasks.yaml | active | Android 待实现任务清单（6 项：BLE 权限模型、网关身份发现与绑定、BLE 批次转发与载荷格式、观测有效性与全零占位、上传失败分类与 401 阻塞、升温规则文案；按前置依赖排序）
 artifacts/backend_feasibility.md | history | 后端可行性探索 BE-EXP-002（2026-11-09 只读 SSH 实测：EMQX 5.8.0/端口/unit/6 路由/401/零业务流量；历史记录保留不改写，当前入口见 backend_feasibility_current.md）
 artifacts/backend_feasibility_current.md | active | 后端可行性探索 BE-EXP-003（2026-11-10 重新只读核验：同一 abr.py 8949B/2026-10-22 未变、EMQX 5.8.0 uptime 17d、6 路由 405、OPTIONS 无鉴权头提示、10-22 的 200 已进入 mysql.connect、仍无业务流量；资料/已核验/未知分开、service_context 与端到端 D1–D6；上传受理条件仍未定性）
-artifacts/codegraph_current_index.md | active | 代码智能：当前三个子工程 CodeGraph 入口、覆盖与排除范围、源码版本、同步与查询证据引用及变更后同步方法
+artifacts/codegraph_current_index.md | history | 代码智能：此前三个子工程索引交接；当前入口见 artifacts/codegraph_prepare_index.md
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
+artifacts/codegraph_prepare_index.md | active | 代码智能：传感器、网关与 Android 本轮索引入口、覆盖范围、源码版本、同步和查询证据及后续同步方法
 artifacts/failure_resolution.md | active | 项目协调失败责任与人工交接报告 FR-003（EV-030 完整交付失败/固件再次拒接）：保留 EV-030/EV-031 原失败与版本引用、D2/E1/F-1 已修与两次拒接依据，区分上电段采集编排（串口晚开 0.208 s、pyocd 未登记/无 CW32 目标）、T5 双态现场条件、跨链路联测阶段、功耗仪器等缺项及责任/完成条件；指出验收阶段冲突与测试资产缺口；结果 REPLAN_REQUIRED，未改产品源码/配置/验收文档，未烧录或重测；FR-001 原文保留在后
 artifacts/failure_resolution_backend_service.md | active | 项目协调失败责任与人工交接报告 FR-002（既有服务运行期核验）：保留 g002 WORK_FAILED 原失败与版本引用，区分契约层“无需改服务端”与运行期未证，列明服务访问连接未登记、网络动作未授权、测试身份未准备、回读/清理未授权、验收分界未定等缺项及责任/完成条件；本次结果 REPLAN_REQUIRED，未联网、未写库、未改配置或产品源码
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 7（基于 FW-EXP-002 rev 2：确认 T1–T4/F-1 已实现、GXHT40 当前构建 q=1；用户更正“现场无光”；保持 CALIBRATED=0，T5 需受光/全遮光双态；更新资源、验证矩阵与 6 项任务交接）
@@ -154,6 +155,7 @@ evidence/backend_exploration/upload_contract_stub.py | active | 可复跑本地�
 evidence/build.md | active | 构建证据 BUILD-002 rev 6.4（F-1 修复后全量 rebuild 0 Error/1 既有告警、Code=25964、axf md5 a3b08774…；未下载）
 evidence/codegraph_current_validation.json | history | 代码智能：三个子工程本轮 status/sync/explore/files 原始结果、时间、退出码与源码摘要
 evidence/codegraph_dengbei11_validation.json | active | ????????? status?????????? explore ???????????
+evidence/codegraph_prepare_validation.json | active | 代码智能：本轮三个子工程同步前后状态、实际查询摘要与源码节选、UTC 时间、退出码及源码摘要
 evidence/codegraph_validation.md | history | CodeGraph 历史可用性验证证据（索引 complete、无 pending/drift）
 evidence/codegraph_validation_20261109.json | history | ?????????????????????????????????????????????
 evidence/codegraph_validation_20261110.json | active | ???????????????????????????????UTC ???????????
