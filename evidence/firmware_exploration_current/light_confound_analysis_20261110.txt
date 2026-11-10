@@ -1,0 +1,50 @@
+==============================================================================
+0) Samples used (t/h/a are S-line fields: 0.1 C, 0.1 %RH, ADC code)
+   label                            k      t      h      a R_ldr MOhm
+   A no-light window   k=900      900    236    355   3750      54.35
+   B room lamp         k=993      993    280    321   3514      30.24
+   C direct light      k=1002    1002    291    304   3061      14.80
+   C direct light      k=1005    1005    281    321   3083      15.23
+   D direct continued  k=1017    1017    274    338   3095      15.47
+==============================================================================
+1) Same-temperature pairs: large code differences cannot be thermal
+   B room lamp         k=993 vs C direct light      k=1005 : dt=+1 (0.1C)  dh=+0 (0.1%RH)  da=-431 codes
+   -> the 431-code room-lamp/direct difference at dt=+1 (0.1C) is not thermal;
+      the illumination state dominates it.
+==============================================================================
+2) Apparent temperature coefficient inside the direct-light window
+   assumption: the user's light state did not change between these samples
+   k=1002 -> k=1005 : dt=-1.0 C, da=+22 codes -> -22.0 codes/degC
+   k=1005 -> k=1017 : dt=-0.7 C, da=+12 codes -> -17.1 codes/degC
+   apparent coefficient: -22.0 .. -17.1 codes/degC (code falls as it warms)
+==============================================================================
+3) Decomposition of the session drift (k=900 -> k=1017)
+   dt = +3.8 C, da = -655 codes
+   with -22.0 codes/degC -> thermal part -84 codes (13%), remainder -571 codes
+   with -17.1 codes/degC -> thermal part -65 codes (10%), remainder -590 codes
+   -> illumination remains the dominant driver; thermal drift is a minor term
+      for the light/no-light question, but comparable to the margin of an
+      absolute mid-threshold (see section 4).
+==============================================================================
+4) Impact on the absolute-threshold option (P2: threshold near 3630)
+   room lamp a=3514, no-light a=3750 -> midpoint threshold ~3632
+   margin to room lamp = 118 codes, to no-light = 118 codes
+   a +-2 C swing moves the code by +-34 codes = 29% of the margin
+   a +-3 C swing moves the code by +-51 codes = 44% of the margin
+   -> P2 is feasible only with per-unit calibration AND temperature compensation
+      or a wider margin; this is a requirement/hardware decision, not firmware.
+==============================================================================
+5) Robustness: correct the no-light reference to the room-lamp temperature
+   no-light a=3750 at 23.6 C; room lamp at 28.0 C; mean coeff -19.6 codes/degC
+   temperature-corrected no-light code at 28.0 C = 3664
+   R_dark=42.49 MOhm, R_lit=30.24 MOhm -> R_l/R_d=0.712 (rule needs <= 0.333)
+   -> the 1/3 verdict does not change; it gets worse, not better
+   corrected mid-threshold margin = 75 codes (was 118) -> P2 is tighter still
+==============================================================================
+6) Limitations (do not over-read)
+   * humidity moved with temperature in this session (355->338 0.1%RH);
+     t and h cannot be separated from 5 samples.
+   * the coefficient is apparent (LDR + 5M divider + ADC), not a datasheet value.
+   * the 'light state unchanged' assumption for C/D samples comes from the user's
+     statement, not from an independent illuminance measurement.
+   * no new capture was taken this round; all numbers come from committed S lines.

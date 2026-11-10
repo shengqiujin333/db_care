@@ -82,7 +82,7 @@ artifacts/failure_resolution.md | active | 项目协调失败责任与人工交�
 artifacts/failure_resolution_backend_service.md | active | 项目协调失败责任与人工交接报告 FR-002（既有服务运行期核验）：保留 g002 WORK_FAILED 原失败与版本引用，区分契约层“无需改服务端”与运行期未证，列明服务访问连接未登记、网络动作未授权、测试身份未准备、回读/清理未授权、验收分界未定等缺项及责任/完成条件；本次结果 REPLAN_REQUIRED，未联网、未写库、未改配置或产品源码
 artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 7（基于 FW-EXP-002 rev 2：确认 T1–T4/F-1 已实现、GXHT40 当前构建 q=1；用户更正“现场无光”；保持 CALIBRATED=0，T5 需受光/全遮光双态；更新资源、验证矩阵与 6 项任务交接）
 artifacts/firmware_feasibility.md | history | 固件可行性探索 FW-EXP-002 rev 2（历史，不改写；当前入口见 firmware_feasibility_current.md）：构建/UART1/GXHT40 I²C（0x44/0xFD、双 CRC、时序）与 3 分钟节拍已证实；用户确认现场无光并更正 README“有光”描述，3914/3915/3932 与暗态极性一致；受光低码与受控 C_dark 分布未测，结论 EXPLORATION_COMPLETE（设计可继续，R2/R4/R7 未通过）；列明测试/标定门禁
-artifacts/firmware_feasibility_current.md | active | 固件可行性探索 FW-EXP-003 rev 3（2026-11-10，结果 WORK_FAILED）：rev 1/2 直射与延续窗口 a=3061/3083/3095、房间灯 3514、无光 3750/3914–3932；穷举 C_dark=1..4095 全判 dark；rev 3 用与 R3/ADC 标度无关的电阻比证明室内灯 R_l/R_d=0.556>1/3 ⇒ 任何 R3 都不可能判“有光”（直射仅 R3≥162–212 MΩ 时可能）；用户已“跳过此项验证”，E1/E2 未执行且不写作通过；列 P1–P4 决策路径；未改判据/未烧录/未标定
+artifacts/firmware_feasibility_current.md | active | 固件可行性探索 FW-EXP-003 rev 4（2026-11-10，结果 WORK_FAILED）：直射/延续 a=3061/3083/3095、房间灯 3514、无光 3750/3914–3932；穷举 C_dark 全判 dark；rev 3 电阻比证明室内灯 R_l/R_d=0.556>1/3 ⇒ 任何 R3 不可行；rev 4 校验比率式 ADC（满量程=VDD，厂商示例）与温度混杂（同温对照 431 码、−17…−22 codes/℃、温度占 10–13%），温度修正后 0.712 更紧、P2 余量仅 ≈75 码；用户已“跳过此项验证”；列 P1–P4 决策路径；未改判据/未烧录/未标定
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-002 rev 7（2026-11-09 as-built 回归：产品源码零改动；Keil 0E/1W、axf/hex md5 与 EV-028 一致；实现侧宿主自检 388/0；FW-REG-GXHT40/T5/BOOT/E2E 未执行并交测试；rev 6.4 历史保留）
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 7（FWR-101..120：GXHT40、光敏 1/3、3 分钟、升温 >0.9℃ 且无光或 >35℃、UART1、失败可诊断、当前构建再观测、调试等待有界、受光/全遮光双态门禁；含 as-built 对照、用户“现场无光”更正与未决项）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 7（裸机超级循环 + RTC 深睡；T1–T4/F-1 已实现；上电诊断、S/G/P 轨迹、冻结快照、有界等待、当前构建资源与不变量；T5 待双态标定）
@@ -484,6 +484,7 @@ evidence/firmware_exploration/sigrok_decode_metadata.json | active | 由 firmwar
 evidence/firmware_exploration/sigrok_info.err.txt | active | 由 firmware_engineer 新增或修改的项目相关文件
 evidence/firmware_exploration/sigrok_info.out.txt | active | 由 firmware_engineer 新增或修改的项目相关文件
 evidence/firmware_exploration_current/ | active | 当前轮固件可行性探索证据目录：构建/串口/逻辑分析仪原始返回、房间灯 3514、直射 3061/3083 与延续 3095 三轮光敏实测、独立反推与 C_dark 穷举脚本及输出、工具原始结果
+evidence/firmware_exploration_current/analyze_light_confound.py | active | rev 4 独立分析脚本：同温对照、直射窗口表观温度系数、会话漂移分解、温度修正后的电阻比与绝对阈值余量（只读已提交 S 行，不访问硬件）
 evidence/firmware_exploration_current/analyze_light_gate.py | active | 独立分析脚本：S 行完整性、分压反推 R_ldr、C_dark 穷举分类、标度无关不变量（需 R_ldr/R3≤0.468）、同条件稳定性、以及“需 R_l/R_d≤1/3”的硬件无关判定与所需 R3（不引用固件常量）
 evidence/firmware_exploration_current/args/ | active | 本目录各工具调用的参数文件（构建/串口/逻辑分析仪/直射轮）
 evidence/firmware_exploration_current/args/mdk_build.json | active | 由 firmware_engineer 新增或修改的项目相关文件
@@ -499,6 +500,7 @@ evidence/firmware_exploration_current/args/sigrok_decode.json | active | 由 fir
 evidence/firmware_exploration_current/args/sigrok_info.json | active | 由 firmware_engineer 新增或修改的项目相关文件
 evidence/firmware_exploration_current/decoded_i2c_20261110.txt | active | 由 firmware_engineer 新增或修改的项目相关文件
 evidence/firmware_exploration_current/light_condition_20261110.md | active | 光敏条件实测记录：§1–§9 房间灯窗口（a=3514、反推 30.2 MΩ、竞争假设），§10 直射轮（a=3061/3083、全 C_dark 穷举），§11 延续窗口（a=3095、否定浮空/开路），§12 用户“跳过此项验证”与 rev 3 电阻比结论（室内灯 0.556>1/3 无解）
+evidence/firmware_exploration_current/light_confound_analysis_20261110.txt | active | 上述脚本输出（同温 431 码/0.1 ℃、−22.0 与 −17.1 codes/℃、温度占 10–13%、修正后 R_l/R_d=0.712、P2 余量 75 码）
 evidence/firmware_exploration_current/light_gate_analysis_20261110.txt | active | 上述脚本输出（5 条 S 行、R_ldr 表、4095 次分类全 dark、k=1002/1005/1017 极差 34 码、§5 电阻比判定：房间灯 0.556>1/3 任何 R3 均不可行、直射需 R3≥162–212 MΩ）
 evidence/firmware_exploration_current/mdk_build.out.txt | active | 由 firmware_engineer 新增或修改的项目相关文件
 evidence/firmware_exploration_current/mdk_build_2.out.txt | active | 由 firmware_engineer 新增或修改的项目相关文件
