@@ -1,0 +1,37 @@
+# 本轮工具调用原始结果与时间戳（2026-11-10T01:00Z 直射轮）
+
+执行器：受审计 tool_cli（PowerShell 入口，见 context.md「Built-in Device Backend Details」）
+所有调用均设置有限超时，未遗留后台任务；未烧录、未复位、未修改固件或配置。
+
+| # | 时间（UTC） | 工具 | 参数 | 结果 | 产物 |
+|---|---|---|---|---|---|
+| 1 | 01:00:42.308–01:00:42.313 | `serial_list_ports` | `{}` | `success=true`、`exit_code=0`；COM43 = Prolific `USB VID:PID=067B:2303 LOCATION=1-9.4.2`；COM26 = `C251:F001 SER=87094109484987710672FF50`（调试器 CDC，未使用） | `serial_list_ports_3.out.txt`、`serial_list_ports_3.err.txt`（空） |
+| 2 | 01:00:48.542–01:05:28.742 | `serial_capture` | `{"port":"COM43","baudrate":9600,"duration_sec":280}` | `success=true`、`exit_code=0`、`bytes_received=162`、`stderr=""`；2 条 S 行（k=1002、k=1005） | `serial_capture_direct_280s.bin`（md5 `41f5c69eaac669b91f596354fc65b354`）、`serial_capture_direct_280s.out.json`、`serial_capture_direct_280s.err.txt`（空） |
+
+`serial_capture` 工具返回原文（`serial_capture_direct_280s.out.json`）：
+
+```json
+{"tool":"serial_capture","success":true,"exit_code":0,"stdout":"bytes_received=162\npreview:\nS k=1002 p=277 H=1 V=0 o=8 n=3057 x=3066 a=3061 D=0 t=291 h=304 q=1 r=0 s=0 y=0\r\nS k=1005 p=291 H=1 V=0 o=8 n=3081 x=3088 a=3083 D=0 t=281 h=321 q=1 r=0 s=0 y=0\r\n","stderr":"","artifacts":["...\\serial-capture-1794272728741192400.bin"],"error_code":null,"started_at":"2026-11-10T01:00:48.542621+00:00","finished_at":"2026-11-10T01:05:28.742206+00:00"}
+```
+
+原始字节（`serial_capture_direct_280s.bin`，162 B，逐字节）：
+
+```
+S k=1002 p=277 H=1 V=0 o=8 n=3057 x=3066 a=3061 D=0 t=291 h=304 q=1 r=0 s=0 y=0\r\n
+S k=1005 p=291 H=1 V=0 o=8 n=3081 x=3088 a=3083 D=0 t=281 h=321 q=1 r=0 s=0 y=0\r\n
+```
+
+## 未调用 / 未执行
+
+| 工具或动作 | 状态 | 原因 |
+|---|---|---|
+| `mdk_build` | 本轮未重跑 | 传感器工程源码自 `fe683a3` 起零差异（`git diff --stat` 空）；上一轮 00:49:49Z `mdk_build` 0 Error/0 Warning，axf md5 `a3b08774e764f174eac318f6771d0c42` 与 EV-028 一致，按版本复用 |
+| `mdk_flash` / 复位 / 上电循环 | 未执行 | 当前能力工具列表无 `mdk_flash`，`sensor_programming` 入口为 `unavailable_for_current_capability`；且不为取日志反复改/刷固件 |
+| `sigrok_capture` | 未执行 | I²C 被动采集与本次光照判据问题无判别力（数字通道不能测光敏阻值/节点电压）；上一轮 2.32 会话结论按版本复用 |
+| 手机 / 网关 / BLE / 433 触发 | 未执行 | 当前能力无手机交互工具；跨链路属后续联调阶段 |
+
+## 采集窗口与身份
+
+- COM43/9600 8N1，被动只读；采集期间无写入、无复位。
+- 上位机 md5 与文件字节数见上表；工具产物在角色工作目录 `work/verification_tools/` 的原始副本已复制为项目内 `.bin`（`.gitignore` 不忽略本目录）。
+- 采集期间目标持续运行当前镜像；未读回 Flash 校验镜像，板上镜像身份以历史 `mdk_flash` Verify OK 记录（EV-028/EV-030）为准，本轮未重新烧录。
