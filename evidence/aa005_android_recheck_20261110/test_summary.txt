@@ -1,0 +1,28 @@
+ST-AA005-R2 host-side summary (2026-11-10, HEAD f516a73, product tree = D-AA005-1 fix)
+
+Focused independent test:
+  command: ./gradlew :app:testDebugUnitTest --offline --tests "com.jinyuni.dengbei_care.verification.Aa005SevenItemVerificationTest" --rerun-tasks
+  result : tests=20 failures=0 errors=0 skipped=0 (EXIT=0)
+  note   : g6_authRejected_mustPauseAllAutomaticRequests_untilManualRetry (previous failure) PASS
+
+Full host unit test:
+  command: ./gradlew :app:testDebugUnitTest --offline --rerun-tasks
+  result : suites=32 tests=257 failures=0 errors=0 skipped=0 (EXIT=0)
+
+Independent static check:
+  command: python evidence/software_verify_aa005_android_check.py
+  result : RESULT OK, 54/54 PASS, 0 findings; E6 = PASS (upload orchestration reads global blocked state)
+
+Independent gates:
+  command: python evidence/aa005_android_check/run_gates.py
+  result : SUMMARY: 12/12 gates passed (EXIT=0)
+
+Build / APK:
+  command: ./gradlew clean :app:assembleDebug --offline  -> BUILD SUCCESSFUL (EXIT=0)
+  aapt   : package=com.jinyuni.dengbei_care versionCode=10 versionName=1.9 minSdk=26 targetSdk=34
+  apk    : 10,365,488 B  sha256 6383c4a59be83803e0730bf926266834c04813976002b055731ea5d0f3457264
+           md5 0b527bfbfc95c74503450a4cefcf4b68
+
+Device install:
+  android_test install -> installed_version_verified (versionCode 10 / versionName 1.9,
+  sha256 6383c4a5... matching the freshly built APK above)

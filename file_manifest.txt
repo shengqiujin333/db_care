@@ -195,6 +195,38 @@ evidence/aa005_android_check/ui_14_final_home_guard_stopped.xml | active | 由 s
 evidence/aa005_android_check/ui_15_continuation_final_state_cleared.xml | active | 由 software_tester 新增或修改的项目相关文件
 evidence/aa005_android_check/ui_16_continuation_final_home_guard_stopped.xml | active | 由 software_tester 新增或修改的项目相关文件
 evidence/aa005_android_check/unit_test_full.log | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_recheck_20261110/ | active | ST-AA005-R2 原始证据目录：当前 HEAD 重建构建/APK 身份、原失败独立用例 20/20、全量 257 项、54 项独立静态与 12 门禁、真机安装/有界扫描/真实 GATT/保存清除的 UI 树与截图、原始 logcat 与汇总
+evidence/aa005_android_recheck_20261110/TEST-com.jinyuni.dengbei_care.verification.Aa005SevenItemVerificationTest.xml | active | 原失败独立用例复跑 JUnit XML（tests=20 failures=0 errors=0 skipped=0）
+evidence/aa005_android_recheck_20261110/apk_identity.txt | active | 当前 HEAD 重建 APK 大小/sha256/md5/commit 与 aapt badging（10/1.9/26/34）
+evidence/aa005_android_recheck_20261110/build.log | active | 当前 HEAD `:app:assembleDebug --offline` 原始输出（BUILD SUCCESSFUL）
+evidence/aa005_android_recheck_20261110/device_gatt_evidence.txt | active | 真实 GATT 读取与两个 180 s 周期日志摘录
+evidence/aa005_android_recheck_20261110/device_identity.txt | active | 真机身份（Redmi 8A / Android 10 / API 29 / serial）
+evidence/aa005_android_recheck_20261110/device_link_state_evidence.txt | active | 链路状态/GATEWAY_UNSET/MTU/NO_DEVICE/ENETUNREACH 日志摘录
+evidence/aa005_android_recheck_20261110/device_scan_evidence.txt | active | 真实 BLE 扫描/保存日志摘录（10.016 s 有界、stopScan、地址保存）
+evidence/aa005_android_recheck_20261110/extract_evidence.py | active | 从原始 logcat 提取扫描/GATT/链路状态证据的可复跑脚本
+evidence/aa005_android_recheck_20261110/focused_independent_test.log | active | 原失败独立用例 `Aa005SevenItemVerificationTest` 复跑原始输出（20 项）
+evidence/aa005_android_recheck_20261110/full_unit_test.log | active | 全量 `testDebugUnitTest --rerun-tasks` 原始输出（EXIT=0）
+evidence/aa005_android_recheck_20261110/gates.log | active | 12 个独立门禁原始输出（SUMMARY: 12/12 gates passed）
+evidence/aa005_android_recheck_20261110/logcat_full.txt | active | 本轮原始 logcat（安装后启动/守护开始）
+evidence/aa005_android_recheck_20261110/logcat_full2.txt | active | 本轮原始 logcat（权限请求/扫描前）
+evidence/aa005_android_recheck_20261110/logcat_full3.txt | active | 本轮原始 logcat（扫描开始/停止）
+evidence/aa005_android_recheck_20261110/logcat_full4.txt | active | 本轮原始 logcat（保存候选/首次真实 GATT 读取）
+evidence/aa005_android_recheck_20261110/logcat_full5.txt | active | 本轮原始 logcat（读取完成/首页链路状态）
+evidence/aa005_android_recheck_20261110/logcat_full6.txt | active | 本轮原始 logcat（第二个 180 s 周期真实读取）
+evidence/aa005_android_recheck_20261110/logcat_full7.txt | active | 本轮原始 logcat（手动重试/清除网关/ENETUNREACH）
+evidence/aa005_android_recheck_20261110/package_dump.txt | active | 当前安装包版本、安装/更新时间与权限快照
+evidence/aa005_android_recheck_20261110/recheck_home_after_gateway_connect.png | active | 真实网关读取后首页截图
+evidence/aa005_android_recheck_20261110/recheck_home_guard_started.png | active | 首页守护启动截图
+evidence/aa005_android_recheck_20261110/recheck_ui_01_after_launch.xml | active | UI 树：安装后启动首页（守护停止、无设备）
+evidence/aa005_android_recheck_20261110/recheck_ui_02_gateway_dialog.xml | active | UI 树：网关与上传设置初始态（未配置/待发 0）
+evidence/aa005_android_recheck_20261110/recheck_ui_03_scan_permission.xml | active | UI 树：首次扫描触发系统定位权限框
+evidence/aa005_android_recheck_20261110/recheck_ui_04_after_scan.xml | active | UI 树：首次授权后（未自动扫描，见 O-AA005-5）
+evidence/aa005_android_recheck_20261110/recheck_ui_05_after_scan_timeout.xml | active | UI 树：真实扫描找到候选（xxx / 84:C2:E4:03:02:02 / RSSI=-49 / FFE0）
+evidence/aa005_android_recheck_20261110/recheck_ui_06_gateway_saved.xml | active | UI 树：保存后 BLE 连接目标与平台身份分列
+evidence/aa005_android_recheck_20261110/recheck_ui_07_home_after_connect.xml | active | UI 树：首页守护中与链路状态文本
+evidence/aa005_android_recheck_20261110/recheck_ui_08_gateway_cleared.xml | active | UI 树：清除后未配置、无回退
+evidence/aa005_android_recheck_20261110/static_check_aa005.log | active | 独立静态核查原始输出（54/54 PASS，E6=PASS）
+evidence/aa005_android_recheck_20261110/test_summary.txt | active | 宿主机复验汇总（构建/APK/20 项/257 项/54 项/12 门禁/设备安装）
 evidence/android_fix_20261110/ | active | D-AA005-1 修复自检原始证据目录（焦点独立用例、全量单测、静态核查、12 门禁、构建与 APK 身份）
 evidence/android_fix_20261110/TEST-Aa005SevenItemVerificationTest.xml | active | 原受影响独立用例 JUnit XML 副本（20/0/0/0）
 evidence/android_fix_20261110/apk_badging.txt | active | 修复后 APK aapt badging（versionCode 10 / versionName 1.9）
@@ -663,7 +695,7 @@ evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
 evidence/software_static_check_server_migration.py | active | 可复跑静态核查（ITEM-004：服务器常量/旧主机分布/XML 放行/兼容面）
-evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）；置底 ST-AA005：AA-005 七项增量 + 当前候选整体核验，TEST_FAIL（缺陷 D-AA005-1：401 后未全局暂停自动上传）
+evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）；ST-AA005 原文保留（TEST_FAIL：D-AA005-1）；置底 ST-AA005-R2：D-AA005-1 修复复验 20/20、全量 257/0、静态 54/54、门禁 12/12、真机真实 BLE 发现与 GATT（MTU 240/FFE2 160 B）及清除语义，结论 TEST_PASS（限定版本/范围）+ 未执行项与新观察 O-AA005-5/6
 evidence/software_triage.md | active | 负责角色：软件测试。Android 软件失败归因（AA-005 G-6 / D-AA005-1）：401/403 后仅 park 本批、未读取全局阻塞，自动触发仍上传其余到期行；含对象版本、源码机制、独立复现、影响范围、竞争假设与复验目标；结论为需 Android 实现修复
 evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；已按 AA-005 已批准变更同步期望；退出码 0/1）
 evidence/software_verify_aa005_android_check.py | active | AA-005 七项增量独立静态核查（54 项：权限/MAC 单一来源/旧状态清零/容量与完整性接线/上传分类与阻塞/规则文案/版本/清单；退出码 0/1；含 FINDING E6）

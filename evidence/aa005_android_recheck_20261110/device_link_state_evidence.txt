@@ -1,0 +1,41 @@
+# Link state / permission / network evidence
+11-10 21:54:17.110 I/MqttService(28504): BLE connect blocked: gateway address cleared/unset
+11-10 21:54:17.111 I/MqttService(28504): link_state=GATEWAY_UNSET msg=未配置网关地址（搜索附近网关）
+11-10 21:56:17.292 I/MqttService(28504): Saved MAC address: 000000000000
+11-10 21:56:17.508 E/MqttService(28504): Failed to connect to broker
+11-10 21:56:17.508 E/MqttService(28504): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:17.508 E/MqttService(28504): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:17.508 E/MqttService(28504): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:31.679 I/MqttService(28504): Saved MAC address: 000000000000
+11-10 21:56:31.720 E/MqttService(28504): Failed to connect to broker
+11-10 21:56:31.720 E/MqttService(28504): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:31.720 E/MqttService(28504): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:31.720 E/MqttService(28504): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:57:17.124 I/MqttService(28504): BLE connect blocked: gateway address cleared/unset
+11-10 21:57:17.125 I/MqttService(28504): link_state=GATEWAY_UNSET msg=未配置网关地址（搜索附近网关）
+11-10 21:57:19.434 I/MqttService(28504): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-10 21:57:19.434 I/MqttService(28504): link_state=CONNECTING msg=正在连接网关…
+11-10 21:57:19.434 I/MqttService(28504): Attempt 1 to connect to Bluetooth device...
+11-10 21:57:21.965 I/MqttService(28504): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-10 21:57:22.794 I/MqttService(28504): cipher length = 160
+11-10 21:57:22.808 W/MqttService(28504): BLE frame rejected: NO_DEVICE (devCount=0)
+11-10 21:57:22.817 I/MqttService(28504): Successfully connected and read data on attempt 1
+11-10 22:00:22.840 I/MqttService(28504): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-10 22:00:22.841 I/MqttService(28504): link_state=CONNECTING msg=正在连接网关…
+11-10 22:00:22.841 I/MqttService(28504): Attempt 1 to connect to Bluetooth device...
+11-10 22:00:25.412 I/MqttService(28504): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-10 22:00:26.093 I/MqttService(28504): cipher length = 160
+11-10 22:00:26.096 W/MqttService(28504): BLE frame rejected: NO_DEVICE (devCount=0)
+11-10 22:00:26.103 I/MqttService(28504): Successfully connected and read data on attempt 1
+11-10 22:01:17.333 I/MqttService(28504): Saved MAC address: 000000000000
+11-10 22:01:17.380 E/MqttService(28504): Failed to connect to broker
+11-10 22:01:17.380 E/MqttService(28504): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:17.380 E/MqttService(28504): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:17.380 E/MqttService(28504): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:31.696 I/MqttService(28504): Saved MAC address: 000000000000
+11-10 22:01:31.743 E/MqttService(28504): Failed to connect to broker
+11-10 22:01:31.743 E/MqttService(28504): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:31.743 E/MqttService(28504): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:31.743 E/MqttService(28504): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:41.731 I/MqttService(28504): BLE connect blocked: gateway address cleared/unset
+11-10 22:01:41.731 I/MqttService(28504): link_state=GATEWAY_UNSET msg=未配置网关地址（搜索附近网关）

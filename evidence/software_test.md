@@ -1245,3 +1245,86 @@ expected:<[empty]> but was:<[upload_blocked]>
 - **G-6**：`UploadResult` 分类、单批 park、手动重试恢复均通过；但“401/403/4xx 后不产生自动重试请求（全局阻塞）”未满足，且已由独立门禁稳定复现（D-AA005-1）。
 - 依据 TD-SW-004 §9.3“任一必需项失败/未执行 → TEST_FAIL”，本轮结论 **TEST_FAIL**；`failure_cause=MEASURED_DEFECT`（同时保留 §6 的真实链路未执行项，不以模拟豁免）。
 - **续跑复核（同一工作区，2026-11-10T13:21Z，产品树仍为 `7848b99`）**：聚焦复跑 `Aa005SevenItemVerificationTest` 得 20 项 / 1 失败（同一 `g6_authRejected_mustPauseAllAutomaticRequests_untilManualRetry`，`kt:550`），12/12 独立门禁仍 EXIT=0（`software_verify_aa005_android_check.py` 53 PASS + FINDING E6）；复核 `CloudUploadRepository.isGateOpen()/uploadPendingOnce()` 无阻塞态读取。缺陷稳定复现，判定不变。原始记录 `evidence/aa005_android_check/continuation_rerun_20261110.txt`。
+
+---
+
+## ST-AA005-R2 · D-AA005-1 修复复验与当前交付整体核验 —— 结论 **TEST_PASS（限定版本/范围）**
+
+**被测对象**：Android App `dengbei_care`；核验时 HEAD `f516a73`（工作区干净）；产品树相对 `7848b99` 的唯一变化为 D-AA005-1 修复（`cloud/CloudUploadRepository.kt`，+31 行）与实现侧回归用例；未改版本号。
+**版本/产物**：`versionCode 10 / versionName 1.9`、`minSdk 26 / targetSdk 34`；由当前 HEAD 重建的 `app-debug.apk` 10,365,488 B，SHA-256 `6383c4a59be83803e0730bf926266834c04813976002b055731ea5d0f3457264`，MD5 `0b527bfbfc95c74503450a4cefcf4b68`（重建字节与实现侧构建时间戳不同，版本/内容一致；包内已含修复）。
+**设备**：Redmi 8A / Android 10 / API 29 / `12f046690506`；本轮蓝牙开、定位总开关开（mode=3）、无默认网络；网关上电并在范围内。
+**依据**：`artifacts/android_implementation.md`（D-AA005-1 修复）、`artifacts/android_tasks.yaml` ITEM-001…007、`artifacts/android_architecture.md` AA-005 rev 4.0、`artifacts/software_test_design.md` TD-SW-004、`artifacts/software_e2e_plan.md` E2E-SW-004、Project Goal 补充条件第 4 点（跨链路验证属后续联调阶段）。
+
+### 1. 独立执行摘要
+
+| 层 | 方法 | 结果 |
+|---|---|---|
+| 构建 | `./gradlew clean :app:assembleDebug --offline` | **BUILD SUCCESSFUL**；APK 身份见上；`aapt` 版本/清单一致 |
+| 原失败用例复验 | `verification/Aa005SevenItemVerificationTest`（未修改） | **20/20 PASS**（`g6_authRejected_mustPauseAllAutomaticRequests_untilManualRetry` 已通过） |
+| 宿主机全量回归 | `:app:testDebugUnitTest --rerun-tasks` | **32 套件 / 257 项 / 0 失败 / 0 错误 / 0 跳过** |
+| 独立静态核查 | `python evidence/software_verify_aa005_android_check.py` | **54/54 PASS，0 FINDING**；E6 = `PASS 上传编排读取全局阻塞状态` |
+| 既有独立门禁 | `python evidence/aa005_android_check/run_gates.py` | **12/12 EXIT=0** |
+| 真机安装/启动 | `android_test install/launch/ui_*` | 安装校验版本与 SHA-256 一致；启动、首页、守护启停、对话框、扫描、保存/清除均正常；全程无 `FATAL EXCEPTION`/`ANR` |
+| 真实 BLE 发现（G-2） | 网关设置 → FFE0 过滤扫描 | **找到真实候选** `xxx  84:C2:E4:03:02:02  RSSI=-49  FFE0`；扫描 21:55:38.603 开始、21:55:48.619 停止（10.016 s），停止后无回调 |
+| 真实 GATT 读取（G-1/G-7） | 保存候选 → `GATEWAY_CHANGED` 立即读 + 下一轮读取 | 两次均：连接成功、**MTU 240 (status=0)**、FFE2 返回 **160 B**、`devCount=0` → `NO_DEVICE` 明确拒绝（不产生读数）、无崩溃 |
+| 读取节拍 | 相邻周期日志 | 21:54:17.110 → 21:57:17.124（**180.014 s**）；22:00:22 下一轮使用已保存地址 |
+| 清除/不回退 | 清除网关地址 | UI “未配置网关地址”、输入空；日志 `GATEWAY_UNSET`，无回退默认 |
+| 真实 `/upload_data`/401 | — | **NOT EXECUTED**（手机无默认网络、无隔离测试身份、无服务写/回读授权；属 E2E 阶段） |
+
+原始证据：`evidence/aa005_android_recheck_20261110/`（`test_summary.txt`、`focused_independent_test.log` 与 JUnit XML、`full_unit_test.log`、`static_check_aa005.log`、`gates.log`、`build.log`、`apk_identity.txt`、`device_scan_evidence.txt`、`device_gatt_evidence.txt`、`device_link_state_evidence.txt`、UI 树/截图、原始 logcat、`package_dump.txt`）。
+
+### 2. D-AA005-1 修复复验（原缺陷）
+
+- **原缺陷**：401/403/其他 4xx 被拒后仅 park 本批，后续自动触发仍发出请求（全局暂停缺失）。
+- **修复**：`UploadGate.isUploadBlocked()` + 会话级 `globalBlocked`；`uploadPendingOnce()` 在取批/调用 API 前检查；阻塞期间 `enqueueAndUpload` 仍入队但不触发；`retryBlockedNow()` 清阻塞后立即上传一次；`PrefsUploadGate` 读取持久化 `upload_blocked_reason`。
+- **复验（独立资产未改）**：原失败用例现 PASS（单批 1 行 401 → 第 2 次自动触发返回 `empty`、请求数保持 1、行保留；手动重试恢复）；静态 E6 由 FINDING 变为 PASS；全量 257 项无回归。
+- **边界**：真实 401/403、真实 `/upload_data` 持久化与回读未执行（外部条件，见 §4）；本轮 PASS 不证明服务端受理/持久化。
+
+### 3. 真机功能核验（本轮实际执行）
+
+| 步骤 | 实际观察 | 结论 |
+|---|---|---|
+| 安装当前构建 | `install` 返回 `installed_version_verified`，versionCode 10 / versionName 1.9 / sha256 `6383c4a5…` 与本地产物一致 | PASS（安装≠业务通过） |
+| 启动/首页/守护 | 首页显示“启动”，点击后变“停止”，前台服务通知出现；再点恢复“启动” | PASS |
+| 网关设置对话框 | 初始“未配置网关地址”、平台身份为空、“云端上传状态：无（待发 0 条）”、“重试上传”按钮 | PASS（呈现） |
+| 首次扫描权限（API<31） | 点击“搜索附近网关”触发系统定位权限框（申请者“爱守护”）；授权后**首次未自动开始扫描**（见 O-AA005-5），再次点击后开始 | 权限请求时机/范围 PASS；O-AA005-5 记录 |
+| 有界扫描 | `GatewayDiscovery: scan started filterByFfe0=true timeoutMs=10000` → 10.016 s 后 `scan stopped`；UI 显示“找到 1 个候选”；候选 `xxx 84:C2:E4:03:02:02 RSSI=-49 FFE0` | PASS（真实候选/过滤/有界/必停） |
+| 保存与双身份 | 点击候选填入并保存；日志 `gateway_ble_addr saved=84:C2:E4:03:02:02 (platform mac_addr untouched)`；UI“BLE 连接目标：84:C2:E4:03:02:02 / 平台身份（mac_addr）：空” | PASS |
+| 真实 GATT 读取 | 保存触发立即读：`Attempt 1` → `Connected to device, discovering services` → `MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35` → `cipher length = 160` → `BLE frame rejected: NO_DEVICE (devCount=0)` → `Successfully connected and read data on attempt 1` | PASS（真实链路/MTU/返回长度；devCount=0 正确拒绝） |
+| 下一轮读取 | 22:00:22 使用已保存地址再次成功读取（同 MTU/160 B/NO_DEVICE） | PASS（保存后下一轮生效） |
+| 清除 | 清除后 UI“未配置网关地址”、输入空；日志 `BLE connect blocked: gateway address cleared/unset`、`link_state=GATEWAY_UNSET msg=未配置网关地址（搜索附近网关）` | PASS（不回退默认） |
+| 手动重试上传 | 点击“重试上传”无崩溃、无待发行时无请求 | PASS（仅 UI/健壮性；真实语义见宿主机用例） |
+| MQTT/云 | 手机无默认网络，周期性连接 `8.140.23.253:8883` 均 `ENETUNREACH`；无发布/上传 | NOT EXECUTED（外部条件） |
+
+**设备收尾**：守护已停止（按钮回到“启动”）、网关地址已清除（UI 与日志一致）、App 保持安装、蓝牙保持开启；定位权限本轮因扫描测试被授予（granted=true），未使用 adb 撤销。全程无崩溃/ANR，App 进程存活。
+
+### 4. 未执行项与外部条件（不得写成通过）
+
+| 项 | 缺失条件 | 状态/依据 |
+|---|---|---|
+| 真实多设备（N≥2）批次、占位/0.0 源、MQTT 发布 | 网关当前 `devCount=0`（无已配置传感器），无真实多设备源；broker 不可达 | NOT EXECUTED（E2E-04、T-SW-L2-43/45/46；任务文本“无可控源时记 NOT EXECUTED”） |
+| 真实 `/upload_data` 2xx、持久化与回读 | 手机无默认网络；无隔离测试身份；无服务写/回读授权 | NOT EXECUTED（E2E-08/09 阶段；T-SW-L2-47/48） |
+| 真实 401/403、手动重试实际恢复 | 同上；不得向既有服务制造未授权写入 | NOT EXECUTED（本轮缺陷由宿主机独立用例判定） |
+| API 31+ 权限分支 | 无 API 31+ 真机/AVD | NOT EXECUTED |
+| 9 台绑定/第 10 台拒绝/多设备读取完整性 | 无 9 台真实绑定与多设备快照 | NOT EXECUTED（宿主机矩阵已过） |
+| 详情页规则/高温强调/24 h、卡片相对时间真机截图 | 无真实读数（devCount=0） | NOT EXECUTED（源码/布局/宿主机断言已过） |
+| 调温/改变光强/遮光/功耗 | 用户明确禁止 | NOT APPLICABLE |
+
+**阶段依据**：Project Goal 补充条件第 4 点明确跨链路联测属后续联调阶段；E2E-SW-004 §2 规定前置不具备时旅程记 NOT EXECUTED。上述未执行项不因本轮 PASS 变为通过。
+
+### 5. 观察项（不构成本轮验收失败，交实现/上游参考）
+
+| ID | 观察 | 证据/影响 |
+|---|---|---|
+| O-AA005-1（仍存在） | 扫描权限刚授予但蓝牙关闭时，“未授予扫描权限”提示未区分真实原因（蓝牙关闭） | 代码 `GatewayBleSettingsDialog.onPermissionResult` 用 `hasScanPermission()`（含适配器状态）；建议改用 `policy.reason/userMessage` |
+| O-AA005-2（仍存在） | API31+ `canScan` 额外要求 `BLUETOOTH_CONNECT`，与任务文本“扫描仅请求 BLUETOOTH_SCAN”存在规范张力 | 真实“附近设备”权限组通常同时授予；本轮未据此判失败 |
+| O-AA005-3（仍存在） | `用户使用说明书.md` 版本/措辞与当前 1.9 界面不一致 | 文档一致性建议；不影响构建/功能 |
+| **O-AA005-5（新）** | 首次授予定位权限后，待执行的扫描**未自动开始**，需再次点击“搜索附近网关” | 实测：21:53:40 点击 → 21:53:43 系统权限页由本 App 拉起 → 21:54:10 授权 result=4 → 无 `GatewayDiscovery` 日志；21:55:35 再次点击 → 21:55:38 `scan started`。候选原因（未证实到代码级）：对话框经 `ActivityCompat.requestPermissions(requireActivity(), …)` 发起，结果由 Activity 级 FragmentManager 分发，而 `NotificationsFragment` 位于 NavHost 子 FragmentManager，可能收不到 `onRequestPermissionsResult`，导致 `pendingScan` 不执行。建议实现核查并改为 `fragment.requestPermissions(...)`/`registerForActivityResult`；用户可二次点击完成扫描，故未计入本轮声明验收失败 |
+| **O-AA005-6（新）** | 成功读取但 `devCount=0` 时，首页链路状态停留在“正在连接网关…” | 实测 21:57:22 读取成功且 `NO_DEVICE` 拒绝后、22:00 前 UI 仍为“正在连接网关…”；`processBleSamples` 仅为 `devCount>0` 的占位/有效批次设置终态，`Rejected` 分支未设状态。建议为 `NO_DEVICE` 设置明确终态（如“网关已连接，暂无设备”）；未在声明验收项内 |
+
+### 6. 判定
+
+- **D-AA005-1**：修复有效；原独立失败用例 20/20、静态 E6 PASS、12/12 门禁与 257 项全量回归均无失败。缺陷关闭（仅限本轮测试范围）。
+- **G-1/G-2/G-7**：在真实网关条件下获得正向证据（无定位授权仍可尝试/连接、真实候选发现、MTU 240、FFE2 160 B、保留地址与清除语义）；未覆盖多设备/9 台边界。
+- **G-3/G-4/G-5/G-6**：宿主机独立矩阵/静态核查全部通过；真实多设备、占位/0.0、真实 401/上传/回读按 §4 记 NOT EXECUTED（外部条件，不写成通过）。
+- 依据 TD-SW-004“任一必需项失败 → TEST_FAIL”，本轮在**可执行范围内未发现与验收不符的失败**，结论 **TEST_PASS（限定版本 `f516a73` + APK `6383c4a5…` 与本轮已测范围）**；观察项 O-AA005-1/2/3/5/6 与未执行项不因本结论变为通过，后续联调/文档阶段继续跟踪。

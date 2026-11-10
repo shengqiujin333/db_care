@@ -1,0 +1,143 @@
+# Real-device BLE/GATT + cadence evidence (Redmi 8A / Android 10 / API 29)
+# gateway 84:C2:E4:03:02:02 discovered via FFE0; two read cycles
+11-10 21:54:17.110 I/MqttService(28504): BLE connect blocked: gateway address cleared/unset
+11-10 21:54:17.111 I/MqttService(28504): link_state=GATEWAY_UNSET msg=未配置网关地址（搜索附近网关）
+11-10 21:56:17.262 D/MqttService(28504): Attempting to reconnect to broker
+11-10 21:56:17.292 I/MqttService(28504): Saved MAC address: 000000000000
+11-10 21:56:17.454 D/AlarmPingSender(28504): Unregister alarmreceiver to MqttServiceandroid_client
+11-10 21:56:17.463 D/AlarmPingSender(28504): Unregister alarmreceiver to MqttServiceandroid_client
+11-10 21:56:17.508 E/MqttService(28504): Failed to connect to broker
+11-10 21:56:17.508 E/MqttService(28504): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:17.508 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:80)
+11-10 21:56:17.508 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:132)
+11-10 21:56:17.508 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-10 21:56:17.508 E/MqttService(28504): 	at java.lang.Thread.run(Thread.java:919)
+11-10 21:56:17.508 E/MqttService(28504): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:17.508 E/MqttService(28504): 	at libcore.io.IoBridge.connect(IoBridge.java:143)
+11-10 21:56:17.508 E/MqttService(28504): 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-10 21:56:17.508 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-10 21:56:17.508 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-10 21:56:17.508 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-10 21:56:17.508 E/MqttService(28504): 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-10 21:56:17.508 E/MqttService(28504): 	at java.net.Socket.connect(Socket.java:621)
+11-10 21:56:17.508 E/MqttService(28504): 	at com.android.org.conscrypt.AbstractConscryptSocket.connect(AbstractConscryptSocket.java:156)
+11-10 21:56:17.508 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:74)
+11-10 21:56:17.508 E/MqttService(28504): 	... 3 more
+11-10 21:56:17.508 E/MqttService(28504): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:17.508 E/MqttService(28504): 	at libcore.io.Linux.connect(Native Method)
+11-10 21:56:17.508 E/MqttService(28504): 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-10 21:56:17.508 E/MqttService(28504): 	at libcore.io.BlockGuardOs.connect(BlockGuardOs.java:136)
+11-10 21:56:17.508 E/MqttService(28504): 	at libcore.io.IoBridge.connectErrno(IoBridge.java:174)
+11-10 21:56:17.508 E/MqttService(28504): 	at libcore.io.IoBridge.connect(IoBridge.java:135)
+11-10 21:56:17.508 E/MqttService(28504): 	... 11 more
+11-10 21:56:31.651 D/MqttService(28504): Attempting to reconnect to broker
+11-10 21:56:31.679 I/MqttService(28504): Saved MAC address: 000000000000
+11-10 21:56:31.700 D/AlarmPingSender(28504): Unregister alarmreceiver to MqttServiceandroid_client
+11-10 21:56:31.712 D/AlarmPingSender(28504): Unregister alarmreceiver to MqttServiceandroid_client
+11-10 21:56:31.720 E/MqttService(28504): Failed to connect to broker
+11-10 21:56:31.720 E/MqttService(28504): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:31.720 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:80)
+11-10 21:56:31.720 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:132)
+11-10 21:56:31.720 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-10 21:56:31.720 E/MqttService(28504): 	at java.lang.Thread.run(Thread.java:919)
+11-10 21:56:31.720 E/MqttService(28504): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:31.720 E/MqttService(28504): 	at libcore.io.IoBridge.connect(IoBridge.java:143)
+11-10 21:56:31.720 E/MqttService(28504): 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-10 21:56:31.720 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-10 21:56:31.720 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-10 21:56:31.720 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-10 21:56:31.720 E/MqttService(28504): 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-10 21:56:31.720 E/MqttService(28504): 	at java.net.Socket.connect(Socket.java:621)
+11-10 21:56:31.720 E/MqttService(28504): 	at com.android.org.conscrypt.AbstractConscryptSocket.connect(AbstractConscryptSocket.java:156)
+11-10 21:56:31.720 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:74)
+11-10 21:56:31.720 E/MqttService(28504): 	... 3 more
+11-10 21:56:31.720 E/MqttService(28504): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-10 21:56:31.720 E/MqttService(28504): 	at libcore.io.Linux.connect(Native Method)
+11-10 21:56:31.720 E/MqttService(28504): 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-10 21:56:31.720 E/MqttService(28504): 	at libcore.io.BlockGuardOs.connect(BlockGuardOs.java:136)
+11-10 21:56:31.720 E/MqttService(28504): 	at libcore.io.IoBridge.connectErrno(IoBridge.java:174)
+11-10 21:56:31.720 E/MqttService(28504): 	at libcore.io.IoBridge.connect(IoBridge.java:135)
+11-10 21:56:31.720 E/MqttService(28504): 	... 11 more
+11-10 21:57:17.124 I/MqttService(28504): BLE connect blocked: gateway address cleared/unset
+11-10 21:57:17.125 I/MqttService(28504): link_state=GATEWAY_UNSET msg=未配置网关地址（搜索附近网关）
+11-10 21:57:19.434 I/MqttService(28504): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-10 21:57:19.434 I/MqttService(28504): link_state=CONNECTING msg=正在连接网关…
+11-10 21:57:19.434 I/MqttService(28504): Attempt 1 to connect to Bluetooth device...
+11-10 21:57:19.530 D/StatusBar( 1916): updateNotification old=StatusBarNotification(pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null key=0|com.jinyuni.dengbei_care|1|null|10169: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+11-10 21:57:20.178 I/MqttService(28504): Connected to device, discovering services...
+11-10 21:57:21.965 I/MqttService(28504): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-10 21:57:22.794 I/MqttService(28504): cipher length = 160
+11-10 21:57:22.808 W/MqttService(28504): BLE frame rejected: NO_DEVICE (devCount=0)
+11-10 21:57:22.809 I/MqttService(28504): No ids to write (or capacity exceeded)
+11-10 21:57:22.817 I/MqttService(28504): Successfully connected and read data on attempt 1
+11-10 21:58:04.783 D/MqttService(28504): onResume called
+11-10 22:00:22.840 I/MqttService(28504): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-10 22:00:22.841 I/MqttService(28504): link_state=CONNECTING msg=正在连接网关…
+11-10 22:00:22.841 I/MqttService(28504): Attempt 1 to connect to Bluetooth device...
+11-10 22:00:23.667 I/MqttService(28504): Connected to device, discovering services...
+11-10 22:00:25.412 I/MqttService(28504): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-10 22:00:26.093 I/MqttService(28504): cipher length = 160
+11-10 22:00:26.096 W/MqttService(28504): BLE frame rejected: NO_DEVICE (devCount=0)
+11-10 22:00:26.097 I/MqttService(28504): No ids to write (or capacity exceeded)
+11-10 22:00:26.103 I/MqttService(28504): Successfully connected and read data on attempt 1
+11-10 22:01:17.318 D/MqttService(28504): Attempting to reconnect to broker
+11-10 22:01:17.333 I/MqttService(28504): Saved MAC address: 000000000000
+11-10 22:01:17.354 D/AlarmPingSender(28504): Unregister alarmreceiver to MqttServiceandroid_client
+11-10 22:01:17.369 D/AlarmPingSender(28504): Unregister alarmreceiver to MqttServiceandroid_client
+11-10 22:01:17.380 E/MqttService(28504): Failed to connect to broker
+11-10 22:01:17.380 E/MqttService(28504): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:17.380 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:80)
+11-10 22:01:17.380 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:132)
+11-10 22:01:17.380 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-10 22:01:17.380 E/MqttService(28504): 	at java.lang.Thread.run(Thread.java:919)
+11-10 22:01:17.380 E/MqttService(28504): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:17.380 E/MqttService(28504): 	at libcore.io.IoBridge.connect(IoBridge.java:143)
+11-10 22:01:17.380 E/MqttService(28504): 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-10 22:01:17.380 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-10 22:01:17.380 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-10 22:01:17.380 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-10 22:01:17.380 E/MqttService(28504): 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-10 22:01:17.380 E/MqttService(28504): 	at java.net.Socket.connect(Socket.java:621)
+11-10 22:01:17.380 E/MqttService(28504): 	at com.android.org.conscrypt.AbstractConscryptSocket.connect(AbstractConscryptSocket.java:156)
+11-10 22:01:17.380 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:74)
+11-10 22:01:17.380 E/MqttService(28504): 	... 3 more
+11-10 22:01:17.380 E/MqttService(28504): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:17.380 E/MqttService(28504): 	at libcore.io.Linux.connect(Native Method)
+11-10 22:01:17.380 E/MqttService(28504): 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-10 22:01:17.380 E/MqttService(28504): 	at libcore.io.BlockGuardOs.connect(BlockGuardOs.java:136)
+11-10 22:01:17.380 E/MqttService(28504): 	at libcore.io.IoBridge.connectErrno(IoBridge.java:174)
+11-10 22:01:17.380 E/MqttService(28504): 	at libcore.io.IoBridge.connect(IoBridge.java:135)
+11-10 22:01:17.380 E/MqttService(28504): 	... 11 more
+11-10 22:01:20.496 D/MqttService(28504): onPause called
+11-10 22:01:31.683 D/MqttService(28504): Attempting to reconnect to broker
+11-10 22:01:31.696 I/MqttService(28504): Saved MAC address: 000000000000
+11-10 22:01:31.718 D/AlarmPingSender(28504): Unregister alarmreceiver to MqttServiceandroid_client
+11-10 22:01:31.734 D/AlarmPingSender(28504): Unregister alarmreceiver to MqttServiceandroid_client
+11-10 22:01:31.743 E/MqttService(28504): Failed to connect to broker
+11-10 22:01:31.743 E/MqttService(28504): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:31.743 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:80)
+11-10 22:01:31.743 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:132)
+11-10 22:01:31.743 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-10 22:01:31.743 E/MqttService(28504): 	at java.lang.Thread.run(Thread.java:919)
+11-10 22:01:31.743 E/MqttService(28504): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:31.743 E/MqttService(28504): 	at libcore.io.IoBridge.connect(IoBridge.java:143)
+11-10 22:01:31.743 E/MqttService(28504): 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-10 22:01:31.743 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-10 22:01:31.743 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-10 22:01:31.743 E/MqttService(28504): 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-10 22:01:31.743 E/MqttService(28504): 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-10 22:01:31.743 E/MqttService(28504): 	at java.net.Socket.connect(Socket.java:621)
+11-10 22:01:31.743 E/MqttService(28504): 	at com.android.org.conscrypt.AbstractConscryptSocket.connect(AbstractConscryptSocket.java:156)
+11-10 22:01:31.743 E/MqttService(28504): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:74)
+11-10 22:01:31.743 E/MqttService(28504): 	... 3 more
+11-10 22:01:31.743 E/MqttService(28504): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-10 22:01:31.743 E/MqttService(28504): 	at libcore.io.Linux.connect(Native Method)
+11-10 22:01:31.743 E/MqttService(28504): 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-10 22:01:31.743 E/MqttService(28504): 	at libcore.io.BlockGuardOs.connect(BlockGuardOs.java:136)
+11-10 22:01:31.743 E/MqttService(28504): 	at libcore.io.IoBridge.connectErrno(IoBridge.java:174)
+11-10 22:01:31.743 E/MqttService(28504): 	at libcore.io.IoBridge.connect(IoBridge.java:135)
+11-10 22:01:31.743 E/MqttService(28504): 	... 11 more
+11-10 22:01:34.179 D/StatusBar( 1916): updateNotification old=StatusBarNotification(pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null key=0|com.jinyuni.dengbei_care|1|null|10169: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+11-10 22:01:41.731 I/MqttService(28504): BLE connect blocked: gateway address cleared/unset
+11-10 22:01:41.731 I/MqttService(28504): link_state=GATEWAY_UNSET msg=未配置网关地址（搜索附近网关）
+11-10 22:01:41.835 D/StatusBar( 1916): updateNotification old=StatusBarNotification(pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null key=0|com.jinyuni.dengbei_care|1|null|10169: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
