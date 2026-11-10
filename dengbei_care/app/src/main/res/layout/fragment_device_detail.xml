@@ -49,7 +49,16 @@
                 android:layout_marginBottom="8dp"
                 android:textAppearance="?attr/textAppearanceBodySmall"
                 android:textColor="?attr/colorOnSurfaceVariant"
-                tools:text="采样周期 3 分钟。仅当温度较上次下降超过 0.9℃且无光，或温度超过 35.0℃ 时才上报；未满足条件时不会上报，因此可能长时间没有新数据。" />
+                tools:text="采样周期 3 分钟。仅当温度较上次升高超过 0.9℃且无光，或温度超过 35.0℃ 时才上报；未满足条件时不会上报，因此可能长时间没有新数据。" />
+
+            <TextView
+                android:id="@+id/readingSemanticsText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="时间说明：这里显示的是手机读取网关缓存的时刻，不是传感器采样时刻。"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant" />
 
             <TextView
                 android:id="@+id/latestReadingText"

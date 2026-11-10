@@ -102,7 +102,7 @@
             app:layout_constraintTop_toBottomOf="@id/tempValue"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="最近上报 5 分钟前 · 按条件上报，可能长时间无上报" />
+            tools:text="最近读取 5 分钟前 · 按条件上报，可能长时间无数据" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/sparkline"

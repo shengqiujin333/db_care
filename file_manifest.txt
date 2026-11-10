@@ -98,30 +98,57 @@ artifacts/system_analysis_current.md | active | 系统架构：最新需求与�
 artifacts/test_design.md | active | 嵌入式测试设计 TD-002 rev 8.0（当前 6 项任务：FW-REG-ASBUILT、FW-REG-REPORT、FW-LIGHT-DEF2-MECH、FW-OBS-PASSIVE、FW-LIGHT-DEF2-ENABLE、FW-DIAG-BOOT 的验收追踪矩阵与正常/异常用例；LIGHT-DEF-2 形制/未启用等价性、COM43 ≥3 周期被动观测、判定数值接受后启用门禁、上电五行与 pyocd 编排评估、证据身份绑定与 TEST_FAIL 退出准则；明确不安排调温/改变光强/遮光刺激/功耗测量；只做设计不执行）
 dengbei_care/ | active | Android App 工程根（Gradle/Kotlin；本轮按 readme 第 6 点同步修改）
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
-dengbei_care/app/build.gradle.kts | active | App 模块构建脚本（versionCode 9 / versionName 1.8；宿主机单测 isReturnDefaultValues）
+dengbei_care/app/build.gradle.kts | active | App 模块构建脚本（versionCode 10 / versionName 1.9；宿主机单测 isReturnDefaultValues）
 dengbei_care/app/src/androidTest/java/com/jinyuni/dengbei_care/verification/ | active | 真机 instrumented SQLite 验证（ITEM-006/007/009）；已编译打包，设备执行因 Gradle UTP 依赖缺失且无外网而阻塞
 dengbei_care/app/src/main/AndroidManifest.xml | active | 应用清单
 dengbei_care/app/src/main/assets/ | coarse | 内嵌资源（emqxsl-ca.crt、jd-ca.crt、隐私政策/服务条款 HTML）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ | active | 其余 Android 业务源码（MainActivity、MacIdBox、DeviceParamsBook、MyApplication、ui/*、report/* 等）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt | active | 卡片设备状态（移除“30 分钟无数据⇒离线”，改为相对上报时间语义）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt | active | 前台服务：BLE 轮询（3 分钟节拍）、GATT 解密→GatewayFrameCodec、MQTT 批量→归因、告警判定、入库、云上传四个触发点
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MainActivity.kt | active | 由 android_engineer 新增或修改的项目相关文件
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt | active | 前台服务：BLE 轮询（180 s）、权限策略接入、gateway_ble_addr 连接、MTU/返回长度完整性校验、占位跳过、批次转发（time:temps:humis）、告警判定、入库、上传分类/阻塞/手动重试、容量 ≤9 前置
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt | active | 报警铃声播放（不外抛，异常降级）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt | active | 本地 SQLite v3（pending_uploads 表/索引、单条读数幂等写入 storeTemperatureReading、时间窗查询 getSamplesInRange）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt | active | 报警震动（不外抛，异常降级）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ble/ | active | BLE 权限策略（纯逻辑）与有界网关发现（Android BLE 扫描，FFE0 过滤/10 s 上限/全路径 stopScan）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicy.kt | active | 按 API 与连接方式判定 BLE 连接/扫描权限（API<31 直连不要求定位；API31+ CONNECT/SCAN），输出 canConnect/canScan/missing/reason/userMessage 与请求集合
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ble/GatewayDiscovery.kt | active | 网关有界扫描（10 s，FFE0 优先、显式无过滤回退；超时/取消/异常均 stopScan 并释放回调）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt | active | 平台服务器常量唯一来源（HOST 8.140.23.253、ssl://…:8883、http://…:5000）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt | active | 云上传编排（门控→幂等入队→独立作用域取批上传→成功删除/失败退避、Mutex 串行）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt | active | 云上传待发箱（幂等入队、到期取批、ack 删除、SQLite 适配与降级）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt | active | 云上传编排（门控→幂等入队→独立作用域取批→2xx 删除/可重试退避/401-403 与 4xx 暂停自动重试并写阻塞状态；patch/手动重试；唯一空拦截器注入点）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt | active | 云上传待发箱（幂等入队、到期取批、ack 删除、park 暂停、手动重试恢复、SQLite 适配与降级）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt | active | /upload_data 请求体构造纯逻辑
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt | active | BLE 聚合帧解码纯逻辑（16B 头块；每设备块 id4B|hum u16be@4|temp s16be@6；显式拒绝非法帧）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadResult.kt | active | 上传结果分类纯逻辑（2xx/401-403/其他 4xx/可重试）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt | active | BLE 聚合帧解码纯逻辑（16B 头块；id4B|hum u16be@4|temp s16be@6；新增只读 x10 整数字段；显式拒绝非法帧）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayIdentity.kt | active | 网关 BLE 身份纯逻辑（MAC 规范化/校验、候选去重排序、迁移默认值单点、已清除不回退、地址解析）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuard.kt | active | 容量与读取完整性纯逻辑（MAX_DEVICES=9、16×(1+N)、MTU 阈值、返回长度对齐/覆盖判定）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt | active | 早起报告文本生成（零样本“昨日无上报”、按条件上报说明）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt | active | 报警判定纯逻辑（时间窗下降 5/10/15 min、>65℃ 紧急）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwarding.kt | active | BLE 批次转发纯逻辑（数量/ID/顺序按绑定匹配，time:temps:humis，Locale.US，拒绝不产出部分载荷）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/BleObservation.kt | active | 观测分类纯逻辑（8 B 全零占位 vs 有效 ID 的 0.0/0.0，x10 整数组判定）
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt | active | MQTT 批量载荷严格归因纯逻辑
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt | active | 采样节拍常量（180 s，BLE 周期与文案共用）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt | active | 设备详情只读呈现常量与判定（3 分钟 + 条件上报文案、24 h 图、>35.0℃ 高温强调、不显示光照）
-dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt | active | Retrofit 接口（既有 5 端点 + 新增 POST /upload_data 与请求体 DTO）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt | active | 采样节拍常量（180 s，BLE 周期与文案共用；注释方向为升温 >0.9℃ 且无光）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt | active | 设备详情只读呈现常量与判定（3 分钟 + 升温 >0.9℃ 且无光/ >35.0℃ 文案、接收时间≠采样时刻说明、24 h 图、>35.0℃ 强调、不显示光照）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayBleSettingsDialog.kt | active | “网关与上传设置”对话框（显示 gateway_ble_addr/mac_addr、候选名称/MAC/RSSI、手动保存/清除、上传阻塞状态与手动重试）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt | active | 由 android_engineer 新增或修改的项目相关文件
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeFragment.kt | active | 首页：链路状态条观察、开启守护前按 API 请求权限
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt | active | 首页状态：设备卡片 Map + linkStatus（权限/蓝牙/网关/读取完整性，不作为离线推断）
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt | active | “我的”页：传感器绑定（容量 ≤9 拒绝第 10 台）、网关与上传设置入口、扫描权限结果转发
+dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt | active | Retrofit 接口（既有 5 端点 + POST /upload_data 与 DTO；time 注释为 BLE/MQTT 接收秒而非物理采样时刻）
 dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | coarse | 内嵌 Paho MQTT Android 客户端（vendor）
-dengbei_care/app/src/main/res/ | coarse | Android 资源（layout/values/drawable/mipmap/navigation/xml）；xml/network_security_config.xml 放行 8.140.23.253（保留既有两项）
+dengbei_care/app/src/main/res/ | coarse | Android 资源（layout/values/drawable/mipmap/navigation/xml）；本轮布局新增首页链路状态条、详情时间说明、通知页网关与上传入口；xml/network_security_config.xml 放行 8.140.23.253
+dengbei_care/app/src/main/res/layout/fragment_device_detail.xml | active | 由 android_engineer 新增或修改的项目相关文件
+dengbei_care/app/src/main/res/layout/fragment_home.xml | active | 由 android_engineer 新增或修改的项目相关文件
+dengbei_care/app/src/main/res/layout/fragment_notifications.xml | active | 由 android_engineer 新增或修改的项目相关文件
+dengbei_care/app/src/main/res/layout/item_device_card.xml | active | 由 android_engineer 新增或修改的项目相关文件
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ | active | 宿主机 JUnit 自检（cloud/、db/、protocol/、report/、telemetry/、ui/）与 verification/ 下软件独立验证用例（ITEM-001..014）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicyTest.kt | active | 权限策略 SDK 矩阵自检（直连/扫描、授予/拒绝、适配器/定位）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadFailureClassificationTest.kt | active | 401/403/4xx 阻塞、不自动重试、手动重试恢复自检
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadResultTest.kt | active | 上传状态/异常分类矩阵自检
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayIdentityTest.kt | active | 网关身份规范化/排序/迁移与清除自检
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuardTest.kt | active | 容量/MTU/返回长度矩阵自检（与 codec 帧长一致）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwardingTest.kt | active | 批次载荷逐字与全部拒绝分支自检
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleObservationTest.kt | active | 占位与合法 0.0/0.0 分类自检
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt | active | 由 android_engineer 新增或修改的项目相关文件
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt | active | 由 android_engineer 新增或修改的项目相关文件
 dengbei_care/build.gradle.kts | active | 工程级 Gradle 脚本
 dengbei_care/codegraph.json | active | ?????Android ???? iOS ?????????????????
 dengbei_care/gradle/libs.versions.toml | active | 依赖版本目录（gradle.properties、dependencies.txt、gradlew(.bat) 同级）
@@ -129,11 +156,21 @@ dengbei_care/iOS开发所需资料清单.md | coarse | iOS 资料清单
 dengbei_care/iOS开发资料/ | coarse | iOS 开发资料包（本轮不改 iOS，仅参考）
 dengbei_care/iOS版功能需求文档.md | coarse | iOS 功能需求文档
 dengbei_care/play_store_512.png | active | 应用商店图标
-dengbei_care/readme.txt | active | Android 版本变更记录（最新 V1.8 条目）
+dengbei_care/readme.txt | active | Android 版本变更记录（最新 V1.9：升温方向/权限/网关身份/批次转发/占位/上传分类/容量完整性）
 dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
-dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.8）
-evidence/android_test.md | active | Android 实现侧自检证据 AT-002
+dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.9：升温规则、权限说明、网关与上传设置）
+evidence/android_impl_20261110/ | active | AA-005 七项增量实现自检原始证据目录（单测/构建/编译/静态核查日志与 APK 身份）
+evidence/android_impl_20261110/apk_badging.txt | active | aapt dump badging 原始输出（versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34）
+evidence/android_impl_20261110/apk_identity.txt | active | APK 大小与 sha256/md5、构建命令
+evidence/android_impl_20261110/build_clean.log | active | clean + assembleDebug 原始输出（BUILD SUCCESSFUL；顺序执行，避免并发构建污染）
+evidence/android_impl_20261110/compile_rerun.log | active | compileDebugKotlin --rerun 原始输出（0 error / 11 条基线 warning）
+evidence/android_impl_20261110/static_checks.py | active | A1–A14 可复跑静态核查脚本（只读源码/清单，不含设备操作）
+evidence/android_impl_20261110/static_checks.txt | active | 上述脚本输出（RESULT: OK）
+evidence/android_impl_20261110/test_summary.txt | active | JUnit XML 汇总（235 tests / 0 failures / 0 errors / 0 skipped）
+evidence/android_impl_20261110/unit_test.log | active | 首跑 testDebugUnitTest --rerun-tasks 原始输出（235/0）
+evidence/android_impl_20261110/unit_test_final.log | active | 终跑 testDebugUnitTest 原始输出（BUILD SUCCESSFUL）
+evidence/android_test.md | active | Android 实现侧自检证据 AT-002/AT-015（本轮 235 项单测、11 条基线告警、APK 身份与 A1–A14 静态核查）
 evidence/backend_exploration/ | active | 后端可行性探索原始证据目录（本地 Flask+SQLite 桩；对既有服务的只读 SSH 探测脚本与原始输出，仅状态/端口/日志，未写数据、未直连 DB）
 evidence/backend_exploration/http_history_counts.txt | active | 请求行 26（POST 14/GET 11）、journal 自 2026-09-25 起的原始计数
 evidence/backend_exploration/http_request_history.txt | active | 关键实测：2026-10-22T19:32:28 三次 POST /upload_data 为 401/401/200；此后至本轮无任何 POST

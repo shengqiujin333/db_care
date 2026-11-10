@@ -119,4 +119,8 @@ class HomeViewModel private constructor(): ViewModel() {
 
     val _startData = MutableLiveData<Int>()
     val startData: LiveData<Int> = _startData
+
+    // ===== 链路状态(权限/蓝牙/网关/读取完整性;不作为离线推断) =====
+    val _linkStatus = MutableLiveData<String>("")
+    val linkStatus: LiveData<String> = _linkStatus
 }

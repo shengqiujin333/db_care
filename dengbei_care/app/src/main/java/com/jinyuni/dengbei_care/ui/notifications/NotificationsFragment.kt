@@ -27,6 +27,8 @@ import androidx.navigation.fragment.findNavController
 import com.jinyuni.dengbei_care.MacIdBook
 import com.jinyuni.dengbei_care.R
 import com.jinyuni.dengbei_care.databinding.FragmentNotificationsBinding
+import com.jinyuni.dengbei_care.protocol.GatewayReadGuard
+import com.jinyuni.dengbei_care.ui.gateway.GatewayBleSettingsDialog
 import com.jinyuni.dengbei_care.ui.zhuce.ZhuCeViewModel
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanOptions
@@ -54,6 +56,7 @@ class NotificationsFragment : Fragment() {
     private var registerstate = ""
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private var isPermissionRequested = false // 标志位，记录是否已经弹过窗
+    private var gatewayBleDialog: GatewayBleSettingsDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,16 +94,21 @@ class NotificationsFragment : Fragment() {
             val input = sensoridinputText.text.toString()
             val nameinput = sensornameinputText.text.toString()
             if ((nameinput.length > 0)&&(input.length == 8)) {
-                val ok = MacIdBook.add(requireContext(),input,nameinput,immediate = true)
-                if(ok == false){
-                    Toast.makeText(requireContext(), "添加传感器失败,请联系客服", Toast.LENGTH_SHORT).show()
-                }else{
-//                    val it = Intent(requireContext().applicationContext, MqtttService::class.java).apply {
-//                        action = "BLE_ENQUEUE_WRITE_IDS"
-//                        putExtra("id", input)
-//                    }
-//                    requireContext().applicationContext.startService(it)
-                    Toast.makeText(requireContext(), "添加传感器成功", Toast.LENGTH_SHORT).show()
+                // AA-005 D-31：绑定容量 ≤9，第 10 台明确拒绝（不静默截断）
+                val bound = try { MacIdBook.count(requireContext()) } catch (e: Exception) { 0 }
+                if (bound >= GatewayReadGuard.MAX_DEVICES) {
+                    Toast.makeText(
+                        requireContext(),
+                        "已绑定 $bound 台设备，超过网关完整传输上限 ${GatewayReadGuard.MAX_DEVICES} 台（请先删除多余设备）",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    val ok = MacIdBook.add(requireContext(),input,nameinput,immediate = true)
+                    if(ok == false){
+                        Toast.makeText(requireContext(), "添加传感器失败,请联系客服", Toast.LENGTH_SHORT).show()
+                    }else{
+                        Toast.makeText(requireContext(), "添加传感器成功", Toast.LENGTH_SHORT).show()
+                    }
                 }
             } else {
                 Toast.makeText(requireContext(), "请输入传感器编码和别称", Toast.LENGTH_SHORT).show()
@@ -313,10 +321,33 @@ class NotificationsFragment : Fragment() {
             val intent = Intent(requireContext(), com.jinyuni.dengbei_care.report.ReportActivity::class.java)
             startActivity(intent)
         }
+
+        binding.gatewayBleButton.setOnClickListener {
+            gatewayBleDialog?.stopScan()
+            gatewayBleDialog = GatewayBleSettingsDialog(this, ::requestPermissionsCompat).also { it.show() }
+        }
+    }
+
+    private fun requestPermissionsCompat(permissions: Array<String>, requestCode: Int) {
+        ActivityCompat.requestPermissions(requireActivity(), permissions, requestCode)
+    }
+
+    @Suppress("DEPRECATION")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == GatewayBleSettingsDialog.REQUEST_SCAN_PERMISSIONS) {
+            gatewayBleDialog?.onPermissionResult()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        gatewayBleDialog?.dismiss()
+        gatewayBleDialog = null
         _binding = null
     }
 

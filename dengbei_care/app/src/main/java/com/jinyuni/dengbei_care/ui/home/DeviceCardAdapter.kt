@@ -67,11 +67,11 @@ class DeviceCardAdapter(
 
             bindStatusChip(binding.statusChip, state)
 
-            // 最近上报相对时间 + 条件上报提示（不再用数据龄显示“离线”：长时间无上报是正常产品行为）
+            // 最近读取相对时间 + 条件上报提示（不再用数据龄显示“离线”：长时间无上报是正常产品行为）
             binding.reportHint.text = if (state.isNeverReported()) {
-                "尚未收到上报 · 按条件上报，可能长时间无上报"
+                "尚未读取到数据 · 按条件上报，可能长时间无数据"
             } else {
-                "最近上报 ${state.lastReportAgeLabel()} · 按条件上报，可能长时间无上报"
+                "最近读取 ${state.lastReportAgeLabel()} · 按条件上报，可能长时间无数据"
             }
 
             if (state.alarmMessage.isNotBlank() && state.alarmSeverity != Severity.NORMAL) {

@@ -2,8 +2,10 @@ package com.jinyuni.dengbei_care.ui.home
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jinyuni.dengbei_care.MacIdBook
+import com.jinyuni.dengbei_care.MainActivity
 import com.jinyuni.dengbei_care.MqtttService
 import com.jinyuni.dengbei_care.R
 import com.jinyuni.dengbei_care.databinding.FragmentHomeBinding
@@ -81,6 +84,38 @@ class HomeFragment : Fragment() {
         homeViewModel.startData.observe(viewLifecycleOwner) { running ->
             updateGuardButtonState(running == 1)
         }
+
+        homeViewModel.linkStatus.observe(viewLifecycleOwner) { status ->
+            binding.linkStatusText.text = status
+            binding.linkStatusText.visibility =
+                if (status.isBlank()) View.GONE else View.VISIBLE
+        }
+
+        // 链路状态可点击：权限→应用设置；蓝牙→蓝牙设置；定位→定位设置；网关→提示到“我的”页配置
+        binding.linkStatusText.setOnClickListener {
+            val status = homeViewModel.linkStatus.value.orEmpty()
+            val ctx = requireContext()
+            val intent = when {
+                status.contains("权限") -> Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:" + ctx.packageName)
+                )
+                status.contains("定位") -> Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                status.contains("蓝牙未开启") -> Intent(Settings.ACTION_BLUETOOTH_SETTINGS)
+                else -> null
+            }
+            if (intent != null) {
+                try {
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Log.w("HomeFragment", "open settings failed: ${e.message}")
+                }
+            } else if (status.contains("网关")) {
+                android.widget.Toast.makeText(
+                    ctx, "请在“我的 → 网关与上传设置”中选择或保存网关", android.widget.Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun restoreGuardState() {
@@ -126,6 +161,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun toggleButton() {
+        if (!isStarted) {
+            // 开启守护前按 API 请求权限（不请求定位；扫描权限由网关设置页按需请求）
+            (activity as? MainActivity)?.requestStartupPermissions()
+        }
         val guardState = if (isStarted) "0.0" else "1.0"
         val intent = Intent(context, MqtttService::class.java).apply {
             putExtra("guardaction", guardState)

@@ -153,6 +153,18 @@
         tools:ignore="MissingConstraints" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/gatewayBleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_marginEnd="@dimen/spacing_md"
+        android:layout_marginBottom="@dimen/spacing_sm"
+        android:text="网关与上传设置"
+        app:layout_constraintBottom_toTopOf="@+id/viewReportButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/viewReportButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

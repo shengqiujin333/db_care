@@ -38,6 +38,15 @@ class CloudUploadRepository(
     interface UploadApi {
         /** @return true 表示 HTTP 2xx（视为成功） */
         suspend fun upload(data: SensorUploadData): Boolean
+
+        /**
+         * 详细上传结果（AA-005 D-27）：生产实现按真实 HTTP 状态/异常分类。
+         * 默认实现由 [upload] 的布尔结果推导，保持既有伪实现与历史验证用例兼容：
+         * true → Success；false → Retryable（与改动前的统一退避一致）。
+         */
+        suspend fun uploadDetailed(data: SensorUploadData): UploadResult =
+            if (upload(data)) UploadResult.Success
+            else UploadResult.Retryable(null, "upload_failed")
     }
 
     /** 门控与身份来源（生产实现见 [PrefsUploadGate]） */
@@ -45,6 +54,18 @@ class CloudUploadRepository(
         fun guardActive(): Boolean
         fun phone(): String
         fun gatewayMac(): String
+
+        /** 401/403/4xx：写入可观测阻塞状态（实现可忽略，便于伪实现） */
+        fun markUploadBlocked(result: UploadResult, pendingCount: Int) {}
+
+        /** 手动重试/成功后清除阻塞状态 */
+        fun clearUploadBlocked() {}
+
+        /** 可重试失败：记录最近一次结果与待发条数 */
+        fun markUploadRetryScheduled(pendingCount: Int) {}
+
+        /** 上传成功：记录最近一次结果 */
+        fun markUploadSucceeded(pendingCount: Int) {}
     }
 
     /** 上传参数（唯一常量来源） */
@@ -121,25 +142,49 @@ class CloudUploadRepository(
                 readings = batch.map { SensorReading(it.devId, it.time, it.temperature, it.humidity) }
             ) ?: return UploadOutcome(0, 0, 0, "empty_payload")
 
-            val ok = try {
-                api.upload(payload)
+            val result = try {
+                api.uploadDetailed(payload)
             } catch (e: Exception) {
                 Log.w(TAG, "upload failed: ${e.message}")
-                false
+                UploadResult.fromError(e)
             }
 
-            return if (ok) {
-                batch.forEach { outbox.ack(it) }
-                Log.i(TAG, "uploaded ${batch.size} reading(s)")
-                UploadOutcome(batch.size, batch.size, 0)
-            } else {
-                batch.forEach { outbox.markFailed(it, config.backoffSeconds(it.attempts + 1)) }
-                Log.w(TAG, "upload failed for ${batch.size} reading(s); will retry with backoff")
-                UploadOutcome(batch.size, 0, batch.size, "upload_failed")
+            return when (result) {
+                is UploadResult.Success -> {
+                    batch.forEach { outbox.ack(it) }
+                    val pending = outbox.pendingCount()
+                    gate.markUploadSucceeded(pending)
+                    Log.i(TAG, "uploaded ${batch.size} reading(s)")
+                    UploadOutcome(batch.size, batch.size, 0)
+                }
+                is UploadResult.Retryable -> {
+                    batch.forEach { outbox.markFailed(it, config.backoffSeconds(it.attempts + 1)) }
+                    gate.markUploadRetryScheduled(outbox.pendingCount())
+                    Log.w(TAG, "upload failed for ${batch.size} reading(s); will retry with backoff (${result.cause})")
+                    UploadOutcome(batch.size, 0, batch.size, "upload_failed")
+                }
+                is UploadResult.AuthRejected, is UploadResult.RequestRejected -> {
+                    // 永久拒绝：不进入自动退避队列（park），保留全部行并置全局阻塞状态；
+                    // 不影响 BLE/MQTT/告警/入库；用户手动重试时恢复。
+                    batch.forEach { outbox.park(it, config.maxAttempts) }
+                    gate.markUploadBlocked(result, outbox.pendingCount())
+                    Log.w(TAG, "upload rejected for ${batch.size} reading(s); auto-retry paused")
+                    UploadOutcome(batch.size, 0, batch.size, "upload_blocked")
+                }
             }
         } finally {
             mutex.unlock()
         }
+    }
+
+    /**
+     * 用户手动“重试上传”：清除阻塞状态、恢复被暂停的到期行（批量 UPDATE，不改表结构）
+     * 并立即触发一次上传。
+     */
+    fun retryBlockedNow(): Job {
+        gate.clearUploadBlocked()
+        outbox.resetForManualRetry(config.maxAttempts)
+        return triggerUpload()
     }
 
     companion object {
@@ -173,20 +218,81 @@ class PrefsUploadGate(private val prefs: SharedPreferences) : CloudUploadReposit
 
     override fun gatewayMac(): String = prefs.getString(KEY_MAC_ADDR, "").orEmpty()
 
-    private companion object {
+    override fun markUploadBlocked(result: UploadResult, pendingCount: Int) {
+        val (reason, status) = when (result) {
+            is UploadResult.AuthRejected -> KEY_REASON_AUTH to result.httpStatus
+            is UploadResult.RequestRejected -> KEY_REASON_REQUEST to result.httpStatus
+            else -> "RETRYABLE" to null
+        }
+        prefs.edit()
+            .putString(KEY_UPLOAD_BLOCKED_REASON, reason)
+            .putLong(KEY_UPLOAD_BLOCKED_AT, System.currentTimeMillis() / 1000)
+            .putString(KEY_UPLOAD_LAST_STATUS, status?.toString() ?: "")
+            .putInt(KEY_UPLOAD_PENDING_COUNT, pendingCount)
+            .apply()
+    }
+
+    override fun clearUploadBlocked() {
+        prefs.edit()
+            .putString(KEY_UPLOAD_BLOCKED_REASON, "")
+            .putLong(KEY_UPLOAD_BLOCKED_AT, 0L)
+            .apply()
+    }
+
+    override fun markUploadRetryScheduled(pendingCount: Int) {
+        prefs.edit()
+            .putString(KEY_UPLOAD_LAST_STATUS, KEY_STATUS_RETRYING)
+            .putInt(KEY_UPLOAD_PENDING_COUNT, pendingCount)
+            .apply()
+    }
+
+    override fun markUploadSucceeded(pendingCount: Int) {
+        prefs.edit()
+            .putString(KEY_UPLOAD_LAST_STATUS, KEY_STATUS_OK)
+            .putInt(KEY_UPLOAD_PENDING_COUNT, pendingCount)
+            .putString(KEY_UPLOAD_BLOCKED_REASON, "")
+            .putLong(KEY_UPLOAD_BLOCKED_AT, 0L)
+            .apply()
+    }
+
+    companion object {
         const val KEY_MEASURE_STATE = "measure_state"
         const val STATE_GUARD_RUNNING = "stopping"
         const val KEY_REGISTER_PHONE = "registerphone"
         const val KEY_MAC_ADDR = "mac_addr"
+
+        const val KEY_UPLOAD_BLOCKED_REASON = "upload_blocked_reason"
+        const val KEY_UPLOAD_BLOCKED_AT = "upload_blocked_at"
+        const val KEY_UPLOAD_LAST_STATUS = "upload_last_status"
+        const val KEY_UPLOAD_PENDING_COUNT = "upload_pending_count"
+
+        const val KEY_REASON_AUTH = "AUTH_REJECTED"
+        const val KEY_REASON_REQUEST = "REQUEST_REJECTED"
+        const val KEY_STATUS_RETRYING = "RETRYING"
+        const val KEY_STATUS_OK = "OK"
     }
 }
 
 /** 仅依赖服务器基址的 Retrofit 客户端（基址集中于 [CloudConfig]） */
 object CloudApiClient {
 
+    /**
+     * 唯一拦截器注入点（AA-005 D-28）：当前为空实现。
+     * 401 的具体机制未定性前，**不得**在这里加入 Authorization/token/签名头；
+     * 端到端 D1 定性后由后续任务决定。
+     */
+    private val interceptorInjectionPoint: okhttp3.Interceptor? = null
+
+    val okHttpClient: okhttp3.OkHttpClient by lazy {
+        okhttp3.OkHttpClient.Builder()
+            .apply { interceptorInjectionPoint?.let { addInterceptor(it) } }
+            .build()
+    }
+
     val apiService: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl(CloudConfig.HTTP_BASE_URL)
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)
@@ -194,13 +300,23 @@ object CloudApiClient {
 }
 
 /**
- * 生产上传实现：`POST /upload_data`，HTTP 2xx 视为成功（AA-002 §5.5）。
- * 网络/解析异常不在此处吞掉，由 [CloudUploadRepository.uploadPendingOnce] 统一按失败退避处理。
+ * 生产上传实现：`POST /upload_data`。
+ * 2xx 视为 HTTP 受理（不代表持久化）；401/403/4xx/5xx/网络异常按 [UploadResult] 分类。
+ * 网络/解析异常不在此处吞掉，由 [CloudUploadRepository.uploadPendingOnce] 统一分类。
  */
 class RetrofitUploadApi(
     private val apiService: ApiService = CloudApiClient.apiService
 ) : CloudUploadRepository.UploadApi {
 
     override suspend fun upload(data: SensorUploadData): Boolean =
-        apiService.uploadData(data).isSuccessful
+        uploadDetailed(data) is UploadResult.Success
+
+    override suspend fun uploadDetailed(data: SensorUploadData): UploadResult {
+        val response = try {
+            apiService.uploadData(data)
+        } catch (e: Exception) {
+            return UploadResult.fromError(e)
+        }
+        return UploadResult.fromHttp(response.code())
+    }
 }

@@ -907,3 +907,95 @@ CREATE INDEX IF NOT EXISTS idx_pending_uploads_next ON pending_uploads(next_atte
 1. **门禁时序**：测试能力的 D3 检查基于 `git diff <BASELINE> HEAD`，故修复必须在提交后才可见绿；本能力已完成修复并验证工作区口径为 0 无效条目，Runtime 提交后重跑该脚本即为 EXIT=0。
 2. **根因属流程工具侧**：自动化清单同步应使用 `git -c core.quotepath=false`（或先还原转义）再写入清单，否则非 ASCII 路径会被写成转义串。该行为不在本能力范围，已登记为交接/流程改进项。
 3. **本项无新增/删除产品文件**，清单仅 1 行删除。
+
+---
+
+# AA-005 七项增量（本轮完成）
+
+状态：Android 实现（`android_engineer.android_implementation`）。依据：`artifacts/android_architecture.md`（AA-005 rev 4.0）与 `artifacts/android_tasks.yaml`（7 项）、`artifacts/interface_contract.md`（IC-002 v4.0）、`artifacts/software_test_design.md`（TD-SW-004 v4.0）。
+范围：仅 `dengbei_care` Android 工程；未改固件/网关/服务端/iOS/硬件。
+基线：Git `b291096`（接手时 `git status --short` 为空）；交付版本 `versionCode 10 / versionName 1.9`、`minSdk 26`、`targetSdk/compileSdk 34`。
+本轮未连接手机/网关、未安装 APK、未访问服务端；真机验收交软件测试（T-SW-L2/L3、REG）。
+
+## 1. 逐项改动
+
+### ITEM-001 BLE 权限模型（AA-005 G-1 / D-16 / D-19）
+
+| 文件 | 改动 |
+|---|---|
+| `ble/BlePermissionPolicy.kt`（新增） | 纯逻辑：`evaluate(sdkInt, granted, needScan, adapterEnabled, locationEnabled)` → `canConnect/canScan/missing/requiresLocationServices/reason/userMessage`；`connectRequestPermissions`（API<31 为空）与 `scanRequestPermissions`（API<31 仅定位、API31+ 仅 SCAN/CONNECT）；API<31 直连恒不要求 `ACCESS_FINE_LOCATION` |
+| `MqtttService.kt` | `checkBluetoothPermission/isBluetoothBusy/connectToBluetoothDevice` 统一走同一策略；权限失败写首页链路状态并记录 `sdkInt/missing/needScan/adapterEnabled`；删除“仅一行日志后 return”的路径 |
+| `MainActivity.kt` | 删除启动时被注释/不可达的定位请求与拒绝后重复请求分支；新增 `requestStartupPermissions()`：API≥33 请求通知、API≥31 请求 `BLUETOOTH_CONNECT`，**不请求定位**；拒绝只提示一次 |
+| `ui/home/HomeViewModel.kt`、`HomeFragment.kt`、`res/layout/fragment_home.xml` | 新增 `linkStatus` LiveData 与首页状态条；开启守护时调用 `requestStartupPermissions()` |
+
+`ACCESS_FINE_LOCATION` 保留在 Manifest：既有 Wi-Fi 配网页 `GatewayFragment` 仍需它；本项只移除其作为 BLE 直连前置。
+
+### ITEM-002 网关身份与有界发现（G-2 / D-17 / D-18 / D-29）
+
+| 文件 | 改动 |
+|---|---|
+| `protocol/GatewayIdentity.kt`（新增） | MAC 规范化/校验（冒号/短横/12 位连写）、候选去重排序（FFE0 优先→RSSI 降序）、迁移默认与“已清除”判定、`resolveAddress`；硬编码默认值只在此一处 |
+| `ble/GatewayDiscovery.kt`（新增） | `BluetoothLeScanner` 有界扫描：FFE0 过滤优先、显式无过滤回退、10 s 上限；超时/取消/`onScanFailed`/异常全部 `stopScan` 并释放回调 |
+| `ui/gateway/GatewayBleSettingsDialog.kt`（新增） | “网关与上传设置”对话框：当前 `gateway_ble_addr`（默认值标“未确认”）与 `mac_addr`（只读，分别展示）、候选名称/MAC/RSSI、手动输入/保存/清除（写 `gateway_ble_addr_cleared`，清除后不回退）、扫描权限按 API 请求 |
+| `ui/notifications/NotificationsFragment.kt` + `res/layout/fragment_notifications.xml` | 新增“网关与上传设置”入口；页面销毁时停止扫描并关闭对话框 |
+| `MqtttService.kt` | 连接目标改为 `GatewayIdentity.resolveAddress(prefs)`；连接日志同条记录 `gateway_ble_addr`（BLE 连接目标）与 `mac_addr`（平台身份）；`GATEWAY_CHANGED` 动作触发立即读取 |
+
+既有 `ui/gateway/GatewayFragment.kt`（Wi-Fi/ESP 配网）未改动、未复用为 BLE 发现。
+
+### ITEM-003 批次转发（G-3 / D-20 / D-26）
+
+- `telemetry/BleBatchForwarding.kt`（新增）：`plan(readings, boundOrder, timeSeconds, allPlaceholder)` → `Forward("<time>:<temps>:<humis>")` 或 `Refuse(reason)`；`RefuseReason` 覆盖 `NO_BOUND_DEVICE/COUNT_MISMATCH/UNKNOWN_ID/DUPLICATE_ID/ORDER_MISMATCH/ALL_PLACEHOLDER`；`Locale.US` 固定一位小数、空格不出现。
+- `MqtttService.kt`：删除 `bletime/bleTempData/bleHumiData/bletimebkp` 覆盖式“最后一笔”状态；一次成功读取按接收时间组成母批次，本地逐 ID 处理后再统一判定转发；MQTT 已连接立即发布，未连接只保留最近一批（有界 1），连接成功回调发布一次；拒绝只影响发布。
+
+### ITEM-004 观测有效性（G-5 / D-21 / D-24 / D-25 / D-30）
+
+- `telemetry/BleObservation.kt`（新增）：8 B 全零（`ID=00000000 且 tX10=0 且 hX10=0`）→ `Placeholder`；有效 ID 的 `0.0/0.0` → `Valid`；判定只用 x10 整数。
+- `protocol/GatewayFrameCodec.kt`：`SensorSample` 追加 `temperatureX10/humidityX10`（不改变原字段/偏移/字节序/符号）。
+- `MqtttService.kt`：删除 `isZeroValue`/`bleZeroCount` 连续 3 次门槛；占位跳过且整批占位显示“网关暂无传感器数据”，不写库/不入队/不建卡片/不报警；每次成功读取（非占位）仍按接收 Unix 秒入库与入队（不按值去重）。
+- `ui/home/DeviceCardAdapter.kt`、`item_device_card.xml`、`fragment_device_detail.xml`：卡片文案改为“最近读取/尚未读取到数据”，详情新增“读取网关缓存的时刻≠传感器采样时刻”说明；不出现“离线”推断。
+
+### ITEM-005 上传失败分类与手动重试（G-6 / D-27 / D-28）
+
+- `cloud/UploadResult.kt`（新增）：2xx=`Success`；401/403=`AuthRejected`；其余 4xx（408/429 除外）=`RequestRejected`；5xx/408/429/超时/IO/解析=`Retryable`。
+- `cloud/CloudUploadRepository.kt`：`UploadApi` 增加带默认实现的 `uploadDetailed`（既有 Boolean 伪实现保持兼容）；`UploadGate` 增加默认的阻塞/成功/重试状态回调；401/403/4xx 走 `park`（attempts 置上限、保留行、不自动重试）并写阻塞状态；`retryBlockedNow()` 清阻塞、恢复被暂停行（批量 UPDATE，不改表结构）并立即上传一次；`CloudApiClient` 新增唯一空拦截器注入点（**未加**任何鉴权头）。
+- `cloud/UploadOutbox.kt`：新增 `park` 与 `resetForManualRetry`（Sqlite 覆盖为 `UPDATE ... WHERE attempts >= ?`）。
+- `PrefsUploadGate`：写入 `upload_blocked_reason/upload_blocked_at/upload_last_status/upload_pending_count`；`MqtttService` 新增 `RETRY_UPLOAD` 动作；设置对话框展示“上传被拒绝/请求被拒绝/重试中”与待发条数并提供“重试上传”。
+
+### ITEM-006 规则文案与契约注释（G-4 / D-22 / D-34）
+
+- `ui/detail/DetailPresentation.kt`、`fragment_device_detail.xml`：规则改为“温度较上次**升高**超过 0.9℃且无光，或温度超过 35.0℃”；严格边界不变；App 自身“温度湿度下降报警”文案/算法/阈值未改。
+- `telemetry/SensorCadence.kt`：注释方向改为升温。
+- `ui/zhuce/ApiService.kt`：`SensorReading.time` 注释改为“BLE 接收 Unix 秒或 MQTT 载荷首段秒，不是物理采样时刻”（字段名/类型/单位不变）。
+- `用户使用说明书.md`、`dengbei_care/readme.txt`、`app/build.gradle.kts`：同步升温方向、权限说明与 V1.9 变更记录；版本 10/1.9。
+
+### ITEM-007 容量与读取完整性（G-7 / D-31 / D-32）
+
+- `protocol/GatewayReadGuard.kt`（新增）：`MAX_DEVICES=9`、`MAX_FRAME_BYTES=160`、`ATT_OVERHEAD=3`、`expectedFrameSize`、`capacityVerdict`、`mtuVerdict`、`lengthVerdict`（先对齐、后长度；允许 16 B 对齐尾块）。
+- `MqtttService.kt`：读前按 `MacIdBook.count()` 做容量判定（>9 不连接、不写 `0xA1`、不转发，状态 `BINDING_CAPACITY_EXCEEDED`）；MTU 协商后按 `16×(1+N)+3` 校验，不足时只重连重试一次，仍不足记 `READ_INCOMPLETE`；`onCharacteristicRead` 使用实际 `value.size` 判定对齐与覆盖，失败整帧拒绝并记录 actual/expected，不补零/不拼接/不裁余字节；`buildAllSavedIdsA1SinglePacket` 默认上限改为 9 并**拒绝**超限（不再 `take(50)`），`BLE_ENQUEUE_WRITE_IDS` 同步拒绝。
+- `ui/notifications/NotificationsFragment.kt`：第 10 台绑定明确拒绝并提示上限 9。
+
+## 2. 兼容面（逐项保持）
+
+BLE 记录布局/字节序/负温符号、AES/ECB/NoPadding 与密钥、GATT UUID（FFE0/FFE2/FFE3）、`0xA1` 头与分块格式、`mac_addr` 语义、topic 规则与 `time:temps:humis` 格式、`/upload_data` 字段/单位、SQLite v3 表结构与 `(device_id,time)` 幂等键、65℃ 紧急阈值、900 s 去抖、三条报警文案、App 自身下降报警算法、既有 Wi-Fi 配网页均未改。
+
+## 3. 本轮验证（实现侧自检）
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 宿主机单测 | `./gradlew :app:testDebugUnitTest --offline` | `BUILD SUCCESSFUL`；**31 套件 / 235 项 / 0 失败 / 0 错误 / 0 跳过**（既有 188 项 + 本轮 47 项：权限矩阵 9、身份 6、容量/完整性 8、观测 4、转发 9、上传分类 6、上传编排 5） |
+| 编译告警 | `./gradlew :app:compileDebugKotlin --offline --rerun` | 0 error；**11 条 warning，与基线集合一致，无新增** |
+| 构建 | `./gradlew clean :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；APK 10,365,236 B；`versionCode 10 / versionName 1.9`（aapt badging） |
+| 静态核查 | `python evidence/android_impl_20261110/static_checks.py` | A1–A14 全 PASS（MAC 单点、哨兵清零、无 50 截断、载荷单点、无下降文案、无未证实鉴权、`value.size`/MTU 守卫、容量前置、版本、注释、SQLite 未改、无新 UUID） |
+
+原始输出与 APK 身份：`evidence/android_impl_20261110/`（`unit_test.log`、`unit_test_final.log`、`build_clean.log`、`compile_rerun.log`、`static_checks.txt`、`test_summary.txt`、`apk_identity.txt`、`apk_badging.txt`）。
+本轮测试增量文件：`BlePermissionPolicyTest`、`GatewayIdentityTest`、`GatewayReadGuardTest`、`BleObservationTest`、`BleBatchForwardingTest`、`UploadResultTest`、`CloudUploadFailureClassificationTest`。
+
+## 4. 观察、边界与交接
+
+1. **未执行（交软件测试）**：真机安装/权限弹窗与拒绝路径、真实 BLE 扫描/保存/重连、真实 GATT 的 MTU 与 `value.size`、真实多设备批次、真实占位/0.0/0.0、真实 401/403 与持久化回读。本轮未使用 adb（无 `android_test` 入口），不以宿主机结论代替真机结论。
+2. **9 台只是容量上界**：本轮证明 `>9` 被拒绝与判定函数正确，不证明已支持 9 台真实快照；`REG-17/L2-54` 缺真实条件时记 NOT EXECUTED。
+3. **MTU 重试语义**：`READ_INCOMPLETE` 由 MTU 不足或返回长度不足触发；MTU 不足只额外重连一次（与既有 5 次连接重试区分），不会无限重试。
+4. **验证资产同步（需测试能力复核）**：`app/src/test/.../verification/DetailPresentationItem012VerificationTest.kt` 的唯一字面期望原为“下降”，与本轮批准的需求/AA-005 G-4 相反，且会导致测试源无法编译；本轮仅把该字面期望改为“升高”并追加“不得出现下降超过 0.9”断言（未降低断言强度）。该文件属软件测试独立验证资产，需在后续独立验证中重新确认。
+5. **未新增鉴权**：401 机制仍未定性；`/upload_data` 2xx 只表示 HTTP 受理，不代表持久化。真实上传/回读属端到端阶段。
+6. **现场有光且固件判据未启用**：升温分支当前不触发，只有 >35℃ 可能上报；App 不补偿、不推断；本轮未安排调温/改变光强/功耗测试。
+7. **未安装 APK、未改设备状态**；包身份仅为本地构建产物（sha256 `bddc698a…`，见 `apk_identity.txt`）。

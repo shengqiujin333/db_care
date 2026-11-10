@@ -41,7 +41,7 @@ data class MacData(val phoneNumber: String, val macAddress: String)
 /** 单条传感器读数（字段名与 `/upload_data` 契约一致） */
 data class SensorReading(
     val devId: String,        // 8 位 HEX 设备 ID（来自记录自身归因）
-    val time: Long,           // Unix 秒（真实采样时间）
+    val time: Long,           // Unix 秒：BLE 接收秒或 MQTT 载荷首段秒；不是物理采样时刻
     val temperature: Double,  // 摄氏度
     val humidity: Double      // 百分比相对湿度 %RH
 )

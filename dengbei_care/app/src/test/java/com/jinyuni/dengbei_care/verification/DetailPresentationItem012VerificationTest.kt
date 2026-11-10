@@ -10,19 +10,20 @@ import org.junit.Test
  * 软件测试独立验证（software_tester.software_verification / ITEM-012）——宿主机逻辑层。
  *
  * 期望值由本文件按 readme 修改点 3/4 与 AA-002 §5.3/§7（D-12/D-14/D-03）独立写出：
- * 规则文案与 readme 一致且不含推断结论；图表范围上限 24 h；高温强调严格 `> 35.0℃`。
+ * 规则文案与 readme 一致（升温方向）且不含推断结论；图表范围上限 24 h；高温强调严格 `> 35.0℃`。
  */
 class DetailPresentationItem012VerificationTest {
 
     private val expectedRule =
-        "采样周期 3 分钟。仅当温度较上次下降超过 0.9℃且无光，或温度超过 35.0℃ 时才上报；" +
+        "采样周期 3 分钟。仅当温度较上次升高超过 0.9℃且无光，或温度超过 35.0℃ 时才上报；" +
             "未满足条件时不会上报，因此可能长时间没有新数据。"
 
     @Test
     fun ruleText_isExactlyTheReadmeRule() {
         assertEquals(expectedRule, DetailPresentation.REPORT_RULE_TEXT)
         val t = DetailPresentation.REPORT_RULE_TEXT
-        listOf("采样周期 3 分钟", "0.9℃", "无光", "35.0℃", "才上报", "可能长时间没有新数据")
+        assertFalse("不得出现下降方向", t.contains("下降超过 0.9"))
+        listOf("采样周期 3 分钟", "升高超过 0.9℃", "无光", "35.0℃", "才上报", "可能长时间没有新数据")
             .forEach { assertTrue("规则文案缺少「$it」", t.contains(it)) }
     }
 

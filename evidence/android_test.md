@@ -1042,3 +1042,72 @@ D-014-1 已按要求修复：仅删除 1 行无效清单条目，真实条目与
 
 1. **根因在流程工具侧**：自动化清单同步应以 `git -c core.quotepath=false` 取路径（或先还原转义）再写入，否则非 ASCII 路径会被写成转义串并产生假记录（属 Runtime/流程改进项，不在本能力范围）。
 2. **真机安装/升级路径**仍未执行（需设备且 debug 包会连生产 broker/服务器），与 ST-014 §4 一致。
+
+---
+
+## AT-015 · AA-005 七项增量（G-1…G-7）实现侧自检
+
+对象：`dengbei_care` 当前工作区（版本 10 / 1.9），对应 `artifacts/android_tasks.yaml` 的 ITEM-001…007 / AA-005 rev 4.0 D-16…D-34。
+执行：Android 实现角色在本机（Windows 11 amd64、Gradle 8.4 wrapper、JDK 21.0.2、`--offline`）。
+证据目录：`evidence/android_impl_20261110/`。
+
+### 1. 宿主机单测
+
+```
+cd D:\mypro\beiwo2\AIP\dengbei_care
+./gradlew :app:testDebugUnitTest --offline --rerun-tasks   # 首跑：235/0
+./gradlew :app:testDebugUnitTest --offline                 # 终跑：BUILD SUCCESSFUL
+```
+
+| 项 | 结果 |
+|---|---|
+| 套件 / 用例 | 31 套件 / **235 项** |
+| 失败 / 错误 / 跳过 | **0 / 0 / 0** |
+| 既有独立验证用例 | 继续通过（含 ITEM-001…014 的 verification 套件） |
+| 本轮新增 | 47 项：`BlePermissionPolicyTest`(9)、`GatewayIdentityTest`(6)、`GatewayReadGuardTest`(8)、`BleObservationTest`(4)、`BleBatchForwardingTest`(9)、`UploadResultTest`(6)、`CloudUploadFailureClassificationTest`(5) |
+
+原始输出：`evidence/android_impl_20261110/unit_test.log`、`unit_test_final.log`、`test_summary.txt`。
+
+### 2. 编译与构建
+
+```
+./gradlew :app:compileDebugKotlin --offline --rerun
+./gradlew clean :app:assembleDebug --offline
+```
+
+| 项 | 结果 |
+|---|---|
+| 编译错误 | 0 |
+| 编译告警 | **11 条，与基线集合一致，无新增**（均为既有文件既有告警） |
+| 构建 | `BUILD SUCCESSFUL` |
+| APK | `app/build/outputs/apk/debug/app-debug.apk`，10,365,236 B，sha256 `bddc698a89482e3d6f4752bb0d0fd6a58e34f9c63e93bc84307b7d41ef755b47`，md5 `172b584059539fd023ce6f565d4f40ee` |
+| 清单身份 | `package com.jinyuni.dengbei_care versionCode=10 versionName=1.9`，minSdk 26 / targetSdk 34（`aapt dump badging`） |
+
+原始输出：`compile_rerun.log`、`build_clean.log`、`apk_identity.txt`、`apk_badging.txt`。
+
+### 3. 静态核查（A1–A14）
+
+`python evidence/android_impl_20261110/static_checks.py` → `RESULT: OK`（`static_checks.txt`）：
+
+- A1 硬编码网关 MAC 仅在 `GatewayIdentity.DEFAULT_GATEWAY_BLE_ADDR` 一处；
+- A2 `bleTempData/bleHumiData/bletime/bleZeroCount/isZeroValue` 在 `app/src/main` 清零；
+- A3 无 `take(50)` / `maxCount = 50` 静默截断；
+- A4 载荷构造只在 `BleBatchForwarding`，格式 `time:temps:humis`；
+- A5 应用源码无“下降超过 0.9”；
+- A6 无新增 Authorization/Bearer 鉴权头；
+- A7 读路径使用实际 `value.size` + MTU 守卫 + `lengthVerdict`；
+- A8 绑定与读取均引用 `GatewayReadGuard.MAX_DEVICES`；
+- A9 版本 10 / 1.9；
+- A10 `SensorReading.time` 注释与 `SensorCadence` 方向已同步；
+- A11 `TemperatureDatabaseHelper.kt` 本轮未改（v3 schema 保持）；
+- A12 `pending_uploads` 复合主键 `(device_id,time)` 未变；
+- A13 容量前置先于 `getRemoteDevice` 连接；
+- A14 未新增 GATT UUID（仅 FFE0/FFE2/FFE3）。
+
+### 4. 未执行与边界
+
+1. **未连接手机/网关、未安装 APK、未访问服务端**：本能力无 `android_test` 设备工具；真机权限弹窗、真实扫描/GATT、MTU/返回字节、多设备批次、真实占位/0.0、真实 401/403 与回读均未执行，交软件测试按 TD-SW-004 v4.0 的 T-SW-L2-53/54、L3-22、REG-17 等验收。
+2. **9 台只是静态容量上界**：宿主机只证明 `>9` 被拒绝、判定函数正确，不证明已支持 9 台真实快照；缺真实条件记 NOT EXECUTED。
+3. **验证资产同步**：`verification/DetailPresentationItem012VerificationTest.kt` 的原字面期望为“下降”，与 AA-005 G-4 相反且会造成测试源编译失败；本次仅将字面值与禁词断言同步到“升高”，未降低断言强度，需测试能力在独立验证中复核。
+4. **上传语义**：2xx 仍只表示 HTTP 受理；401 机制未定性，未新增鉴权；真实持久化/回读不在本轮。
+5. **当前现场有光且固件无光判据未启用**：升温分支当前不触发；本轮未安排调温/改变光强/功耗测试，App 未做补偿或推断。

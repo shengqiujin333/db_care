@@ -1,0 +1,16 @@
+AA-005 static checks
+PASS A1 hardcoded gateway MAC only once (migration default)
+PASS A2 no last-batch state / zero-sentinel
+PASS A3 no 50-device silent truncation
+PASS A4 single payload construction (time:temps:humis)
+PASS A5 no drop-direction rule text in app sources
+PASS A6 no unverified auth headers
+PASS A7 read completeness uses value.size + MTU guard
+PASS A8 binding capacity guard <= 9
+PASS A9 version bumped to 1.9 / 10
+PASS A10 time comment + cadence direction synced
+PASS A11 SQLite helper unchanged in this round (v3 schema intact)
+PASS A12 outbox key (device_id,time) intact
+PASS A13 capacity check precedes GATT connect
+PASS A14 no new GATT UUIDs introduced
+RESULT: OK

@@ -36,6 +36,23 @@
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
+    <TextView
+        android:id="@+id/linkStatusText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_md"
+        android:layout_marginTop="@dimen/spacing_xs"
+        android:layout_marginEnd="@dimen/spacing_md"
+        android:background="?attr/colorSurfaceVariant"
+        android:padding="@dimen/spacing_sm"
+        android:textAppearance="?attr/textAppearanceBodySmall"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        tools:text="网关连接失败（重试 / 检查网关电源）" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/deviceCardRecycler"
         android:layout_width="match_parent"
@@ -43,7 +60,7 @@
         android:clipToPadding="false"
         android:paddingTop="@dimen/spacing_xs"
         android:paddingBottom="@dimen/spacing_sm"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        app:layout_constraintTop_toBottomOf="@id/linkStatusText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_device_card" />

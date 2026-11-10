@@ -17,6 +17,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.jinyuni.dengbei_care.ble.BlePermissionPolicy
+import com.jinyuni.dengbei_care.ble.PermissionNeed
 import com.jinyuni.dengbei_care.databinding.ActivityMainBinding
 import com.jinyuni.dengbei_care.report.ReportScheduler
 import com.jinyuni.dengbei_care.ui.zhuce.PrivacyPolicyActivity
@@ -25,9 +27,9 @@ import com.jinyuni.dengbei_care.ui.zhuce.TermsOfServiceActivity
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val REQUEST_CODE_POST_NOTIFICATIONS = 1231
-    private val REQUEST_CODE_LOCATION = 1232
-    private val REQUEST_BLUETOOTH_PERMISSION = 1
+    private val REQUEST_CODE_STARTUP_PERMISSIONS = 1231
+    private var permissionRequestInFlight = false
+    private var denialToastShown = false
     private lateinit var dialog: AlertDialog // 声明对话框对象
     private val REQUEST_CODE_SCHEDULE_EXACT_ALARM = 1233
 
@@ -59,31 +61,12 @@ class MainActivity : BaseActivity() {
 //        setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_CODE_POST_NOTIFICATIONS)
-//            }
-//        }
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(
-//                    this,
-//                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                    REQUEST_CODE_LOCATION
-//                )
-//            }
-//        }
-
-//        if (!hasVibratePermission()) {
-//            requestVibratePermission()
-//        }
-
-
         setupDefaultPreferences(this)
         startMqttService()
         scheduleDailyReport()
+        if (isPrivacyPolicyAccepted()) {
+            requestStartupPermissions()
+        }
 
     }
 
@@ -138,24 +121,8 @@ class MainActivity : BaseActivity() {
             // 用户选择同意，保存选择并继续
             savePrivacyPolicyAccepted()
             dialog.dismiss() // 关闭对话框
-            Toast.makeText(this, "我们需要您授予通知权限和位置权限以便触发条件时能及时提醒", Toast.LENGTH_SHORT).show()
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_CODE_POST_NOTIFICATIONS)
-                }
-            }
-
-
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED) {
-//                    ActivityCompat.requestPermissions(
-//                        this,
-//                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                        REQUEST_CODE_LOCATION
-//                    )
-//                }
-//            }
+            Toast.makeText(this, "我们需要您授予通知与蓝牙权限以便及时提醒", Toast.LENGTH_SHORT).show()
+            requestStartupPermissions()
         }
 
         // 创建对话框
@@ -216,16 +183,57 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun requestBluetoothPermissions() {
-        // Request Bluetooth permissions for Android 12 and above
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN),
-            REQUEST_BLUETOOTH_PERMISSION
-        )
+    // ---------- 运行时权限（AA-005 G-1 / D-16） ----------
+    // 只请求当前 API 真正需要的、且清单已声明的权限：
+    // - API>=31：BLUETOOTH_CONNECT（直连）；扫描场景另由网关设置页请求 BLUETOOTH_SCAN；
+    // - API>=33：POST_NOTIFICATIONS；
+    // - API<31：直连不需要定位；仅扫描流程请求 ACCESS_FINE_LOCATION。
+    // 拒绝或“不再询问”只提示一次，不重复请求、不回退到定位权限。
+
+    private fun grantedNeeds(): Set<PermissionNeed> {
+        val granted = mutableSetOf<PermissionNeed>()
+        fun has(p: String) = ContextCompat.checkSelfPermission(this, p) == PackageManager.PERMISSION_GRANTED
+        if (has(Manifest.permission.BLUETOOTH_CONNECT)) granted += PermissionNeed.BLUETOOTH_CONNECT
+        if (has(Manifest.permission.BLUETOOTH_SCAN)) granted += PermissionNeed.BLUETOOTH_SCAN
+        if (has(Manifest.permission.ACCESS_FINE_LOCATION)) granted += PermissionNeed.FINE_LOCATION
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+            has(Manifest.permission.POST_NOTIFICATIONS)
+        ) {
+            granted += PermissionNeed.POST_NOTIFICATIONS
+        }
+        return granted
     }
 
+    private fun platformPermission(need: PermissionNeed): String = when (need) {
+        PermissionNeed.BLUETOOTH_CONNECT -> Manifest.permission.BLUETOOTH_CONNECT
+        PermissionNeed.BLUETOOTH_SCAN -> Manifest.permission.BLUETOOTH_SCAN
+        PermissionNeed.FINE_LOCATION -> Manifest.permission.ACCESS_FINE_LOCATION
+        PermissionNeed.POST_NOTIFICATIONS -> Manifest.permission.POST_NOTIFICATIONS
+    }
 
+    /** 启动/开启守护时调用：请求连接与通知所需权限，不请求定位 */
+    fun requestStartupPermissions() {
+        if (permissionRequestInFlight) return
+        val granted = grantedNeeds()
+        val request = mutableListOf<String>()
+        if (BlePermissionPolicy.needsNotificationPermission(Build.VERSION.SDK_INT, granted)) {
+            request += platformPermission(PermissionNeed.POST_NOTIFICATIONS)
+        }
+        BlePermissionPolicy.connectRequestPermissions(Build.VERSION.SDK_INT, granted)
+            .forEach { request += platformPermission(it) }
+        if (request.isEmpty()) return
+
+        permissionRequestInFlight = true
+        Log.i(
+            "Permission",
+            "request startup permissions: ${request.distinct()} sdkInt=${Build.VERSION.SDK_INT}"
+        )
+        ActivityCompat.requestPermissions(
+            this,
+            request.distinct().toTypedArray(),
+            REQUEST_CODE_STARTUP_PERMISSIONS
+        )
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -233,109 +241,26 @@ class MainActivity : BaseActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_CODE_POST_NOTIFICATIONS -> {
-                if (grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // 通知权限被授予
-                    Log.d("Permission", "Notification permission granted")
+        if (requestCode != REQUEST_CODE_STARTUP_PERMISSIONS) return
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                            != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(
-                                this,
-                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                                REQUEST_CODE_LOCATION
-                            )
-                        }
-                    }
-                } else {
-                    // 通知权限被拒绝
-                    Log.d("Permission", "Notification permission denied")
-                    if (!shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                        Toast.makeText(this, "需要通知权限以提供及时的消息提醒", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), REQUEST_CODE_POST_NOTIFICATIONS)
-                        }
-                    }
-                }
-            }
-            REQUEST_CODE_LOCATION -> {
-                if (grantResults.isNotEmpty() &&
-                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // 位置权限被授予
-                    Log.d("Permission", "Location permission granted")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        // For Android 12 (API level 31) and above
-                        if (ContextCompat.checkSelfPermission(
-                                this, Manifest.permission.BLUETOOTH_CONNECT
-                            ) != PackageManager.PERMISSION_GRANTED ||
-                            ContextCompat.checkSelfPermission(
-                                this, Manifest.permission.BLUETOOTH_SCAN
-                            ) != PackageManager.PERMISSION_GRANTED
-                        ) {
-                            // Request Bluetooth permissions
-                            requestBluetoothPermissions()
-                        }
-                    }
-
-
-                } else {
-                    // 位置权限被拒绝
-                    Log.d("Permission", "Location permission denied")
-                    if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        Toast.makeText(this, "需要位置相关服务才能及时获取服务器消息", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                            != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(
-                                this,
-                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                                REQUEST_CODE_LOCATION
-                            )
-                        }
-                    }
-                }
-            }
-            REQUEST_BLUETOOTH_PERMISSION -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Bluetooth permissions granted
-                    Log.d("Permission", "Bluetooth permissions granted")
-
-                } else {
-                    if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        Toast.makeText(this, "需要蓝牙相关权限才能及时获取传感器数据", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    // Bluetooth permissions denied
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        // For Android 12 (API level 31) and above
-                        if (ContextCompat.checkSelfPermission(
-                                this, Manifest.permission.BLUETOOTH_CONNECT
-                            ) != PackageManager.PERMISSION_GRANTED ||
-                            ContextCompat.checkSelfPermission(
-                                this, Manifest.permission.BLUETOOTH_SCAN
-                            ) != PackageManager.PERMISSION_GRANTED
-                        ) {
-                            // Request Bluetooth permissions
-                            requestBluetoothPermissions()
-                        }
-                    }
-                }
-            }
-
-
-
-
+        permissionRequestInFlight = false
+        val denied = permissions.filterIndexed { index, _ ->
+            grantResults.getOrNull(index) != PackageManager.PERMISSION_GRANTED
+        }
+        Log.i(
+            "Permission",
+            "startup permissions result: requested=${permissions.toList()} denied=$denied " +
+                    "sdkInt=${Build.VERSION.SDK_INT}"
+        )
+        if (denied.isNotEmpty() && !denialToastShown) {
+            denialToastShown = true
+            Toast.makeText(
+                this,
+                "权限被拒绝：将无法读取网关数据。可到系统设置中授予附近设备/通知权限",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
-
 
 //    private fun hasVibratePermission(): Boolean {
 //        return ContextCompat.checkSelfPermission(this, Manifest.permission.VIBRATE) == PackageManager.PERMISSION_GRANTED

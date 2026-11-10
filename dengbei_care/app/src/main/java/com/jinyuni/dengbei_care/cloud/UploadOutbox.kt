@@ -39,6 +39,17 @@ interface UploadOutboxStore {
     fun updateRetry(devId: String, time: Long, attempts: Int, nextAttemptAt: Long)
 
     fun count(): Int
+
+    /**
+     * 暂停自动重试（永久拒绝时使用）：把 `attempts` 置为上限，行保留在待发箱。
+     * 默认实现复用 [updateRetry]，便于既有内存伪实现直接使用。
+     */
+    fun park(devId: String, time: Long, maxAttempts: Int) {
+        updateRetry(devId, time, maxAttempts, 0L)
+    }
+
+    /** 手动重试：把被暂停（`attempts >= maxAttempts`）的行恢复为可自动重试 */
+    fun resetForManualRetry(maxAttempts: Int) {}
 }
 
 /** 队列策略（纯逻辑，时间可注入） */
@@ -76,6 +87,12 @@ class UploadOutbox(
     }
 
     fun pendingCount(): Int = store.count()
+
+    /** 暂停该行的自动重试（保留行，不删除） */
+    fun park(row: UploadOutboxRow, maxAttempts: Int) = store.park(row.devId, row.time, maxAttempts)
+
+    /** 清除阻塞后恢复被暂停的行（批量，不改表结构） */
+    fun resetForManualRetry(maxAttempts: Int) = store.resetForManualRetry(maxAttempts)
 }
 
 /**
@@ -167,6 +184,15 @@ class SqliteUploadOutboxStore(
     }.getOrElse {
         Log.w(TAG, "outbox count failed (${it.message})")
         0
+    }
+
+    override fun resetForManualRetry(maxAttempts: Int) {
+        runCatching {
+            helper.writableDatabase.execSQL(
+                "UPDATE $table SET $colAttempts = 0, $colNext = 0 WHERE $colAttempts >= ?",
+                arrayOf(maxAttempts)
+            )
+        }.onFailure { Log.w(TAG, "outbox manual retry reset failed (${it.message})") }
     }
 
     private fun exists(

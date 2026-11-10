@@ -51,7 +51,9 @@ object GatewayFrameCodec {
         val devIdHex: String,        // "0C:11:82:24"
         val devIdCompact: String,    // "0C118224"（MacIdBook 键）
         val humidityPct: Double,     // u16be@4 / 10.0
-        val temperatureC: Double     // s16be@6 / 10.0（有符号）
+        val temperatureC: Double,    // s16be@6 / 10.0（有符号）
+        val humidityX10: Int,        // u16be@4 原始 0.1 %RH（占位判定用，additive）
+        val temperatureX10: Int      // s16be@6 原始 0.1 ℃（有符号，additive）
     )
 
     /** 拒绝原因 */
@@ -134,14 +136,16 @@ object GatewayFrameCodec {
     fun decodeDeviceBlock(block: ByteArray, offset: Int): SensorSample {
         val p8 = block.copyOfRange(offset, offset + DEVICE_PAYLOAD_SIZE)
         val devIdBytes = p8.copyOfRange(0, 4)
-        val humi = u16be(p8, 4) / 10.0
-        val temp = s16be(p8, 6) / 10.0
+        val humiRaw = u16be(p8, 4)
+        val tempRaw = s16be(p8, 6)
         return SensorSample(
             devIdBytes = devIdBytes,
             devIdHex = toColonHex(devIdBytes),
             devIdCompact = toCompactHex(devIdBytes),
-            humidityPct = humi,
-            temperatureC = temp
+            humidityPct = humiRaw / 10.0,
+            temperatureC = tempRaw / 10.0,
+            humidityX10 = humiRaw,
+            temperatureX10 = tempRaw
         )
     }
 }

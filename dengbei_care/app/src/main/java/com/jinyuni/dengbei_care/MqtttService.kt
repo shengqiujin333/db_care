@@ -29,6 +29,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.github.mikephil.charting.data.Entry
+import com.jinyuni.dengbei_care.ble.BlePermissionPolicy
+import com.jinyuni.dengbei_care.ble.LinkReason
+import com.jinyuni.dengbei_care.ble.PermissionNeed
+import com.jinyuni.dengbei_care.ble.Policy
 import com.jinyuni.dengbei_care.cloud.CloudConfig
 import com.jinyuni.dengbei_care.cloud.CloudUploadRepository
 import com.jinyuni.dengbei_care.cloud.PrefsUploadGate
@@ -36,7 +40,11 @@ import com.jinyuni.dengbei_care.cloud.RetrofitUploadApi
 import com.jinyuni.dengbei_care.cloud.SqliteUploadOutboxStore
 import com.jinyuni.dengbei_care.cloud.UploadOutbox
 import com.jinyuni.dengbei_care.protocol.GatewayFrameCodec
+import com.jinyuni.dengbei_care.protocol.GatewayIdentity
+import com.jinyuni.dengbei_care.protocol.GatewayReadGuard
 import com.jinyuni.dengbei_care.telemetry.AlarmEvaluator
+import com.jinyuni.dengbei_care.telemetry.BleBatchForwarding
+import com.jinyuni.dengbei_care.telemetry.BleObservation
 import com.jinyuni.dengbei_care.telemetry.ReadingAttribution
 import com.jinyuni.dengbei_care.telemetry.SensorCadence
 import com.jinyuni.dengbei_care.ui.home.HomeViewModel
@@ -245,20 +253,23 @@ class MqtttService : MqttService() {
     private lateinit var wakeLock: PowerManager.WakeLock
     private var connectcnt:Int = 0
     private lateinit var bluetoothAdapter: BluetoothAdapter
-    var bleTempData: List<Double>? = null
-    var bleHumiData: List<Double>? = null
-    var bletime:Long? = null
-    var bletimebkp:Long? = null
-    // BLE 读取周期与传感器 3 分钟采样节拍对齐（readme 修改点 3）；手动立即读取通道 wakeReadNow 保留
+    /** 未连接 MQTT 时只保留最近一批待转发（有界为 1，AA-005 D-20） */
+    private var pendingForwardPayload: String? = null
+    /** BLE 读取周期与传感器 3 分钟采样节拍对齐（readme 修改点 3）；手动立即读取通道 wakeReadNow 保留 */
     private val READ_INTERVAL_MS = SensorCadence.SAMPLE_PERIOD_MS
     private val wakeReadNow = Channel<Unit>(Channel.CONFLATED) // 触发“立刻读”的信号（合并最新）
-    private var bleZeroCount = 0  // 连续0值的次数
+
+    /** 最近一次协商的 ATT MTU（只用于读取完整性判定与日志） */
+    @Volatile private var lastNegotiatedMtu: Int = 23
+    /** 本轮连接是否因 MTU 不足而失败 */
+    @Volatile private var mtuInsufficient = false
 
     @Volatile private var writeInFlight = false
 
 
 //    private val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
-    private val deviceMacAddress = "84:C2:E4:03:02:02" // 替换为目标设备的 MAC 地址
+    // 注：GATT 连接目标不再硬编码；唯一来源为 MyPrefs.gateway_ble_addr（迁移默认常量只在
+    // GatewayIdentity 中定义一次）。legacy 常量名保留供静态核查排除，不再作为连接路径。
     private val handler = Handler(Looper.getMainLooper())
 //    private val executor = Executors.newSingleThreadScheduledExecutor()
     private val bluetoothScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -411,11 +422,22 @@ class MqtttService : MqttService() {
         return byteArrayOf(0xA1.toByte(), cleaned.size.toByte()) + body
     }
 
-    fun buildAllSavedIdsA1SinglePacket(context: Context, maxCount: Int = 50): ByteArray? {
-        val ids = MacIdBook.all(context).map { (id8, _name) -> id8 }.distinct().take(maxCount)
-        if (ids.isEmpty()) return null
-        require(ids.all { it.length == 8 && it.all { c -> c in "0123456789abcdefABCDEF" } })
-        return buildA1Payload4B(ids)
+    fun buildAllSavedIdsA1SinglePacket(
+        context: Context,
+        maxCount: Int = GatewayReadGuard.MAX_DEVICES
+    ): ByteArray? {
+        val all = MacIdBook.all(context).map { (id8, _name) -> id8 }.distinct()
+        if (all.isEmpty()) return null
+        // AA-005 D-31：容量超过 9 台时必须拒绝，不静默截断（否则网关无法完整回传）
+        if (all.size > maxCount || all.size > GatewayReadGuard.MAX_DEVICES) {
+            Log.w(
+                "MqttService",
+                "A1 write refused: bound=${all.size} max=$maxCount capacity=${GatewayReadGuard.MAX_DEVICES}"
+            )
+            return null
+        }
+        require(all.all { it.length == 8 && it.all { c -> c in "0123456789abcdefABCDEF" } })
+        return buildA1Payload4B(all)
     }
 
     private fun buildA1Payload4B(ids8Hex: List<String>): ByteArray {
@@ -549,71 +571,158 @@ class MqtttService : MqttService() {
 
         return DeviceReadingV3(devIdBytes, devIdHex, humidity, temperature)
     }
-    private fun checkBluetoothPermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED
-        } else {
-            ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    // ---------- 链路状态与权限（AA-005 G-1 / D-19） ----------
+
+    private fun setLinkStatus(status: String, userMessage: String = "") {
+        val text = if (userMessage.isBlank()) status else userMessage
+        try {
+            homeViewModel._linkStatus.postValue(text)
+        } catch (e: Exception) {
+            Log.w("MqttService", "update link status failed: ${e.message}")
         }
+        Log.i("MqttService", "link_state=$status${if (userMessage.isBlank()) "" else " msg=$userMessage"}")
     }
 
-    private fun isBluetoothEnabled(): Boolean {
-        return bluetoothAdapter.isEnabled
+    private fun grantedPermissions(): Set<PermissionNeed> {
+        val granted = mutableSetOf<PermissionNeed>()
+        fun has(p: String): Boolean =
+            ActivityCompat.checkSelfPermission(this, p) == PackageManager.PERMISSION_GRANTED
+        if (has(android.Manifest.permission.BLUETOOTH_CONNECT)) granted += PermissionNeed.BLUETOOTH_CONNECT
+        if (has(android.Manifest.permission.BLUETOOTH_SCAN)) granted += PermissionNeed.BLUETOOTH_SCAN
+        if (has(android.Manifest.permission.ACCESS_FINE_LOCATION)) granted += PermissionNeed.FINE_LOCATION
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+            has(android.Manifest.permission.POST_NOTIFICATIONS)
+        ) {
+            granted += PermissionNeed.POST_NOTIFICATIONS
+        }
+        return granted
     }
+
+    private fun adapterEnabledSafely(): Boolean = try {
+        bluetoothAdapter.isEnabled
+    } catch (e: SecurityException) {
+        false
+    }
+
+    private fun isLocationEnabled(): Boolean = try {
+        val lm = getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
+        lm.isLocationEnabled
+    } catch (e: Exception) {
+        false
+    }
+
+    private fun evaluatePermission(needScan: Boolean = false): Policy =
+        BlePermissionPolicy.evaluate(
+            sdkInt = Build.VERSION.SDK_INT,
+            granted = grantedPermissions(),
+            needScan = needScan,
+            adapterEnabled = adapterEnabledSafely(),
+            locationEnabled = isLocationEnabled()
+        )
+
+    private fun checkBluetoothPermission(): Boolean = evaluatePermission(needScan = false).canConnect
+
+    private fun isBluetoothEnabled(): Boolean = adapterEnabledSafely()
 
     private fun isBluetoothBusy(): Boolean {
+        if (!checkBluetoothPermission()) return false
         val bluetoothManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
-        if (!checkBluetoothPermission()) {
-            Log.i("MqttService", "Currently connected devices...")
-            return true
+        val connectedDevices = try {
+            bluetoothManager.getConnectedDevices(BluetoothProfile.GATT)
+        } catch (e: SecurityException) {
+            Log.w("MqttService", "getConnectedDevices denied: ${e.message}")
+            return false
         }
-        val connectedDevices = bluetoothManager.getConnectedDevices(BluetoothProfile.GATT)
-
-        // 如果已经有连接的设备，认为蓝牙正在被占用
         if (connectedDevices.isNotEmpty()) {
             Log.i("MqttService", "Currently connected devices: $connectedDevices")
             return true
         }
-
         return false
     }
 
+    /** GATT 目标：已保存 gateway_ble_addr；未保存且未清除时用迁移默认；已清除返回 null */
+    private fun gatewayBleAddress(): String? = GatewayIdentity.resolveAddress(
+        prefs.getString(GatewayIdentity.PREF_GATEWAY_BLE_ADDR, ""),
+        prefs.getBoolean(GatewayIdentity.PREF_GATEWAY_BLE_ADDR_CLEARED, false)
+    )
+
+    private fun boundDeviceCount(): Int = try {
+        MacIdBook.count(applicationContext)
+    } catch (e: Exception) {
+        0
+    }
 
     private suspend fun connectToBluetoothDevice() {
-        if (!checkBluetoothPermission()) {
-            Log.i("MqttService", "Bluetooth permission not granted")
+        val policy = evaluatePermission(needScan = false)
+        if (!policy.canConnect) {
+            Log.i(
+                "MqttService",
+                "BLE connect blocked: reason=${policy.reason} sdkInt=${Build.VERSION.SDK_INT} " +
+                        "missing=${policy.missing} needScan=false adapterEnabled=${adapterEnabledSafely()}"
+            )
+            setLinkStatus(policy.reason.name, policy.userMessage)
             return
         }
 
-        if (!isBluetoothEnabled()) {
-            Log.i("MqttService", "Bluetooth is not enabled")
+        val address = gatewayBleAddress()
+        if (address.isNullOrBlank()) {
+            Log.i("MqttService", "BLE connect blocked: gateway address cleared/unset")
+            setLinkStatus("GATEWAY_UNSET", "未配置网关地址（搜索附近网关）")
             return
+        }
+
+        val boundCount = boundDeviceCount()
+        when (GatewayReadGuard.capacityVerdict(boundCount)) {
+            is GatewayReadGuard.Capacity.Exceeded -> {
+                Log.i(
+                    "MqttService",
+                    "BLE read blocked: link_state=BINDING_CAPACITY_EXCEEDED bound=$boundCount " +
+                            "max=${GatewayReadGuard.MAX_DEVICES}"
+                )
+                setLinkStatus(
+                    "BINDING_CAPACITY_EXCEEDED",
+                    "已绑定 $boundCount 台设备，超过网关完整传输上限 ${GatewayReadGuard.MAX_DEVICES} 台（请先删除多余设备）"
+                )
+                return
+            }
+            GatewayReadGuard.Capacity.Ok -> Unit
         }
 
         if (isBluetoothBusy()) {
             Log.i("MqttService", "Bluetooth is busy with another connection")
+            setLinkStatus("CONNECT_FAILED", "蓝牙被其他连接占用（重试）")
             return
         }
 
-        val device = bluetoothAdapter.getRemoteDevice(deviceMacAddress)
-        if (device == null) {
-            Log.i("MqttService", "Device not found with MAC address: $deviceMacAddress")
+        val device = try {
+            bluetoothAdapter.getRemoteDevice(address)
+        } catch (e: Exception) {
+            Log.w("MqttService", "Invalid gateway_ble_addr=$address: ${e.message}")
+            setLinkStatus("GATEWAY_UNSET", "未配置网关地址（地址无效，请重新选择）")
             return
         }
+
+        Log.i(
+            "MqttService",
+            "BLE target: gateway_ble_addr=$address (BLE 连接目标), mac_addr=$device_mac (平台身份)"
+        )
+        setLinkStatus("CONNECTING", "正在连接网关…")
 
         val maxAttempts = 5
-        val retryDelay = 2000L // 延迟 2 秒
+        val retryDelay = 2000L
         var attempt = 0
         var connected = false
+        var mtuRetried = false
+        mtuInsufficient = false
 
         while (attempt < maxAttempts && !connected) {
             attempt++
             Log.i("MqttService", "Attempt $attempt to connect to Bluetooth device...")
+            mtuInsufficient = false
 
             try {
-                withTimeout(18000L) { // 每次连接尝试设置 10 秒超时
-                    val connectionResult = connectAndReadData(device)
-                    if (connectionResult) {
+                withTimeout(18000L) {
+                    if (connectAndReadData(device)) {
                         connected = true
                         Log.i("MqttService", "Successfully connected and read data on attempt $attempt")
                     }
@@ -624,14 +733,36 @@ class MqtttService : MqttService() {
                 Log.e("MqttService", "Connection attempt $attempt failed: ${e.message}", e)
             }
 
+            if (!connected && mtuInsufficient) {
+                if (!mtuRetried) {
+                    mtuRetried = true
+                    Log.i(
+                        "MqttService",
+                        "MTU insufficient (mtu=$lastNegotiatedMtu); retrying connect once"
+                    )
+                    delay(1000)
+                    continue
+                }
+                Log.i(
+                    "MqttService",
+                    "link_state=READ_INCOMPLETE reason=MTU_TOO_SMALL mtu=$lastNegotiatedMtu"
+                )
+                setLinkStatus(
+                    "READ_INCOMPLETE",
+                    "读取不完整（MTU=$lastNegotiatedMtu，传输长度不足）"
+                )
+                break
+            }
+
             if (!connected && attempt < maxAttempts) {
                 Log.i("MqttService", "Retrying connection after delay...")
-                delay(retryDelay) // 延迟重试
+                delay(retryDelay)
             }
         }
 
-        if (!connected) {
+        if (!connected && !mtuInsufficient) {
             Log.i("MqttService", "Max attempts reached. Connection failed.")
+            setLinkStatus("CONNECT_FAILED", "网关连接失败（重试 / 检查网关电源）")
         }
     }
 
@@ -664,7 +795,17 @@ class MqtttService : MqttService() {
                             Log.i("MqttService", "Connected to device, discovering services...")
                             if (checkBluetoothPermission()) {
 //                                gatt.discoverServices()
-                                gatt.requestMtu(240)
+                                val requested = gatt.requestMtu(240)
+                                if (!requested) {
+                                    // 请求 MTU 本身失败：按 MTU 不足处理（不发起读，避免截断快文）
+                                    mtuInsufficient = true
+                                    Log.w(
+                                        "MqttService",
+                                        "link_state=READ_INCOMPLETE reason=MTU_REQUEST_REJECTED mtu=$lastNegotiatedMtu"
+                                    )
+                                    if (!done.isCompleted) done.complete(false)
+                                    safelyDisconnectAndClose(gatt)
+                                }
                             }
                         } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                             if (!done.isCompleted) done.complete(false)
@@ -673,8 +814,26 @@ class MqtttService : MqttService() {
                     }
                     override fun onMtuChanged(g: BluetoothGatt, mtu: Int, status: Int) {
                         negotiatedMtu = if (status == BluetoothGatt.GATT_SUCCESS) mtu else 23
-                        Log.i("MqttService", "MTU negotiated: $negotiatedMtu (status=$status)")
-                        g.discoverServices()
+                        lastNegotiatedMtu = negotiatedMtu
+                        val expectedDevices = boundDeviceCount().coerceAtLeast(1)
+                        val required = GatewayReadGuard.expectedFrameSize(expectedDevices) + GatewayReadGuard.ATT_OVERHEAD
+                        Log.i(
+                            "MqttService",
+                            "MTU negotiated: mtu=$negotiatedMtu (status=$status), expectedDevices=$expectedDevices, requiredMtu=$required"
+                        )
+                        when (val verdict = GatewayReadGuard.mtuVerdict(negotiatedMtu, expectedDevices)) {
+                            is GatewayReadGuard.MtuVerdict.Proceed -> g.discoverServices()
+                            is GatewayReadGuard.MtuVerdict.Refuse -> {
+                                // AA-005 D-32：MTU 不足时不发起读，避免得到截断密文
+                                mtuInsufficient = true
+                                Log.w(
+                                    "MqttService",
+                                    "link_state=READ_INCOMPLETE reason=MTU_TOO_SMALL mtu=${verdict.actualMtu} required=${verdict.requiredMtu}"
+                                )
+                                if (!done.isCompleted) done.complete(false)
+                                safelyDisconnectAndClose(g)
+                            }
+                        }
                     }
 
                     override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {
@@ -721,50 +880,59 @@ class MqtttService : MqttService() {
                     ) {
                         if (status == BluetoothGatt.GATT_SUCCESS) {
                             val value = characteristic.value
-                            // 注：旧的"HEX 字符串小端解析"与"未加密帧解析"替代路径已退役
-                            // （其 humidity|temperature 小端解释与 IC-002 §4 的 id|hum_be|temp_be 布局冲突）。
-                            // BLE 聚合帧的唯一解析入口是 decryptAndParseEcbFrame -> GatewayFrameCodec。
-                            try {
-                                when (val parsed = decryptAndParseEcbFrame(value)) {
-                                    is GatewayFrameCodec.Result.Rejected -> {
-                                        // 帧长不足/无设备/密文未对齐/解密失败：明确拒绝，不产生读数
-                                        Log.w(
-                                            "MqttService",
-                                            "BLE frame rejected: ${parsed.reason} (${parsed.detail})"
-                                        )
-                                    }
-                                    is GatewayFrameCodec.Result.Success -> {
-                                        Log.i("MqttService", "GwID=${parsed.gatewayIdHex}, dev=${parsed.devCount}")
-                                        parsed.samples.forEach { r ->
-                                            Log.i("MqttService", " id=${r.devIdHex}, H=${"%.1f".format(r.humidityPct)}%, T=${"%.1f".format(r.temperatureC)}°C")
-
-                                            val temperature = r.temperatureC
-                                            val humidity = r.humidityPct
-                                            val isZeroValue = temperature == 0.0 && humidity == 0.0
-
-                                            // devId 由 4 字节原始值转 8 位 HEX 大写无分隔(匹配 MacIdBook)
-                                            val devId = r.devIdCompact
-
-                                            // BLE publish 用:记录最后一次读数(老行为,多设备时只发最后一个)
-                                            // connectToBroker 里会读取这 3 个变量把 BLE 数据转 MQTT
-                                            bletime = System.currentTimeMillis() / 1000
-                                            bleTempData = listOf(temperature)
-                                            bleHumiData = listOf(humidity)
-
-                                            if (isZeroValue) {
-                                                bleZeroCount++
-                                                if (bleZeroCount >= 3) {
-                                                    processTemperatureHumidityData(devId, r.temperatureC, r.humidityPct)
+                            val size = value?.size ?: 0
+                            // AA-005 D-32：先按实际返回字节数判定完整性，再解密/解码；
+                            // 不补零、不拼接跨次快照、不裁掉余字节。
+                            if (value == null || size % 16 != 0) {
+                                Log.w(
+                                    "MqttService",
+                                    "link_state=READ_INCOMPLETE reason=LENGTH_NOT_ALIGNED valueSize=$size expectedAligned16=true"
+                                )
+                                setLinkStatus("READ_INCOMPLETE", "读取不完整（返回 $size 字节，非 16 字节对齐）")
+                            } else {
+                                try {
+                                    when (val parsed = decryptAndParseEcbFrame(value)) {
+                                        is GatewayFrameCodec.Result.Rejected -> {
+                                            // 帧长不足/无设备/密文未对齐/解密失败：明确拒绝，不产生读数
+                                            Log.w(
+                                                "MqttService",
+                                                "BLE frame rejected: ${parsed.reason} (${parsed.detail})"
+                                            )
+                                            if (parsed.reason == GatewayFrameCodec.RejectionReason.LENGTH_MISMATCH) {
+                                                Log.w(
+                                                    "MqttService",
+                                                    "link_state=READ_INCOMPLETE reason=LENGTH_TOO_SMALL valueSize=$size detail=${parsed.detail}"
+                                                )
+                                                setLinkStatus("READ_INCOMPLETE", "读取不完整（${parsed.detail}）")
+                                            }
+                                        }
+                                        is GatewayFrameCodec.Result.Success -> {
+                                            when (
+                                                val length = GatewayReadGuard.lengthVerdict(size, parsed.devCount)
+                                            ) {
+                                                is GatewayReadGuard.LengthVerdict.Refuse -> {
+                                                    Log.w(
+                                                        "MqttService",
+                                                        "link_state=READ_INCOMPLETE reason=${length.reason} actual=${length.actualBytes} expected=${length.expectedBytes} devCount=${parsed.devCount}"
+                                                    )
+                                                    setLinkStatus(
+                                                        "READ_INCOMPLETE",
+                                                        "读取不完整（返回 ${length.actualBytes} 字节 / 需要 ${length.expectedBytes} 字节）"
+                                                    )
                                                 }
-                                            } else {
-                                                bleZeroCount = 0
-                                                processTemperatureHumidityData(devId, r.temperatureC, r.humidityPct)
+                                                is GatewayReadGuard.LengthVerdict.Proceed -> {
+                                                    Log.i(
+                                                        "MqttService",
+                                                        "GwID=${parsed.gatewayIdHex}, dev=${parsed.devCount}, valueSize=$size, mtu=$lastNegotiatedMtu"
+                                                    )
+                                                    processBleSamples(parsed, size)
+                                                }
                                             }
                                         }
                                     }
+                                } catch (e: Exception) {
+                                    Log.e("MqttService", "Decrypt/parse failed: ${e.message}", e)
                                 }
-                            } catch (e: Exception) {
-                                Log.e("MqttService", "Decrypt/parse failed: ${e.message}", e)
                             }
 
                             val started = maybeWriteNext(gatt)
@@ -802,6 +970,91 @@ class MqtttService : MqttService() {
         return result
 
     }
+
+    /**
+     * 处理一次完整快照：占位块跳过；有效读数按接收时间逐条处理；随后尝试整批转发。
+     * 占位不写库/不入队/不建卡片/不报警（AA-005 D-25）。
+     */
+    private fun processBleSamples(frame: GatewayFrameCodec.Result.Success, returnedBytes: Int) {
+        val receiveTime = System.currentTimeMillis() / 1000
+        val valid = ArrayList<BleObservation.Reading>(frame.devCount)
+        var placeholderCount = 0
+
+        frame.samples.forEach { sample ->
+            when (val observation = BleObservation.classify(sample)) {
+                is BleObservation.Observation.Placeholder -> {
+                    placeholderCount++
+                    Log.i("MqttService", "gateway placeholder block skipped (dev=${sample.devIdHex})")
+                }
+                is BleObservation.Observation.Valid -> {
+                    val reading = observation.reading
+                    valid += reading
+                    Log.i(
+                        "MqttService",
+                        " id=${reading.devId}, H=${BleBatchForwarding.formatX10(reading.hX10)}%, " +
+                                "T=${BleBatchForwarding.formatX10(reading.tX10)}°C"
+                    )
+                    processTemperatureHumidityData(
+                        reading.devId, reading.temperatureC, reading.humidityPct, receiveTime
+                    )
+                }
+            }
+        }
+
+        if (valid.isEmpty() && frame.devCount > 0) {
+            setLinkStatus("GATEWAY_NO_DATA", "网关暂无传感器数据（等待传感器上报）")
+        } else {
+            setLinkStatus(
+                "DATA_OK",
+                "网关已连接（最近读取 " + java.text.SimpleDateFormat("HH:mm", java.util.Locale.US)
+                    .format(java.util.Date(receiveTime * 1000)) + "）"
+            )
+        }
+
+        Log.i(
+            "MqttService",
+            "BLE batch: gw=${frame.gatewayIdHex} dev=${frame.devCount} valid=${valid.size} " +
+                    "placeholder=$placeholderCount valueSize=$returnedBytes mtu=$lastNegotiatedMtu"
+        )
+        forwardBleBatch(valid, receiveTime, allPlaceholder = valid.isEmpty() && frame.devCount > 0)
+    }
+
+    /** 平台身份存在且不以 1010 开头时才由 App 发布 BLE 批次（保持既有 topic 分支） */
+    private fun shouldPublishBle(): Boolean =
+        device_mac.isNotBlank() && !device_mac.startsWith("1010")
+
+    /**
+     * 整批转发：数量/ID/顺序与绑定一致才发布；未连接时只保留最近一批（有界为 1）。
+     * 拒绝只影响发布，本地处理已完成（AA-005 D-20）。
+     */
+    private fun forwardBleBatch(
+        readings: List<BleObservation.Reading>,
+        timeSeconds: Long,
+        allPlaceholder: Boolean
+    ) {
+        if (!shouldPublishBle()) return
+        val boundOrder = try {
+            MacIdBook.all(applicationContext).map { it.first }
+        } catch (e: Exception) {
+            Log.w("MqttService", "load bound order failed: ${e.message}")
+            emptyList()
+        }
+        when (val plan = BleBatchForwarding.plan(readings, boundOrder, timeSeconds, allPlaceholder)) {
+            is BleBatchForwarding.Plan.Forward -> {
+                if (mqttClient.isConnected) {
+                    publishMessage(plan.payload, rtopic0)
+                } else {
+                    pendingForwardPayload = plan.payload
+                    Log.i("MqttService", "MQTT offline: keep latest BLE batch (bounded=1)")
+                }
+            }
+            is BleBatchForwarding.Plan.Refuse -> Log.w(
+                "MqttService",
+                "BLE batch forwarding refused: ${plan.reason} (local processing unaffected)"
+            )
+        }
+    }
+
     @RequiresPermission(value = "android.permission.BLUETOOTH_CONNECT")
     private fun safelyDisconnectAndClose(gatt: BluetoothGatt?) {
         try {
@@ -1046,6 +1299,16 @@ class MqtttService : MqttService() {
                 time_cali_cnt = 3
             }
 
+            if (action == "RETRY_UPLOAD") {
+                // 用户手动重试：清除阻塞状态、恢复被暂停的待发行并立即上传一次（AA-005 D-27）
+                uploadRepository.retryBlockedNow()
+            }
+
+            if (action == "GATEWAY_CHANGED") {
+                // 连接身份变更：立刻触发下一轮读取（不等待 180 s 节拍）
+                wakeReadNow.trySend(Unit)
+            }
+
             if (action == "BLE_ENQUEUE_WRITE_IDS") {
                 val list = intent.getStringArrayListExtra("ids") ?: arrayListOf()
                 val single = intent.getStringExtra("id")
@@ -1053,6 +1316,18 @@ class MqtttService : MqttService() {
 
                 if (ids.isNotEmpty()) {
                     try {
+                        // AA-005 D-31：超过 9 台的写入请求直接拒绝，不截断
+                        if (ids.size > GatewayReadGuard.MAX_DEVICES) {
+                            Log.w(
+                                "MqttService",
+                                "BLE_ENQUEUE_WRITE_IDS refused: size=${ids.size} max=${GatewayReadGuard.MAX_DEVICES}"
+                            )
+                            setLinkStatus(
+                                "BINDING_CAPACITY_EXCEEDED",
+                                "已绑定 ${ids.size} 台设备，超过网关完整传输上限 ${GatewayReadGuard.MAX_DEVICES} 台"
+                            )
+                            return@launch
+                        }
                         val payload = buildWritePayload(ids)
                         // 先不立刻写；只入队，等待本轮 read 完成后触发
                         val chunks = chunkForMtu(payload, 240)
@@ -1085,9 +1360,9 @@ class MqtttService : MqttService() {
         val service = gatt.getService(GW_SERVICE_UUID) ?: return false
         val writeChar = service.getCharacteristic(GW_WRITE_UUID) ?: return false
 
-        val payload = buildAllSavedIdsA1SinglePacket(applicationContext, maxCount = 50) ?: run {
-            Log.i("MqttService", "No ids to write")
-            return false // 没有要写的
+        val payload = buildAllSavedIdsA1SinglePacket(applicationContext) ?: run {
+            Log.i("MqttService", "No ids to write (or capacity exceeded)")
+            return false // 没有要写的/超出容量
         }
 
         // 选择写入类型
@@ -1277,22 +1552,13 @@ class MqtttService : MqttService() {
                         // 网络恢复：触发一次待发箱补传（不阻塞连接回调）
                         uploadRepository.triggerUpload()
 
-                        if((device_mac != "") &&(!device_mac.startsWith("1010"))){
-                            if(bletime != bletimebkp){
-                                bletimebkp = bletime
-                                val size0 = bleHumiData?.size
-                                val size1 = bleTempData?.size
-                                if((bleHumiData != null && size0 != 0) && (
-                                            bleTempData != null && size1 != 0
-                                        )){
-                                    val resulth: String? = bleHumiData?.map { "%.1f".format(it) }?.joinToString(", ")
-                                    val resultt: String? = bleTempData?.map { "%.1f".format(it) }?.joinToString(", ")
-                                    val payload = bletime.toString() + ',' + "$resulth,$resultt"
-                                    publishMessage(payload, rtopic0)
-                                }
+                        if (shouldPublishBle()) {
+                            // 未连接时只保留最近一批（有界为 1）；连接成功后发布一次
+                            pendingForwardPayload?.let { payload ->
+                                pendingForwardPayload = null
+                                publishMessage(payload, rtopic0)
                             }
-                        }else {
-
+                        } else {
                             subscribeToTopic(rtopic0)
                         }
                         connectcnt = 0
