@@ -1,0 +1,55 @@
+== A 版本递增（源码 + 产物） ==
+  PASS  build.gradle.kts: 8/1.7 → 10/1.9
+  PASS  AGP output-metadata.json: versionCode 10 / versionName 1.9
+  PASS  合并清单: versionCode="10" / versionName="1.9"
+  PASS  APK 二进制清单字符串池：含 1.9=True，含 1.8=False
+== B 文档与实现一致（交叉核对） ==
+  PASS  代码事实：采样 180s
+  PASS  代码事实：规则 0.9/35.0
+  PASS  代码事实：范围 24h
+  PASS  代码事实：高温阈值 35.0
+  PASS  代码事实：下降窗口 5/10/15
+  PASS  代码事实：紧急 65.0
+  PASS  代码事实：新服务器
+  PASS  代码事实：待发箱表名
+  PASS  代码事实：DB v3
+  PASS  代码事实：上传门控
+  PASS  代码事实：900s 节流
+  PASS  代码事实：早报文案
+  PASS  代码事实：卡片相对时间
+  PASS  文档：readme 记录 V1.9 条目
+  PASS  文档：readme 说明 3 分钟采样
+  PASS  文档：readme 说明条件上报（0.9/无光/35）
+  PASS  文档：readme 说明卡片不再离线
+  PASS  文档：readme 说明云同步与幂等
+  PASS  文档：readme 说明新服务器地址
+  PASS  文档：readme 说明早报文案
+  PASS  文档：说明书版本 1.9
+  PASS  文档：说明书 24 小时
+  PASS  文档：说明书 卡片不再离线
+  PASS  文档：说明书 详情规则说明
+  PASS  文档：说明书 下降报警时间窗
+  PASS  文档：说明书 云同步章节
+  PASS  文档：说明书 pending_uploads
+  PASS  文档：说明书 关守护不上传
+  PASS  文档：说明书 早报昨日无上报
+== C 旧口径清零 ==
+  PASS  文档不得出现「版本:1.7」→ 0
+  PASS  文档不得出现「版本：1.7」→ 0
+  PASS  文档不得出现「不上传到云端」→ 0
+  PASS  「50 分钟」仅出现在历史变更语境（越界 0 处）
+  PASS  文档不得暗示固定节拍「每 3 分钟上报」→ 0
+  PASS  文档不得暗示固定节拍「每 3 分钟上传」→ 0
+  PASS  文档不得暗示固定节拍「每 3 分钟一条」→ 0
+  PASS  文档不得暗示固定节拍「288」→ 0
+  PASS  「每 3 分钟」仅用于“采样”语境
+  PASS  “离线”仅在否定/说明语境（越界 0 处）
+== D file_manifest.txt 维护 ==
+  PASS  清单条目已更新：dengbei_care/app/build.gradle.kts（含「versionCode」）
+  PASS  清单条目已更新：dengbei_care/readme.txt（含「1.9」）
+  PASS  清单条目已更新：dengbei_care/用户使用说明书.md（含「1.9」）
+  PASS  工作流全部产品变更文件（75 个）均在清单中（缺失 0）
+== D3 本项新增/修改的清单条目路径必须真实存在 ==
+  PASS  本项改动清单条目中路径不存在的 active 条目 = 0
+== RESULT ==
+  OK: 版本递增已落地到产物；文档与实现交叉一致且旧口径清零；file_manifest 完整

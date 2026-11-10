@@ -1328,3 +1328,55 @@ expected:<[empty]> but was:<[upload_blocked]>
 - **G-1/G-2/G-7**：在真实网关条件下获得正向证据（无定位授权仍可尝试/连接、真实候选发现、MTU 240、FFE2 160 B、保留地址与清除语义）；未覆盖多设备/9 台边界。
 - **G-3/G-4/G-5/G-6**：宿主机独立矩阵/静态核查全部通过；真实多设备、占位/0.0、真实 401/上传/回读按 §4 记 NOT EXECUTED（外部条件，不写成通过）。
 - 依据 TD-SW-004“任一必需项失败 → TEST_FAIL”，本轮在**可执行范围内未发现与验收不符的失败**，结论 **TEST_PASS（限定版本 `f516a73` + APK `6383c4a5…` 与本轮已测范围）**；观察项 O-AA005-1/2/3/5/6 与未执行项不因本结论变为通过，后续联调/文档阶段继续跟踪。
+
+---
+
+## ST-AA005-R3 · 当前构建包独立核验（android_package_check）—— 结论 **TEST_PASS（限定包/安装/启动/回归范围）**
+
+**被测对象**：`artifacts/android_build.md`（AB-001，候选构建）；源码 `28b78b0`（工作区干净；`git diff f516a73..HEAD -- dengbei_care` 为空，产品树与此前通过复验的 `f516a73` 一致）。
+**被测包**：`dengbei_care/app/build/outputs/apk/debug/app-debug.apk`，10,365,460 B，SHA-256 `d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6`；`versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34`。
+**设备**：Redmi 8A / Android 10 / API 29 / `12f046690506`；蓝牙开、定位总开关开（mode=3）、无默认网络。
+**依据**：Project Goal（本轮 Android 改动与“跨链路属后续联调”的补充条件）、`artifacts/android_build.md` §4–5（要求安装当前候选并重跑）、`artifacts/software_test_design.md` DLV-01/02/04、TD-SW-004。
+**原始证据**：`evidence/android_package_check_20261110/`（含 `test_report.md`、安装结果、APK 身份、UI 树/截图、原始 logcat、单测与门禁日志）。
+
+### 1. 独立执行摘要
+
+| 层 | 方法 | 结果 |
+|---|---|---|
+| 包身份/签名 | `sha256sum`、`aapt dump badging`、`apksigner verify --print-certs --verbose` | **PASS**：哈希与声明一致；`10/1.9`、`26/34`、launchable `MainActivity`；v2 签名验证通过 |
+| 正式构建入口 | `./gradlew :app:assembleDebug --offline` | **BUILD SUCCESSFUL**（全部 up-to-date）；重跑后 APK 哈希不变 |
+| 安装/升级 | `android_test install`（自动处理确认） | **PASS**：`installed_version_verified`（版本+sha256 一致）；覆盖升级后 `firstInstallTime` 保留、`lastUpdateTime` 更新；应用数据保留 |
+| 启动/资源装载 | `launch` + `ui_dump` + `ui_screenshot` + logcat | **PASS**：首页、空态、三页签、设定页、我的页、网关对话框均正常渲染；无 `FATAL EXCEPTION`/`ANR` |
+| 关键用户路径 | 守护启停、页签切换、网关设置对话框 | **PASS**：启动→“停止”，停止→“启动”；`GATEWAY_UNSET` 且不回退默认；上传状态“无（待发 0 条）” |
+| 宿主机回归 | `:app:testDebugUnitTest --offline --rerun-tasks` | **32 套件 / 257 项 / 0 失败 / 0 错误 / 0 跳过** |
+| 独立静态/门禁 | `software_verify_aa005_android_check.py`、`aa005_android_check/run_gates.py` | **54/54 PASS**、**12/12 EXIT=0**（含版本/文档/清单一致性门禁） |
+| 真实跨链路（DLV-03/06） | — | **NOT EXECUTED**（上游明确属后续联调；无网络/无隔离账号/无真实多设备） |
+
+### 2. 关键实测记录
+
+1. **安装字节 = 被测候选字节**：`android_test install` 返回包名、`version_code=10`、`version_name=1.9`、`sha256=d2054221…`，与本地产物逐项一致；解决 `artifacts/android_build.md` §5-1 提出的“安装字节是否等于被测字节”问题。
+2. **覆盖升级保留数据**：安装前 `firstInstallTime=19:25:25`；安装后该值不变、`lastUpdateTime=22:15:13`；`privacy_policy_accepted=true`、`gateway_ble_addr_cleared=true`、`measure_state=starting` 等偏好保留。
+3. **守护启停**：首页按钮“启动”→“停止”→“启动”；停止后 `measure_state=starting`；启动期间的周期读取日志为 `BLE connect blocked: gateway address cleared/unset` / `link_state=GATEWAY_UNSET`（22:18:23），确认清除网关后不回退默认地址。
+4. **网关设置对话框**：显示“未配置网关地址”、平台身份（`mac_addr`）空、“云端上传状态：无（待发 0 条）”、“重试上传”；未执行任何写入。
+5. **无崩溃**：会话内 `logcat_full_session.txt` 无 `FATAL EXCEPTION`、无本应用 ANR；进程存活。
+
+### 3. 观察项（未计入本轮交付失败）
+
+| ID | 观察 | 证据 | 判定依据 |
+|---|---|---|---|
+| O-PKG-1 | “我的”页在 720×1520 上，本轮新增的“网关与上传设置”`[32,1168][688,1264]` 与既有“传感器别称”输入框 `[33,1104][533,1224]`、“注册传感器”`[452,1128][688,1224]` 底部约 56 px 重叠；两控件上部仍可见可点，注册路径未失效 | `ui_05_my_tab.xml`、`my_tab_overlap_observation.png` | 该按钮由 `7848b99` 新增；属布局观感问题，不是本轮声明验收项，且未导致功能不可用；建议页面改为可滚动或把新按钮纳入顶部流式约束 |
+| O-PKG-2 | 既有“查看今日报告”`[32,1280][688,1376]` 整体位于底部导航 `[0,1264][720,1424]` 之下，点击被导航栏拦截（点击后页签变为“设定”） | `ui_05_my_tab.xml`、`ui_09_after_report_click.xml` | 按钮在基线 `fe9a81c` 已存在，属**基线既有**布局问题；报告内容仍可由早报通知打开 `ReportActivity`；建议后续布局修复一并处理 |
+
+### 4. 未执行项（不得写成通过）
+
+真实网关 BLE → App → MQTT → `/upload_data` → 服务持久化/回读（DLV-03）、真实 MTU/`value.size`/≤9 台与第 10 台拒绝（DLV-06）、真实 401/403 与回读、真实读数下的卡片/详情/24 h 截图、API 31+ 权限分支：**NOT EXECUTED**。依据：Project Goal 补充条件第 4 点明确跨链路验证安排在后续联调阶段；本机无默认网络、无隔离测试身份与服务写读授权、无真实多设备源。调温/改变光强/遮光/功耗按用户明确要求 **NOT APPLICABLE**。
+
+### 5. 判定
+
+1. **包身份与正式构建**：当前候选 APK 由正式构建入口产出，包名/版本/SDK/签名与交付声明完全一致，重跑构建哈希不变。**通过**
+2. **安装/升级**：当前候选成功覆盖安装，安装校验版本与 SHA-256 一致，应用数据保留。**通过**
+3. **启动、资源装载与关键用户路径**：首页/设定/我的/网关对话框正常渲染，守护启停与清除网关语义正确，全程无崩溃/ANR。**通过**
+4. **回归**：257 项宿主机用例、54 项独立静态检查、12 个独立门禁全部通过；版本/文档/清单一致性门禁通过。**通过**
+5. **观察项与未执行项不因本结论变为通过**；O-PKG-1/O-PKG-2 已给实现/后续维护参考，真实跨链路项保留至联调阶段。
+
+结论：**TEST_PASS（限定范围：当前 APK 的包身份、安装/升级、启动与资源装载、已执行关键用户路径、宿主机回归；不含真实跨端链路）**。设备收尾：守护已停止、网关保持未配置、App 保持安装、蓝牙/定位/网络设置未改、无后台任务遗留。

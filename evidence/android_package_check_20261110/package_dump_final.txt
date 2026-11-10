@@ -1,0 +1,198 @@
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        e88627c com.jinyuni.dengbei_care/.MainActivity filter cb5d28c
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      android.intent.action.BATTERY_OKAY:
+        5fbe705 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter fafa9ea
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.ACTION_POWER_DISCONNECTED:
+        f83135a com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter 3d97dd5
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+      androidx.profileinstaller.action.SAVE_PROFILE:
+        c50d98b com.jinyuni.dengbei_care/androidx.profileinstaller.ProfileInstallReceiver filter cc78c42
+          Action: "androidx.profileinstaller.action.SAVE_PROFILE"
+      android.intent.action.DEVICE_STORAGE_LOW:
+        d372a68 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter 88cd4db
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      android.net.conn.CONNECTIVITY_CHANGE:
+        3d8ee81 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy filter 9338b78
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+      android.intent.action.DEVICE_STORAGE_OK:
+        d372a68 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter 88cd4db
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      androidx.profileinstaller.action.INSTALL_PROFILE:
+        c50d98b com.jinyuni.dengbei_care/androidx.profileinstaller.ProfileInstallReceiver filter 9d1e724
+          Action: "androidx.profileinstaller.action.INSTALL_PROFILE"
+      android.intent.action.BATTERY_LOW:
+        5fbe705 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter fafa9ea
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.TIMEZONE_CHANGED:
+        4cf0b26 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.RescheduleReceiver filter 6412251
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.TIME_SET:
+        4cf0b26 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.RescheduleReceiver filter 6412251
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      androidx.profileinstaller.action.SKIP_FILE:
+        c50d98b com.jinyuni.dengbei_care/androidx.profileinstaller.ProfileInstallReceiver filter ca4928d
+          Action: "androidx.profileinstaller.action.SKIP_FILE"
+      androidx.profileinstaller.action.BENCHMARK_OPERATION:
+        c50d98b com.jinyuni.dengbei_care/androidx.profileinstaller.ProfileInstallReceiver filter abf0453
+          Action: "androidx.profileinstaller.action.BENCHMARK_OPERATION"
+      android.intent.action.BOOT_COMPLETED:
+        4cf0b26 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.RescheduleReceiver filter 6412251
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.ACTION_POWER_CONNECTED:
+        f83135a com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter 3d97dd5
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+      androidx.work.diagnostics.REQUEST_DIAGNOSTICS:
+        6f18367 com.jinyuni.dengbei_care/androidx.work.impl.diagnostics.DiagnosticsReceiver filter c79e3b7
+          Action: "androidx.work.diagnostics.REQUEST_DIAGNOSTICS"
+      androidx.work.impl.background.systemalarm.UpdateProxies:
+        3888514 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver filter dd67ab6
+          Action: "androidx.work.impl.background.systemalarm.UpdateProxies"
+
+Permissions:
+  Permission [com.jinyuni.dengbei_care.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION] (6dfef5d):
+    sourcePackage=com.jinyuni.dengbei_care
+    uid=10169 gids=null type=0 prot=signature
+    perm=Permission{b24f1bd com.jinyuni.dengbei_care.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION}
+    packageSetting=PackageSetting{e8d35a3 com.jinyuni.dengbei_care/10169}
+
+Registered ContentProviders:
+  com.jinyuni.dengbei_care/androidx.startup.InitializationProvider:
+    Provider{590b3b2 com.jinyuni.dengbei_care/androidx.startup.InitializationProvider}
+
+ContentProvider Authorities:
+  [com.jinyuni.dengbei_care.androidx-startup]:
+    Provider{590b3b2 com.jinyuni.dengbei_care/androidx.startup.InitializationProvider}
+      applicationInfo=ApplicationInfo{308ef03 com.jinyuni.dengbei_care}
+
+Key Set Manager:
+  [com.jinyuni.dengbei_care]
+      Signing KeySets: 29
+
+Packages:
+  Package [com.jinyuni.dengbei_care] (e8d35a3):
+    userId=10169
+    pkg=Package{2f2de80 com.jinyuni.dengbei_care}
+    codePath=/data/app/com.jinyuni.dengbei_care-tPuD_MQCt2fExAX3nLJz9A==
+    resourcePath=/data/app/com.jinyuni.dengbei_care-tPuD_MQCt2fExAX3nLJz9A==
+    legacyNativeLibraryDir=/data/app/com.jinyuni.dengbei_care-tPuD_MQCt2fExAX3nLJz9A==/lib
+    primaryCpuAbi=null
+    secondaryCpuAbi=null
+    versionCode=10 minSdk=26 targetSdk=34
+    versionName=1.9
+    splits=[base]
+    apkSigningVersion=2
+    applicationInfo=ApplicationInfo{308ef03 com.jinyuni.dengbei_care}
+    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    privateFlags=[ PRIVATE_FLAG_ACTIVITIES_RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION ALLOW_AUDIO_PLAYBACK_CAPTURE PARTIALLY_DIRECT_BOOT_AWARE ]
+    dataDir=/data/user/0/com.jinyuni.dengbei_care
+    supportsScreens=[small, medium, large, xlarge, resizeable, anyDensity]
+    usesOptionalLibraries:
+      androidx.window.extensions
+      androidx.window.sidecar
+    timeStamp=2026-11-10 22:15:13
+    firstInstallTime=2026-11-10 19:25:25
+    lastUpdateTime=2026-11-10 22:15:13
+    signatures=PackageSignatures{73388ff version:2, signatures:[3a34b52a], past signatures:[]}
+    installPermissionsFixed=true
+    pkgFlags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    declared permissions:
+      com.jinyuni.dengbei_care.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: prot=signature, INSTALLED
+    requested permissions:
+      android.permission.INTERNET
+      android.permission.ACCESS_FINE_LOCATION
+      android.permission.ACCESS_COARSE_LOCATION
+      android.permission.ACCESS_WIFI_STATE
+      android.permission.CHANGE_WIFI_MULTICAST_STATE
+      android.permission.CHANGE_WIFI_STATE
+      android.permission.ACCESS_NETWORK_STATE
+      android.permission.FOREGROUND_SERVICE
+      android.permission.FOREGROUND_SERVICE_DATA_SYNC
+      android.permission.READ_PHONE_STATE
+      android.permission.WAKE_LOCK
+      android.permission.POST_NOTIFICATIONS
+      android.permission.SCHEDULE_EXACT_ALARM
+      android.permission.VIBRATE
+      android.permission.CAMERA
+      android.permission.NEARBY_WIFI_DEVICES
+      android.permission.BLUETOOTH
+      android.permission.BLUETOOTH_ADMIN
+      android.permission.BLUETOOTH_CONNECT
+      android.permission.BLUETOOTH_SCAN
+      android.permission.RECEIVE_BOOT_COMPLETED
+      com.jinyuni.dengbei_care.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+    install permissions:
+      android.permission.FOREGROUND_SERVICE: granted=true
+      android.permission.RECEIVE_BOOT_COMPLETED: granted=true
+      android.permission.BLUETOOTH: granted=true
+      android.permission.CHANGE_WIFI_MULTICAST_STATE: granted=true
+      android.permission.INTERNET: granted=true
+      android.permission.BLUETOOTH_ADMIN: granted=true
+      android.permission.CHANGE_WIFI_STATE: granted=true
+      com.jinyuni.dengbei_care.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION: granted=true
+      android.permission.ACCESS_NETWORK_STATE: granted=true
+      android.permission.VIBRATE: granted=true
+      android.permission.ACCESS_WIFI_STATE: granted=true
+      android.permission.WAKE_LOCK: granted=true
+    User 0: ceDataInode=-4293935101 installed=true hidden=false suspended=false stopped=false notLaunched=false enabled=0 instant=false virtual=false
+      gids=[3002, 3003, 3001]
+      runtime permissions:
+        android.permission.ACCESS_FINE_LOCATION: granted=true, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.ACCESS_COARSE_LOCATION: granted=true, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_PHONE_STATE: granted=true, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.CAMERA: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+      enabledComponents:
+        androidx.work.impl.background.systemalarm.RescheduleReceiver
+        androidx.work.impl.background.systemjob.SystemJobService
+
+Package Changes:
+  Sequence number=9
+  User 0:
+    seq=0, package=com.miui.greenguard
+    seq=1, package=com.xiaomi.account
+    seq=2, package=com.android.shell
+    seq=3, package=com.android.settings
+    seq=8, package=com.jinyuni.dengbei_care
+
+
+Dexopt state:
+  [com.jinyuni.dengbei_care]
+    path: /data/app/com.jinyuni.dengbei_care-tPuD_MQCt2fExAX3nLJz9A==/base.apk
+      arm: [status=run-from-apk] [reason=unknown]
+      odex file size: null
+      odex file size: null
+
+
+Compiler stats:
+  [com.jinyuni.dengbei_care]
+    (No recorded stats)
+
+Active APEX packages:
+
+
+Inactive APEX packages:
+
+
+Factory APEX packages:
+
+
+  APEX session state:
