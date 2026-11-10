@@ -70,3 +70,19 @@ condition: next invocation, no new user light statement; same stated condition, 
    samples: k=1002 a=3061, k=1005 a=3083, k=1017 a=3095
    k span 1002..1017 (15 min), mean range 3061..3095 (spread 34 codes)
    stable value => persistent photocontrol, not a transient and not a floating node
+==============================================================================
+5) Scale-free check: the rule needs R_lit/R_dark <= 1/3 (any R3, any ADC scale)
+   code ratio = (R_l/R_d) * (R3+R_d)/(R3+R_l); as R3 -> inf it tends to R_l/R_d,
+   so R_l/R_d > 1/3 can never be reported as 'light' for ANY divider resistor.
+   same-session no-light reference: mean=3750 -> R_dark=54.35 MOhm
+   condition                         mean R_l (MOhm) R_l/R_d  3*ratio 1/3 possible?
+   2026-11-09 14:33Z (no light)      3914     108.12   1.989    5.968 NO (needs R_l <= R_d/3)
+   2026-11-09 14:40Z (no light)      3915     108.75   2.001    6.003 NO (needs R_l <= R_d/3)
+   2026-11-09 15:24Z (no light)      3932     120.61   2.219    6.658 NO (needs R_l <= R_d/3)
+   A 2026-11-09T23:17Z window k=900  3750      54.35   1.000    3.000 (reference)
+   B 2026-11-10T00:49Z room lamp k=  3514      30.24   0.556    1.669 NO (needs R_l <= R_d/3)
+   C 2026-11-10T01:00Z direct light  3061      14.80   0.272    0.817 yes, only if R3 >= 162 MOhm
+   C 2026-11-10T01:00Z direct light  3083      15.23   0.280    0.841 yes, only if R3 >= 191 MOhm
+   D 2026-11-10T01:17Z continued k=  3095      15.47   0.285    0.854 yes, only if R3 >= 212 MOhm
+   reading: ratio 0.556 (room lamp) > 1/3 => impossible for every R3 value;
+            ratio 0.272 (direct) is < 1/3 but needs an impractical R3 to realise it.

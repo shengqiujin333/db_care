@@ -190,6 +190,30 @@ def main():
         print("   k span %d..%d (%d min), mean range %d..%d (spread %d codes)"
               % (min(ks), max(ks), max(ks) - min(ks), min(aa), max(aa), max(aa) - min(aa)))
         print("   stable value => persistent photocontrol, not a transient and not a floating node")
+
+    print("=" * 78)
+    print("5) Scale-free check: the rule needs R_lit/R_dark <= 1/3 (any R3, any ADC scale)")
+    print("   code ratio = (R_l/R_d) * (R3+R_d)/(R3+R_l); as R3 -> inf it tends to R_l/R_d,")
+    print("   so R_l/R_d > 1/3 can never be reported as 'light' for ANY divider resistor.")
+    dark_same = [code for code in (3750,)]     # same-session no-light reference (k=900)
+    rd = r_ldr_ohm(dark_same[0])
+    print("   same-session no-light reference: mean=%d -> R_dark=%.2f MOhm" % (dark_same[0], rd / 1e6))
+    print("   %-32s %5s %10s %7s %8s %s" % ("condition", "mean", "R_l (MOhm)", "R_l/R_d", "3*ratio", "1/3 possible?"))
+    for label, code in refs:
+        if code == dark_same[0]:
+            print("   %-32s %5d %10.2f %7.3f %8.3f %s"
+                  % (label[:32], code, rd / 1e6, 1.0, 3.0, "(reference)"))
+            continue
+        rl = r_ldr_ohm(code)
+        if rl <= 0 or rl == float("inf"):
+            continue
+        a = rl / rd
+        possible = "NO (needs R_l <= R_d/3)" if a > 1.0 / 3.0 else "yes, only if R3 >= %.0f MOhm" % (
+            2.0 * rl / 1e6 / (1.0 - 3.0 * a))
+        print("   %-32s %5d %10.2f %7.3f %8.3f %s"
+              % (label[:32], code, rl / 1e6, a, 3.0 * a, possible))
+    print("   reading: ratio 0.556 (room lamp) > 1/3 => impossible for every R3 value;")
+    print("            ratio 0.272 (direct) is < 1/3 but needs an impractical R3 to realise it.")
     return rc
 
 
