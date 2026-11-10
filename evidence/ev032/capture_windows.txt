@@ -1,0 +1,23 @@
+EV-032 COM43 capture windows (UTC 2026-11-10)
+Port: COM43, 9600 8N1, Prolific 067B:2303 (LOCATION=1-9.4.2)
+Board image: current delivery, axf md5 b6a15fed2ed5e3d0c4adc51ac87a4830 (mdk_flash Verify OK at 14:31:30Z)
+No temperature or light stimulus was applied; the board was left in its normal state.
+
+window   start (Z)             end (Z)               duration  bytes  observed S k   raw file                md5
+cap01    2026-11-10T14:31:34   2026-11-10T14:36:34   300.20 s     78    k=3            cap01_k3.cap            4685325b5faef1bb4301b9b1b61623f4
+cap02    2026-11-10T14:36:43   2026-11-10T14:41:43   300.21 s    156    k=6, k=9       cap02_k6_k9.cap         1f1005798942b4055eb1fe0d0423592a
+gap      (no serial capture; bit-level fx2lafw session 14:43:11-14:43:13 captured the I2C transaction of k=12)
+cap03    2026-11-10T14:44:17   2026-11-10T14:49:18   300.23 s    158    k=15, k=18     cap03_k15_k18.cap       f77dd859cb16b9b8c02118c3bf0c4a1b
+
+Inter-window gaps (serial not captured): 9.2 s between cap01/cap02; 2 min 34 s between cap02/cap03.
+The k sequence observed is 3, 6, 9, 15, 18. k=12 was not captured on COM43 but its sample is the
+I2C transaction captured by the logic analyzer (converted 26.8 C equals p(k=15)=268, see
+capture_analysis.txt). The k=9 -> k=15 gap is an unobserved window, not evidence of a missed sample.
+
+Per-window bytes: every line is 78-79 B including CRLF (<= 96 B budget); no NUL, no stray bytes,
+no output between sampling periods.
+
+Observed cadence: k advances by 3 per sampling opportunity. Wall-clock spacing between the
+first observed cycles is consistent with ~58.7 s per RTC minute tick (LSI-based; readme gives no
+tolerance), so this report does NOT claim 180.0 s precision. The device-internal k is the
+authoritative cadence evidence.

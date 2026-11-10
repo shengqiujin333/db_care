@@ -258,8 +258,10 @@ int main(void)
         CHECK(raised && lowered_after,
               "PB05 raised for the light sample and lowered again (divider powered only while sampling)");
       }
-      CHECK(LIGHT_DARK_CALIBRATED == 0 ? (r.valid == false) : true,
-            "uncalibrated delivery: light validity stays false (no dark decision without calibration)");
+      CHECK(LIGHT_DARK_THRESHOLD_CODE == 0
+                ? (r.valid == false && r.dark == false)
+                : (r.valid == true),
+            "delivery with the criterion disabled (T=0): light validity stays false and no dark decision");
     }
 
     printf("\n==== result: %d passed, %d failed ====\n", pass, fail);

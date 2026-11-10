@@ -45,26 +45,27 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/hos
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_line_verify_ev.c | active | 测试能力独立验证 harness：BUS/G/S/P 行逐字节、逐行 96 B 预算与 CRLF（EV-022 起预算按单行判定，兼容 T2 P 行）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_probe_verify_ev.c | active | 测试能力独立验证 harness：BUS 扫描/general call 分支/诊断快照传播
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_pure_check.c | active | fw_core 纯逻辑自检（含 T1 升温/严格边界、LIGHT-DEF-2 阈值形制全量向量）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_verify_ev.c | active | 测试能力独立验证 harness：fw_core 穷举（65536 温度/湿度字、CRC、1-3 判据网格、升温方向 572 组判定哈希 0xA524C2E9）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_verify_ev.c | active | 测试能力独立验证 harness：fw_core 穷举（65536 温度/湿度字、CRC、LIGHT-DEF-2 阈值 1,253,376 例网格、升温方向 572 组判定哈希 0xA524C2E9）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gw_compat_verify_ev.c | active | 测试能力独立验证 harness：传感器→网关→Android 全链兼容
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_check.c | active | GXHT40 驱动实现侧自检（mock 从机）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_gxht40_verify_ev.c | active | 测试能力独立验证 harness：GXHT40 驱动（位级 mock 总线/从机、重探、总线恢复、命令白名单）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_check.c | active | 光照通路实现侧自检（真实 light.c + 影子 MCU；判据未启用/启用两变体、T 边界与实测参考值）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_verify_ev.c | history | 测试能力 harness，已陈旧不可编译（仍按 T2 之前 light_sample() 的 bool API 编写，且引用已删滞回语义）；结论不采用，待重写
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_verify_ev.c | active | 测试能力独立验证 harness（EV-032 重写）：真实 light.c + mock_mcu 影子层，LIGHT-DEF-2 接线/全超时/部分成功/无状态；T=0 与 T=3000 双变体
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_check.c | active | measure.c 采样流程与发送路径实现侧自检（T2 冻结/重试/不覆盖/P 行取数；F-1 首样本 H=0 与 p=上一周期断言）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_measure_flow_verify_ev.c | active | 测试能力独立验证 harness：measure.c 多周期流程模型（EV-024 按 T1 升温语义修复参考模型与脚本向量，避免引用已删除的 DROP 常量）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_check.c | active | 空口帧往返 + 网关→Android 映射实现侧自检
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_frame_verify_ev.c | active | 测试能力独立验证 harness：空口帧字段/字节序/篡改拒绝
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_report_verify_ev.c | active | 测试能力独立验证 harness：条件上报发送路径
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_report_verify_ev.c | active | 测试能力独立验证 harness：条件上报发送路径（EV-032 同步为升温方向与冻结触发样本；light_sample 结构体桩）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rtc_cadence_verify_ev.c | active | 测试能力独立验证 harness：3 分钟 RTC 节拍门控
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c | active | 宿主机纯逻辑综合套件（CRC/换算/有效域/LIGHT-DEF-2 阈值判据/升温上报判定）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_bus_check.c | active | 软 I2C 位级 mock 总线自检（含探测与总线恢复线序）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sf_i2c_verify_ev.c | active | 测试能力独立验证 harness：软 I2C 原语与 i2c_bus_recover
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_vdd_verify_ev.c | active | 测试能力独立验证 harness：light_read_vdd_mv 供电轨测量（含公式/超时/不伪造）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_vdd_verify_ev.c | active | 测试能力独立验证 harness：light_read_vdd_mv 供电轨测量（含公式/超时/不伪造；EV-032 门禁改为 LIGHT_DARK_THRESHOLD_CODE==0）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_diagline_ev/ | active | 测试能力自建影子 MCU 层（诊断行 harness）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_light/ | active | 实现侧影子 MCU 层（供 light.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_main_ev/ | active | 测试能力自建影子 MCU 层（main.c RTC 节拍 harness）
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_mcu/ | active | 测试能力自建影子 MCU 层（light 相关 harness）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_mcu/ | active | 测试能力自建影子 MCU 层（light 相关 harness；EV-032 补 ADC_InputVref1P2 与 CR_f.BGREN）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_mcu/mock_cw32.h | active | 由 embedded_tester 新增或修改的项目相关文件
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_ev/ | active | 测试能力自建影子 MCU 层（measure 流程 harness）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_mcu/ | active | 实现侧影子 MCU 层（供 measure.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/ | active | 实现侧影子 MCU 层（供 debug_trace.c 宿主机编译）
@@ -612,6 +613,60 @@ evidence/ev030/tool_results.txt | active | 本轮设备/构建/下载/采集/宿
 evidence/ev031/ | active | EV-031 失败归因最小实测原始证据目录：同一镜像/同一启动会话的 COM43 捕获与工具原始结果
 evidence/ev031/serial_capture_0852Z.bin | active | COM43 原始字节（08:52:50–08:57:50Z，S k=33/k=36，均 q=1；158 B；md5 8559c027…）
 evidence/ev031/tool_results.txt | active | EV-031 串口/USB/sigrok 只读配置/COM43 采集/pyocd 只读枚举原始结果与时间戳
+evidence/ev032/ | active | EV-032 原始证据目录：3 份 COM43 原始捕获、1 次 fx2lafw:2.32 位级 I²C 采集/离线解码、独立分析/静态核查脚本与输出、宿主 harness 日志、构建/下载/工具原始结果
+evidence/ev032/EV-032_prototype_section.md | active | EV-032 下载身份段落（已并入 evidence/programmed_prototype.md 顶部）
+evidence/ev032/EV-032_section.md | active | EV-032 证据正文（已并入 evidence/test.md 顶部）
+evidence/ev032/analyze_ev032.py | active | EV-032 独立解析：S 行字段/行长/节拍/p 链、双字 CRC-8 复算、温湿度换算与名义时序（不引用实现常量）
+evidence/ev032/cap01_k3.cap | active | COM43 原始字节（14:31:34–14:36:34Z，S k=3，78 B；md5 4685325b…）
+evidence/ev032/cap02_k6_k9.cap | active | COM43 原始字节（14:36:43–14:41:43Z，S k=6/k=9，156 B；md5 1f100579…）
+evidence/ev032/cap03_k15_k18.cap | active | COM43 原始字节（14:44:17–14:49:18Z，S k=15/k=18，158 B；md5 f77dd859…）
+evidence/ev032/capture_analysis.txt | active | analyze_ev032.py 输出（5 周期全 q=1/V=0/D=0、p 链匹配、双 CRC 匹配、32.531 ms/614.25 µs）
+evidence/ev032/capture_metadata.json | active | sigrok_capture 实际参数/命令/时间戳
+evidence/ev032/capture_windows.txt | active | 3 个串口窗口起止/字节数/观测 k/间隙与原始 md5；k=12 由位级事务推断配对
+evidence/ev032/decode_metadata.json | active | sigrok_decode 离线解码参数与输入身份
+evidence/ev032/decoded_i2c.txt | active | 位级 I²C 完整注解（0x44 写 0xFD、读 6 字节 69 15 A1 51 8C 95、NACK/STOP，含样点号）
+evidence/ev032/gcc_build.log | active | 独立 GNU 交叉构建原始输出（exit 0；FLASH 34840 B / RAM 1816 B）
+evidence/ev032/git_identity_static.txt | active | HEAD、实现提交文件清单、产品源码零差异与测试侧资产增量原始输出
+evidence/ev032/host_*_verify_ev*.log | active | 测试侧 13 组独立 harness 原始输出与编译日志（合计 609 项 0 失败）
+evidence/ev032/host_build_test.log | active | 实现侧 test/build_test.sh 原始输出（48+61+54+28+31=222 项 0 失败）
+evidence/ev032/host_diag_line_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_diag_line_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_diag_probe_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_diag_probe_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_fw_core_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_fw_core_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_gw_compat_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_gw_compat_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_gxht40_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_gxht40_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_harness_summary.txt | active | 实现侧与测试侧宿主用例计数汇总
+evidence/ev032/host_light_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_light_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_light_verify_ev_enabled.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_light_verify_ev_enabled.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_measure_flow_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_measure_flow_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_rf_frame_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_rf_frame_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_rf_report_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_rf_report_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_rtc_cadence_verify_ev.harness.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_rtc_cadence_verify_ev.link.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_rtc_cadence_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_rtc_cadence_verify_ev.main.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_sf_i2c_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_sf_i2c_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_vdd_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/host_vdd_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev032/image_identity.txt | active | 下载前后 axf/hex md5 与文件大小
+evidence/ev032/mdk_rebuild_build.log | active | 独立 mdk_build rebuild 原始日志（0E/1W，Code 25964）
+evidence/ev032/prepend_sections.py | active | 将 EV-032 段落并入 evidence/test.md 与 programmed_prototype.md 的可复跑脚本
+evidence/ev032/pyocd_check.txt | active | pyocd 0.36.0 只读枚举（探针在位、CW32 目标为空、未执行复位）
+evidence/ev032/raw_i2c_capture.sr | active | 位级 I²C 原始采集（8,000,000 样点 @4 MS/s，D0=SCL/D1=SDA，conn=2.32；md5 ec5d2273…）
+evidence/ev032/run_host_harnesses.sh | active | EV-032 测试侧独立 harness 构建/运行可复跑脚本
+evidence/ev032/static_check_ev032.py | active | EV-032 静态核查脚本（常量/旧宏/判据接线/行序/引脚/浮点/旧通路/有界等待）
+evidence/ev032/static_check_ev032.txt | active | 上述脚本输出（21/21 PASS）
+evidence/ev032/tool_results.txt | active | 本轮设备/构建/下载/串口/逻辑分析仪/pyocd 原始结果与时间戳
 evidence/firmware_assignment_referral.md | active | 固件实现失败分派转交证据（EV-028/029：GXHT40 与 F-1 已修复；剩余 T4-02/T5/INT/T4-07 为采集编排、遮光/刺激与仪器配置条件，非固件代码缺陷；列明责任与前置条件）
 evidence/firmware_assignment_referral_ev030.md | active | EV-030 失败分派转交报告：固件 5/5+2/2 周期 q=1、0 G、I2C 双 CRC、F-1 保持；未满足项为上电五行采集编排、T5 双态物理条件、跨链路/刺激、功耗仪器；结论 ASSIGNMENT_DECLINED，未改产品源码
 evidence/firmware_design_lightdef/ | active | 固件设计用于无光判据推导的可复跑统计目录：只读已提交的原始串口捕获，输出光敏均值分布与阈值余量
@@ -732,7 +787,7 @@ evidence/fw_impl_20261110/mdk_build_baseline.out.json | active | 基线 mdk_buil
 evidence/fw_impl_20261110/mdk_build_lightdef2.err.txt | active | LIGHT-DEF-2 构建 stderr（空）
 evidence/fw_impl_20261110/mdk_build_lightdef2.out.json | active | LIGHT-DEF-2 后 mdk_build rebuild 工具原始返回（0E/1W、Code 25964）
 evidence/interface_contract_validation.md | active | 系统架构：IC-002 v4.0源码核对与CRC/65536温度字/12资格向量/容量/缓存键算术自检、当前对象摘要和未验证边界
-evidence/programmed_prototype.md | active | 下载身份记录（EV-030 置顶：HEAD f978a01 / axf md5 a3b08774…、mdk_flash Verify OK、目标运行证据；仅证明下载成功，不代表功能合格；EV-028/026/024 及更早保留为历史）
+evidence/programmed_prototype.md | active | 下载身份记录（EV-032 置顶：HEAD abaa706 / 实现提交 82a7e74 / axf md5 b6a15fed…、mdk_flash Verify OK、目标运行证据；仅证明下载成功，不代表功能合格；EV-030 及更早保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
@@ -746,7 +801,7 @@ evidence/software_verify_cloud_upload_item009.py | active | 由 software_tester 
 evidence/software_verify_detail_presentation_item012.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_release_item014.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_timestamp_write_item007.py | active | 由 software_tester 新增或修改的项目相关文件
-evidence/test.md | active | 嵌入式验证证据 EV-030（当前轮，置顶）：TEST_FAIL（整体）— 连续 3 周期 q=1、位级 I²C 双 CRC 匹配、首样本 H=0 p=0、宿主 218+498 项 0 失败；T4-01 上电五行/uid、T5 双态标定、T4-03 失败路径、触发/跨链路、功耗未满足；EV-028 及更早保留为历史
+evidence/test.md | active | 嵌入式验证证据 EV-032（当前轮，置顶）：TEST_FAIL（完整目标，failure_cause=EXTERNAL_CONDITION_UNEXECUTED）— LIGHT-DEF-2 T=0 实板等价性成立（k=3/6/9/15/18，全 q=1/V=0/D=0）、独立宿主 609/0、双字 CRC 匹配；上电五行、判据启用、真实升温/跨链路未执行，E2E-04 已批准延期；EV-030 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-030 置顶，EV-029/EV-027/EV-025/EV-023/EV-021 原文保留）：EV-030 完整交付 TEST_FAIL 复核——同一镜像新增 2 周期 q=1、F-1 保持；剩余为上电段采集编排（串口/下载串行、pyocd 未登记授权）、光敏双态/标定、升温与跨链路刺激、功耗仪器；未见新固件功能缺陷（仅归因，不代表整体通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）

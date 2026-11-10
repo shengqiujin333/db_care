@@ -1,0 +1,100 @@
+EV-032 device / build / capture tool raw results (embedded_tester.embedded_verification)
+All times are Windows-host UTC, 2026-11-10. Tools were called through the mounted
+hardware_verification MCP backend; no shell substitute was used for device access.
+
+1) mdk_build {"action":"rebuild"}  [14:31:00.141 - 14:31:03.315]
+   exit_code=0
+   Compiler: 'V6.24' (ARMCLANG)
+   Rebuild target 'Project'
+   ../USER/src/main.c(254): warning: while loop has empty body [-Wempty-body]
+   1 warning generated.
+   Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+   ".\\output\\exe\\Project.axf" - 0 Error(s), 1 Warning(s).
+   Build Time Elapsed: 00:00:02
+   Raw log copied to evidence/ev032/mdk_rebuild_build.log
+   Post-build md5: Project.axf b6a15fed2ed5e3d0c4adc51ac87a4830
+                   Project.hex 4d728dec9b0d28a352c46436b7586c72
+
+2) mdk_flash {}  [14:31:18.045 - 14:31:30.625]
+   exit_code=0
+   Build target 'Project' -> 0 Error(s), 0 Warning(s)
+   Load "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\MDK\\output\\exe\\Project.axf"
+   Erase Done.
+   Programming Done.
+   Verify OK.
+   Application running ...
+   Flash Load finished at 22:31:30
+   Post-flash md5 unchanged: axf b6a15fed2ed5e3d0c4adc51ac87a4830
+                             hex 4d728dec9b0d28a352c46436b7586c72
+   (Verify OK proves download verification only, not functional pass.)
+
+3) serial_list_ports  [14:31:12.034]
+   exit_code=0
+   COM43: "Prolific USB-to-Serial Comm Port (COM43)", USB VID:PID=067B:2303, LOCATION=1-9.4.2
+   COM26: "USB 串行设备", VID:PID=C251:F001, SER=87094109484987710672FF50 (debugger CDC, NOT used)
+
+4) usb_list_devices  [14:31:12.126 - 14:31:14.137]
+   exit_code=0
+   Present: Prolific 067B:2303 (COM43); C251:F001 composite (CW-DAPLink, SN 87094109484987710672FF50);
+            18D1:4EE7 with 12F046690506 (Redmi 8A); 04B4:8613 "fx2lafw" (Cypress FX2);
+            cameras, Bluetooth radio, USB root hubs.
+   Not enumerated: oscilloscope, current meter, SMU, VDS1022.
+
+5) sigrok_info  [14:31:14.221]
+   exit_code=0
+   enabled=true; driver=fx2lafw; connection=2.32; channels=[D0,D1];
+   signal_labels={D0:scl, D1:sda}; triggers={D1:f}; samplerate_hz=4000000;
+   max_samplerate_hz=8000000; max_samples=20000000; timeout_sec=240; online=not_checked
+
+6) sigrok_probe  [14:42:04.498 - 14:42:04.595]
+   exit_code=0
+   command: sigrok-cli --driver fx2lafw:conn=2.32 --show
+   (probe may upload RAM firmware and change the USB address; no EEPROM write)
+
+7) sigrok_capture  [14:42:08.868 - 14:43:13.256]
+   exit_code=0, timed_out=false
+   command: --driver fx2lafw:conn=2.32 --config samplerate=4000000 --channels D0,D1
+            --samples 8000000 --wait-trigger --triggers D1=f
+   session: 8,000,000 samples at 4 MHz = 2.0 s; D0=SCL, D1=SDA (trigger: SDA falling edge)
+   raw: evidence/ev032/raw_i2c_capture.sr md5 ec5d22730670f56d4ee2e556a694974f
+   metadata: evidence/ev032/capture_metadata.json
+
+8) sigrok_decode  [14:43:20.604]
+   exit_code=0, annotations_present=true
+   decoder i2c, channel_map {scl:D0, sda:D1}, options {}
+   output: evidence/ev032/decoded_i2c.txt; metadata: evidence/ev032/decode_metadata.json
+   Decoded sequence:
+     Start / Address write 44 / ACK / Data write FD / ACK / Stop
+     Start / Address read 44 / ACK / Data read 69 15 A1 51 8C 95 / NACK / Stop
+   Independent recomputation (analyze_ev032.py): temperature CRC 0xA1 MATCH, humidity CRC 0x95 MATCH;
+   temperature 268 x10 = 26.8 C, humidity 338 x10 = 33.8 %RH.
+   Nominal timing (sample index / 4 MS/s): write START->STOP 12.051 ms,
+   command STOP->read START 32.531 ms, read START->STOP 40.165 ms, SCL bit interval 614.25 us.
+
+9) serial_capture COM43 9600 8N1
+   cap01 [14:31:34.000 - 14:36:34.200] exit_code=0 bytes_received=78
+         S k=3 p=283 H=1 V=0 o=8 n=3985 x=3992 a=3988 D=0 t=269 h=339 q=1 r=0 s=0 y=0
+   cap02 [14:36:43.404 - 14:41:43.609] exit_code=0 bytes_received=156
+         S k=6 p=269 H=1 V=0 o=8 n=3983 x=3994 a=3987 D=0 t=266 h=343 q=1 r=0 s=0 y=0
+         S k=9 p=266 H=1 V=0 o=8 n=3982 x=3992 a=3986 D=0 t=258 h=354 q=1 r=0 s=0 y=0
+   cap03 [14:44:17.882 - 14:49:18.107] exit_code=0 bytes_received=158
+         S k=15 p=268 H=1 V=0 o=8 n=3981 x=3989 a=3984 D=0 t=253 h=354 q=1 r=0 s=0 y=0
+         S k=18 p=253 H=1 V=0 o=8 n=3980 x=3988 a=3984 D=0 t=252 h=360 q=1 r=0 s=0 y=0
+   Raw files and md5: evidence/ev032/cap01_k3.cap, cap02_k6_k9.cap, cap03_k15_k18.cap
+   No boot banner / BUS / VDD / IOTEST / IOSIG line was captured: the serial port opened
+   3.4 s after "Application running" (flash finished 14:31:30.6, capture started 14:31:34.0),
+   after the power-on block had already been printed. See item 10.
+
+10) pyocd read-only evaluation (BOT-04)  [14:51:03]
+    pyocd CLI 0.36.0 (C:/Users/kason/AppData/Roaming/Python/Python311/Scripts/pyocd.exe)
+    pyocd list: "P&S CW-DAPLINK(CMSIS-DAP) 87094109484987710672FF50  Target n/a"
+    pyocd list --targets --name CW32: empty (no CW32 target definition loaded)
+    pyocd is not a registered target-access entry in runtime/environment.yaml; no reset
+    was attempted and no DFP/package was installed. Raw output: evidence/ev032/pyocd_check.txt
+    => "open COM43 first, reset inside the window" cannot be orchestrated with the current
+       registered entries; BOT-01/02 recorded NOT EXECUTED (not substituted by later S lines).
+
+11) Static / git checks
+    git HEAD at verification: abaa706e6515494b64f9136e81f62cea107bfa3a
+    Product source diff since the implementation commit 82a7e74: empty.
+    Static checks: evidence/ev032/static_check_ev032.py -> static_check_ev032.txt (21/21 PASS).

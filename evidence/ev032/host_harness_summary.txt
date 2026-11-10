@@ -1,0 +1,42 @@
+EV-032 host verification summary (2026-11-10, MinGW-w64 gcc 12.2.0)
+Source: current delivery tree; product source unchanged since commit 82a7e74.
+Script: evidence/ev032/run_host_harnesses.sh (full stdout/stderr per harness in this directory).
+
+Implementer suite (test/build_test.sh):
+  [1/4] fw_core pure logic ....... 48 passed / 0 failed
+  [2/4] measure flow ............. 61 passed / 0 failed
+  [3/4] UART debug trace ......... 54 passed / 0 failed
+  [4/4a] light, T=0 delivered .... 28 passed / 0 failed
+  [4/4b] light, T=3590 variant ... 31 passed / 0 failed
+  total .......................... 222 passed / 0 failed (exit 0)
+
+Tester independent harnesses:
+  host_fw_core_verify_ev ......... 59 / 0   (T7 exhaustive LIGHT-DEF-2: 1,253,376 cases over 153 T values, 0 mismatches; T8 report hash 0xA524C2E9)
+  host_gxht40_verify_ev .......... 93 / 0
+  host_sf_i2c_verify_ev .......... 51 / 0
+  host_diag_line_verify_ev ....... 38 / 0
+  host_diag_probe_verify_ev ...... 109 / 0
+  host_measure_flow_verify_ev .... 79 / 0
+  host_rf_frame_verify_ev ........ 10 / 0
+  host_rf_report_verify_ev ....... 30 / 0   (refreshed: rising direction + frozen triggering sample)
+  host_rtc_cadence_verify_ev ..... 17 / 0
+  host_gw_compat_verify_ev ....... 11 / 0
+  host_vdd_verify_ev ............. 31 / 0   (refreshed: LIGHT_DARK_THRESHOLD_CODE == 0 gate)
+  host_light_verify_ev (T=0) ..... 40 / 0   (refreshed: real light.c + mock MCU)
+  host_light_verify_ev (T=3000) .. 41 / 0   (enabled-wiring variant)
+  total .......................... 609 passed / 0 failed
+
+Builds:
+  mdk_build rebuild .............. 0 Error / 1 existing warning (main.c(254) empty while body)
+                                   Code=25964 RO=656 RW=116 ZI=1676
+                                   Project.axf md5 b6a15fed2ed5e3d0c4adc51ac87a4830
+                                   Project.hex md5 4d728dec9b0d28a352c46436b7586c72
+  gcc/build.sh ................... exit 0; FLASH 34840 B / RAM 1816 B (0 errors; existing warnings only)
+
+Static checks (static_check_ev032.py): 21 / 21 PASS (criterion constant 0, legacy macros absent,
+stateless comparison, light wiring, rising report rule, S-line order, power-on order, no
+float/dynamic memory, no active legacy subsystems, bounded TX guard).
+
+Stale-asset status: all four previously stale tester assets were refreshed and now compile/run;
+no tester asset is excluded from the 609 total. The implementation-side files were not modified
+by this verification (see git_identity_static.txt).

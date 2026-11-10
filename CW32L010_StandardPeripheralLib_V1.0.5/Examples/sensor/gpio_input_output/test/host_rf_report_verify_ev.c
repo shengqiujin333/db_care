@@ -59,7 +59,19 @@ static int16_t  gxht_t;
 static uint16_t gxht_h;
 
 void light_init(void) { }
-bool light_sample(void) { return light_ret != 0; }
+light_result_t light_sample(void)
+{
+    light_result_t r;
+    memset(&r, 0, sizeof r);
+    r.adc_ok = true;
+    r.samples_ok = LIGHT_ADC_SAMPLES;
+    r.valid = (light_ret != 0);
+    r.dark = (light_ret != 0);
+    r.mean_adc_code = (light_ret != 0) ? 4000u : 0u;
+    r.code_min = r.mean_adc_code;
+    r.code_max = r.mean_adc_code;
+    return r;
+}
 void gxht40_init(i2c_dev *dev) { (void)dev; }
 gxht40_status_t gxht40_measure(int16_t *t, uint16_t *h)
 {
@@ -67,6 +79,7 @@ gxht40_status_t gxht40_measure(int16_t *t, uint16_t *h)
     return gxht_ret;
 }
 uint8_t gxht40_detected_addr7(void) { return 0x44u; }
+void gxht40_diag_fetch(gxht40_diag_t *out) { memset(out, 0, sizeof *out); }
 
 /* ---------------- scripted sender ---------------- */
 static int      send_script[16];           /* 1 = success, 0 = failure */
@@ -120,7 +133,7 @@ int main(void)
     CHECK(send_calls == 0, "sender not called when report_req is clear");
 
     printf("[T2] report triggered by a real cycle, then sent successfully\n");
-    cycle(1, 280, 510);                      /* dark + 2.0 C drop -> report */
+    cycle(1, 320, 510);                      /* dark + 2.0 C rise -> report (rising direction) */
     CHECK(report_req == 1u, "sampling cycle raised the pending report");
     reset_send_log();
     { const int s[1] = {1}; script_send(s, 1); }
@@ -130,17 +143,17 @@ int main(void)
     CHECK(send_timeout[0] == SENSOR_RF_TX_TIMEOUT_MS, "sender received the configured timeout");
     CHECK(report_req == 0u, "pending report cleared after a successful send");
     { uint8_t ref[10]; encode_frame10(mcu_uid, prev_temp, prev_hum, ref);
-      uint8_t ref2[10]; encode_frame10(mcu_uid, 280, 510, ref2);
+      uint8_t ref2[10]; encode_frame10(mcu_uid, 320, 510, ref2);
       uint8_t ref3[10]; encode_frame10(mcu_uid, tempvalue, huminityvalue, ref3);
       CHECK(memcmp(send_buf[0], ref2, 10) == 0, "frame handed to the sender is the encoded frame of the triggering sample");
       CHECK(memcmp(ref, ref2, 10) != 0, "frame really depends on the sample values (anchor is meaningful)");
       /* no frame change vs the previous implementation: tempvalue/huminityvalue are exactly the
          triggering sample at send time, so encoding them yields the very same 10 bytes */
-      CHECK(tempvalue == 280 && huminityvalue == 510, "tempvalue/huminityvalue hold the triggering sample at send time");
+      CHECK(tempvalue == 320 && huminityvalue == 510, "tempvalue/huminityvalue hold the triggering sample at send time");
       CHECK(memcmp(send_buf[0], ref3, 10) == 0, "identical to encoding tempvalue/huminityvalue (previous code path) -> no frame change"); }
 
     printf("[T3] failure keeps the pending report until the retry limit\n");
-    cycle(1, 260, 520);                      /* another report */
+    cycle(1, 340, 520);                      /* another report (prev 320) */
     CHECK(report_req == 1u, "report pending");
     reset_send_log();
     { const int s[6] = {0, 0, 1, 0, 0, 0}; script_send(s, 6); }
@@ -153,7 +166,7 @@ int main(void)
     CHECK(memcmp(send_buf[2], send_buf[0], 10) != 0 || 1, "frame captured per attempt");
 
     printf("[T4] retry exhaustion abandons the round (bounded)\n");
-    cycle(1, 250, 530);                      /* another report */
+    cycle(1, 360, 530);                      /* another report (prev 340) */
     CHECK(report_req == 1u, "report pending");
     reset_send_log();
     { const int s[8] = {0, 0, 0, 1, 1, 1, 1, 1}; script_send(s, 8); }
@@ -165,7 +178,7 @@ int main(void)
       CHECK(send_calls == before, "no further attempts after the round was abandoned"); }
 
     printf("[T5] a new report after an abandoned round is sent again (retry counter reset)\n");
-    cycle(1, 240, 540);
+    cycle(1, 380, 540);                      /* new report after exhaustion (prev 360) */
     CHECK(report_req == 1u, "new report pending");
     reset_send_log();
     { const int s[4] = {0, 1, 1, 1}; script_send(s, 4); }
@@ -175,7 +188,7 @@ int main(void)
     CHECK(send_calls == 2 && report_req == 0u, "second attempt succeeded (retry counter restarted at 0 for the new round)");
 
     printf("[T6] legacy hall/OPTCFG gates retired; sleep gate is report/sample only\n");
-    cycle(1, 220, 550);
+    cycle(1, 400, 550);                      /* report for the sleep-gate checks (prev 380) */
     CHECK(report_req == 1u, "report pending");
     reset_send_log();
     { const int s[1] = {1}; script_send(s, 1); }

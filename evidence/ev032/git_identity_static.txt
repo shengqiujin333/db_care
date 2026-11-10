@@ -1,0 +1,43 @@
+=== git identity ===
+abaa706e6515494b64f9136e81f62cea107bfa3a
+abaa706e6515494b64f9136e81f62cea107bfa3a 2026-11-10 22:26:27 +0800 [role:software_tester] Update project work
+
+=== product source diff since firmware implementation commit 82a7e74 (expect empty) ===
+(end)
+
+=== implementation commit file list ===
+82a7e74 [role:firmware_engineer] Update project work
+ .../gpio_input_output/USER/inc/debug_trace.h       |   4 +-
+ .../sensor/gpio_input_output/USER/inc/fw_core.h    |  11 +-
+ .../sensor/gpio_input_output/USER/inc/light.h      |   8 +-
+ .../gpio_input_output/USER/inc/sensor_config.h     |  36 +--
+ .../sensor/gpio_input_output/USER/src/fw_core.c    |  12 +-
+ .../sensor/gpio_input_output/USER/src/light.c      |  13 +-
+ .../sensor/gpio_input_output/test/build_test.sh    |  10 +-
+ .../test/host_fw_core_pure_check.c                 |  36 +--
+ .../gpio_input_output/test/host_light_check.c      |  61 ++--
+ .../gpio_input_output/test/host_sensor_core_test.c |  19 +-
+ artifacts/firmware_implementation.md               | 139 ++++++++-
+ .../fw_impl_20261110/args/mdk_build_baseline.json  |   1 +
+ .../fw_impl_20261110/args/mdk_build_lightdef2.json |   1 +
+ evidence/fw_impl_20261110/build_evidence.md        |  87 ++++++
+ evidence/fw_impl_20261110/driver_test_evidence.md  | 101 +++++++
+ evidence/fw_impl_20261110/gcc_build_baseline.log   | 168 +++++++++++
+ evidence/fw_impl_20261110/gcc_build_lightdef2.log  | 168 +++++++++++
+ .../fw_impl_20261110/host_build_test_baseline.log  | 307 ++++++++++++++++++++
+ .../fw_impl_20261110/host_build_test_lightdef2.log | 311 +++++++++++++++++++++
+ evidence/fw_impl_20261110/md5_list.txt             |  14 +
+ .../fw_impl_20261110/mdk_build_baseline.err.txt    |   0
+ .../fw_impl_20261110/mdk_build_baseline.out.json   |   1 +
+ .../fw_impl_20261110/mdk_build_lightdef2.err.txt   |   0
+ .../fw_impl_20261110/mdk_build_lightdef2.out.json  |   1 +
+ file_manifest.txt                                  |  36 ++-
+ 25 files changed, 1441 insertions(+), 104 deletions(-)
+
+=== tester asset delta (this round) ===
+ M CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_verify_ev.c
+ M CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_verify_ev.c
+ M CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_rf_report_verify_ev.c
+ M CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_vdd_verify_ev.c
+ M CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_mcu/mock_cw32.h
+?? evidence/ev032/

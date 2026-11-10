@@ -50,6 +50,7 @@ void GPIO_WritePin(GPIO_TypeDef *port, uint16_t pin, GPIO_PinState state);
 #define ADC_SqrEns0to0       0u
 #define ADC_SampTime390Clk   7u
 #define ADC_InputCH11        0xBu
+#define ADC_InputVref1P2     0xFu
 #define ADC_IT_EOC           1u
 #define ADC_ISR_EOC_Msk      (1u << 0)
 
@@ -61,7 +62,12 @@ typedef struct {
     ADC_InitChannelTypeDef ADC_IN0;
 } ADC_InitTypeDef;
 
-typedef struct { volatile uint32_t isr; uint32_t (*isr_get)(void); } mock_adc_regs_t;
+typedef struct { volatile uint32_t BGREN : 1; volatile uint32_t rsv : 31; } ADC_CR_bits;
+typedef struct {
+    volatile uint32_t isr;
+    uint32_t (*isr_get)(void);
+    volatile ADC_CR_bits CR_f;   /* light.c 的 VDD 测量会写 CR_f.BGREN */
+} mock_adc_regs_t;
 extern mock_adc_regs_t mock_adc;
 /* light.c reads the EOC flag as CW_ADC->ISR; route it through a function-pointer member
    so the bounded-poll guard can be asserted deterministically (only light.c uses ISR). */

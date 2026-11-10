@@ -1,0 +1,168 @@
+== compile ==
+../USER/src/encrytogate.c: In function 'print_hex':
+../USER/src/encrytogate.c:142:3: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  142 |   for(size_t i=0;i<n;i++) printf("%02X ", b[i]); printf("\n");
+      |   ^~~
+../USER/src/encrytogate.c:142:50: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  142 |   for(size_t i=0;i<n;i++) printf("%02X ", b[i]); printf("\n");
+      |                                                  ^~~~~~
+At top level:
+../USER/src/encrytogate.c:144:13: warning: 'uid4_hex' defined but not used [-Wunused-function]
+  144 | static void uid4_hex(const uint8_t u4[4], char out9[9]){
+      |             ^~~~~~~~
+../USER/src/encrytogate.c:140:13: warning: 'print_hex' defined but not used [-Wunused-function]
+  140 | static void print_hex(const char* title, const uint8_t* b, size_t n){
+      |             ^~~~~~~~~
+../USER/src/encrytogate.c:17:22: warning: 'IPERM' defined but not used [-Wunused-const-variable=]
+   17 | static const uint8_t IPERM[10] = {4, 2, 8, 0, 6, 3, 9, 7, 1, 5};
+      |                      ^~~~~
+../USER/src/main.c:183:9: warning: return type of 'main' is not 'int' [-Wmain]
+  183 | int32_t main(void)
+      |         ^~~~
+../USER/src/main.c: In function 'assert_failed':
+../USER/src/main.c:295:29: warning: unused parameter 'file' [-Wunused-parameter]
+  295 | void assert_failed(uint8_t* file, uint32_t line)
+      |                    ~~~~~~~~~^~~~
+../USER/src/main.c:295:44: warning: unused parameter 'line' [-Wunused-parameter]
+  295 | void assert_failed(uint8_t* file, uint32_t line)
+      |                                   ~~~~~~~~~^~~~
+../USER/src/sf_i2c.c: In function 'i2c_write_multi_byte':
+../USER/src/sf_i2c.c:298:12: warning: 'err' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  298 |     return err;
+      |            ^~~
+../USER/src/sf_i2c.c: In function 'i2c_write_multi_byte_16bit':
+../USER/src/sf_i2c.c:486:12: warning: 'err' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  486 |     return err;
+      |            ^~~
+../COMMON/convert.c: In function 'convert_hexstr_to_int':
+../COMMON/convert.c:43:13: warning: comparison between pointer and integer
+   43 |  while(*str != NULL)
+      |             ^~
+../COMMON/convert.c:59:11: warning: returning 'void *' from a function with return type 'uint8_t' {aka 'unsigned char'} makes integer from pointer without a cast [-Wint-conversion]
+   59 |    return NULL;
+      |           ^~~~
+../UM2005C/app_gtimer.c: In function 'app_gtimer_init':
+../UM2005C/app_gtimer.c:62:31: warning: unused parameter 'bps' [-Wunused-parameter]
+   62 | void app_gtimer_init(uint16_t bps)
+      |                      ~~~~~~~~~^~~
+In file included from ../../../../Libraries/inc/system_cw32l010.h:23,
+                 from ../../../../Libraries/inc/cw32l010_btim.h:36,
+                 from ../../../../Libraries/src/cw32l010_btim.c:30:
+../../../../Libraries/src/cw32l010_btim.c: In function 'BTIM_SetPrescaler':
+../../../../Libraries/inc/cw32l010_btim.h:71:61: warning: comparison is always true due to limited range of data type [-Wtype-limits]
+   71 | #define IS_BTIM_PRS_DIV(DIV)                        (((DIV) <= 0xFFFF) && ((DIV) >= 1))
+      |                                                             ^~
+../../../../Libraries/inc/base_types.h:127:34: note: in definition of macro 'assert_param'
+  127 |     #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+      |                                  ^~~~
+../../../../Libraries/src/cw32l010_btim.c:276:18: note: in expansion of macro 'IS_BTIM_PRS_DIV'
+  276 |     assert_param(IS_BTIM_PRS_DIV(Prescaler));
+      |                  ^~~~~~~~~~~~~~~
+In file included from ../../../../Libraries/inc/system_cw32l010.h:23,
+                 from ../../../../Libraries/inc/cw32l010_gtim.h:37,
+                 from ../../../../Libraries/src/cw32l010_gtim.c:29:
+../../../../Libraries/src/cw32l010_gtim.c: In function 'GTIM_SetPrescaler':
+../../../../Libraries/inc/cw32l010_gtim.h:273:51: warning: comparison is always true due to limited range of data type [-Wtype-limits]
+  273 | #define IS_GTIM_PRESCALER(DIV)             ((DIV) <= 0xFFFF)
+      |                                                   ^~
+../../../../Libraries/inc/base_types.h:127:34: note: in definition of macro 'assert_param'
+  127 |     #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+      |                                  ^~~~
+../../../../Libraries/src/cw32l010_gtim.c:511:18: note: in expansion of macro 'IS_GTIM_PRESCALER'
+  511 |     assert_param(IS_GTIM_PRESCALER(GTIMPrescaler));
+      |                  ^~~~~~~~~~~~~~~~~
+In file included from ../../../../Libraries/inc/system_cw32l010.h:23,
+                 from ../../../../Libraries/inc/cw32l010_i2c.h:38,
+                 from ../../../../Libraries/src/cw32l010_i2c.c:30:
+../../../../Libraries/src/cw32l010_i2c.c: In function 'I2C_SetBaud':
+../../../../Libraries/inc/cw32l010_i2c.h:94:60: warning: comparison is always true due to limited range of data type [-Wtype-limits]
+   94 | #define IS_I2C_Baud_BRR(BRR)            ((BRR) >0 && (BRR) <= 0xFF)
+      |                                                            ^~
+../../../../Libraries/inc/base_types.h:127:34: note: in definition of macro 'assert_param'
+  127 |     #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+      |                                  ^~~~
+../../../../Libraries/src/cw32l010_i2c.c:55:18: note: in expansion of macro 'IS_I2C_Baud_BRR'
+   55 |     assert_param(IS_I2C_Baud_BRR(u8TBaud));
+      |                  ^~~~~~~~~~~~~~~
+../../../../Libraries/src/cw32l010_iwdt.c:79:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
+   79 | void inline IWDT_Cmd(void)
+      | ^~~~
+../../../../Libraries/src/cw32l010_iwdt.c:87:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
+   87 | void inline IWDT_Refresh(void)
+      | ^~~~
+../../../../Libraries/src/cw32l010_iwdt.c:95:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
+   95 | void inline IWDT_Unlock(void)
+      | ^~~~
+../../../../Libraries/src/cw32l010_iwdt.c:103:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
+  103 | void inline IWDT_Lock(void)
+      | ^~~~
+../../../../Libraries/src/cw32l010_iwdt.c:111:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
+  111 | void inline IWDT_Stop(void)
+      | ^~~~
+../../../../Libraries/src/cw32l010_iwdt.c:203:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
+  203 | void inline IWDT_ClearOVFlag(void)
+      | ^~~~
+In file included from ../../../../Libraries/inc/system_cw32l010.h:23,
+                 from ../../../../Libraries/inc/cw32l010_spi.h:26,
+                 from ../../../../Libraries/src/cw32l010_spi.c:29:
+../../../../Libraries/src/cw32l010_spi.c: In function 'SPI_ITConfig':
+../../../../Libraries/inc/cw32l010_spi.h:233:56: warning: comparison is always true due to limited range of data type [-Wtype-limits]
+  233 | #define IS_SPI_IT(IT)                            ((IT) <= 0xFF && ((IT) != (uint8_t)0x00))
+      |                                                        ^~
+../../../../Libraries/inc/base_types.h:127:34: note: in definition of macro 'assert_param'
+  127 |     #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+      |                                  ^~~~
+../../../../Libraries/src/cw32l010_spi.c:173:18: note: in expansion of macro 'IS_SPI_IT'
+  173 |     assert_param(IS_SPI_IT(SPI_IT));
+      |                  ^~~~~~~~~
+../../../../Libraries/src/cw32l010_spi.c: In function 'SPI_GetITStatus':
+../../../../Libraries/inc/cw32l010_spi.h:233:56: warning: comparison is always true due to limited range of data type [-Wtype-limits]
+  233 | #define IS_SPI_IT(IT)                            ((IT) <= 0xFF && ((IT) != (uint8_t)0x00))
+      |                                                        ^~
+../../../../Libraries/inc/base_types.h:127:34: note: in definition of macro 'assert_param'
+  127 |     #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+      |                                  ^~~~
+../../../../Libraries/src/cw32l010_spi.c:207:18: note: in expansion of macro 'IS_SPI_IT'
+  207 |     assert_param(IS_SPI_IT(SPI_IT));
+      |                  ^~~~~~~~~
+../../../../Libraries/src/cw32l010_spi.c: In function 'SPI_FlushSendBuff':
+../../../../Libraries/src/cw32l010_spi.c:418:37: warning: unused parameter 'SPIx' [-Wunused-parameter]
+  418 | void SPI_FlushSendBuff(SPI_TypeDef* SPIx)
+      |                        ~~~~~~~~~~~~~^~~~
+In file included from ../../../../Libraries/inc/system_cw32l010.h:23,
+                 from ../../../../Libraries/inc/cw32l010_uart.h:26,
+                 from ../../../../Libraries/src/cw32l010_uart.c:29:
+../../../../Libraries/src/cw32l010_uart.c: In function 'UART_SendData_8bit':
+../../../../Libraries/inc/cw32l010_uart.h:264:53: warning: comparison is always true due to limited range of data type [-Wtype-limits]
+  264 | #define IS_UART_DATA_8BIT(DATA)             ((DATA) <= 0xFF)
+      |                                                     ^~
+../../../../Libraries/inc/base_types.h:127:34: note: in definition of macro 'assert_param'
+  127 |     #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+      |                                  ^~~~
+../../../../Libraries/src/cw32l010_uart.c:70:18: note: in expansion of macro 'IS_UART_DATA_8BIT'
+   70 |     assert_param(IS_UART_DATA_8BIT(Data));
+      |                  ^~~~~~~~~~~~~~~~~
+../../../../Libraries/src/cw32l010_uart.c: In function 'UART_SetMultiMode':
+../../../../Libraries/inc/cw32l010_uart.h:265:56: warning: comparison is always true due to limited range of data type [-Wtype-limits]
+  265 | #define IS_UART_ADDRESS(ADDRESS)            ((ADDRESS) <= 0xFF)
+      |                                                        ^~
+../../../../Libraries/inc/base_types.h:127:34: note: in definition of macro 'assert_param'
+  127 |     #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+      |                                  ^~~~
+../../../../Libraries/src/cw32l010_uart.c:551:18: note: in expansion of macro 'IS_UART_ADDRESS'
+  551 |     assert_param(IS_UART_ADDRESS(UART_Address));
+      |                  ^~~~~~~~~~~~~~~
+../../../../Libraries/inc/cw32l010_uart.h:266:59: warning: comparison is always true due to limited range of data type [-Wtype-limits]
+  266 | #define IS_UART_ADDRESSMSK(ADDRESSMSK)      ((ADDRESSMSK) <= 0xFF)
+      |                                                           ^~
+../../../../Libraries/inc/base_types.h:127:34: note: in definition of macro 'assert_param'
+  127 |     #define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+      |                                  ^~~~
+../../../../Libraries/src/cw32l010_uart.c:552:18: note: in expansion of macro 'IS_UART_ADDRESSMSK'
+  552 |     assert_param(IS_UART_ADDRESSMSK(UART_AddressMsK));
+      |                  ^~~~~~~~~~~~~~~~~~
+== link ==
+Memory region         Used Size  Region Size  %age Used
+           FLASH:       34840 B        64 KB     53.16%
+             RAM:        1816 B         4 KB     44.34%
+== done: obj/sensor_fw.elf/.hex/.bin ==

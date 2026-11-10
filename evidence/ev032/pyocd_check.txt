@@ -1,0 +1,13 @@
+=== pyocd read-only enumeration (BOT-04) 2026-11-10T14:51:03Z ===
+0.36.0
+
+--- pyocd list ---
+  #   Probe/Board                 Unique ID                  Target  
+---------------------------------------------------------------------
+  0   P&S CW-DAPLINK(CMSIS-DAP)   87094109484987710672FF50   n/a     
+
+--- pyocd list --targets --name CW32 ---
+  Name   Vendor   Part Number   Families   Source  
+---------------------------------------------------
+
+--- note: pyocd is not a registered target-access entry in runtime/environment.yaml; no reset performed ---

@@ -1,30 +1,37 @@
 /*
- * Independent verification harness for ITEM-004 (light path).
+ * Independent verification harness for the light path (ITEM-004 / LIGHT-DEF-2).
  * Author: embedded_tester.embedded_verification.
  *
  * Compiles the REAL USER/src/light.c against an emulated MCU layer
- * (mockinc/cw32l010_{gpio,adc,sysctrl}.h shadow the vendor headers) so the actual
- * sampling sequence can be exercised on the host:
+ * (test/mock_mcu/cw32l010_{gpio,adc,sysctrl}.h shadow the vendor headers) so the
+ * actual sampling sequence is exercised on the host:
  *   PB05 high -> settle delay -> N ADC conversions on PB04/AIN11 -> average
- *   -> hysteresis DARK/LIT -> PB05 low.
+ *   -> validity gate/dark decision -> PB05 low.
  *
- * The hysteresis truth table is additionally checked directly on the real
- * light_code_is_dark() function.
+ * FD-002 rev 8 semantics under test:
+ *   valid = adc_ok && (LIGHT_DARK_THRESHOLD_CODE != 0)
+ *   dark  = valid && mean_adc_code >= LIGHT_DARK_THRESHOLD_CODE   (equality counts)
+ * The delivery constant is 0 (criterion disabled). The harness is also built
+ * with -DLIGHT_DARK_THRESHOLD_CODE=3000 to exercise the enabled wiring.
+ * There is no hysteresis, no state and no full-scale fallback on ADC timeout.
  *
  * Build (from gpio_input_output/):
- *   gcc -std=c11 -Wall -Wextra -I <mockinc> -I USER/inc -I COMMON \
- *       test/host_light_verify_ev.c USER/src/light.c -o light_verify
- * (<mockinc> must precede any vendor include path; no vendor headers are used.)
+ *   gcc -std=c11 -Wall -Wextra -I test/mock_mcu -I USER/inc -I COMMON \
+ *       test/host_light_verify_ev.c USER/src/light.c USER/src/fw_core.c \
+ *       -o light_verify
+ *   gcc ... -DLIGHT_DARK_THRESHOLD_CODE=3000u ... -o light_verify_enabled
  */
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include "light.h"
-#include "fw_core.h"      /* light_code_is_dark moved here in ITEM-005 */
+#include "fw_core.h"
 #include "sensor_config.h"
 #include "delay.h"
 #include "mock_cw32.h"
+
+#define THRESH_CODE ((int)LIGHT_DARK_THRESHOLD_CODE)
 
 /* ---------------- mock MCU state ---------------- */
 GPIO_TypeDef mock_gpiob;
@@ -93,8 +100,10 @@ static int pass, fail;
 
 int main(void)
 {
-    printf("==== independent light path verification (embedded_tester) ====\n");
-    mock_adc.isr_get = isr_get;   /* wire the counting ISR getter used by CW_ADC->ISR */
+    printf("==== independent light path verification (embedded_tester, LIGHT-DEF-2) ====\n");
+    printf("     delivery LIGHT_DARK_THRESHOLD_CODE = %d (%s)\n",
+           THRESH_CODE, THRESH_CODE == 0 ? "criterion DISABLED" : "criterion ENABLED");
+    mock_adc.isr_get = isr_get;
 
     /* ---- T1: init configures PB05 output / PB04 analog and the ADC ---- */
     printf("[T1] light_init pin ownership and ADC configuration\n");
@@ -112,12 +121,13 @@ int main(void)
     CHECK(adc_cfg.ADC_ConvertMode == ADC_ConvertMode_Once, "single conversion mode");
     CHECK(adc_enabled == 0, "ADC left disabled after init");
 
-    /* ---- T2: LIT sample sequence ---- */
-    printf("[T2] sample with bright reading (LIT)\n");
+    /* ---- T2: sampling sequence with a valid reading ---- */
+    printf("[T2] sampling sequence and delivery-configured validity gate\n");
     log_reset(); script_const(100, LIGHT_ADC_SAMPLES);
-    bool dark = light_sample();
-    CHECK(dark == false, "code=100 -> LIT (false)");
-    CHECK(light_last_code() == 100, "averaged code exposed as 100");
+    light_result_t r = light_sample();
+    CHECK(r.adc_ok == true && r.samples_ok == LIGHT_ADC_SAMPLES, "all 8 conversions succeed");
+    CHECK(r.mean_adc_code == 100u && r.code_min == 100u && r.code_max == 100u,
+          "mean/min/max of the scripted burst = 100");
     CHECK(pb05_sets() == 1 && pb05_resets() == 1, "exactly one PB05 high and one PB05 low per sample");
     CHECK(first_write_is_pb05_high(), "PB05 raised BEFORE sampling");
     CHECK(last_write_is_pb05_low(), "PB05 lowered AFTER sampling");
@@ -126,55 +136,52 @@ int main(void)
     CHECK(conv_calls == LIGHT_ADC_SAMPLES, "exactly LIGHT_ADC_SAMPLES(8) conversions per sample");
     CHECK(adc_enable_calls == 1 && adc_disable_calls == 1, "ADC enabled then disabled around the burst");
     CHECK(adc_enabled == 0, "ADC disabled after the burst");
+    if (THRESH_CODE == 0) {
+        CHECK(r.valid == false && r.dark == false,
+              "T=0: adc_ok sample is NOT valid and NOT dark (criterion disabled)");
+    } else {
+        CHECK(r.valid == true && r.dark == (r.mean_adc_code >= (uint16_t)THRESH_CODE),
+              "T!=0: valid=true and dark follows mean >= T");
+    }
 
-    /* ---- T3: DARK sample ---- */
-    printf("[T3] sample with dark reading (DARK)\n");
-    log_reset(); script_const(400, LIGHT_ADC_SAMPLES);
-    dark = light_sample();
-    CHECK(dark == true, "code=400 (>= ENTER 350) -> DARK");
-    CHECK(light_last_code() == 400, "averaged code 400");
-
-    /* ---- T4: averaging of multiple samples ---- */
-    printf("[T4] arithmetic mean of the burst\n");
+    /* ---- T3: arithmetic mean and min/max over the burst ---- */
+    printf("[T3] arithmetic mean / min / max of the burst\n");
     { const int v[8] = {0,4095,0,4095,0,4095,0,4095};
       log_reset(); script_set(v, LIGHT_ADC_SAMPLES);
-      dark = light_sample();
-      CHECK(light_last_code() == 2047, "mean of 4x0 + 4x4095 = 2047 (integer)");
-      CHECK(dark == true, "decision uses the mean (2047 >= 350 -> DARK)");
-      CHECK(conv_calls == 8, "all 8 samples used"); }
+      r = light_sample();
+      CHECK(r.adc_ok && r.samples_ok == 8, "all 8 conversions used");
+      CHECK(r.mean_adc_code == 2047u, "mean of 4x0 + 4x4095 = 2047 (integer)");
+      CHECK(r.code_min == 0u && r.code_max == 4095u, "min/max come from the successful samples");
+      if (THRESH_CODE != 0) {
+          CHECK(r.dark == (2047u >= (uint16_t)THRESH_CODE), "decision uses the mean, threshold form");
+      } else {
+          CHECK(r.valid == false && r.dark == false, "T=0 stays not-valid/not-dark regardless of mean");
+      } }
 
-    /* ---- T5: hysteresis state machine through light_sample ---- */
-    printf("[T5] hysteresis across successive samples\n");
-    light_reset_state();
-    log_reset(); script_const(400, 8);
-    CHECK(light_sample() == true, "reset -> first sample 400 -> DARK");
-    log_reset(); script_const(300, 8);
-    CHECK(light_sample() == true, "DARK then code=300 (inside band) stays DARK");
-    log_reset(); script_const(250, 8);
-    CHECK(light_sample() == false, "code=250 (<= EXIT) turns LIT");
-    log_reset(); script_const(300, 8);
-    CHECK(light_sample() == false, "LIT then code=300 (< ENTER) stays LIT");
-    log_reset(); script_const(350, 8);
-    CHECK(light_sample() == true, "code=350 (= ENTER) turns DARK");
-    log_reset(); script_const(349, 8);
-    CHECK(light_sample() == true, "code=349 (> EXIT) stays DARK");
-
-    /* ---- T6: partial conversion timeout -> average of successful only ---- */
-    printf("[T6] partial EOC timeout\n");
+    /* ---- T4: partial conversion timeout -> average of successful only ---- */
+    printf("[T4] partial EOC timeout\n");
     { const int v[8] = {-1,-1,1000,1000,1000,1000,1000,1000};
-      light_reset_state();
       log_reset(); script_set(v, 8);
-      dark = light_sample();
-      CHECK(light_last_code() == 1000, "average over the 6 successful conversions only");
-      CHECK(dark == true, "decision from the successful average");
-      CHECK(conv_calls == 8, "a conversion was attempted for every slot"); }
+      r = light_sample();
+      CHECK(r.adc_ok == true && r.samples_ok == 6u, "6 successful samples recorded (not 8)");
+      CHECK(r.mean_adc_code == 1000u, "average over the successful conversions only");
+      CHECK(r.code_min == 1000u && r.code_max == 1000u, "min/max from the successful samples");
+      CHECK(conv_calls == 8, "a conversion was attempted for every slot");
+      CHECK(last_write_is_pb05_low() && adc_enabled == 0, "PB05/ADC restored on the partial-failure path");
+      if (THRESH_CODE == 0) {
+          CHECK(r.valid == false && r.dark == false, "T=0 keeps the gate closed");
+      } else {
+          CHECK(r.valid == true && r.dark == (1000u >= (uint16_t)THRESH_CODE), "threshold applied to the mean");
+      } }
 
-    /* ---- T7: all conversions time out -> full scale -> DARK, bounded ---- */
-    printf("[T7] all EOC timeouts (open/failed divider)\n");
+    /* ---- T5: all conversions time out -> no full-scale synthesis, bounded ---- */
+    printf("[T5] all EOC timeouts (open/failed divider)\n");
     log_reset(); script_const(-1, 8);
-    dark = light_sample();
-    CHECK(dark == true, "all-timeout falls back to full scale -> DARK (tends to report, never blocks)");
-    CHECK(light_last_code() == LIGHT_ADC_FULL_SCALE, "fallback code = 4095");
+    r = light_sample();
+    CHECK(r.adc_ok == false && r.samples_ok == 0u, "no successful conversion");
+    CHECK(r.mean_adc_code == 0u && r.code_min == 0u && r.code_max == 0u,
+          "mean/min/max stay 0 (no 4095 full-scale synthesis)");
+    CHECK(r.valid == false && r.dark == false, "invalid sample is never valid/dark");
     CHECK(last_write_is_pb05_low(), "PB05 still lowered on the failure path");
     CHECK(adc_enabled == 0, "ADC disabled on the failure path");
     printf("    poll count = %lu (bounded guard, %lu..%lu expected)\n",
@@ -185,20 +192,30 @@ int main(void)
           isr_poll_count <= (uint32_t)LIGHT_ADC_SAMPLES * (LIGHT_ADC_EOC_GUARD + 1u),
           "polling is bounded by LIGHT_ADC_EOC_GUARD per conversion (no infinite wait)");
 
-    /* ---- T8: light_reset_state clears the hysteresis state ---- */
-    printf("[T8] light_reset_state\n");
-    light_reset_state();
-    log_reset(); script_const(300, 8);
-    CHECK(light_sample() == false, "after reset the first sample uses the ENTER threshold (300 -> LIT)");
-    log_reset(); script_const(350, 8);
-    CHECK(light_sample() == true, "then 350 -> DARK");
-
-    /* ---- T9: direct truth table on the real pure function ---- */
-    printf("[T9] light_code_is_dark truth table\n");
-    CHECK(light_code_is_dark(0u, false) == false && light_code_is_dark(349u, false) == false, "LIT: 0/349 -> LIT");
-    CHECK(light_code_is_dark(350u, false) == true && light_code_is_dark(4095u, false) == true, "LIT: 350/4095 -> DARK");
-    CHECK(light_code_is_dark(251u, true) == true && light_code_is_dark(250u, true) == false, "DARK: 251 stays / 250 turns LIT");
-    CHECK(light_code_is_dark(300u, true) == true && light_code_is_dark(300u, false) == false, "inside band keeps previous state");
+    /* ---- T6: stateless per-sample decision (no hysteresis / no history) ---- */
+    printf("[T6] stateless decision across successive samples\n");
+    if (THRESH_CODE != 0) {
+        log_reset(); script_const((int)THRESH_CODE, 8);
+        r = light_sample();
+        CHECK(r.valid && r.dark, "mean == T -> dark (equality counts)");
+        log_reset(); script_const((int)THRESH_CODE - 1, 8);
+        r = light_sample();
+        CHECK(r.valid && !r.dark, "mean == T-1 -> lit");
+        log_reset(); script_const((int)THRESH_CODE - 1, 8);
+        r = light_sample();
+        CHECK(r.valid && !r.dark, "repeating an in-band value never latches a previous state");
+        log_reset(); script_const((int)THRESH_CODE, 8);
+        r = light_sample();
+        CHECK(r.valid && r.dark, "repeating T -> dark again (per-sample, no history)");
+    } else {
+        log_reset(); script_const(4095, 8);
+        r = light_sample();
+        CHECK(r.dark == false, "T=0: full-scale mean is still not dark (disabled criterion)");
+        log_reset(); script_const(0, 8);
+        r = light_sample();
+        CHECK(r.dark == false, "T=0: zero mean is still not dark");
+        CHECK(r.adc_ok == true && r.samples_ok == 8, "conversions still recorded when the criterion is disabled");
+    }
 
     printf("==== result: %d passed, %d failed ====\n", pass, fail);
     return fail ? 1 : 0;

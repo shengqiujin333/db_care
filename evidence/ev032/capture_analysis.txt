@@ -1,0 +1,45 @@
+=== COM43 cycles (raw bytes, 9600 8N1) ===
+cap01_k3.cap: 78 bytes md5=4685325b5faef1bb4301b9b1b61623f4
+  hex: 53206b3d3320703d32383320483d3120563d30206f3d38206e3d3339383520783d3339393220613d3339383820443d3020743d32363920683d33333920713d3120723d3020733d3020793d300d0a
+  OK  line 78 B: S k=3 p=283 H=1 V=0 o=8 n=3985 x=3992 a=3988 D=0 t=269 h=339 q=1 r=0 s=0 y=0
+cap02_k6_k9.cap: 156 bytes md5=1f1005798942b4055eb1fe0d0423592a
+  hex: 53206b3d3620703d32363920483d3120563d30206f3d38206e3d3339383320783d3339393420613d3339383720443d3020743d32363620683d33343320713d3120723d3020733d3020793d300d0a53206b3d3920703d32363620483d3120563d30206f3d38206e3d3339383220783d3339393220613d3339383620443d3020743d32353820683d33353420713d3120723d3020733d3020793d300d0a
+  OK  line 78 B: S k=6 p=269 H=1 V=0 o=8 n=3983 x=3994 a=3987 D=0 t=266 h=343 q=1 r=0 s=0 y=0
+  OK  line 78 B: S k=9 p=266 H=1 V=0 o=8 n=3982 x=3992 a=3986 D=0 t=258 h=354 q=1 r=0 s=0 y=0
+cap03_k15_k18.cap: 158 bytes md5=f77dd859cb16b9b8c02118c3bf0c4a1b
+  hex: 53206b3d313520703d32363820483d3120563d30206f3d38206e3d3339383120783d3339383920613d3339383420443d3020743d32353320683d33353420713d3120723d3020733d3020793d300d0a53206b3d313820703d32353320483d3120563d30206f3d38206e3d3339383020783d3339383820613d3339383420443d3020743d32353220683d33363020713d3120723d3020733d3020793d300d0a
+  OK  line 79 B: S k=15 p=268 H=1 V=0 o=8 n=3981 x=3989 a=3984 D=0 t=253 h=354 q=1 r=0 s=0 y=0
+  OK  line 79 B: S k=18 p=253 H=1 V=0 o=8 n=3980 x=3988 a=3984 D=0 t=252 h=360 q=1 r=0 s=0 y=0
+
+=== per-cycle checks ===
+k=3: PASS q==1, V==0 (criterion disabled), D==0 (criterion disabled), o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0 (no report), k multiple of 3
+k=6: PASS q==1, V==0 (criterion disabled), D==0 (criterion disabled), o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0 (no report), k multiple of 3
+k=9: PASS q==1, V==0 (criterion disabled), D==0 (criterion disabled), o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0 (no report), k multiple of 3
+k=15: PASS q==1, V==0 (criterion disabled), D==0 (criterion disabled), o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0 (no report), k multiple of 3
+k=18: PASS q==1, V==0 (criterion disabled), D==0 (criterion disabled), o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0 (no report), k multiple of 3
+
+=== cadence / previous-sample chain ===
+k sequence: [3, 6, 9, 15, 18]
+p(k=6)=269 vs t(k=3)=269: MATCH
+p(k=6)=269 vs t(k=6)=266: differs (F-1)
+p(k=9)=266 vs t(k=6)=266: MATCH
+p(k=9)=266 vs t(k=9)=258: differs (F-1)
+p(k=18)=253 vs t(k=15)=253: MATCH
+p(k=18)=253 vs t(k=18)=252: differs (F-1)
+consecutive k triple: [3, 6, 9] -> PASS
+next captured k: [15, 18] (gaps are unobserved windows, not missing samples)
+light raw a range: [3988, 3987, 3986, 3984, 3984] (recorded only; no light/temperature stimulus applied)
+
+=== bit-level I2C decode (fx2lafw conn=2.32, D0=SCL, D1=SDA, 4 MS/s) ===
+address writes: ['Address write: 44']
+command writes: ['Data write: FD']
+address reads : ['Address read: 44']
+data bytes    : ['Data read: 69', 'Data read: 15', 'Data read: A1', 'Data read: 51', 'Data read: 8C', 'Data read: 95']
+starts=2 stops=2 acks=8 nacks=1
+raw: 69 15 A1 51 8C 95
+temp word 0x6915: crc calc 0xA1 == received 0xA1 -> MATCH; 268 x10 = 26.8 C
+hum  word 0x518C: crc calc 0x95 == received 0x95 -> MATCH; 338 x10 = 33.8 %RH
+write START->STOP      : 12.051 ms
+cmd STOP->read START   : 32.531 ms
+read START->STOP       : 40.165 ms
+SCL bit interval       : 614.25 us (nominal)
