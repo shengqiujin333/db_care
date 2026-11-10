@@ -1,0 +1,158 @@
+> Task :app:clean
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:dataBindingMergeDependencyArtifactsDebug
+> Task :app:generateDebugResValues
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:mergeDebugResources
+> Task :app:checkDebugAarMetadata
+> Task :app:mapDebugSourceSetPaths
+> Task :app:parseDebugLocalResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:dataBindingGenBaseClassesDebug
+> Task :app:extractDeepLinksDebug
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:javaPreCompileDebug
+> Task :app:mergeDebugShaders
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:validateSigningDebug
+> Task :app:checkDebugDuplicateClasses
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeLibDexDebug
+> Task :app:buildKotlinToolingMetadata
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:dataBindingMergeDependencyArtifactsRelease
+> Task :app:generateReleaseResValues
+> Task :app:generateReleaseResources
+> Task :app:processDebugResources
+> Task :app:packageReleaseResources
+> Task :app:mergeReleaseResources
+> Task :app:checkReleaseAarMetadata
+> Task :app:parseReleaseLocalResources
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:dataBindingGenBaseClassesRelease
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:javaPreCompileRelease
+> Task :app:extractProguardFiles
+> Task :app:mergeReleaseJniLibFolders
+> Task :app:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:stripReleaseDebugSymbols NO-SOURCE
+> Task :app:extractReleaseNativeSymbolTables NO-SOURCE
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:desugarReleaseFileDependencies
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:mergeReleaseArtProfile
+> Task :app:mergeExtDexDebug
+
+> Task :app:compileDebugKotlin
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt:122:42 Type mismatch: inferred type is Nothing? but String was expected
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:393:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:429:54 Destructured parameter '_name' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:775:17 Variable 'closed' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:776:33 Variable 'negotiatedMtu' initializer is redundant
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:876:34 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt:248:21 Variable 'rowId' initializer is redundant
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt:63:23 Parameter 'context' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardFragment.kt:63:13 Variable 'dashboardViewModel' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt:66:13 Variable 'notificationsViewModel' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeFragment.kt:351:88 Name shadowed: success
+
+> Task :app:compileDebugJavaWithJavac
+警告: [options] 源值 8 已过时，将在未来发行版中删除
+警告: [options] 目标值 8 已过时，将在未来发行版中删除
+警告: [options] 要隐藏有关已过时选项的警告, 请使用 -Xlint:-options。
+注: 某些输入文件使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+3 个警告
+
+> Task :app:processDebugJavaRes
+> Task :app:dexBuilderDebug
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :app:mergeReleaseAssets
+> Task :app:compressReleaseAssets
+> Task :app:mergeProjectDexDebug
+> Task :app:extractReleaseVersionControlInfo
+> Task :app:mergeDebugJavaResource
+> Task :app:collectReleaseDependencies
+> Task :app:mergeExtDexRelease
+> Task :app:sdkReleaseDependencyData
+> Task :app:validateSigningRelease
+> Task :app:writeReleaseAppMetadata
+> Task :app:writeReleaseSigningConfigVersions
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+> Task :app:processReleaseManifestForPackage
+> Task :app:processReleaseResources
+> Task :app:optimizeReleaseResources
+
+> Task :app:compileReleaseKotlin
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt:122:42 Type mismatch: inferred type is Nothing? but String was expected
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:393:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:429:54 Destructured parameter '_name' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:775:17 Variable 'closed' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:776:33 Variable 'negotiatedMtu' initializer is redundant
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:876:34 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt:248:21 Variable 'rowId' initializer is redundant
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt:63:23 Parameter 'context' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardFragment.kt:63:13 Variable 'dashboardViewModel' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt:66:13 Variable 'notificationsViewModel' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeFragment.kt:351:88 Name shadowed: success
+
+> Task :app:compileReleaseJavaWithJavac
+警告: [options] 源值 8 已过时，将在未来发行版中删除
+警告: [options] 目标值 8 已过时，将在未来发行版中删除
+警告: [options] 要隐藏有关已过时选项的警告, 请使用 -Xlint:-options。
+注: 某些输入文件使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+3 个警告
+
+> Task :app:generateReleaseLintVitalReportModel
+Generating lint files for backported methods only (compile API B)
+
+> Task :app:lintVitalAnalyzeRelease FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:lintVitalAnalyzeRelease'.
+> Could not resolve all files for configuration ':app:detachedConfiguration1'.
+   > Could not download lint-gradle-31.3.2.jar (com.android.tools.lint:lint-gradle:31.3.2): No cached version available for offline mode
+   > Could not download lint-31.3.2.jar (com.android.tools.lint:lint:31.3.2): No cached version available for offline mode
+   > Could not download lint-checks-31.3.2.jar (com.android.tools.lint:lint-checks:31.3.2): No cached version available for offline mode
+   > Could not download lint-api-31.3.2.jar (com.android.tools.lint:lint-api:31.3.2): No cached version available for offline mode
+   > Could not download intellij-core-31.3.2.jar (com.android.tools.external.com-intellij:intellij-core:31.3.2): No cached version available for offline mode
+   > Could not download kotlin-compiler-31.3.2.jar (com.android.tools.external.com-intellij:kotlin-compiler:31.3.2): No cached version available for offline mode
+   > Could not download uast-31.3.2.jar (com.android.tools.external.org-jetbrains:uast:31.3.2): No cached version available for offline mode
+   > Could not download groovy-3.0.10.jar (org.codehaus.groovy:groovy:3.0.10): No cached version available for offline mode
+   > Could not download kotlin-reflect-1.9.20.jar (org.jetbrains.kotlin:kotlin-reflect:1.9.20): No cached version available for offline mode
+   > Could not download kotlin-stdlib-1.9.20.jar (org.jetbrains.kotlin:kotlin-stdlib:1.9.20): No cached version available for offline mode
+   > Could not download play-sdk-proto-31.3.2.jar (com.android.tools:play-sdk-proto:31.3.2): No cached version available for offline mode
+   > Could not download httpclient-4.5.6.jar (org.apache.httpcomponents:httpclient:4.5.6): No cached version available for offline mode
+   > Could not download commons-codec-1.10.jar (commons-codec:commons-codec:1.10): No cached version available for offline mode
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 25s
+73 actionable tasks: 73 executed

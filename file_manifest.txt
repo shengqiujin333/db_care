@@ -70,6 +70,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/ | active | 实现侧影子 MCU 层（供 debug_trace.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_vdd_ev/ | active | 测试能力自建影子 MCU 层（供电轨测量 harness，mock_bgr_trim_value 替身修调值）
 artifacts/android_architecture.md | active | Android 方案设计 AA-005 rev 4.0（承接 IC-002 v4.0：BLE 权限策略、网关发现绑定、批次转发与载荷格式、网关全零占位、上传失败分类与 401 可观测、升温规则/时间注释同步、绑定 ≤9 台与 MTU/返回长度完整性守卫；含 as-built 行号证据、当前有光与固件判据未启用的数据预期、宿主机/真机验证分工与未决项交接）
+artifacts/android_build.md | active | Android 构建产物 AB-001（debug 测试候选：包名/versionCode 10/1.9、构建命令、APK SHA-256/MD5、v2 签名与 debug 证书、安装/升级说明、候选范围与 release 未产出原因）
 artifacts/android_feasibility.md | active | Android 真机/模拟环境可行性探索 AF-001（Redmi 8A Android 10/API 29 只读事实、API<31 定位权限门阻断、硬编码网关 MAC、AVD API 34 对照与差异、未证实项与最小下一步）
 artifacts/android_fix_D-AA005-1.md | active | Android 集成调试修复 FIX-AA005-1（401/403/4xx 后全局暂停自动上传；根因、改动、独立用例复验、APK 身份与未执行项）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加；AA-005 七项增量 + D-AA005-1 全局上传阻塞修复；d6fc6cd 完整交付重建）
@@ -227,6 +228,15 @@ evidence/aa005_android_recheck_20261110/recheck_ui_07_home_after_connect.xml | a
 evidence/aa005_android_recheck_20261110/recheck_ui_08_gateway_cleared.xml | active | UI 树：清除后未配置、无回退
 evidence/aa005_android_recheck_20261110/static_check_aa005.log | active | 独立静态核查原始输出（54/54 PASS，E6=PASS）
 evidence/aa005_android_recheck_20261110/test_summary.txt | active | 宿主机复验汇总（构建/APK/20 项/257 项/54 项/12 门禁/设备安装）
+evidence/android_build_20261110/ | active | Android 发布构建原始证据目录（debug 候选构建/测试/签名/身份与 release 未产出原因）
+evidence/android_build_20261110/apk_badging.txt | active | 候选 APK aapt badging（包名/versionCode 10/versionName 1.9/minSdk 26/targetSdk 34）
+evidence/android_build_20261110/apksigner_verify.txt | active | 候选 APK apksigner 验证（Verifies；v2；Android Debug 证书摘要）
+evidence/android_build_20261110/build_debug.log | active | clean assembleDebug --offline 原始输出（BUILD SUCCESSFUL）
+evidence/android_build_20261110/build_evidence.md | active | Android 构建证据 BUILD-005（源码 commit、命令、APK 摘要、签名、257 项单测、release 限制与未执行项）
+evidence/android_build_20261110/build_identity.txt | active | 构建时 commit、APK 大小/sha256/md5 与用例计数
+evidence/android_build_20261110/build_offline_debug_release_attempt.log | active | 离线同时构建 debug+release 的原始日志（debug 成功；release 因本地缓存缺 lint 依赖失败）
+evidence/android_build_20261110/static_check_for_manifest.log | active | 清单更新后独立静态核查复跑（54/54 PASS，含 H1 全部 active 路径存在）
+evidence/android_build_20261110/unit_test.log | active | 同源码全量 testDebugUnitTest --rerun-tasks 原始输出（32 套件 / 257 项 / 0 失败）
 evidence/android_fix_20261110/ | active | D-AA005-1 修复自检原始证据目录（焦点独立用例、全量单测、静态核查、12 门禁、构建与 APK 身份）
 evidence/android_fix_20261110/TEST-Aa005SevenItemVerificationTest.xml | active | 原受影响独立用例 JUnit XML 副本（20/0/0/0）
 evidence/android_fix_20261110/apk_badging.txt | active | 修复后 APK aapt badging（versionCode 10 / versionName 1.9）
