@@ -1,0 +1,58 @@
+== AA-005 独立静态核查 ==
+PASS  A1  MqtttService 不再有“仅一行 Bluetooth permission not granted 后返回”的路径
+PASS  A2  checkBluetoothPermission 直接使用权限策略（needScan=false）
+PASS  A3  isBluetoothBusy 在权限缺失时返回 false（不再伪装为 busy）
+PASS  A4  connectToBluetoothDevice 使用同一策略
+PASS  A5:sdkInt=$  权限失败日志包含 sdkInt=$
+PASS  A5:missing=$  权限失败日志包含 missing=$
+PASS  A5:needScan=false adapterEnabled=  权限失败日志包含 needScan=false adapterEnabled=
+PASS  A6  MainActivity 启动权限请求使用 connectRequestPermissions + 通知权限判定
+PASS  A7  MainActivity 不在启动路径直接请求 ACCESS_FINE_LOCATION（仅收集已授予状态与枚举映射）
+PASS  A8  网关设置页扫描权限使用 scanRequestPermissions + needScan=true 策略
+PASS  A9  Manifest 保留 ACCESS_FINE_LOCATION（既有 Wi-Fi 配网页）
+PASS  A10  Manifest 声明 BLUETOOTH_CONNECT / BLUETOOTH_SCAN
+PASS  B1  硬编码迁移默认 MAC 恰 1 处（GatewayIdentity.kt）
+PASS  B2  连接目标来自 GatewayIdentity.resolveAddress / gateway_ble_addr
+PASS  B3  GATT 目标来自变量 address，不是硬编码字面量
+PASS  B4  显式清除标记键存在且隔离于默认值
+PASS  C1  工程内无“只保留最后一笔”的转发状态变量
+PASS  C2  批次载荷构造只有一处（BleBatchForwarding.plan 调用 1 次）
+PASS  C3  MqtttService 无湿度在前的旧拼接
+PASS  C4  未连接 MQTT 时只保留最近一批（有界 1）并在连接成功后发布一次
+PASS  C5  保留既有 topic 选择分支
+PASS  D1:capacityVerdict(  MqtttService 调用 capacityVerdict(
+PASS  D1:mtuVerdict(  MqtttService 调用 mtuVerdict(
+PASS  D1:lengthVerdict(  MqtttService 调用 lengthVerdict(
+PASS  D2  onCharacteristicRead 使用实际 value.size 做 16 B 对齐判定
+PASS  D3:BINDING_CAPACITY_EXCEEDED  链路状态 BINDING_CAPACITY_EXCEEDED 可读
+PASS  D3:READ_INCOMPLETE  链路状态 READ_INCOMPLETE 可读
+PASS  D3:GATEWAY_NO_DATA  链路状态 GATEWAY_NO_DATA 可读
+PASS  D4  0xA1 写入按 MAX_DEVICES=9 明确拒绝，无 50 台静默截断
+PASS  D5  工程内无 take(50) / maxCount=50
+PASS  D6  绑定入口在达到 9 台时明确拒绝
+PASS  D7  MTU 判定通过后才 discoverServices（不足不发起读）
+PASS  D8  MTU 不足只重连一次
+PASS  E1  非注释代码中无 Authorization/Bearer
+PASS  E2  上传使用 UploadResult 详细分类
+PASS  E3  401/403/4xx 进入 park，手动重试恢复
+PASS  E4  仅一个空拦截器注入点
+PASS  E5  设置页展示阻塞原因并提供“重试上传”
+PASS  F1  versionCode=10 versionName=1.9
+PASS  F2  APK 存在，sha256=bddc698a89482e3d6f4752bb0d0fd6a58e34f9c63e93bc84307b7d41ef755b47，size=10365236
+PASS  G1  REPORT_RULE_TEXT 与冻结文本逐字一致
+PASS  G2  产品源码/布局/readme/说明书均无“较上次下降超过 0.9”
+PASS  G3  readme V1.9 变更记录已同步升温方向
+PASS  G4  SensorCadence 注释方向为升温
+PASS  G5  ApiService.SensorReading.time 注释同步接收秒语义
+PASS  G6  详情布局静态文本为升温方向
+PASS  G7  DetailPresentation 非注释代码无 lux/照度/光照/勒克斯
+PASS  G8  App 自身三条报警文案逐字保留
+PASS  H1  file_manifest.txt 全部 active 路径存在
+PASS  H2  本轮 8 个新增产品文件均已在清单登记
+PASS  I1  BLE 读取周期引用 SensorCadence.SAMPLE_PERIOD_MS
+PASS  I2  请求 MTU 240 保留
+PASS  I3  codec 仍按 devCount 消费设备块（尾部不当作设备）
+== 观察/FINDING ==
+FIND  E6  CloudUploadRepository/UploadOutbox 未读取全局阻塞状态：401 后仅 park 本批行，其余到期行仍会在下一次 triggerUpload 自动上传（实测见 Kotlin 门禁 g6_authRejected_mustPauseAllAutomaticRequests_untilManualRetry）
+== RESULT ==
+OK: 53 项检查全部通过；1 项观察

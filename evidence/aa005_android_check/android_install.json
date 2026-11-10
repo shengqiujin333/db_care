@@ -1,0 +1,29 @@
+{
+  "apk": {
+    "package": "com.jinyuni.dengbei_care",
+    "label": "爱守护",
+    "version_code": 10,
+    "version_name": "1.9",
+    "sha256": "bddc698a89482e3d6f4752bb0d0fd6a58e34f9c63e93bc84307b7d41ef755b47"
+  },
+  "events": [
+    {
+      "stage": "starting"
+    },
+    {
+      "stage": "confirmation_clicked",
+      "selector": {
+        "packageName": "com.miui.securitycenter",
+        "text": "继续安装",
+        "resourceId": "android:id/button2"
+      }
+    },
+    {
+      "stage": "adb_success"
+    },
+    {
+      "stage": "installed_version_verified"
+    }
+  ],
+  "verified": true
+}

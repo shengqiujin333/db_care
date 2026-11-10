@@ -1,0 +1,52 @@
+ST-AA005 continuation re-verification (same CALL, same workspace)
+UTC: 2026-11-10T13:21:38Z .. 2026-11-10T13:25Z
+Product tree: git diff 7848b99..HEAD -- dengbei_care = empty (unchanged since implementation commit)
+HEAD at re-run: f77873d
+
+[1] Focused independent host test re-run
+Command (cwd dengbei_care):
+  ./gradlew :app:testDebugUnitTest --offline --tests "com.jinyuni.dengbei_care.verification.Aa005SevenItemVerificationTest"
+
+Observed:
+  > Task :app:testDebugUnitTest FAILED
+  com.jinyuni.dengbei_care.verification.Aa005SevenItemVerificationTest >
+    g6_authRejected_mustPauseAllAutomaticRequests_untilManualRetry FAILED
+      org.junit.ComparisonFailure at Aa005SevenItemVerificationTest.kt:550
+  20 tests completed, 1 failed
+  BUILD FAILED in 3s
+
+Result: D-AA005-1 reproduces unchanged (19/20 PASS; the single FAIL is the
+"401 must pause all automatic requests" gate).
+
+[2] Independent gates re-run
+Command (cwd repo root):
+  C:/Users/kason/anaconda3/python.exe evidence/aa005_android_check/run_gates.py
+Observed: 12/12 gates EXIT=0; last line "SUMMARY: 12/12 gates passed"; runner exit 0.
+Notably software_verify_aa005_android_check.py: "OK: 53 项检查全部通过；1 项观察" (FINDING E6).
+
+[3] Source confirmation of the measured defect (read-only)
+- CloudUploadRepository.isGateOpen() (line 101) = guardActive() && phone().isNotBlank(); it never reads the
+  blocked state.
+- uploadPendingOnce() (lines 132-178) takes a due batch and calls the API with no blocked-state check.
+- AuthRejected/RequestRejected branch (lines 166-173) only parks the rows in the current batch and calls
+  gate.markUploadBlocked(...).
+Therefore a second automatic trigger requests the remaining due rows again. No blocked-state read exists in
+CloudUploadRepository.kt or UploadOutbox.kt (UploadOutbox only parks/resets rows).
+
+Conclusion unchanged: TEST_FAIL, failure_cause = MEASURED_DEFECT (D-AA005-1).
+
+[4] Device final-state check (Redmi 8A / API 29 / serial 12f046690506, online)
+- android_test devices 13:24:37Z: 12f046690506 device (model Redmi_8A).
+- android_test launch com.jinyuni.dengbei_care 13:24:41Z.
+- Navigated: 我的 (navigation_notifications) -> 网关与上传设置 (gatewayBleButton).
+  ui_dump at 13:25:15Z (saved as ui_15_continuation_final_state_cleared.xml) shows
+  "未配置网关地址\n平台身份（mac_addr）：" and "云端上传状态：无（待发 0 条）".
+- Back to 首页 (navigation_home); ui_dump at 13:26:04Z (saved as
+  ui_16_continuation_final_home_guard_stopped.xml) shows startGuardButton text "启动"
+  (guard stopped) and linkStatusText "未配置网关地址（搜索附近网关）".
+- Home key pressed 13:26:27Z; app left in background.
+This live check confirms the report's device cleanup claim (gateway address cleared, guard stopped).
+It also corrects one citation in the original section: the retained save log is
+"gateway_ble_addr saved=84:C2:E4:03:02:99" (logcat_save_clear.txt, 19:45:08), not
+"...AA:BB:CC:DD:EE:01"; the AA:BB:CC:DD:EE:01 normalized result is evidenced by ui_07.
+

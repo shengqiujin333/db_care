@@ -7,7 +7,8 @@
     （如报告建议文案，属后续项），记录为 INFO 且必须未新增。
   B chip 四状态：`DeviceCardAdapter.bindStatusChip` 恰有 未收到/紧急/警告/正常 四个 `chip.text` 赋值，
     且（配色资源 + 字色）与改动前基线逐字一致；相对基线仅允许移除“离线”分支。
-  C 提示文案：`reportHint` 两种取值都包含“按条件上报，可能长时间无上报”；未收到时温湿度仍为 `--`。
+  C 提示文案：`reportHint` 两种取值都包含“按条件上报，可能长时间无数据”（AA-005 D-30
+    将“最近上报”改为“最近读取”、未收到改为“尚未读取到数据”）；未收到时温湿度仍为 `--`。
   D 布局：`reportHint` 位于 `tempValue` 之下，`sparkline` 顶部约束指向 `reportHint`。
   E 配色资源 `colors.xml` 与基线一致。
   F 卡片/状态类不得自行推断连通性（链路状态仍由 NotificationsViewModel 表达）。
@@ -152,9 +153,9 @@ def main() -> int:
 
     print("== C 提示文案与 -- 占位 ==")
     checks = {
-        "C1 未收到提示": "尚未收到上报 · 按条件上报，可能长时间无上报" in adapter,
-        "C2 已收到提示含相对时间": "最近上报 ${state.lastReportAgeLabel()} · 按条件上报，可能长时间无上报" in adapter,
-        "C3 条件上报提示出现 >=2 次": adapter.count("按条件上报，可能长时间无上报") >= 2,
+        "C1 未收到提示": "尚未读取到数据 · 按条件上报，可能长时间无数据" in adapter,
+        "C2 已收到提示含相对时间": "最近读取 ${state.lastReportAgeLabel()} · 按条件上报，可能长时间无数据" in adapter,
+        "C3 条件上报提示出现 >=2 次": adapter.count("按条件上报，可能长时间无数据") >= 2,
         "C4 未收到时温湿度为 --（基于 isNeverReported）": '"--"' in adapter and "state.isNeverReported()" in adapter,
     }
     for k, v in checks.items():

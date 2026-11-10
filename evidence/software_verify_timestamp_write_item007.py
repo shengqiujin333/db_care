@@ -143,11 +143,27 @@ def check_source():
     print(f"  {'PASS' if ok else 'FAIL'}  currentTime = timeOverride ?: 接收时刻")
     if not ok:
         violations.append("A6: currentTime 计算不符")
-    ble_calls = re.findall(r"processTemperatureHumidityData\(devId, r\.temperatureC, r\.humidityPct\)", mqtt)
+    # AA-005：BLE 路径改为在 processBleSamples 内以显式“本次读取接收时刻”调用
+    # （与不传 timeOverride 的旧写法等价：值仍为接收时刻，不是回填时间）
+    ok_recv = "val receiveTime = System.currentTimeMillis() / 1000" in mqtt
+    print(f"  {'PASS' if ok_recv else 'FAIL'}  BLE 批次接收时刻 = System.currentTimeMillis()/1000")
+    if not ok_recv:
+        violations.append("A6: BLE 接收时刻计算不符")
+    ble_calls = re.findall(
+        r"processTemperatureHumidityData\(\s*reading\.devId,\s*reading\.temperatureC,\s*reading\.humidityPct,\s*receiveTime\s*\)",
+        mqtt)
     ok_ble = len(ble_calls) >= 1
-    print(f"  {'PASS' if ok_ble else 'FAIL'}  BLE 调用不传 timeOverride（命中 {len(ble_calls)} 处）")
+    print(f"  {'PASS' if ok_ble else 'FAIL'}  BLE 调用使用显式接收时刻 receiveTime（命中 {len(ble_calls)} 处）")
     if not ok_ble:
-        violations.append("A6: BLE 调用点未找到/传了 timeOverride")
+        violations.append("A6: BLE 调用点未使用接收时刻")
+    # BLE 路径不得出现按固定间隔回填（60 s 类偏移）
+    ble_block = mqtt[mqtt.find("private fun processBleSamples"):]
+    ble_block = ble_block[:ble_block.find("\n    /** 平台身份")]
+    if re.search(r"receiveTime\s*[-+]\s*\d+\s*\*", ble_block) or "* 60" in ble_block:
+        print("  FAIL  BLE 接收时刻被回填偏移")
+        violations.append("A6: BLE 接收时刻存在回填偏移")
+    else:
+        print("  PASS  BLE 接收时刻无固定间隔回填")
     ok_mqtt = "processTemperatureHumidityData(\n                                            r.devId, r.temperature, r.humidity, batch.timeSeconds\n                                        )" in mqtt or \
               re.search(r"processTemperatureHumidityData\(\s*r\.devId,\s*r\.temperature,\s*r\.humidity,\s*batch\.timeSeconds\s*\)", mqtt) is not None
     print(f"  {'PASS' if ok_mqtt else 'FAIL'}  MQTT 调用传 payload 首段时间 batch.timeSeconds")

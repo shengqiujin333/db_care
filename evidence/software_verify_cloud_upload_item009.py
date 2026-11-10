@@ -115,7 +115,9 @@ def check(repo, outbox, mqtt):
 
     print("== D 失败与并发 ==")
     checks2 = {
-        "D1 api.upload 包 try/catch": "try {\n                api.upload(payload)" in repo,
+        # AA-005：改为 uploadDetailed（返回 UploadResult 四分类），仍须包 try/catch
+        "D1 api.uploadDetailed 包 try/catch":
+            "try {\n                api.uploadDetailed(payload)" in repo,
         "D2 Mutex.tryLock": "mutex.tryLock()" in repo,
         "D3 finally unlock": "finally {\n            mutex.unlock()" in repo,
         "D4 独立作用域 SupervisorJob + Dispatchers.IO":
@@ -149,8 +151,11 @@ def check(repo, outbox, mqtt):
     print("== F 生产客户端与门控键 ==")
     checks3 = {
         "F1 基址取自 CloudConfig.HTTP_BASE_URL": "baseUrl(CloudConfig.HTTP_BASE_URL)" in repo,
-        "F2 RetrofitUploadApi 用 uploadData + isSuccessful":
-            "apiService.uploadData(data).isSuccessful" in repo,
+        # AA-005：不再使用 isSuccessful，而由 UploadResult.fromHttp 分类（不猜测响应体）
+        "F2 RetrofitUploadApi 用 uploadData + UploadResult.fromHttp":
+            "apiService.uploadData(data)" in repo and
+            "UploadResult.fromHttp(response.code())" in repo and
+            "isSuccessful" not in repo,
         "F3 门控键 measure_state/stopping": '"measure_state"' in repo and '"stopping"' in repo,
         "F4 手机号键 registerphone": '"registerphone"' in repo,
         "F5 网关 MAC 键 mac_addr": '"mac_addr"' in repo,

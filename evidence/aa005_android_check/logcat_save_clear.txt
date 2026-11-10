@@ -1,0 +1,12 @@
+--------- beginning of main
+--------- beginning of system
+11-10 19:45:08.283 23299 23299 I GatewayBleSettings: gateway_ble_addr saved=84:C2:E4:03:02:99 (platform mac_addr untouched)
+11-10 19:45:08.337 23299 23913 I MqttService: BLE connect blocked: reason=BLUETOOTH_OFF sdkInt=29 missing=[] needScan=false adapterEnabled=false
+11-10 19:45:08.337 23299 23913 I MqttService: link_state=BLUETOOTH_OFF msg=蓝牙未开启（去开启）
+11-10 19:45:08.362 23299 23299 I Toast   : Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+=== after clear ===
+--------- beginning of main
+11-10 19:45:25.736 23299 23913 I MqttService: BLE connect blocked: reason=BLUETOOTH_OFF sdkInt=29 missing=[] needScan=false adapterEnabled=false
+11-10 19:45:25.737 23299 23913 I MqttService: link_state=BLUETOOTH_OFF msg=蓝牙未开启（去开启）
+--------- beginning of system
+11-10 19:45:25.759 23299 23299 I Toast   : Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care

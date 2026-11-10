@@ -30,7 +30,8 @@ LAYOUT_REL = f"{APP}/res/layout/fragment_device_detail.xml"
 BASELINE = "f6d26dc"  # 本项实现前的提交
 
 EXPECTED_RULE = (
-    "采样周期 3 分钟。仅当温度较上次下降超过 0.9℃且无光，或温度超过 35.0℃ 时才上报；"
+    # AA-005 G-4 / D-22：方向修正为“升高”（原 1.8 文案误写为“下降”）
+    "采样周期 3 分钟。仅当温度较上次升高超过 0.9℃且无光，或温度超过 35.0℃ 时才上报；"
     "未满足条件时不会上报，因此可能长时间没有新数据。"
 )
 
@@ -92,7 +93,7 @@ def main() -> int:
         for l in wuguang_lines:
             print("    " + l.strip()[:110])
         violations.append(f"A: “无光”出现位置异常（{len(wuguang_lines)} 处）")
-    for inf in ("因下降", "因为温度", "由于温度", "上报原因", "推测", "触发上报的原因"):
+    for inf in ("因下降", "因升高", "因为温度", "由于温度", "上报原因", "推测", "触发上报的原因"):
         n = len(re.findall(inf, detail_ui))
         ok = n == 0
         print(f"  {'PASS' if ok else 'FAIL'}  无推断结论词「{inf}」= {n}")

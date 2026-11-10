@@ -1,0 +1,37 @@
+EXIT=0  evidence/software_static_check_no_little_endian_parser.py
+    OK: 小端解析入口已从 Android 源工程移除；在用入口只经 GatewayFrameCodec
+
+EXIT=0  evidence/software_static_check_server_migration.py
+    OK: 服务器地址已切换并集中；旧主机不再作为连接目标；明文放行集合精确；兼容面未变
+
+EXIT=0  evidence/software_verify_db_migration_item006.py
+    OK: v3 schema/迁移语句与既有结构不变均成立；迁移语义（保数据/幂等/回退/v1→v3）在宿主 SQLite 通过
+
+EXIT=0  evidence/software_verify_upload_payload_item008.py
+    OK: 既有端点/数据类未变、新 DTO 契约正确、单位仅一次换算、UploadPayload 纯逻辑且空集不请求
+
+EXIT=0  evidence/software_verify_cloud_upload_item009.py
+    OK: 参数集中、SQL 幂等/到期/排序正确、门控优先、失败与并发受控、未接线且客户端契约正确
+
+EXIT=0  evidence/software_verify_timestamp_write_item007.py
+    OK: 单条真实时间戳写入、幂等、门控与入口时间语义均成立（宿主 SQL 执行验证通过）
+
+EXIT=0  evidence/software_verify_orchestration_item010.py
+    OK
+
+EXIT=0  evidence/software_verify_card_status_item011.py
+    OK: 旧离线判定清零、chip 四状态与配色不变、提示与 -- 占位正确、布局接线正确
+
+EXIT=0  evidence/software_verify_detail_presentation_item012.py
+    OK: 规则文案一致且无光照/推断信息、范围 24h、高温强调严格 >35.0、只读呈现且不参与判定
+
+EXIT=0  evidence/software_verify_report_wording_item013.py
+    OK: 新文案到位、旧文案清零、统计结构与阈值及 DailyReportWorker/DailyStats/SQL 均未改动
+
+EXIT=0  evidence/software_verify_release_item014.py
+    OK: 版本递增已落地到产物；文档与实现交叉一致且旧口径清零；file_manifest 完整
+
+EXIT=0  evidence/software_verify_aa005_android_check.py
+  OK: 53 项检查全部通过；1 项观察
+
+SUMMARY: 12/12 gates passed

@@ -140,7 +140,7 @@ dengbei_care/app/src/main/res/layout/fragment_device_detail.xml | active | 由 a
 dengbei_care/app/src/main/res/layout/fragment_home.xml | active | 由 android_engineer 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/layout/fragment_notifications.xml | active | 由 android_engineer 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/layout/item_device_card.xml | active | 由 android_engineer 新增或修改的项目相关文件
-dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ | active | 宿主机 JUnit 自检（cloud/、db/、protocol/、report/、telemetry/、ui/）与 verification/ 下软件独立验证用例（ITEM-001..014）
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ | active | 宿主机 JUnit 自检（cloud/、db/、protocol/、report/、telemetry/、ui/）与 verification/ 下软件独立验证用例（既有 ITEM-001..014 + AA-005 七项增量 Aa005SevenItemVerificationTest 20 项）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicyTest.kt | active | 权限策略 SDK 矩阵自检（直连/扫描、授予/拒绝、适配器/定位）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadFailureClassificationTest.kt | active | 401/403/4xx 阻塞、不自动重试、手动重试恢复自检
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadResultTest.kt | active | 上传状态/异常分类矩阵自检
@@ -149,6 +149,7 @@ dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuar
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwardingTest.kt | active | 批次载荷逐字与全部拒绝分支自检
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleObservationTest.kt | active | 占位与合法 0.0/0.0 分类自检
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt | active | 由 android_engineer 新增或修改的项目相关文件
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/Aa005SevenItemVerificationTest.kt | active | 软件测试独立验证（AA-005 七项增量）：权限矩阵/网关身份/批次转发/观测占位与 x10/上传四分类与“401 后全局暂停自动重试”门禁/容量与完整性/规则文案，共 20 项
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt | active | 由 android_engineer 新增或修改的项目相关文件
 dengbei_care/build.gradle.kts | active | 工程级 Gradle 脚本
 dengbei_care/codegraph.json | active | ?????Android ???? iOS ?????????????????
@@ -161,6 +162,38 @@ dengbei_care/readme.txt | active | Android 版本变更记录（最新 V1.9：�
 dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.9：升温规则、权限说明、网关与上传设置）
+evidence/aa005_android_check/ | active | AA-005 软件验证原始证据目录：20 项独立 JUnit 结果与失败 XML、全量 255 项日志、静态/12 门禁汇总、repro 运行器、Redmi 8A 真机安装结果/UI 树/截图/logcat/权限与版本快照、ST-AA005 报告正文、同一工作区续跑复核记录（continuation_rerun_20261110.txt）
+evidence/aa005_android_check/ST-AA005_section.md | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/TEST-com.jinyuni.dengbei_care.verification.Aa005SevenItemVerificationTest.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/android_install.json | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/assemble_debug.log | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/continuation_rerun_20261110.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/device_identity.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/gates_summary.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/logcat_app.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/logcat_save_clear.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/package_dump.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/package_dump_final.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/run_gates.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/screen_gateway_settings.png | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/static_check.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_01_privacy_dialog.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_02_home_initial.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_03_home_guard_started.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_04_my_page.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_05_gateway_settings_default.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_06_gateway_invalid_rejected.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_07_gateway_saved_bound.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_08_gateway_cleared.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_09_home_link_status_bluetooth_off.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_10_scan_location_permission.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_11_after_deny.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_12_second_permission_dialog.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_13_gateway_saved_after_clear_test.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_14_final_home_guard_stopped.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_15_continuation_final_state_cleared.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/ui_16_continuation_final_home_guard_stopped.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/aa005_android_check/unit_test_full.log | active | 由 software_tester 新增或修改的项目相关文件
 evidence/android_impl_20261110/ | active | AA-005 七项增量实现自检原始证据目录（单测/构建/编译/静态核查日志与 APK 身份）
 evidence/android_impl_20261110/apk_badging.txt | active | aapt dump badging 原始输出（versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34）
 evidence/android_impl_20261110/apk_identity.txt | active | APK 大小与 sha256/md5、构建命令
@@ -614,8 +647,14 @@ evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
 evidence/software_static_check_server_migration.py | active | 可复跑静态核查（ITEM-004：服务器常量/旧主机分布/XML 放行/兼容面）
-evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）
-evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；退出码 0/1）
+evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）；置底 ST-AA005：AA-005 七项增量 + 当前候选整体核验，TEST_FAIL（缺陷 D-AA005-1：401 后未全局暂停自动上传）
+evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；已按 AA-005 已批准变更同步期望；退出码 0/1）
+evidence/software_verify_aa005_android_check.py | active | AA-005 七项增量独立静态核查（54 项：权限/MAC 单一来源/旧状态清零/容量与完整性接线/上传分类与阻塞/规则文案/版本/清单；退出码 0/1；含 FINDING E6）
+evidence/software_verify_card_status_item011.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/software_verify_cloud_upload_item009.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/software_verify_detail_presentation_item012.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/software_verify_release_item014.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/software_verify_timestamp_write_item007.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/test.md | active | 嵌入式验证证据 EV-030（当前轮，置顶）：TEST_FAIL（整体）— 连续 3 周期 q=1、位级 I²C 双 CRC 匹配、首样本 H=0 p=0、宿主 218+498 项 0 失败；T4-01 上电五行/uid、T5 双态标定、T4-03 失败路径、触发/跨链路、功耗未满足；EV-028 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-030 置顶，EV-029/EV-027/EV-025/EV-023/EV-021 原文保留）：EV-030 完整交付 TEST_FAIL 复核——同一镜像新增 2 周期 q=1、F-1 保持；剩余为上电段采集编排（串口/下载串行、pyocd 未登记授权）、光敏双态/标定、升温与跨链路刺激、功耗仪器；未见新固件功能缺陷（仅归因，不代表整体通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
