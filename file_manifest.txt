@@ -92,7 +92,7 @@ artifacts/interface_contract.md | active | 接口契约 IC-002 v3.0（升温 >0.
 artifacts/software_e2e_plan.md | active | 软件端到端测试计划 E2E-SW-004 rev 3.0（AA-004 六项增量：权限/发现/真实批次/占位与0.0/完整交付/既有服务复用与真实上传幂等回读/401阻塞与手动重试/全链路；只做计划不执行）
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-004 rev 3.0（AA-004 G-1..G-6 与 ITEM-001..006 逐条追踪、宿主机/真机/真实服务用例、环境缺口、证据边界与最终判定规则）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
-artifacts/system_analysis_current.md | active | 系统架构：2026-11-10当前需求约束、候选版本与文件摘要、EV-030/031及服务只读证据边界、Android六项增量和分阶段集成缺口分析
+artifacts/system_analysis_current.md | active | 系统架构：最新需求与旧1/3判据冲突、禁止调温调光功耗测试的当前边界、可复用候选版本及摘要、历史证据限制和后续集成缺口
 artifacts/test_design.md | active | 嵌入式测试设计 TD-002 rev 7.0（FW-REG-ASBUILT/REPORT/GXHT40、FW-T5-LIGHT、FW-DIAG-BOOT、FW-E2E-POWER 六项验收追踪矩阵与正常/异常用例、COM43 实板观测、BUS/VDD/IOTEST/IOSIG/S/G/P 判据、暗态/受光/全遮光标定门禁、fx2lafw:2.32 可选补充判别、pyocd 上电编排候选、退出准则；只做设计不执行）
 dengbei_care/ | active | Android App 工程根（Gradle/Kotlin；本轮按 readme 第 6 点同步修改）
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
@@ -559,7 +559,7 @@ evidence/triage.md | active | 嵌入式测试失败归因证据（EV-030 置顶�
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）
 gxht40.pdf | active | GXHT40 数据手册 V2.6（地址仅 0x44/0x45、命令 0xFD/0x94、CRC-8 poly 0x31/init 0xFF、换算 §7.5、t_MEAS/t_PU、VDD 1.6..5.5 V）
-readme.txt | active | 项目总说明与最新 8 点需求（GXHT40 替换、光敏分压、180 s 采样、本次较上次升温 >0.9℃ 且无光 或 >35.0℃ 才上报、全暗阈值取 1/3、同步 Android、不改网关与 iOS/硬件）
+readme.txt | active | 用户当前需求：GXHT40、光敏、180s采样、升温>0.9℃且无光或>35℃、Android与UART1；已删除旧1/3要求，当前有光且禁止安排调温调光功耗硬件测试
 sensor_hardware/ | active | 传感器硬件资料根（BOM + OrCAD 网表/器件）
 sensor_hardware/MAIN_BOARD.BOM | active | 传感器 BOM（含本次新增光敏电阻与分压电路元件）
 sensor_hardware/pstchip.dat | active | 器件引脚定义
