@@ -7,6 +7,8 @@
 |---|---|---|---|---|---|
 | 1 | 01:00:42.308–01:00:42.313 | `serial_list_ports` | `{}` | `success=true`、`exit_code=0`；COM43 = Prolific `USB VID:PID=067B:2303 LOCATION=1-9.4.2`；COM26 = `C251:F001 SER=87094109484987710672FF50`（调试器 CDC，未使用） | `serial_list_ports_3.out.txt`、`serial_list_ports_3.err.txt`（空） |
 | 2 | 01:00:48.542–01:05:28.742 | `serial_capture` | `{"port":"COM43","baudrate":9600,"duration_sec":280}` | `success=true`、`exit_code=0`、`bytes_received=162`、`stderr=""`；2 条 S 行（k=1002、k=1005） | `serial_capture_direct_280s.bin`（md5 `41f5c69eaac669b91f596354fc65b354`）、`serial_capture_direct_280s.out.json`、`serial_capture_direct_280s.err.txt`（空） |
+| 3 | 01:13:01.173–01:13:01.178 | `serial_list_ports`（rev 2） | `{}` | `success=true`、`exit_code=0`；COM43 = Prolific `067B:2303 LOCATION=1-9.4.2`（同一身份） | `serial_list_ports_4.out.txt`、`serial_list_ports_4.err.txt`（空） |
+| 4 | 01:13:11.930–01:18:12.135 | `serial_capture`（rev 2） | `{"port":"COM43","baudrate":9600,"duration_sec":300}` | `success=true`、`exit_code=0`、`bytes_received=81`、`stderr=""`；1 条 S 行（k=1017、a=3095） | `serial_capture_after_300s.bin`（md5 `8aa8af543def322667999f23de829895`）、`.out.json`、`.err.txt`（空） |
 
 `serial_capture` 工具返回原文（`serial_capture_direct_280s.out.json`）：
 
@@ -20,6 +22,14 @@
 S k=1002 p=277 H=1 V=0 o=8 n=3057 x=3066 a=3061 D=0 t=291 h=304 q=1 r=0 s=0 y=0\r\n
 S k=1005 p=291 H=1 V=0 o=8 n=3081 x=3088 a=3083 D=0 t=281 h=321 q=1 r=0 s=0 y=0\r\n
 ```
+
+rev 2 延续窗口（`serial_capture_after_300s.bin`，81 B，逐字节）：
+
+```
+S k=1017 p=278 H=1 V=0 o=8 n=3091 x=3100 a=3095 D=0 t=274 h=338 q=1 r=0 s=0 y=0\r\n
+```
+
+工具返回原文（`serial_capture_after_300s.out.json`）：`{"tool":"serial_capture","success":true,"exit_code":0,"stdout":"bytes_received=81\npreview:\nS k=1017 ... y=0\r\n","stderr":"","started_at":"2026-11-10T01:13:11.930779+00:00","finished_at":"2026-11-10T01:18:12.135177+00:00"}`。
 
 ## 未调用 / 未执行
 

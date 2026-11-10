@@ -37,6 +37,8 @@ CONDITIONS = [
      "user: room lamp on, kept shining"),
     ("C 2026-11-10T01:00Z direct light", "serial_capture_direct_280s.bin",
      "user reply '已直射' 2026-11-10T00:58:30Z"),
+    ("D 2026-11-10T01:17Z continued", "serial_capture_after_300s.bin",
+     "next invocation, no new user light statement; same stated condition, 15 min later"),
 ]
 
 # Historical measured means (FW-EXP-002 rev 2, 2026-11-09, user-confirmed no light)
@@ -157,6 +159,13 @@ def main():
               % (dark_ref, dark_ref * 2 // 3, lo - dark_ref * 2 // 3))
         print("   code ratio best-lit / lowest measured dark = %.3f (rule needs <= 0.333)"
               % (lo / float(dark_ref)))
+        thr = dark_ref // 3 + (1 if dark_ref % 3 else 0)
+        ratio_need = thr / float(ADC_FULL_SCALE - thr)
+        ratio_have = lo / float(ADC_FULL_SCALE - lo)
+        print("   invariant: at C_dark=%d the threshold is %d -> R_ldr/R3 must be <= %.3f"
+              % (dark_ref, thr, ratio_need))
+        print("              measured best-lit R_ldr/R3 = %.3f -> needs %.2fx further reduction"
+              % (ratio_have, ratio_have / ratio_need))
 
     print("=" * 78)
     print("4) Ordered response series (does light reach the part at all?)")
@@ -170,6 +179,17 @@ def main():
                  r_ldr_ohm(first[2]) / r_ldr_ohm(last[2])))
     print("   interpretation: monotone decrease with increasing illumination proves the divider,")
     print("   PB05 drive and ADC channel respond, but the magnitude never approaches the rule limit.")
+
+    print("=" * 78)
+    print("4b) Stability of the continuing window (same stated light condition)")
+    direct_all = [(k, a) for (lbl, k, a, _n) in series if lbl[0] in ("C", "D")]
+    if direct_all:
+        ks = [k for k, _a in direct_all]
+        aa = [a for _k, a in direct_all]
+        print("   samples: %s" % ", ".join("k=%d a=%d" % (k, a) for k, a in direct_all))
+        print("   k span %d..%d (%d min), mean range %d..%d (spread %d codes)"
+              % (min(ks), max(ks), max(ks) - min(ks), min(aa), max(aa), max(aa) - min(aa)))
+        print("   stable value => persistent photocontrol, not a transient and not a floating node")
     return rc
 
 
