@@ -1029,3 +1029,19 @@ BLE 记录布局/字节序/负温符号、AES/ECB/NoPadding 与密钥、GATT UUI
 
 原始证据：`evidence/android_fix_20261110/`；修复说明：`artifacts/android_fix_D-AA005-1.md`。
 **未执行**：真实 401/403 与 `/upload_data` 回读、真实 BLE/GATT/MTU、设备 UI（外部条件；与缺陷判定无关，保持 NOT EXECUTED）。
+
+---
+
+# 重建交付身份（android_implementation rebuild）
+
+在 D-AA005-1 修复提交 `d6fc6cd`（工作区干净）上重建完整交付，覆盖 `artifacts/android_tasks.yaml` **ITEM-001…007 全部必需行为**（含本轮修复），不是只重做最后一项：
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 构建 | `./gradlew clean :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；APK 10,365,484 B，sha256 `5fc3d21abfbf3b3f65060f58bb8f481de3f7125d0138afef73bfa9ce634ea3b2`，md5 `7dbff99cc8204d6a08dd3faa0b67e642` |
+| 版本/清单 | `aapt dump badging` | `versionCode 10 / versionName 1.9`，`minSdk 26 / targetSdk 34` |
+| 全量宿主机 | `./gradlew :app:testDebugUnitTest --offline --rerun-tasks` | **32 套件 / 257 项 / 0 失败 / 0 错误 / 0 跳过**（含独立 `Aa005SevenItemVerificationTest` 20/20） |
+| 独立静态核查 | `software_verify_aa005_android_check.py` | **54/54 PASS，0 FINDING** |
+| 独立门禁 | `aa005_android_check/run_gates.py` | **12/12 EXIT=0** |
+
+重建证据：`evidence/android_fix_20261110/rebuild_*.log` 与 `rebuild_*.txt`。交付状态：Android 侧七项增量与 D-AA005-1 修复均已在 `d6fc6cd` 交付，可交由独立软件测试复验；真实手机/网关/服务端链路与 API 31+ 权限项仍未执行（外部条件），不因本次重建自动通过。

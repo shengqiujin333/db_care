@@ -1111,3 +1111,46 @@ cd D:\mypro\beiwo2\AIP\dengbei_care
 3. **验证资产同步**：`verification/DetailPresentationItem012VerificationTest.kt` 的原字面期望为“下降”，与 AA-005 G-4 相反且会造成测试源编译失败；本次仅将字面值与禁词断言同步到“升高”，未降低断言强度，需测试能力在独立验证中复核。
 4. **上传语义**：2xx 仍只表示 HTTP 受理；401 机制未定性，未新增鉴权；真实持久化/回读不在本轮。
 5. **当前现场有光且固件无光判据未启用**：升温分支当前不触发；本轮未安排调温/改变光强/功耗测试，App 未做补偿或推断。
+
+---
+
+## AT-016 · D-AA005-1 修复与完整交付重建（commit `d6fc6cd`）
+
+对象：完整 Android 交付（AA-005 ITEM-001…007 + D-AA005-1 修复），重建时工作区干净，HEAD `d6fc6cdad4c2d6eea4ba0b28db2a02b21ea96138`。
+证据目录：`evidence/android_fix_20261110/`（`rebuild_*`）。
+
+### 1. 构建与版本
+
+```
+cd D:\mypro\beiwo2\AIP\dengbei_care
+./gradlew clean :app:assembleDebug --offline
+```
+
+| 项 | 结果 |
+|---|---|
+| 构建 | `BUILD SUCCESSFUL`（36 tasks） |
+| APK | `app/build/outputs/apk/debug/app-debug.apk`，10,365,484 B，sha256 `5fc3d21abfbf3b3f65060f58bb8f481de3f7125d0138afef73bfa9ce634ea3b2`，md5 `7dbff99cc8204d6a08dd3faa0b67e642` |
+| 身份 | `versionCode 10 / versionName 1.9`，`minSdk 26 / targetSdk 34`（aapt） |
+
+原始：`rebuild_assemble.log`、`rebuild_identity.txt`、`rebuild_apk_badging.txt`。
+
+### 2. 全量回归与独立门禁
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 全量宿主机 | `./gradlew :app:testDebugUnitTest --offline --rerun-tasks` | **32 套件 / 257 项 / 0 失败 / 0 错误 / 0 跳过**（含独立 `Aa005SevenItemVerificationTest` 20/20） |
+| 独立静态核查 | `software_verify_aa005_android_check.py` | **54/54 PASS，0 FINDING**（E6 已为 PASS） |
+| 独立门禁 | `aa005_android_check/run_gates.py` | **12/12 EXIT=0** |
+| 修复焦点 | `--tests Aa005SevenItemVerificationTest` | 20/0（原 D-AA005-1 用例已通过） |
+
+原始：`rebuild_unit_test.log`、`rebuild_static_aa005.log`、`rebuild_gates.log`。
+
+### 3. 本次修复要点（D-AA005-1）
+
+- `CloudUploadRepository`：新增会话级 `globalBlocked` 与 `isUploadBlocked()`；`AuthRejected`/`RequestRejected` 置位；`uploadPendingOnce()` 在取批/API 调用前检查（阻塞时返回 `empty`，不取行不发请求）；阻塞期 `enqueueAndUpload()` 仍入队但不触发；`retryBlockedNow()`/成功清除。
+- `PrefsUploadGate`：读取 `upload_blocked_reason`，冷启动保持暂停语义。
+- 未修改独立测试期望、门禁、协议、表结构与版本号。
+
+### 4. 未执行项
+
+真实 401/403 与 `/upload_data` 持久化回读、真实 BLE/GATT/MTU、多设备/占位/9 台真实快照、设备 UI 截图、API 31+ 权限分支均未执行（外部条件）；不得写成 PASS。本次重建不替代独立软件测试复验。

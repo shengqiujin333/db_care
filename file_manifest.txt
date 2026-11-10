@@ -72,7 +72,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 artifacts/android_architecture.md | active | Android 方案设计 AA-005 rev 4.0（承接 IC-002 v4.0：BLE 权限策略、网关发现绑定、批次转发与载荷格式、网关全零占位、上传失败分类与 401 可观测、升温规则/时间注释同步、绑定 ≤9 台与 MTU/返回长度完整性守卫；含 as-built 行号证据、当前有光与固件判据未启用的数据预期、宿主机/真机验证分工与未决项交接）
 artifacts/android_feasibility.md | active | Android 真机/模拟环境可行性探索 AF-001（Redmi 8A Android 10/API 29 只读事实、API<31 定位权限门阻断、硬编码网关 MAC、AVD API 34 对照与差异、未证实项与最小下一步）
 artifacts/android_fix_D-AA005-1.md | active | Android 集成调试修复 FIX-AA005-1（401/403/4xx 后全局暂停自动上传；根因、改动、独立用例复验、APK 身份与未执行项）
-artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加；AA-005 七项增量 + D-AA005-1 全局上传阻塞修复）
+artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加；AA-005 七项增量 + D-AA005-1 全局上传阻塞修复；d6fc6cd 完整交付重建）
 artifacts/android_tasks.yaml | active | Android 待实现任务清单（7 项：BLE 权限模型、网关身份发现与绑定、BLE 批次转发与载荷格式、观测有效性与全零占位、绑定容量 ≤9 与读取完整性、上传失败分类与 401 阻塞、升温规则文案与时间/节拍注释；按前置依赖排序）
 artifacts/backend_feasibility.md | history | 后端可行性探索 BE-EXP-002（2026-11-09 只读 SSH 实测：EMQX 5.8.0/端口/unit/6 路由/401/零业务流量；历史记录保留不改写，当前入口见 backend_feasibility_current.md）
 artifacts/backend_feasibility_current.md | active | 后端可行性探索 BE-EXP-004（2026-11-10 15:47 重新只读核验：同一 abr.py 8949B/2026-10-22 未变、21 命令/7.2 s、EMQX 5.8.0 uptime 17d9h/0 连接、6 路由 405、OPTIONS 200、POST 仍 14 条/末次 10-22、本地桩复跑逐项一致；新增网关缓存复读→同值不同秒重复行的数据语义假设；service_context 与 D1–D6；上传受理条件仍未定性）
@@ -201,6 +201,12 @@ evidence/android_fix_20261110/apk_badging.txt | active | 修复后 APK aapt badg
 evidence/android_fix_20261110/apk_identity.txt | active | 修复后 APK 大小、sha256/md5 与构建命令
 evidence/android_fix_20261110/build.log | active | clean + assembleDebug 原始输出（BUILD SUCCESSFUL）
 evidence/android_fix_20261110/gates.log | active | 12 个独立门禁原始输出（SUMMARY: 12/12 gates passed）
+evidence/android_fix_20261110/rebuild_apk_badging.txt | active | 重建后 APK aapt badging（versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34）
+evidence/android_fix_20261110/rebuild_assemble.log | active | 修复后完整交付重建（commit d6fc6cd）clean assembleDebug 原始输出（BUILD SUCCESSFUL）
+evidence/android_fix_20261110/rebuild_gates.log | active | 重建后独立门禁原始输出（12/12 EXIT=0）
+evidence/android_fix_20261110/rebuild_identity.txt | active | 重建时 commit、APK 尺寸/sha256/md5 与用例计数
+evidence/android_fix_20261110/rebuild_static_aa005.log | active | 重建后独立静态核查原始输出（54/54 PASS，0 FINDING）
+evidence/android_fix_20261110/rebuild_unit_test.log | active | 重建后全量 testDebugUnitTest --rerun-tasks 原始输出（32 套件 / 257 项 / 0 失败）
 evidence/android_fix_20261110/static_aa005.log | active | 独立静态核查原始输出（54/54 PASS，E6 → PASS）
 evidence/android_fix_20261110/test_summary.txt | active | 全量用例汇总（257/0/0/0）
 evidence/android_fix_20261110/unit_test_full.log | active | 全量 testDebugUnitTest --rerun-tasks 原始输出（32 套件 / 257 项 / 0 失败）
@@ -214,7 +220,7 @@ evidence/android_impl_20261110/static_checks.txt | active | 上述脚本输出�
 evidence/android_impl_20261110/test_summary.txt | active | JUnit XML 汇总（235 tests / 0 failures / 0 errors / 0 skipped）
 evidence/android_impl_20261110/unit_test.log | active | 首跑 testDebugUnitTest --rerun-tasks 原始输出（235/0）
 evidence/android_impl_20261110/unit_test_final.log | active | 终跑 testDebugUnitTest 原始输出（BUILD SUCCESSFUL）
-evidence/android_test.md | active | Android 实现侧自检证据 AT-002/AT-015（本轮 235 项单测、11 条基线告警、APK 身份与 A1–A14 静态核查）
+evidence/android_test.md | active | Android 实现侧自检证据 AT-002/AT-015/AT-016（本轮 235→257 项单测、基线告警、APK 身份、A1–A14 与独立静态/门禁核查）
 evidence/backend_exploration/ | active | 后端可行性探索原始证据目录（本地 Flask+SQLite 桩；对既有服务的只读 SSH 探测脚本与原始输出，仅状态/端口/日志，未写数据、未直连 DB）
 evidence/backend_exploration/http_history_counts.txt | active | 请求行 26（POST 14/GET 11）、journal 自 2026-09-25 起的原始计数
 evidence/backend_exploration/http_request_history.txt | active | 关键实测：2026-10-22T19:32:28 三次 POST /upload_data 为 401/401/200；此后至本轮无任何 POST
