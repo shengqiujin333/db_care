@@ -55,6 +55,12 @@ class CloudUploadRepository(
         fun phone(): String
         fun gatewayMac(): String
 
+        /**
+         * 是否处于“上传被拒（401/403/其他 4xx）后的全局暂停”状态。
+         * 默认 false 以保持既有伪实现兼容；生产实现读取持久化的 `upload_blocked_reason`。
+         */
+        fun isUploadBlocked(): Boolean = false
+
         /** 401/403/4xx：写入可观测阻塞状态（实现可忽略，便于伪实现） */
         fun markUploadBlocked(result: UploadResult, pendingCount: Int) {}
 
@@ -97,6 +103,16 @@ class CloudUploadRepository(
 
     private val mutex = Mutex()
 
+    /**
+     * 会话级全局阻塞：401/403/其他 4xx 被拒后置位，阻止后续自动触发继续请求，
+     * 直到用户手动重试（[retryBlockedNow]）或成功上传清除。
+     */
+    @Volatile
+    private var globalBlocked: Boolean = false
+
+    /** 全局阻塞的当前值（会话标志或持久化门控状态任一为真） */
+    fun isUploadBlocked(): Boolean = globalBlocked || gate.isUploadBlocked()
+
     /** 门控：守护中且已注册手机号；否则不入队、不发起请求（D-09） */
     fun isGateOpen(): Boolean = gate.guardActive() && gate.phone().isNotBlank()
 
@@ -118,6 +134,11 @@ class CloudUploadRepository(
         if (!enqueued) {
             Log.i(TAG, "duplicate reading ignored by outbox: devId=$devId time=$time")
         }
+        // 阻塞期间仍入队（不丢数据），但不自动触发上传；新行等待用户手动重试
+        if (isUploadBlocked()) {
+            Log.i(TAG, "upload blocked; reading queued only (no automatic upload)")
+            return enqueued
+        }
         triggerUpload()
         return enqueued
     }
@@ -131,6 +152,8 @@ class CloudUploadRepository(
      */
     suspend fun uploadPendingOnce(): UploadOutcome {
         if (!isGateOpen()) return UploadOutcome(0, 0, 0, "gate_closed")
+        // 全局阻塞：在取批和调用 API 之前返回，不取行、不发请求（AA-005 G-6 / ITEM-005）
+        if (isUploadBlocked()) return UploadOutcome(0, 0, 0, "empty")
         if (!mutex.tryLock()) return UploadOutcome(0, 0, 0, "busy")
         try {
             val batch = outbox.dueBatch(config.maxAttempts, config.batchLimit)
@@ -153,6 +176,7 @@ class CloudUploadRepository(
                 is UploadResult.Success -> {
                     batch.forEach { outbox.ack(it) }
                     val pending = outbox.pendingCount()
+                    globalBlocked = false
                     gate.markUploadSucceeded(pending)
                     Log.i(TAG, "uploaded ${batch.size} reading(s)")
                     UploadOutcome(batch.size, batch.size, 0)
@@ -166,9 +190,10 @@ class CloudUploadRepository(
                 is UploadResult.AuthRejected, is UploadResult.RequestRejected -> {
                     // 永久拒绝：不进入自动退避队列（park），保留全部行并置全局阻塞状态；
                     // 不影响 BLE/MQTT/告警/入库；用户手动重试时恢复。
+                    globalBlocked = true
                     batch.forEach { outbox.park(it, config.maxAttempts) }
                     gate.markUploadBlocked(result, outbox.pendingCount())
-                    Log.w(TAG, "upload rejected for ${batch.size} reading(s); auto-retry paused")
+                    Log.w(TAG, "upload rejected for ${batch.size} reading(s); automatic uploads paused globally")
                     UploadOutcome(batch.size, 0, batch.size, "upload_blocked")
                 }
             }
@@ -182,6 +207,7 @@ class CloudUploadRepository(
      * 并立即触发一次上传。
      */
     fun retryBlockedNow(): Job {
+        globalBlocked = false
         gate.clearUploadBlocked()
         outbox.resetForManualRetry(config.maxAttempts)
         return triggerUpload()
@@ -217,6 +243,9 @@ class PrefsUploadGate(private val prefs: SharedPreferences) : CloudUploadReposit
     override fun phone(): String = prefs.getString(KEY_REGISTER_PHONE, "").orEmpty()
 
     override fun gatewayMac(): String = prefs.getString(KEY_MAC_ADDR, "").orEmpty()
+
+    override fun isUploadBlocked(): Boolean =
+        prefs.getString(KEY_UPLOAD_BLOCKED_REASON, "").orEmpty().isNotBlank()
 
     override fun markUploadBlocked(result: UploadResult, pendingCount: Int) {
         val (reason, status) = when (result) {

@@ -999,3 +999,33 @@ BLE 记录布局/字节序/负温符号、AES/ECB/NoPadding 与密钥、GATT UUI
 5. **未新增鉴权**：401 机制仍未定性；`/upload_data` 2xx 只表示 HTTP 受理，不代表持久化。真实上传/回读属端到端阶段。
 6. **现场有光且固件判据未启用**：升温分支当前不触发，只有 >35℃ 可能上报；App 不补偿、不推断；本轮未安排调温/改变光强/功耗测试。
 7. **未安装 APK、未改设备状态**；包身份仅为本地构建产物（sha256 `bddc698a…`，见 `apk_identity.txt`）。
+
+---
+
+# D-AA005-1 修复（Android 集成调试）
+
+**来源**：`evidence/software_test.md` ST-AA005 的 `TEST_FAIL`（`failure_cause=MEASURED_DEFECT`）；`evidence/software_triage.md` 判定 `REPAIR_REQUIRED`。
+**缺陷**：401/403/其他 4xx 被拒后仅 park 当批行，`CloudUploadRepository` 不读阻塞状态，导致后续自动触发仍会发出上传请求（全局暂停缺失）。
+
+## 1. 改动
+
+| 文件 | 改动 |
+|---|---|
+| `cloud/CloudUploadRepository.kt` | `UploadGate` 新增 `isUploadBlocked(): Boolean = false`（默认值保持既有伪实现/独立测试兼容）；新增会话级 `@Volatile globalBlocked` 与 `isUploadBlocked()`；`AuthRejected`/`RequestRejected` 分支置位；`uploadPendingOnce()` 在取批与 API 调用前检查，阻塞时返回 `UploadOutcome(0,0,0,"empty")`（不取行、不请求）；`enqueueAndUpload()` 阻塞期间仍入队但不触发；`retryBlockedNow()` 清除阻塞后恢复并立即上传；成功分支清除 |
+| `PrefsUploadGate` | `isUploadBlocked()` 读取 `upload_blocked_reason` 非空（跨进程/冷启动保持暂停） |
+| `app/src/test/.../cloud/CloudUploadFailureClassificationTest.kt` | 新增 2 项实现侧回归：401 后全局停止自动请求直到手动重试；阻塞期间仍入队但不请求 |
+
+未改：独立测试 `Aa005SevenItemVerificationTest`、门禁脚本、`UploadResult`、表结构、批量/退避常量、契约、版本号。
+
+## 2. 验证（实现侧）
+
+| 检查 | 结果 |
+|---|---|
+| 原受影响独立用例（未修改） | `Aa005SevenItemVerificationTest` **20/20 PASS**（D-AA005-1 消失） |
+| 全量宿主机 | **32 套件 / 257 项 / 0 失败 / 0 错误 / 0 跳过** |
+| 独立静态核查 | `software_verify_aa005_android_check.py` **54/54 PASS，0 FINDING**（E6 → PASS） |
+| 独立门禁 | `aa005_android_check/run_gates.py` **12/12 EXIT=0** |
+| 构建 | `clean assembleDebug` 成功；APK 10,365,496 B，sha256 `db183867…`，versionCode 10 / versionName 1.9 |
+
+原始证据：`evidence/android_fix_20261110/`；修复说明：`artifacts/android_fix_D-AA005-1.md`。
+**未执行**：真实 401/403 与 `/upload_data` 回读、真实 BLE/GATT/MTU、设备 UI（外部条件；与缺陷判定无关，保持 NOT EXECUTED）。

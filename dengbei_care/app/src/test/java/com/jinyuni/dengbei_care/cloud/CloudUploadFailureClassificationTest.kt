@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -20,10 +21,13 @@ class CloudUploadFailureClassificationTest {
     private val api = FakeDetailedApi()
     private val gate = FakeGate()
 
-    private fun repo() = CloudUploadRepository(
+    private fun repo(
+        config: CloudUploadRepository.Config = CloudUploadRepository.Config()
+    ) = CloudUploadRepository(
         api = api,
         outbox = outbox,
         gate = gate,
+        config = config,
         now = { clock },
         scope = CoroutineScope(Dispatchers.Unconfined)
     )
@@ -104,6 +108,53 @@ class CloudUploadFailureClassificationTest {
         assertNull(gate.blockedReason)
         assertEquals(0, outbox.pendingCount())
         assertEquals("OK", gate.lastStatus)
+    }
+
+    /**
+     * D-AA005-1 回归：401/403/4xx 后必须**全局**暂停自动上传。
+     *
+     * 单批只覆盖 1 行时，另 1 行仍在待发箱且到期；下一次自动触发不得再请求（返回 empty，调用数不变），
+     * 直到手动重试清除阻塞。
+     */
+    @Test
+    fun globalBlocked_stopsAllAutomaticUploads_untilManualRetry() = runBlocking {
+        enqueue(10L, 11L)
+        api.detailed = UploadResult.AuthRejected(401)
+        val repository = repo(CloudUploadRepository.Config(batchLimit = 1))
+
+        val first = repository.uploadPendingOnce()
+        assertEquals("upload_blocked", first.skipped)
+        assertEquals(1, api.calls)
+        assertEquals(2, outbox.pendingCount())
+        assertTrue(repository.isUploadBlocked())
+
+        // 模拟下一次自动触发（每轮 BLE / 入队后 / 网络恢复）：不得取行、不得请求
+        clock += 200
+        val second = repository.uploadPendingOnce()
+        assertEquals("empty", second.skipped)
+        assertEquals(0, second.attempted)
+        assertEquals("401 后不得再产生自动上传请求", 1, api.calls)
+        assertEquals(2, outbox.pendingCount())
+
+        // 手动重试：解除阻塞并恢复被暂停行；单批 1 行 → 成功删除 1 行，另 1 行仍保留且不丢
+        api.detailed = UploadResult.Success
+        repository.retryBlockedNow()
+        assertEquals(1, outbox.pendingCount())
+        assertFalse(repository.isUploadBlocked())
+    }
+
+    @Test
+    fun blockedState_stillEnqueuesNewReadings_withoutAutomaticRequest() = runBlocking {
+        enqueue(10L)
+        api.detailed = UploadResult.AuthRejected(401)
+        val repository = repo(CloudUploadRepository.Config(batchLimit = 1))
+        repository.uploadPendingOnce()
+        val callsAfterBlock = api.calls
+
+        // 阻塞期间新读数仍入队（不丢数据），但不得自动触发上传
+        assertTrue(repository.enqueueAndUpload("0C118224", 12L, 26.0, 61.0))
+        assertEquals(callsAfterBlock, api.calls)
+        assertTrue(outbox.pendingCount() >= 2)
     }
 
     @Test
