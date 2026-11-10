@@ -1,0 +1,112 @@
+=== no-light definition evidence summary (design input) ===
+analysis script : evidence/firmware_design_lightdef/analyze_lightdef.py
+inputs          : committed raw UART captures only (no hardware access)
+S lines parsed  : 103 (deduplicated per directory/tick/mean/min/max;
+                  the same capture stored as .bin and .cap counts once)
+
+--- [1] samples with an externally declared light condition ---
+  firmware_exploration_current     serial_capture_20261110_0720Z.bin k=900   a=3750 n=3747 x=3757 o=8 t=236  q=1 V=0 D=0  <- same session, lighting NOT declared
+  firmware_exploration_current     serial_capture_light_210s.bin k=993   a=3514 n=3512 x=3519 o=8 t=280  q=1 V=0 D=0  <- room lamp (user: 房间灯)
+  firmware_exploration_current     serial_capture_direct_280s.bin k=1002  a=3061 n=3057 x=3066 o=8 t=291  q=1 V=0 D=0  <- direct sunlight (user: 已直射)
+  firmware_exploration_current     serial_capture_direct_280s.bin k=1005  a=3083 n=3081 x=3088 o=8 t=281  q=1 V=0 D=0  <- direct sunlight (user: 已直射)
+  firmware_exploration_current     serial_capture_after_300s.bin k=1017  a=3095 n=3091 x=3100 o=8 t=274  q=1 V=0 D=0  <- direct sunlight continuation
+
+--- [2] passive captures: per-file min/max of the light ADC mean ---
+  ev021                            run3_a.cap                   n=2  a=3677..3696  spread=19  t=231..234
+  ev021                            run3_b.cap                   n=1  a=3736..3736  spread=0  t=234..234
+  ev022                            cap01.cap                    n=1  a=3724..3724  spread=0  t=229..229
+  ev022                            cap02.cap                    n=1  a=3750..3750  spread=0  t=0..0
+  ev022                            cap03.cap                    n=2  a=3710..3743  spread=33  t=0..239
+  ev022                            cap04.cap                    n=2  a=3675..3744  spread=69  t=219..219
+  ev022                            cap05.cap                    n=1  a=3683..3683  spread=0  t=219..219
+  ev022                            cap06.cap                    n=1  a=3679..3679  spread=0  t=253..253
+  ev022                            cap07.cap                    n=2  a=3662..3669  spread=7  t=248..248
+  ev022                            cap08.cap                    n=2  a=3697..3723  spread=26  t=249..249
+  ev022                            cap09.cap                    n=1  a=3743..3743  spread=0  t=249..249
+  ev022                            cap10.cap                    n=2  a=3677..3725  spread=48  t=249..249
+  ev022                            cap11.cap                    n=2  a=3692..3692  spread=0  t=249..249
+  ev022                            cap12.cap                    n=2  a=3700..3707  spread=7  t=249..249
+  ev022                            cap13.cap                    n=1  a=3706..3706  spread=0  t=249..249
+  ev023                            capA.cap                     n=2  a=3737..3747  spread=10  t=226..226
+  ev023                            capB.cap                     n=2  a=3716..3725  spread=9  t=222..222
+  ev023                            capC.cap                     n=2  a=3692..3712  spread=20  t=222..222
+  ev024                            cap01.cap                    n=1  a=3660..3660  spread=0  t=214..214
+  ev024                            cap02.cap                    n=2  a=3665..3697  spread=32  t=203..206
+  ev024                            cap03.cap                    n=2  a=3734..3779  spread=45  t=201..201
+  ev024                            cap04.cap                    n=1  a=3809..3809  spread=0  t=208..208
+  ev024                            cap05.cap                    n=2  a=3824..3836  spread=12  t=199..201
+  ev024                            cap06.cap                    n=2  a=3844..3845  spread=1  t=198..199
+  ev024                            cap07.cap                    n=2  a=3831..3838  spread=7  t=198..202
+  ev024                            cap08.cap                    n=1  a=3839..3839  spread=0  t=198..198
+  ev024                            cap09.cap                    n=2  a=3842..3847  spread=5  t=197..197
+  ev024                            cap10.cap                    n=2  a=3848..3855  spread=7  t=198..208
+  ev024                            cap11.cap                    n=1  a=3856..3856  spread=0  t=197..197
+  ev024                            cap12.cap                    n=2  a=3093..3098  spread=5  t=216..245
+  ev024                            cap13.cap                    n=2  a=3113..3125  spread=12  t=202..218
+  ev024                            cap14.cap                    n=1  a=3128..3128  spread=0  t=201..201
+  ev024                            cap15.cap                    n=2  a=3131..3134  spread=3  t=199..200
+  ev024                            cap16.cap                    n=2  a=3132..3192  spread=60  t=221..221
+  ev025                            serial_capture_1.bin         n=2  a=3155..3155  spread=0  t=221..225
+  ev025                            serial_capture_2.bin         n=2  a=3160..3162  spread=2  t=202..204
+  ev026                            cap00_preflash_old_image.cap n=1  a=3166..3166  spread=0  t=220..220
+  ev026                            cap01_postflash_bus_k0.cap   n=1  a=3195..3195  spread=0  t=241..241
+  ev026                            cap02_k6_k9.cap              n=2  a=3183..3186  spread=3  t=206..227
+  ev026                            cap03_k12.cap                n=1  a=3184..3184  spread=0  t=217..217
+  ev026                            cap04_k18.cap                n=1  a=3194..3194  spread=0  t=205..205
+  ev026                            cap05_k21_k24.cap            n=2  a=3188..3192  spread=4  t=205..217
+  ev026                            cap06_k27_k30.cap            n=2  a=3194..3196  spread=2  t=203..203
+  ev026                            cap07_k33.cap                n=1  a=3196..3196  spread=0  t=203..203
+  ev026                            cap08_k45.cap                n=1  a=3196..3196  spread=0  t=204..204
+  ev026                            cap09_k48_k51.cap            n=2  a=3197..3199  spread=2  t=204..219
+  ev026                            cap10_k54_k57.cap            n=2  a=3198..3199  spread=1  t=205..208
+  ev027                            cap01_k75.bin                n=1  a=3197..3197  spread=0  t=225..225
+  ev027                            cap02_k84_k87.bin            n=2  a=3202..3206  spread=4  t=212..221
+  ev028                            cap01_k3_postflash.bin       n=1  a=3249..3249  spread=0  t=213..213
+  ev028                            cap02_k6_k9.bin              n=2  a=3279..3304  spread=25  t=243..250
+  ev028                            cap03_reset_bus_k0_k3.bin    n=2  a=3298..3299  spread=1  t=262..263
+  ev028                            cap04_k9_after_reset.bin     n=1  a=3221..3221  spread=0  t=241..241
+  ev028                            cap05_k18.bin                n=1  a=3335..3335  spread=0  t=242..242
+  ev029                            serial_capture_1204Z.bin     n=2  a=3732..3735  spread=3  t=272..277
+  ev030                            cap01_boot_bus_k0.cap        n=1  a=3990..3990  spread=0  t=247..247
+  ev030                            cap02_k6.cap                 n=1  a=3993..3993  spread=0  t=247..247
+  ev030                            cap03_k9_k12.cap             n=2  a=3993..3994  spread=1  t=246..247
+  ev030                            cap04_k18.cap                n=1  a=3993..3993  spread=0  t=243..243
+  ev031                            serial_capture_0852Z.bin     n=2  a=3995..3996  spread=1  t=245..246
+  firmware_exploration             serial_capture_200s.bin      n=1  a=3914..3914  spread=0  t=252..252
+  firmware_exploration             serial_capture_220s.bin      n=1  a=3915..3915  spread=0  t=249..249
+  firmware_exploration             serial_capture_dark_1522Z.bin n=1  a=3932..3932  spread=0  t=258..258
+
+--- [3] bounds ---
+  declared-lit maximum mean          : 3514
+  declared-lit minimum mean          : 3061
+  passive maximum mean (all captures): 3996
+  passive minimum mean (all captures): 3061
+  max intra-period spread (x-n)      : 21
+  median intra-period spread         : 9
+
+--- [4] old form 'dark = valid && 3*mean >= C_dark' feasibility ---
+  highest attainable dark threshold : ceil(4095/3) = 1365 codes
+  lowest declared-lit mean observed : 3061 codes
+  => lit would need mean <= 1365 ; unmet by 1696 codes (ratio 0.446)
+  C_dark needed to call the room lamp 'lit' : > 3*3514 = 10542 (> 12-bit full scale 4095)
+
+--- [5] candidate threshold form: dark = valid && mean >= T ---
+  lit-side reference (declared room lamp) : 3514
+  dark-side reference (inferred covered)  : 3660  (EV-024 k=3..54)
+  empirical separation                    : 146 codes (3.6 % of full scale)
+  candidate T = round((lit+dark)/2)       : 3590
+  margin to lit side                      : 76 codes
+  margin to dark side                     : 70 codes
+  margin / median intra-period spread     : 8.4x / 7.8x
+  margin / max intra-period spread        : 3.6x / 3.3x
+  admissible band (lit < T <= dark)       : (3514, 3660]
+  near-saturation check (EV-030/031)      : 3987..3996 >= T -> DARK (margin >= 397)
+  NOTE: any T inside the band shares the same 146-code total separation; the
+        position only trades false-lit against false-dark. Stability of the
+        band across temperature, placement and unit is NOT characterised.
+
+--- [6] gate state actually observed (V / D / r / s) ---
+  V=0 D=0 r=0 s=0 : 103 lines
+
+Note: every capture shows V=0 D=0 r=0 s=0 y=0 -> the disabled/uncalibrated gate
+      never produced a report decision in any recorded cycle (matches the as-built source).

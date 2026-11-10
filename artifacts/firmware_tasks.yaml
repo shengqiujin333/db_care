@@ -1,30 +1,33 @@
 items:
   - objective: >-
-      确认当前 as-built 固件候选（HEAD ef5caa6）是本次设计基线：重建传感器 Keil 工程并复跑实现侧宿主自检，
-      核对 T1 升温判定/严格 35.0℃、T2 冻结快照与 P 行、T3 UART 有界等待、T4/F-1 GXHT40 修复均已存在，
-      且空口/BLE 布局、S/G/P 行格式、采样节拍、前值推进、失败不推进、未标定门禁均未改变。
-      本任务不要求重写已符合项；只有回归向量失败时才允许做最小修复。不得修改验证角色自有的
-      test/*_verify_ev.c、test/mock_*_ev/ 或 evidence/embedded_verify_*.py。
+      确认当前 as-built 固件候选（HEAD 548155d）是本次设计基线：重建传感器 Keil 工程并复跑实现侧宿主自检，
+      核对 T1 升温判定/严格 35.0℃、T2 冻结快照与 P 行、T3 UART 有界等待、T4/F-1 GXHT40 驱动与诊断、
+      S 行前值快照均已存在且未回归；核对空口/BLE 布局、S/G/P 行格式、3 分钟节拍、失败不推进、
+      判据未启用时的 V=0/D=0 安全方向均未改变；静态核查 hall/optcfg/params/history 无活动引用、
+      PB04 仅 AIN11、PB05 仅光照供电、PB06 未使用、Flash 读保护两行仍为注释。
+      本任务不修改产品源码；任何回归失败只允许最小修复并重新取证。
     input_refs:
       - readme.txt
-      - artifacts/firmware_feasibility.md
       - artifacts/firmware_design.md
       - artifacts/firmware_requirements.md
+      - artifacts/firmware_rtos_architecture.md
       - artifacts/interface_contract.md
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/gxht40.c
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/Project.uvprojx
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh
     acceptance:
-      - "构建：Keil rebuild 0 Error / ≤1 既有 warning（main.c 空循环体）；Code=25964 RO=656 RW=116 ZI=1676；Project.axf md5=a3b08774e764f174eac318f6771d0c42、Project.hex md5=546ce20a718fa69b40177cce0145f4b5；若源文件无功能修改，重建产物应与该摘要一致。"
+      - "构建：Keil rebuild 0 Error / ≤1 既有 warning（main.c 空循环体）；本任务不改源码，产物摘要应与历史交付一致（Project.axf md5 a3b08774e764f174eac318f6771d0c42、Project.hex md5 546ce20a718fa69b40177cce0145f4b5、Code=25964 RO=656 RW=116 ZI=1676）；若摘要不同必须给出源码差异说明，不能只改期望值。"
       - "T1：sensor_decide_report 为 cur>350 或（have_prev 且 int32(cur-prev)>9 且 dark）；+0.9℃ 不报、+1.0℃ 报、降温不报、恰好 35.0℃ 可经升温分支上报、无前值仅超温；int16 极值不溢出。"
       - "T2：触发且无待上报时冻结 {temp,hum}；组帧只读冻结快照；重试/跨采样期间帧字节不变；新触发不覆盖；仅成功清除；P 行 rq/s/y/t/h 为组帧实际值且 ≤96 B。"
       - "T3：TXE 永不置位、TXBUSY 永不清零时，打印与关闭在有限循环内返回；超时不改 report_req/前值/冻结快照/发送结果；不复位 GPIOA、不改 PA03/PA04/PA07/PA08。"
-      - "T4/F-1：GXHT40 0x44/0x45 探测、0xFD、6 B、双 CRC、x10 换算/有效域、失败后重探与有界恢复仍在；S 行 p/H 为判定前快照（首样本 H=0 p=0），不因新采样改变。"
-      - "接口/退役：433 明文 10 B、BLE 8 B 布局不变；无 hall/optcfg/params/history 活动引用；PB04=AIN11、PB05=光照供电、PB06 未使用；S/G/P/BOOT 行格式不变。"
+      - "T4/F-1：GXHT40 0x44/0x45 探测、0xFD、6 B、双 CRC、x10 换算/有效域、失败后重探与有界恢复仍在；S 行 p/H 为判定前快照（首样本 H=0 p=0）。"
+      - "接口/退役：433 明文 10 B、BLE 8 B 布局不变；无 hall/optcfg/params/history 活动引用；PB04=AIN11、PB05=光照供电、PB06 未使用；S/G/P/BOOT 行字节格式不变；Flash 读保护两行仍为注释。"
+      - "判据未启用方向：LIGHT_DARK_* 仍为未启用状态时，light_sample 输出 valid=false、dark=false，S 行 V=0 D=0，升温分支不触发；不得把该状态解读为“已识别有光”。"
       - "证据类别：当前构建日志、产物摘要、实现侧宿主自检输出；不把宿主结果冒充实板/跨链路通过。"
     metadata:
       increment: FW-REG-ASBUILT
@@ -35,6 +38,7 @@ items:
       as_built_state: implemented_current_source
       evidence_class: host_self_test_and_build
       external_prereq: none
+      forbidden: []
       do_not_touch:
         - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/*_verify_ev.c
         - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_*_ev/
@@ -42,10 +46,10 @@ items:
         - dengbei_care/
 
   - objective: >-
-      回归 T1/T2/T3 的规范向量与格式化行为，确认当前源码在该范围内无需功能改动：
-      IC-002 九组上报向量、待上报冻结/重试/跨采样/不覆盖、P 行字段与 96 B 预算、
-      UART TXE/TXBUSY 卡死有界返回、S/G/P 既有行逐字节格式。若任一向量失败，按最小改动修复并复跑；
-      不得通过改判据、改期望、降低断言或修改验证角色资产来通过。
+      回归 T1/T2/T3 的规范向量与格式化行为，确认该范围无需功能改动：IC-002 §3.1 九组上报向量、
+      待上报冻结/重试/跨采样/不覆盖、P 行字段与 96 B 预算、UART TXE/TXBUSY 卡死有界返回、
+      S/G/P 既有行逐字节格式。任一向量失败时按最小改动修复并复跑；不得通过改判据、改期望、
+      降低断言或修改验证角色资产来通过。
     input_refs:
       - artifacts/firmware_design.md
       - artifacts/firmware_requirements.md
@@ -59,11 +63,11 @@ items:
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh
     acceptance:
-      - "T1 向量：30.0→30.8 暗不报；30.0→30.9 暗不报；30.0→31.0 暗报；30.0→31.0 明/无效不报；30.0→29.0 暗不报；34.0→35.0 暗报、明不报；无前值 35.0 不报、35.1 明/无效报。"
+      - "T1 向量：30.0→30.8 暗不报；30.0→30.9 暗不报；30.0→31.0 暗报；30.0→31.0 明/未启用不报；30.0→29.0 暗不报；34.0→35.0 暗报、明不报；无前值 35.0 不报、35.1 任意光照报。"
       - "T2：首次成功 P 行 rq=0/s=1/t/h=冻结样本；失败重试期间组帧入参逐次相同、帧字节不变；新触发不覆盖；用尽放弃不伪造成功；P 行 ≤96 B 且仅整数。"
-      - "T3：正常 mock 下 BOOT/VDD/IOTEST/IOSIG/BUS/S/G/P 字节不变；TXE 卡死/ TXBUSY 卡死两组均在有限循环返回并完成关闭。"
-      - "失败语义：温湿度失败周期不新建/不覆盖快照、不发送、不推进前值；SENSOR_DEBUG_UART=0 时 P 行空实现且不引入 UART 符号。"
-      - "证据类别：宿主自检输出与构建 0 Error；真实目标 P 行/节拍证据由后续实板任务取得，不以宿替代。"
+      - "T3：正常 mock 下 BOOT/VDD/IOTEST/IOSIG/BUS/S/G/P 字节不变；TXE 卡死/TXBUSY 卡死两组均在有限循环返回并完成关闭。"
+      - "失败语义：温湿度失败周期不新建/不覆盖快照、不发送、不推进前值；SENSOR_DEBUG_UART=0 时不引入 UART 符号。"
+      - "证据类别：宿主自检输出与构建 0 Error；真实目标 P 行/节拍证据由实板任务取得，不以宿替代。"
     metadata:
       increment: FW-REG-REPORT
       title: T1/T2/T3 规范向量与格式化回归
@@ -74,6 +78,7 @@ items:
       as_built_state: implemented_current_source
       evidence_class: host_self_test_and_build
       external_prereq: none
+      forbidden: []
       do_not_touch:
         - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/*_verify_ev.c
         - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_*_ev/
@@ -81,44 +86,93 @@ items:
         - dengbei_care/
 
   - objective: >-
-      在当前交付构建和真实目标上复核 GXHT40 采集：连续 ≥3 个 3 分钟周期 S 行 q=1、t/h 在有效域、
-      k 步长为 3；如出现失败周期，取得 S+G 与 BUS/IOTEST/IOSIG/VDD 可判别证据并保持失败语义
-      （不上报、不推进前值、不构造 0、不冻结）。当前构建已在 0x44 取得 ACK/CRC/q=1，
-      不重复旧 EV-017 的驱动重写；不得使用 0x94/加热命令、放宽 CRC/量程或伪造读数。
+      按设计 §6.2 落地无光判据形制 LIGHT-DEF-2，并保持判据未启用：在 sensor_config.h 删除
+      LIGHT_DARK_REF_CODE / LIGHT_DARK_CALIBRATED，新增唯一常量 LIGHT_DARK_THRESHOLD_CODE（0 =
+      未启用；1..4095 = 阈值）；把 light_is_dark(mean, valid, threshold) 改为 valid && threshold!=0 &&
+      mean >= threshold（整数比较、边界相等为暗、每笔独立无滞回）；light.c 的 valid 改为
+      adc_ok && (阈值 != 0)；同步更新 light.h/fw_core.h 注释与实现侧自检向量。
+      本任务不启用判据、不改阈值取值、不改采样/时序/格式/空口/BLE。
     input_refs:
-      - artifacts/firmware_feasibility.md
       - artifacts/firmware_design.md
       - artifacts/firmware_requirements.md
-      - artifacts/interface_contract.md
-      - gxht40.pdf
-      - sensor_hardware/pstxnet.dat
-      - sensor_hardware/MAIN_BOARD.BOM
-      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/gxht40.c
-      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/sf_i2c.c
+      - evidence/firmware_design_lightdef/lightdef_analysis.txt
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/fw_core.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/light.h
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_fw_core_pure_check.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_check.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh
+    acceptance:
+      - "形制向量：threshold=0 且 valid=true → dark=false；threshold=1、mean=0 → false、mean=1 → true；threshold=4095 → 仅 mean=4095 为 true；mean=threshold-1 → false、mean=threshold → true（相等为暗）；valid=false → 任意 threshold/mean 均 false；threshold=0 与 valid=false 任一成立即不得判暗。"
+      - "接线：light_sample 的 valid = adc_ok && (LIGHT_DARK_THRESHOLD_CODE != 0)；dark = light_is_dark(mean, valid, LIGHT_DARK_THRESHOLD_CODE)；ADC 全超时仍 adc_ok=false → valid=false → dark=false，不合成满量程。"
+      - "未启用等价性：LIGHT_DARK_THRESHOLD_CODE=0 时，S 行 V=0 D=0、r=0、s=0、y=0 与 as-built 一致；采样时序、行长度（≤96 B）、字段集合/顺序、G/P 行条件、433/BLE 布局、资源占用均不变。"
+      - "旧宏清除：源码与实现侧测试中不再出现 LIGHT_DARK_REF_CODE / LIGHT_DARK_CALIBRATED；不保留静默同义别名。"
+      - "构建：Keil rebuild + gcc/build.sh + 宿主机 test/build_test.sh 全部 0 Error；产物摘要变化必须有说明并重新绑定证据。"
+      - "跨角色影响登记：不改 test/*_verify_ev.c 与 test/mock_*_ev/；在实现记录中列出需由验证角色同步的资产（host_fw_core_verify_ev.c 的 1/3 断言、host_vdd_verify_ev.c 的旧宏引用），不得以修改验证资产或绕过其断言来让本任务通过。"
+      - "证据类别：源码差异、构建日志、宿主向量输出；不声称无光判定已可用。"
+    metadata:
+      increment: FW-LIGHT-DEF2-MECH
+      title: 无光判据形制落地（LIGHT-DEF-2，门禁关闭）
+      priority: high
+      owner: firmware_engineer
+      depends_on:
+        - FW-REG-REPORT
+      as_built_state: criterion_form_pending_replacement
+      evidence_class: host_self_test_and_build
+      external_prereq: none
+      forbidden:
+        - 设置非 0 的 LIGHT_DARK_THRESHOLD_CODE
+        - 引入滞回、温补、自适应基线或跨周期光照状态
+        - 修改 433/BLE 布局、S/G/P 行格式或采样节拍
+      do_not_touch:
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/*_verify_ev.c
+        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_*_ev/
+        - CH592EVT/EVT/EXAM/BLE/beiwov2/
+        - dengbei_care/
+
+  - objective: >-
+      在当前构建与真实目标上做被动观测，不施加任何温度或光照刺激：用 COM43/9600 8N1 连续采集
+      ≥3 个 3 分钟周期，确认 q=1、k 步长 3、o=8、每行 ≤96 B、无杂散字节/NUL、采样间期无输出；
+      记录每周期 a/n/x/V/D 与 t/h，形成判据审查与后续启用对比的现场基线；出现失败周期时取 S+G
+      并保持失败语义（不上报、不推进前值、不构造 0）。观测环境保持设备正常使用状态，不为取数
+      改变光强、遮光或温度。
+    input_refs:
+      - artifacts/firmware_design.md
+      - artifacts/firmware_requirements.md
+      - artifacts/firmware_feasibility_current.md
+      - evidence/firmware_design_lightdef/lightdef_analysis.txt
+      - evidence/ev030/tool_results.txt
+      - evidence/ev031/tool_results.txt
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/measure.c
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c
-      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
-      - evidence/test.md
     acceptance:
-      - "正常路径：当前构建真实目标连续 ≥3 个 3 分钟周期 S 行 q=1；t 在 -40.0..125.0℃、h 在 0..100.0%RH；相邻 k 差 3；读数与环境相符。"
-      - "总线证据：可用 COM43 的 BUS/IOTEST/IOSIG/VDD 或已登记 fx2lafw:conn=2.32 被动 I2C 证明 0x44/0x45 中实际地址、0xFD 命令、6 B 读取与双 CRC；数字采样不证明模拟电平。"
-      - "失败路径：失败周期 q=0 且不报/不推进/不构造 0；S 后 G 给出结果码/ACK/重读/重测/raw；下一周期仍重探 0x44/0x45 并有界恢复。"
-      - "边界：不使用 0x94/加热命令；不放宽 CRC/量程/有效域；不改空口/BLE 布局；不因旧 EV-017 q=0 重写已工作驱动。"
-      - "跨链路（触发周期）：手机显示的温湿度与该周期 S/P 冻结样本一致；不一致登记为跨链路问题。"
-      - "证据类别：当前构建实板原始串口/被动 I2C、下载校验、构建摘要与 UID；历史 EV-017/COM42 只作背景。"
+      - "采集：COM43/9600 8N1 有界采集 ≥3 个连续周期（单窗口不足时允许多窗口，须记录窗口起止与字节数）。"
+      - "字段：全部周期 q=1；t 在 -400..1250、h 在 0..1000；o=8；a 落在 n..x 之间；每行 ≤96 B 且以 CRLF 结束；窗口内无杂散字节/NUL；采样间期无输出。"
+      - "节拍：相邻观测周期 k 差值恒为 3；同一周期不出现两行 S。"
+      - "判据状态：记录 V/D（判据未启用时应为 V=0 D=0），并记录 a 数值供设计 §6.2 复核；不得把 V=0 D=0 解释为“已识别有光”。"
+      - "失败路径：若出现 q=0，须取得同周期 G 行并核对结果码/ACK/重读/重测/raw，确认不报/不推进/不构造 0；不得为消除失败而改判据或降低断言。"
+      - "身份：记录构建摘要、下载校验（若本次涉及下载）与板件标识（若可取得）；不得用历史 COM42 或旧镜像证据替代。"
+      - "禁止：不以调温、改变光强、遮光/照射、拆装外壳作为取数手段；不在本任务内做功耗测量。"
+      - "证据类别：COM43 原始字节 + 解析输出 + 时间/窗口记录；数字行不证明模拟电气或照度。"
     metadata:
-      increment: FW-REG-GXHT40
-      title: GXHT40 当前构建实板回归与失败路径
+      increment: FW-OBS-PASSIVE
+      title: 当前构建被动观测（COM43，无刺激）
       priority: high
       owner: firmware_engineer_with_embedded_test
       depends_on:
         - FW-REG-ASBUILT
-      as_built_state: implemented_current_source
+      as_built_state: capture_pending
       evidence_class: current_build_real_board_capture
       external_prereq:
-        - 传感器 Keil 工程构建与下载授权（保存的调试器/Flash 算法）
-        - COM43/9600 8N1 有界采集
-        - 可选：登记 fx2lafw:conn=2.32 被动 I2C（需已登记入口与接线）
+        - 传感器 Keil 工程构建与下载授权（工程保存的调试器/Flash 算法）
+        - COM43/9600 8N1 有界采集入口
+      forbidden:
+        - 调节温度
+        - 改变光强或以遮光/照射作为测试手段
+        - 功耗/电流测量
       do_not_touch:
         - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/*_verify_ev.c
         - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_*_ev/
@@ -126,72 +180,77 @@ items:
         - dengbei_care/
 
   - objective: >-
-      完成 1/3 无光判据的标定门禁。当前现场无光：保持 LIGHT_DARK_CALIBRATED=0，记录暗态 S 的
-      V/o/n/x/a/D；3914/3915/3932 仅作候选，不是正式 C_dark。只有同一板件、同一供电/建立时间/8 样本平均下
-      取得受光低码与受控全遮光两组数据，且受光均值 < ceil(C_dark/3)、全遮光 3·mean >= C_dark 时，
-      才允许回填 C_dark（1..4095）并置 CALIBRATED=1、重建。若现场仍无光或无受光窗口，记未执行/条件未满足，
-      不得用暗态单组、满量程、旧 350/250 或估算值回填，不得改判据凑通过。
+      在无光判据的形制与数值获得正式接受、且已取得设计 §6.2(5) 要求的被动双态证据后，把
+      LIGHT_DARK_THRESHOLD_CODE 从 0 回填为接受值（候选 3590，可用带 (3514, 3660]），重建并在真实
+      目标上采集：受光周期 V=1 D=0、覆盖/无光周期 V=1 D=1、ADC 全超时 V=0。证据不足或出现分离
+      不足（受光均值 ≥ T、覆盖均值 < T）时，回退 T=0 并登记为需求/硬件决策，不挪阈值凑通过。
     input_refs:
-      - artifacts/firmware_feasibility.md
       - artifacts/firmware_design.md
       - artifacts/firmware_requirements.md
       - artifacts/interface_contract.md
-      - sensor_hardware/pstxnet.dat
-      - sensor_hardware/MAIN_BOARD.BOM
-      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c
-      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/light.h
-      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c
+      - evidence/firmware_design_lightdef/lightdef_analysis.txt
+      - evidence/ev024/capture_analysis.txt
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h
-      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_light_check.c
-      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_sensor_core_test.c
-      - evidence/test.md
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c
+      - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/fw_core.c
     acceptance:
-      - "未标定门禁：当前构建 S 行 V=0、D=0、o=8（或实际成功样本数）；升温分支不触发；C_dark/CALIBRATED 保持 0/0；不得出现伪造暗态或跳过门禁。"
-      - "暗态记录：记录至少 1 笔现场无光样本（V/o/n/x/a/D、时间、板件 UID、VDD）；3914/3915/3932 作为候选基线，不作为正式 C_dark。"
-      - "双态条件：受光可用时记录受光 S；受控全遮光记录 a 分布（min/max/mean、取样次数、遮光方式）；受光 mean < ceil(C_dark/3) 且全遮光 3·mean >= C_dark 才可回填。"
-      - "若现场无光：本任务记为条件未满足/未执行，保持 CALIBRATED=0；不得用暗态单组或估算值回填、不得改判据。"
-      - "若回填：C_dark 为 1..4095 实测值，回填唯一配置点并重建；三态复测（受光 V=1 D=0、全遮光 V=1 D=1、移开恢复 D=0）；ADC 全超时仍 valid=0/dark=0。"
-      - "分离不足：受光读数与 ceil(C_dark/3) 分离不足时按阈值/器件问题登记并交需求/硬件决策；不得修改判据或期望。"
-      - "证据类别：当前构建 COM43 原始字节（暗态/受光/全遮光/恢复）、标定记录、配置版本与构建/下载身份；不得用宿主 mock 或历史日志替代实板标定。"
+      - "前置：存在对判据形制与数值的接受记录（含 IC-002 §4.2 同步）；缺少接受记录时本任务不得执行，只记录未执行及缺项。"
+      - "证据：T 非 0 之前须已有同板件/同构建/同摆放的受光被动样本 mean<T 与覆盖被动样本 mean>=T，来自不同周期、o=8、n/x 未饱和；观测未以改变光强/遮光为测试手段。"
+      - "启用后：受光周期实测 S 行 V=1 D=0（记录 a 与阈值余量）；覆盖/无光周期 V=1 D=1；ADC 全超时（可用宿主角或实际超时）V=0 D=0；恰好 mean==T 判暗。"
+      - "边界传播：启用后 30.0→30.9℃ 覆盖态不报、30.0→31.0℃ 覆盖态可报、受光态升温不报、>35.1℃ 任意光照报（宿主向量 + 实板可观测性说明；本阶段不做升温刺激）。"
+      - "回退规则：若受光均值 ≥ T 或覆盖均值 < T，或双态证据缺失，保持/恢复 T=0 并登记分离不足与所需决策；不得改阈值、加滞回/温补或放宽判据。"
+      - "重建与证据：回填后 rebuild 0 Error，下载校验须见 Verify OK，证据绑定新构建摘要 + COM43 原始字节；不得沿用历史 axf 摘要。"
+      - "禁止：不以调温、改变光强、遮光/照射、功耗测量取得证据；不以宿主结果冒充实板观测。"
     metadata:
-      increment: FW-T5-LIGHT
-      title: 1/3 无光判据标定门禁（现场无光时保持未标定）
-      priority: high
+      increment: FW-LIGHT-DEF2-ENABLE
+      title: 无光判据数值接受后启用与被动双态取证
+      priority: medium
       owner: firmware_engineer_with_embedded_test
-      depends_on: []
-      as_built_state: mechanism_implemented_calibration_pending
+      depends_on:
+        - FW-LIGHT-DEF2-MECH
+        - FW-OBS-PASSIVE
+      as_built_state: blocked_on_criterion_acceptance
       evidence_class: current_build_real_board_capture
       external_prereq:
-        - 受光窗口与完全遮光操作条件（用户/现场）
-        - 传感器 Keil 工程构建与下载授权
-        - COM43 串口有界采集
+        - 判据形制与数值的接受记录（需求/架构），并同步 IC-002 §4.2
+        - 正常使用状态下的被动覆盖/无光观测窗口（不得人为改变光强或遮光）
+        - 传感器 Keil 工程构建与下载授权、COM43 采集入口
+      forbidden:
+        - 调节温度
+        - 改变光强或以遮光/照射作为测试手段
+        - 调整阈值以拟合观测或加入滞回/温补
+        - 功耗/电流测量
       do_not_touch:
         - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/*_verify_ev.c
         - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_*_ev/
-        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/light.c
         - CH592EVT/EVT/EXAM/BLE/beiwov2/
         - dengbei_care/
 
   - objective: >-
-      补齐上电诊断身份证据：在先打开 COM43 捕获的前提下，于窗口内复位/上电，取得
-      BOOT（fw/uid/rst/uart）、VDD、IOTEST、IOSIG、BUS 各一次，并与当前构建摘要交叉核对。
-      本任务不修改固件；若当前编排无法在端口打开前复位，记录“未执行及原因”，不得用后续 S 行替代。
+      补齐上电诊断身份证据：先打开 COM43 捕获，再在窗口内复位/上电，取得 BOOT（fw/uid/rst/uart）、
+      VDD、IOTEST、IOSIG、BUS 各一次并与构建/下载身份交叉核对。按用户补充条件评估用已连接的
+      CW-DAPLink + pyocd 作为复位入口：先确认 pyocd 能识别目标，再评估能否在 COM43 采集期间执行
+      reset；pyocd 未在 runtime/environment.yaml 登记时只提出补登记需求，不猜测入口。无法完成
+      编排时记录未执行及原因，不用后续 S 行替代、不为取日志反复修改固件。
     input_refs:
-      - artifacts/firmware_feasibility.md
       - artifacts/firmware_design.md
       - artifacts/firmware_requirements.md
+      - artifacts/firmware_feasibility_current.md
+      - evidence/programmed_prototype.md
+      - evidence/ev030/tool_results.txt
+      - evidence/ev031/tool_results.txt
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/main.c
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c
       - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/debug_trace.h
-      - evidence/test.md
     acceptance:
       - "同一端口窗口内取得 BOOT/VDD/IOTEST/IOSIG/BUS 五行（各自一次）；BOOT 的 uid/复位来源/uart=9600 可读；不能只取得 BUS 或后续 S。"
       - "上电五行与当前构建摘要/下载校验记录对应；BUS ack 与 0x44/0x45 实际应答不矛盾；VDD 超时不得伪造。"
-      - "若无法在端口打开前复位：记录未执行、实际时序和所需编排；不修改固件、不反复重试、不用后续行替代。"
-      - "证据类别：COM43 原始字节、构建/下载身份；数字行不证明模拟电气。"
+      - "pyocd 复位候选：记录 pyocd 是否已安装/版本、是否识别 CW32L010 目标、是否能在 COM43 会话期间执行 reset；不可用时记录具体缺项（含 environment.yaml 未登记该入口），只提出配置补全建议。"
+      - "若无法在端口打开前复位：记录未执行、实际时序与所需编排；不修改固件、不反复重试、不用后续行替代。"
+      - "证据类别：COM43 原始字节、构建/下载身份、pyocd 探测原始输出；数字行不证明模拟电气。"
     metadata:
       increment: FW-DIAG-BOOT
-      title: 上电五行/uid 捕获编排
+      title: 上电五行/uid 捕获编排（含 pyocd 复位候选评估）
       priority: medium
       owner: embedded_test_with_debug
       depends_on:
@@ -199,46 +258,11 @@ items:
       as_built_state: diagnostic_lines_implemented_capture_pending
       evidence_class: current_build_real_board_capture
       external_prereq:
-        - 先开 COM43 捕获、窗口内复位/上电的测试/调试编排
+        - 先开 COM43 捕获、窗口内复位的测试/调试编排
+        - pyocd 复位入口（当前 environment.yaml 未登记，需补登记后评估）
+      forbidden:
+        - 为取日志反复修改或重刷固件
+        - 调节温度、改变光强或功耗测量
       do_not_touch:
         - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/debug_trace.c
         - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/debug_trace.h
-
-  - objective: >-
-      在 T5 双态标定可用后，完成真实触发与跨链路/功耗证据：受控全遮光 + 局部升温使本次比上次
-      升高超过 0.9℃（或严格 >35.0℃ 分支），观察 S 的 r=1、P 冻结样本与 s=1，并在网关/手机侧
-      核对同一笔 ID/温湿度/时间语义；另测严格 35.0℃ 边界、首样本无前值、采样峰值与深睡电流。
-      本任务属测试/联调/硬件职责；未具备条件时记录未执行，不得用宿主 mock 或估算值代替。
-    input_refs:
-      - artifacts/firmware_feasibility.md
-      - artifacts/firmware_design.md
-      - artifacts/firmware_requirements.md
-      - artifacts/interface_contract.md
-      - evidence/test.md
-      - evidence/software_e2e_plan.md
-    acceptance:
-      - "触发路径：暗 + 升温 >0.9℃ 时 r=1、P 行冻结 t/h 与组帧一致、s=1；恰好 +0.9℃ 不报、降温不报；明/光照无效只关升温分支。"
-      - "超温路径：严格 >35.0℃ 在明/无效/无前值时仍报；恰好 35.0℃ 不经超温分支，但满足升温分支仍可报。"
-      - "跨链路：网关/手机显示与同一周期 S/P 的 ID/温湿度一致；不一致登记为跨链路问题，不改固件期望值。"
-      - "功耗：CR2032 采样峰值、深睡电流、UART/射频瞬态有实测值与条件；设计估算不作通过依据。"
-      - "未执行：无受光/遮光/升温/网关/手机/电流表条件时逐项记未执行及原因，不写通过。"
-      - "证据类别：串口/P 行、网关/手机同笔记录、功耗测量原始值；测试/硬件职责。"
-    metadata:
-      increment: FW-E2E-POWER
-      title: 真实触发、跨链路与 CR2032 功耗证据
-      priority: high
-      owner: embedded_test_and_hardware_test
-      depends_on:
-        - FW-T5-LIGHT
-        - FW-REG-GXHT40
-      as_built_state: pending_test_conditions
-      evidence_class: current_build_real_board_capture
-      external_prereq:
-        - 受光/全遮光/局部升温现场条件
-        - 网关与手机同窗口联调
-        - 电流表/示波器等功耗测量入口（当前未登记）
-      do_not_touch:
-        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src/
-        - CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/
-        - CH592EVT/EVT/EXAM/BLE/beiwov2/
-        - dengbei_care/
