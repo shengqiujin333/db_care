@@ -1,0 +1,100 @@
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 400 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 200 -
+127.0.0.1 - - [10/Nov/2026 15:48:19] "POST /upload_data HTTP/1.1" 400 -
+== 本地桩实验（仅 127.0.0.1，不触外网） ==
+time_utc=2026-11-10T07:48:19.651435+00:00
+python=3.10.9 flask=2.2.2
+stub=Flask+SQLite  UNIQUE(dev_id,time)  insert=INSERT OR IGNORE
+bind=127.0.0.1:59429
+
+-- documented_vector_negative
+   req_bytes=131  status=200  resp={"ignored": 0, "inserted": 1, "success": true}
+   table_rows=1  last=('13800000000', '01020304', 1699999999, -5, 60)
+   说明: 既有契约的负温向量应被接收；单位 ℃/%RH 不再二次换算
+
+-- rise_branch_value
+   req_bytes=131  status=200  resp={"ignored": 0, "inserted": 1, "success": true}
+   table_rows=2  last=('13800000000', '01020304', 1700000000, 31, 60)
+   说明: 升温 0.9℃ 判据在传感器侧完成；服务端只需存储该读数，不重算判据
+
+-- high_temp_branch_value
+   req_bytes=131  status=200  resp={"ignored": 0, "inserted": 1, "success": true}
+   table_rows=3  last=('13800000000', '01020304', 1700000001, 35.1, 55)
+   说明: >35.0℃ 读数与 35.0 严格边界由传感器侧决定；服务端不解析 35.0 语义
+
+-- batch_50
+   req_bytes=3757  status=200  resp={"ignored": 0, "inserted": 50, "success": true}
+   table_rows=53  last=('13800000000', '01020304', 1700007820, 29.9, 50)
+   说明: Android CloudUploadRepository.DEFAULT_BATCH_LIMIT=50；整批一个 HTTP 请求
+
+-- retry_identical_batch
+   req_bytes=3757  status=200  resp={"ignored": 50, "inserted": 0, "success": true}
+   table_rows=53  last=('13800000000', '01020304', 1700007820, 29.9, 50)
+   说明: 相同 (dev_id,time) 重试应不增行；重试前 53 行
+
+-- same_key_in_one_batch
+   req_bytes=205  status=200  resp={"ignored": 1, "inserted": 1, "success": true}
+   table_rows=54  last=('13800000000', '01020304', 1700000300, 30, 50)
+   说明: 同批内同键先到先得（30.0 保留，30.1 被忽略）；App 仍会删掉已 2xx 的待发箱行
+
+-- existing_key_different_value
+   req_bytes=131  status=200  resp={"ignored": 1, "inserted": 0, "success": true}
+   table_rows=54  last=('13800000000', '01020304', 1700000300, 30, 50)
+   说明: 已存在的 (01020304,1700000000) 保留原值 31.0；32.7 被静默忽略且无冲突上报
+
+   核对: 该键当前行=[('13800000000', '01020304', 1700000000, 31, 60)]
+
+-- two_rows_one_second_apart
+   req_bytes=205  status=200  resp={"ignored": 0, "inserted": 2, "success": true}
+   table_rows=56  last=('13800000000', '01020304', 1700000601, 30.1, 50.1)
+   说明: 秒级粒度不能区分同秒多个真实样本；相邻秒可以共存
+
+-- empty_readings
+   req_bytes=58  status=200  resp={"ignored": 0, "inserted": 0, "success": true}
+   table_rows=56  last=('13800000000', '01020304', 1700000601, 30.1, 50.1)
+   说明: 桩允许空集并返回 inserted=0；真实服务策略未知，不能外推
+
+-- missing_phone
+   req_bytes=109  status=400  resp={"error": "phone", "success": false}
+   table_rows=56  last=('13800000000', '01020304', 1700000601, 30.1, 50.1)
+   说明: 桩返回 400；真实服务对 phone 的校验策略未核验
+
+-- unknown_mac_not_persisted
+   req_bytes=131  status=200  resp={"ignored": 0, "inserted": 1, "success": true}
+   table_rows=57  last=('13800000000', '01020304', 1700001500, 25.5, 60)
+   说明: 文档表无 mac 列，桩中 mac 只被接收不落库；无法据此审计来源网关
+
+-- numeric_precision
+   req_bytes=135  status=200  resp={"ignored": 0, "inserted": 1, "success": true}
+   table_rows=58  last=('13800000000', '01020304', 1700001800, 25.555, 60.004)
+   说明: SQLite REAL 保留 25.555/60.004；MySQL DECIMAL(6,2) 会四舍五入为 25.56/60.00，未在本机建模
+
+-- malformed_json
+   req_bytes=9  status=400  resp={"error": "json", "success": false}
+   说明: 桩返回 400；真实服务在解析失败时的状态码与响应体未核验
+
+-- volume_model_1_device_1_day
+   180 s 节拍 → 480 次/日；本轮插入 480 行，忽略 0 行
+   table_rows=538  sqlite_pages=15 page_size=4096 db_bytes≈61440
+   说明: 行数上界来自 BLE 轮询 + 网关缓存复读；体积是 SQLite 页统计，不是 InnoDB 行/索引体积
+
+== 统计摘要 ==
+cases=13  http_2xx=11  http_4xx=2
+rows_total=538  db_bytes=61440
+
+== 结论边界 ==
+1. 以上仅为本地 Flask+SQLite 桩，未连接 8.140.23.253、EMQX、MySQL 或 abr.py。
+2. 已证实（桩内）：契约字段/单位/50 条批可用；同键重试不增行；同键不同值静默丢弃；
+   mac 不在文档表中；480 行/日/设备的节拍上界可被该表结构容纳。
+3. 未证实：真实服务的端点存在性、响应码/inserted、MySQL IGNORE 全语义、鉴权/绑定、
+   持久化与回读；不得用本脚本结果替代。

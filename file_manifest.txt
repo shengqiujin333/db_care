@@ -74,7 +74,8 @@ artifacts/android_feasibility.md | active | Android 真机/模拟环境可行性
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加）
 artifacts/android_tasks.yaml | active | Android 待实现任务清单（6 项：BLE 权限模型、网关身份发现与绑定、BLE 批次转发与载荷格式、观测有效性与全零占位、上传失败分类与 401 阻塞、升温规则文案；按前置依赖排序）
 artifacts/backend_feasibility.md | history | 后端可行性探索 BE-EXP-002（2026-11-09 只读 SSH 实测：EMQX 5.8.0/端口/unit/6 路由/401/零业务流量；历史记录保留不改写，当前入口见 backend_feasibility_current.md）
-artifacts/backend_feasibility_current.md | active | 后端可行性探索 BE-EXP-003（2026-11-10 重新只读核验：同一 abr.py 8949B/2026-10-22 未变、EMQX 5.8.0 uptime 17d、6 路由 405、OPTIONS 无鉴权头提示、10-22 的 200 已进入 mysql.connect、仍无业务流量；资料/已核验/未知分开、service_context 与端到端 D1–D6；上传受理条件仍未定性）
+artifacts/backend_feasibility_current.md | active | 后端可行性探索 BE-EXP-004（2026-11-10 15:47 重新只读核验：同一 abr.py 8949B/2026-10-22 未变、21 命令/7.2 s、EMQX 5.8.0 uptime 17d9h/0 连接、6 路由 405、OPTIONS 200、POST 仍 14 条/末次 10-22、本地桩复跑逐项一致；新增网关缓存复读→同值不同秒重复行的数据语义假设；service_context 与 D1–D6；上传受理条件仍未定性）
+artifacts/backend_feasibility_g002.md | active | 后端可行性探索 BE-EXP-003 原文保留（2026-11-10 07:08–07:14：同一 abr.py 未变、OPTIONS 无鉴权头提示、10-22 的 200 已进入 mysql.connect、仍无业务流量；历史记录不改写，当前入口见 backend_feasibility_current.md）
 artifacts/codegraph_current_index.md | history | 代码智能：此前三个子工程索引交接；当前入口见 artifacts/codegraph_prepare_index.md
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
@@ -140,16 +141,19 @@ evidence/backend_exploration/ssh_readonly_inspection.txt | active | 会话 1 原
 evidence/backend_exploration/ssh_readonly_inspection_2.txt | active | 会话 2 原始输出
 evidence/backend_exploration/ssh_readonly_inspection_3.txt | active | 会话 3 原始输出
 evidence/backend_exploration/ssh_readonly_inspection_g002.txt | active | BE-EXP-003 原始输出：本轮 6.9 s 会话（23:14:02–23:14:09Z）、ed25519 主机指纹、EMQX 17 d uptime/0 连接、6 路由 405+Allow、OPTIONS 200、journal 14 条 POST/末次 2026-10-22 19:32:28 401-401-200 与 mysql.connect 行
+evidence/backend_exploration/ssh_readonly_inspection_g003.txt | active | BE-EXP-004 原始输出：7.2 s 会话（07:47:50–07:47:57Z）、ed25519 主机指纹、abr.py 8949B/mtime 2026-10-22/inode、EMQX 5.8.0 uptime 17d9h/0 连接、6 路由 405+Allow、OPTIONS 200、journal 14 条 POST/末次 2026-10-22 19:32:28、上轮以来 0 POST、df/free
 evidence/backend_exploration/ssh_readonly_probe.py | active | 只读 SSH 会话 1：身份、systemd 状态、ss -lnt、docker ps/inspect、进程、6 路径 GET 探测、abr.py 元数据、近 4 天日志、EMQX 版本、磁盘内存；含脱敏与总时限
 evidence/backend_exploration/ssh_readonly_probe_emqx.py | active | 只读 SSH 会话 3：EMQX broker 版本/uptime、broker stats、metrics（显示自 2026-10-24 重启起零连接零消息）、clients list
 evidence/backend_exploration/ssh_readonly_probe_followup.py | active | 只读 SSH 会话 2：journal 保留期、端口→进程映射、EMQX listeners、MySQL 镜像身份/重启策略、OS 版本
 evidence/backend_exploration/ssh_readonly_probe_g002.py | active | BE-EXP-003 只读 SSH 复检脚本：identity/unit/ss/docker ps/stat/emqx ctl/GET|OPTIONS 路由/journal 计数与 10-22 窗口/df/free；脱敏、单命令≤12 s、无写动作
+evidence/backend_exploration/ssh_readonly_probe_g003.py | active | BE-EXP-004 只读 SSH 复检脚本：identity/unit/ss/docker ps/stat(含 ctime/inode)/emqx ctl/GET|OPTIONS 6 路由/journal 全量与上轮以来增量/10-22 窗口/df/free；脱敏、单命令≤15 s、无写动作
 evidence/backend_exploration/ssh_readonly_probe_http_history.py | active | 只读 SSH 会话 5：统计 user_script journal 的请求行/POST/GET 数量与 journal 最早条目
 evidence/backend_exploration/ssh_readonly_probe_http_requests.py | active | 只读 SSH 会话 6：导出 26 条请求行原文（仅 method/path/status，无请求体）
 evidence/backend_exploration/ssh_readonly_probe_routes.py | active | 只读 SSH 会话 4：对 6 个客户端 POST 路径 + 1 个对照路径做 GET 探测，用 405+Allow 判定路由存在、404 作对照（不调用写逻辑）
 evidence/backend_exploration/ssh_tcp_probe.py | active | 从项目资料读取主机后对 22/1883/3306/5000/8083/8084/8883/18083 做有界 TCP 连接探测（仅 connect/close）
 evidence/backend_exploration/ssh_tcp_probe_output.txt | active | 上述端口探测原始输出（8 端口 TCP_OPEN，≤15 ms）
 evidence/backend_exploration/upload_contract_observations.txt | active | 上述桩实验原始输出（时间、运行时、端口、逐用例请求字节/状态/响应/表行，以及结论边界）
+evidence/backend_exploration/upload_contract_observations_g003.txt | active | BE-EXP-004 桩实验复跑输出（13 用例/11×2xx/2×4xx/538 行/61440 B；与上次复跑归一化逐行一致）
 evidence/backend_exploration/upload_contract_observations_rerun.txt | active | 桩实验复跑输出（13 用例/11×2xx/2×4xx/538 行/61440 B，与 2026-11-09 首跑逐项一致）
 evidence/backend_exploration/upload_contract_stub.py | active | 可复跑本地桩：13 个 /upload_data 请求覆盖负温/35.1℃/50 条批/重试幂等/同键冲突/精度/空集/缺字段/1 日 480 行；明确不可外推 MySQL 与真实服务
 evidence/build.md | active | 构建证据 BUILD-002 rev 6.4（F-1 修复后全量 rebuild 0 Error/1 既有告警、Code=25964、axf md5 a3b08774…；未下载）
