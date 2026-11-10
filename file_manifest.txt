@@ -648,6 +648,7 @@ evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
 evidence/software_static_check_server_migration.py | active | 可复跑静态核查（ITEM-004：服务器常量/旧主机分布/XML 放行/兼容面）
 evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）；置底 ST-AA005：AA-005 七项增量 + 当前候选整体核验，TEST_FAIL（缺陷 D-AA005-1：401 后未全局暂停自动上传）
+evidence/software_triage.md | active | 负责角色：软件测试。Android 软件失败归因（AA-005 G-6 / D-AA005-1）：401/403 后仅 park 本批、未读取全局阻塞，自动触发仍上传其余到期行；含对象版本、源码机制、独立复现、影响范围、竞争假设与复验目标；结论为需 Android 实现修复
 evidence/software_verify_*_item0NN.py | active | Android 逐项独立验证脚本（card_status_item011、cloud_upload_item009、db_migration_item006、detail_presentation_item012、orchestration_item010、release_item014、report_wording_item013、timestamp_write_item007、upload_payload_item008；已按 AA-005 已批准变更同步期望；退出码 0/1）
 evidence/software_verify_aa005_android_check.py | active | AA-005 七项增量独立静态核查（54 项：权限/MAC 单一来源/旧状态清零/容量与完整性接线/上传分类与阻塞/规则文案/版本/清单；退出码 0/1；含 FINDING E6）
 evidence/software_verify_card_status_item011.py | active | 由 software_tester 新增或修改的项目相关文件
