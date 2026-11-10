@@ -31,6 +31,14 @@ S k=1017 p=278 H=1 V=0 o=8 n=3091 x=3100 a=3095 D=0 t=274 h=338 q=1 r=0 s=0 y=0\
 
 工具返回原文（`serial_capture_after_300s.out.json`）：`{"tool":"serial_capture","success":true,"exit_code":0,"stdout":"bytes_received=81\npreview:\nS k=1017 ... y=0\r\n","stderr":"","started_at":"2026-11-10T01:13:11.930779+00:00","finished_at":"2026-11-10T01:18:12.135177+00:00"}`。
 
+## rev 5（2026-11-10T01:51Z as-built 后果核验）
+
+| 工具或动作 | 状态 | 说明 |
+|---|---|---|
+| 离线分析 | 已执行 | `check_asbuilt_consequence.py`（新建）→ `asbuilt_consequence_20261110.txt`；只读已提交 `.bin` 的 S 行，统计 V/D/q/r/s/y |
+| 设备工具（串口/构建/逻辑分析仪） | 未调用 | 无新刺激与新上游决策；重复同条件观测不产生新信息 |
+| 烧录 / 复位 / 改固件 / 改判据 | 未执行 | 同前：无授权入口，且判据变更属需求决策 |
+
 ## rev 4（2026-11-10T01:47Z 归因前提核验）
 
 | 工具或动作 | 状态 | 说明 |

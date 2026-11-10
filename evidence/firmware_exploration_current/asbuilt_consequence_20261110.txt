@@ -1,0 +1,23 @@
+==============================================================================
+Per-capture tally (deduplicated by k across files)
+   file                                            k   V   D   q   r   s   y
+   serial_capture_20261110_0720Z.bin             900   0   0   1   0   0   0
+   serial_capture_after_300s.bin                1017   0   0   1   0   0   0
+   serial_capture_direct_280s.bin               1002   0   0   1   0   0   0
+   serial_capture_direct_280s.bin               1005   0   0   1   0   0   0
+   serial_capture_light_210s.bin                 993   0   0   1   0   0   0
+==============================================================================
+Summary over 5 distinct cycles (k=900..1017)
+   V (light valid) : [0]
+   D (dark)        : [0]
+   q (sample ok)   : [1]
+   r (report)      : [0]
+   s (send result) : [0]
+   y (retry)       : [0]
+   t range (0.1 C) : 236 .. 291
+------------------------------------------------------------------------------
+   -> no report decision, no send attempt, no retry in any observed cycle: CONFIRMED
+   scope: only the cycles actually captured here; an untransmitted state was
+   never observed to be overridden by the >35.0 C branch (all t <= 29.1 C).
+   limitation: absence of sends in these windows is consistent with the
+   uncalibrated gate, but it is not a proof for cycles that were not captured.
