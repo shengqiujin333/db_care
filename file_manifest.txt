@@ -91,8 +91,8 @@ artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 8（FWR-1
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 8（裸机超级循环 + RTC 深睡；T1–T4/F-1 冻结；光照分类改为无状态 LIGHT-DEF-2、未启用即 V=0/D=0；上电诊断、S/G/P 轨迹、冻结快照、有界等待、资源与不变量；功耗只作估算且本阶段不测量）
 artifacts/firmware_tasks.yaml | active | 固件任务清单 rev 8（6 项：FW-REG-ASBUILT 回归、FW-REG-REPORT T1/T2/T3 向量、FW-LIGHT-DEF2-MECH 判据形制落地门禁关闭、FW-OBS-PASSIVE COM43 被动观测、FW-LIGHT-DEF2-ENABLE 数值接受后启用取证、FW-DIAG-BOOT 上电五行与 pyocd 复位候选；均禁调温/改变光强/遮光刺激/功耗测量）
 artifacts/interface_contract.md | active | 系统架构：IC-002 v4.0，撤旧1/3强制要求、保留无光判据未决；兼容RF/BLE/平台，明确160B容量与完整读取、占位、观测时间、错误分类及服务闭合条件
-artifacts/software_e2e_plan.md | active | 软件端到端测试计划 E2E-SW-004 rev 3.0（AA-004 六项增量：权限/发现/真实批次/占位与0.0/完整交付/既有服务复用与真实上传幂等回读/401阻塞与手动重试/全链路；只做计划不执行）
-artifacts/software_test_design.md | active | 软件测试设计 TD-SW-004 rev 3.0（AA-004 G-1..G-6 与 ITEM-001..006 逐条追踪、宿主机/真机/真实服务用例、环境缺口、证据边界与最终判定规则）
+artifacts/software_e2e_plan.md | active | 软件端到端测试计划 E2E-SW-004 rev 4.0（AA-005 七项增量：权限/发现/真实批次/占位与0.0/容量与读取完整性/完整交付/既有服务复用与真实上传幂等回读/401阻塞与手动重试/全链路；只做计划不执行）
+artifacts/software_test_design.md | active | 软件测试设计 TD-SW-004 rev 4.0（AA-005 G-1..G-7 与 ITEM-001..007 逐条追踪、宿主机/真机/真实服务用例、容量与 MTU/返回长度完整性、环境缺口、证据边界与最终判定规则）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
 artifacts/system_analysis_current.md | active | 系统架构：最新需求与旧1/3判据冲突、禁止调温调光功耗测试的当前边界、可复用候选版本及摘要、历史证据限制和后续集成缺口
 artifacts/test_design.md | active | 嵌入式测试设计 TD-002 rev 8.0（当前 6 项任务：FW-REG-ASBUILT、FW-REG-REPORT、FW-LIGHT-DEF2-MECH、FW-OBS-PASSIVE、FW-LIGHT-DEF2-ENABLE、FW-DIAG-BOOT 的验收追踪矩阵与正常/异常用例；LIGHT-DEF-2 形制/未启用等价性、COM43 ≥3 周期被动观测、判定数值接受后启用门禁、上电五行与 pyocd 编排评估、证据身份绑定与 TEST_FAIL 退出准则；明确不安排调温/改变光强/遮光刺激/功耗测量；只做设计不执行）
