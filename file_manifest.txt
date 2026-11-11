@@ -165,15 +165,15 @@ dengbei_care/play_store_512.png | active | 应用商店图标
 dengbei_care/readme.txt | active | Android 版本变更记录（最新 V1.9：升温方向/权限/网关身份/批次转发/占位/上传分类/容量完整性）
 dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
-dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.9：升温规则、权限说明、网关与上传设置；rev 2 按实际界面修正 4.1 网关编码 12 位/保存/注册传感器与登录前置、4.3 传感器列表入口、4.4 不可滚动提示、9.2 报告按钮被导航遮挡改由通知进入）
-docs/ | active | 交付文档包 DOC-PKG-001 rev 2（技术文档角色；按版本化的用户/安装/调试/配置/维护手册）
-docs/01_产品说明与版本变更.md | active | 产品说明：系统链路、8 项需求逐项落地位置与状态、判定规则精确语义（含 T=0 限制）、数据/时间语义、交付物、已验证/未验证清单
+dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.9：升温规则、权限说明、网关与上传设置；rev 3 按实际界面与实测入口修正 4.1 网关编码/注册传感器与两类失败提示、4.2 编码格式、4.3 删除入口不可用、4.4 底部按钮被导航遮挡、11.2 408/429 可重试说明）
+docs/ | active | 交付文档包 DOC-PKG-001 rev 3（技术文档角色；按版本化的用户/安装/调试/配置/维护手册）
+docs/01_产品说明与版本变更.md | active | 产品说明 rev 3：系统链路（网关不自带 MQTT/HTTP，云端转发由 App 完成）、8 项需求逐项落地位置与状态、判定规则精确语义（含 T=0 限制）、数据/时间语义、交付物、已验证/未验证清单
 docs/02_传感器固件安装与烧录.md | active | 传感器固件安装：发布包 MD5/成员校验、CW-DAPLink 与工程保存配置、mdk_build/mdk_flash 步骤、Verify OK 与上电五行核对、故障处理、升级回退与禁止事项
 docs/03_传感器调试串口手册.md | active | UART1 调试手册：PA06/PA05/J3 接线、9600 8N1、上电五行与 S/G/P 行逐字段含义、判定矩阵、采集与复位编排顺序、常见问题与限制
-docs/04_安卓App安装与使用.md | active | Android 交付/运维手册 rev 2：APK 身份与签名、安装/覆盖升级/回退、首次权限、真实「我的」页文字（网关编码 12 位/保存/注册传感器）与登录前置、`/setmac` 语义、网关 BLE 地址与上传设置、O-PKG-1/O-PKG-2 实际限制、排障与未验证项
-docs/05_平台服务器配置与联调前提.md | active | 平台配置手册 rev 2：服务器端口/客户端唯一配置点/证书与 topic、明文放行 3 域名（含旧主机历史条目）与凭据处理规则、只读核验结论与 401 未定性、联调前置 D1–D8、变更步骤与限制
-docs/06_维护排障与已知限制.md | active | 维护与限制汇总 rev 2：例行维护表、按现象排障路径（含报告按钮不可点）、19 项已知限制（O-PKG-1/O-PKG-2 拆分、写网关绑定路径待确认）、未执行/延期测试清单（含 SKIP_CONFIRMED 披露要求）、证据索引与版本记录
-docs/README.md | active | 文档包索引：覆盖版本（固件 FD-002r8、Android 1.9、平台只读核验）、环境前提、安全约束、待核验项汇总（文档包入口文件）
+docs/04_安卓App安装与使用.md | active | Android 交付/运维手册 rev 3：APK 身份与签名、安装/覆盖升级/回退、首次权限、真实「我的」页文字（12 位网关编码/保存/注册传感器/8 位十六进制编码与失败提示）、登录前置与 `/setmac` 语义、网关 BLE 地址与上传设置、401/403 暂停与 408/429 退避重试、O-PKG-1/O-PKG-2/P-04 实际限制（无可用列表入口）、排障与未验证项
+docs/05_平台服务器配置与联调前提.md | active | 平台配置手册 rev 3：服务器端口/客户端唯一配置点/证书与 topic、明文放行 3 域名（含旧主机历史条目）与凭据处理规则、只读核验结论与 401 未定性、联调前置 D1–D8、变更步骤与限制
+docs/06_维护排障与已知限制.md | active | 维护与限制汇总 rev 3：例行维护表、按现象排障路径（含报告与传感器列表入口不可用、408/429 退避）、20 项已知限制（O-PKG-1/O-PKG-2/P-04 拆分与写网关绑定路径待确认）、未执行/延期测试清单（含 SKIP_CONFIRMED 披露要求）、证据索引与版本记录
+docs/README.md | active | 文档包索引 rev 3：覆盖版本（固件 FD-002r8、Android 1.9、平台只读核验）、环境前提、安全约束、待核验项（含传感器列表入口不可用）、版本记录（文档包入口文件）
 evidence/aa005_android_check/ | active | AA-005 软件验证原始证据目录：20 项独立 JUnit 结果与失败 XML、全量 255 项日志、静态/12 门禁汇总、repro 运行器、Redmi 8A 真机安装结果/UI 树/截图/logcat/权限与版本快照、ST-AA005 报告正文、同一工作区续跑复核记录（continuation_rerun_20261110.txt）
 evidence/aa005_android_check/ST-AA005_section.md | active | 由 software_tester 新增或修改的项目相关文件
 evidence/aa005_android_check/TEST-com.jinyuni.dengbei_care.verification.Aa005SevenItemVerificationTest.xml | active | 由 software_tester 新增或修改的项目相关文件
