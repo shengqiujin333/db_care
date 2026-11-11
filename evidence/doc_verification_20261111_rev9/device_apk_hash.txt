@@ -1,0 +1,10 @@
+设备已安装 APK 身份（Redmi 8A / serial 12f046690506）
+路径：/data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==/base.apk
+（路径来自 `adb shell pm path com.jinyuni.dengbei_care`，原始输出见 device_apk_path.txt）
+复制方式：adb exec-out cat（MSYS2_ARG_CONV_EXCL='*'），复制到临时文件后计算摘要并删除副本
+- 大小：10365460 字节
+- SHA-256：d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+- MD5：58de16b8fef549f004b92ffcec0104d9
+主机候选 dengbei_care/app/build/outputs/apk/debug/app-debug.apk：
+- 大小 10365460 / SHA-256 d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6 / MD5 58de16b8fef549f004b92ffcec0104d9
+结论：设备已装包与当前候选逐字节一致。

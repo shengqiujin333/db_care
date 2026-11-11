@@ -1,0 +1,52 @@
+DOC-VERIFY-009 身份与版本记录（被测文档包 DOC-PKG-001 rev 9）
+校核时点：2026-11-11T09:40Z–09:45Z（UTC；Asia/Shanghai 17:40–17:45）
+仓库：D:\mypro\beiwo2\AIP
+HEAD：ac27eb5e4797ba674148e8b46d61baaa2bed8aac（[role:technical_writer] Update project work；rev 9 文档提交）
+开始校核时工作区：clean（仅本能力随后新增 evidence/doc_verification_20261111_rev9/）
+
+一、本次文档提交的变更范围（c21d13d..HEAD）
+$ git diff --name-only c21d13d..HEAD
+- dengbei_care/用户使用说明书.md
+- docs/01_产品说明与版本变更.md
+- docs/02_传感器固件安装与烧录.md
+- docs/03_传感器调试串口手册.md
+- docs/04_安卓App安装与使用.md
+- docs/05_平台服务器配置与联调前提.md
+- docs/06_维护排障与已知限制.md
+- docs/README.md
+- evidence/doc_verification_20261111_rev8/*（上一轮校核证据）
+- file_manifest.txt
+说明：产品源码（dengbei_care/app/src、android build 脚本、传感器固件工程、fw_release/）在本区间无变化；
+      docs/02/03/05 仅文档包版本号行变化；docs/04 仅版本号与依据行变化；docs/01 仅版本号与文档包字段变化。
+
+二、候选身份复算（与文档声明比对）
+固件发布包：
+- fw_release/fw_sensor_FD-002r8.zip  size=134791  md5=5df0c6d45ecddc8aae8bddbbcfc9cfdf
+- 与 docs/README.md:9、docs/01:88 声明一致
+安卓候选 APK：
+- dengbei_care/app/build/outputs/apk/debug/app-debug.apk  size=10365460
+  sha256=d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+  md5=58de16b8fef549f004b92ffcec0104d9
+- 与 docs/README.md:77、docs/01:88、用户使用说明书:25 声明一致
+产品源码：
+- 当前 APK 对应实现提交 28b78b0（docs/01:89 声明）；c21d13d..HEAD 内 app/src 与构建脚本零差异，
+  故上一轮针对同一 APK 的真机 UI/安装证据仍适用于当前候选。
+
+三、设备身份与已安装包（有界只读 ADB 查询）
+$ adb devices → 12f046690506  device product:olivelite model:Redmi_8A
+$ adb shell dumpsys package com.jinyuni.dengbei_care（原始输出见 device_package_dump.txt）
+- versionCode=10  versionName=1.9  minSdk=26  targetSdk=34
+- firstInstallTime=2026-11-10 19:25:25  lastUpdateTime=2026-11-11 13:57:18
+- codePath=/data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==
+$ adb shell pm path com.jinyuni.dengbei_care
+- /data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==/base.apk
+设备已安装 base.apk 副本复算（核对后删除副本，不随仓库保留）：
+- size=10365460
+- sha256=d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+- md5=58de16b8fef549f004b92ffcec0104d9
+结论：设备已装包与主机候选逐字节一致（versionCode 10 / versionName 1.9）。
+
+四、说明
+- 本轮未重新安装/升级/清除数据，未启动业务守护；仅做包身份与设备只读查询。
+- 上一轮 rev8 的设备证明（device_package_dump.txt、device_apk_hash.txt 等）仍保留在
+  evidence/doc_verification_20261111_rev8/；本轮重新查询结果与之一致。
