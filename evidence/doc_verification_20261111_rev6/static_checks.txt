@@ -1,0 +1,130 @@
+DOC-VERIFY-006 静态对照原始记录（文档 rev 6 ↔ 当前候选源码/配置/既有真机证据）
+说明：以下为静态源码核对，不代表在设备上重新执行了对应业务。行号为当前工作区文件的实际行号。
+
+====================================================================
+A. DOC-VERIFY-005 报告项的复核（D-28 / D-29 / D-30）
+====================================================================
+
+A1. D-28 注册/登录入口
+文档：dengbei_care/用户使用说明书.md:46
+“进入「我的」标签页，点右上「**账户**」进入注册/登录页；页面顶部有「登录」「注册」两个勾选项。”
+源码/真机：
+- res/values/strings.xml:35 register=账户
+- ui_my_page_rev5.xml:11-12 用户：未登录 / 账户
+- ui_account_page_rev5.xml:13-14 登录 / 注册 CheckBox
+结果：已修正，文档与实际一致。
+
+A2. D-29 按钮/字段/状态文字
+- 用户使用说明书.md:63 忘记/修改密码 ↔ strings.xml:94 forgetbutton=忘记/修改密码；ui_account_page_rev5.xml:55
+- 用户使用说明书.md:66 退出 ↔ strings.xml:98 logoutbutton=退出；ui_account_page_rev5.xml:52
+- 用户使用说明书.md:69 注销（第 4 次起） ↔ strings.xml:95 deleteuserbutton=注销；
+  ZhuCeFragment.kt:220-232 clickCount++; if(clickCount > 3) 触发注销（第 4 次），前 3 次提示“请点击3次注销”
+- 用户使用说明书.md:177 报警间隔 ↔ strings.xml:28 delay_report=报警间隔；ui_settings_scrolled_rev5.xml:21 hint=报警间隔
+- 用户使用说明书.md:111 / docs/04:194 / docs/06:57 云端上传请求被拒绝（HTTP 4xx）
+  ↔ GatewayBleSettingsDialog.kt:178 "云端上传请求被拒绝（HTTP ${status...}）"
+- 用户使用说明书.md:175/188/240 响铃 ↔ strings.xml:26 buzzer=响铃；ui_settings_scrolled_rev5.xml:19
+结果：已修正，文档与实际一致。
+
+A3. D-30 408/429 与 20 次上限
+文档：用户使用说明书.md:111、315；docs/04:193/198；docs/06:55
+源码：CloudUploadRepository.kt:226 DEFAULT_MAX_BACKOFF_SECONDS=1800L；:229 DEFAULT_MAX_ATTEMPTS=20；
+UploadOutbox.kt:74 attempts>=maxAttempts 的行不再自动重试；MqtttService.kt:1302-1305 手动 RETRY_UPLOAD 清除阻塞并立即上传。
+结果：已修正；四处表述一致（20 次、30 分钟退避、达限后手动「重试上传」）。
+
+====================================================================
+B. rev 6 整包自查中未发现的文档—实现不一致（本轮新增）
+====================================================================
+
+B1. D-31 docs/04 §4.3 “关闭守护则停止读取与上传” 与实现不符
+文档：docs/04_安卓App安装与使用.md:178
+“守护按钮启动后 App 每 **180 s** 读取一次网关；关闭守护则停止读取与上传。”
+
+源码事实：
+- MqtttService.kt:259 READ_INTERVAL_MS = SensorCadence.SAMPLE_PERIOD_MS（180000 ms）
+- MqtttService.kt:383-405 startBluetoothTask(): while (isActive) { onTimeout(READ_INTERVAL_MS) ...;
+  uploadRepository.triggerUpload(); connectToBluetoothDevice() } —— 该循环不读取守护状态。
+- MqtttService.kt:372-376 只要 macAddr 非空（且不以 "1010" 开头）即启动上述循环。
+- 守护状态仅门控：
+  * 入库/上传：MqtttService.kt:1170-1185（startData 值传给 storeTemperatureReading，非 1 时
+    TemperatureDatabaseHelper.kt:214-221 直接返回 -1，且不入队）
+  * 报警：MqtttService.kt:1205 if (homeViewModel.startData.value == 1)
+  * 关闭守护的按钮动作：HomeFragment.kt:168-173 只发送 START_STOP_GUARD 并写 measure_state，
+    不停止 MqtttService，也不停止 BLE 循环。
+结论：关闭守护后，BLE 读取轮询仍每 180 s 执行（只是不写库、不报警、不上传）。
+文档“停止读取”不成立；参数/行为说明需修正或由 Android 实现改为真正停止读取。
+产品归属：Android 实现（P-11）。
+
+B2. D-32 用户手册 §6.3 “剩余倒计时”恢复与实现不符
+文档：dengbei_care/用户使用说明书.md:163
+“应用被杀进程重启后,会自动恢复到之前的守护状态(启动/停止)和剩余倒计时。”
+
+源码事实：
+- HomeFragment.kt:59 restoreGuardState() 在首页创建时调用。
+- HomeFragment.kt:121-147 measure_state=="stopping" 时读取 finish_guard_time，
+  HomeFragment.kt:137:
+  val minutesDifference = calculateMinutesDifference(timed, timec) * 3600000L
+- HomeFragment.kt:230-236 calculateMinutesDifference 返回 diff / (60 * 1000)，单位是分钟。
+- HomeFragment.kt:238-245 startCountDown(timeInMillis) 直接使用该值。
+换算：剩余 N 分钟 → N × 3,600,000 ms = N 小时（多 60 倍）。例如剩余 120 分钟会按 120 小时倒计时，
+到时自动停止不会在预期剩余时间发生。
+结论：守护状态恢复成立，但“剩余倒计时”不成立。文档需按当前缺陷披露，或由 Android 实现修复后
+（应为 × 60_000L）再声明。产品归属：Android 实现（P-09）。
+
+B3. D-33 用户手册 §8 “震动最长 5 分钟”与实现不符
+文档：dengbei_care/用户使用说明书.md:223
+“1. **手机震动**(最长 5 分钟,可循环)”
+
+源码事实：
+- MqtttService.kt:1132 / :1212 调用 VibrationPlayer.vibratePhone(this, 300 * 1000, true)
+- VibrationPlayer.kt:38-44 API 26+ 分支：pattern longArrayOf(0, 500, 1000)，repeatIndex=0（无限循环）；
+  该分支未使用 duration 参数。
+- VibrationPlayer.kt:45-50 API <26 且 repeat=true 分支同样使用无限循环 pattern，未使用 duration。
+- stopVibration 只在 BaseActivity.kt:15-22 的 onTouchEvent 中调用；没有 5 分钟的定时停止路径。
+结论：当前支持版本（minSdk 26）上震动会持续循环，直到用户触屏/进程结束；“最长 5 分钟”不成立。
+文档需改为实际行为或由 Android 实现增加时限。产品归属：Android 实现（P-10）。
+
+B4. D-34 用户手册 §7.1 “报警间隔”字段未参与本地报警节流
+文档：dengbei_care/用户使用说明书.md:177 “**报警间隔**（秒）”；
+同一手册 :216 “普通报警(下降/超限)有 15 分钟节流:15 分钟内只触发一次报警”。
+
+源码事实：
+- MqtttService.kt:176 DeviceParams.delayAlarm；:197 从 delayalarm 读取并赋默认 "8"；
+  :244 _delayAlarm；:326-327 读入并打印日志。
+- 之后未再使用 _delayAlarm：报警判定 AlarmEvaluator.Parameters（MqtttService.kt:1101-1110）不含该字段；
+  普通报警节流 MqtttService.kt:1208 固定 (900 * 1000) ms。
+- delayalarm 仅出现在 PUBLISH_DATA 负载字符串（MqtttService.kt:1290-1292），未参与 App 本地节流。
+结论：用户在「设定」页填写的“报警间隔”不会改变当前 App 的 15 分钟固定节流。手册把它列为可设置参数
+但未说明实际作用，读者会误以为可改变报警间隔。文档需注明“当前版本仅保存/随配置发布，实际节流固定
+15 分钟”，或由 Android 实现接入该值。产品归属：Android 实现（P-08）。
+
+====================================================================
+C. 已核对一致的主要内容（本轮抽查/复用）
+====================================================================
+1. 版本/身份：APK 10,365,460 B、SHA-256 d2054221…、MD5 58de16b8…；设备已装 versionCode 10 /
+   versionName 1.9 / debug；固件包 134,791 B、md5 5df0c6d4…（identity_checks.txt）。
+2. 「我的」页/账户页/设定页/网关对话框文字与 bounds：与 docs/04 §4.1/§4.2、用户手册 §3/§4/§7
+   一致（复用同一 APK 的 rev5 UI 树；cap: 账户、保存、注册传感器、网关与上传设置、查看今日报告、
+   打开传感器列表、忘记/修改密码、退出、注销、报警间隔、响铃、设备报警）。
+3. 上传分类：UploadResult.kt:25-32（401/403=AuthRejected；408/429 与 5xx=Retryable；其余 4xx=
+   RequestRejected）与 docs/04 §5、docs/06 §2.3、用户手册 §11.2 一致。
+4. 判定/时序：sensor_decide_report 严格 >9（0.9℃）与 >350（35.0℃）；T=0 时 dark=false；
+   docs/01 §3、docs/03 §5.2、docs/06 #1、用户手册 §5/§5.1/Q2 一致（沿用 EV-036/EV-035 证据，
+   本轮未重烧/重采）。
+5. 采样/读取周期：SensorCadence.SAMPLE_PERIOD_MS=180000；docs/01 §4、docs/04 §4.3 的 180 s 一致。
+6. 默认值：MainActivity.kt:146-158 首次安装 2/0.1/35/29/75/40/8/10；DashboardFragment.kt:90-104
+   「默认值」按钮 1/4/35/29/70/40/8/5 且不保存；与用户手册 §7.1 一致。
+7. 报警参数：AlarmEvaluator.kt:26-33（>65.0℃、5/10/15 分钟窗）；MqtttService.kt:1208（900 s 节流）；
+   与 docs/04 §6、用户手册 §7.3/§7.4 一致。
+8. 9 台上限：GatewayReadGuard.kt:18 MAX_DEVICES=9；NotificationsFragment.kt:99-104 超限提示；
+   与 docs/04 §4.1、用户手册 §4.1/§4.3 一致。
+9. 时间语义：MqtttService BLE=receiveTime、MQTT=batch.timeSeconds；docs/01 §4、docs/04 §4.3、
+   用户手册 §11.1 一致。
+10. 未执行披露：docs/06 §4、docs/01 §6 保持 FW-LIGHT-DEF2-ENABLE=SKIP_CONFIRMED、真实升温、
+    跨链路、/upload_data、功耗、release 等未执行/延期状态，未写成通过。
+
+====================================================================
+D. 静态发现边界
+====================================================================
+B1–B4 均为源码静态对照结论，未在真机上触发对应运行条件（关闭守护后观察 BLE 轮询、杀进程重启后
+观察倒计时、触发报警观察震动时长、修改报警间隔观察节流）。这些缺陷是“文档声明与当前候选实现不符”，
+不是“因缺少外部条件而未执行”；未执行部分不影响上述静态矛盾的成立。

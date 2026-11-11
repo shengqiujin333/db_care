@@ -395,6 +395,10 @@ evidence/doc_verification_20261111_rev5/ui_gateway_dialog_rev5.xml | active | �
 evidence/doc_verification_20261111_rev5/ui_my_page_rev5.xml | active | 「我的」页真实 UI 树（用户：未登录、账户、网关编码/保存、注册传感器、三个底部按钮）
 evidence/doc_verification_20261111_rev5/ui_settings_scrolled_rev5.xml | active | 「设定」页滚动后真实 UI 树（守护时间 8、报警间隔 10、确定/默认值）
 evidence/doc_verification_20261111_rev5/ui_settings_top_rev5.xml | active | 「设定」页顶部真实 UI 树（选择设备、2/0.1/35/29/75/40）
+evidence/doc_verification_20261111_rev6/ | active | 软件测试文档独立校核原始证据目录（DOC-VERIFY-006）：DOC-PKG-001 rev 6 与随包用户手册的静态核对、设备/包身份查询、复用 rev5 真机 UI 树
+evidence/doc_verification_20261111_rev6/DOC-VERIFY-006.md | active | 产品文档独立校核报告：rev 6 复核 D-28/D-29/D-30 已修正；新发现 D-31（关闭守护仍进行 BLE 读取）、D-32（剩余倒计时恢复 60 倍）、D-33（震动无 5 分钟上限）、D-34（报警间隔未参与节流）；产品缺陷 P-08..P-11 分开定位；结论 TEST_FAIL
+evidence/doc_verification_20261111_rev6/identity_checks.txt | active | 校核身份原始记录：HEAD、APK/固件摘要、Redmi 8A 在线状态、已装包 versionCode 10/1.9、复用 rev5 UI 证据清单
+evidence/doc_verification_20261111_rev6/static_checks.txt | active | 文档对照源码逐项核对记录（D-28..D-34 行号与代码路径、已一致项、静态发现边界）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检

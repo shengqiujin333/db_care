@@ -1,0 +1,61 @@
+DOC-VERIFY-006 身份与环境核对原始记录
+时点：2026-11-11（Asia/Shanghai）
+仓库 HEAD：43b6de3（rev 6 文档提交；工作区开始校核时 clean）
+
+一、候选产物摘要（本机复算）
+$ sha256sum dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6 *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+$ md5sum dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+58de16b8fef549f004b92ffcec0104d9 *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+$ stat -c '%s %n' dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+10365460 dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+$ md5sum fw_release/fw_sensor_FD-002r8.zip
+5df0c6d45ecddc8aae8bddbbcfc9cfdf *fw_release/fw_sensor_FD-002r8.zip
+$ stat -c '%s %n' fw_release/fw_sensor_FD-002r8.zip
+134791 fw_release/fw_sensor_FD-002r8.zip
+
+结论：与 docs/01 §5、docs/04 §1、docs/02 §1 声明一致。
+
+二、测试手机在线与已安装包身份（本轮实际查询）
+$ android_test devices
+List of devices attached
+12f046690506           device product:olivelite model:Redmi_8A device:olivelite transport_id:1
+
+$ adb -s 12f046690506 shell dumpsys package com.jinyuni.dengbei_care
+（节选）
+  Package [com.jinyuni.dengbei_care] (e8d35a3):
+    codePath=/data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==
+    versionCode=10 minSdk=26 targetSdk=34
+    versionName=1.9
+    splits=[base]
+    apkSigningVersion=2
+    flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+    firstInstallTime=2026-11-10 19:25:25
+    lastUpdateTime=2026-11-11 13:57:18
+
+结论：设备在线；已安装包为 debug 候选 10/1.9，与文档候选身份一致。
+本轮未重新安装、未卸载、未清数据、未拉取设备 APK 重算摘要（复用 rev 5 的逐字节一致性证据：
+evidence/doc_verification_20261111_rev5/device_apk_hash.txt；候选主机 APK 摘要本轮复算未变）。
+
+三、复用的有效真机 UI 证据（同一 APK d2054221…，DOC-VERIFY-005 采集）
+- evidence/doc_verification_20261111_rev5/ui_my_page_rev5.xml
+  「我的」页：用户：未登录 / 账户 / 请输入网关编码：/ 保存 / 请输入传感器编码和别称：/ 注册传感器 /
+  网关与上传设置 / 查看今日报告 / 打开传感器列表
+- evidence/doc_verification_20261111_rev5/ui_account_page_rev5.xml
+  账户页：登录 / 注册 checkbox、获取验证码、忘记/修改密码、退出、注销
+- evidence/doc_verification_20261111_rev5/ui_settings_scrolled_rev5.xml
+  设定页：温度最大值/最小值、湿度最大值/最小值、报警方式、震动、响铃、守护时间、报警间隔、确定、默认值
+- evidence/doc_verification_20261111_rev5/ui_gateway_dialog_rev5.xml
+  网关与上传设置：搜索附近网关 / 扩大搜索（不过滤）/ 清除网关地址 / 保存网关地址 / 重试上传 / 关闭
+- evidence/doc_verification_20261111_rev5/ui_after_opensensorlist_click_rev5.xml
+- evidence/doc_verification_20261111_rev5/ui_after_report_click_rev5.xml
+
+复用理由：APK 字节身份未变（SHA-256 d2054221…），rev 6 仅修改文档，未修改 Android 源码；
+本轮仅用既有 UI 树核对文档文字，不重复导航点击与业务数据操作。
+
+四、本轮未执行
+- 固件重新烧录、mdk_build/mdk_flash、COM43 采集；
+- 真实升温 >0.9℃ / >35.0℃、光强变化/遮光、功耗测量；
+- 网关→手机跨链路、/upload_data 真实写入与回读；
+- 真机触发报警、守护进程重启倒计时、关闭守护后的 BLE 轮询行为观测。
+以上未执行项不作为通过依据；本轮新增缺陷均为源码静态对照结论，已在报告中单独标注。
