@@ -1,7 +1,7 @@
 # 04 安卓 App 安装与使用（交付/运维视角）
 
 适用版本：`com.jinyuni.dengbei_care` **versionCode 10 / versionName 1.9**（应用名"爱守护"，debug 候选）
-文档包：DOC-PKG-001 rev 5（2026-11-11；已按 DOC-VERIFY-001/002/003/004 校正界面文字、入口可用性、重试上限与失败分类）
+文档包：DOC-PKG-001 rev 6（2026-11-11；已按 DOC-VERIFY-001/002/003/004 校正界面文字、入口可用性、重试上限与失败分类）
 依据：`artifacts/android_build.md`（AB-001）、`artifacts/android_implementation.md`（AIMPL-002）、`evidence/software_test.md`（ST-AA005-R2/R3）、`dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/`、`dengbei_care/用户使用说明书.md`
 
 > 面向**安装、升级、配置、排障**；面向最终用户的完整操作说明见 `dengbei_care/用户使用说明书.md`。两者覆盖同一版本，若出现冲突以当前源码与本文档的构建身份为准。
@@ -204,7 +204,7 @@ adb -s 12f046690506 install <app-debug.apk>
 ## 6. 报警与本地数据（摘要）
 
 - 三类报警：下降报警（与 5/10/15 分钟前样本比较）、超限报警（阈值可全局/每设备设置）、紧急报警（>65 ℃，不节流）。
-- 普通报警 15 分钟节流；报警方式可配震动/蜂鸣；任意点击屏幕停止当前报警。
+- 普通报警 15 分钟节流；报警方式可配震动/响铃；任意点击屏幕停止当前报警。
 - 本地数据：`temperature`、`alarm_events`、`pending_uploads`（SQLite v3）、`MyPrefs`（参数）、`dev_<id>_*`（每设备参数）。
 - 卸载应用会清除本地数据；已上传的云端数据不受影响。
 - 详细用户操作见 `dengbei_care/用户使用说明书.md`。
@@ -222,7 +222,7 @@ adb -s 12f046690506 install <app-debug.apk>
 | 无法查看/删除已绑定传感器 | 已知阻断：`打开传感器列表` 被底部导航拦截（P-04），当前无 UI 路径；不要重复点击，等 Android 修复；详见 06 文档 §3 #20 |
 | 无法上传且显示 401/403 | 先确认手机号注册状态与网络；问题属平台鉴权，需平台侧确认受理条件，**不要**在客户端加临时鉴权头或改服务器 |
 | 注册收不到验证码 | 平台短信通道；确认手机号；联系管理员 |
-| 提示 `您登录/退出次数太多，需要重新安装软件` | 既有防刷：`LOGIN_CNT > 30`（第 31 次起）拦截登录/退出；需重装应用 |
+| 提示 `您登录/退出次数太多，需要重新安装软件` | 既有防刷：登录时累加 `LOGIN_CNT`，超过 30（即第 31 次登录尝试起）拦截，需重装应用；退出不计入该计数 |
 | 早起报告未推送 | 通知权限、电池白名单；WorkManager 有分钟级漂移 |
 | 安装失败 `INSTALL_FAILED_UPDATE_INCOMPATIBLE` | 签名不一致，需卸载（清数据）后安装 |
 
