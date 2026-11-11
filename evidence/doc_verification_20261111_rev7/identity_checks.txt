@@ -1,0 +1,52 @@
+DOC-VERIFY-007 身份与设备核对原始记录
+=====================================
+校核时点（UTC）：2026-11-11T09:16Z 起
+工作目录：D:\mypro\beiwo2\AIP
+
+一、仓库
+--------
+HEAD（校核开始时）：4b0c630 [role:technical_writer] Update project work
+git status --short：空（工作区 clean）
+rev 7 文档提交仅改动：docs/01..06、docs/README.md、dengbei_care/用户使用说明书.md、file_manifest.txt
+产品源码与构建产物无改动（沿用既有候选身份）
+
+二、候选身份复算
+----------------
+$ md5sum fw_release/fw_sensor_FD-002r8.zip
+5df0c6d45ecddc8aae8bddbbcfc9cfdf *fw_release/fw_sensor_FD-002r8.zip
+大小：134791 B
+（与 docs/01 §5、docs/02 §2、PACKAGE.txt 声明一致）
+
+$ md5sum dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+58de16b8fef549f004b92ffcec0104d9 *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+$ sha256sum dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6 *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+大小：10365460 B
+（与 docs/04 §1、用户手册 §2.1 声明一致）
+
+三、真机（只读查询）
+--------------------
+$ adb -s 12f046690506 devices
+List of devices attached
+12f046690506           device product:olivelite model:Redmi_8A device:olivelite transport_id:1
+
+$ adb -s 12f046690506 shell pm list packages --show-versioncode com.jinyuni.dengbei_care
+package:com.jinyuni.dengbei_care versionCode:10
+
+$ adb -s 12f046690506 shell dumpsys package com.jinyuni.dengbei_care
+    versionCode=10 minSdk=26 targetSdk=34
+    versionName=1.9
+    firstInstallTime=2026-11-10 19:25:25
+    lastUpdateTime=2026-11-11 13:57:18
+
+结论：设备在线且已安装候选 10/1.9；候选 APK 摘要本轮复算未变。
+本轮未重装、未清数据、未改应用数据，也未重新执行 UI 操作；
+rev 7 未改 APK，故沿用 rev5/rev6 同摘要 APK 的真机 UI 树作为界面文字证据。
+
+四、本轮复用与未执行边界
+------------------------
+复用：rev5/rev6 同 APK（d2054221…）真机 UI 树、安装/覆盖升级结果、257 项宿主机用例、
+      54 项静态核查与 12 门禁结果、EV-036 固件实板证据、发布包身份。
+未执行：固件重烧/COM43 采集、真实升温/超温、光强变化/遮光、功耗、
+      网关→手机跨链路、/upload_data 真实写入与回读、D-31～D-38 的真机行为复现。
+      本轮对行为声明的核对方法为源码静态对照，未伪称真机复现。
