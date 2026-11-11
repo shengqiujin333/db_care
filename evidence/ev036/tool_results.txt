@@ -1,0 +1,84 @@
+EV-036 release-package check - device/tool raw results (2026-11-11, UTC)
+
+Subject: fw_release/fw_sensor_FD-002r8.zip (release candidate FD-002r8)
+Test-side assets only; no product source, project file or runtime config changed.
+
+1) serial_list_ports  (2026-11-11T05:15:04.521Z, exit 0)
+   COM43  Prolific USB-to-Serial Comm Port  USB VID:PID=067B:2303  LOCATION=1-9.4.2
+   COM26  USB serial device                VID:PID=C251:F001  SN=87094109484987710672FF50
+   (COM43 = sensor UART1 at 9600 8N1; COM26 is the debugger CDC and was not used.)
+
+2) usb_list_devices  (05:15:04.612-05:15:06.725Z, exit 0)
+   - C251:F001 USB composite device, SN 87094109484987710672FF50 (CW-DAPLink) -> present
+   - 18D1:4EE7 SN 12F046690506 (target phone)                                -> present, not used
+   - 04B4:8613 FriendlyName=fx2lafw (Cypress FX2 logic analyzer)             -> present
+   - No ammeter / SMU / oscilloscope enumerated.
+
+3) pyocd (test-side, per Project Goal supplemental condition 2; not a registered
+   runtime/environment.yaml entry; nothing installed or reconfigured)
+   pyocd --version -> 0.36.0
+   pyocd list      -> 0  P&S CW-DAPLINK(CMSIS-DAP)  87094109484987710672FF50  target n/a
+   reset command   -> pyocd reset -t cortex_m -u 87094109484987710672FF50 -M attach -m hw
+   launched 4 s after COM43 was opened by the MCP serial_capture
+   reset window    -> start 2026-11-11T05:15:52.036Z, pyocd_exit=0, end 05:15:52.806Z
+   effect          -> MCU re-ran from reset; same capture window then shows BOOT..BUS and S k=0
+
+4) mdk_build {"action":"rebuild"}  (05:15:06.830-05:15:09.136Z, exit 0)
+   Compiler V6.24; Rebuild target 'Project'
+   "../USER/src/main.c(254): warning: while loop has empty body" (1 warning, pre-existing)
+   Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+   ".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s)
+   Built image MD5 (test-side md5sum, after rebuild):
+     Project.axf b6a15fed2ed5e3d0c4adc51ac87a4830 (297,380 B)
+     Project.hex 4d728dec9b0d28a352c46436b7586c72 ( 75,275 B)
+   Both match the release package members byte-for-byte (see release_identity.txt).
+
+5) mdk_flash {}  (05:15:19.665-05:15:32.356Z, exit 0)
+   Build target 'Project' 0 Error(s), 0 Warning(s)   (incremental; image unchanged)
+   Load "...\MDK\output\exe\Project.axf"
+   Erase Done.Programming Done.Verify OK.Application running ...
+   (Verify OK only proves download read-back; function is judged separately below.)
+
+6) serial_capture (MCP; raw bytes in evidence/ev036/*.bin)
+   BOT-01 05:15:47.992-05:16:18.187Z 271 B  md5 b88020173b013491b91d8d3728370b4e
+     BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+     VDD ok=1 code=1480 bgrmv=1189 mv=3289
+     IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+     IOSIG scl=95555 sda=30300
+     BUS idle=3 scl=1 sda=1 ack=44
+     S k=0 p=0 H=0 V=0 o=8 n=2856 x=2864 a=2860 D=0 t=273 h=349 q=1 r=0 s=0 y=0
+   C1     05:16:29.262-05:21:29.465Z  78 B  md5 e8521df1c4fec96b69238493b0ed7fe0
+     S k=3 p=273 H=1 V=0 o=8 n=2867 x=2872 a=2869 D=0 t=269 h=355 q=1 r=0 s=0 y=0
+   C2     05:21:34.325-05:26:34.533Z 156 B  md5 2927627dbf5db29a94124677aacd1053
+     S k=6 p=269 H=1 V=0 o=8 n=2872 x=2877 a=2874 D=0 t=267 h=364 q=1 r=0 s=0 y=0
+     S k=9 p=267 H=1 V=0 o=8 n=2877 x=2882 a=2879 D=0 t=266 h=361 q=1 r=0 s=0 y=0
+   C3     05:28:37.435-05:33:37.626Z 158 B  md5 e74ca6ecaf208513732decae3fec6a94
+     S k=15 p=271 H=1 V=0 o=8 n=2874 x=2881 a=2878 D=0 t=267 h=358 q=1 r=0 s=0 y=0
+     S k=18 p=267 H=1 V=0 o=8 n=2885 x=2891 a=2886 D=0 t=266 h=362 q=1 r=0 s=0 y=0
+   Window gaps: BOT->C1 11.2 s; C1->C2 4.9 s; C2->C3 2 min 2.9 s.
+   The k=12 S row was not captured in a window; its t value is inferred from
+   p(k=15)=271 and the passive I2C conversion (temp_x10=271) as a cross-window check.
+
+7) sigrok (fx2lafw:conn=2.32, D0=SCL, D1=SDA, D1 falling-edge trigger)
+   capture: 8,000,000 samples @4,000,000 Hz (2.0 s session),
+            05:26:53.563-05:27:38.455Z, exit 0, timed_out=false,
+            raw file md5 79b9edbbebeb6a68ac714795ab0fe04d
+   decode : offline i2c, scl=D0, sda=D1, exit 0, annotations present
+            Start / Address write 44 / ACK / Data write FD / ACK / Stop
+            Start / Address read 44 / ACK / Data read 69 71 DE 54 19 2E / NACK / Stop
+   Independent re-check: temperature CRC 0xDE MATCH, humidity CRC 0x2E MATCH,
+            temp_x10=271, hum_x10=351; nominal command STOP->read START 32.535 ms.
+   Association: p(k=15)=271 equals the converted I2C temperature, so this
+            transaction belongs to the k=12 sample (cross-window inference).
+            Digital sampling proves logic levels and timing only within the sample
+            resolution (250 ns); it does not prove analog amplitude/rise time and is
+            supplementary, not a substitute for any on-board serial row.
+
+8) Not available / not executed
+   - Ammeter / SMU / oscilloscope: none enumerated -> E2E-04 power measurement
+     NOT EXECUTED (approved DEFERABLE).
+   - Temperature stimulus, light-intensity change, occlusion/illumination: prohibited
+     by the user for this stage; not performed (FW-LIGHT-DEF2-ENABLE is human-confirmed
+     SKIP_CONFIRMED and was not retested).
+   - Gateway/phone cross-link: deferred to the later integration stage per user
+     condition 4; this round does not touch the gateway or the phone app.

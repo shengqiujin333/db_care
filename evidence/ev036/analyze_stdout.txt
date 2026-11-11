@@ -1,0 +1,60 @@
+=== BOT window: port open -> HW reset -> boot diagnostics (COM43 9600 8N1) ===
+--- bot01_hw.bin: 271 bytes md5=b88020173b013491b91d8d3728370b4e
+    50 B OK: BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+    39 B OK: VDD ok=1 code=1480 bgrmv=1189 mv=3289
+    48 B OK: IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+    27 B OK: IOSIG scl=95555 sda=30300
+    31 B OK: BUS idle=3 scl=1 sda=1 ack=44
+    76 B OK: S k=0 p=0 H=0 V=0 o=8 n=2856 x=2864 a=2860 D=0 t=273 h=349 q=1 r=0 s=0 y=0
+first five line names: ['BOOT', 'VDD', 'IOTEST', 'IOSIG', 'BUS']
+order/once check: PASS
+BOOT fields: PASS -> ('FD-002r4', '6A002C00', '0040', '9600')
+VDD: ok=1 code=1480 bgrmv=1189 mv=3289; 4095*bgrmv/code=3289 -> MATCH
+IOTEST fields: PASS -> ('0', '0', '3', 'none', '0')
+IOSIG: scl=95555 sda=30300; ACK slot low=True (address 0x88 write was ACKed)
+BUS fields: PASS -> ('3', '1', '1', '44')
+
+=== S rows: frozen format and field checks ===
+--- bot01_hw.bin: 271 bytes md5=b88020173b013491b91d8d3728370b4e
+    50 B OK: BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+    39 B OK: VDD ok=1 code=1480 bgrmv=1189 mv=3289
+    48 B OK: IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+    27 B OK: IOSIG scl=95555 sda=30300
+    31 B OK: BUS idle=3 scl=1 sda=1 ack=44
+    76 B OK: S k=0 p=0 H=0 V=0 o=8 n=2856 x=2864 a=2860 D=0 t=273 h=349 q=1 r=0 s=0 y=0
+--- cap01_k3.bin: 78 bytes md5=e8521df1c4fec96b69238493b0ed7fe0
+    78 B OK: S k=3 p=273 H=1 V=0 o=8 n=2867 x=2872 a=2869 D=0 t=269 h=355 q=1 r=0 s=0 y=0
+--- cap02_k6_k9.bin: 156 bytes md5=2927627dbf5db29a94124677aacd1053
+    78 B OK: S k=6 p=269 H=1 V=0 o=8 n=2872 x=2877 a=2874 D=0 t=267 h=364 q=1 r=0 s=0 y=0
+    78 B OK: S k=9 p=267 H=1 V=0 o=8 n=2877 x=2882 a=2879 D=0 t=266 h=361 q=1 r=0 s=0 y=0
+--- cap03_k15_k18.bin: 158 bytes md5=e74ca6ecaf208513732decae3fec6a94
+    79 B OK: S k=15 p=271 H=1 V=0 o=8 n=2874 x=2881 a=2878 D=0 t=267 h=358 q=1 r=0 s=0 y=0
+    79 B OK: S k=18 p=267 H=1 V=0 o=8 n=2885 x=2891 a=2886 D=0 t=266 h=362 q=1 r=0 s=0 y=0
+k=0: PASS q==1, V==0, D==0, o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0, k multiple of 3, H/p first-sample semantics
+k=3: PASS q==1, V==0, D==0, o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0, k multiple of 3, H/p first-sample semantics
+k=6: PASS q==1, V==0, D==0, o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0, k multiple of 3, H/p first-sample semantics
+k=9: PASS q==1, V==0, D==0, o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0, k multiple of 3, H/p first-sample semantics
+k=15: PASS q==1, V==0, D==0, o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0, k multiple of 3, H/p first-sample semantics
+k=18: PASS q==1, V==0, D==0, o==8, a in [n,x], t in [-400,1250], h in [0,1000], r==0/s==0/y==0, k multiple of 3, H/p first-sample semantics
+
+=== cadence and previous-value chain ===
+k sequence (capture order): [0, 3, 6, 9, 15, 18]
+consecutive set (0, 3, 6, 9) present: PASS
+consecutive set (15, 18) present: PASS
+p(k=3)=273 vs t(k=0)=273: MATCH
+p(k=6)=269 vs t(k=3)=269: MATCH
+p(k=9)=267 vs t(k=6)=267: MATCH
+p(k=18)=267 vs t(k=15)=267: MATCH
+light raw a range: [2860, 2869, 2874, 2879, 2878, 2886] (recorded only; no light/temperature stimulus)
+gates: no `G` line and no `P` line in any capture: PASS
+
+=== passive I2C decode re-check (offline annotations) ===
+addresses: [('write', '44'), ('read', '44')]; write data: ['FD']; read data: ['69', '71', 'DE', '54', '19', '2E']
+temp word 0x6971 CRC 0xDE recomputed 0xDE: MATCH
+hum  word 0x5419 CRC 0x2E recomputed 0x2E: MATCH
+converted: temp_x10=271, hum_x10=351
+p(k=15)=271 vs I2C temp_x10=271: MATCH -> transaction belongs to the k=12 sample
+nominal command STOP -> read START: 32.535 ms
+(sample index / 4 MS/s; nominal relative time only, not cross-device synchronized)
+
+written: capture_analysis.txt

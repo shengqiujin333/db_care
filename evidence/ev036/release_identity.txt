@@ -1,0 +1,45 @@
+EV-036 release package and build identity (2026-11-11)
+
+A) Release package itself (test-side re-check, evidence/ev036/package_identity.py)
+   package   : fw_release/fw_sensor_FD-002r8.zip
+   size      : 134791 B
+   md5       : 5df0c6d45ecddc8aae8bddbbcfc9cfdf
+   crc_test  : OK (zipfile.testzip() returned no bad member)
+   member    : fw_sensor_FD-002r8_b6a15fed.axf 297380 B
+               md5=b6a15fed2ed5e3d0c4adc51ac87a4830 crc=B9C31A27
+   member    : fw_sensor_FD-002r8_4d728dec.hex 75275 B
+               md5=4d728dec9b0d28a352c46436b7586c72 crc=EC66763B
+   member    : PACKAGE.txt 3202 B
+               md5=a58f67fcf5b760767ff5b65888c73dfb crc=9CDC7920
+   All three member MD5 values equal the values declared in PACKAGE.txt and in
+   artifacts/firmware_release.md.
+
+B) Independent rebuild of the current product source (this round)
+   command   : mdk_build {"action":"rebuild"} 2026-11-11T05:15:06.830-05:15:09.136Z
+   compiler  : Keil MDK / ARMCLANG V6.24
+   result    : 0 Error(s), 1 Warning(s) (pre-existing main.c(254) empty while body)
+   size      : Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+   axf md5   : b6a15fed2ed5e3d0c4adc51ac87a4830 (297380 B)
+   hex md5   : 4d728dec9b0d28a352c46436b7586c72 (75275 B)
+   -> identical to both release-package members (byte-for-byte).
+
+C) Download (this round)
+   command   : mdk_flash {}
+   window    : 2026-11-11T05:15:19.665-05:15:32.356Z
+   log       : Erase Done.Programming Done.Verify OK.Application running ...
+   Verify OK only proves that the programmed image reads back identically; it is
+   not a functional acceptance.
+
+D) Product-source provenance
+   repository HEAD at verification : 5b9b7aa63309c82de1b90e46b533d4559d2f2efa
+   last commit touching sensor USER/MDK/EWARM : 82a7e74e5d6bae855a573e1f23f83936ba8db049
+   git diff --stat 82a7e74 HEAD -- <sensor>/USER <sensor>/MDK <sensor>/EWARM : empty
+   git status --short : empty before test-side evidence was written
+   => the release package, the independent rebuild and the downloaded image all
+      correspond to the same product source generation.
+
+E) Production-package hygiene (BOT-01 reconsideration instruction)
+   The zip contains only the .axf, the .hex and PACKAGE.txt; it contains no test
+   harness, mock, verification-only source or test switch. Evidence sources are
+   kept outside the package under evidence/ev036/. No firmware test interface was
+   added or required for the test-side orchestration (port-open + pyocd reset).
