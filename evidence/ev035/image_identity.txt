@@ -1,0 +1,33 @@
+EV-035 test identity (independent rebuild, deploy, identity closure)
+
+Verification HEAD at start           : cfe98a18c7932840195f80ed7d587433e0a0701f (2026-11-11)
+Sensor product source last change    : 82a7e74e5d6bae855a573e1f23f83936ba8db049 (role:firmware_engineer, 2026-11-10)
+git diff 82a7e74..HEAD -- <sensor>/USER <sensor>/MDK <sensor>/EWARM  : empty (no product changes)
+git status --porcelain -- <sensor>   : empty at start
+
+Build (independent)  : mdk_build {"action":"rebuild"}, Keil MDK ARMCLANG V6.24
+Result               : 0 Error(s), 1 Warning(s) (existing main.c(254) empty while body)
+Program Size         : Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+Project.axf md5      : b6a15fed2ed5e3d0c4adc51ac87a4830
+Project.hex md5      : 4d728dec9b0d28a352c46436b7586c72
+Matches FWI-003 rev 8 declared identity: yes (character-for-character)
+
+GNU cross build      : gcc/build.sh exit 0, 0 error (27 existing warnings)
+                       FLASH 34840 B / RAM 1816 B (matches FWI-003 rev 8)
+                       evidence/ev035/gcc_build.log
+
+Download             : mdk_flash {} (project-saved debugger/flash algorithm)
+Result               : Erase Done.Programming Done.Verify OK.Application running ...
+Downloaded image     : same axf md5 (unchanged before/after download)
+Log                  : evidence/ev035/mdk_flash.log
+
+Board identity       : BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+                       (same board UID as historical records; rst=0040 from pyocd nRESET)
+Target               : CW32L010 sensor board (GXHT40 U9 on the same board)
+Probe                : CW-DAPLink C251:F001 SN 87094109484987710672FF50
+UART                 : COM43 Prolific 067B:2303, 9600 8N1
+
+Static / asset boundary:
+- Implementation commit 82a7e74 did not modify test/*_verify_ev.c or test/mock_*_ev/.
+- This verification round did not modify USER/**, MDK/, EWARM/, gateway, or Android sources.
+- Runtime files (permissions.yaml / environment.yaml) were not modified.

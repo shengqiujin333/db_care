@@ -1,0 +1,9 @@
+Command (test-side, launched 4 s after COM43 was opened by the MCP capture):
+  "C:/Users/kason/AppData/Roaming/Python/Python311/Scripts/pyocd.exe" reset \
+      -t cortex_m -u 87094109484987710672FF50 -M attach -m hw
+Result: exit=0, no stdout/stderr (silent success); nRESET caused the MCU to re-run
+from the start (subsequent capture begins with BOOT and S k=0).
+pyocd 0.36.0; probe "P&S CW-DAPLINK(CMSIS-DAP)" SN 87094109484987710672FF50.
+pyocd is not a registered runtime/environment.yaml entry; used per Project Goal
+supplemental condition 2 with the existing installation, no packages installed
+and no configuration changed.

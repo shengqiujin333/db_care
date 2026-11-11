@@ -1,3 +1,32 @@
+# ProgrammedPrototypeArtifact（EV-035 / LIGHT-DEF-2 交付镜像下载 + 上电身份回读）
+
+本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。功能判定见 `evidence/test.md` EV-035：本交付范围内已执行的必需用例 **TEST_PASS**；`FW-LIGHT-DEF2-ENABLE` 经人工确认未执行（`SKIP_CONFIRMED`）、`E2E-04` 已批准延期未测，均在报告中列明。本轮已在实板确认：上电五行/`uid`（BOT-01/02/03/04）、6 个采样行 `q=1`（k=0/3/6/12/15/18，连续集 k=0/3/6 与 k=12/15/18）、位级 I²C 双字 CRC 匹配、`p` 链保持。
+
+## 本次下载的固件身份
+
+| 项 | 值 |
+|---|---|
+| 验证时 HEAD | `cfe98a18c7932840195f80ed7d587433e0a0701f`；产品源码 = 实现提交 `82a7e74`（FWI-003 rev 8），`git diff 82a7e74..HEAD -- <sensor>/USER MDK EWARM` 为空 |
+| 构建方式 | `mdk_build {"action":"rebuild"}`（Keil MDK / ARMCLANG **V6.24**，工程保存配置）+ `mdk_flash {}`（先编译再下载） |
+| 构建结果 | `0 Error(s), 1 Warning(s)`（既有 `main.c(254) while(k--);` 空循环体）；`Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676` |
+| 镜像路径 | `CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.axf` |
+| 镜像 md5 | **`b6a15fed2ed5e3d0c4adc51ac87a4830`**（本能力独立 rebuild，与 FWI-003 rev 8 / BUILD-003 声明逐字符一致） |
+| 附带 hex md5 | **`4d728dec9b0d28a352c46436b7586c72`**（`Project.hex`） |
+
+## 下载目标与下载校验
+
+| 项 | 值 |
+|---|---|
+| 目标器件 | CW32L010（U7），传感器板（GXHT40 U9 同板） |
+| 调试串口 | **COM43** = Prolific USB-to-Serial（VID:PID `067B:2303`），9600 8N1 |
+| 下载探针 | CW-DAPLink `USB VID:PID=C251:F001`（SN `87094109484987710672FF50`） |
+| 下载结果 | **1 次成功**：2026-11-11T04:38:30.078–04:38:42.466Z，`Erase Done.Programming Done.Verify OK.Application running ...`；下载后 axf/hex md5 未变 |
+| 运行/身份证明 | 端口先开 + `pyocd` HW reset 后同一窗口取得 `BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600`、`VDD ok=1 code=1481 bgrmv=1189 mv=3287`、`IOTEST … gc=0`、`IOSIG scl=95555 sda=30300`、`BUS idle=3 scl=1 sda=1 ack=44` 与 `S k=0 … q=1`；随后 k=3/6/12/15/18 采样行 |
+
+`Verify OK` 只证明**下载内容的回读校验一致**。原始结果：`evidence/ev035/image_identity.txt`、`capture_windows.txt`、`capture_analysis.txt`、`tool_results.txt`；原始捕获：`evidence/ev035/bot01_hw.bin`、`cap01_k3_k6.bin`、`cap02_k12.bin`、`cap03_k15_k18.bin`；位级 I²C：`raw_i2c_capture.sr`、`decoded_i2c.txt`。
+
+---
+
 # ProgrammedPrototypeArtifact（EV-034 / LIGHT-DEF-2 交付镜像下载 + 上电身份回读）
 
 本文件只证明「本轮实际把当前交付镜像下载到真实目标并回读校验成功」，**不表示任何业务功能合格**。功能判定见 `evidence/test.md` EV-034：整体 `TEST_FAIL`（判据启用、真实升温/跨链路、功耗未完成）；本轮已在实板确认：上电五行/`uid` 取得（BOT-01/02/03）、连续 5 个采样周期 `q=1`（k=0/3/6/9/12）、位级 I²C 双字 CRC 匹配、`p` 链保持。

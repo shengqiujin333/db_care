@@ -1,0 +1,39 @@
+==== independent conditional-report send-path verification (embedded_tester) ====
+    PASS  baseline cycle stored (30.0 C / 50.0 %RH)
+[T1] no pending report -> no transmission
+    PASS  sender not called when report_req is clear
+[T2] report triggered by a real cycle, then sent successfully
+    PASS  sampling cycle raised the pending report
+    PASS  exactly one transmission attempt
+    PASS  sender received len = 10
+    PASS  sender received the configured timeout
+    PASS  pending report cleared after a successful send
+    PASS  frame handed to the sender is the encoded frame of the triggering sample
+    PASS  frame really depends on the sample values (anchor is meaningful)
+    PASS  tempvalue/huminityvalue hold the triggering sample at send time
+    PASS  identical to encoding tempvalue/huminityvalue (previous code path) -> no frame change
+[T3] failure keeps the pending report until the retry limit
+    PASS  report pending
+    PASS  attempt 1 failed -> report still pending (no false success)
+    PASS  attempt 2 failed -> report still pending
+    PASS  attempt 3 succeeded -> report cleared
+    PASS  frame captured per attempt
+[T4] retry exhaustion abandons the round (bounded)
+    PASS  report pending
+    PASS  exactly SENSOR_RF_TX_RETRY(3) attempts, then the round is abandoned
+    PASS  pending report cleared after exhaustion
+    PASS  no further attempts after the round was abandoned
+[T5] a new report after an abandoned round is sent again (retry counter reset)
+    PASS  new report pending
+    PASS  first attempt of the new round failed -> still pending
+    PASS  second attempt succeeded (retry counter restarted at 0 for the new round)
+[T6] legacy hall/OPTCFG gates retired; sleep gate is report/sample only
+    PASS  report pending
+    PASS  pending report blocks deep sleep
+    PASS  pending report is sent on the first call (no legacy window deferral)
+    PASS  pending sample blocks deep sleep
+    PASS  idle state (no report, no sample) enters deep sleep
+[T7] failed measurements never produce a report or a transmission
+    PASS  failed cycle raises no report
+    PASS  no transmission from a failed cycle
+==== result: 30 passed, 0 failed ====

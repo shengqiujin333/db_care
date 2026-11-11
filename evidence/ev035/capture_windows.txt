@@ -1,0 +1,17 @@
+EV-035 COM43 capture windows (9600 8N1, no stimulus)
+
+Reset for BOT window: pyocd reset -t cortex_m -u 87094109484987710672FF50 -M attach -m hw
+launched by a test-side background command 4 s after COM43 was opened by the MCP
+serial_capture session; pyocd exit=0 (evidence/ev035/pyocd_reset_boot.txt).
+
+window  file                start (UTC)                 end (UTC)                   bytes  md5                                observed S rows
+BOT-01  bot01_hw.bin        2026-11-11T04:38:53.136Z    2026-11-11T04:39:23.351Z     271   6bfa1012869228692f722488ce773cc4   BOOT/VDD/IOTEST/IOSIG/BUS + S k=0
+W1      cap01_k3_k6.bin     2026-11-11T04:39:35.751Z    2026-11-11T04:44:35.948Z     156   9814c4e264afb4ad6808c67bfdd5b71e   S k=3, k=6
+W2      cap02_k12.bin       2026-11-11T04:47:46.312Z    2026-11-11T04:52:46.510Z      79   5c550af0d2651279dbfc090a1402eae1   S k=12
+W3      cap03_k15_k18.bin   2026-11-11T04:52:55.880Z    2026-11-11T04:57:56.078Z     158   44218128d2647cce3a934225b89974e6   S k=15, k=18
+
+Gaps between windows: 12.4 s (BOT end -> W1 start), 3 min 10.4 s (W1 end -> W2 start),
+9.4 s (W2 end -> W3 start).  The 3 min 10 s gap contains the k=9 sample; the passive
+I2C capture (sigrok window 04:44:36-04:47:34Z) observed the k=9 transaction and its
+converted temperature (268 x10) equals p(k=12) in cap02, a cross-window consistency check.
+No temperature, light-intensity or occlusion stimulus was applied.
