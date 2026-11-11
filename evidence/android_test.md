@@ -1154,3 +1154,40 @@ cd D:\mypro\beiwo2\AIP\dengbei_care
 ### 4. 未执行项
 
 真实 401/403 与 `/upload_data` 持久化回读、真实 BLE/GATT/MTU、多设备/占位/9 台真实快照、设备 UI 截图、API 31+ 权限分支均未执行（外部条件）；不得写成 PASS。本次重建不替代独立软件测试复验。
+
+---
+
+## AT-017 · 产品验收 D-01/D-02/D-03/D-04a 修复后重建（commit `dacf888`）
+
+对象：完整 Android 交付（AA-005 七项 + D-AA005-1 + 产品验收布局/文案修复）；重建时工作区干净，HEAD `dacf888a04b7415c52fc489ef092deb40f878375`。
+证据目录：`evidence/product_android_rebuild_20261111/`。
+
+### 1. 构建与身份
+
+```
+cd D:\mypro\beiwo2\AIP\dengbei_care
+./gradlew clean :app:assembleDebug --offline
+```
+
+| 项 | 结果 |
+|---|---|
+| 构建 | `BUILD SUCCESSFUL` |
+| APK | 10,365,464 B，sha256 `71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8`，md5 `1e17e0c281715fddd26d308246d6424c` |
+| 身份/签名 | `versionCode 10 / versionName 1.9`；`minSdk 26 / targetSdk 34`；v2 签名通过（Android Debug 证书） |
+
+### 2. 回归与门禁
+
+| 检查 | 结果 |
+|---|---|
+| 全量宿主机 | 33 套件 / **261 项** / 0 失败 / 0 错误 / 0 跳过 |
+| 布局/文案结构（`static_layout_check.py`） | 15/15 PASS |
+| 既有独立静态核查 | 54/54 PASS，0 FINDING |
+| 既有独立门禁 | 12/12 EXIT=0 |
+
+### 3. 本次重建范围
+
+包含产品验收 D-01/D-02（底部按钮可达）、D-03（控件重叠）、D-04a（首页文案）修复，以及 AA-005 全部七项与 D-AA005-1；版本号保持 10 / 1.9，重装需 `-r` 并核对新摘要。
+
+### 4. 未执行
+
+未安装/操作手机；真实点击/布局 bounds 复测、真实 BLE/平台链路、D-04b 随包手册（技术文档角色）均不在本能力；保持 NOT EXECUTED，不得写成通过。

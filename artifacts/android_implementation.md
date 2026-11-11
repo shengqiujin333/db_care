@@ -1071,3 +1071,21 @@ BLE 记录布局/字节序/负温符号、AES/ECB/NoPadding 与密钥、GATT UUI
 - 实机安装/点击复测未执行（本能力无 `android_test`），交独立产品验收；真实 BLE/平台链路等保持 NOT EXECUTED。
 
 修复说明：`artifacts/android_fix_product_D01-D04a.md`；证据：`evidence/product_fix_20261111/`。
+
+---
+
+# 产品验收修复重建（product_android_rebuild）
+
+在修复提交 `dacf888`（工作区干净）上重建完整 Android 交付（AA-005 ITEM-001…007 + D-AA005-1 + D-01/D-02/D-03/D-04a），交付全部必需应用行为：
+
+| 检查 | 命令 | 结果 |
+|---|---|---|
+| 构建 | `./gradlew clean :app:assembleDebug --offline` | `BUILD SUCCESSFUL`；APK 10,365,464 B，sha256 `71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8`，md5 `1e17e0c281715fddd26d308246d6424c` |
+| 版本/签名 | `aapt dump badging` / `apksigner verify` | `versionCode 10 / versionName 1.9`，`minSdk 26/targetSdk 34`；APK Signature v2 通过，`Android Debug` 证书（项目既有 debug keystore） |
+| 全量宿主机 | `./gradlew :app:testDebugUnitTest --offline --rerun-tasks` | **33 套件 / 261 项 / 0 失败 / 0 错误 / 0 跳过** |
+| 布局/文案结构 | `python evidence/product_fix_20261111/static_layout_check.py` | **15/15 PASS**（NavHost 约束、滚动布局、无重叠、快速入口置顶、首页文案） |
+| 既有独立静态 | `software_verify_aa005_android_check.py` | **54/54 PASS，0 FINDING** |
+| 既有独立门禁 | `aa005_android_check/run_gates.py` | **12/12 EXIT=0** |
+
+重建证据：`evidence/product_android_rebuild_20261111/`（`build.log`、`unit_test.log`、`static_layout_check.log`、`static_aa005.log`、`gates.log`、`apk_badging.txt`、`apksigner_verify.txt`、`rebuild_identity.txt`、`test_summary.txt`）。
+实机安装/点击复测、真实 BLE/GATT、真实 `/upload_data`/401/回读、API 31+、9 台快照等保持 NOT EXECUTED，交独立产品验收；本次重建不替代真机验收。
