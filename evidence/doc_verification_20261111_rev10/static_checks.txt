@@ -1,0 +1,182 @@
+DOC-VERIFY-010 static / live checks
+===================================
+
+A. Scope
+--------
+Subject: DOC-PKG-001 rev 10 (docs/README.md and docs/01..06) plus
+dengbei_care/用户使用说明书.md. Focus: rev10 changes and the reader tasks they
+affect (APK identity, install, "我的" page entries, list/report behaviour,
+limitation numbering, evidence index). Reused valid evidence from
+DOC-VERIFY-001..009 and android_check/android_package_check where the candidate
+bytes are unchanged; performed a live UI re-check on the installed candidate.
+
+B. rev10 changed claims vs evidence
+-----------------------------------
+B1 APK identity 10,365,464 B / SHA-256 71a041d3... / MD5 1e17e0c2...
+   docs/04:19-21, docs/01:88, docs/README.md:10, 用户使用说明书.md:25
+   -> host APK and installed device base.apk both match (identity_checks.txt §3/§4).
+   PASS.
+
+B2 Source delivery commit ab72db9, product tree = dacf888
+   docs/04:23, docs/01:89, artifacts/android_build.md:6
+   -> commit exists; product code diff dacf888..HEAD over dengbei_care/app and
+      build scripts is empty. The only tree delta is the rev10 one-line manual
+      identity edit. PASS for code; observation O-1 for the literal wording.
+
+B3 "我的" page layout and entries (AB-002, fixed)
+   docs/04:96, docs/04:171-175, docs/06 #17/#18/#20
+   Live check on installed 71a041d3 (2026-11-11, evidence dir):
+   - ui_my_page_live.xml: 用户：未登录, 账户, 查看今日报告[32,327][688,423],
+     打开传感器列表[32,431][688,527], 网关编码输入, 注册传感器[32,1177][688,1264].
+   - ui_my_scrolled_live.xml: 注册传感器[32,976][688,1072],
+     网关与上传设置[32,1120][688,1216] -> disjoint; both above nav_view
+     [0,1264][720,1424].
+   - ScrollView scrollable="true"; swipe up revealed the bottom button.
+   PASS (matches docs exactly).
+
+B4 Report entry opens ReportActivity
+   docs/04:172, docs/06 #18, 用户使用说明书.md:260
+   Live: clicked viewReportButton -> ui_info activity=.report.ReportActivity;
+   report_activity_dumpsys.txt shows ReportActivity on top;
+   ui_report_activity_live.xml = 早起报告 / 尚未生成过报告 / 重新生成.
+   PASS.
+
+B5 Sensor-list entry opens SensorIdListFragment
+   docs/04:127-129, docs/06 #20, 用户使用说明书.md:87/95
+   Live: clicked opensensorlistbutton -> ui_sensor_list_live.xml =
+   已保存的 ID（0） / 点选可多选，删除选中可批量移除 / 删除选中(disabled).
+   PASS for the empty state; the "with data" case remains NOT EXECUTED (disclosed).
+
+B6 Home empty-state copy
+   docs/04:174, 用户使用说明书.md (D-04a)
+   Live/committed evidence ui_home_after_install.xml:89 =
+   点击下方「去添加」添加设备；也可在「我的」→「打开传感器列表」查看已保存 ID
+   PASS.
+
+B7 No crash during the re-check
+   logcat_session_tail.txt (527 lines) contains 0 "FATAL EXCEPTION" / "ANR in".
+
+C. Counts and identifiers
+-------------------------
+C1 Root host tests : evidence/android_package_check_20261111/unit_test_summary.txt
+   suites=33 tests=261 failures=0 errors=0 skipped=0
+   -> docs/04:24, docs/01:99 PASS.
+C2 Gates          : gates.log "SUMMARY: 12/12 gates passed" -> docs/01:99 PASS.
+C3 Static AA-005   : static_check_aa005.log "54 项检查全部通过；0 项观察"
+   -> docs/01:99 PASS.
+C4 Layout static  : evidence/product_fix_20261111/static_layout_check.txt
+   15 PASS lines, RESULT: OK -> docs/01:99 "15/15" PASS.
+C5 Limitations    : docs/06 §3 rows 1..25, no gap/duplicate; README:27 says
+   25 (#1-#25; #17/#18/#20 fixed) -> PASS.
+C6 Constants (reused, code unchanged): MAX_DEVICES=9 (GatewayReadGuard.kt:18),
+   20 attempts / 1800 s (CloudUploadRepository.kt:226,229),
+   180 s (SensorCadence.kt:14) -> docs/04 §4.1/§5, 06 #21-25 consistent.
+
+D. Documentation defects found
+------------------------------
+D-41 (documentation defect, technical_writer must fix)
+  docs/06_维护排障与已知限制.md:128 lists
+  evidence/ev038/(...、release_identity.txt).
+  File evidence/ev038/release_identity.txt does NOT exist. The EV-036 file
+  evidence/ev036/release_identity.txt does exist; EV-038 has no such file.
+  Evidence for the listed EV-038 identity facts is in
+  evidence/ev038/tool_results.txt and capture_windows.txt (and image_identity
+  equivalents in EV-037).
+  Fix: replace that filename with an existing EV-038 file (e.g.
+  tool_results.txt / capture_windows.txt) or point to the EV-037/EV-036
+  identity file explicitly.
+  Same-class scan: all other named files in docs/06 §5, docs/02 §10,
+  docs/04 §9 and README resolve.
+
+D-42 (shared project index defect; file_manifest.txt)
+  Commit 31060e4 changed manifest entries for historical evidence from .bin to
+  .cap (ev028 cap02, ev033 cap01/cap03/cap04, ev034 bot01, ev035 bot01,
+  ev036 bot01/cap01/cap02, ev037 bot01/cap01..cap04), but those .cap files do
+  not exist in the working tree or in git; only the .bin files exist and are
+  gitignored (git check-ignore -> .gitignore:12 *.bin).
+  Exact checks: evidence/ev028/cap02_k6_k9.cap MISSING,
+  evidence/ev033/cap01_k3.cap MISSING, evidence/ev034/bot01_hw.cap MISSING,
+  evidence/ev035/bot01_hw.cap MISSING, evidence/ev036/bot01_hw.cap MISSING,
+  evidence/ev037/bot01_hw.cap MISSING (same for the other renames).
+  Impact: manifest points readers at files that do not exist; docs/03:223
+  correctly describes these captures as local .bin files not distributed.
+  Owner: the manifest edit came from the embedded-tester commit; correct the
+  entries (restore .bin names marked local-only, or commit the .cap copies and
+  update references). Not a product-documentation statement, but it breaks the
+  shared path index this package relies on.
+
+D-43 (documentation completeness, technical_writer)
+  docs/06 §4 is titled "未执行 / 延期测试清单（必须随交付披露）" but does not
+  list two NOT EXECUTED items introduced in rev10 and stated elsewhere:
+  (a) "打开传感器列表" with real bound data (list/delete/batch delete);
+  (b) real BLE/GATT/MTU/pairing and real /upload_data/401 on the current
+      candidate 71a041d3 (the prior evidence is from an earlier build).
+  They appear in docs/06 #9/#20, docs/04 §8 item 3 and README §5 item 7, so
+  this is an inconsistency inside 06 rather than a false claim.
+  Fix: add both rows to §4 so the mandatory disclosure table is complete.
+
+E. Observations (not blocking by themselves)
+--------------------------------------------
+O-1 AB-002 / evidence/android_build_20261111/build_evidence.md state literally
+    "git diff dacf888..HEAD -- dengbei_care is empty". At rev10 HEAD that is no
+    longer literally true (the user manual identity line changed), although the
+    buildable code is byte-identical and the APK identity is unchanged.
+    Recommend wording "产品源码树（app/、构建脚本）与 dacf888 一致" or note the
+    documentation-only edit.
+
+O-2 docs/03:221 cites "EV-036 §3 上电五行与周期原文"; EV-036 §3 contains the
+    five power-on lines and the first S row, while the remaining periodic rows
+    are in §4. Low impact; consider citing §3-§4.
+
+O-3 docs/01:67 (unchanged from rev9) says "EV-036，6 个周期"; rev10 also has
+    EV-038 7 cycles. The historical statement remains true; an update would be
+    editorial only.
+
+F. Cross-document consistency re-check (rev10)
+----------------------------------------------
+1. Version headers: README + docs/01..06 all "DOC-PKG-001 rev 10"; rev10
+   version row present in README §6.1 and docs/06 §7. No stale "rev 9" as
+   current.
+2. APK identity/size/hash appears consistently in README:10, docs/01:88,
+   docs/04:19-21, 用户使用说明书.md:25.
+3. Firmware package size/md5 and member md5s consistent across README:9,
+   docs/01:86, docs/02:20 and the actual zip.
+4. "Fixed" entries #17/#18/#20 keep their numbers and match README §5 item 8,
+   docs/04 §4.1/§4.2, docs/06 §2.5 and the user manual.
+5. Remaining behaviour limits P-08..P-13 map to #21..#25 consistently
+   (docs/04 §4.3/§8 item 4, docs/06 #21-25, README §5 item 10).
+6. No leftover "无 UI 路径 / 按钮不可用 / 待 Android 修复" as a current-state
+   statement; the matches are historical version records only.
+7. The no-light criterion remains disclosed as disabled (T=0) in docs/01 §3,
+   docs/02 §9, docs/03 §5.2/§10, docs/06 #1, README §5 item 1 and the user
+   manual; it is not written as passed.
+8. "Whole-product acceptance not re-run" is stated consistently in docs/01 §6,
+   docs/04 §8 item 5, docs/06 §4 final paragraph, README §5 item 11.
+
+G. Not executed in this round
+-----------------------------
+- Firmware re-flash / COM43 capture (tool boundary does not include mdk_flash or
+  serial_capture; EV-038/EV-037 evidence reused).
+- Real temperature rise / >35 C trigger / 433 transmission (user forbids
+  temperature changes).
+- Light-intensity change / full dark stimulus (user forbids changing light).
+- Gateway -> phone 433/BLE end-to-end (later integration stage).
+- Real /upload_data write, idempotency, persistence read-back (no write
+  authorization).
+- CR2032 peak/deep-sleep current (approved deferral, no instrument).
+- Android release variant / production signing.
+- Android install was not repeated: installed bytes were pulled and compared to
+  the candidate instead (byte-identical), and overwrite-upgrade evidence was
+  reused.
+- Android rollback procedure was not executed.
+- "Sensor list with real bound data" list/delete was not executed.
+- P-08..P-13 real-device behaviour was not reproduced (source static only).
+
+H. Automated path check
+-----------------------
+command: python evidence/doc_verification_20261111_rev10/check_doc_refs.py
+docs/README.md docs/01_...md docs/02_...md docs/03_...md docs/04_...md
+docs/05_...md docs/06_...md dengbei_care/用户使用说明书.md
+result : bases=6 checked=149 missing=0 (EXIT=0)
+note   : the checker looks at inline-code path tokens; the ev038 file list
+inside Chinese parentheses is checked separately in §D (D-41).

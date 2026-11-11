@@ -426,6 +426,23 @@ evidence/doc_verification_20261111/ui_gateway_dialog.xml | active | “网关与
 evidence/doc_verification_20261111/ui_home.xml | active | 首页真实 UI 树（爱守护/空态/首页-设定-我的三页签）
 evidence/doc_verification_20261111/ui_my_page.xml | active | “我的”页真实 UI 树（请输入网关编码/保存/注册传感器/网关与上传设置/查看今日报告/打开传感器列表）
 evidence/doc_verification_20261111/usb_enumeration.txt | active | USB 枚举：COM43 Prolific 067B:2303、CW-DAPLink C251:F001 序列号、COM26 CDC、手机 12F046690506、fx2lafw
+evidence/doc_verification_20261111_rev10/ | active | 软件测试文档独立校核原始证据目录（DOC-VERIFY-010）：DOC-PKG-001 rev 10 的 APK 身份/入口修复/EV-038 引用复核、真机 UI 重走、整包同类路径与跨文档一致性检查
+evidence/doc_verification_20261111_rev10/DOC-VERIFY-010.md | active | 产品文档独立校核报告：rev 10 复核 APK 71a041d3… 与 D-01～D-04a 入口/布局；发现 D-41（06 §5 引用不存在的 ev038/release_identity.txt）、D-43（06 §4 披露清单遗漏）、D-42（file_manifest 的 .cap 条目不存在）与 O-1～O-3；结论 TEST_FAIL
+evidence/doc_verification_20261111_rev10/check_doc_refs.py | active | 文档内联路径引用存在性检查脚本（可复跑，多源码根解析）
+evidence/doc_verification_20261111_rev10/device_apk_hash.txt | active | 设备 base.apk 与主机候选 10,365,464 B / SHA-256 71a041d3… 逐字节一致（副本核对后删除）
+evidence/doc_verification_20261111_rev10/device_apk_path.txt | active | 设备已安装 base.apk 路径（pm path 原始输出）
+evidence/doc_verification_20261111_rev10/device_package_dump.txt | active | dumpsys package 原始输出（versionCode 10 / versionName 1.9 / 安装与更新时间）
+evidence/doc_verification_20261111_rev10/device_state.txt | active | 设备系统版本 10 / API 29 / Redmi 8A
+evidence/doc_verification_20261111_rev10/extract_ui.py | active | UI 树文本/bounds 提取脚本（可复跑）
+evidence/doc_verification_20261111_rev10/identity_checks.txt | active | HEAD c259380、rev10 变更范围、固件包/成员、主机与设备 APK 大小/摘要一致、源码零差异、文档引用文件存在性
+evidence/doc_verification_20261111_rev10/logcat_session_tail.txt | active | 本轮会话 logcat 尾部（0 条 FATAL/ANR）
+evidence/doc_verification_20261111_rev10/report_activity_dumpsys.txt | active | 点击报告入口后的 Activity 栈原始输出（ReportActivity 在顶）
+evidence/doc_verification_20261111_rev10/static_checks.txt | active | rev10 修改逐项核对、261 项/54 静态/12 门禁/15 布局、跨文档一致性、D-41/D-42/D-43 与 O-1～O-3、未执行项与路径检查输出
+evidence/doc_verification_20261111_rev10/ui_dump_note.txt | active | MIUI uiautomator 主题文件告警说明（dump 本身成功）
+evidence/doc_verification_20261111_rev10/ui_my_page_live.xml | active | 本轮「我的」页 UI 原始树（顶部报告/列表入口与输入区）
+evidence/doc_verification_20261111_rev10/ui_my_scrolled_live.xml | active | 本轮「我的」页滚动后 UI 原始树（注册传感器与网关按钮 bounds 不相交）
+evidence/doc_verification_20261111_rev10/ui_report_activity_live.xml | active | 点击「查看今日报告」后的 ReportActivity UI 原始树
+evidence/doc_verification_20261111_rev10/ui_sensor_list_live.xml | active | 点击「打开传感器列表」后的空态列表 UI 原始树
 evidence/doc_verification_20261111_rev2/ | active | 软件测试文档独立校核原始证据目录（DOC-VERIFY-002）：DOC-PKG-001 rev 2 对照固件 FD-002r8/Android 1.9 候选的真机 UI 复现、包身份与源码核对
 evidence/doc_verification_20261111_rev2/DOC-VERIFY-002.md | active | 产品文档独立校核报告：rev 2 复核 D-01..D-11 已修正；新发现 D-12（打开传感器列表入口被底部导航拦截，对应 P-04）、D-13（408/429 上传分类）、D-14（网关并转 MQTT）、D-15（注册失败提示）；列已执行/未执行项与修正建议；结论 TEST_FAIL
 evidence/doc_verification_20261111_rev2/device_package_state.txt | active | 设备/包版本、首次安装/更新时间与候选 APK 摘要（本轮未重装）

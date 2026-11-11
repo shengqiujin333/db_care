@@ -1,0 +1,92 @@
+DOC-VERIFY-010 identity checks (2026-11-11, Asia/Shanghai; tool times UTC)
+======================================================================
+
+1. Repository / documentation identity
+--------------------------------------
+HEAD                 : c2593805d619f6f851f1aaae0e6df1f5141cb79a
+HEAD subject         : [role:technical_writer] Update project work
+HEAD commit time     : Wed Nov 11 20:41:48 2026 +0800
+Working tree at start: clean (git status --short empty)
+Documentation subject: docs/README.md (DOC-PKG-001 rev 10) + docs/01..06 + dengbei_care/用户使用说明书.md
+rev10 commit diff    : 9 files changed, 96 insertions(+), 87 deletions(-)
+  files: docs/01,02,03,04,05,06,README, 用户使用说明书.md, file_manifest.txt
+
+2. Sensor firmware candidate
+----------------------------
+fw_release/fw_sensor_FD-002r8.zip
+  size 134,791 B
+  md5  5df0c6d45ecddc8aae8bddbbcfc9cfdf   (matches docs/README.md:9, docs/01:86, docs/02:20)
+members (zipfile read):
+  fw_sensor_FD-002r8_b6a15fed.axf  297,380 B  md5 b6a15fed2ed5e3d0c4adc51ac87a4830
+  fw_sensor_FD-002r8_4d728dec.hex   75,275 B  md5 4d728dec9b0d28a352c46436b7586c72
+  PACKAGE.txt                        3,202 B  md5 a58f67fcf5b760767ff5b65888c73dfb
+product source:
+  git cat-file -t 82a7e74 -> commit
+  git diff --quiet 82a7e74 HEAD -- <sensor>/USER <sensor>/MDK <sensor>/EWARM <sensor>/gcc
+  -> exit 0 (zero diff), matching docs/01:87 and docs/02:68
+
+3. Android candidate
+--------------------
+host APK: dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+  size 10,365,464 B
+  sha256 71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8
+  md5    1e17e0c281715fddd26d308246d6424c
+  -> matches docs/04:19-21, docs/01:88, docs/README.md:10, 用户使用说明书.md:25 (AB-002)
+
+historical APK: dengbei_care/爱守护.apk
+  size 8,144,628 B
+  sha256 a62046cc0b7b2ca401159b48daa1b95459af70becc2d6d9bbdbddeb27c38aaf8
+  (only used to confirm it is NOT the current candidate)
+
+source identity:
+  git diff --stat dacf888..HEAD -- dengbei_care/app dengbei_care/build.gradle.kts
+    dengbei_care/settings.gradle.kts dengbei_care/gradle dengbei_care/gradlew*
+  -> empty (product code identical to fix commit dacf888)
+  git diff --stat dacf888..HEAD -- dengbei_care/
+  -> only dengbei_care/用户使用说明书.md, 2 lines (1 insertion, 1 deletion):
+     the rev10 APK identity line
+  Note: this means AB-002/build_evidence's literal statement
+  "git diff dacf888..HEAD -- dengbei_care is empty" is no longer literally true
+  after the rev10 documentation commit, although the buildable product code is
+  still identical. Recorded as observation O-1, not a handbook procedure defect.
+
+4. Device identity (read-only ADB; no install/uninstall/clear)
+--------------------------------------------------------------
+serial 12f046690506 : device (online)
+model               : Redmi 8A
+Android / SDK       : 10 / 29
+installed package   : com.jinyuni.dengbei_care
+  versionCode=10 minSdk=26 targetSdk=34
+  versionName=1.9
+  apkSigningVersion=2
+  firstInstallTime=2026-11-10 19:25:25
+  lastUpdateTime=2026-11-11 19:18:26
+  base.apk path: /data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==/base.apk
+device base.apk (pulled, hashed, copy removed):
+  size 10,365,464 B
+  sha256 71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8
+  md5    1e17e0c281715fddd26d308246d6424c
+  -> byte-identical to the host candidate and to AB-002
+
+5. Evidence files referenced by rev10
+-------------------------------------
+evidence/ev038/: capture_analysis.txt, analyze_ev038.py, tool_results.txt,
+  decoded_i2c.txt, static_check_ev038.txt all EXIST.
+  release_identity.txt -> MISSING (docs/06:128 references it). DEFECT D-41.
+evidence/android_build_20261111/: build.log, unit_test.log, apk_badging.txt,
+  apksigner_verify.txt, build_evidence.md all EXIST.
+evidence/fw_release_20261111/: package_verify.txt, mdk_build_release.out.json,
+  gcc_build_release.log, verify_release_package.py all EXIST.
+evidence/android_check_20261111/: ui_report_activity.xml,
+  ui_sensor_id_list_after_fix.xml, ui_my_scrolled.xml, verify_ui_checks.txt EXIST.
+evidence/product_fix_20261111/static_layout_check.txt EXIST (15 PASS / RESULT OK).
+evidence/android_package_check_20261111/: unit_test_summary.txt = 33 suites / 261 tests / 0 failures;
+  gates.log = 12/12; static_check_aa005.log = 54/54.
+
+6. Cross-check of firmware evidence cited by rev10
+--------------------------------------------------
+EV-038 capture_analysis.txt: VDD mv=3287 (ok=1, recomputation MATCH); 7 S rows
+  k=0,3,6,9,12,15,21, all q=1 V=0 D=0; k=18 not claimed as a COM43 row.
+EV-036 capture_analysis.txt: VDD mv=3289; 6 S rows; a=2860..2886.
+-> supports docs/02:50 (3.28-3.29 V), docs/01:38 (a=2860..2886),
+   docs/06:86 (7 cycles, EV-038), docs/01:98.
