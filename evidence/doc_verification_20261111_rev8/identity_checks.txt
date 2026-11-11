@@ -1,0 +1,96 @@
+DOC-VERIFY-008 身份与对象核对原始记录
+校核时点：2026-11-11（Asia/Shanghai；UTC 时间见各命令返回）
+输出基准目录：D:/mypro/beiwo2/AIP
+
+一、仓库身份
+------------------------------------------------------------------
+$ git rev-parse HEAD
+c21d13dbe67ab35e48ce464d9ab5afa3e5b4f094
+
+开始校核时 $ git status --porcelain
+（空，工作区 clean）
+
+最近提交：
+c21d13d [role:technical_writer] Update project work   （rev 8 文档提交）
+7885270 [role:software_tester] Update project work    （DOC-VERIFY-007）
+4b0c630 [role:technical_writer] Update project work   （rev 7 文档提交）
+
+二、候选产物身份（本轮复算）
+------------------------------------------------------------------
+$ md5sum fw_release/fw_sensor_FD-002r8.zip
+5df0c6d45ecddc8aae8bddbbcfc9cfdf *fw_release/fw_sensor_FD-002r8.zip
+
+$ stat -c '%s' fw_release/fw_sensor_FD-002r8.zip
+134791
+
+$ sha256sum dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6 *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+
+$ stat -c '%s' dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+10365460
+
+$ md5sum dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+58de16b8fef549f004b92ffcec0104d9 *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+
+与文档声明比对：
+- docs/01 §5 / docs/02 §2 / README：zip 134,791 B、md5 5df0c6d4… —— 一致
+- docs/04 §1 / 用户手册 §2.1：APK 10,365,460 B、SHA-256 d2054221…、MD5 58de16b8… —— 一致
+
+三、设备身份（只读查询）
+------------------------------------------------------------------
+$ adb -s 12f046690506 devices
+List of devices attached
+12f046690506           device product:olivelite model:Redmi_8A device:olivelite transport_id:1
+
+$ adb shell dumpsys package com.jinyuni.dengbei_care
+  codePath=/data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==
+  versionCode=10 minSdk=26 targetSdk=34
+  versionName=1.9
+  flags=[ DEBUGGABLE HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]
+  firstInstallTime=2026-11-10 19:25:25
+  lastUpdateTime=2026-11-11 13:57:18
+  signatures=PackageSignatures{73388ff version:2, signatures:[3a34b52a], past signatures:[]}
+
+$ adb shell pm path com.jinyuni.dengbei_care
+package:/data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==/base.apk
+
+$ adb shell stat -c '%s' /data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==/base.apk
+10365460
+
+$ adb shell sha256sum /data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==/base.apk
+d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6  /data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==/base.apk
+
+结论：设备在线；已装包为当前候选 10/1.9，设备 base.apk 与主机候选字节一致（大小与 SHA-256 均相同）。
+
+四、产品源码/工程/发布包在上一校核提交后的变更
+------------------------------------------------------------------
+$ git diff --stat 4b0c630..HEAD -- \
+    dengbei_care/app/src \
+    dengbei_care/app/build.gradle.kts \
+    CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER \
+    CH592EVT/EVT/EXAM/BLE/beiwov2 \
+    fw_release
+（无输出：产品源码/工程/发布包零差异，仅文档与证据变化）
+
+$ git diff --stat 4b0c630..HEAD -- docs dengbei_care/用户使用说明书.md
+ dengbei_care/用户使用说明书.md | 11 +++++++----
+ docs/01_产品说明与版本变更.md   |  4 ++--
+ docs/02_传感器固件安装与烧录.md |  2 +-
+ docs/03_传感器调试串口手册.md   |  2 +-
+ docs/04_安卓App安装与使用.md    | 12 +++++++-----
+ docs/05_平台服务器配置与联调前提.md | 2 +-
+ docs/06_维护排障与已知限制.md   |  8 +++++---
+ docs/README.md                  | 10 ++++++----
+ 8 files changed, 30 insertions(+), 21 deletions(-)
+
+五、复用/未执行边界
+------------------------------------------------------------------
+复用：
+- 同一 APK d2054221…（rev 8 未改 APK）的 rev5/rev6 真机 UI 树、安装/覆盖升级证据；
+- 同源码树 257 项宿主机用例 0 失败、54 项静态核查、12 门禁（前序软件验证，产品源码未变）；
+- EV-036 固件发布包/上电五行/周期 S 行/I²C 原始证据。
+
+未执行：
+- 固件重烧、COM43 采集、真实升温/超温、光强变化/遮光、功耗、跨链路、/upload_data 写入与回读；
+- P-08～P-13 / D-35～D-38 的真机行为复现。
+理由：当前能力未提供 serial_capture/mdk_flash，且用户明确当前不能调温/调光/测功耗，跨链路安排在后续阶段，平台写接口无授权。

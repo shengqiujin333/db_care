@@ -403,6 +403,13 @@ evidence/doc_verification_20261111_rev7/ | active | 软件测试文档独立校�
 evidence/doc_verification_20261111_rev7/DOC-VERIFY-007.md | active | 产品文档独立校核报告：rev 7 复核 D-31..D-34 已正确修正；新发现 D-35（关闭守护行为边界与实现不符）、D-36（用户手册未披露 P-11）、D-37（紧急报警忽略震动/响铃开关）、D-38（“最近读取”判在线与时间语义冲突）；产品观察 P-12/P-13；结论 TEST_FAIL
 evidence/doc_verification_20261111_rev7/identity_checks.txt | active | HEAD、固件包/APK 摘要复算、Redmi 8A 在线与已装 10/1.9、复用与未执行边界
 evidence/doc_verification_20261111_rev7/static_checks.txt | active | D-31..D-34 文档—源码复核记录与 D-35..D-38 的文档位置、源码行号、判断依据
+evidence/doc_verification_20261111_rev8/ | active | 软件测试文档独立校核原始证据目录（DOC-VERIFY-008）：DOC-PKG-001 rev 8 与随包用户手册的静态复核、D-35～D-38 修正核对、D-39/D-40 整包一致性缺陷、设备与包身份复算
+evidence/doc_verification_20261111_rev8/DOC-VERIFY-008.md | active | 产品文档独立校核报告：rev 8 复核 D-35～D-38 已修正；新发现 D-39（README 已知限制数量 20≠25）与 D-40（独立校核索引/自查标题未更新到 rev 8，遗漏 DOC-VERIFY-006/007）；O-1 建议；结论 TEST_FAIL
+evidence/doc_verification_20261111_rev8/device_apk_hash.txt | active | 设备已安装 base.apk 大小 10,365,460 B 与 SHA-256 d2054221…（与主机候选一致）
+evidence/doc_verification_20261111_rev8/device_apk_path.txt | active | 设备已安装 base.apk 路径
+evidence/doc_verification_20261111_rev8/device_package_dump.txt | active | dumpsys package 原始输出（versionCode 10/versionName 1.9、签名、权限、安装/更新时间）
+evidence/doc_verification_20261111_rev8/identity_checks.txt | active | HEAD、固件包/APK 摘要、设备在线与已装版本/字节一致性、产品源码零差异、文档变更清单
+evidence/doc_verification_20261111_rev8/static_checks.txt | active | D-35～D-38 文档—源码行号复核；D-39/D-40 可复现位置与影响；O-1 说明
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检
