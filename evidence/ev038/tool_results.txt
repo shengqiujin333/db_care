@@ -1,0 +1,99 @@
+EV-038 tool results (2026-11-11, UTC) - embedded_integration_verification
+(action firmware_package_check) on CW32L010 sensor board.
+Subject: artifacts/firmware_release.md (FW-REL-001 rev 2) + fw_release/fw_sensor_FD-002r8.zip.
+Product firmware source unchanged since 82a7e74; this round rebuilt, downloaded and
+re-sampled on the real target (no reuse of a previous download record for the verdict).
+
+== serial_list_ports (11:59:30.448-11:59:30.454Z)
+exit 0. COM43 Prolific USB-to-Serial Comm Port, VID:PID=067B:2303, LOCATION=1-9.4.2.
+COM26 "USB serial device", VID:PID=C251:F001 SN 87094109484987710672FF50 (debugger CDC, not used).
+
+== usb_list_devices (11:59:30.540-11:59:32.511Z)
+exit 0. Present: Prolific 067B:2303; C251:F001 composite (CW-DAPLink SN 87094109484987710672FF50);
+18D1:4EE7 SN 12F046690506 (phone); 04B4:8613 "fx2lafw"; camera; Bluetooth; root hubs.
+No current meter / SMU / oscilloscope enumerated.
+
+== sigrok_info (11:59:32.611-11:59:32.613Z)
+exit 0. enabled=true, driver=fx2lafw, connection=2.32, channels D0,D1, labels D0=scl D1=sda,
+trigger D1=f, samplerate 4,000,000 Hz, max 8,000,000, max samples 20,000,000, timeout 240 s.
+online=not_checked (configuration only).
+
+== Release package identity (independent recomputation)
+fw_release/fw_sensor_FD-002r8.zip 134,791 B md5 5df0c6d45ecddc8aae8bddbbcfc9cfdf; zip testzip=None.
+Members exactly 3:
+  fw_sensor_FD-002r8_b6a15fed.axf 297,380 B md5 b6a15fed2ed5e3d0c4adc51ac87a4830
+  fw_sensor_FD-002r8_4d728dec.hex  75,275 B md5 4d728dec9b0d28a352c46436b7586c72
+  PACKAGE.txt                       3,202 B md5 a58f67fcf5b760767ff5b65888c73dfb
+No harness/mock/test-switch members.
+
+== Repository identity at verification time
+HEAD=15f70a5d4b9570817ce4e71320730d2728be6fdf (working tree clean at start).
+git diff --stat 82a7e74 HEAD -- <sensor>/USER <sensor>/MDK <sensor>/EWARM <sensor>/gcc = empty.
+
+== mdk_build {"action":"rebuild"} (11:59:40.689-11:59:42.640Z)
+exit 0. ARMCLANG V6.24; 0 Error(s), 1 Warning(s) (pre-existing ../USER/src/main.c(254)
+empty while body); Program Size Code=25964 RO-data=656 RW-data=116 ZI-data=1676.
+Project.axf md5 b6a15fed2ed5e3d0c4adc51ac87a4830 (297,380 B);
+Project.hex md5 4d728dec9b0d28a352c46436b7586c72 (75,275 B).
+Both byte-identical to the release package members.
+
+== mdk_flash {} (11:59:59.554-12:00:11.910Z)
+exit 0. Build target 'Project' 0 Error(s) 0 Warning(s). Flash log:
+Erase Done.Programming Done.Verify OK.Application running ...
+Post-flash axf/hex md5 unchanged. Verify OK proves download read-back only, not function.
+
+== pyocd (BOT-04 / BOT-01 orchestration)
+pyocd 0.36.0. `pyocd list --targets --name CW32` -> empty table (no CW32L010 target definition).
+`pyocd list` -> P&S CW-DAPLINK(CMSIS-DAP) UID 87094109484987710672FF50, Target n/a.
+Reset command: pyocd reset -v -t cortex_m -u 87094109484987710672FF50 -M attach -m hw
+Window 12:00:22.932-12:00:23.645Z, rc=0. Used only as an external reset source;
+no flash programming or memory write. pyocd is not registered in runtime/environment.yaml;
+no installation and no configuration change were made.
+
+== serial_capture (COM43, 9600 8N1)
+1) 12:00:48.839-12:05:49.040Z  78 B  -> S k=3           (cap01_k3.cap)
+2) 12:05:58.108-12:10:58.317Z 156 B  -> S k=6, k=9      (cap02_k6_k9.cap)
+3) 12:11:07.270-12:16:07.483Z 158 B  -> S k=12, k=15    (cap03_k12_k15.cap)
+4) 12:18:21.643-12:23:21.830Z  79 B  -> S k=21          (cap04_k21.cap)
+Boot window: 12:00:20.923-12:00:45.692Z 271 B -> BOOT/VDD/IOTEST/IOSIG/BUS + S k=0
+(bot01_hw.cap; reset at 12:00:22.932-12:00:23.645Z inside the window).
+No stray bytes between rows; every line ends CRLF; all rows <=96 B including CRLF.
+
+== sigrok_capture (12:16:16.536-12:17:58.983Z)
+exit 0, timed_out=false. Command: sigrok-cli --driver fx2lafw:conn=2.32
+--config samplerate=4000000 --channels D0,D1 --samples 8000000 --wait-trigger
+--triggers D1=f --output-format srzip.
+Session: 8,000,000 samples @ 4 MS/s = 2.0 s, D0=scl D1=sda. Trigger fired near 12:17:56.9Z.
+Raw .sr md5 d4c712ad5874685b4eb1b04d68b57f7f (evidence copy 16,695 B).
+
+== sigrok_decode (12:18:09.547-12:18:09.735Z)
+exit 0, annotations_present=true. i2c:scl=D0:sda=D1, sample-numbered annotations.
+Decoded: Start / Address write 0x44 / ACK / Data write 0xFD / ACK / Stop /
+         Start / Address read 0x44 / ACK / Data read 68 43 8D 59 81 EE / NACK / Stop.
+Independent recomputation (analyze_ev038.py): T word 0x6843 CRC-8 0x8D MATCH,
+RH word 0x5981 CRC-8 0xEE MATCH; T=263 (26.3 C), RH=377 (37.7 %RH) under the
+project-declared x10 conversion; p(k=21)=263 equals T -> transaction pairs to k=18.
+
+== host-side rerun (this round, fresh outputs in evidence/ev038/)
+Implementer test/build_test.sh: 5 stages 48+61+54+28+31 = 222 passed, 0 failed.
+Tester harnesses: fw_core 59, gxht40 93, sf_i2c 51, diag_line 38, diag_probe 109,
+measure_flow 79, rf_frame 10, rf_report 30, rtc 17, gw_compat 11, vdd 31,
+light T=0 40, light T=3000 enabled 41 = 609 passed, 0 failed.
+Static check (static_check_ev037.py, read-only): 21 passed, 0 failed.
+
+== Independent capture analysis (analyze_ev038.py)
+129 PASS, 0 FAIL: boot order/fields, VDD formula, BUS ack=44, 7 S rows, q=1,
+o=8, field domains, p chain, H/p first-sample semantics, line budget, CRC-8, pairing.
+
+== NOT EXECUTED / DEFERRED (not pass)
+- FW-LIGHT-DEF2-ENABLE: human-confirmed SKIP_CONFIRMED 2026-11-11T03:50:42Z
+  ("无法准备，先跳过"). Not retested this round; T remains 0; V=0 D=0 is NOT proof
+  of "light detected" or "no light".
+- E2E-04 CR2032 peak/deep-sleep current: approved DEFERABLE; no current meter/SMU/oscilloscope.
+- Real temperature-rise / over-temperature and light-level changes: prohibited by user
+  (cannot adjust temperature or light intensity); no stimulation applied.
+- Gateway/phone cross-link and 433 over-air reception: user condition 4, later
+  integration stage; out of this firmware-stage scope.
+- Physical sensor/bus disconnect induction: no authorized stimulus; I2C failure
+  re-probe and bounded bus recovery are covered by host harness vectors only
+  (gxht40 93/0, sf_i2c 51/0), not by a live-board fault injection.

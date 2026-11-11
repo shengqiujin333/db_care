@@ -1,0 +1,159 @@
+
+== bot01_hw.cap (271 B, md5 a5cc02526b95b293bdabe3b3b3ddaee9) boot + first sample
+PASS  bot01_hw.cap: no NUL bytes
+PASS  bot01_hw.cap: capture ends on CRLF boundary
+PASS  bot01_hw.cap: no trailing partial line
+PASS  bot01_hw.cap: line length 50 B incl CRLF <= 96
+PASS  bot01_hw.cap: printable ASCII line
+PASS  bot01_hw.cap: line length 39 B incl CRLF <= 96
+PASS  bot01_hw.cap: printable ASCII line
+PASS  bot01_hw.cap: line length 48 B incl CRLF <= 96
+PASS  bot01_hw.cap: printable ASCII line
+PASS  bot01_hw.cap: line length 27 B incl CRLF <= 96
+PASS  bot01_hw.cap: printable ASCII line
+PASS  bot01_hw.cap: line length 31 B incl CRLF <= 96
+PASS  bot01_hw.cap: printable ASCII line
+PASS  bot01_hw.cap: line length 76 B incl CRLF <= 96
+PASS  bot01_hw.cap: printable ASCII line
+
+== cap01_k3.cap (78 B, md5 bd7072212bb2787b2d291a27d0efaeb9) 
+PASS  cap01_k3.cap: no NUL bytes
+PASS  cap01_k3.cap: capture ends on CRLF boundary
+PASS  cap01_k3.cap: no trailing partial line
+PASS  cap01_k3.cap: line length 78 B incl CRLF <= 96
+PASS  cap01_k3.cap: printable ASCII line
+
+== cap02_k6_k9.cap (156 B, md5 beac7054e584ba484b08282b92b1112f) 
+PASS  cap02_k6_k9.cap: no NUL bytes
+PASS  cap02_k6_k9.cap: capture ends on CRLF boundary
+PASS  cap02_k6_k9.cap: no trailing partial line
+PASS  cap02_k6_k9.cap: line length 78 B incl CRLF <= 96
+PASS  cap02_k6_k9.cap: printable ASCII line
+PASS  cap02_k6_k9.cap: line length 78 B incl CRLF <= 96
+PASS  cap02_k6_k9.cap: printable ASCII line
+
+== cap03_k12_k15.cap (158 B, md5 36b79433b16863cb0193bb73fbf02ba4) 
+PASS  cap03_k12_k15.cap: no NUL bytes
+PASS  cap03_k12_k15.cap: capture ends on CRLF boundary
+PASS  cap03_k12_k15.cap: no trailing partial line
+PASS  cap03_k12_k15.cap: line length 79 B incl CRLF <= 96
+PASS  cap03_k12_k15.cap: printable ASCII line
+PASS  cap03_k12_k15.cap: line length 79 B incl CRLF <= 96
+PASS  cap03_k12_k15.cap: printable ASCII line
+
+== cap04_k21.cap (79 B, md5 fe3aa6d2b1c24d723619186a6173b762) 
+PASS  cap04_k21.cap: no NUL bytes
+PASS  cap04_k21.cap: capture ends on CRLF boundary
+PASS  cap04_k21.cap: no trailing partial line
+PASS  cap04_k21.cap: line length 79 B incl CRLF <= 96
+PASS  cap04_k21.cap: printable ASCII line
+
+== boot lines
+PASS  BOOT->VDD->IOTEST->IOSIG->BUS each exactly once, in order
+PASS  exactly one BOOT line
+PASS  BOOT fields fw/uid/rst/uart
+PASS  BOOT uart=9600
+PASS  VDD ok=1
+PASS  VDD mv == 4095*bgrmv/code (computed 3287)
+PASS  IOTEST gc=0
+PASS  BUS ack=44 (0x44 device answered)
+
+== periodic S rows
+  k=0 p=0 t=269 h=364 V=0 D=0 o=8 n=3920 x=3926 a=3923 q=1 H=0 r=0 s=0 y=0
+  k=3 p=269 t=264 h=371 V=0 D=0 o=8 n=3919 x=3925 a=3922 q=1 H=1 r=0 s=0 y=0
+  k=6 p=264 t=267 h=367 V=0 D=0 o=8 n=3919 x=3923 a=3920 q=1 H=1 r=0 s=0 y=0
+  k=9 p=267 t=263 h=374 V=0 D=0 o=8 n=3919 x=3923 a=3921 q=1 H=1 r=0 s=0 y=0
+  k=12 p=263 t=262 h=375 V=0 D=0 o=8 n=3918 x=3924 a=3920 q=1 H=1 r=0 s=0 y=0
+  k=15 p=262 t=262 h=376 V=0 D=0 o=8 n=3917 x=3922 a=3919 q=1 H=1 r=0 s=0 y=0
+  k=21 p=263 t=265 h=375 V=0 D=0 o=8 n=3917 x=3923 a=3919 q=1 H=1 r=0 s=0 y=0
+PASS  >= 4 distinct S rows observed (7)
+PASS  first sample k=0 captured (H/p no-history evidence)
+PASS  no duplicate k rows
+PASS  tick step k=0->3 is a positive multiple of 3 (=3)
+PASS  tick step k=3->6 is a positive multiple of 3 (=3)
+PASS  tick step k=6->9 is a positive multiple of 3 (=3)
+PASS  tick step k=9->12 is a positive multiple of 3 (=3)
+PASS  tick step k=12->15 is a positive multiple of 3 (=3)
+PASS  tick step k=15->21 is a positive multiple of 3 (=6)
+PASS  k=0 q=1
+PASS  k=0 o=8
+PASS  k=0 r=s=y=0
+PASS  k=0 t=269 inside [-400,1250]
+PASS  k=0 h=364 inside [0,1000]
+PASS  k=0 n<=a<=x
+PASS  k=0 V=0 D=0 (criterion-disabled equivalence)
+PASS  k=3 q=1
+PASS  k=3 o=8
+PASS  k=3 r=s=y=0
+PASS  k=3 t=264 inside [-400,1250]
+PASS  k=3 h=371 inside [0,1000]
+PASS  k=3 n<=a<=x
+PASS  k=3 V=0 D=0 (criterion-disabled equivalence)
+PASS  k=6 q=1
+PASS  k=6 o=8
+PASS  k=6 r=s=y=0
+PASS  k=6 t=267 inside [-400,1250]
+PASS  k=6 h=367 inside [0,1000]
+PASS  k=6 n<=a<=x
+PASS  k=6 V=0 D=0 (criterion-disabled equivalence)
+PASS  k=9 q=1
+PASS  k=9 o=8
+PASS  k=9 r=s=y=0
+PASS  k=9 t=263 inside [-400,1250]
+PASS  k=9 h=374 inside [0,1000]
+PASS  k=9 n<=a<=x
+PASS  k=9 V=0 D=0 (criterion-disabled equivalence)
+PASS  k=12 q=1
+PASS  k=12 o=8
+PASS  k=12 r=s=y=0
+PASS  k=12 t=262 inside [-400,1250]
+PASS  k=12 h=375 inside [0,1000]
+PASS  k=12 n<=a<=x
+PASS  k=12 V=0 D=0 (criterion-disabled equivalence)
+PASS  k=15 q=1
+PASS  k=15 o=8
+PASS  k=15 r=s=y=0
+PASS  k=15 t=262 inside [-400,1250]
+PASS  k=15 h=376 inside [0,1000]
+PASS  k=15 n<=a<=x
+PASS  k=15 V=0 D=0 (criterion-disabled equivalence)
+PASS  k=21 q=1
+PASS  k=21 o=8
+PASS  k=21 r=s=y=0
+PASS  k=21 t=265 inside [-400,1250]
+PASS  k=21 h=375 inside [0,1000]
+PASS  k=21 n<=a<=x
+PASS  k=21 V=0 D=0 (criterion-disabled equivalence)
+PASS  p(k=3)=269 == t(k=0)=269
+PASS  p(k=6)=264 == t(k=3)=264
+PASS  p(k=9)=267 == t(k=6)=267
+PASS  p(k=12)=263 == t(k=9)=263
+PASS  p(k=15)=262 == t(k=12)=262
+PASS  first sample H=0 p=0
+PASS  k=3 H=1 (previous value available)
+PASS  k=6 H=1 (previous value available)
+PASS  k=9 H=1 (previous value available)
+PASS  k=12 H=1 (previous value available)
+PASS  k=15 H=1 (previous value available)
+PASS  k=21 H=1 (previous value available)
+PASS  S rows appear once each in increasing k order: [0, 3, 6, 9, 12, 15, 21]
+
+== bit-level I2C decode
+PASS  decode contains 0x44 write and 0xFD command
+PASS  decode contains 0x44 read address
+  read bytes: ['68', '43', '8D', '59', '81', 'EE']
+PASS  exactly 6 data bytes read (6)
+PASS  two START and two STOP conditions
+PASS  last byte NACKed by master
+PASS  temperature CRC-8 0x8D matches 0x8D
+PASS  humidity CRC-8 0xEE matches 0xEE
+  t_x10=263 h_x10=377 (raw T=0x6843 H=0x5981)
+PASS  decoded temperature inside valid domain
+PASS  decoded humidity inside valid domain
+PASS  p(k=21)=263 equals decoded transaction temperature 263
+
+== line length stats
+  min=27 max=79 n=12
+PASS  all lines <= 96 B including CRLF
+
+== RESULT: PASS=129 FAIL=0

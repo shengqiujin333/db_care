@@ -696,7 +696,7 @@ evidence/ev027/tool_results.txt | active | 本轮串口/逻辑分析仪原始结
 evidence/ev028/ | active | EV-028 原始证据目录：2 次下载日志、5 个 COM43 串口原始 .bin、独立解析脚本与输出、位级采集失败日志、宿主 harness 复跑日志
 evidence/ev028/analyze_ev028.py | active | EV-028 独立解析（逐行字段集合/顺序、行长≤96、CRLF/杂散字节、q/G、k 步长、F-1 p 链）
 evidence/ev028/cap01_k3_postflash.bin | active | COM43 原始字节（11:28:56–11:33:56Z，S k=3）
-evidence/ev028/cap02_k6_k9.bin | active | COM43 原始字节（11:34:22–11:39:22Z，S k=6/k=9，p 链 213→243）
+evidence/ev028/cap02_k6_k9.cap | active | COM43 原始字节（11:34:22–11:39:22Z，S k=6/k=9，p 链 213→243）
 evidence/ev028/cap03_reset_bus_k0_k3.bin | active | COM43 原始字节（11:39:47–11:44:47Z，BUS + 首样本 S k=0 H=0 p=0 + S k=3）
 evidence/ev028/cap04_k9_after_reset.bin | active | COM43 原始字节（11:45:16–11:50:17Z，S k=9 p=260）
 evidence/ev028/cap05_k18.bin | active | COM43 原始字节（11:54:11–11:59:12Z，S k=18 p=245）
@@ -840,13 +840,13 @@ evidence/ev033/EV-033_section.md | active | EV-033 证据正文（已并入 evid
 evidence/ev033/analyze_ev033.py | active | EV-033 独立解析：S 行字段/行长/节拍/p 链、双字 CRC-8 复算、温湿度换算与名义时序（不引用实现常量）
 evidence/ev033/analyze_stdout.txt | active | analyze_ev033.py 运行输出
 evidence/ev033/cap01.md5 | active | cap01 原始 md5 记录
-evidence/ev033/cap01_k3.bin | active | COM43 原始字节（23:14:58–23:19:58Z，S k=3，78 B；md5 59fb59e8…）
+evidence/ev033/cap01_k3.cap | active | COM43 原始字节（23:14:58–23:19:58Z，S k=3，78 B；md5 59fb59e8…）
 evidence/ev033/cap02.md5 | active | cap02 原始 md5 记录
 evidence/ev033/cap02_k9.bin | active | COM43 原始字节（23:20:10–23:25:10Z，S k=9，78 B；md5 636ef01c…）
 evidence/ev033/cap03.md5 | active | cap03 原始 md5 记录
-evidence/ev033/cap03_k12_k15.bin | active | COM43 原始字节（23:25:19–23:30:19Z，S k=12/k=15，158 B；md5 98981664…）
+evidence/ev033/cap03_k12_k15.cap | active | COM43 原始字节（23:25:19–23:30:19Z，S k=12/k=15，158 B；md5 98981664…）
 evidence/ev033/cap04.md5 | active | cap04 原始 md5 记录
-evidence/ev033/cap04_k21.bin | active | COM43 原始字节（23:32:28–23:37:28Z，S k=21，79 B；md5 f02eb9be…）
+evidence/ev033/cap04_k21.cap | active | COM43 原始字节（23:32:28–23:37:28Z，S k=21，79 B；md5 f02eb9be…）
 evidence/ev033/cap_start_utc.txt | active | 首个串口采集开始的 UTC 时间
 evidence/ev033/capture_analysis.txt | active | analyze_ev033.py 输出（5 周期全 q=1/V=0/D=0、p 链匹配、双 CRC 匹配、32.515 ms/614.25 µs）
 evidence/ev033/capture_metadata.json | active | sigrok_capture 实际参数/命令/时间戳
@@ -903,7 +903,7 @@ evidence/ev034/ | active | EV-034 原始证据目录：端口先开后 HW reset 
 evidence/ev034/analyze_ev034.py | active | EV-034 独立解析：上电五行顺序/字段/长度、VDD 复算、S 行字段/行长/节拍/p 链（不引用实现常量）
 evidence/ev034/analyze_i2c_ev034.py | active | EV-034 位级 I²C 分析：双字 CRC-8 复算、温湿度换算、名义时序（不引用实现常量）
 evidence/ev034/analyze_stdout.txt | active | analyze_ev034.py 运行输出
-evidence/ev034/bot01_hw.bin | active | BOT-01 原始字节：COM43 先开 + pyocd HW reset，271 B（BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 d6121c06…）
+evidence/ev034/bot01_hw.cap | active | BOT-01 原始字节：COM43 先开 + pyocd HW reset，271 B（BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 d6121c06…）
 evidence/ev034/cap00_k3_prior_reset.bin | active | COM43 补充原始字节：03:03:33 sysresetreq 后的 S k=3，78 B（md5 2f7f41b5…；不进入连续集，仅保留原始尝试）
 evidence/ev034/cap01_k3_k6.bin | active | COM43 原始字节：S k=3/k=6，156 B（md5 3f76727b…）
 evidence/ev034/cap02_k9_k12.bin | active | COM43 原始字节：S k=9/k=12，157 B（md5 7ade8e80…）
@@ -956,7 +956,7 @@ evidence/ev034/tool_results.txt | active | 本轮设备枚举/构建/下载/pyoc
 evidence/ev035/ | active | EV-035 原始证据目录：独立 rebuild/下载、端口先开后 HW reset 的上电五行捕获、4 份 COM43 原始捕获（约 19 分钟）、1 次 fx2lafw:2.32 位级 I²C 采集/离线解码、独立分析/静态核查脚本与输出、宿主 harness 日志、构建/下载/pyocd/工具原始结果
 evidence/ev035/analyze_ev035.py | active | EV-035 独立解析：上电五行顺序/字段/长度、VDD 复算、S 行字段/行长/节拍/p 链、I²C 双字 CRC/换算（不引用实现常量）
 evidence/ev035/analyze_stdout.txt | active | analyze_ev035.py 运行输出
-evidence/ev035/bot01_hw.bin | active | BOT-01 原始字节：COM43 先开 + pyocd HW reset，271 B（BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 6bfa1012…）
+evidence/ev035/bot01_hw.cap | active | BOT-01 原始字节：COM43 先开 + pyocd HW reset，271 B（BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 6bfa1012…）
 evidence/ev035/cap01_k3_k6.bin | active | COM43 原始字节：S k=3/k=6，156 B（md5 9814c4e2…）
 evidence/ev035/cap02_k12.bin | active | COM43 原始字节：S k=12，79 B（md5 5c550af0…）
 evidence/ev035/cap03_k15_k18.bin | active | COM43 原始字节：S k=15/k=18，158 B（md5 44218128…）
@@ -1007,9 +1007,9 @@ evidence/ev035/tool_results.txt | active | 本轮设备枚举/构建/下载/pyoc
 evidence/ev036/ | active | EV-036 发布包核验原始证据目录：发布包/成员身份与 CRC、独立 rebuild 与下载、端口先开后 HW reset 的上电五行捕获、4 份 COM43 原始捕获（约 18 分钟）、1 次 fx2lafw:2.32 位级 I²C 采集/离线解码、独立分析/静态核查脚本与输出、工具原始结果
 evidence/ev036/analyze_ev036.py | active | EV-036 独立解析：上电五行顺序/字段/长度、VDD 复算、S 行字段/行长/节拍/H 与 p 链、I²C 双字 CRC/换算（不引用实现常量）
 evidence/ev036/analyze_stdout.txt | active | analyze_ev036.py 运行输出
-evidence/ev036/bot01_hw.bin | active | BOT-01 原始字节：COM43 先开 + pyocd HW reset，271 B（BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 b8802017…）
-evidence/ev036/cap01_k3.bin | active | COM43 原始字节：S k=3，78 B（md5 e8521df1…）
-evidence/ev036/cap02_k6_k9.bin | active | COM43 原始字节：S k=6/k=9，156 B（md5 2927627d…）
+evidence/ev036/bot01_hw.cap | active | BOT-01 原始字节：COM43 先开 + pyocd HW reset，271 B（BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 b8802017…）
+evidence/ev036/cap01_k3.cap | active | COM43 原始字节：S k=3，78 B（md5 e8521df1…）
+evidence/ev036/cap02_k6_k9.cap | active | COM43 原始字节：S k=6/k=9，156 B（md5 2927627d…）
 evidence/ev036/cap03_k15_k18.bin | active | COM43 原始字节：S k=15/k=18，158 B（md5 e74ca6ec…）
 evidence/ev036/capture_analysis.txt | active | 上电五行与 S 行独立分析输出（五行有序、VDD 复算 MATCH、6 周期全 q=1/V=0/D=0、连续集 k=0/3/6/9 与 k=15/18、H/p 链匹配、I²C 双 CRC MATCH、p(k=15) 与 I²C 温度配对）
 evidence/ev036/decoded_i2c.txt | active | 位级 I²C 完整注解（0x44 写 0xFD、读 6 字节 69 71 DE 54 19 2E、NACK/STOP，含样点号）
@@ -1023,11 +1023,11 @@ evidence/ev036/static_check_ev036.txt | active | 上述脚本输出（21/21 PASS
 evidence/ev036/tool_results.txt | active | 本轮设备枚举/构建/下载/pyocd/串口/逻辑分析仪原始结果与时间戳；窗口间隙与未执行项
 evidence/ev037/ | active | EV-037 当前固件独立实板验证原始证据目录：独立重建/下载、端口先开后 HW reset 的上电五行、4 份 COM43 原始捕获（7 周期）、1 次 fx2lafw:2.32 位级 I²C 采集/离线解码、独立分析/静态/发布包纯净性脚本与输出、宿主 harness 日志与工具原始结果
 evidence/ev037/analyze_ev037.py | active | EV-037 独立解析：上电五行顺序/VDD 复算、S 行字段/行长/节拍/p 链、双字 CRC-8 与换算（不引用实现常量）
-evidence/ev037/bot01_hw.bin | active | 上电段原始字节（端口先开 + pyocd HW reset，271 B；BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 83fc268c…）
-evidence/ev037/cap01_k3.bin | active | COM43 原始字节：S k=3，78 B（md5 2100c100…）
-evidence/ev037/cap02_k6_k9.bin | active | COM43 原始字节：S k=6/k=9，156 B（md5 81a2d3a0…）
-evidence/ev037/cap03_k12_k15.bin | active | COM43 原始字节：S k=12/k=15，158 B（md5 f9899edb…）
-evidence/ev037/cap04_k21.bin | active | COM43 原始字节：S k=21，79 B（md5 42934b48…）
+evidence/ev037/bot01_hw.cap | active | 上电段原始字节（端口先开 + pyocd HW reset，271 B；BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 83fc268c…）
+evidence/ev037/cap01_k3.cap | active | COM43 原始字节：S k=3，78 B（md5 2100c100…）
+evidence/ev037/cap02_k6_k9.cap | active | COM43 原始字节：S k=6/k=9，156 B（md5 81a2d3a0…）
+evidence/ev037/cap03_k12_k15.cap | active | COM43 原始字节：S k=12/k=15，158 B（md5 f9899edb…）
+evidence/ev037/cap04_k21.cap | active | COM43 原始字节：S k=21，79 B（md5 42934b48…）
 evidence/ev037/capture_analysis.txt | active | analyze_ev037.py 输出（166 项 0 失败；五行有序、VDD MATCH、7 周期全 q=1/V=0/D=0、p 链匹配、双 CRC MATCH、p(k=21)=261 与 I²C 温度配对）
 evidence/ev037/capture_metadata.json | active | sigrok_capture 实际参数/命令/时间戳（8 M 样点 @4 MS/s，conn=2.32，D1 下降沿触发）
 evidence/ev037/capture_windows.txt | active | 全部串口/位级窗口起止、字节数、md5、观测 k、k=18 未直采的说明
@@ -1076,6 +1076,59 @@ evidence/ev037/run_host_harnesses.sh | active | EV-037 测试侧独立 harness �
 evidence/ev037/static_check_ev037.py | active | EV-037 静态核查脚本（常量/旧宏/判据接线/行序/上电顺序/引脚/浮点/旧通路/有界等待）
 evidence/ev037/static_check_ev037.txt | active | 上述脚本输出（21/21 PASS）
 evidence/ev037/tool_results.txt | active | 本轮设备枚举/构建/下载/pyocd/串口/逻辑分析仪/宿主测试原始结果与时间戳；未执行与延期项
+evidence/ev038/ | active | EV-038 当前发布包 rev 2 独立 HIL 原始证据目录：包/成员身份复算、独立重建与下载、端口先开后 HW reset 的上电五行、4 份 COM43 原始捕获（7 周期）、1 次 fx2lafw:2.32 位级 I²C 采集/离线解码、独立分析/静态脚本与输出、宿主 harness 日志与工具原始结果
+evidence/ev038/EV-038_prototype_section.md | active | EV-038 下载身份段落（已并入 evidence/programmed_prototype.md 顶部）
+evidence/ev038/EV-038_section.md | active | EV-038 证据正文（已并入 evidence/test.md 顶部）与 programmed prototype 段落来源
+evidence/ev038/analyze_ev038.py | active | EV-038 独立解析：上电五行顺序/字段/长度、VDD 复算、S 行字段/行长/节拍/p 链、双字 CRC-8 与换算（不引用实现常量）
+evidence/ev038/bot01_hw.cap | active | 上电段原始字节（端口先开 + pyocd HW reset，271 B；BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 a5cc0252…）
+evidence/ev038/cap01_k3.cap | active | COM43 原始字节：S k=3，78 B（md5 bd707221…）
+evidence/ev038/cap02_k6_k9.cap | active | COM43 原始字节：S k=6/k=9，156 B（md5 beac7054…）
+evidence/ev038/cap03_k12_k15.cap | active | COM43 原始字节：S k=12/k=15，158 B（md5 36b79433…）
+evidence/ev038/cap04_k21.cap | active | COM43 原始字节：S k=21，79 B（md5 fe3aa6d2…）
+evidence/ev038/capture_analysis.txt | active | analyze_ev038.py 输出（129 项 0 失败；五行有序、VDD MATCH、7 周期全 q=1/V=0/D=0、p 链匹配、双 CRC MATCH、p(k=21)=263 与 I²C 温度配对）
+evidence/ev038/capture_metadata.json | active | sigrok_capture 实际参数/命令/时间戳（8 M 样点 @4 MS/s，conn=2.32，D1 下降沿触发）
+evidence/ev038/capture_windows.txt | active | 全部串口/位级窗口起止、字节数、md5、观测 k、k=18 未直采的说明
+evidence/ev038/capture_with_reset.py | active | 测试侧 BOT-01 编排脚本（COM43 先开、延时后 pyocd HW reset、逐块记录原始字节与时间；未改固件）
+evidence/ev038/decode_metadata.json | active | sigrok_decode 离线解码参数与输入身份
+evidence/ev038/decoded_i2c.txt | active | 位级 I²C 完整注解（0x44 写 0xFD、读 68 43 8D 59 81 EE、NACK/STOP，含样点号）
+evidence/ev038/host_*_verify_ev*.log | active | 测试侧 13 组独立 harness 原始输出与编译/链接日志（合计 609 项 0 失败，含 light T=0 与 T=3000 变体）
+evidence/ev038/host_build_test.log | active | 实现侧 test/build_test.sh 原始输出（48+61+54+28+31=222 项 0 失败）
+evidence/ev038/host_diag_line_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_diag_line_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_diag_probe_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_diag_probe_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_fw_core_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_fw_core_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_gw_compat_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_gw_compat_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_gxht40_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_gxht40_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_harness_run.stdout | active | run_host_harnesses.sh 完整 stdout（RESULT: FAILED=[]）
+evidence/ev038/host_harness_summary.txt | active | 测试侧 harness 逐组计数与实现侧 5 阶段计数汇总（609/0 + 222/0）
+evidence/ev038/host_light_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_light_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_light_verify_ev_enabled.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_light_verify_ev_enabled.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_measure_flow_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_measure_flow_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_rf_frame_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_rf_frame_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_rf_report_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_rf_report_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_rtc_cadence_verify_ev.harness.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_rtc_cadence_verify_ev.link.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_rtc_cadence_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_rtc_cadence_verify_ev.main.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_sf_i2c_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_sf_i2c_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_vdd_verify_ev.build.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/host_vdd_verify_ev.log | active | 由 embedded_tester 新增或修改的项目相关文件
+evidence/ev038/pyocd_check.txt | active | pyocd 0.36.0 版本、CW32 目标查询为空、CW-DAPLINK 探针 UID 与 Target=n/a 的原始输出
+evidence/ev038/pyocd_reset_boot.txt | active | 上电编排原始输出：COM43 先开、pyocd HW reset（rc=0）、逐块接收时间与字节
+evidence/ev038/raw_i2c_capture.sr | active | 位级 I²C 原始采集（8,000,000 样点 @4 MS/s，D0=SCL/D1=SDA，conn=2.32；md5 d4c712ad…）
+evidence/ev038/run_host_harnesses.sh | active | EV-038 测试侧独立 harness 构建/运行可复跑脚本（本机 MinGW-w64 gcc）
+evidence/ev038/static_check_ev038.txt | active | 只读静态核查输出（沿用测试侧 21 项检查；21/21 PASS）
+evidence/ev038/tool_results.txt | active | 本轮设备枚举/包身份/构建/下载/pyocd/串口/逻辑分析仪/宿主测试原始结果与时间戳；未执行与延期项
 evidence/firmware_assignment_referral.md | active | 固件实现失败分派转交证据（EV-028/029：GXHT40 与 F-1 已修复；剩余 T4-02/T5/INT/T4-07 为采集编排、遮光/刺激与仪器配置条件，非固件代码缺陷；列明责任与前置条件）
 evidence/firmware_assignment_referral_ev030.md | active | EV-030 失败分派转交报告：固件 5/5+2/2 周期 q=1、0 G、I2C 双 CRC、F-1 保持；未满足项为上电五行采集编排、T5 双态物理条件、跨链路/刺激、功耗仪器；结论 ASSIGNMENT_DECLINED，未改产品源码
 evidence/firmware_design_lightdef/ | active | 固件设计用于无光判据推导的可复跑统计目录：只读已提交的原始串口捕获，输出光敏均值分布与阈值余量
@@ -1278,7 +1331,7 @@ evidence/product_fix_20261111/static_layout_check.py | active | 可复跑布局/
 evidence/product_fix_20261111/static_layout_check.txt | active | 上述脚本输出（15/15 PASS）
 evidence/product_fix_20261111/test_summary.txt | active | 修复后全量宿主机用例汇总（261/0/0/0，33 套件）
 evidence/product_fix_20261111/unit_test.log | active | 全量 testDebugUnitTest --rerun-tasks 原始输出（32 套件 / 257 项 / 0 失败）
-evidence/programmed_prototype.md | active | 下载身份记录（EV-037 置顶：HEAD d5701f5 / 实现提交 82a7e74 / 独立重建 axf md5 b6a15fed… 与发布包成员逐字节一致、mdk_flash Verify OK、上电五行与 7 个 q=1 采样行、位级 I²C 双 CRC 匹配；EV-036 及更早保留为历史；仅证明下载成功，不代表功能合格）
+evidence/programmed_prototype.md | active | 下载身份记录（EV-038 置顶：HEAD 15f70a5 / 实现提交 82a7e74 / 独立重建 axf md5 b6a15fed… 与发布包成员逐字节一致、mdk_flash Verify OK、上电五行与 7 个 q=1 采样行、位级 I²C 双 CRC 匹配；EV-037/EV-036 及更早保留为历史；仅证明下载成功，不代表功能合格）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
@@ -1292,7 +1345,7 @@ evidence/software_verify_cloud_upload_item009.py | active | 由 software_tester 
 evidence/software_verify_detail_presentation_item012.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_release_item014.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_timestamp_write_item007.py | active | 由 software_tester 新增或修改的项目相关文件
-evidence/test.md | active | 嵌入式验证证据 EV-037（当前轮，置顶）：当前固件独立验证 TEST_PASS（限定已执行范围）— 重建 axf b6a15fed…/hex 4d728dec… 与发布包一致、mdk_flash Verify OK、端口先开后 HW reset 取得上电五行与 S k=0、7 周期 k=0/3/6/9/12/15/21 全 q=1/V=0/D=0 且 p 链匹配、位级 I²C 双 CRC MATCH 且 p(k=21)=温度 261、宿主 222+609/0、静态 21/21；FW-LIGHT-DEF2-ENABLE 为 SKIP_CONFIRMED（2026-11-11T03:50:42Z，未执行不写成通过）、真实升温/光强与跨链路未执行、E2E-04 已批准延期；EV-036 及更早保留为历史
+evidence/test.md | active | 嵌入式验证证据 EV-038（当前轮，置顶）：发布包 FD-002r8 rev 2 独立 HIL_PASS（限定已执行范围）— 包/成员身份复算一致、独立重建 axf b6a15fed…/hex 4d728dec… 与包逐字节一致、mdk_flash Verify OK、端口先开后 HW reset 取得上电五行与 S k=0、7 周期 k=0/3/6/9/12/15/21 全 q=1/V=0/D=0 且 p 链匹配、位级 I²C 双 CRC MATCH 且 p(k=21)=温度 263、宿主 222+609/0、静态 21/21；FW-LIGHT-DEF2-ENABLE 为 SKIP_CONFIRMED（2026-11-11T03:50:42Z，未执行不写成通过）、真实升温/光强与跨链路未执行、E2E-04 已批准延期；EV-037/EV-036 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-030 置顶，EV-029/EV-027/EV-025/EV-023/EV-021 原文保留）：EV-030 完整交付 TEST_FAIL 复核——同一镜像新增 2 周期 q=1、F-1 保持；剩余为上电段采集编排（串口/下载串行、pyocd 未登记授权）、光敏双态/标定、升温与跨链路刺激、功耗仪器；未见新固件功能缺陷（仅归因，不代表整体通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 fw_release/ | active | 传感器固件发布包目录（发布候选；二进制以确定性 zip 入库，避开 .gitignore 的构建产物与 **/Release/ 规则）

@@ -1,0 +1,33 @@
+EV-038 COM43 / sigrok capture windows (2026-11-11, UTC)
+
+Target: CW32L010 sensor board (GXHT40 U9 same board), image = independent rebuild
+axf b6a15fed2ed5e3d0c4adc51ac87a4830 / hex 4d728dec9b0d28a352c46436b7586c72,
+flashed with mdk_flash {} at 11:59:59.554-12:00:11.910Z: Erase Done.Programming Done.
+Verify OK.Application running ...  (Verify OK proves download read-back only.)
+Port: COM43 = Prolific USB-to-Serial VID:PID 067B:2303, LOCATION=1-9.4.2, 9600 8N1.
+Reset reference: pyocd 0.36.0 HW reset at 12:00:22.932-12:00:23.645Z (rc=0),
+external reset source only; no flash/memory write through pyocd.
+
+file                     window start (UTC)      window end (UTC)        bytes  md5                               observed
+bot01_hw.cap             12:00:20.923 (open)     12:00:45.692            271    a5cc02526b95b293bdabe3b3b3ddaee9  BOOT,VDD,IOTEST,IOSIG,BUS,S k=0; reset inside window
+cap01_k3.cap             12:00:48.839            12:05:49.040             78    bd7072212bb2787b2d291a27d0efaeb9  S k=3
+cap02_k6_k9.cap          12:05:58.108            12:10:58.317            156    beac7054e584ba484b08282b92b1112f  S k=6, k=9
+cap03_k12_k15.cap        12:11:07.270            12:16:07.483            158    36b79433b16863cb0193bb73fbf02ba4  S k=12, k=15
+cap04_k21.cap            12:18:21.643            12:23:21.830             79    fe3aa6d2b1c24d723619186a6173b762  S k=21
+
+Serial S rows observed in this run: k=0, 3, 6, 9, 12, 15, 21 (7 rows).
+k=18 was not inside any COM43 window (gap 12:16:07-12:18:21). Its sampling
+transaction was captured at bit level by the logic analyzer; p(k=21)=263 equals
+the decoded temperature 263, so k=18 t=263 is established by that pairing.
+k=18 is NOT claimed as a COM43 row.
+
+raw_i2c_capture.sr       12:16:16.536-12:17:58.983 (capture session)  16,695 B
+                         md5 d4c712ad5874685b4eb1b04d68b57f7f
+                         fx2lafw:conn=2.32, D0=SCL, D1=SDA, trigger D1 falling edge.
+                         Session: 8,000,000 samples @ 4 MS/s = 2.0 s;
+                         trigger fired near 12:17:56.9Z, inside the session.
+                         Decode: sigrok_decode i2c scl=D0 sda=D1 -> decoded_i2c.txt.
+                         0x44 write 0xFD; read 68 43 8D 59 81 EE.
+
+No temperature or light stimulus was applied. No power/current measurement was made.
+Host harnesses and static check were run from the current source tree in this round.

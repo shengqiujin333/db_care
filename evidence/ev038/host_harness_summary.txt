@@ -1,0 +1,22 @@
+EV-038 host-side summary (2026-11-11, current source tree)
+
+Implementer test/build_test.sh stages: 48 + 61 + 54 + 28 + 31 = 222 passed, 0 failed.
+
+Tester independent harnesses:
+  host_fw_core_verify_ev.log            59 passed 0 failed
+  host_gxht40_verify_ev.log             93 passed 0 failed
+  host_sf_i2c_verify_ev.log             51 passed 0 failed
+  host_diag_line_verify_ev.log          38 passed 0 failed
+  host_diag_probe_verify_ev.log        109 passed 0 failed
+  host_measure_flow_verify_ev.log       79 passed 0 failed
+  host_rf_frame_verify_ev.log           10 passed 0 failed
+  host_rf_report_verify_ev.log          30 passed 0 failed
+  host_rtc_cadence_verify_ev.log        17 passed 0 failed
+  host_gw_compat_verify_ev.log          11 passed 0 failed
+  host_vdd_verify_ev.log                31 passed 0 failed
+  host_light_verify_ev.log (T=0)        40 passed 0 failed
+  host_light_verify_ev_enabled.log (T=3000) 41 passed 0 failed
+TESTER_TOTAL_PASSED = 609
+
+Static check (read-only): 21 passed, 0 failed.
+Capture analysis (independent): 129 passed, 0 failed.
