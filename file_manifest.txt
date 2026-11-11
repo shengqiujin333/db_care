@@ -375,6 +375,26 @@ evidence/doc_verification_20261111_rev4/ui_after_opensensorlist_click_rev4.xml |
 evidence/doc_verification_20261111_rev4/ui_after_report_click_rev4.xml | active | 点击「查看今日报告」后的 UI 树（navigation_dashboard 选中，并记录「设定」页当前参数 2/0.1/35/29/75/40）
 evidence/doc_verification_20261111_rev4/ui_gateway_dialog_rev4.xml | active | 「网关与上传设置」对话框真实 UI 树（未配置/平台身份/搜索/扩大/清除/保存/待发 0 条/重试/关闭）
 evidence/doc_verification_20261111_rev4/ui_my_page_rev4.xml | active | 「我的」页真实 UI 树（网关编码/保存/注册传感器/网关与上传设置/查看今日报告/打开传感器列表及 bounds）
+evidence/doc_verification_20261111_rev5/ | active | 软件测试文档独立校核原始证据目录（DOC-VERIFY-005）：DOC-PKG-001 rev 5 与随包用户使用说明书的静态核对、真机 UI 复现、设备 APK 字节一致性
+evidence/doc_verification_20261111_rev5/DOC-VERIFY-005.md | active | 产品文档独立校核报告：rev 5 复核 D-19..D-27 已修正；新发现 D-28（注册/登录入口）、D-29（按钮/字段文字）、D-30（408/429 与 20 次上限矛盾）；结论 TEST_FAIL
+evidence/doc_verification_20261111_rev5/account_page_rev5.png | active | 注册/登录页真机截图
+evidence/doc_verification_20261111_rev5/apk_badging.txt | active | aapt badging：候选 versionCode 10/1.9；历史 爱守护.apk versionCode 1/1.0
+evidence/doc_verification_20261111_rev5/device_apk_hash.txt | active | 设备 base.apk 路径/大小/SHA-256/MD5 与主机候选逐字节一致（副本核对后删除）
+evidence/doc_verification_20261111_rev5/device_apk_path.txt | active | 设备已安装包 base.apk 路径
+evidence/doc_verification_20261111_rev5/device_state.txt | active | 设备系统版本/API/型号（Android 10 / API 29 / Redmi 8A）
+evidence/doc_verification_20261111_rev5/my_page_rev5.png | active | 「我的」页真机截图
+evidence/doc_verification_20261111_rev5/package_dump.txt | active | 设备包状态 dumpsys（versionCode 10/versionName 1.9、安装/更新时间、签名）
+evidence/doc_verification_20261111_rev5/settings_scrolled_rev5.png | active | 「设定」页滚动后真机截图（报警间隔字段）
+evidence/doc_verification_20261111_rev5/settings_top_rev5.png | active | 「设定」页顶部真机截图
+evidence/doc_verification_20261111_rev5/source_checks.txt | active | 文档对照源码/真机 UI 的逐项核对记录（含 D-28/D-29/D-30 行号与证据、D-19..D-27 复核、docs/02/03/05/06 静态核对）
+evidence/doc_verification_20261111_rev5/static_identity.txt | active | HEAD、主机候选 APK 大小/SHA-256/MD5、历史 APK 大小/MD5
+evidence/doc_verification_20261111_rev5/ui_account_page_rev5.xml | active | 点「账户」后的注册/登录页真实 UI 树（登录/注册 checkbox、忘记/修改密码、退出、注销）
+evidence/doc_verification_20261111_rev5/ui_after_opensensorlist_click_rev5.xml | active | 点击「打开传感器列表」后 UI 树（navigation_dashboard 选中，未进入列表；P-04）
+evidence/doc_verification_20261111_rev5/ui_after_report_click_rev5.xml | active | 点击「查看今日报告」后 UI 树（navigation_dashboard 选中，复现 O-PKG-2）
+evidence/doc_verification_20261111_rev5/ui_gateway_dialog_rev5.xml | active | 「网关与上传设置」对话框真实 UI 树（未配置网关地址、平台身份、搜索/扩大/清除/保存、待发 0 条、重试上传、关闭）
+evidence/doc_verification_20261111_rev5/ui_my_page_rev5.xml | active | 「我的」页真实 UI 树（用户：未登录、账户、网关编码/保存、注册传感器、三个底部按钮）
+evidence/doc_verification_20261111_rev5/ui_settings_scrolled_rev5.xml | active | 「设定」页滚动后真实 UI 树（守护时间 8、报警间隔 10、确定/默认值）
+evidence/doc_verification_20261111_rev5/ui_settings_top_rev5.xml | active | 「设定」页顶部真实 UI 树（选择设备、2/0.1/35/29/75/40）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检

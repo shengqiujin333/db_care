@@ -1,0 +1,9 @@
+device_apk_path=/data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==/base.apk
+device_pulled_size=10365460 B
+device_pulled_sha256=d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+host_candidate_sha256=d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+device_pulled_md5=58de16b8fef549f004b92ffcec0104d9
+结论：设备已安装包与主机候选 app-debug.apk 逐字节一致。
+方法：adb -s 12f046690506 shell pm path com.jinyuni.dengbei_care 取路径；
+      MSYS2_ARG_CONV_EXCL='*' adb -s 12f046690506 exec-out cat <path> > device_base.apk；
+      sha256sum/md5sum 比对后删除 10 MB 副本，未入库、未改动设备应用数据。

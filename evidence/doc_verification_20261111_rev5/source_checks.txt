@@ -1,0 +1,123 @@
+DOC-VERIFY-005 文档—实现逐项核对记录
+校核时点：2026-11-11T07:31Z–07:44Z（UTC）
+仓库 HEAD：ffe0921
+文档版本：docs/README.md 标题 “DOC-PKG-001 rev 5”；docs/01–06 均标注 “DOC-PKG-001 rev 5（2026-11-11）”
+设备：Redmi 8A / Android 10 / API 29 / serial 12f046690506
+已安装包：com.jinyuni.dengbei_care versionCode=10 versionName=1.9
+设备 base.apk SHA-256 = d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+主机 app-debug.apk SHA-256 = 同值；MD5 = 58de16b8fef549f004b92ffcec0104d9；大小 10365460 B
+历史 dengbei_care/爱守护.apk：8144628 B，2024-11-06，md5 57286f8936db1f02e9845d50ea636076，aapt versionCode 1 / versionName 1.0
+
+=== D-28 用户手册 §3 注册/登录入口 ===
+用户使用说明书.md:46  “进入「我的」标签页,顶部有「注册」和「登录」入口。”
+真实 UI（ui_my_page_rev5.xml:11-12）：
+  text="用户：未登录" resource-id=usernameText
+  text="账户" resource-id=registerButton bounds=[537,183][713,279]
+fragment_notifications.xml:9-31：usernameText + registerButton(@string/register)
+strings.xml:35：<string name="register">账户</string>
+点击 registerButton 后真实 UI（ui_account_page_rev5.xml:13-14）：
+  text="登录" resource-id=checkBox
+  text="注册" resource-id=checkBox2
+fragment_zhuce.xml:22-33：登录/注册两个 CheckBox
+结论：§3 所述“我的页顶部有注册和登录入口”不成立；正确路径是“我的 → 账户 → 注册/登录页”。D-28。
+
+=== D-29 按钮/字段文字 ===
+用户使用说明书.md:63  “点「忘记密码」按钮”
+  strings.xml:94 <string name="forgetbutton">忘记/修改密码</string>
+  ui_account_page_rev5.xml:55 text="忘记/修改密码" resource-id=button2
+用户使用说明书.md:66  “点「退出登录」按钮”
+  strings.xml:98 <string name="logoutbutton">退出</string>
+  ui_account_page_rev5.xml:52 text="退出" resource-id=button4
+用户使用说明书.md:69  “连续点「注销用户」3 次以上”
+  strings.xml:95 <string name="deleteuserbutton">注销</string>
+  ui_account_page_rev5.xml:56 text="注销" resource-id=button3
+  ZhuCeFragment.kt:220-232：clickCount>3 后调用 deleteUser；deleteUser 注释“改了用户的密码，没有删掉账号”（ZhuCeFragment.kt:381）
+用户使用说明书.md:177 “**延时报警**(秒)”
+  strings.xml:28 <string name="delay_report">报警间隔</string>
+  ui_settings_scrolled_rev5.xml:21 text="10" hint="报警间隔" resource-id=delay_report
+用户使用说明书.md:111 “「请求被拒绝（HTTP 4xx）」”
+  GatewayBleSettingsDialog.kt:177-178 实际 “云端上传请求被拒绝（HTTP ${status.ifBlank { "4xx" }}），数据已保留（待发 $pending 条）”
+  docs/04_安卓App安装与使用.md §5 已用“云端上传请求被拒绝（HTTP 4xx）”
+结论：D-29（低）。
+
+=== D-30 408/429 与 20 次上限 ===
+用户使用说明书.md:111 “遇到 408/429（超时/限流）时应用会自动重试，不需要手动处理。”
+用户使用说明书.md:315 “单行最多自动重试 20 次，达到上限后数据仍保留却不再自动补传，需点一次「重试上传」才会继续”
+docs/06_维护排障与已知限制.md §2.3 第 55 行：“累计 20 次失败后该行停止自动重试但数据保留……必须手动「重试上传」恢复”
+CloudUploadRepository.kt:229 const val DEFAULT_MAX_ATTEMPTS = 20
+CloudUploadRepository.kt:225-226 DEFAULT_MAX_BACKOFF_SECONDS = 1800
+UploadResult.kt:25-33：408/429/5xx -> Retryable
+结论：同手册前后矛盾；D-30。
+
+=== D-19 安装对象 ===
+用户使用说明书.md:23-28：候选路径/10,365,460 B/SHA-256 d2054221…/versionCode 10/1.9；历史包 8,144,628 B/2024-11-06/versionCode 1/1.0
+aapt（apk_badging.txt）：候选 versionCode 10 versionName 1.9；历史 versionCode 1 versionName 1.0
+设备已安装 base.apk 与主机候选 SHA-256 一致（device_apk_hash.txt）
+结论：已修正。
+
+=== D-20 BLE 连接对象 ===
+用户使用说明书.md:34：“连接**中继器（网关）**的 BLE GATT；传感器数据先经 433 MHz 到网关”
+MqtttService.kt:643 注释“GATT 目标：已保存 gateway_ble_addr”
+GatewayIdentity.kt:99 实际 GATT 目标解析
+ui_gateway_dialog_rev5.xml:16 “未配置网关地址\n平台身份（mac_addr）：”；按钮/状态区与 §4.4 一致
+结论：已修正。
+
+=== D-21 默认值 ===
+MainActivity.kt:146-153 首次安装写入 tempdrop=2, humdrop=0.1, tempmax=35, tempmin=29, hummax=75, hummin=40, guardtime=8, delayalarm=10
+DashboardFragment.kt:90-104「默认值」按钮填 1/4/35/29/70/40/8/5，不调用 saveCurrentValues
+真机 ui_settings_top_rev5.xml:19-25：2 / 0.1 / 35 / 29 / 75 / 40
+真机 ui_settings_scrolled_rev5.xml:20-21：守护时间 8 / 报警间隔 10
+用户使用说明书.md:179-183 已区分两组值
+结论：值已修正；字段文字见 D-29。
+
+=== D-22 每设备参数入口 ===
+DeviceDetailFragment.kt:58-81：toolbar.title + setNavigationOnClickListener；无 menu 设置
+fragment_device_detail.xml:16-26：MaterialToolbar 仅 navigationIcon，无 app:menu
+DashboardFragment.kt:120-162：deviceSpinner 项“全局默认值(所有设备)” + 各设备；选中后 loadCurrentValues
+真机 ui_settings_top_rev5.xml:12-14：选择设备 / 全局默认值(所有设备)
+用户使用说明书.md:140、186-189 已改为“设定 → 选择设备”
+结论：已修正。
+
+=== D-23 报告时间命令 ===
+用户使用说明书.md:249-252：无受支持 UI 入口；明确不要用 echo 追加 XML
+MainActivity.kt:73-77：只读取 report_time 并 ReportScheduler.scheduleDaily
+全工程检索 report_time：仅 MainActivity 读取/写默认值与 DailyReportWorker 的 last_report_time
+结论：已修正。
+
+=== D-24 服务端幂等 ===
+用户使用说明书.md:313：本地待发箱去重；服务端唯一键为部署资料声明、尚未经本轮验证
+docs/05 §5 D4、docs/06 #7 同口径
+本轮未连接服务器、未连数据库
+结论：已修正。
+
+=== D-25 时间语义 ===
+docs/01 §4 第 75 行：BLE=手机读取时刻，MQTT=网关 payload 首段时间，均非传感器物理采样时刻
+用户使用说明书.md:304 同口径
+MqtttService.kt:978-999：receiveTime = System.currentTimeMillis()/1000 用于 BLE 样本
+MqtttService.kt:1669-1677：MQTT 使用 batch.timeSeconds
+UploadPayload.kt:26-31：MQTT=payload 首段网关时间，BLE=接收时刻
+结论：已修正。
+
+=== D-26 无光分支未启用 ===
+sensor_config.h:128-129 #define LIGHT_DARK_THRESHOLD_CODE 0u（0=未启用，唯一禁用值）
+sensor_config.h:138-139 SENSOR_REPORT_RISE_X10=9 / SENSOR_REPORT_HIGH_X10=350
+用户使用说明书.md:136、274 已加限制说明并引用 docs/01 §3、docs/06 #1
+docs/06 #1、docs/01 §3 一致
+结论：已修正。
+
+=== D-27 界面文字 ===
+DeviceCardAdapter.kt:70-74 “最近读取 ${...} · 按条件上报，可能长时间无数据”
+HomeFragment.kt:127-132 / 141 / 151 / 156 / 179 / 189 按钮“启动/停止”
+strings.xml:80 start_guard_button=启动
+真机 ui_my_page_rev5.xml、ui_settings_* 一致
+结论：§5/§6 已修正；§3/§7.1/§4.4 仍有 D-29 所列差异。
+
+=== 文档包其他核对 ===
+docs/02 §2/§5/§6：发布包 md5、三成员、Verify OK、上电五行、S 行格式与 EV-036/源码一致（静态）
+docs/03 §2/§4/§5/§8：PA06/PA05、9600 8N1、五行顺序、S/G/P 字段、先开串口后复位与源码/EV-036 一致（静态）
+docs/05 §1/§2/§4/§5：CloudConfig、jd-ca.crt、3 个 domain-config、只读核验与未验证边界一致（静态）
+docs/06 §2.3/§3/§4：20 次上限、20 项限制、未执行清单一致；#20 与真机点击复现一致
+真机点击复现：
+  ui_after_opensensorlist_click_rev5.xml:39 navigation_dashboard selected=true（未进入列表）
+  ui_after_report_click_rev5.xml:39 navigation_dashboard selected=true（未进入报告）
+未执行：固件重烧/COM43、433 实发、升温/改光、跨链路、/upload_data 写入、功耗。
