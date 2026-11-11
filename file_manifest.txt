@@ -1074,6 +1074,7 @@ evidence/fw_release_20261111/verify_release_package.py | active | 发布包校�
 evidence/interface_contract_validation.md | active | 系统架构：IC-002 v4.0源码核对与CRC/65536温度字/12资格向量/容量/缓存键算术自检、当前对象摘要和未验证边界
 evidence/product_acceptance_20261111/ | active | 软件测试产品整体功能验收原始证据目录（PRODUCT-ACCEPTANCE-001）：COM43 实板周期、安卓真机 UI/冷启动/守护启停/页面缺陷复现、候选与设备身份复算
 evidence/product_acceptance_20261111/PRODUCT-ACCEPTANCE-001.md | active | 产品整体功能验收报告：当前完整候选（固件 FD-002r8 / 安卓 1.9 / 既有网关与平台 / 文档 rev 9）逐项结果；实测缺陷 D-01「查看今日报告」与 D-02「打开传感器列表」被底部导航拦截、D-03 网关按钮重叠、D-04 首页文案与“无 UI 路径”文档错误；未执行项含 FW-LIGHT-DEF2-ENABLE（人工 SKIP_CONFIRMED）、真实升温/光强双态、跨链路、平台写入、功耗；结论 TEST_FAIL（MEASURED_DEFECT）
+evidence/product_acceptance_20261111/SOFTWARE-TRIAGE-001.md | active | 产品验收失败软件归因：Android D-01/D-02/D-03/D-04a 实测复现（含原始坐标触摸）、源码机制与复验目标；D-04b 文档责任、R4 人工跳过与未执行项边界；结论 REPAIR_REQUIRED
 evidence/product_acceptance_20261111/android-ui_dump-1794390977249456500.xml | active | 设定页 UI 原始树（默认参数 2/0.1/35/29/75/40）
 evidence/product_acceptance_20261111/android-ui_dump-1794391049778381300.xml | active | 我的页 UI 原始树（账户/网关编码/注册传感器/三按钮及 bounds）
 evidence/product_acceptance_20261111/android-ui_dump-1794391089892097800.xml | active | 网关与上传设置对话框 UI 原始树（BLE 地址/搜索/保存/上传状态/重试）
@@ -1109,6 +1110,17 @@ evidence/product_acceptance_20261111/parse_ui.py | active | uiautomator XML 有�
 evidence/product_acceptance_20261111/serial_capture_com43_20261111.bin | active | COM43/9600 8N1 原始捕获 160 B（S k=276/279，md5 7f50a340…；窗口 2026-11-11T09:50:46–09:55:46Z；*.bin 命中 .gitignore，本机留存，随仓库以 hex 文本复核）
 evidence/product_acceptance_20261111/serial_capture_hex.txt | active | 上述原始捕获的十六进制转储（便于随仓库复核）
 evidence/product_acceptance_20261111/serial_capture_meta.txt | active | 串口采集窗口、端口/波特率、字节数与 md5/sha256
+evidence/product_acceptance_20261111/software_triage_20261111/ | active | 本轮失败归因独立复现原始证据目录（当前候选实机 UI 树、截图、包身份与崩溃缓冲）
+evidence/product_acceptance_20261111/software_triage_20261111/device_crash_buffer.txt | active | 本轮操作后 crash 缓冲（空，未见应用崩溃）
+evidence/product_acceptance_20261111/software_triage_20261111/device_package_dump_triage.txt | active | 设备 dumpsys package（本轮：versionCode 10 / versionName 1.9）；设备 base.apk SHA-256 d2054221… 与主机候选一致
+evidence/product_acceptance_20261111/software_triage_20261111/raw_tap_360_1328.txt | active | tap 动作原始输出（空输出=命令成功）；坐标见同目录 UI 树
+evidence/product_acceptance_20261111/software_triage_20261111/screenshot_my_page.png | active | 我的页真机截图：底部导航遮挡底部按钮、网关按钮覆盖注册控件
+evidence/product_acceptance_20261111/software_triage_20261111/ui_after_open_sensor_list_click.xml | active | 选择器点击“打开传感器列表”后切到「设定」的 UI 原始树（D-02 本轮复现）
+evidence/product_acceptance_20261111/software_triage_20261111/ui_after_raw_tap_report_center.xml | active | 原始坐标触摸“查看今日报告”中心 (360,1328) 后切到「设定」的 UI 原始树（排除工具选择器差异）
+evidence/product_acceptance_20261111/software_triage_20261111/ui_after_register_sensor_click.xml | active | 点击「注册传感器」中心的实测结果：打开“网关与上传设置”对话框（D-03 由几何重叠升级为功能阻断）
+evidence/product_acceptance_20261111/software_triage_20261111/ui_after_view_report_click.xml | active | 选择器点击“查看今日报告”后切到「设定」的 UI 原始树（D-01 本轮复现）
+evidence/product_acceptance_20261111/software_triage_20261111/ui_my_page.xml | active | 我的页 UI 原始树：底部按钮、注册按钮与底部导航/nav_host 的 bounds
+evidence/product_acceptance_20261111/software_triage_20261111/ui_via_home_add_route.xml | active | 首页「去添加」进入“已保存的 ID（0）”列表页的 UI 原始树（D-04b 文档表述反证）
 evidence/product_acceptance_20261111/toast_linkstatus_tap.png | active | 链路状态点击后的 Toast“请在‘我的 → 网关与上传设置’中选择或保存网关”（预期行为）
 evidence/programmed_prototype.md | active | 下载身份记录（EV-036 置顶：HEAD 5b9b7aa / 实现提交 82a7e74 / 发布包 FD-002r8 与独立重建 axf md5 b6a15fed… 逐字节一致、mdk_flash Verify OK、上电五行与 6 个 q=1 采样行运行证据；仅证明下载成功，不代表功能合格；EV-035 及更早保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
