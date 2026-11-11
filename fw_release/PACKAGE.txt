@@ -1,0 +1,48 @@
+Firmware release package - dengbei sensor (CW32L010)
+=====================================================
+
+Package tag       : FD-002r8
+Built from commit : 82a7e74e5d6bae855a573e1f23f83936ba8db049 (sensor product source)
+Repository HEAD   : 9f7817f (sensor USER/MDK/EWARM/gcc unchanged since 82a7e74)
+Design baseline   : FD-002 rev 8 - LIGHT-DEF-2 criterion form; delivery default T=0 (criterion disabled)
+Firmware banner   : BOOT fw=FD-002r4 uid=6A002C00 rst=.. uart=9600 (fw string intentionally unchanged)
+Build tool        : Keil MDK / ARMCLANG V6.24; project MDK/Project.uvprojx (saved settings, unchanged)
+Build command     : mdk_build {"action":"rebuild"}
+Build result      : 0 Error / 1 Warning (pre-existing main.c(254) empty while body)
+Program size      : Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+Target device     : CW32L010 (Keil Device CW32L010F8; BOM U7 = CW32L010Y8M6 - documented difference)
+
+Member files and MD5
+--------------------
+fw_sensor_FD-002r8_b6a15fed.axf : b6a15fed2ed5e3d0c4adc51ac87a4830 (297380 bytes)
+fw_sensor_FD-002r8_4d728dec.hex : 4d728dec9b0d28a352c46436b7586c72 (75275 bytes)
+
+Reproducibility
+---------------
+Three independent rebuilds of the same source produced this axf/hex MD5:
+  - firmware implementation round 2026-11-10 (evidence/fw_impl_20261110/build_evidence.md)
+  - embedded test round EV-035 2026-11-11 (evidence/ev035/image_identity.txt)
+  - this release round 2026-11-11 (evidence/fw_release_20261111/mdk_build_release.out.json)
+The zip is packed with fixed member timestamps so its own MD5 is reproducible.
+
+Download / programming instructions (NOT performed by the releasing role)
+-------------------------------------------------------------------------
+1. Use the saved Keil project MDK/Project.uvprojx with the saved CW-DAPLink debugger and the saved
+   CW32L010 flash algorithm (mdk_flash {}); the tool compiles then downloads.
+   Do not select another chip, debugger or algorithm, and do not change the project file.
+2. Require a flash log containing "Erase Done.Programming Done.Verify OK.Application running ...".
+   Verify OK only proves read-back of the programmed image, not function.
+3. After download, capture COM43 at 9600 8N1: BOOT/VDD/IOTEST/IOSIG/BUS once, then one S line per
+   3-minute cycle. With the delivery default (T=0) each S line must show V=0 D=0.
+4. Never flash the existing gateway; it is out of this release scope.
+
+Limitations and open items (full list in artifacts/firmware_release.md)
+----------------------------------------------------------------------
+- No-light criterion is DISABLED in this delivery (LIGHT_DARK_THRESHOLD_CODE=0): the rise-and-dark
+  upload branch cannot fire; only the strict >35.0 C branch is available.
+- Enabling the criterion requires an accepted criterion value plus passive lit/dark evidence;
+  that test item is human-confirmed deferred (NOT EXECUTED) for this delivery.
+- Real temperature rise / >35 C trigger, cross-link (gateway + phone) and power measurement were
+  not executed in this stage (user constraints; later integration stage).
+- This package is a build candidate with identity and instructions; it is NOT a statement of
+  functional acceptance of the product.
