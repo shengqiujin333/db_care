@@ -1045,3 +1045,29 @@ BLE 记录布局/字节序/负温符号、AES/ECB/NoPadding 与密钥、GATT UUI
 | 独立门禁 | `aa005_android_check/run_gates.py` | **12/12 EXIT=0** |
 
 重建证据：`evidence/android_fix_20261110/rebuild_*.log` 与 `rebuild_*.txt`。交付状态：Android 侧七项增量与 D-AA005-1 修复均已在 `d6fc6cd` 交付，可交由独立软件测试复验；真实手机/网关/服务端链路与 API 31+ 权限项仍未执行（外部条件），不因本次重建自动通过。
+
+---
+
+# 产品验收 D-01/D-02/D-03/D-04a 修复
+
+**来源**：`evidence/product_acceptance_20261111/PRODUCT-ACCEPTANCE-001.md` TEST_FAIL；`SOFTWARE-TRIAGE-001.md` 判定 `REPAIR_REQUIRED`（仅限 Android 对象）。
+
+## 变更
+
+| 文件 | 变更 |
+|---|---|
+| `res/layout/activity_main.xml` | NavHost 高度 `match_parent` → `0dp`，底部止于 `nav_view` 顶部 |
+| `res/layout/fragment_notifications.xml` | 改为 `NestedScrollView + LinearLayout`；快速入口置顶；全部控件顺序排列、无重叠；保留全部控件 ID 与点击回调 |
+| `res/layout/fragment_home.xml` | 空态引导文案改为「去添加」/「打开传感器列表」实际路径 |
+| `用户使用说明书.md` | 同步修复后行为：移除“被遮挡/不可用/不能滚动”旧描述；有数据时的列出/删除保持“尚待实机验证” |
+
+未改 BLE/MQTT/上传/告警/SQLite/版本；未动 `docs/` 随包手册（D-04b 属技术文档角色）。
+
+## 自检
+
+- `clean assembleDebug` 成功；APK 10,365,444 B，SHA-256 `9c6427c9…`；`versionCode 10 / versionName 1.9`；v2 签名通过。
+- 全量宿主机 **33 套件 / 261 项 / 0 失败**（含布局结构回归 4 项）。
+- `evidence/product_fix_20261111/static_layout_check.py` **15/15 PASS**；既有独立静态 **54/54**；门禁 **12/12**。
+- 实机安装/点击复测未执行（本能力无 `android_test`），交独立产品验收；真实 BLE/平台链路等保持 NOT EXECUTED。
+
+修复说明：`artifacts/android_fix_product_D01-D04a.md`；证据：`evidence/product_fix_20261111/`。

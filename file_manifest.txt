@@ -74,6 +74,7 @@ artifacts/android_architecture.md | active | Android 方案设计 AA-005 rev 4.0
 artifacts/android_build.md | active | Android 构建产物 AB-001（debug 测试候选：包名/versionCode 10/1.9、构建命令、APK SHA-256/MD5、v2 签名与 debug 证书、安装/升级说明、候选范围与 release 未产出原因）
 artifacts/android_feasibility.md | active | Android 真机/模拟环境可行性探索 AF-001（Redmi 8A Android 10/API 29 只读事实、API<31 定位权限门阻断、硬编码网关 MAC、AVD API 34 对照与差异、未证实项与最小下一步）
 artifacts/android_fix_D-AA005-1.md | active | Android 集成调试修复 FIX-AA005-1（401/403/4xx 后全局暂停自动上传；根因、改动、独立用例复验、APK 身份与未执行项）
+artifacts/android_fix_product_D01-D04a.md | active | Android 集成调试修复 FIX-PROD-01（产品验收 D-01/D-02 底部按钮可达、D-03 控件重叠、D-04a 首页文案；根因/改动/自检/实机复测方法与 D-04b 文档交接）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加；AA-005 七项增量 + D-AA005-1 全局上传阻塞修复；d6fc6cd 完整交付重建）
 artifacts/android_tasks.yaml | active | Android 待实现任务清单（7 项：BLE 权限模型、网关身份发现与绑定、BLE 批次转发与载荷格式、观测有效性与全零占位、绑定容量 ≤9 与读取完整性、上传失败分类与 401 阻塞、升温规则文案与时间/节拍注释；按前置依赖排序）
 artifacts/backend_feasibility.md | history | 后端可行性探索 BE-EXP-002（2026-11-09 只读 SSH 实测：EMQX 5.8.0/端口/unit/6 路由/401/零业务流量；历史记录保留不改写，当前入口见 backend_feasibility_current.md）
@@ -139,7 +140,8 @@ dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt | active | “我的”页：传感器绑定（容量 ≤9 拒绝第 10 台）、网关与上传设置入口、扫描权限结果转发
 dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt | active | Retrofit 接口（既有 5 端点 + POST /upload_data 与 DTO；time 注释为 BLE/MQTT 接收秒而非物理采样时刻）
 dengbei_care/app/src/main/java/org/eclipse/paho/android/service/ | coarse | 内嵌 Paho MQTT Android 客户端（vendor）
-dengbei_care/app/src/main/res/ | coarse | Android 资源（layout/values/drawable/mipmap/navigation/xml）；本轮布局新增首页链路状态条、详情时间说明、通知页网关与上传入口；xml/network_security_config.xml 放行 8.140.23.253
+dengbei_care/app/src/main/res/ | coarse | Android 资源（layout/values/drawable/mipmap/navigation/xml）；本轮修复产品验收 D-01/D-02/D-03：NavHost 高度改为约束、通知页改滚动布局且快速入口置顶、控件无重叠；含首页链路状态条、详情时间说明、网关与上传入口；xml/network_security_config.xml 放行 8.140.23.253
+dengbei_care/app/src/main/res/layout/activity_main.xml | active | 由 android_engineer 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/layout/fragment_device_detail.xml | active | 由 android_engineer 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/layout/fragment_home.xml | active | 由 android_engineer 新增或修改的项目相关文件
 dengbei_care/app/src/main/res/layout/fragment_notifications.xml | active | 由 android_engineer 新增或修改的项目相关文件
@@ -153,6 +155,7 @@ dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuar
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwardingTest.kt | active | 批次载荷逐字与全部拒绝分支自检
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleObservationTest.kt | active | 占位与合法 0.0/0.0 分类自检
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt | active | 由 android_engineer 新增或修改的项目相关文件
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsLayoutContractTest.kt | active | 产品验收 D-01/D-02/D-03/D-04a 布局/文案结构回归（NavHost 约束、滚动布局、控件顺序/ID、首页文案；不替代真机 bounds 验收）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/Aa005SevenItemVerificationTest.kt | active | 软件测试独立验证（AA-005 七项增量）：权限矩阵/网关身份/批次转发/观测占位与 x10/上传四分类与“401 后全局暂停自动重试”门禁/容量与完整性/规则文案，共 20 项
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt | active | 由 android_engineer 新增或修改的项目相关文件
 dengbei_care/build.gradle.kts | active | 工程级 Gradle 脚本
@@ -165,7 +168,7 @@ dengbei_care/play_store_512.png | active | 应用商店图标
 dengbei_care/readme.txt | active | Android 版本变更记录（最新 V1.9：升温方向/权限/网关身份/批次转发/占位/上传分类/容量完整性）
 dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
-dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.9；rev 9 按 DOC-VERIFY-008 补“紧急 >65 ℃ 报警除外”示例；保留 rev 8 的关闭守护边界（入库/`/upload_data`/下降超限提醒停止，MQTT 转发/紧急提醒/报警记录照旧）、紧急报警不受开关影响、「最近读取」不证明在线，以及 rev 5–7 的安装/默认值/时间语义/无光限制等修正）
+dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.9；本轮同步产品验收 D-01/D-02/D-03/D-04a 修复后行为：传感器列表/报告入口可用、页面可滚动、首页路径文案，有数据时删除仍标“尚待实机验证”）
 docs/ | active | 交付文档包 DOC-PKG-001 rev 9（技术文档角色；按版本化的用户/安装/调试/配置/维护手册）
 docs/01_产品说明与版本变更.md | active | 产品说明 rev 9：系统链路（网关不自带 MQTT/HTTP，云端转发由 App 完成）、8 项需求逐项落地位置与状态、判定规则精确语义（含 T=0 限制）、时间语义（BLE=读取时刻/MQTT=网关时间）、交付物、已验证/未验证清单
 docs/02_传感器固件安装与烧录.md | active | 传感器固件安装：发布包 MD5/成员校验、CW-DAPLink 与工程保存配置、mdk_build/mdk_flash 步骤、Verify OK 与上电五行核对、故障处理、升级回退与禁止事项
@@ -1122,6 +1125,17 @@ evidence/product_acceptance_20261111/software_triage_20261111/ui_after_view_repo
 evidence/product_acceptance_20261111/software_triage_20261111/ui_my_page.xml | active | 我的页 UI 原始树：底部按钮、注册按钮与底部导航/nav_host 的 bounds
 evidence/product_acceptance_20261111/software_triage_20261111/ui_via_home_add_route.xml | active | 首页「去添加」进入“已保存的 ID（0）”列表页的 UI 原始树（D-04b 文档表述反证）
 evidence/product_acceptance_20261111/toast_linkstatus_tap.png | active | 链路状态点击后的 Toast“请在‘我的 → 网关与上传设置’中选择或保存网关”（预期行为）
+evidence/product_fix_20261111/ | active | 产品验收 D-01/D-02/D-03/D-04a 修复自检证据目录（构建/单测/布局静态核查/既有静态与门禁/APK 身份）
+evidence/product_fix_20261111/apk_badging.txt | active | 修复后 APK aapt badging（versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34）
+evidence/product_fix_20261111/apk_identity.txt | active | 修复后 APK 大小/sha256/md5 与版本（10 / 1.9）
+evidence/product_fix_20261111/apksigner_verify.txt | active | 修复后 APK apksigner 验证（v2 通过；Android Debug 证书）
+evidence/product_fix_20261111/build.log | active | clean assembleDebug --offline 原始输出（BUILD SUCCESSFUL）
+evidence/product_fix_20261111/gates.log | active | 既有 12 项独立门禁复跑（12/12 EXIT=0）
+evidence/product_fix_20261111/static_aa005.log | active | 既有独立静态核查复跑（54/54 PASS）
+evidence/product_fix_20261111/static_layout_check.py | active | 可复跑布局/文案静态核查（NavHost 约束、滚动布局、控件无重叠/ID/回调、首页文案、版本与导航）
+evidence/product_fix_20261111/static_layout_check.txt | active | 上述脚本输出（15/15 PASS）
+evidence/product_fix_20261111/test_summary.txt | active | 修复后全量宿主机用例汇总（261/0/0/0，33 套件）
+evidence/product_fix_20261111/unit_test.log | active | 全量 testDebugUnitTest --rerun-tasks 原始输出（32 套件 / 257 项 / 0 失败）
 evidence/programmed_prototype.md | active | 下载身份记录（EV-036 置顶：HEAD 5b9b7aa / 实现提交 82a7e74 / 发布包 FD-002r8 与独立重建 axf md5 b6a15fed… 逐字节一致、mdk_flash Verify OK、上电五行与 6 个 q=1 采样行运行证据；仅证明下载成功，不代表功能合格；EV-035 及更早保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）

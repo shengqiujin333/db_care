@@ -1,179 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fillViewport="true"
     tools:context=".ui.notifications.NotificationsFragment">
 
-    <TextView
-        android:id="@+id/usernameText"
-        android:layout_width="219dp"
-        android:layout_height="44dp"
-        android:padding="8dp"
-        android:text="@string/username"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.151"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/registerButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:text="@string/register"
-        app:layout_constraintBottom_toBottomOf="@id/usernameText"
-        app:layout_constraintStart_toEndOf="@+id/usernameText"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/sensorAddressLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:padding="8dp"
-        android:text="@string/sensor_address"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.115"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameText"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/sensorAddressInput"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:hint="@string/sensor_address_hint"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.216"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sensorAddressLabel"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/macSendButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:text="@string/mac_send_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensorAddressInput" />
-
-    <Button
-        android:id="@+id/macScanButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/usecamera"
-        app:layout_constraintStart_toEndOf="@+id/sensorAddressLabel"
-        app:layout_constraintTop_toBottomOf="@+id/registerButton" />
-
-    <TextView
-        android:id="@+id/sensoridinfo"
-        android:layout_width="180dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/sensor_id"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/macSendButton" />
-
-
-    <Button
-        android:id="@+id/sensoridscan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/usecamera"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/macSendButton" />
-
-    <EditText
-        android:id="@+id/sensoridinput"
-        android:layout_width="300dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="48dp"
-        android:hint="@string/sensor_id_hint"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.216"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensoridinfo"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/addsensorid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/addsensor"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensoridinput" />
-
-    <Button
-        android:id="@+id/opensensorlistbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="132dp"
-        android:text="@string/opensensorlist"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addsensorid" />
-
-
-    <EditText
-        android:id="@+id/sensornameinput"
-        android:layout_width="250dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:hint="@string/sensorname"
-        android:importantForAutofill="no"
-        android:inputType="text"
-        android:padding="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.151"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sensoridinput"
-        tools:ignore="MissingConstraints" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/gatewayBleButton"
+    <!--
+        「我的」页布局约束（D-01/D-02/D-03）：
+        - 页面内容使用滚动容器，底部不再固定锚定到 parent 底部，避免落入底部导航覆盖区；
+        - 「查看今日报告」「打开传感器列表」放在顶部，按控件中心即可触达；
+        - 所有控件为 LinearLayout 顺序排列，互不重叠（含「注册传感器」与「网关与上传设置」）。
+    -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_md"
-        android:layout_marginEnd="@dimen/spacing_md"
-        android:layout_marginBottom="@dimen/spacing_sm"
-        android:text="网关与上传设置"
-        app:layout_constraintBottom_toTopOf="@+id/viewReportButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:orientation="vertical"
+        android:paddingStart="@dimen/spacing_md"
+        android:paddingTop="@dimen/spacing_md"
+        android:paddingEnd="@dimen/spacing_md"
+        android:paddingBottom="@dimen/spacing_lg">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/viewReportButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_md"
-        android:layout_marginEnd="@dimen/spacing_md"
-        android:layout_marginBottom="@dimen/spacing_lg"
-        android:text="查看今日报告"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <!-- 账户 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/usernameText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/spacing_sm"
+                android:text="@string/username"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_sm"
+                android:text="@string/register" />
+        </LinearLayout>
+
+        <!-- 快速入口（置于顶部，避免被底部导航遮挡） -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/viewReportButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:text="查看今日报告" />
+
+        <Button
+            android:id="@+id/opensensorlistbutton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:text="@string/opensensorlist" />
+
+        <!-- 网关编码 -->
+        <TextView
+            android:id="@+id/sensorAddressLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:padding="@dimen/spacing_sm"
+            android:text="@string/sensor_address"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/sensorAddressInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/sensor_address_hint"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:padding="@dimen/spacing_sm" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/macSendButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/mac_send_button" />
+
+            <Button
+                android:id="@+id/macScanButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:text="@string/usecamera" />
+        </LinearLayout>
+
+        <!-- 传感器编码与别称 -->
+        <TextView
+            android:id="@+id/sensoridinfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_md"
+            android:padding="@dimen/spacing_sm"
+            android:text="@string/sensor_id"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/sensoridinput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="@string/sensor_id_hint"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:minHeight="48dp"
+                android:padding="@dimen/spacing_sm" />
+
+            <Button
+                android:id="@+id/sensoridscan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_xs"
+                android:text="@string/usecamera" />
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/sensornameinput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_xs"
+            android:hint="@string/sensorname"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:padding="@dimen/spacing_sm" />
+
+        <Button
+            android:id="@+id/addsensorid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_sm"
+            android:text="@string/addsensor" />
+
+        <!-- 网关与上传设置：与「注册传感器」保持顺序间隔，不与其重叠 -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/gatewayBleButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_lg"
+            android:text="网关与上传设置" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
