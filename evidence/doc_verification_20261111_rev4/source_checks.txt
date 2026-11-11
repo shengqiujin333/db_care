@@ -1,0 +1,171 @@
+DOC-VERIFY-004 文档—实现/证据逐项核对记录
+校核时点：2026-11-11 15:02–15:20（Asia/Shanghai）
+说明：行号为当前 rev 4 文件与当前源码行号；本文件只记录独立核对结论，不代替报告。
+
+[A. 已核对一致（通过项）]
+
+DOC-PKG-001 / 01 §3 判定语义
+  文档：cur>350 优先；have_prev && dark && (cur-prev)>9；其余不上报；恰好 9/350 不触发。
+  实现：fw_core.c:112-126；sensor_config.h:138-139（RISE=9/HIGH=350，严格大于）；
+        sensor_config.h:128-130（LIGHT_DARK_THRESHOLD_CODE=0，唯一禁用值）。
+  结果：一致。
+
+01 §2 / 02 / 03 固件身份与包
+  zip 134791 B / md5 5df0c6d45ecddc8aae8bddbbcfc9cfdf；
+  成员 axf 297380 B b6a15fed…、hex 75275 B 4d728dec…、PACKAGE.txt 3202 B a58f67…；
+  MDK/output/exe/Project.axf md5 b6a15fed…；构建 0 Error/1 Warning，Code=25964 RO=656 RW=116 ZI=1676。
+  结果：与 docs/02 §2/§4、01 §5、PACKAGE.txt 逐项一致（static_identity.txt）。
+
+02 §3 / 05 USB 与调试器
+  usb_list_devices：COM43=Prolific 067B:2303；COM26=C251:F001；
+  CW-DAPLink 序列号 87094109484987710672FF50；手机 12F046690506；fx2lafw。
+  结果：与 docs/README §2、02 §3、03 §2 一致。
+
+03 §2/§4/§5/§6/§7 串口实现
+  sensor_config.h:203-216：PA06=TXD、PA05=RXD、9600、PCLK 8 MHz、行预算 96 B；
+  debug_trace.c:391-407 S 行顺序；:415-434 G 行；:442-450 P 行；:455-478 行宽预算；
+  light.c:140：mv = 4095*bgrmv/code；measure.c:164-165,226-233：gc 0..3 语义；
+  main.c:220-250：BOOT→VDD→IOTEST→IOSIG→BUS；main.c:118-130：3 拍一次采样。
+  结果：与 docs/03 逐字段一致；EV-036 样本行逐字一致。
+  pyocd 0.36.0 支持 -t/-M/-m；docs/03 §8 示例语法可用。
+
+04 §1 安卓包身份/权限/构建
+  build.gradle.kts:11-15：applicationId com.jinyuni.dengbei_care, minSdk 26, targetSdk 34,
+  versionCode 10, versionName 1.9；
+  主机 APK 10365460 B，SHA-256 d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6，
+  MD5 58de16b8fef549f004b92ffcec0104d9；apksigner：v2=true，CN=Android Debug，摘要 773e4ef6…；
+  AndroidManifest.xml 声明 BLUETOOTH_CONNECT/SCAN、FINE/COARSE_LOCATION、CAMERA、POST_NOTIFICATIONS 等。
+  结果：与 docs/04 §1/§3 一致。
+
+04 §4.1 我的页注册入口
+  真机 ui_my_page_rev4.xml：用户：未登录 / 账户 / 请输入网关编码： / 使用摄像头扫一扫 /
+  请输入网关上的字母串 / 保存 / 请输入传感器编码和别称： / 请输入传感器的字母串 /
+  请输入传感器别称用于显示 / 注册传感器 / 网关与上传设置 / 查看今日报告 / 打开传感器列表。
+  NotificationsFragment.kt:84-116（长度 12、长度 8 + 别称非空、9 台上限、两条提示）；
+  MacIdBox.kt:74-79（8 位十六进制）、:87-103（中文≤3 或 [a-z0-9]{1,8}）。
+  结果：文档 §4.1 步骤 1–3、5、6 与实现/真机一致。
+
+04 §4.1 步骤 4 / 06 #20 打开传感器列表不可用
+  真机 ui_my_page_rev4.xml：opensensorlistbutton [164,1296][456,1392]，
+  nav_view [0,1264][720,1424]；
+  点击后 ui_after_opensensorlist_click_rev4.xml：navigation_dashboard selected=true，
+  未出现 SensorIdListFragment。
+  结果：与文档一致（产品缺陷 P-04，文档如实描述）。
+
+04 §4.2 网关与上传设置
+  真机 ui_gateway_dialog_rev4.xml：标题、未配置网关地址/平台身份、输入提示、
+  搜索附近网关/扩大搜索（不过滤）/清除网关地址/保存网关地址/云端上传状态：无（待发 0 条）/重试上传/关闭。
+  GatewayBleSettingsDialog.kt:61-123（控件与文字）、:149-185（状态文本）、
+  :187-213（保存格式校验、清除不回退默认）、:215-219（重试上传）；
+  MqtttService.kt:1307-1310（GATEWAY_CHANGED → 立即读取）。
+  结果：与文档表格一致。
+
+04 §4.2 O-PKG-1 / O-PKG-2
+  真机 bounds：gatewayBleButton [32,1168][688,1264]；sensornameinput [33,1104][533,1224]；
+  addsensorid [452,1128][688,1224]；重叠 1224-1168=56 px；
+  点击 viewReportButton 后 ui_after_report_click_rev4.xml：navigation_dashboard selected=true，
+  未出现 ReportActivity。
+  结果：与文档一致。
+
+04 §5 / 06 §2.3 上传分类与重试
+  UploadResult.kt:25-33：401/403=AuthRejected；408/429=Retryable；其余 4xx=RequestRejected；5xx=Retryable。
+  CloudUploadRepository.kt:184-198：Auth/RequestRejected 才 globalBlocked=true + park；
+  :216-230：DEFAULT_MAX_ATTEMPTS=20、DEFAULT_MAX_BACKOFF_SECONDS=1800；
+  :209-214：手动重试清除阻塞并 resetForManualRetry。
+  结果：与 docs/04 §5、06 §2.3 一致。
+
+05 平台配置
+  CloudConfig.kt:18-30（8.140.23.253、8883、5000、URI/Base URL 唯一来源）；
+  MqtttService.kt:116 clientId=android_client；:1260/1262 topic /<mac>/a/r0、/a/s0；
+  :1588-1600 jd-ca.crt + TLSv1.2；jd-ca.crt md5 f1a8212e3c690d57894b8a3a5fd901ab；
+  network_security_config.xml 3 个 domain-config；Kotlin 源码 117.72.84.210 零命中。
+  结果：与 docs/05 §1/§2 一致；未连接服务器、未调用写接口、未连数据库。
+
+06 §4 未执行项
+  FW-LIGHT-DEF2-ENABLE：运行时延期记录 SKIP_CONFIRMED 2026-11-11T03:50:42Z，与文档一致；
+  其余升温/光强/跨链路/upload_data/E2E-04/release 均保持“未执行”。
+  结果：未把未执行写成通过。
+
+[B. 本轮新发现（文档缺陷）]
+
+D-19（高）用户使用说明书 §2.1 安装对象错误
+  文档（dengbei_care/用户使用说明书.md:23）：“直接安装 `爱守护.apk` 即可。”
+  事实：仓库内 dengbei_care/爱守护.apk 为 versionCode=1 / versionName=1.0（2024-11-06，8144628 B），
+        不是本次交付的 1.9 候选；当前候选为
+        dengbei_care/app/build/outputs/apk/debug/app-debug.apk（versionCode 10/1.9，
+        SHA-256 d2054221…，10365460 B）。
+  影响：按用户手册安装会得到旧版 1.0，缺少本轮全部 Android 改动。
+  修正：改为当前候选路径与身份，并注明 debug 候选仅内部测试；明确 爱守护.apk 为历史包、不得作为 1.9 安装源。
+
+D-20（中）用户使用说明书 §2.2 BLE 连接对象错误
+  文档（:29）：“附近设备/蓝牙权限(必须):连接 BLE 温湿度传感器”。
+  事实：手机 BLE 连接对象是网关（CH592，GATEWAY BLE 地址/`gateway_ble_addr`），
+        传感器与网关之间是 433 MHz；传感器不与手机建立 BLE 链路。
+  修正：改为“连接中继器（网关）的 BLE GATT；传感器数据经 433 MHz 先到网关”。
+
+D-21（中）用户使用说明书 §7.1 默认参数数值错误
+  文档（:172）：“取消恢复默认值(温度下降 1°C、湿度下降 4%、温度 29-35°C、湿度 40-70%、
+        守护 8 小时、延时 5 秒…)；这些是「默认值」，所有新设备会自动使用这套参数。”
+  事实：首次安装实际写入 MyPrefs（MainActivity.kt:139-166）：
+        tempdrop=2、humdrop=0.1、tempmax=35、tempmin=29、hummax=75、hummin=40、
+        guardtime=8、delayalarm=10；
+        真机“设定”页当前值（ui_after_report_click_rev4.xml）为 2 / 0.1 / 35 / 29 / 75 / 40。
+        “取消”按钮只是把输入框填为 1 / 4 / 35 / 29 / 70 / 40 / 8 / 5（DashboardFragment.kt:90-104），
+        不落盘；与首次安装默认值不同。
+  修正：分别写清“首次安装生效值”和“取消按钮填充值”；或统一两组值并同步实现，
+        在文档中给出真机可核对的实际值。
+
+D-22（高）用户使用说明书 §5.1/§7.2 每设备参数入口不存在
+  文档（:133、:177）：“点击任意卡片…右上角有「该设备参数」菜单”；“点右上角「该设备参数」菜单”。
+  事实：DeviceDetailFragment.kt:58-80 只设置 toolbar 标题与返回监听，无菜单；
+        res/menu 仅有 bottom_nav_menu.xml；详情页布局无 app:menu。
+        每设备参数实际入口是「设定」页顶部「选择设备」下拉（DashboardFragment.kt:120-162，
+        含“全局默认值(所有设备)”与各设备项），编辑后点「确定」保存。
+  修正：删除“该设备参数菜单”表述，改为“设定 → 选择设备 → 选择目标设备 → 修改参数 → 确定”。
+
+D-23（高）用户使用说明书 §9.1 adb 修改报告时间命令会破坏 SharedPreferences
+  文档（:241-243）：`adb shell run-as com.jinyuni.dengbei_care \
+    sh -c "echo 'report_time=08:00' >> shared_prefs/MyPrefs.xml"`
+  事实：SharedPreferences XML 需要形如 `<string name="report_time">08:00</string>` 的元素；
+        直接追加 `report_time=08:00` 文本会写出非法 XML，应用下次加载可能解析失败/设置丢失。
+        当前应用也没有 `report_time` 的 UI 入口（MainActivity.kt:75 读取）。
+  修正：不要提供该追加命令；若确需支持，应给出“停应用、备份、重写合法 XML、重启”的完整安全步骤，
+        或明确说明当前无受支持修改方式。
+
+D-24（中）用户使用说明书 §11.2 服务端幂等被写成已验证事实
+  文档（:304）：“重复上传由服务端 (设备 ID, 时间) 唯一键与本地待发箱双重去重，不会产生重复记录”。
+  事实：服务端 `(dev_id,time)` 唯一键与 `INSERT IGNORE` 仅来自部署资料声明；
+        docs/05 §5 D4 与本轮授权均未执行真实写入/幂等验证（无写授权、未连库）。
+  修正：改为“本地待发箱按 (devId,time) 去重；服务端唯一键为部署资料声明，尚未验证，
+        不能承诺不产生重复记录”，与 docs/04 §5、05 §5 保持一致。
+
+D-25（中）时间字段语义在包内不一致
+  文档：docs/01:75 “App 的 time 字段是 BLE/MQTT 接收秒，不是传感器物理采样时刻”；
+        用户使用说明书:295 “写入时间是该读数的真实采样时间”。
+  事实：BLE 路径用手机接收时刻（MqtttService.kt:978-999）；
+        MQTT 路径用 payload 首段网关时间（UploadPayload.kt:27；MqtttService.kt:1669-1677）；
+        两者都不等同于传感器物理采样时刻。
+  修正：docs/01 与用户使用说明书统一为“BLE=接收时刻、MQTT=网关 payload 时间；
+        均非传感器物理采样时刻”，删除“真实采样时间”表述。
+
+D-26（中）用户使用说明书未披露交付固件“无光”分支禁用
+  文档：:134、:265 将“温度较上次升高超过 0.9℃ 且无光”写成当前可生效规则，未注明限制。
+  事实：交付固件 LIGHT_DARK_THRESHOLD_CODE=0，`V`/`D` 恒 0，升温+无光分支不触发；
+        板上只有严格 >35.0℃ 分支可用（docs/01 §3、docs/06 #1、FW-LIGHT-DEF2-ENABLE SKIP_CONFIRMED）。
+  修正：在用户手册相关段落加“当前交付固件无光判据未启用，升温+无光分支不触发，
+        仅 >35.0℃ 可用”的显著说明，并链接 docs/01 §3 / docs/06 §3 #1。
+
+D-27（低）界面文字引用不精确
+  文档：用户使用说明书:125 “最近上报 12 分钟前…可能长时间无上报”；:143 “「启动守护」”；
+        docs/04:179 “只显示'最近上报时间'”。
+  事实：卡片实际文案为“最近读取 … · 按条件上报，可能长时间无数据”（DeviceCardAdapter.kt:74）；
+        首页按钮初始文案为“启动”、运行后“停止”（HomeFragment.kt:127-189，strings.xml:80）。
+  修正：按实际文案改写，或将文档改为不依赖精确按钮/卡片文字的表述。
+
+[C. 产品观察（不直接作为文档判定依据，需交 Android 实现确认）]
+
+P-07（低）默认参数不一致：首次安装默认值（2/0.1/75/10）与“取消”按钮填充值（1/4/70/5）不同，
+     用户可能得到不同行为；建议统一默认值或明确两者语义。
+P-06（沿用）CloudConfig.kt:10 注释仍包含 MQTT 共享固定后缀明文；文档未复制该值，
+     但源码存在凭据暴露面，建议 Android 实现改为占位/配置引用（报告不复述该值）。
+P-04/P-05（沿用）传感器列表入口被导航拦截、输入提示改进，属 Android 布局/导航实现。

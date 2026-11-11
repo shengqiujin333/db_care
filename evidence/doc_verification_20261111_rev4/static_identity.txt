@@ -1,0 +1,68 @@
+DOC-VERIFY-004 静态身份原始记录
+校核时点：2026-11-11 15:02–15:20（Asia/Shanghai）
+对象：docs/README.md + docs/01..06（DOC-PKG-001 rev 4，HEAD 636c337）
+      + dengbei_care/用户使用说明书.md（rev 4 同批修改）
+
+[仓库]
+HEAD = 636c337 [role:technical_writer] Update project work
+
+[固件发布包]
+path   = fw_release/fw_sensor_FD-002r8.zip
+size   = 134791 B
+md5    = 5df0c6d45ecddc8aae8bddbbcfc9cfdf
+members:
+  fw_sensor_FD-002r8_b6a15fed.axf  297380 B  md5 b6a15fed2ed5e3d0c4adc51ac87a4830
+  fw_sensor_FD-002r8_4d728dec.hex   75275 B  md5 4d728dec9b0d28a352c46436b7586c72
+  PACKAGE.txt                        3202 B  md5 a58f67fcf5b760767ff5b65888c73dfb
+PACKAGE.txt 摘要与包内成员、Keil 产物 MDK/output/exe/Project.axf（b6a15fed…）一致。
+evidence/fw_release_20261111/package_verify.txt: RESULT: PASS
+构建结果（mdk_build_release.out.json）：0 Error / 1 Warning；
+  Code=25964 RO-data=656 RW-data=116 ZI-data=1676；ARMCLANG V6.24。
+
+[产品源码提交]
+82a7e74 存在；git diff 82a7e74 HEAD -- USER MDK EWARM gcc 为空。
+28b78b0 存在；git diff 28b78b0 HEAD -- dengbei_care/app/src/main 为空。
+
+[安卓候选 APK]
+path    = dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+size    = 10365460 B
+sha256  = d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+md5     = 58de16b8fef549f004b92ffcec0104d9
+aapt    = package com.jinyuni.dengbei_care, versionCode 10, versionName 1.9,
+          sdkVersion 26, targetSdkVersion 34
+签名证据：evidence/android_build_20261110/apksigner_verify.txt
+  v2=true, v1/v3/v4=false, CN=Android Debug,
+  cert SHA-256 773e4ef63f06b85b2a1d20fd65a8df6b8dfafce1a41fcb2adddfd513b08d9255
+
+[仓库内历史 APK（用户使用说明书 §2.1 所指）]
+path    = dengbei_care/爱守护.apk
+size    = 8144628 B（文件时间 2024-11-06）
+aapt    = package com.jinyuni.dengbei_care, versionCode 1, versionName 1.0,
+          sdkVersion 26, targetSdkVersion 34
+说明：该文件不是本次 1.9 候选；为读取非 ASCII 路径，复制到 ASCII 临时名后用 aapt 读取，
+      读取后删除临时副本，未改动原文件。
+
+[平台配置]
+CloudConfig.kt:18,21,24,27,30 -> SERVER_HOST=8.140.23.253, MQTT_BROKER_PORT=8883,
+  HTTP_PORT=5000, MQTT_BROKER_URI=ssl://…:8883, HTTP_BASE_URL=http://…:5000
+Kotlin 源码中 117.72.84.210 命中 0 次（仅 CloudConfig.kt 使用 8.140.23.253）。
+assets/jd-ca.crt md5 = f1a8212e3c690d57894b8a3a5fd901ab
+network_security_config.xml：3 个 domain-config（8.140.23.253 / 117.72.84.210 / 192.168.4.1）。
+
+[USB 枚举（usb_list_devices）]
+Prolific USB-to-Serial Comm Port (COM43)  VID_067B PID_2303
+USB 串行设备 (COM26)                       VID_C251 PID_F001  （调试器 CDC，非传感器调试口）
+USB Composite Device                       VID_C251 PID_F001  序列号 87094109484987710672FF50
+Redmi 8A                                   VID_18D1 PID_4EE7  序列号 12F046690506
+fx2lafw                                    VID_04B4 PID_8613  CYPRESS_FX2
+
+[pyocd]
+可执行文件：C:\Users\kason\AppData\Roaming\Python\Python311\Scripts\pyocd.EXE
+版本：0.36.0
+reset 支持参数：-t/--target、-M/--mode、-m/--method、-c/--core（文档 §8 示例语法可用）。
+
+[安卓工具链]
+Gradle wrapper：gradle-8.4-bin.zip
+AGP：gradle/libs.versions.toml agp = 8.3.2
+JDK：openjdk 21.0.2（java -version）
+Gradle/AGP/JDK 与 docs/README §2 一致。
