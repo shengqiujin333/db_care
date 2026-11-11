@@ -1,0 +1,118 @@
+### 1. implementer host suite test/build_test.sh
+== build_test.sh: exit=0
+    PASS  mv = 4095*bgrmv/code (可独立复核)
+    PASS  测完后 BGREN 已清 (不持续耗电)
+    PASS  测完后 ADC 已关闭
+    PASS  转换超时: 返回 0 (无效)
+    PASS  无效时不写任何伪造读数
+    PASS  超时路径也关闭 BGR 与 ADC
+    PASS  VDD 测量后 light_sample 仍 8/8 成功
+==== result: 31 passed, 0 failed ====
+### 2. tester harnesses
+== compile fw_core: exit=0
+== fw_core: exit=0
+    PASS  int16 extremes, upward over-temp -> true
+    PASS  exactly 35.0C, no rise -> no report (strict T>35)
+    PASS  34.0C cooling + DARK -> no report
+    PASS  int16 min, no rise -> false
+    PASS  int16 max -> over-temp branch -> true
+==== result: 59 passed, 0 failed ====
+== compile gxht40: exit=0
+== gxht40: exit=0
+    PASS  FWR-118: the re-probe after a range failure is preceded by the bounded bus recovery
+[T16] command whitelist re-check over the whole run (47 commands)
+    PASS  commands were actually exercised (non-empty set)
+    PASS  every command byte sent in every test was 0xFD
+    PASS  soft reset 0x94 never appears in any path
+==== result: 93 passed, 0 failed ====
+== compile sf_i2c: exit=0
+== sf_i2c: exit=0
+    PASS  4 SCL rising edges total = 3 recovery pulses + the STOP edge
+    PASS  one STOP, no START
+    PASS  no device address/command byte was written by the recovery
+[T11b] recovery sequence contains no address byte and no read
+    PASS  no ACK slot, no read byte, no master response bit during recovery
+==== result: 51 passed, 0 failed ====
+== compile diag_line: exit=0
+== diag_line: exit=0
+[C1] close semantics: UART1 reset/clock-off happen after full drain
+    PASS  close resets UART1
+    PASS  close disables the UART1 clock
+    PASS  close is idempotent
+    PASS  UART1 re-opened for the next diagnostic line
+==== result: 38 passed, 0 failed ====
+== compile diag_probe: exit=0
+== diag_probe: exit=0
+    PASS  self-check completes
+    PASS  gc=1: 0x00 ACKed, 0x06 not ACKed
+    PASS  the 0x06 attempt is still on the wire
+[I5] gc consistency: gc in {0,3} agrees with the BUS scan of the same pins
+    PASS  gc=3 <=> BUS ack=none (the two readings of the same bus cannot disagree)
+==== result: 109 passed, 0 failed ====
+== compile measure_flow: exit=0
+== measure_flow: exit=0
+    PASS  pending sample blocks deep sleep
+    PASS  idle state enters deep sleep
+[S7] sample flag gating
+    PASS  no sampling when the flag is clear
+    PASS  no state change when the flag is clear
+==== result: 79 passed, 0 failed ====
+== compile rf_frame: exit=0
+== rf_frame: exit=0
+    PASS  same input -> byte-identical ciphertext
+[T5] integrity
+    PASS  every single-bit ciphertext flip is rejected
+[T6] decoded values -> BLE record [id | hum_be | temp_be] -> Android u16be@4 / s16be@6
+    PASS  id/humidity/temperature attribution survives the gateway->Android convention
+==== result: 10 passed, 0 failed ====
+== compile rf_report: exit=0
+== rf_report: exit=0
+    PASS  pending sample blocks deep sleep
+    PASS  idle state (no report, no sample) enters deep sleep
+[T7] failed measurements never produce a report or a transmission
+    PASS  failed cycle raises no report
+    PASS  no transmission from a failed cycle
+==== result: 30 passed, 0 failed ====
+== compile rtc_main: exit=0
+== compile rtc_harness: exit=0
+== rtc: exit=0
+    PASS  opportunities land on ticks 3,6,...,30
+[T6] one opportunity per three ticks (consumption verified in the ITEM-006 harness)
+    PASS  exactly one flag per three minute ticks
+    PASS  3 ticks per sampling opportunity (config single point)
+    PASS  1 min x 3 ticks = 3 minutes
+==== result: 17 passed, 0 failed ====
+== compile gw_compat: exit=0
+== gw_compat: exit=0
+    PASS  gateway 16*(1+devCount) == Android expected 16*(1+devCount)
+[T5] sensor id passthrough (encoder uid[0..3] -> gateway -> BLE record -> Android)
+    PASS  gateway decode accepted
+    PASS  air id = encoder uid[0..3] (gateway copies p[0..3] verbatim)
+    PASS  record id bytes unchanged
+==== result: 11 passed, 0 failed ====
+== compile vdd: exit=0
+== vdd: exit=0
+    PASS  light_sample() still converts all 8 samples after the VDD measurement
+    PASS  mean of the scripted light samples (33)
+    PASS  PB05 raised for the light sample and lowered again (divider powered only while sampling)
+    PASS  delivery with the criterion disabled (T=0): light validity stays false and no dark decision
+
+==== result: 31 passed, 0 failed ====
+### 3. independent light.c wiring: delivery T=0 and enabled T=3000
+== compile light_disabled: exit=0
+== light_disabled: exit=0
+    PASS  polling is bounded by LIGHT_ADC_EOC_GUARD per conversion (no infinite wait)
+[T6] stateless decision across successive samples
+    PASS  T=0: full-scale mean is still not dark (disabled criterion)
+    PASS  T=0: zero mean is still not dark
+    PASS  conversions still recorded when the criterion is disabled
+==== result: 40 passed, 0 failed ====
+== compile light_enabled: exit=0
+== light_enabled: exit=0
+[T6] stateless decision across successive samples
+    PASS  mean == T -> dark (equality counts)
+    PASS  mean == T-1 -> lit
+    PASS  repeating an in-band value never latches a previous state
+    PASS  repeating T -> dark again (per-sample, no history)
+==== result: 41 passed, 0 failed ====
+### RESULT: FAILED=[]

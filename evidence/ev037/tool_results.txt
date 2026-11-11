@@ -1,0 +1,77 @@
+EV-037 tool results (2026-11-11, UTC) — embedded_verification on CW32L010 sensor board
+Invocation: firmware_check / embedded_verification. Product source unchanged since 82a7e74.
+
+== serial_list_ports (11:27:01.996-11:27:02.002Z)
+exit 0. COM43 Prolific USB-to-Serial Comm Port, USB VID:PID=067B:2303, LOCATION=1-9.4.2.
+COM26 "USB 串行设备", VID:PID=C251:F001 SN 87094109484987710672FF50 (debugger CDC, not used).
+
+== usb_list_devices (11:27:02.086-11:27:04.207Z)
+exit 0. Present: Prolific 067B:2303; C251:F001 composite (CW-DAPLink SN 87094109484987710672FF50);
+18D1:4EE7 SN 12F046690506 (phone); 04B4:8613 "fx2lafw"; camera; Bluetooth; root hubs.
+No current meter/SMU/oscilloscope enumerated.
+
+== sigrok_info (11:27:04.289-11:27:04.292Z)
+exit 0. enabled=true, driver=fx2lafw, connection=2.32, channels D0,D1, labels D0=scl D1=sda,
+trigger D1=f, samplerate 4,000,000 Hz, max 8,000,000, max samples 20,000,000, timeout 240 s,
+online=not_checked.
+
+== mdk_build {"action":"rebuild"} (11:27:06.523-11:27:08.526Z)
+exit 0. ARMCLANG V6.24; 0 Error(s), 1 Warning(s) (pre-existing ../USER/src/main.c(254) empty
+while body); Program Size Code=25964 RO-data=656 RW-data=116 ZI-data=1676.
+Project.axf md5 b6a15fed2ed5e3d0c4adc51ac87a4830 (297,380 B);
+Project.hex md5 4d728dec9b0d28a352c46436b7586c72 (75,275 B).
+
+== mdk_flash {} (11:27:45.931-11:27:58.287Z)
+exit 0. Build target 'Project' 0 Error(s) 0 Warning(s). Flash log:
+Load "...\MDK\output\exe\Project.axf"
+Erase Done.Programming Done.Verify OK.Application running ...
+Flash Load finished at 19:27:58 (local). Post-flash axf/hex md5 unchanged.
+Note: Verify OK proves read-back integrity of the download only, not functional correctness.
+
+== pyocd (BOT-01 orchestration)
+pyocd 0.36.0 at C:\Users\kason\AppData\Roaming\Python\Python311\Scripts\pyocd.
+Command: pyocd reset -v -t cortex_m -u 87094109484987710672FF50 -M attach -m hw
+Reset window 11:28:12.015-11:28:12.757Z, rc=0. Used only as a reset source per Project Goal
+supplementary condition 2; no flash programming or memory write through pyocd.
+pyocd is still not a registered entry in runtime/environment.yaml; no installation, no config change.
+
+== serial_capture (COM43, 9600 8N1)
+1) 11:28:40.082-11:33:40.292Z 78 B  -> S k=3          (cap01_k3.bin)
+2) 11:33:49.082-11:38:49.278Z 156 B -> S k=6, k=9     (cap02_k6_k9.bin)
+3) 11:38:57.602-11:43:57.804Z 158 B -> S k=12, k=15   (cap03_k12_k15.bin)
+4) 11:46:33.220-11:51:33.423Z 79 B  -> S k=21         (cap04_k21.bin)
+No stray bytes between rows; every line ends CRLF; all rows <=96 B including CRLF.
+
+== sigrok_capture (11:44:04.535-11:45:53.658Z)
+exit 0, timed_out=false. Command: sigrok-cli --driver fx2lafw:conn=2.32 --config samplerate=4000000
+--channels D0,D1 --samples 8000000 --wait-trigger --triggers D1=f --output-format srzip.
+Session: 8,000,000 samples, 4 MS/s, 2.0 s, D0=scl D1=sda. Trigger fired near 11:45:51Z.
+Raw .sr md5 0f5603dd62c9f09ce2ac3d1104d725d6 (evidence copy; full 16.7 KB).
+
+== sigrok_decode (11:46:08.488-11:46:08.678Z)
+exit 0, annotations_present=true. i2c:scl=D0:sda=D1, sample-numbered annotations.
+Decoded: Start / Address write 0x44 / ACK / Data write 0xFD / ACK / Stop /
+         Start / Address read 0x44 / ACK / Data read 68 09 6B 59 5C A6 / NACK / Stop.
+
+== host-side rerun (this round, fresh outputs)
+Implementer test/build_test.sh: 5 stages 48+61+54+28+31 = 222 passed, 0 failed.
+Tester harnesses: fw_core 59, gxht40 93, sf_i2c 51, diag_line 38, diag_probe 109,
+measure_flow 79, rf_frame 10, rf_report 30, rtc 17, gw_compat 11, vdd 31, light T=0 40,
+light T=3000 enabled 41 = 609 passed, 0 failed.
+
+== static check (static_check_ev037.py)
+21 passed, 0 failed. Delivery LIGHT_DARK_THRESHOLD_CODE=0; no legacy 1/3 macros in USER/test;
+dark = valid && T!=0 && mean >= T; upward rise and strict >35.0; 3 ticks/sample; 10 B RF frame;
+power-on order; S field order; bounded UART TX; no float/dynamic memory; no legacy hall/optical link.
+
+== release package purity (package_purity.txt)
+fw_release/fw_sensor_FD-002r8.zip 134,791 B md5 5df0c6d45ecddc8aae8bddbbcfc9cfdf; testzip none;
+members exactly axf b6a15fed..., hex 4d728dec..., PACKAGE.txt a58f67fc...; no harness/mock/test switch.
+
+== NOT EXECUTED / DEFERRED (not pass)
+- FW-LIGHT-DEF2-ENABLE: human-confirmed SKIP_CONFIRMED 2026-11-11T03:50:42Z ("无法准备，先跳过").
+  Not retested this round; T remains 0; V=0 D=0 is NOT proof of "light detected".
+- E2E-04 CR2032 peak/deep-sleep current: approved DEFERABLE; no current meter/SMU/oscilloscope.
+- Real temperature-rise/over-temperature and light-level changes: prohibited by user
+  (cannot adjust temperature or light intensity); no stimulation applied.
+- Gateway/phone cross-link: user condition 4, later integration stage, out of this firmware stage.

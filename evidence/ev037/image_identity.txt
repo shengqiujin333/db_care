@@ -1,0 +1,48 @@
+HEAD=d5701f55b456e5fe07440c8dc4ec4ed206fa626e
+UTC=2026-11-11T11:27:12Z
+b6a15fed2ed5e3d0c4adc51ac87a4830 *CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.axf
+4d728dec9b0d28a352c46436b7586c72 *CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.hex
+5df0c6d45ecddc8aae8bddbbcfc9cfdf *fw_release/fw_sensor_FD-002r8.zip
+-rw-r--r-- 1 kason 197121 297380 Nov 11 19:27 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/output/exe/Project.axf
+--- product source diff since 82a7e74 ---
+ dengbei_care/app/build.gradle.kts                  |   4 +-
+ .../java/com/jinyuni/dengbei_care/MainActivity.kt  | 223 +++-----
+ .../java/com/jinyuni/dengbei_care/MqtttService.kt  | 464 ++++++++++++----
+ .../dengbei_care/ble/BlePermissionPolicy.kt        | 143 +++++
+ .../jinyuni/dengbei_care/ble/GatewayDiscovery.kt   | 175 ++++++
+ .../dengbei_care/cloud/CloudUploadRepository.kt    | 175 +++++-
+ .../com/jinyuni/dengbei_care/cloud/UploadOutbox.kt |  26 +
+ .../com/jinyuni/dengbei_care/cloud/UploadResult.kt |  40 ++
+ .../dengbei_care/protocol/GatewayFrameCodec.kt     |  14 +-
+ .../dengbei_care/protocol/GatewayIdentity.kt       | 105 ++++
+ .../dengbei_care/protocol/GatewayReadGuard.kt      |  85 +++
+ .../dengbei_care/telemetry/BleBatchForwarding.kt   |  71 +++
+ .../dengbei_care/telemetry/BleObservation.kt       |  47 ++
+ .../dengbei_care/telemetry/SensorCadence.kt        |   2 +-
+ .../dengbei_care/ui/detail/DetailPresentation.kt   |   6 +-
+ .../ui/gateway/GatewayBleSettingsDialog.kt         | 342 ++++++++++++
+ .../dengbei_care/ui/home/DeviceCardAdapter.kt      |   6 +-
+ .../jinyuni/dengbei_care/ui/home/HomeFragment.kt   |  39 ++
+ .../jinyuni/dengbei_care/ui/home/HomeViewModel.kt  |   4 +
+ .../ui/notifications/NotificationsFragment.kt      |  51 +-
+ .../jinyuni/dengbei_care/ui/zhuce/ApiService.kt    |   2 +-
+ .../app/src/main/res/layout/activity_main.xml      |   2 +-
+ .../src/main/res/layout/fragment_device_detail.xml |  11 +-
+ .../app/src/main/res/layout/fragment_home.xml      |  21 +-
+ .../src/main/res/layout/fragment_notifications.xml | 318 +++++------
+ .../app/src/main/res/layout/item_device_card.xml   |   2 +-
+ .../dengbei_care/ble/BlePermissionPolicyTest.kt    | 167 ++++++
+ .../cloud/CloudUploadFailureClassificationTest.kt  | 273 +++++++++
+ .../jinyuni/dengbei_care/cloud/UploadResultTest.kt |  54 ++
+ .../dengbei_care/protocol/GatewayIdentityTest.kt   |  92 +++
+ .../dengbei_care/protocol/GatewayReadGuardTest.kt  | 112 ++++
+ .../telemetry/BleBatchForwardingTest.kt            | 113 ++++
+ .../dengbei_care/telemetry/BleObservationTest.kt   |  40 ++
+ .../ui/detail/DetailPresentationTest.kt            |   2 +-
+ .../NotificationsLayoutContractTest.kt             |  83 +++
+ .../verification/Aa005SevenItemVerificationTest.kt | 618 +++++++++++++++++++++
+ .../DetailPresentationItem012VerificationTest.kt   |   7 +-
+ dengbei_care/readme.txt                            |  13 +-
+ ...224\250\350\257\264\346\230\216\344\271\246.md" | 156 ++++--
+ 39 files changed, 3594 insertions(+), 514 deletions(-)
+DIFF_EXIT=0

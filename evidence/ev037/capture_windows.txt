@@ -1,0 +1,28 @@
+EV-037 COM43 / sigrok capture windows (2026-11-11, UTC)
+
+Target: CW32L010 sensor board, image = independent rebuild axf b6a15fed2ed5e3d0c4adc51ac87a4830
+(hex 4d728dec9b0d28a352c46436b7586c72), flashed with Verify OK at 11:27:45.931-11:27:58.287Z.
+Port: COM43 = Prolific USB-to-Serial VID:PID 067B:2303, LOCATION=1-9.4.2, 9600 8N1.
+Reset reference: pyocd 0.36.0 HW reset at 11:28:12.015-11:28:12.757Z (rc=0); S k=0 observed at
+t+4.109 s after port open.
+
+file                     window start (UTC)       window end (UTC)         bytes  md5                               observed ticks / notes
+bot01_hw.bin             11:28:10.008 (open)      11:28:34.822             271    83fc268cfc22075ad3023f74897e2696   BOOT,VDD,IOTEST,IOSIG,BUS,S k=0; reset inside window
+cap01_k3.bin             11:28:40.082             11:33:40.292              78    2100c10049819e08ddbb517d6b542f4d   S k=3
+cap02_k6_k9.bin          11:33:49.082             11:38:49.278             156    81a2d3a0326d9577be90f45f61160b7b   S k=6, k=9
+cap03_k12_k15.bin        11:38:57.602             11:43:57.804             158    f9899edb11f72a41ca4625b6c514885e   S k=12, k=15
+cap04_k21.bin            11:46:33.220             11:51:33.423              79    42934b4898c03f3759202436217fbcf6   S k=21 (p=261)
+
+Gap: k=18 not captured on COM43. Its sampling transaction was captured by the logic analyzer
+(see below) and p(k=21)=261 equals the decoded temperature 26.1 C, so k=18 t=261 is established
+indirectly; k=18 is NOT claimed as a serial row.
+
+raw_i2c_capture.sr       11:44:04.535-11:45:53.658 (8,000,000 samples @4 MS/s = 2.0 s)  16,686 B
+                         md5 0f5603dd62c9f09ce2ac3d1104d725d6
+                         fx2lafw conn=2.32, D0=SCL, D1=SDA, trigger D1 falling edge.
+                         Trigger fired near 11:45:51Z; capture contains one GXHT40 measure+read.
+
+decode: sigrok_decode i2c scl=D0 sda=D1; decoded_i2c.txt / decode_metadata.json.
+Capture metadata: capture_metadata.json (sample count, rate, duration, command, timing note).
+
+No temperature or light stimulus was applied. No power/current measurement was made.

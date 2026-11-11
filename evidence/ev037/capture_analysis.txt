@@ -1,0 +1,194 @@
+
+== bot01_hw.bin (271 B, md5 83fc268cfc22075ad3023f74897e2696) boot+first sample
+PASS  bot01_hw.bin: no NUL bytes
+PASS  bot01_hw.bin: capture ends on CRLF boundary
+PASS  bot01_hw.bin: no trailing partial line
+PASS  bot01_hw.bin: line length 50 B incl CRLF <= 96
+PASS  bot01_hw.bin: line length 39 B incl CRLF <= 96
+PASS  bot01_hw.bin: line length 48 B incl CRLF <= 96
+PASS  bot01_hw.bin: line length 27 B incl CRLF <= 96
+PASS  bot01_hw.bin: line length 31 B incl CRLF <= 96
+PASS  bot01_hw.bin: line length 76 B incl CRLF <= 96
+PASS  bot01_hw.bin: S field names/order frozen
+PASS  bot01_hw.bin: S H in {0,1}
+PASS  bot01_hw.bin: S V in {0,1}
+PASS  bot01_hw.bin: S D in {0,1}
+PASS  bot01_hw.bin: S q in {0,1}
+PASS  bot01_hw.bin: S r in {0,1}
+PASS  bot01_hw.bin: S s in {0,1,2}
+PASS  bot01_hw.bin: S y in {0..3}
+PASS  bot01_hw.bin: S o in 0..8
+PASS  bot01_hw.bin: S t in [-400,1250]
+PASS  bot01_hw.bin: S h in [0,1000]
+PASS  bot01_hw.bin: S n<=x in 0..4095
+PASS  bot01_hw.bin: S a within [n,x] (o=8)
+PASS  bot01_hw.bin: S k=0 q=1 (sample ok)
+PASS  bot01_hw.bin: S k=0 V=0 D=0 (LIGHT-DEF-2 disabled, T=0)
+PASS  bot01_hw.bin: tick k=0 not duplicated
+
+== cap01_k3.bin (78 B, md5 2100c10049819e08ddbb517d6b542f4d) 
+PASS  cap01_k3.bin: no NUL bytes
+PASS  cap01_k3.bin: capture ends on CRLF boundary
+PASS  cap01_k3.bin: no trailing partial line
+PASS  cap01_k3.bin: line length 78 B incl CRLF <= 96
+PASS  cap01_k3.bin: S field names/order frozen
+PASS  cap01_k3.bin: S H in {0,1}
+PASS  cap01_k3.bin: S V in {0,1}
+PASS  cap01_k3.bin: S D in {0,1}
+PASS  cap01_k3.bin: S q in {0,1}
+PASS  cap01_k3.bin: S r in {0,1}
+PASS  cap01_k3.bin: S s in {0,1,2}
+PASS  cap01_k3.bin: S y in {0..3}
+PASS  cap01_k3.bin: S o in 0..8
+PASS  cap01_k3.bin: S t in [-400,1250]
+PASS  cap01_k3.bin: S h in [0,1000]
+PASS  cap01_k3.bin: S n<=x in 0..4095
+PASS  cap01_k3.bin: S a within [n,x] (o=8)
+PASS  cap01_k3.bin: S k=3 q=1 (sample ok)
+PASS  cap01_k3.bin: S k=3 V=0 D=0 (LIGHT-DEF-2 disabled, T=0)
+PASS  cap01_k3.bin: tick k=3 not duplicated
+
+== cap02_k6_k9.bin (156 B, md5 81a2d3a0326d9577be90f45f61160b7b) 
+PASS  cap02_k6_k9.bin: no NUL bytes
+PASS  cap02_k6_k9.bin: capture ends on CRLF boundary
+PASS  cap02_k6_k9.bin: no trailing partial line
+PASS  cap02_k6_k9.bin: line length 78 B incl CRLF <= 96
+PASS  cap02_k6_k9.bin: S field names/order frozen
+PASS  cap02_k6_k9.bin: S H in {0,1}
+PASS  cap02_k6_k9.bin: S V in {0,1}
+PASS  cap02_k6_k9.bin: S D in {0,1}
+PASS  cap02_k6_k9.bin: S q in {0,1}
+PASS  cap02_k6_k9.bin: S r in {0,1}
+PASS  cap02_k6_k9.bin: S s in {0,1,2}
+PASS  cap02_k6_k9.bin: S y in {0..3}
+PASS  cap02_k6_k9.bin: S o in 0..8
+PASS  cap02_k6_k9.bin: S t in [-400,1250]
+PASS  cap02_k6_k9.bin: S h in [0,1000]
+PASS  cap02_k6_k9.bin: S n<=x in 0..4095
+PASS  cap02_k6_k9.bin: S a within [n,x] (o=8)
+PASS  cap02_k6_k9.bin: S k=6 q=1 (sample ok)
+PASS  cap02_k6_k9.bin: S k=6 V=0 D=0 (LIGHT-DEF-2 disabled, T=0)
+PASS  cap02_k6_k9.bin: tick k=6 not duplicated
+PASS  cap02_k6_k9.bin: line length 78 B incl CRLF <= 96
+PASS  cap02_k6_k9.bin: S field names/order frozen
+PASS  cap02_k6_k9.bin: S H in {0,1}
+PASS  cap02_k6_k9.bin: S V in {0,1}
+PASS  cap02_k6_k9.bin: S D in {0,1}
+PASS  cap02_k6_k9.bin: S q in {0,1}
+PASS  cap02_k6_k9.bin: S r in {0,1}
+PASS  cap02_k6_k9.bin: S s in {0,1,2}
+PASS  cap02_k6_k9.bin: S y in {0..3}
+PASS  cap02_k6_k9.bin: S o in 0..8
+PASS  cap02_k6_k9.bin: S t in [-400,1250]
+PASS  cap02_k6_k9.bin: S h in [0,1000]
+PASS  cap02_k6_k9.bin: S n<=x in 0..4095
+PASS  cap02_k6_k9.bin: S a within [n,x] (o=8)
+PASS  cap02_k6_k9.bin: S k=9 q=1 (sample ok)
+PASS  cap02_k6_k9.bin: S k=9 V=0 D=0 (LIGHT-DEF-2 disabled, T=0)
+PASS  cap02_k6_k9.bin: tick k=9 not duplicated
+
+== cap03_k12_k15.bin (158 B, md5 f9899edb11f72a41ca4625b6c514885e) 
+PASS  cap03_k12_k15.bin: no NUL bytes
+PASS  cap03_k12_k15.bin: capture ends on CRLF boundary
+PASS  cap03_k12_k15.bin: no trailing partial line
+PASS  cap03_k12_k15.bin: line length 79 B incl CRLF <= 96
+PASS  cap03_k12_k15.bin: S field names/order frozen
+PASS  cap03_k12_k15.bin: S H in {0,1}
+PASS  cap03_k12_k15.bin: S V in {0,1}
+PASS  cap03_k12_k15.bin: S D in {0,1}
+PASS  cap03_k12_k15.bin: S q in {0,1}
+PASS  cap03_k12_k15.bin: S r in {0,1}
+PASS  cap03_k12_k15.bin: S s in {0,1,2}
+PASS  cap03_k12_k15.bin: S y in {0..3}
+PASS  cap03_k12_k15.bin: S o in 0..8
+PASS  cap03_k12_k15.bin: S t in [-400,1250]
+PASS  cap03_k12_k15.bin: S h in [0,1000]
+PASS  cap03_k12_k15.bin: S n<=x in 0..4095
+PASS  cap03_k12_k15.bin: S a within [n,x] (o=8)
+PASS  cap03_k12_k15.bin: S k=12 q=1 (sample ok)
+PASS  cap03_k12_k15.bin: S k=12 V=0 D=0 (LIGHT-DEF-2 disabled, T=0)
+PASS  cap03_k12_k15.bin: tick k=12 not duplicated
+PASS  cap03_k12_k15.bin: line length 79 B incl CRLF <= 96
+PASS  cap03_k12_k15.bin: S field names/order frozen
+PASS  cap03_k12_k15.bin: S H in {0,1}
+PASS  cap03_k12_k15.bin: S V in {0,1}
+PASS  cap03_k12_k15.bin: S D in {0,1}
+PASS  cap03_k12_k15.bin: S q in {0,1}
+PASS  cap03_k12_k15.bin: S r in {0,1}
+PASS  cap03_k12_k15.bin: S s in {0,1,2}
+PASS  cap03_k12_k15.bin: S y in {0..3}
+PASS  cap03_k12_k15.bin: S o in 0..8
+PASS  cap03_k12_k15.bin: S t in [-400,1250]
+PASS  cap03_k12_k15.bin: S h in [0,1000]
+PASS  cap03_k12_k15.bin: S n<=x in 0..4095
+PASS  cap03_k12_k15.bin: S a within [n,x] (o=8)
+PASS  cap03_k12_k15.bin: S k=15 q=1 (sample ok)
+PASS  cap03_k12_k15.bin: S k=15 V=0 D=0 (LIGHT-DEF-2 disabled, T=0)
+PASS  cap03_k12_k15.bin: tick k=15 not duplicated
+
+== cap04_k21.bin (79 B, md5 42934b4898c03f3759202436217fbcf6) 
+PASS  cap04_k21.bin: no NUL bytes
+PASS  cap04_k21.bin: capture ends on CRLF boundary
+PASS  cap04_k21.bin: no trailing partial line
+PASS  cap04_k21.bin: line length 79 B incl CRLF <= 96
+PASS  cap04_k21.bin: S field names/order frozen
+PASS  cap04_k21.bin: S H in {0,1}
+PASS  cap04_k21.bin: S V in {0,1}
+PASS  cap04_k21.bin: S D in {0,1}
+PASS  cap04_k21.bin: S q in {0,1}
+PASS  cap04_k21.bin: S r in {0,1}
+PASS  cap04_k21.bin: S s in {0,1,2}
+PASS  cap04_k21.bin: S y in {0..3}
+PASS  cap04_k21.bin: S o in 0..8
+PASS  cap04_k21.bin: S t in [-400,1250]
+PASS  cap04_k21.bin: S h in [0,1000]
+PASS  cap04_k21.bin: S n<=x in 0..4095
+PASS  cap04_k21.bin: S a within [n,x] (o=8)
+PASS  cap04_k21.bin: S k=21 q=1 (sample ok)
+PASS  cap04_k21.bin: S k=21 V=0 D=0 (LIGHT-DEF-2 disabled, T=0)
+PASS  cap04_k21.bin: tick k=21 not duplicated
+
+== boot sequence
+PASS  BOOT field order fw,uid,rst,uart
+PASS  BOOT uart=9600
+PASS  VDD ok=1
+PASS  VDD recompute 4095*1189//1481 = 3287 == 3287
+PASS  BUS ack=44 (0x44 device ACK)
+PASS  IOTEST swap=none
+PASS  IOTEST gc=0
+PASS  power-on five lines ordered once each: ['BOOT', 'VDD', 'IOTEST', 'IOSIG', 'BUS']
+PASS  first sample S follows BUS
+PASS  exactly one BOOT line
+PASS  S k=0 captured after reset
+
+== cadence / p chain
+observed ticks: [0, 3, 6, 9, 12, 15, 21]
+PASS  at least 3 cycles captured (7)
+PASS  first observed tick is 0
+PASS  tick gaps are multiples of 3: [3, 3, 3, 3, 3, 6]
+PASS  k=0: p=0 H=0 (no previous sample)
+PASS  k=3: p=271 == t(k=0)=271 and H=1
+PASS  k=6: p=268 == t(k=3)=268 and H=1
+PASS  k=9: p=263 == t(k=6)=263 and H=1
+PASS  k=12: p=265 == t(k=9)=265 and H=1
+PASS  k=15: p=266 == t(k=12)=266 and H=1
+PASS  no report/transmit/retry in observed cycles (r=s=y=0)
+
+== bit-level I2C (independent CRC-8)
+PASS  decode shows 0x44 write 0xFD then 0x44 read
+read bytes: 68 09 6B 59 5C A6
+PASS  six data bytes read
+PASS  temperature word 6809 CRC 6B MATCH
+PASS  humidity word 595C CRC A6 MATCH
+converted: temp 261 x10, humidity 349 x10
+PASS  I2C temperature 261 x10 equals p at captured tick(s) [21] (cross-window pairing)
+nominal command STOP -> read START: 32.533 ms
+PASS  nominal command-to-read gap is plausible
+
+== summary
+observed ticks: [0, 3, 6, 9, 12, 15, 21]
+rows: 12; bytes: 742
+NOTE  I2C temp x10 = 261, humidity x10 = 349
+NOTE  command STOP->read START 32.533 ms (nominal 4 MS/s)
+
+RESULT: 166 passed, 0 failed
