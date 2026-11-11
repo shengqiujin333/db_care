@@ -92,7 +92,7 @@ artifacts/firmware_design.md | active | 固件设计方案 FD-002 rev 8（据最
 artifacts/firmware_feasibility.md | history | 固件可行性探索 FW-EXP-002 rev 2（历史，不改写；当前入口见 firmware_feasibility_current.md）：构建/UART1/GXHT40 I²C（0x44/0xFD、双 CRC、时序）与 3 分钟节拍已证实；用户确认现场无光并更正 README“有光”描述，3914/3915/3932 与暗态极性一致；受光低码与受控 C_dark 分布未测，结论 EXPLORATION_COMPLETE（设计可继续，R2/R4/R7 未通过）；列明测试/标定门禁
 artifacts/firmware_feasibility_current.md | active | 固件可行性探索 FW-EXP-003 rev 6（2026-11-10，结果 WORK_FAILED）：含 §0 一页决策摘要；实测 直射 3061/3083/3095、房间灯 3514、同会话无光 3750、历史无光 3914–3932；穷举 C_dark 全判 dark；rev 3 电阻比 + rev 6 数值扫描（R3=10 kΩ…1 GΩ）确认对同会话暗态任何 R3 不可行，并修正“所有基准”的过度说法（对历史更暗基准需 R3≈376–383 MΩ，不实际）；rev 4 比率式 ADC 与温度混杂（同温对照 431 码、−17…−22 codes/℃）；rev 5 as-built 5 周期均 r=0/s=0/y=0；用户已“跳过此项验证”；列 P1–P4 及各自所需输入；未改判据/未烧录/未标定
 artifacts/firmware_implementation.md | active | 固件实现记录 FWI-003 rev 8（2026-11-10：as-built 基线重建摘要一致；落地无光判据 LIGHT-DEF-2 绝对阈值、单一常量默认 T=0、旧宏删除；Keil 0E/1W axf b6a15fed…、gcc 0 error、宿主 222/0；未下载/未实板观测；列明验证资产同步清单与未执行条件；FWI-002 rev 7 历史保留）
-artifacts/firmware_release.md | active | 固件发布记录 FW-REL-001 rev 1（传感器 CW32L010 发布候选：源提交 82a7e74/HEAD 9f7817f 产品源无变化；Keil V6.24 重建 0E/1W、Code 25964、axf b6a15fed…/hex 4d728dec…；确定性发布包 fw_release/fw_sensor_FD-002r8.zip md5 5df0c6d4…（134791 B）；下载说明、可复现步骤、版本绑定的 EV-035 测试状态（含 SKIP_CONFIRMED 与 DEFERABLE 披露）与限制；不表示已烧录或功能通过）
+artifacts/firmware_release.md | active | 固件发布记录 FW-REL-001 rev 2（传感器 CW32L010 发布候选：包与成员摘要未变（zip 134791 B / md5 5df0c6d4…）；源提交 82a7e74、自查 HEAD 13e737e 产品源零差异；Keil V6.24 0E/1W；绑定 EV-035/036/037 同身份证据；18 类整包事实自查无固件/发布侧矛盾；登记两项文档引用性转交；含 SKIP_CONFIRMED/DEFERABLE 披露与身份冻结规则；不表示已烧录或功能通过）
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 8（FWR-101..123：GXHT40、光照采样、3 分钟、升温 >0.9℃ 且无光或 >35℃、UART1、失败可诊断、当前构建再观测、有界等待、LIGHT-DEF-2 绝对阈值形制与启用门禁、旧 1/3 退役可复核、本阶段禁止调温/调光/功耗实验；含 as-built 对照与 12 项未决项）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 8（裸机超级循环 + RTC 深睡；T1–T4/F-1 冻结；光照分类改为无状态 LIGHT-DEF-2、未启用即 V=0/D=0；上电诊断、S/G/P 轨迹、冻结快照、有界等待、资源与不变量；功耗只作估算且本阶段不测量）
 artifacts/firmware_tasks.yaml | active | 固件任务清单 rev 8（6 项：FW-REG-ASBUILT 回归、FW-REG-REPORT T1/T2/T3 向量、FW-LIGHT-DEF2-MECH 判据形制落地门禁关闭、FW-OBS-PASSIVE COM43 被动观测、FW-LIGHT-DEF2-ENABLE 数值接受后启用取证、FW-DIAG-BOOT 上电五行与 pyocd 复位候选；均禁调温/改变光强/遮光刺激/功耗测量）
@@ -1202,8 +1202,9 @@ evidence/fw_release_20261111/make_release_package.py | active | 打包脚本（�
 evidence/fw_release_20261111/md5_list.txt | active | 发布包与包内自述的 md5 清单，另列两个不入库的 Keil 重建产物摘要（md5sum -c 可用）
 evidence/fw_release_20261111/mdk_build_release.err.txt | active | 发布构建 stderr（空）
 evidence/fw_release_20261111/mdk_build_release.out.json | active | 发布轮 mdk_build rebuild 工具原始返回（0E/1W、Code 25964、axf b6a15fed…）
+evidence/fw_release_20261111/package_selfcheck.md | active | 发布包整包自查 SELFCHECK-REL-002：18 类文档—实现—证据对照（包身份/成员/构建/烧录步骤/五行与 VDD 公式/S 行/节拍/T=0 语义/无 OTA/命名差异/未执行披露）、身份冻结规则、两项文档引用性转交（docs/02 章节引用、README/01 未列 EV-037）与独立复验建议范围
 evidence/fw_release_20261111/package_verify.txt | active | 发布包校验输出：zip md5/CRC OK、三成员 md5 与期望一致、与 Keil 重建产物一致、RESULT PASS
-evidence/fw_release_20261111/upgrade_evidence.md | active | 升级证据 RELEASE-PKG-001：包内容与摘要、三次独立重建可复现、源版本固定、有线升级/回退说明、随包披露的未执行与延期项、边界
+evidence/fw_release_20261111/upgrade_evidence.md | active | 升级证据 RELEASE-PKG-001 rev 2：包内容与摘要（未变）、四次同身份重建（含 EV-036/EV-037）、源版本固定、有线升级/回退说明、随包披露的未执行与延期项、边界与自查索引
 evidence/fw_release_20261111/verify_release_package.py | active | 发布包校验脚本：CRC 测试、成员 md5、与磁盘副本一致性（可复跑）
 evidence/interface_contract_validation.md | active | 系统架构：IC-002 v4.0源码核对与CRC/65536温度字/12资格向量/容量/缓存键算术自检、当前对象摘要和未验证边界
 evidence/product_acceptance_20261111/ | active | 软件测试产品整体功能验收原始证据目录（PRODUCT-ACCEPTANCE-001）：COM43 实板周期、安卓真机 UI/冷启动/守护启停/页面缺陷复现、候选与设备身份复算
