@@ -71,7 +71,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/ | active | 实现侧影子 MCU 层（供 debug_trace.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_vdd_ev/ | active | 测试能力自建影子 MCU 层（供电轨测量 harness，mock_bgr_trim_value 替身修调值）
 artifacts/android_architecture.md | active | Android 方案设计 AA-005 rev 4.0（承接 IC-002 v4.0：BLE 权限策略、网关发现绑定、批次转发与载荷格式、网关全零占位、上传失败分类与 401 可观测、升温规则/时间注释同步、绑定 ≤9 台与 MTU/返回长度完整性守卫；含 as-built 行号证据、当前有光与固件判据未启用的数据预期、宿主机/真机验证分工与未决项交接）
-artifacts/android_build.md | active | Android 构建产物 AB-001（debug 测试候选：包名/versionCode 10/1.9、构建命令、APK SHA-256/MD5、v2 签名与 debug 证书、安装/升级说明、候选范围与 release 未产出原因）
+artifacts/android_build.md | active | Android 构建产物 AB-002（debug 测试候选：包名/versionCode 10/1.9、构建命令、APK SHA-256 71a041d3…/MD5、v2 签名与 debug 证书、与独立真机复验安装字节一致、安装/升级说明、候选范围与 release 未产出原因）
 artifacts/android_feasibility.md | active | Android 真机/模拟环境可行性探索 AF-001（Redmi 8A Android 10/API 29 只读事实、API<31 定位权限门阻断、硬编码网关 MAC、AVD API 34 对照与差异、未证实项与最小下一步）
 artifacts/android_fix_D-AA005-1.md | active | Android 集成调试修复 FIX-AA005-1（401/403/4xx 后全局暂停自动上传；根因、改动、独立用例复验、APK 身份与未执行项）
 artifacts/android_fix_product_D01-D04a.md | active | Android 集成调试修复 FIX-PROD-01（产品验收 D-01/D-02 底部按钮可达、D-03 控件重叠、D-04a 首页文案；根因/改动/自检/实机复测方法与 D-04b 文档交接）
@@ -250,6 +250,14 @@ evidence/android_build_20261110/build_identity.txt | active | 构建时 commit�
 evidence/android_build_20261110/build_offline_debug_release_attempt.log | active | 离线同时构建 debug+release 的原始日志（debug 成功；release 因本地缓存缺 lint 依赖失败）
 evidence/android_build_20261110/static_check_for_manifest.log | active | 清单更新后独立静态核查复跑（54/54 PASS，含 H1 全部 active 路径存在）
 evidence/android_build_20261110/unit_test.log | active | 同源码全量 testDebugUnitTest --rerun-tasks 原始输出（32 套件 / 257 项 / 0 失败）
+evidence/android_build_20261111/ | active | Android 发布构建证据目录（BUILD-006；候选 71a041d3…，与被测安装字节一致）
+evidence/android_build_20261111/apk_badging.txt | active | 候选 APK aapt badging（versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34）
+evidence/android_build_20261111/apksigner_verify.txt | active | 候选 APK apksigner 验证（v2；Android Debug 证书）
+evidence/android_build_20261111/build.log | active | assembleDebug --offline 原始输出（BUILD SUCCESSFUL；35 tasks up-to-date）
+evidence/android_build_20261111/build_evidence.md | active | Android 构建证据 BUILD-006（源码/命令/APK 摘要/签名/回归/独立复验引用/release 限制/安装说明）
+evidence/android_build_20261111/build_identity.txt | active | 构建 commit、产品树修复提交、APK 大小/sha256/md5 与版本
+evidence/android_build_20261111/test_summary.txt | active | 全量用例汇总（261/0/0/0，33 套件）
+evidence/android_build_20261111/unit_test.log | active | testDebugUnitTest --offline 原始输出（BUILD SUCCESSFUL；up-to-date）
 evidence/android_check_20261111/ | active | 软件测试 D-01/D-02/D-03/D-04a 修复后独立真机复验原始证据目录（真机 UI 树、截图、logcat、安装前后包哈希与身份、可复跑 UI 断言脚本）
 evidence/android_check_20261111/SOFTWARE-TEST-ANDROID-RECHECK-001.md | active | 软件测试独立复验报告：当前 APK 71a041d3… 覆盖安装、D-01 报告页/D-02 传感器列表/ D-03 控件不重叠且空输入不误开网关对话框/D-04a 首页文案与去添加路径、关键路径回归与未执行项；结论 TEST_PASS（限定当前 APK 与已执行范围）
 evidence/android_check_20261111/device_apk_hash_post.txt | active | 安装后设备 base.apk SHA-256（与新候选 71a041d3… 一致）
