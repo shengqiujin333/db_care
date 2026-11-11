@@ -1,0 +1,13 @@
+DOC-VERIFY-002 USB enumeration (usb_list_devices, 2026-11-11T06:17:32Z)
+
+| Device | Identity seen | Match |
+|---|---|---|
+| USB-to-serial | Prolific USB-to-Serial Comm Port (COM43), VID_067B&PID_2303 | docs/README §2, docs/03 §2 |
+| Debugger CDC | USB serial device (COM26), VID_C251&PID_F001&MI_00 | docs/README §2 ("COM26 is debugger CDC, not sensor UART") |
+| CW-DAPLink | USB Composite Device, VID_C251&PID_F001, serial 87094109484987710672FF50 | docs/02 §3, docs/03 §8 |
+| Test phone | USBDevice VID_18D1&PID_4EE7 serial 12F046690506 ("SDM439-QRD") | docs/README §2, docs/04 §2 |
+| Logic analyzer | fx2lafw, VID_04B4&PID_8613, CYPRESS_FX2 | environment (not used this round) |
+
+The raw tool response contains mojibake in some FriendlyName fields (Windows codepage issue),
+but the VID/PID/serial values above are unambiguous. Enumeration proves presence/identity only;
+it does not prove protocol or business function.

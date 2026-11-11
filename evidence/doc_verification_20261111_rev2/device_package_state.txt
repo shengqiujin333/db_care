@@ -1,0 +1,28 @@
+DOC-VERIFY-002 device/package snapshot
+UTC=2026-11-11T06:17:32Z..06:21:50Z
+doc under test=DOC-PKG-001 rev 2 (docs/README.md + docs/01..06, HEAD 1b1b5fa80a73b7510f13a1f1d3579922d0b521db)
+
+android_test devices:
+12f046690506           device product:olivelite model:Redmi_8A device:olivelite transport_id:1
+
+adb shell getprop:
+ro.build.version.release=10
+ro.build.version.sdk=29
+
+dumpsys package com.jinyuni.dengbei_care (selected):
+versionCode=10 minSdk=26 targetSdk=34
+versionName=1.9
+firstInstallTime=2026-11-10 19:25:25
+lastUpdateTime=2026-11-11 13:57:18
+
+APK on host:
+path=dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+size=10365460
+sha256=d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+md5=58de16b8fef549f004b92ffcec0104d9
+
+Note: this round did NOT reinstall the APK. The installed package identity and the
+previous install evidence (evidence/doc_verification_20261111/android_install.json,
+SHA-256 d2054221...) match the candidate byte-wise; install/upgrade steps were verified in
+DOC-VERIFY-001 and were not changed by this documentation revision (docs/04 section 2 text
+is unchanged between rev 1 and rev 2).

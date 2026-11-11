@@ -1,0 +1,94 @@
+DOC-VERIFY-002 source-level checks (read-only; no product source changed)
+Paths relative to project root. Line numbers are current at HEAD 1b1b5fa.
+
+== A. docs/04 §4.1 "我的" page texts and behavior ==
+NotificationsFragment.kt:72-91
+  - macsaveButton requires input.length == 12 else Toast "请输入12个字符" (line 86-90).
+  - saveInput writes MyPrefs.mac_addr then calls platform /setmac when registerphone is valid;
+    toasts "mac 设置成功" / "mac 设置失败，请先注册..." / "mac 设置失败，请先登录" (lines 226-263).
+  - No gateway binding-list write path in this fragment.
+NotificationsFragment.kt:93-116
+  - sensor register requires name length > 0 and code length == 8 (line 96);
+    capacity check bound >= GatewayReadGuard.MAX_DEVICES (9) rejects with
+    "已绑定 <n> 台设备，超过网关完整传输上限 9 台（请先删除多余设备）" (lines 99-104).
+MacIdBook.kt:74-108
+  - sensor id sanitizeId12(): exactly 8 hex chars (comment text says 12 but code requires 8).
+  - name rule: pure Han <=3 chars, or [a-z0-9]{1,8}; invalid format -> add() false.
+  - therefore an 8-char non-hex id or an over-long/symbol name reaches the fragment length gate
+    but fails in MacIdBook and shows the generic "添加传感器失败,请联系客服" (lines 106-111).
+res/values/strings.xml: sensor_address="请输入网关编码：", sensor_address_hint="请输入网关上的字母串",
+  mac_send_button="保存", sensor_id="请输入传感器编码和别称：", sensor_id_hint="请输入传感器的字母串",
+  sensorname="请输入传感器别称用于显示", addsensor="注册传感器", opensensorlist="打开传感器列表",
+  usecamera="使用摄像头扫一扫".
+Measured UI (evidence ui_my_page_rev2.xml) matches all these strings and control bounds.
+
+== B. "打开传感器列表" entry (D-12 / P-04) ==
+res/layout/fragment_notifications.xml: Button @+id/opensensorlistbutton, text 打开传感器列表.
+NotificationsFragment.kt:312-317: the ONLY code path that navigates to SensorIdListFragment
+  (action_notificationsFragment_to_SensorIdListFragment), guarded by currentDestination ==
+  navigation_notifications.
+res/navigation/mobile_navigation.xml:47-48: action notifications -> sensorIdListFragment;
+  no other entry point to sensorIdListFragment exists in the navigation graph.
+Measured UI bounds (720x1520): opensensorlistbutton [164,1296][456,1392];
+  bottom navigation container [0,1264][720,1424]; selected nav item 设定 [240,1264][480,1424].
+Measured action: ui_click(text="打开传感器列表") => screen remained on the 设定 tab
+  (evidence ui_after_opensensorlist_click.xml shows navigation_dashboard selected=true).
+  Compare: ui_click(text="查看今日报告") => same interception, 设定 selected
+  (evidence ui_after_report_click.xml), which matches the documented O-PKG-2.
+=> The only documented path to view/delete bound sensors is not operable in the 720x1520 layout.
+
+== C. Upload failure classification (D-13) ==
+UploadResult.kt:25-31
+  - 401/403 -> AuthRejected
+  - 408 and 429 -> Retryable
+  - other 400..499 -> RequestRejected
+  - 5xx -> Retryable
+CloudUploadRepository.kt:184-198
+  - Retryable -> markFailed + backoff, no global block.
+  - AuthRejected / RequestRejected -> park + globalBlocked = true + global pause.
+docs/04 §5 table says "其他 4xx -> 视为请求被拒：同样全局暂停并保留数据".
+docs/06 §2.3 says the status text for that row is "请求被拒绝（HTTP 4xx）".
+=> For HTTP 408/429 the documents describe a global pause, while the implementation retries with
+   backoff and displays "云端上传失败，重试中（待发 N 条）" (GatewayBleSettingsDialog.kt:174-183).
+
+== D. Gateway upload settings dialog (docs/04 §4.2) ==
+GatewayBleSettingsDialog.kt:73,83-92,108-113,132,157-165,187-213
+  - title 网关与上传设置; hint 网关 BLE 地址（AA:BB:CC:DD:EE:FF）
+  - buttons 搜索附近网关 / 扩大搜索（不过滤） / 清除网关地址 / 保存网关地址 / 重试上传 / 关闭
+  - default state text 正在使用默认网关地址（未确认）：<MAC>; unset 未配置网关地址
+  - save toast 已保存网关地址; format failure 地址格式不正确...
+  - clear writes cleared flag and toasts 已清除网关地址（不会回退默认值）
+  - GATEWAY_CHANGED is sent to the service; MqtttService.kt:1307-1310 wakes the read loop now.
+Measured UI (evidence ui_gateway_dialog_rev2.xml) matches all strings and status fields.
+
+== E. Firmware/debug manual claims ==
+USER/src/measure.c:160-165,226-233: IOTEST gc values 0=not attempted (0x44/0x45 answered),
+  1=0x00 ACK but 0x06 not ACK, 2=0x06 accepted, 3=0x00 no ACK. docs/03 §4 matches.
+USER/inc/debug_trace.h:27-57,74-81: S/G/P field semantics, G status 1..5, rd 0..5, at 1..3.
+USER/inc/sensor_config.h:26-27 (1-min tick, 3-tick sample), :97 (PB05->R3 5M->PB04->LDR->GND),
+  :101 (8 ADC samples), :129 (LIGHT_DARK_THRESHOLD_CODE=0), :138-139 (RISE 9, HIGH 350),
+  :171 (96 B line budget), :194-216 (PB05/PB04, PA06/PA05, 9600 8N1).
+USER/src/fw_core.c:106-118: report = (cur > 350) || (have_prev && (cur-prev) > 9 && dark);
+  strictly greater at both boundaries.
+sensor_hardware/pstxnet.dat: LIGHT_ADC net includes J4.1, R3.1, U7 PB04;
+  LIGTHT_POWER net includes R3.2, U7 PB05. sensor_hardware/MAIN_BOARD.BOM: R3=5M, J4=HEADER 2.
+evidence/ev036/capture_analysis.txt: BOOT/VDD/IOTEST/IOSIG/BUS values and 6 S rows match
+  docs/03 §4/§5 samples and docs/02 §6 exactly (VDD 3289 mV, a=2860..2886, q=1/V=0/D=0).
+artifacts/firmware_implementation.md:590-596: reading table treats mv 2700-3100 as fresh CR2032.
+=> docs/02 §3.3 citation and docs/03 §4/§5 semantics match the implementation and raw evidence.
+
+== F. Platform claims ==
+network_security_config.xml: three cleartext domain-config entries
+  (8.140.23.253, 117.72.84.210, 192.168.4.1) exactly as docs/05 §1/§2 now state.
+No 117.72.84.210 in Kotlin sources (Grep over app/src/main/java: 0 matches).
+CloudConfig.kt: SERVER_HOST=8.140.23.253, 8883/5000; unique constant source.
+MqtttService.kt:1262,1598: topic /<mac>/a/s0 and TLSv1.2; :116 clientId=android_client.
+assets/jd-ca.crt md5=f1a8212e3c690d57894b8a3a5fd901ab (matches docs/05 §2).
+UploadPayload.kt:7-21 / build(): request body fields phone, mac, devId, time, temperature,
+  humidity; units ℃/%RH/Unix seconds (matches docs/05 §2).
+
+== G. docs/01 gateway "并转 MQTT" (D-14) ==
+Grep over CH592EVT/EVT/EXAM/BLE/beiwov2 (and APP/) for mqtt/broker/HTTP/WiFi: no matches.
+The gateway firmware has a 433 receiver + BLE GATT path only; MQTT/HTTP is performed by the
+Android app (CloudConfig/MqtttService). docs/01 §1 component table's "并转 MQTT" is therefore
+not supported by the gateway implementation and contradicts docs/01 §1's own topology diagram.

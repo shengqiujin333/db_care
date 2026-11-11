@@ -1,0 +1,46 @@
+DOC-VERIFY-002 static identity checks
+UTC=2026-11-11T06:17:32Z..06:21:50Z
+HEAD=1b1b5fa80a73b7510f13a1f1d3579922d0b521db ("[role:technical_writer] Update project work")
+
+== Firmware release package ==
+md5sum fw_release/fw_sensor_FD-002r8.zip
+5df0c6d45ecddc8aae8bddbbcfc9cfdf *fw_release/fw_sensor_FD-002r8.zip
+zipfile.testzip() = None (no bad member)
+fw_sensor_FD-002r8_b6a15fed.axf  size=297380 md5=b6a15fed2ed5e3d0c4adc51ac87a4830 CRC=b9c31a27
+fw_sensor_FD-002r8_4d728dec.hex  size=75275  md5=4d728dec9b0d28a352c46436b7586c72 CRC=ec66763b
+PACKAGE.txt                      size=3202   md5=a58f67fcf5b760767ff5b65888c73dfb CRC=9cdc7920
+
+Keil current build output:
+MDK/output/exe/Project.axf size=297380 md5=b6a15fed2ed5e3d0c4adc51ac87a4830
+MDK/output/exe/Project.hex md5=4d728dec9b0d28a352c46436b7586c72
+
+== Android APK ==
+size=10365460
+sha256=d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+md5=58de16b8fef549f004b92ffcec0104d9
+apksigner: v2=true, DN=CN=Android Debug, cert SHA-256=773e4ef63f06b85b2a1d20fd65a8df6b8dfafce1a41fcb2adddfd513b08d9255
+aapt badging: package=com.jinyuni.dengbei_care versionCode=10 versionName=1.9 minSdk=26 targetSdk=34
+
+== Source/toolchain references ==
+git cat-file -t 82a7e74 => commit (firmware product source base)
+git diff 82a7e74..HEAD -- <sensor USER/MDK/EWARM/UM2005C/COMMON/gcc> => 0 lines (product source unchanged)
+git cat-file -t 28b78b0 => commit (Android source base)
+git cat-file -t f516a73 => commit
+git diff 28b78b0 f516a73 -- dengbei_care => no output (same product tree)
+gradle wrapper: gradle-8.4-bin
+AGP (gradle/libs.versions.toml): 8.3.2
+
+== Platform configuration static checks ==
+assets/jd-ca.crt md5=f1a8212e3c690d57894b8a3a5fd901ab
+CloudConfig.kt: SERVER_HOST=8.140.23.253, MQTT_BROKER_PORT=8883, HTTP_PORT=5000
+MqtttService.kt: clientId="android_client", TLSv1.2, topics /<mac>/a/r0 (subscribe), /<mac>/a/s0 (publish)
+grep 117.72.84.210 in dengbei_care/app/src/main/java => no matches
+res/xml/network_security_config.xml cleartext domain-config:
+  8.140.23.253 (platform)
+  117.72.84.210 (legacy platform entry, retained by append-not-replace)
+  192.168.4.1 (gateway local provisioning hotspot)
+
+== Gateway source check (docs/01 claim "并转 MQTT") ==
+grep -i "mqtt|broker|8883" in CH592EVT/EVT/EXAM/BLE/beiwov2 => no matches
+grep -i "mqtt|MQTT|HTTP|http|WiFi|wifi" in CH592EVT/EVT/EXAM/BLE/beiwov2/APP => no matches
+=> CH592 gateway source contains no MQTT/HTTP client path; the App is the MQTT publisher.
