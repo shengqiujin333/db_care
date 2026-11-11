@@ -1,804 +1,803 @@
 {
-  "responsible_role": "code intelligence",
-  "scope": "Android current repaired/rebuilt candidate only",
-  "projectPath": "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
-  "indexPath": "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\.codegraph",
-  "container_has_index": false,
-  "existing_index": true,
-  "prior_check": {
-    "git_head": "7848b997466091b4eb9ab2c22e8543a9736ee953",
-    "source_set_sha256": "1c1db9d0bbf6cfbb770427d14e9784e627349e14abf437617b09067671e9ee3a",
-    "record_sha256": "69c79b4eaeaa0dbec78e850865f90446dfb2d75d04b0de0627934d403a94899e",
-    "historical_record_location": "Git history: evidence/codegraph_android_validation.json"
-  },
-  "git_head": {
-    "command": [
-      "git",
-      "rev-parse",
-      "HEAD"
-    ],
-    "started_utc": "2026-11-10T13:47:36.339046+00:00",
-    "finished_utc": "2026-11-10T13:47:36.362153+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "e6fc602cb675d85294acd34b937a8732636fd284\n",
-    "stderr": ""
-  },
-  "initial_git_status": {
-    "command": [
-      "git",
-      "status",
-      "--porcelain=v1"
-    ],
-    "started_utc": "2026-11-10T13:47:36.362153+00:00",
-    "finished_utc": "2026-11-10T13:47:36.403528+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "",
-    "stderr": ""
-  },
-  "git_tree": {
-    "command": [
-      "git",
-      "rev-parse",
-      "HEAD:dengbei_care"
-    ],
-    "started_utc": "2026-11-10T13:47:36.403528+00:00",
-    "finished_utc": "2026-11-10T13:47:36.427827+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "fb74a365211407cacb03a428623df825da46259c\n",
-    "stderr": ""
-  },
-  "source_change_summary": {
-    "command": [
-      "git",
-      "diff",
-      "7848b997466091b4eb9ab2c22e8543a9736ee953",
-      "HEAD",
-      "--stat",
-      "--",
-      "dengbei_care"
-    ],
-    "started_utc": "2026-11-10T13:47:36.427827+00:00",
-    "finished_utc": "2026-11-10T13:47:36.454338+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": " .../dengbei_care/cloud/CloudUploadRepository.kt    |  31 +-\n .../cloud/CloudUploadFailureClassificationTest.kt  |  53 +-\n .../verification/Aa005SevenItemVerificationTest.kt | 618 +++++++++++++++++++++\n 3 files changed, 700 insertions(+), 2 deletions(-)\n",
-    "stderr": ""
-  },
-  "config": {
-    "exclude": [
-      "iOS开发资料/",
-      ".idea/",
-      ".gradle/",
-      "build/",
-      "app/build/"
-    ],
-    "deprioritize": [
-      "app/src/test/",
-      "app/src/androidTest/",
-      "app/src/main/java/org/eclipse/paho/"
-    ]
-  },
-  "cli_version": {
-    "command": [
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-      "--liftoff-only",
-      "--disable-warning=ExperimentalWarning",
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-      "--version"
-    ],
-    "started_utc": "2026-11-10T13:47:36.455340+00:00",
-    "finished_utc": "2026-11-10T13:47:36.534874+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "1.6.0\n",
-    "stderr": ""
-  },
-  "status_before": {
-    "command": [
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-      "--liftoff-only",
-      "--disable-warning=ExperimentalWarning",
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-      "status",
-      "--json",
-      "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
-    ],
-    "started_utc": "2026-11-10T13:47:36.534874+00:00",
-    "finished_utc": "2026-11-10T13:47:36.898298+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\",\"lastIndexed\":\"2026-11-10T10:02:46.230Z\",\"fileCount\":103,\"nodeCount\":2787,\"edgeCount\":5774,\"dbSizeBytes\":9977856,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"class\":181,\"constant\":115,\"enum\":12,\"enum_member\":48,\"field\":351,\"file\":101,\"function\":53,\"import\":859,\"interface\":14,\"method\":951,\"namespace\":97,\"variable\":5},\"languages\":[\"java\",\"kotlin\",\"properties\",\"xml\"],\"pendingChanges\":{\"added\":1,\"modified\":2,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
-    "stderr": ""
-  },
-  "sync": {
-    "command": [
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-      "--liftoff-only",
-      "--disable-warning=ExperimentalWarning",
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-      "sync",
-      "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
-    ],
-    "started_utc": "2026-11-10T13:47:36.898298+00:00",
-    "finished_utc": "2026-11-10T13:47:37.703387+00:00",
-    "timeout_seconds": 45,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "T  Syncing CodeGraph\n|\nScanning files...\nParsing code...\nResolving refs...\nLinking dynamic dispatch...\n|\n*  Synced 3 changed files\n|\n•  Added: 1, Modified: 2 - 193 nodes in 275ms\n|\n—  Done\n\n",
-    "stderr": ""
-  },
-  "status_after": {
-    "command": [
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-      "--liftoff-only",
-      "--disable-warning=ExperimentalWarning",
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-      "status",
-      "--json",
-      "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
-    ],
-    "started_utc": "2026-11-10T13:47:37.703387+00:00",
-    "finished_utc": "2026-11-10T13:47:37.897394+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\",\"lastIndexed\":\"2026-11-10T13:47:37.349Z\",\"fileCount\":104,\"nodeCount\":2863,\"edgeCount\":6113,\"dbSizeBytes\":10018816,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"class\":185,\"constant\":115,\"enum\":12,\"enum_member\":48,\"field\":355,\"file\":102,\"function\":56,\"import\":886,\"interface\":14,\"method\":987,\"namespace\":98,\"variable\":5},\"languages\":[\"java\",\"kotlin\",\"properties\",\"xml\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
-    "stderr": ""
-  },
-  "files": {
-    "command": [
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-      "--liftoff-only",
-      "--disable-warning=ExperimentalWarning",
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-      "files",
-      "-p",
-      "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
-      "--format",
-      "flat",
-      "--no-metadata"
-    ],
-    "started_utc": "2026-11-10T13:47:37.897394+00:00",
-    "finished_utc": "2026-11-10T13:47:38.091669+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "\nFiles (104):\n\n  app/build.gradle.kts\n  app/src/androidTest/java/com/jinyuni/dengbei_care/ExampleInstrumentedTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/UploadOutboxItem009VerificationTest.kt\n  app/src/main/AndroidManifest.xml\n  app/src/main/java/com/jinyuni/dengbei_care/BaseActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicy.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ble/GatewayDiscovery.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadResult.kt\n  app/src/main/java/com/jinyuni/dengbei_care/DeviceParamsBook.kt\n  app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MainActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MyApplication.kt\n  app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt\n  app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayIdentity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuard.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/DailyReportWorker.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportScheduler.kt\n  app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt\n  app/src/main/java/com/jinyuni/dengbei_care/SensorIdAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwarding.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/BleObservation.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt\n  app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/denglu/DengLuFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/AlarmEventAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DeviceDetailFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayBleSettingsDialog.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/sensorid/SensorIdListFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/PrivacyPolicyActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/TermsOfServiceActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt\n  app/src/main/java/org/eclipse/paho/android/service/AlarmPingSender.java\n  app/src/main/java/org/eclipse/paho/android/service/DatabaseMessageStore.java\n  app/src/main/java/org/eclipse/paho/android/service/MessageStore.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttAndroidClient.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttConnection.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttDeliveryTokenAndroid.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttService.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttServiceBinder.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttServiceConstants.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttTokenAndroid.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttTraceHandler.java\n  app/src/main/java/org/eclipse/paho/android/service/ParcelableMqttMessage.java\n  app/src/main/java/org/eclipse/paho/android/service/Status.java\n  app/src/test/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicyTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadFailureClassificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadPayloadTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadResultTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt\n  app/src/test/java/com/jinyuni/dengbei_care/db/TemperatureWriteItem007Test.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ExampleUnitTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayIdentityTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuardTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/report/ReportGeneratorTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwardingTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleObservationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ui/home/DeviceStateTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/Aa005SevenItemVerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/AlarmEvaluatorItem005VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/DeviceStateItem011VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/PlayerDegradationItem010VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/ReadingAttributionItem003VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/ReportGeneratorItem013VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/UploadPayloadItem008VerificationTest.kt\n  build.gradle.kts\n  gradle.properties\n  gradle/wrapper/gradle-wrapper.properties\n  settings.gradle.kts\n\n",
-    "stderr": ""
-  },
-  "queries": [
-    {
-      "command": [
-        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-        "--liftoff-only",
-        "--disable-warning=ExperimentalWarning",
-        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-        "explore",
-        "-p",
-        "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
-        "--max-files",
-        "1",
-        "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt"
-      ],
-      "started_utc": "2026-11-10T13:47:38.091669+00:00",
-      "finished_utc": "2026-11-10T13:47:38.268481+00:00",
-      "timeout_seconds": 30,
-      "timed_out": false,
-      "exit_code": 0,
-      "stderr": "",
-      "query": "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt",
-      "source_files": [
-        "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt"
-      ],
-      "expected_source_present": true,
-      "has_numbered_source": true,
-      "stdout_sha256": "801bc75eb04b1b73dda264c9f9add079ce4dbef4cba92f1a6d1288d88ba17faf",
-      "stdout_characters": 9842,
-      "overview": "**Exploration: app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt**\n\nFound 58 symbols across 1 file. 1 file pinned from the query.\n\n",
-      "source_excerpt": [
-        "40\t        suspend fun upload(data: SensorUploadData): Boolean",
-        "47\t        suspend fun uploadDetailed(data: SensorUploadData): UploadResult =",
-        "54\t        fun guardActive(): Boolean",
-        "55\t        fun phone(): String",
-        "56\t        fun gatewayMac(): String",
-        "60\t         * 默认 false 以保持既有伪实现兼容；生产实现读取持久化的 `upload_blocked_reason`。",
-        "62\t        fun isUploadBlocked(): Boolean = false",
-        "65\t        fun markUploadBlocked(result: UploadResult, pendingCount: Int) {}",
-        "68\t        fun clearUploadBlocked() {}",
-        "71\t        fun markUploadRetryScheduled(pendingCount: Int) {}",
-        "74\t        fun markUploadSucceeded(pendingCount: Int) {}",
-        "78\t    data class Config(",
-        "85\t        fun backoffSeconds(attempts: Int): Long {",
-        "97\t    data class UploadOutcome(",
-        "108\t     * 直到用户手动重试（[retryBlockedNow]）或成功上传清除。",
-        "111\t    private var globalBlocked: Boolean = false",
-        "114\t    fun isUploadBlocked(): Boolean = globalBlocked || gate.isUploadBlocked()",
-        "117\t    fun isGateOpen(): Boolean = gate.guardActive() && gate.phone().isNotBlank()",
-        "123\t    fun enqueueAndUpload(",
-        "138\t        if (isUploadBlocked()) {",
-        "147\t    fun triggerUpload(): Job = scope.launch { uploadPendingOnce() }",
-        "153\t    suspend fun uploadPendingOnce(): UploadOutcome {",
-        "156\t        if (isUploadBlocked()) return UploadOutcome(0, 0, 0, \"empty\")",
-        "179\t                    globalBlocked = false",
-        "193\t                    globalBlocked = true",
-        "209\t    fun retryBlockedNow(): Job {",
-        "210\t        globalBlocked = false",
-        "216\t    companion object {",
-        "239\tclass PrefsUploadGate(private val prefs: SharedPreferences) : CloudUploadRepository.UploadGate {",
-        "241\t    override fun guardActive(): Boolean = prefs.getString(KEY_MEASURE_STATE, \"\") == STATE_GUARD_RUNNING"
-      ]
-    },
-    {
-      "command": [
-        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-        "--liftoff-only",
-        "--disable-warning=ExperimentalWarning",
-        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-        "explore",
-        "-p",
-        "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
-        "--max-files",
-        "1",
-        "app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuard.kt"
-      ],
-      "started_utc": "2026-11-10T13:47:38.270357+00:00",
-      "finished_utc": "2026-11-10T13:47:38.451491+00:00",
-      "timeout_seconds": 30,
-      "timed_out": false,
-      "exit_code": 0,
-      "stderr": "",
-      "query": "app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuard.kt",
-      "source_files": [
-        "app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuard.kt"
-      ],
-      "expected_source_present": true,
-      "has_numbered_source": true,
-      "stdout_sha256": "37db13ddf814c698fa5b010a9a1a03e00eb3b1e85606ec7bb514601c447f965e",
-      "stdout_characters": 3615,
-      "overview": "**Exploration: app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuard.kt**\n\nFound 22 symbols across 1 file. 1 file pinned from the query.\n\n",
-      "source_excerpt": [
-        "15\tobject GatewayReadGuard {",
-        "18\t    const val MAX_DEVICES = 9",
-        "27\t    fun expectedFrameSize(devCount: Int): Int {",
-        "33\t        data object Ok : Capacity",
-        "34\t        data class Exceeded(val bound: Int) : Capacity",
-        "37\t    enum class ReadRefuseReason {",
-        "44\t        data object Proceed : MtuVerdict",
-        "45\t        data class Refuse(val requiredMtu: Int, val actualMtu: Int) : MtuVerdict",
-        "49\t        data class Proceed(val expectedBytes: Int) : LengthVerdict",
-        "50\t        data class Refuse(",
-        "57\t    fun capacityVerdict(boundCount: Int): Capacity =",
-        "58\t        if (boundCount in 0..MAX_DEVICES) Capacity.Ok else Capacity.Exceeded(boundCount)",
-        "60\t    fun mtuVerdict(negotiatedMtu: Int, devCount: Int): MtuVerdict {",
-        "73\t    fun lengthVerdict(returnedBytes: Int, devCount: Int): LengthVerdict {"
-      ]
-    },
-    {
-      "command": [
-        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-        "--liftoff-only",
-        "--disable-warning=ExperimentalWarning",
-        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-        "explore",
-        "-p",
-        "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
-        "--max-files",
-        "1",
-        "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadFailureClassificationTest.kt"
-      ],
-      "started_utc": "2026-11-10T13:47:38.451491+00:00",
-      "finished_utc": "2026-11-10T13:47:38.629994+00:00",
-      "timeout_seconds": 30,
-      "timed_out": false,
-      "exit_code": 0,
-      "stderr": "",
-      "query": "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadFailureClassificationTest.kt",
-      "source_files": [
-        "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadFailureClassificationTest.kt"
-      ],
-      "expected_source_present": true,
-      "has_numbered_source": true,
-      "stdout_sha256": "b2064e7670f2e0cea4e4345ee099d3f049c7ea2b740b58ae3e27aa115dc3c338",
-      "stdout_characters": 10015,
-      "overview": "**Exploration: app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadFailureClassificationTest.kt**\n\nFound 42 symbols across 1 file. 1 file pinned from the query.\n\n",
-      "source_excerpt": [
-        "16\tclass CloudUploadFailureClassificationTest {",
-        "24\t    private fun repo(",
-        "35\t    private fun enqueue(vararg times: Long) {",
-        "40\t    fun authRejected_parksRows_noAutoRetry_andIsObservable() = runBlocking {",
-        "60\t    fun requestRejected_parksRows_andIsObservable() = runBlocking {",
-        "73\t    fun retryable_keepsBackoff_behaviour() = runBlocking {",
-        "87\t    fun success_deletesRows_andReportsOk() = runBlocking {",
-        "97\t    fun manualRetry_clearsBlocked_restoresRows_andUploadsImmediately() = runBlocking {",
-        "106\t        repository.retryBlockedNow()",
-        "120\t    fun globalBlocked_stopsAllAutomaticUploads_untilManualRetry() = runBlocking {",
-        "129\t        assertTrue(repository.isUploadBlocked())",
-        "141\t        repository.retryBlockedNow()",
-        "143\t        assertFalse(repository.isUploadBlocked())",
-        "147\t    fun blockedState_stillEnqueuesNewReadings_withoutAutomaticRequest() = runBlocking {",
-        "161\t    fun booleanOnlyApi_staysCompatible() = runBlocking {",
-        "163\t        val legacy = object : CloudUploadRepository.UploadApi {",
-        "164\t            override suspend fun upload(data: SensorUploadData): Boolean = false",
-        "183\t    private class InMemoryStore : UploadOutboxStore {",
-        "186\t        override fun insertIfAbsent(row: UploadOutboxRow): Boolean {",
-        "193\t        override fun dueRows(now: Long, maxAttempts: Int, limit: Int): List<UploadOutboxRow> =",
-        "199\t        override fun delete(devId: String, time: Long) {",
-        "203\t        override fun updateRetry(devId: String, time: Long, attempts: Int, nextAttemptAt: Long) {",
-        "208\t        override fun count(): Int = rows.size",
-        "210\t        override fun resetForManualRetry(maxAttempts: Int) {",
-        "220\t    private class FakeDetailedApi(",
-        "225\t        override suspend fun upload(data: SensorUploadData): Boolean =",
-        "228\t        override suspend fun uploadDetailed(data: SensorUploadData): UploadResult {",
-        "234\t    private class FakeGate : CloudUploadRepository.UploadGate {",
-        "235\t        override fun guardActive(): Boolean = true",
-        "236\t        override fun phone(): String = \"13800000000\""
-      ]
-    }
-  ],
-  "indexed_source_hashes": [
-    {
-      "path": "app/build.gradle.kts",
-      "sha256": "4f7019c4aa8b8b435f53a06b117f3cf316b5018777df08bcbab4f7cf89a4ecc4"
-    },
-    {
-      "path": "app/src/androidTest/java/com/jinyuni/dengbei_care/ExampleInstrumentedTest.kt",
-      "sha256": "efd6e6bc19fafd4f7558556806a155208bea5af83a0161bec6ea055b2ebc10e4"
-    },
-    {
-      "path": "app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt",
-      "sha256": "a0e06adb23d9711a8813dd1530f3aeb17631788c9cf0902a2e3f8772f56e4b45"
-    },
-    {
-      "path": "app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt",
-      "sha256": "ae60ae4ce67df41bdb4bc1a4a493d02c73f2bc6a701b3a695ee2b87ba07bec79"
-    },
-    {
-      "path": "app/src/androidTest/java/com/jinyuni/dengbei_care/verification/UploadOutboxItem009VerificationTest.kt",
-      "sha256": "9a3318802244162afeb3ddf430cea885d7be38887438edd06cd741dc9ee448d1"
-    },
-    {
-      "path": "app/src/main/AndroidManifest.xml",
-      "sha256": "9812cf28d39e59f8743584bb2ba25d486675be18172fc2a3304ca3e534d9b440"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/BaseActivity.kt",
-      "sha256": "25fcd5f2cc227b958bbf573bbc1ac47518d46f961d020348c75f6b7da910ccd7"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/DeviceParamsBook.kt",
-      "sha256": "b59f3c747bbe3caf264c035627c48bd4d73350c9bf4d41fb9a7e95895648632c"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt",
-      "sha256": "ec814658b69d4805b80d66249e37d876a761dccf1110b239a726825c0571e897"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt",
-      "sha256": "eb0ee0d776920c9d199d97e06c8782c2512ce012efcac6da3b0392306dd25ee0"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/MainActivity.kt",
-      "sha256": "8d59faeb4e8fdb3b17de0fffea9b46d9d0f277ba53f00de276f3a20494f77189"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt",
-      "sha256": "b38ab45677842536e8338f827000f5d842f2730747d1947b93af2674e5ef6a40"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/MyApplication.kt",
-      "sha256": "ad8ddbdcc7c43506a60f6264355345834c71fd3f5f7d8d6f6b7317493fff521d"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt",
-      "sha256": "64c33c25a11aa1b88ad50240f894374a9fa335611191dceea50ccd39d227e086"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/SensorIdAdapter.kt",
-      "sha256": "1240fe7986d02396bda5315f7cc64671a24ed795368b3367c48987e40025d5a4"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt",
-      "sha256": "e9b8c57badef775dd5c1983ed40c6eeb36211ac864c69685bdf0a26b50328ca5"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt",
-      "sha256": "dc87ea8cafdd0bb3161fa1f8e8f82c16c3b820fcc642f6c7a39609d8c7f0edd4"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicy.kt",
-      "sha256": "75bcb969eebeeca58ec2e5057e319f7022f92b01132448adaf4e43f88b33ae36"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ble/GatewayDiscovery.kt",
-      "sha256": "d520f1fffc285def23f30504d1209bcae4c57f5f676de61f4131ec8a75e47468"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt",
-      "sha256": "d7daae2db108ec9b8f349ec61a9148bfd762e58d3fdd78e110fd81a7279b6cfb"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt",
-      "sha256": "725934e0cc748b91fdc9a20dbddc3fa6cbf85f7ecda6450619cc1d6ef7add434"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt",
-      "sha256": "c378d3d388b56e3ccc5ae387e0c349563f8dc9e6246d5f48e42ae5845e95fd06"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt",
-      "sha256": "c0fff0ed06404895c52b216d4ce0c31657c2c4a6a509f29d015e6d579a6d98a9"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadResult.kt",
-      "sha256": "b2c2d6a4f870054e8aa30c170314b930ba015cf9e7e74e57806326cb5bbdbb0e"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt",
-      "sha256": "5f2aa8260c7bd90e25727ddf165aa26d2558889f0cb51d542e5b49b43d10fff9"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayIdentity.kt",
-      "sha256": "9c1114a125b0cbfca8673b51cc4b74e8a251dada40478b8c6adf98b744064704"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuard.kt",
-      "sha256": "6f15ef40b45b76588f4ffde11b05f228d62e96c3a380fbeec5c2780e0ef6b5ec"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/report/DailyReportWorker.kt",
-      "sha256": "36b712d64f5237d6040e78fbd37390092c00afd14d5e61a775a6a8ad6615e620"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/report/ReportActivity.kt",
-      "sha256": "0c971580c8282a2655c937157fb6c0fefc5f77fdbac830bafc882ff0eff26e18"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt",
-      "sha256": "970ac3fe91ce25005d8d8b0a04270e00c9921f9295bc1938d1d91aea1ebe22e7"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/report/ReportScheduler.kt",
-      "sha256": "e4a08fc063e2d2c9ebaf1026e2489856901c7a9483721f4b7af6aa2142f5bceb"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt",
-      "sha256": "207af1d97b28cc61d326bbf92c157edcd7b6fb9994efc05cb75bcc385c33542e"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwarding.kt",
-      "sha256": "d5b49fc29f247edb3ad3abb6e61d29a8634e3dd2841318dbf906619baa3007b9"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/telemetry/BleObservation.kt",
-      "sha256": "55caedbc1191b49f3fdb3bf35e345b717ac6adaed6c9fceeeeffb8837d30e417"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt",
-      "sha256": "8b31db2523b5416c74e03297659d49ad7384d5d2b5446adc817edb388416306a"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt",
-      "sha256": "bb07d9cea1d8ae5299a2eda2e3407d87739f38be4b984274fd5a71316d7fad4b"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardFragment.kt",
-      "sha256": "a1f93d8106acf077ee1e552ea738368d86784ae840569a94d275889c71420e68"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardViewModel.kt",
-      "sha256": "7c3f58ddda6ad49cfacd5e46dd7f8cd8480ed01058f6f3d4e44b59e26c119395"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/denglu/DengLuFragment.kt",
-      "sha256": "3f2ebda138ceb258ae1d79961623a59cc1017e7d3aac86ca8cc8514ad9db8590"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/detail/AlarmEventAdapter.kt",
-      "sha256": "196ed146d64047319820e11672591e8fc34ed3ea21495a1ad3d2bc3e3eae6790"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt",
-      "sha256": "511e46c98608a382a680ce0915164aea4bd13107e57a053625f542aa08360aee"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DeviceDetailFragment.kt",
-      "sha256": "2a67ecd0abc260997cd5d4190941bd25e476482214e987a1f3b3e9b0c75a0458"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayBleSettingsDialog.kt",
-      "sha256": "4f73bf75e11324cfc229847f30926f84ac17f893435a4f08b5bc1bef10db227d"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayFragment.kt",
-      "sha256": "a2ad9029cb2fa161965b60cf821a83ff8a1fcd1ad0b990ed2963e1a97356bc6a"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt",
-      "sha256": "ffea94ae04fa67b64b4dab67c722a250e46a82eeedc584afd4052ef3acbee14a"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeFragment.kt",
-      "sha256": "86b7d05a6775ed510169ca2087b5efaf89da191934fc8d193500d73e38029d7d"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt",
-      "sha256": "a0c815e9a998c9a6606fa1b693a3f7508929649009da67d043ce743cf3fa6abe"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt",
-      "sha256": "7644c93b6348a5ee7fba67e67479752f00082a36f1c950fd52532dfea59ec1c7"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsViewModel.kt",
-      "sha256": "96bdd94f7351327bcef74e69252caf352c019bbf8d18c7952919cb7ebe9146dc"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/sensorid/SensorIdListFragment.kt",
-      "sha256": "86237195c5bcc6653f7f64a506a95d9d1d1b6ec7bb80c1ea9e51bd0c3251c359"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt",
-      "sha256": "05a8df60875c4ea73d20cb384c033a7f96b71a797c35eb3548bff879551acb6e"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/PrivacyPolicyActivity.kt",
-      "sha256": "e99890374b6da250079ec9cb15e39dd16601d7c8d43f4cb00e0f4181ecfd5a87"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/TermsOfServiceActivity.kt",
-      "sha256": "0c7c48a44fbe85c6d9eae061dc0bd73db5879d633400d401608a5392e382818e"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeFragment.kt",
-      "sha256": "2a20945fea1286509cc4771ef6a1c06443456efa7e4ea9859553daa5878b894f"
-    },
-    {
-      "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt",
-      "sha256": "b3058244b74b22df870129c623d09a89ab6509b16310c2b87577b0ab4cfff358"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/AlarmPingSender.java",
-      "sha256": "622bcf7a0e699dcf42dc5a72b81e3f584b7c11975f79241e3173092c5bbbe56d"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/DatabaseMessageStore.java",
-      "sha256": "ed5f11d4183b36825e06b90e57c2b12089034e4fefe0e32bb4e3fb67209e2773"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/MessageStore.java",
-      "sha256": "d053d7e301607f06cdfb2e7d4f73019cb5d920125eed12919f384b54c4ad23e7"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/MqttAndroidClient.java",
-      "sha256": "eed8fc4e77cbeac08b533d13dfe2f6d9c9164acf4d105b9b1c6a464e63c8a07e"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/MqttConnection.java",
-      "sha256": "264f6dd885ed63d9440362e9def7207ba6981710b140093d4e8565e0179bf55a"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/MqttDeliveryTokenAndroid.java",
-      "sha256": "f6030e12a03f44cec21fc994d5e27fc21b71013a1da085157c3cbcc05934bcae"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/MqttService.java",
-      "sha256": "ab8373fa2f7869cca10296aa68cc7abadd4f33a9786eda5b51e88071b83acfe1"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/MqttServiceBinder.java",
-      "sha256": "0fe1f2cbcef79fa3a001fbb44338ec735fabe85a937e95ec8e65441eafa30770"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/MqttServiceConstants.java",
-      "sha256": "d3ba1806f9c1a3030441cc8b5fc2c1d1800a7ab09c7184d16a4055ce99eed2db"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/MqttTokenAndroid.java",
-      "sha256": "3adc3a70e098a9a198466694763d47f3e4745185aa6b74c8f3a0555e333a0af9"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/MqttTraceHandler.java",
-      "sha256": "b0ac4a9d6cce107ca54becf73fecef4f3bbe15c80edd44e9e5c3ab39d512edeb"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/ParcelableMqttMessage.java",
-      "sha256": "44c3d60895d3a0aba421aaee3b6b3820068b6c9a72ced45035d1e6b76de16b5a"
-    },
-    {
-      "path": "app/src/main/java/org/eclipse/paho/android/service/Status.java",
-      "sha256": "f1375f03fdf029c00e2178444cb83ec1519b3a29ef9eb00a477fbbd2e42a998e"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/ExampleUnitTest.kt",
-      "sha256": "47670182f060ec990301fefbfab3d7d49d3c3d8d631895292966a57f75009af4"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicyTest.kt",
-      "sha256": "f63f27f3e860e63e26063708558f6122ab309628b4468e74391083e8a48edfc4"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt",
-      "sha256": "2a217cc042f8a3e127210dd42fe640fa30e1e2acf26478245894fbd64d4af2f5"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadFailureClassificationTest.kt",
-      "sha256": "0e54b12053b8326c91de63510cf5570b26e94bb2f2e5dc5956b3a66dad1abc4f"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt",
-      "sha256": "a169f11a7943f98d022866e6d5c81a5a70d9d6ade626b848c18110049705b3b4"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadPayloadTest.kt",
-      "sha256": "2832acd192d1a449a0b13fbed7fe647299439d7165493922e15175edef751c08"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadResultTest.kt",
-      "sha256": "5a86bc04eb741b9bd92306ad016159b2404c8e73375b80371bb8814ef09f2a27"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt",
-      "sha256": "71635eabba2effba7e76e34d43863c4c029c4c740dfc4254c98c91872b5893f9"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/db/TemperatureWriteItem007Test.kt",
-      "sha256": "005910126d6bbe22b5c57342dfd4c967f1f4026fa871742309804d40177d307a"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt",
-      "sha256": "52f1f11fa3951877efe6a6b039e51ae3c1bd45c056836ecfd6e1e65c66ea07ef"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayIdentityTest.kt",
-      "sha256": "6c7946353e7092d265f1a6952f5fba03b69819ab98a17b99f855254a530c625a"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuardTest.kt",
-      "sha256": "0410176df6a03898c50cb3dc77833026a6a5d88de0e00d24957290a3031ce054"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/report/ReportGeneratorTest.kt",
-      "sha256": "747d789a23edea09d5536a4dfc172eac0f48fbc4b5a2e4e5f65d23f3c62fec03"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt",
-      "sha256": "7967cd691a2a666152b6bb6a099e4a47274a83db402438524ce530260b6de9ca"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwardingTest.kt",
-      "sha256": "2d9dff6e5149be4fb7ed0028faaf0d8218720e452033463b2c56e82b67a32708"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleObservationTest.kt",
-      "sha256": "007c5016cad679fe0a211b38d1b2835aa03ac35a2eece0f4f022ec1fcf07a6c0"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt",
-      "sha256": "dc678096c659dc0b6f36cff1f58a3c61e70863fee34ebd1d8f79bb3595fe1d3a"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt",
-      "sha256": "da55c3cd69b741ecc228082dfa92afbbe312ec6e9e2c7b810dc90bd614720bc9"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt",
-      "sha256": "40a8d5bc4aebddaf20a148a3487158ca410365d1b22fa80dd1b423503739d919"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/ui/home/DeviceStateTest.kt",
-      "sha256": "bbf3ead4e5cc043663b0de1774ae05b4e5dfc632469f29f9a2847e38a8f5a3f2"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/Aa005SevenItemVerificationTest.kt",
-      "sha256": "76744e62cf77c491914afd9a6c69b70d5cbaf5af6929350661fb6befe123cca9"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/AlarmEvaluatorItem005VerificationTest.kt",
-      "sha256": "e8ec6182da90702ae71b8f4623a5004c69e4751cc942fec5839c35cea221585a"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt",
-      "sha256": "e9cd3d48daeb8792fd6697cc20c4c58d8b5f99c048cb98eacf98e5cb1364524a"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt",
-      "sha256": "d3c076404e8b8a4f1ada10fc797d6e5c612e6fedd74308311bda7f8bc9d3bc11"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/DeviceStateItem011VerificationTest.kt",
-      "sha256": "1c74cc04621bd9e5d252d0d697550ca3fbe38522d549be3054225cd0beafa722"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt",
-      "sha256": "83dca5d061740cd6c9e1cd3d6ccc68884ebeb89fc4fd192534a7dce71bcd24d1"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001VerificationTest.kt",
-      "sha256": "2e2bf9d39668a1c301a2ca25e8641e99481fca6079e4ce40a91aad212fcace3c"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/PlayerDegradationItem010VerificationTest.kt",
-      "sha256": "6dee43bb28da662a7907e8b1f824e3945a338c63ad28f745f26e14f1e1317d6e"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/ReadingAttributionItem003VerificationTest.kt",
-      "sha256": "579e2e080f1afec9e218ad58ed425a2d5268a6429d1c46e3068ecf588264cbaa"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/ReportGeneratorItem013VerificationTest.kt",
-      "sha256": "1c90fab1666d758e0734237f76cf92f6936fc13ce4ad7d765bfef3462182339b"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt",
-      "sha256": "5f6a3b058604be6b7c8245b88ab20615ba8f5e98091d2fd3f179c833939aca70"
-    },
-    {
-      "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/UploadPayloadItem008VerificationTest.kt",
-      "sha256": "24ce32b51fe99fbbb6f634261b0218dbe7ed39655d2a824e6ca8f21b46063486"
-    },
-    {
-      "path": "build.gradle.kts",
-      "sha256": "5d63a173221d633491e8638e89053080eda2d53905f86278d8bc989b4d1e82a9"
-    },
-    {
-      "path": "gradle.properties",
-      "sha256": "1c8bb149ddb87dfe8a3de4372b7df65da0e826af581821a5345a89570e780a16"
-    },
-    {
-      "path": "gradle/wrapper/gradle-wrapper.properties",
-      "sha256": "11264a850d743d87c056c7dbc790ad974d1d1ba8c7d2cffe669157d1d044d7a0"
-    },
-    {
-      "path": "settings.gradle.kts",
-      "sha256": "4d4af1f9c1afb466f0297c8db4d22ad722441b7b59843e6b4ebb4ff0dd401854"
-    }
-  ],
-  "indexed_source_set_sha256": "5b4eb564e8a084c56f8aaaa3d493170d769e0553bc312ba986b0c1d2cc5d128c",
-  "hash_format": "SHA256(raw bytes); set=SHA256(UTF8(sorted path+TAB+lowercase_sha256+LF))",
-  "ignore_check": {
-    "command": [
-      "git",
-      "check-ignore",
-      "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\.codegraph"
-    ],
-    "started_utc": "2026-11-10T13:47:38.637698+00:00",
-    "finished_utc": "2026-11-10T13:47:38.664573+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\"\n",
-    "stderr": ""
-  },
-  "tracked_index_check": {
-    "command": [
-      "git",
-      "ls-files",
-      "--",
-      "dengbei_care/.codegraph"
-    ],
-    "started_utc": "2026-11-10T13:47:38.664573+00:00",
-    "finished_utc": "2026-11-10T13:47:38.688441+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "",
-    "stderr": ""
-  },
-  "input_artifact_hashes": {
-    "artifacts/android_implementation.md": "3e6ddbea2632ebf7a193575a00af25eb8400bac0964f8b43707e185e7d51dce8",
-    "artifacts/android_fix_D-AA005-1.md": "8ca655e88342335f24845f4e7c49c8876051fb3867656fabbb80d4bbc5db462d",
-    "evidence/software_triage.md": "ccb6c6e3ba8f3e95df8e7959ea3e0ff4f8ed72921736eaa3993b4f7ec4860606",
-    "artifacts/system_analysis_current.md": "672d3f51ff960dd79a098efbd6253e4a08a760cb43d2f5f88948efff6959ef5f"
-  },
-  "all_commands_completed": true,
-  "background_tasks": []
+    "responsible_role":  "code intelligence",
+    "scope":  "Android current UI repair/rebuild candidate only",
+    "projectPath":  "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+    "indexPath":  "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\.codegraph",
+    "container_has_index":  false,
+    "existing_index":  true,
+    "prior_check":  {
+                        "git_head":  "e6fc602cb675d85294acd34b937a8732636fd284",
+                        "record_sha256":  "26e17b4dfc793d22ffdff13cd44b09e665b899ba684b7f91470bb930f09bce1c",
+                        "location":  "Git history: evidence/codegraph_android_validation.json"
+                    },
+    "git_head":  {
+                     "command":  [
+                                     "git",
+                                     "rev-parse",
+                                     "HEAD"
+                                 ],
+                     "started_utc":  "2026-11-11T10:58:31.188965+00:00",
+                     "finished_utc":  "2026-11-11T10:58:31.212563+00:00",
+                     "timeout_seconds":  30,
+                     "timed_out":  false,
+                     "exit_code":  0,
+                     "stdout":  "9b3df8d2baa3d7eb1214467e811f24f321be85a8\n",
+                     "stderr":  ""
+                 },
+    "initial_git_status":  {
+                               "command":  [
+                                               "git",
+                                               "status",
+                                               "--porcelain=v1"
+                                           ],
+                               "started_utc":  "2026-11-11T10:58:31.212563+00:00",
+                               "finished_utc":  "2026-11-11T10:58:31.254040+00:00",
+                               "timeout_seconds":  30,
+                               "timed_out":  false,
+                               "exit_code":  0,
+                               "stdout":  "",
+                               "stderr":  ""
+                           },
+    "git_tree":  {
+                     "command":  [
+                                     "git",
+                                     "rev-parse",
+                                     "HEAD:dengbei_care"
+                                 ],
+                     "started_utc":  "2026-11-11T10:58:31.254040+00:00",
+                     "finished_utc":  "2026-11-11T10:58:31.278812+00:00",
+                     "timeout_seconds":  30,
+                     "timed_out":  false,
+                     "exit_code":  0,
+                     "stdout":  "c50fa337de36f5b1a59353acf9fdf8aed31b68f4\n",
+                     "stderr":  ""
+                 },
+    "source_change_summary":  {
+                                  "command":  [
+                                                  "git",
+                                                  "diff",
+                                                  "e6fc602cb675d85294acd34b937a8732636fd284",
+                                                  "HEAD",
+                                                  "--stat",
+                                                  "--",
+                                                  "dengbei_care"
+                                              ],
+                                  "started_utc":  "2026-11-11T10:58:31.278812+00:00",
+                                  "finished_utc":  "2026-11-11T10:58:31.303847+00:00",
+                                  "timeout_seconds":  30,
+                                  "timed_out":  false,
+                                  "exit_code":  0,
+                                  "stdout":  " .../app/src/main/res/layout/activity_main.xml      |   2 +-\n .../app/src/main/res/layout/fragment_home.xml      |   2 +-\n .../src/main/res/layout/fragment_notifications.xml | 330 ++++++++++-----------\n .../NotificationsLayoutContractTest.kt             |  83 ++++++\n ...224\\250\\350\\257\\264\\346\\230\\216\\344\\271\\246.md\" | 152 ++++++----\n 5 files changed, 341 insertions(+), 228 deletions(-)\n",
+                                  "stderr":  ""
+                              },
+    "config":  {
+                   "exclude":  [
+                                   "iOS开发资料/",
+                                   ".idea/",
+                                   ".gradle/",
+                                   "build/",
+                                   "app/build/"
+                               ],
+                   "deprioritize":  [
+                                        "app/src/test/",
+                                        "app/src/androidTest/",
+                                        "app/src/main/java/org/eclipse/paho/"
+                                    ]
+               },
+    "cli_version":  {
+                        "command":  [
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                        "--liftoff-only",
+                                        "--disable-warning=ExperimentalWarning",
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                        "--version"
+                                    ],
+                        "started_utc":  "2026-11-11T10:58:31.303847+00:00",
+                        "finished_utc":  "2026-11-11T10:58:31.377512+00:00",
+                        "timeout_seconds":  30,
+                        "timed_out":  false,
+                        "exit_code":  0,
+                        "stdout":  "1.6.0\n",
+                        "stderr":  ""
+                    },
+    "status_before":  {
+                          "command":  [
+                                          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                          "--liftoff-only",
+                                          "--disable-warning=ExperimentalWarning",
+                                          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                          "status",
+                                          "--json",
+                                          "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
+                                      ],
+                          "started_utc":  "2026-11-11T10:58:31.377512+00:00",
+                          "finished_utc":  "2026-11-11T10:58:31.725997+00:00",
+                          "timeout_seconds":  30,
+                          "timed_out":  false,
+                          "exit_code":  0,
+                          "stdout":  "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\",\"lastIndexed\":\"2026-11-10T13:47:37.349Z\",\"fileCount\":104,\"nodeCount\":2863,\"edgeCount\":6113,\"dbSizeBytes\":10018816,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"class\":185,\"constant\":115,\"enum\":12,\"enum_member\":48,\"field\":355,\"file\":102,\"function\":56,\"import\":886,\"interface\":14,\"method\":987,\"namespace\":98,\"variable\":5},\"languages\":[\"java\",\"kotlin\",\"properties\",\"xml\"],\"pendingChanges\":{\"added\":1,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
+                          "stderr":  ""
+                      },
+    "sync":  {
+                 "command":  [
+                                 "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                 "--liftoff-only",
+                                 "--disable-warning=ExperimentalWarning",
+                                 "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                 "sync",
+                                 "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
+                             ],
+                 "started_utc":  "2026-11-11T10:58:31.725997+00:00",
+                 "finished_utc":  "2026-11-11T10:58:32.307271+00:00",
+                 "timeout_seconds":  45,
+                 "timed_out":  false,
+                 "exit_code":  0,
+                 "stdout":  "T  Syncing CodeGraph\n|\nScanning files...\nParsing code...\nResolving refs...\n|\n*  Synced 1 changed files\n|\n•  Added: 1 - 12 nodes in 170ms\n|\n—  Done\n\n",
+                 "stderr":  ""
+             },
+    "status_after":  {
+                         "command":  [
+                                         "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                         "--liftoff-only",
+                                         "--disable-warning=ExperimentalWarning",
+                                         "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                         "status",
+                                         "--json",
+                                         "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
+                                     ],
+                         "started_utc":  "2026-11-11T10:58:32.307271+00:00",
+                         "finished_utc":  "2026-11-11T10:58:32.497711+00:00",
+                         "timeout_seconds":  30,
+                         "timed_out":  false,
+                         "exit_code":  0,
+                         "stdout":  "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\",\"lastIndexed\":\"2026-11-11T10:58:32.036Z\",\"fileCount\":105,\"nodeCount\":2875,\"edgeCount\":6139,\"dbSizeBytes\":10063872,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"class\":186,\"constant\":115,\"enum\":12,\"enum_member\":48,\"field\":355,\"file\":103,\"function\":56,\"import\":890,\"interface\":14,\"method\":992,\"namespace\":99,\"variable\":5},\"languages\":[\"java\",\"kotlin\",\"properties\",\"xml\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
+                         "stderr":  ""
+                     },
+    "files":  {
+                  "command":  [
+                                  "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                  "--liftoff-only",
+                                  "--disable-warning=ExperimentalWarning",
+                                  "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                  "files",
+                                  "-p",
+                                  "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+                                  "--format",
+                                  "flat",
+                                  "--no-metadata"
+                              ],
+                  "started_utc":  "2026-11-11T10:58:32.497711+00:00",
+                  "finished_utc":  "2026-11-11T10:58:32.681694+00:00",
+                  "timeout_seconds":  30,
+                  "timed_out":  false,
+                  "exit_code":  0,
+                  "stdout":  "\nFiles (105):\n\n  app/build.gradle.kts\n  app/src/androidTest/java/com/jinyuni/dengbei_care/ExampleInstrumentedTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/UploadOutboxItem009VerificationTest.kt\n  app/src/main/AndroidManifest.xml\n  app/src/main/java/com/jinyuni/dengbei_care/BaseActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicy.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ble/GatewayDiscovery.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadResult.kt\n  app/src/main/java/com/jinyuni/dengbei_care/DeviceParamsBook.kt\n  app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MainActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MyApplication.kt\n  app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt\n  app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayIdentity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuard.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/DailyReportWorker.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportScheduler.kt\n  app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt\n  app/src/main/java/com/jinyuni/dengbei_care/SensorIdAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwarding.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/BleObservation.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt\n  app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/denglu/DengLuFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/AlarmEventAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DeviceDetailFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayBleSettingsDialog.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/sensorid/SensorIdListFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/PrivacyPolicyActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/TermsOfServiceActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt\n  app/src/main/java/org/eclipse/paho/android/service/AlarmPingSender.java\n  app/src/main/java/org/eclipse/paho/android/service/DatabaseMessageStore.java\n  app/src/main/java/org/eclipse/paho/android/service/MessageStore.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttAndroidClient.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttConnection.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttDeliveryTokenAndroid.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttService.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttServiceBinder.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttServiceConstants.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttTokenAndroid.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttTraceHandler.java\n  app/src/main/java/org/eclipse/paho/android/service/ParcelableMqttMessage.java\n  app/src/main/java/org/eclipse/paho/android/service/Status.java\n  app/src/test/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicyTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadFailureClassificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadPayloadTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadResultTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt\n  app/src/test/java/com/jinyuni/dengbei_care/db/TemperatureWriteItem007Test.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ExampleUnitTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayIdentityTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuardTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/report/ReportGeneratorTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwardingTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleObservationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ui/home/DeviceStateTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsLayoutContractTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/Aa005SevenItemVerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/AlarmEvaluatorItem005VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/DeviceStateItem011VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/PlayerDegradationItem010VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/ReadingAttributionItem003VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/ReportGeneratorItem013VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/UploadPayloadItem008VerificationTest.kt\n  build.gradle.kts\n  gradle.properties\n  gradle/wrapper/gradle-wrapper.properties\n  settings.gradle.kts\n\n",
+                  "stderr":  ""
+              },
+    "queries":  [
+                    {
+                        "command":  [
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                        "--liftoff-only",
+                                        "--disable-warning=ExperimentalWarning",
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                        "explore",
+                                        "-p",
+                                        "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+                                        "--max-files",
+                                        "1",
+                                        "app/src/main/res/layout/activity_main.xml"
+                                    ],
+                        "started_utc":  "2026-11-11T10:58:32.681694+00:00",
+                        "finished_utc":  "2026-11-11T10:58:32.848800+00:00",
+                        "timeout_seconds":  30,
+                        "timed_out":  false,
+                        "exit_code":  0,
+                        "stderr":  "",
+                        "query":  "app/src/main/res/layout/activity_main.xml",
+                        "source_files":  [
+
+                                         ],
+                        "expected_source_present":  false,
+                        "has_numbered_source":  false,
+                        "stdout_sha256":  "4260bf905f58324709711b8a1e5fc14ac74f6d8ffe137451fcb4b96f27850ebf",
+                        "overview":  "No relevant code found for \"app/src/main/res/layout/activity_main.xml\" (no indexed file uniquely matches `app/src/main/res/layout/activity_main.xml`)\n",
+                        "source_excerpt":  [
+
+                                           ]
+                    },
+                    {
+                        "command":  [
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                        "--liftoff-only",
+                                        "--disable-warning=ExperimentalWarning",
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                        "explore",
+                                        "-p",
+                                        "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+                                        "--max-files",
+                                        "1",
+                                        "app/src/main/res/layout/fragment_notifications.xml"
+                                    ],
+                        "started_utc":  "2026-11-11T10:58:32.849800+00:00",
+                        "finished_utc":  "2026-11-11T10:58:33.027246+00:00",
+                        "timeout_seconds":  30,
+                        "timed_out":  false,
+                        "exit_code":  0,
+                        "stderr":  "",
+                        "query":  "app/src/main/res/layout/fragment_notifications.xml",
+                        "source_files":  [
+
+                                         ],
+                        "expected_source_present":  false,
+                        "has_numbered_source":  false,
+                        "stdout_sha256":  "1e43c96d5b7e2fbd1b8ae6bfbef48a48ebfb43333672633813d674566619e6b3",
+                        "overview":  "No relevant code found for \"app/src/main/res/layout/fragment_notifications.xml\" (no indexed file uniquely matches `app/src/main/res/layout/fragment_notifications.xml`)\n",
+                        "source_excerpt":  [
+
+                                           ]
+                    },
+                    {
+                        "command":  [
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                        "--liftoff-only",
+                                        "--disable-warning=ExperimentalWarning",
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                        "explore",
+                                        "-p",
+                                        "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+                                        "--max-files",
+                                        "1",
+                                        "app/src/test/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsLayoutContractTest.kt"
+                                    ],
+                        "started_utc":  "2026-11-11T10:58:33.027246+00:00",
+                        "finished_utc":  "2026-11-11T10:58:33.205915+00:00",
+                        "timeout_seconds":  30,
+                        "timed_out":  false,
+                        "exit_code":  0,
+                        "stderr":  "",
+                        "query":  "app/src/test/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsLayoutContractTest.kt",
+                        "source_files":  [
+                                             "app/src/test/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsLayoutContractTest.kt"
+                                         ],
+                        "expected_source_present":  true,
+                        "has_numbered_source":  true,
+                        "stdout_sha256":  "e32c6c9e180f66299c4fa7475be4f38370229d90232f85d3021e20df99c00750",
+                        "overview":  "**Exploration: app/src/test/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsLayoutContractTest.kt**\n\nFound 7 symbols across 1 file. 1 file pinned from the query.\n\n",
+                        "source_excerpt":  [
+                                               "18\tclass NotificationsLayoutContractTest {",
+                                               "20\t    private fun layout(name: String): String {",
+                                               "32\t    fun navHostHeight_isConstraintBounded_aboveBottomNavigation() {",
+                                               "38\t        assertTrue(\"NavHost 必须使用 0dp 高度\", block.contains(\"android:layout_height=\\\"0dp\\\"\"))",
+                                               "43\t        assertFalse(\"NavHost 不得再用 match_parent 高度\", block.contains(\"android:layout_height=\\\"match_parent\\\"\"))",
+                                               "47\t    fun notifications_isScrollable_andHasNoBottomParentAnchoring() {",
+                                               "49\t        assertTrue(\"根布局必须是 NestedScrollView\", xml.contains(\"\u003candroidx.core.widget.NestedScrollView\"))",
+                                               "55\t    fun notifications_controlsAreOrderedAndDoNotOverlap() {",
+                                               "77\t    fun homeHint_pointsToExistingEntries() {"
+                                           ]
+                    },
+                    {
+                        "command":  [
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                        "--liftoff-only",
+                                        "--disable-warning=ExperimentalWarning",
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                        "explore",
+                                        "-p",
+                                        "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
+                                        "--max-files",
+                                        "1",
+                                        "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt"
+                                    ],
+                        "started_utc":  "2026-11-11T10:58:33.205915+00:00",
+                        "finished_utc":  "2026-11-11T10:58:33.390012+00:00",
+                        "timeout_seconds":  30,
+                        "timed_out":  false,
+                        "exit_code":  0,
+                        "stderr":  "",
+                        "query":  "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt",
+                        "source_files":  [
+                                             "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt"
+                                         ],
+                        "expected_source_present":  true,
+                        "has_numbered_source":  true,
+                        "stdout_sha256":  "801bc75eb04b1b73dda264c9f9add079ce4dbef4cba92f1a6d1288d88ba17faf",
+                        "overview":  "**Exploration: app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt**\n\nFound 58 symbols across 1 file. 1 file pinned from the query.\n\n",
+                        "source_excerpt":  [
+                                               "40\t        suspend fun upload(data: SensorUploadData): Boolean",
+                                               "47\t        suspend fun uploadDetailed(data: SensorUploadData): UploadResult =",
+                                               "54\t        fun guardActive(): Boolean",
+                                               "55\t        fun phone(): String",
+                                               "56\t        fun gatewayMac(): String",
+                                               "62\t        fun isUploadBlocked(): Boolean = false",
+                                               "65\t        fun markUploadBlocked(result: UploadResult, pendingCount: Int) {}",
+                                               "68\t        fun clearUploadBlocked() {}",
+                                               "71\t        fun markUploadRetryScheduled(pendingCount: Int) {}",
+                                               "74\t        fun markUploadSucceeded(pendingCount: Int) {}",
+                                               "78\t    data class Config(",
+                                               "85\t        fun backoffSeconds(attempts: Int): Long {",
+                                               "97\t    data class UploadOutcome(",
+                                               "111\t    private var globalBlocked: Boolean = false",
+                                               "114\t    fun isUploadBlocked(): Boolean = globalBlocked || gate.isUploadBlocked()",
+                                               "117\t    fun isGateOpen(): Boolean = gate.guardActive() \u0026\u0026 gate.phone().isNotBlank()",
+                                               "123\t    fun enqueueAndUpload(",
+                                               "138\t        if (isUploadBlocked()) {",
+                                               "147\t    fun triggerUpload(): Job = scope.launch { uploadPendingOnce() }",
+                                               "153\t    suspend fun uploadPendingOnce(): UploadOutcome {"
+                                           ]
+                    }
+                ],
+    "indexed_source_hashes":  [
+                                  {
+                                      "path":  "app/build.gradle.kts",
+                                      "sha256":  "4f7019c4aa8b8b435f53a06b117f3cf316b5018777df08bcbab4f7cf89a4ecc4"
+                                  },
+                                  {
+                                      "path":  "app/src/androidTest/java/com/jinyuni/dengbei_care/ExampleInstrumentedTest.kt",
+                                      "sha256":  "efd6e6bc19fafd4f7558556806a155208bea5af83a0161bec6ea055b2ebc10e4"
+                                  },
+                                  {
+                                      "path":  "app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt",
+                                      "sha256":  "a0e06adb23d9711a8813dd1530f3aeb17631788c9cf0902a2e3f8772f56e4b45"
+                                  },
+                                  {
+                                      "path":  "app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt",
+                                      "sha256":  "ae60ae4ce67df41bdb4bc1a4a493d02c73f2bc6a701b3a695ee2b87ba07bec79"
+                                  },
+                                  {
+                                      "path":  "app/src/androidTest/java/com/jinyuni/dengbei_care/verification/UploadOutboxItem009VerificationTest.kt",
+                                      "sha256":  "9a3318802244162afeb3ddf430cea885d7be38887438edd06cd741dc9ee448d1"
+                                  },
+                                  {
+                                      "path":  "app/src/main/AndroidManifest.xml",
+                                      "sha256":  "9812cf28d39e59f8743584bb2ba25d486675be18172fc2a3304ca3e534d9b440"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/BaseActivity.kt",
+                                      "sha256":  "25fcd5f2cc227b958bbf573bbc1ac47518d46f961d020348c75f6b7da910ccd7"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/DeviceParamsBook.kt",
+                                      "sha256":  "b59f3c747bbe3caf264c035627c48bd4d73350c9bf4d41fb9a7e95895648632c"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt",
+                                      "sha256":  "ec814658b69d4805b80d66249e37d876a761dccf1110b239a726825c0571e897"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt",
+                                      "sha256":  "eb0ee0d776920c9d199d97e06c8782c2512ce012efcac6da3b0392306dd25ee0"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/MainActivity.kt",
+                                      "sha256":  "8d59faeb4e8fdb3b17de0fffea9b46d9d0f277ba53f00de276f3a20494f77189"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt",
+                                      "sha256":  "b38ab45677842536e8338f827000f5d842f2730747d1947b93af2674e5ef6a40"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/MyApplication.kt",
+                                      "sha256":  "ad8ddbdcc7c43506a60f6264355345834c71fd3f5f7d8d6f6b7317493fff521d"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt",
+                                      "sha256":  "64c33c25a11aa1b88ad50240f894374a9fa335611191dceea50ccd39d227e086"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/SensorIdAdapter.kt",
+                                      "sha256":  "1240fe7986d02396bda5315f7cc64671a24ed795368b3367c48987e40025d5a4"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt",
+                                      "sha256":  "e9b8c57badef775dd5c1983ed40c6eeb36211ac864c69685bdf0a26b50328ca5"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt",
+                                      "sha256":  "dc87ea8cafdd0bb3161fa1f8e8f82c16c3b820fcc642f6c7a39609d8c7f0edd4"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicy.kt",
+                                      "sha256":  "75bcb969eebeeca58ec2e5057e319f7022f92b01132448adaf4e43f88b33ae36"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ble/GatewayDiscovery.kt",
+                                      "sha256":  "d520f1fffc285def23f30504d1209bcae4c57f5f676de61f4131ec8a75e47468"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt",
+                                      "sha256":  "d7daae2db108ec9b8f349ec61a9148bfd762e58d3fdd78e110fd81a7279b6cfb"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt",
+                                      "sha256":  "725934e0cc748b91fdc9a20dbddc3fa6cbf85f7ecda6450619cc1d6ef7add434"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt",
+                                      "sha256":  "c378d3d388b56e3ccc5ae387e0c349563f8dc9e6246d5f48e42ae5845e95fd06"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt",
+                                      "sha256":  "c0fff0ed06404895c52b216d4ce0c31657c2c4a6a509f29d015e6d579a6d98a9"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadResult.kt",
+                                      "sha256":  "b2c2d6a4f870054e8aa30c170314b930ba015cf9e7e74e57806326cb5bbdbb0e"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt",
+                                      "sha256":  "5f2aa8260c7bd90e25727ddf165aa26d2558889f0cb51d542e5b49b43d10fff9"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayIdentity.kt",
+                                      "sha256":  "9c1114a125b0cbfca8673b51cc4b74e8a251dada40478b8c6adf98b744064704"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuard.kt",
+                                      "sha256":  "6f15ef40b45b76588f4ffde11b05f228d62e96c3a380fbeec5c2780e0ef6b5ec"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/report/DailyReportWorker.kt",
+                                      "sha256":  "36b712d64f5237d6040e78fbd37390092c00afd14d5e61a775a6a8ad6615e620"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/report/ReportActivity.kt",
+                                      "sha256":  "0c971580c8282a2655c937157fb6c0fefc5f77fdbac830bafc882ff0eff26e18"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt",
+                                      "sha256":  "970ac3fe91ce25005d8d8b0a04270e00c9921f9295bc1938d1d91aea1ebe22e7"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/report/ReportScheduler.kt",
+                                      "sha256":  "e4a08fc063e2d2c9ebaf1026e2489856901c7a9483721f4b7af6aa2142f5bceb"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt",
+                                      "sha256":  "207af1d97b28cc61d326bbf92c157edcd7b6fb9994efc05cb75bcc385c33542e"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwarding.kt",
+                                      "sha256":  "d5b49fc29f247edb3ad3abb6e61d29a8634e3dd2841318dbf906619baa3007b9"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/telemetry/BleObservation.kt",
+                                      "sha256":  "55caedbc1191b49f3fdb3bf35e345b717ac6adaed6c9fceeeeffb8837d30e417"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt",
+                                      "sha256":  "8b31db2523b5416c74e03297659d49ad7384d5d2b5446adc817edb388416306a"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt",
+                                      "sha256":  "bb07d9cea1d8ae5299a2eda2e3407d87739f38be4b984274fd5a71316d7fad4b"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardFragment.kt",
+                                      "sha256":  "a1f93d8106acf077ee1e552ea738368d86784ae840569a94d275889c71420e68"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardViewModel.kt",
+                                      "sha256":  "7c3f58ddda6ad49cfacd5e46dd7f8cd8480ed01058f6f3d4e44b59e26c119395"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/denglu/DengLuFragment.kt",
+                                      "sha256":  "3f2ebda138ceb258ae1d79961623a59cc1017e7d3aac86ca8cc8514ad9db8590"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/detail/AlarmEventAdapter.kt",
+                                      "sha256":  "196ed146d64047319820e11672591e8fc34ed3ea21495a1ad3d2bc3e3eae6790"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt",
+                                      "sha256":  "511e46c98608a382a680ce0915164aea4bd13107e57a053625f542aa08360aee"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DeviceDetailFragment.kt",
+                                      "sha256":  "2a67ecd0abc260997cd5d4190941bd25e476482214e987a1f3b3e9b0c75a0458"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayBleSettingsDialog.kt",
+                                      "sha256":  "4f73bf75e11324cfc229847f30926f84ac17f893435a4f08b5bc1bef10db227d"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayFragment.kt",
+                                      "sha256":  "a2ad9029cb2fa161965b60cf821a83ff8a1fcd1ad0b990ed2963e1a97356bc6a"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt",
+                                      "sha256":  "ffea94ae04fa67b64b4dab67c722a250e46a82eeedc584afd4052ef3acbee14a"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeFragment.kt",
+                                      "sha256":  "86b7d05a6775ed510169ca2087b5efaf89da191934fc8d193500d73e38029d7d"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt",
+                                      "sha256":  "a0c815e9a998c9a6606fa1b693a3f7508929649009da67d043ce743cf3fa6abe"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt",
+                                      "sha256":  "7644c93b6348a5ee7fba67e67479752f00082a36f1c950fd52532dfea59ec1c7"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsViewModel.kt",
+                                      "sha256":  "96bdd94f7351327bcef74e69252caf352c019bbf8d18c7952919cb7ebe9146dc"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/sensorid/SensorIdListFragment.kt",
+                                      "sha256":  "86237195c5bcc6653f7f64a506a95d9d1d1b6ec7bb80c1ea9e51bd0c3251c359"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt",
+                                      "sha256":  "05a8df60875c4ea73d20cb384c033a7f96b71a797c35eb3548bff879551acb6e"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/PrivacyPolicyActivity.kt",
+                                      "sha256":  "e99890374b6da250079ec9cb15e39dd16601d7c8d43f4cb00e0f4181ecfd5a87"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/TermsOfServiceActivity.kt",
+                                      "sha256":  "0c7c48a44fbe85c6d9eae061dc0bd73db5879d633400d401608a5392e382818e"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeFragment.kt",
+                                      "sha256":  "2a20945fea1286509cc4771ef6a1c06443456efa7e4ea9859553daa5878b894f"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt",
+                                      "sha256":  "b3058244b74b22df870129c623d09a89ab6509b16310c2b87577b0ab4cfff358"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/AlarmPingSender.java",
+                                      "sha256":  "622bcf7a0e699dcf42dc5a72b81e3f584b7c11975f79241e3173092c5bbbe56d"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/DatabaseMessageStore.java",
+                                      "sha256":  "ed5f11d4183b36825e06b90e57c2b12089034e4fefe0e32bb4e3fb67209e2773"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/MessageStore.java",
+                                      "sha256":  "d053d7e301607f06cdfb2e7d4f73019cb5d920125eed12919f384b54c4ad23e7"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/MqttAndroidClient.java",
+                                      "sha256":  "eed8fc4e77cbeac08b533d13dfe2f6d9c9164acf4d105b9b1c6a464e63c8a07e"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/MqttConnection.java",
+                                      "sha256":  "264f6dd885ed63d9440362e9def7207ba6981710b140093d4e8565e0179bf55a"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/MqttDeliveryTokenAndroid.java",
+                                      "sha256":  "f6030e12a03f44cec21fc994d5e27fc21b71013a1da085157c3cbcc05934bcae"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/MqttService.java",
+                                      "sha256":  "ab8373fa2f7869cca10296aa68cc7abadd4f33a9786eda5b51e88071b83acfe1"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/MqttServiceBinder.java",
+                                      "sha256":  "0fe1f2cbcef79fa3a001fbb44338ec735fabe85a937e95ec8e65441eafa30770"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/MqttServiceConstants.java",
+                                      "sha256":  "d3ba1806f9c1a3030441cc8b5fc2c1d1800a7ab09c7184d16a4055ce99eed2db"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/MqttTokenAndroid.java",
+                                      "sha256":  "3adc3a70e098a9a198466694763d47f3e4745185aa6b74c8f3a0555e333a0af9"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/MqttTraceHandler.java",
+                                      "sha256":  "b0ac4a9d6cce107ca54becf73fecef4f3bbe15c80edd44e9e5c3ab39d512edeb"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/ParcelableMqttMessage.java",
+                                      "sha256":  "44c3d60895d3a0aba421aaee3b6b3820068b6c9a72ced45035d1e6b76de16b5a"
+                                  },
+                                  {
+                                      "path":  "app/src/main/java/org/eclipse/paho/android/service/Status.java",
+                                      "sha256":  "f1375f03fdf029c00e2178444cb83ec1519b3a29ef9eb00a477fbbd2e42a998e"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/ExampleUnitTest.kt",
+                                      "sha256":  "47670182f060ec990301fefbfab3d7d49d3c3d8d631895292966a57f75009af4"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicyTest.kt",
+                                      "sha256":  "f63f27f3e860e63e26063708558f6122ab309628b4468e74391083e8a48edfc4"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt",
+                                      "sha256":  "2a217cc042f8a3e127210dd42fe640fa30e1e2acf26478245894fbd64d4af2f5"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadFailureClassificationTest.kt",
+                                      "sha256":  "0e54b12053b8326c91de63510cf5570b26e94bb2f2e5dc5956b3a66dad1abc4f"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt",
+                                      "sha256":  "a169f11a7943f98d022866e6d5c81a5a70d9d6ade626b848c18110049705b3b4"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadPayloadTest.kt",
+                                      "sha256":  "2832acd192d1a449a0b13fbed7fe647299439d7165493922e15175edef751c08"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadResultTest.kt",
+                                      "sha256":  "5a86bc04eb741b9bd92306ad016159b2404c8e73375b80371bb8814ef09f2a27"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt",
+                                      "sha256":  "71635eabba2effba7e76e34d43863c4c029c4c740dfc4254c98c91872b5893f9"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/db/TemperatureWriteItem007Test.kt",
+                                      "sha256":  "005910126d6bbe22b5c57342dfd4c967f1f4026fa871742309804d40177d307a"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt",
+                                      "sha256":  "52f1f11fa3951877efe6a6b039e51ae3c1bd45c056836ecfd6e1e65c66ea07ef"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayIdentityTest.kt",
+                                      "sha256":  "6c7946353e7092d265f1a6952f5fba03b69819ab98a17b99f855254a530c625a"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuardTest.kt",
+                                      "sha256":  "0410176df6a03898c50cb3dc77833026a6a5d88de0e00d24957290a3031ce054"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/report/ReportGeneratorTest.kt",
+                                      "sha256":  "747d789a23edea09d5536a4dfc172eac0f48fbc4b5a2e4e5f65d23f3c62fec03"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt",
+                                      "sha256":  "7967cd691a2a666152b6bb6a099e4a47274a83db402438524ce530260b6de9ca"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleBatchForwardingTest.kt",
+                                      "sha256":  "2d9dff6e5149be4fb7ed0028faaf0d8218720e452033463b2c56e82b67a32708"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/telemetry/BleObservationTest.kt",
+                                      "sha256":  "007c5016cad679fe0a211b38d1b2835aa03ac35a2eece0f4f022ec1fcf07a6c0"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt",
+                                      "sha256":  "dc678096c659dc0b6f36cff1f58a3c61e70863fee34ebd1d8f79bb3595fe1d3a"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt",
+                                      "sha256":  "da55c3cd69b741ecc228082dfa92afbbe312ec6e9e2c7b810dc90bd614720bc9"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt",
+                                      "sha256":  "40a8d5bc4aebddaf20a148a3487158ca410365d1b22fa80dd1b423503739d919"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/ui/home/DeviceStateTest.kt",
+                                      "sha256":  "bbf3ead4e5cc043663b0de1774ae05b4e5dfc632469f29f9a2847e38a8f5a3f2"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsLayoutContractTest.kt",
+                                      "sha256":  "a88b6a0fd3cd9d202a5fe3ec43c141bd09eb8f410d4ac6b7f9a3ae1b9e57aae3"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/Aa005SevenItemVerificationTest.kt",
+                                      "sha256":  "76744e62cf77c491914afd9a6c69b70d5cbaf5af6929350661fb6befe123cca9"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/AlarmEvaluatorItem005VerificationTest.kt",
+                                      "sha256":  "e8ec6182da90702ae71b8f4623a5004c69e4751cc942fec5839c35cea221585a"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt",
+                                      "sha256":  "e9cd3d48daeb8792fd6697cc20c4c58d8b5f99c048cb98eacf98e5cb1364524a"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt",
+                                      "sha256":  "d3c076404e8b8a4f1ada10fc797d6e5c612e6fedd74308311bda7f8bc9d3bc11"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/DeviceStateItem011VerificationTest.kt",
+                                      "sha256":  "1c74cc04621bd9e5d252d0d697550ca3fbe38522d549be3054225cd0beafa722"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt",
+                                      "sha256":  "83dca5d061740cd6c9e1cd3d6ccc68884ebeb89fc4fd192534a7dce71bcd24d1"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001VerificationTest.kt",
+                                      "sha256":  "2e2bf9d39668a1c301a2ca25e8641e99481fca6079e4ce40a91aad212fcace3c"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/PlayerDegradationItem010VerificationTest.kt",
+                                      "sha256":  "6dee43bb28da662a7907e8b1f824e3945a338c63ad28f745f26e14f1e1317d6e"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/ReadingAttributionItem003VerificationTest.kt",
+                                      "sha256":  "579e2e080f1afec9e218ad58ed425a2d5268a6429d1c46e3068ecf588264cbaa"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/ReportGeneratorItem013VerificationTest.kt",
+                                      "sha256":  "1c90fab1666d758e0734237f76cf92f6936fc13ce4ad7d765bfef3462182339b"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt",
+                                      "sha256":  "5f6a3b058604be6b7c8245b88ab20615ba8f5e98091d2fd3f179c833939aca70"
+                                  },
+                                  {
+                                      "path":  "app/src/test/java/com/jinyuni/dengbei_care/verification/UploadPayloadItem008VerificationTest.kt",
+                                      "sha256":  "24ce32b51fe99fbbb6f634261b0218dbe7ed39655d2a824e6ca8f21b46063486"
+                                  },
+                                  {
+                                      "path":  "build.gradle.kts",
+                                      "sha256":  "5d63a173221d633491e8638e89053080eda2d53905f86278d8bc989b4d1e82a9"
+                                  },
+                                  {
+                                      "path":  "gradle.properties",
+                                      "sha256":  "1c8bb149ddb87dfe8a3de4372b7df65da0e826af581821a5345a89570e780a16"
+                                  },
+                                  {
+                                      "path":  "gradle/wrapper/gradle-wrapper.properties",
+                                      "sha256":  "11264a850d743d87c056c7dbc790ad974d1d1ba8c7d2cffe669157d1d044d7a0"
+                                  },
+                                  {
+                                      "path":  "settings.gradle.kts",
+                                      "sha256":  "4d4af1f9c1afb466f0297c8db4d22ad722441b7b59843e6b4ebb4ff0dd401854"
+                                  }
+                              ],
+    "indexed_source_set_sha256":  "2459b06d58cb3bae340084daae926979269a7435c6c273b33dd18f552e51d647",
+    "hash_format":  "SHA256(raw bytes); set=SHA256(UTF8(sorted path+TAB+lowercase_sha256+LF))",
+    "changed_layout_coverage":  {
+                                    "app/src/main/res/layout/activity_main.xml":  false,
+                                    "app/src/main/res/layout/fragment_home.xml":  false,
+                                    "app/src/main/res/layout/fragment_notifications.xml":  false
+                                },
+    "ignore_check":  {
+                         "command":  [
+                                         "git",
+                                         "check-ignore",
+                                         "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\.codegraph"
+                                     ],
+                         "started_utc":  "2026-11-11T10:58:33.397704+00:00",
+                         "finished_utc":  "2026-11-11T10:58:33.425361+00:00",
+                         "timeout_seconds":  30,
+                         "timed_out":  false,
+                         "exit_code":  0,
+                         "stdout":  "\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\"\n",
+                         "stderr":  ""
+                     },
+    "tracked_index_check":  {
+                                "command":  [
+                                                "git",
+                                                "ls-files",
+                                                "--",
+                                                "dengbei_care/.codegraph"
+                                            ],
+                                "started_utc":  "2026-11-11T10:58:33.425361+00:00",
+                                "finished_utc":  "2026-11-11T10:58:33.463684+00:00",
+                                "timeout_seconds":  30,
+                                "timed_out":  false,
+                                "exit_code":  0,
+                                "stdout":  "",
+                                "stderr":  ""
+                            },
+    "input_artifact_hashes":  {
+                                  "artifacts/android_implementation.md":  "55be308ce5de2918c67e8e2143cfba25499e2c8e372fb6cec4aa5dccbee498c1",
+                                  "artifacts/android_fix_product_D01-D04a.md":  "da8005b8d65c4bd21dd5f11cd6ba305e70324f53c07e69f77ea8b4f7600c122d",
+                                  "artifacts/system_analysis_current.md":  "672d3f51ff960dd79a098efbd6253e4a08a760cb43d2f5f88948efff6959ef5f"
+                              },
+    "all_commands_completed":  true,
+    "background_tasks":  [
+
+                         ],
+    "unindexed_layout_file_hashes":  {
+                                         "dengbei_care/app/src/main/res/layout/fragment_notifications.xml":  "9b6e960bfc477a430557fd52b51aa420a0a163e92cd5023207b2d0ce02334797",
+                                         "dengbei_care/app/src/main/res/layout/activity_main.xml":  "9b5acc9105854cbd7d64ab934e4eff4eb288b91091711e46c617a3f33fbfee9a",
+                                         "dengbei_care/app/src/main/res/layout/fragment_home.xml":  "76cd8870b4e5f4ffdb67db677e8769c2d52ec5a20259a8951614544877c834cb"
+                                     },
+    "coverage_limitation":  "Changed layout XML files are absent from the existing index file list; exact layout queries returned no relevant code. Use bounded native reads after graph miss. Indexed test source is not layout source or product verification."
 }
