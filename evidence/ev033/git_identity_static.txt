@@ -1,0 +1,14 @@
+=== git status ===
+?? __ev033_build.log
+?? evidence/ev033/
+=== HEAD ===
+0008dde600a3d53bc47ac9f8e4c2ace91cf665f0
+=== diff 82a7e74..HEAD product source/engineering files ===
+(empty above = product source unchanged)
+=== diff 82a7e74..HEAD test assets ===
+ .../test/host_fw_core_verify_ev.c                  |  70 ++++-----
+ .../gpio_input_output/test/host_light_verify_ev.c  | 165 ++++++++++++---------
+ .../test/host_rf_report_verify_ev.c                |  29 +++-
+ .../gpio_input_output/test/host_vdd_verify_ev.c    |   6 +-
+ .../gpio_input_output/test/mock_mcu/mock_cw32.h    |   8 +-
+ 5 files changed, 159 insertions(+), 119 deletions(-)

@@ -1,0 +1,33 @@
+EV-033 host-side verification summary (same HEAD 0008dde, product source = 82a7e74 / FWI-003 rev 8)
+Toolchain: C:/ProgramData/chocolatey/lib/mingw/tools/install/mingw64/bin/gcc.exe (MinGW-w64)
+Command: CC=<mingw gcc> sh evidence/ev033/run_host_harnesses.sh   (run from the sensor project root)
+Runner result: FAILED=[]  (all compiles and runs exit 0)
+
+Implementer suite test/build_test.sh (4 stages, 5 result lines):
+  host_sensor_core_test   48 passed / 0 failed
+  host_measure_flow_check 61 passed / 0 failed
+  host_debug_trace_check  54 passed / 0 failed
+  host_light_check (T=0)  28 passed / 0 failed
+  host_light_check (T=3590 variant) 31 passed / 0 failed
+  total 222 / 0, exit 0
+
+Tester independent harnesses:
+  host_fw_core_verify_ev.c            59 / 0
+  host_gxht40_verify_ev.c             93 / 0
+  host_sf_i2c_verify_ev.c             51 / 0
+  host_diag_line_verify_ev.c          38 / 0
+  host_diag_probe_verify_ev.c        109 / 0
+  host_measure_flow_verify_ev.c       79 / 0
+  host_rf_frame_verify_ev.c           10 / 0
+  host_rf_report_verify_ev.c          30 / 0
+  host_rtc_cadence_verify_ev.c        17 / 0
+  host_gw_compat_verify_ev.c          11 / 0
+  host_vdd_verify_ev.c                31 / 0
+  host_light_verify_ev.c (T=0)        40 / 0
+  host_light_verify_ev.c (T=3000)     41 / 0
+  total 609 / 0
+
+Scope note: host/mock results are [L0] evidence for logic, wiring, frozen-format, retry and
+state-machine behaviour. They do not substitute for the real-board serial/I2C evidence.
+The implementer's T=3590 light variant is an implementation-side self-check variant; the
+delivered configuration remains LIGHT_DARK_THRESHOLD_CODE = 0 (criterion disabled).

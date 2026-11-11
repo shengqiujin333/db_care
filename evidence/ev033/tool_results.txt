@@ -1,0 +1,67 @@
+EV-033 tool results (raw excerpts; UTC 2026-11-10)
+
+[1] serial_list_ports (23:14:18Z) exit 0
+    COM43  Prolific USB-to-Serial Comm Port  USB VID:PID=067B:2303  LOCATION=1-9.4.2
+    COM26  USB 串行设备                      USB VID:PID=C251:F001  SN 87094109484987710672FF50
+    (COM26 is the debugger CDC interface, not the sensor UART; not used.)
+
+[2] mdk_build {"action":"rebuild"} (23:14:22.24 - 23:14:24.31Z) exit 0
+    Compiler V6.24; Rebuild target 'Project'
+    ../USER/src/main.c(254): warning: while loop has empty body [-Wempty-body]  (1 warning, pre-existing)
+    Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+    ".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+    axf md5 b6a15fed2ed5e3d0c4adc51ac87a4830 ; hex md5 4d728dec9b0d28a352c46436b7586c72
+    (matches FWI-003 rev 8 / BUILD-003)
+
+[3] mdk_flash {} (23:14:32.82 - 23:14:45.41Z) exit 0
+    Build target 'Project' - 0 Error(s), 0 Warning(s)
+    Load "...\MDK\output\exe\Project.axf"
+    Erase Done.Programming Done.Verify OK.Application running ...
+    Flash Load finished at 07:14:45 (host local UTC+8 = 23:14:45Z)
+    Verify OK proves download/verify only, not functional pass. axf/hex md5 unchanged after download.
+
+[4] serial_capture COM43 9600 300 s x4 - see capture_windows.txt for windows/md5.
+    cap01 23:14:58.34-23:19:58.53  78 B  "S k=3 p=242 H=1 V=0 o=8 n=3800 x=3810 a=3806 D=0 t=242 h=378 q=1 r=0 s=0 y=0"
+    cap02 23:20:10.37-23:25:10.59  78 B  "S k=9 p=241 H=1 V=0 o=8 n=3771 x=3779 a=3774 D=0 t=241 h=386 q=1 r=0 s=0 y=0"
+    cap03 23:25:19.79-23:30:19.98 158 B  "S k=12 p=241 H=1 V=0 o=8 n=3752 x=3763 a=3756 D=0 t=235 h=394 q=1 r=0 s=0 y=0"
+                                          "S k=15 p=235 H=1 V=0 o=8 n=3737 x=3747 a=3741 D=0 t=233 h=414 q=1 r=0 s=0 y=0"
+    cap04 23:32:28.48-23:37:28.69  79 B  "S k=21 p=233 H=1 V=0 o=8 n=3715 x=3726 a=3720 D=0 t=233 h=429 q=1 r=0 s=0 y=0"
+    No power-on line (BOOT/VDD/IOTEST/IOSIG/BUS) captured: the MCP serial session and mdk_flash are strictly
+    serialized, and the port opened after the board had already emitted the power-on block.
+
+[5] usb_list_devices (23:39:03Z) exit 0
+    CW-DAPLink  USB VID:PID=C251:F001  SN 87094109484987710672FF50
+    Target phone 18D1:4EE7  SN 12F046690506  (SDM439-QRD)
+    fx2lafw     USB VID:PID=04B4:8613  CYPRESS_FX2
+    Prolific COM43 067B:2303
+    No ammeter / SMU / oscilloscope enumerated.
+
+[6] sigrok_probe (23:30:32Z) exit 0, driver fx2lafw:conn=2.32 (configured USB bus.address resolved)
+
+[7] sigrok_capture (23:30:34.58 - 23:32:02.82Z) exit 0
+    args: --config samplerate=4000000 --channels D0,D1 --samples 8000000 --wait-trigger --triggers D1=f
+    session: 8000000 samples @4 MS/s = 2.0 s, channels D0/D1, unitsize 2
+    actual data window ~23:32:00.8 - 23:32:02.8Z (trigger wait ~86 s); raw_i2c_capture.sr md5 69cdd160451cadbeccf43a06c9ae6f8c
+
+[8] sigrok_decode (23:32:15Z) exit 0, decoder i2c:scl=D0:sda=D1, annotations present
+    Write: Start / Address write 44 / ACK / Data write FD / ACK / Stop
+    Read : Start / Address read 44 / ACK / Data read 63 DF D3 63 EA E3 / NACK / Stop
+    Independent CRC-8 (poly 0x31, init 0xFF): temp 0x63DF -> 0xD3 MATCH; hum 0x63EA -> 0xE3 MATCH
+    Conversion (datasheet integer form): 233 = 23.3 C, 428 = 42.8 %RH
+    Nominal timing: write START->STOP 12.046 ms; command STOP->read START 32.515 ms; read START->STOP 40.150 ms;
+    SCL bit interval 614.25 us (1628 Hz nominal). Digital sampling proves logic levels / sampled timing only.
+    Pairing: converted 23.3 C equals p(k=21)=233 => transaction is the k=18 measurement by inference
+    (the k=18 S row fell in the uncaptured gap); this is not a same-window direct pairing.
+
+[9] pyocd read-only evaluation (23:38Z)
+    pyocd --version -> 0.36.0 (exit 0)
+    pyocd list -> 0  P&S CW-DAPLINK(CMSIS-DAP)  87094109484987710672FF50  Target n/a
+    pyocd list --targets --name CW32 -> empty table (no CW32 target definition)
+    pyocd is NOT registered as an access entry in runtime/environment.yaml; no reset was attempted,
+    no pack was installed, no configuration changed.
+
+[10] host suites (see host_build_test.log, host_*_verify_ev*.log, host_harness_summary.txt)
+    implementer test/build_test.sh: 48+61+54+28+31 = 222 passed / 0 failed, exit 0
+    tester harnesses: 59+93+51+38+109+79+10+30+17+11+31+40+41 = 609 passed / 0 failed, FAILED=[]
+
+[11] static checks: static_check_ev033.py -> SUMMARY: 21 passed, 0 failed (exit 0)

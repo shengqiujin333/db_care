@@ -1,0 +1,25 @@
+EV-033 COM43 capture windows (UTC 2026-11-10)
+Port: COM43, 9600 8N1, Prolific USB-to-Serial 067B:2303 (LOCATION=1-9.4.2, InstanceId 7&298A15B9&0&2)
+Board image: current delivery, axf md5 b6a15fed2ed5e3d0c4adc51ac87a4830
+             (independent mdk_build rebuild; mdk_flash Verify OK / Application running at 23:14:45Z)
+No temperature or light stimulus was applied; the board was left in its normal state.
+Port opened ~12.9 s after "Application running" (flash finished 23:14:45.41Z; first capture started 23:14:58.34Z),
+so the power-on lines had already been emitted before the capture session opened.
+
+window  start (Z)              end (Z)                duration   bytes  observed S k  raw file                md5
+cap01   2026-11-10T23:14:58.34 2026-11-10T23:19:58.53 300.20 s    78    k=3           cap01_k3.bin            59fb59e8b7f6672da41050993e257eda
+cap02   2026-11-10T23:20:10.37 2026-11-10T23:25:10.59 300.22 s    78    k=9           cap02_k9.bin            636ef01ce51ebd77ed8b676c31e6b89b
+cap03   2026-11-10T23:25:19.79 2026-11-10T23:30:19.98 300.19 s   158    k=12, k=15    cap03_k12_k15.bin       989816645e9d2c6e98fb614656b68144
+cap04   2026-11-10T23:32:28.48 2026-11-10T23:37:28.69 300.21 s    79    k=21          cap04_k21.bin           f02eb9bef74b931fc18436976f5bee32
+
+Inter-window gaps (serial not captured): 11.8 s between cap01/cap02; 9.2 s between cap02/cap03;
+2 min 8.5 s between cap03/cap04 (during this gap the optional fx2lafw I2C session ran).
+Consecutive observed sampling opportunities: k=9 -> k=12 -> k=15 (differences 3, 3).
+k=3 and k=21 are isolated observations; k=6 and k=18 fell inside uncaptured gaps
+(k=6 just before cap02 opened, k=18 between cap03 and cap04) and their S rows were not taken.
+The k sequence is therefore 3, 9, 12, 15, 21; gaps are unobserved windows, not missed samples.
+
+Per-window bytes: every S line is 78-79 B including CRLF (<= 96 B budget); no NUL, no stray bytes,
+no output between sampling periods. The board-internal k counter advances by 3 per sampling opportunity.
+Wall-clock spacing is consistent with the LSI-based RTC (readme gives no tolerance), so this report does
+NOT claim 180.0 s precision; the device-internal k is the authoritative cadence evidence.
