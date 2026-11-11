@@ -1072,6 +1072,44 @@ evidence/fw_release_20261111/package_verify.txt | active | 发布包校验输出
 evidence/fw_release_20261111/upgrade_evidence.md | active | 升级证据 RELEASE-PKG-001：包内容与摘要、三次独立重建可复现、源版本固定、有线升级/回退说明、随包披露的未执行与延期项、边界
 evidence/fw_release_20261111/verify_release_package.py | active | 发布包校验脚本：CRC 测试、成员 md5、与磁盘副本一致性（可复跑）
 evidence/interface_contract_validation.md | active | 系统架构：IC-002 v4.0源码核对与CRC/65536温度字/12资格向量/容量/缓存键算术自检、当前对象摘要和未验证边界
+evidence/product_acceptance_20261111/ | active | 软件测试产品整体功能验收原始证据目录（PRODUCT-ACCEPTANCE-001）：COM43 实板周期、安卓真机 UI/冷启动/守护启停/页面缺陷复现、候选与设备身份复算
+evidence/product_acceptance_20261111/PRODUCT-ACCEPTANCE-001.md | active | 产品整体功能验收报告：当前完整候选（固件 FD-002r8 / 安卓 1.9 / 既有网关与平台 / 文档 rev 9）逐项结果；实测缺陷 D-01「查看今日报告」与 D-02「打开传感器列表」被底部导航拦截、D-03 网关按钮重叠、D-04 首页文案与“无 UI 路径”文档错误；未执行项含 FW-LIGHT-DEF2-ENABLE（人工 SKIP_CONFIRMED）、真实升温/光强双态、跨链路、平台写入、功耗；结论 TEST_FAIL（MEASURED_DEFECT）
+evidence/product_acceptance_20261111/android-ui_dump-1794390977249456500.xml | active | 设定页 UI 原始树（默认参数 2/0.1/35/29/75/40）
+evidence/product_acceptance_20261111/android-ui_dump-1794391049778381300.xml | active | 我的页 UI 原始树（账户/网关编码/注册传感器/三按钮及 bounds）
+evidence/product_acceptance_20261111/android-ui_dump-1794391089892097800.xml | active | 网关与上传设置对话框 UI 原始树（BLE 地址/搜索/保存/上传状态/重试）
+evidence/product_acceptance_20261111/android-ui_dump-1794391136702479900.xml | active | 点“查看今日报告”后被切到「设定」的 UI 原始树（D-01 复现）
+evidence/product_acceptance_20261111/android-ui_dump-1794391176438712800.xml | active | 点“打开传感器列表”后被切到「设定」的 UI 原始树（D-02 复现）
+evidence/product_acceptance_20261111/android-ui_dump-1794391213804641900.xml | active | 首页 UI 原始树（未添加设备/去添加/未配置网关状态）
+evidence/product_acceptance_20261111/android-ui_dump-1794391259300913300.xml | active | 首页「去添加」进入“已保存的 ID（0）”列表页 UI 原始树（可达路径实测）
+evidence/product_acceptance_20261111/android-ui_dump-1794391328921116700.xml | active | 点「启动」后按钮变「停止」的 UI 原始树
+evidence/product_acceptance_20261111/android-ui_dump-1794391364801851200.xml | active | 点「停止」后按钮恢复「启动」的 UI 原始树
+evidence/product_acceptance_20261111/android-ui_dump-1794391444908451800.xml | active | force-stop 后冷启动首页 UI 原始树（MainActivity 前台）
+evidence/product_acceptance_20261111/android-ui_dump-1794391743043600800.xml | active | 文本选择器点击首页链路状态后的 UI 原始树（未开弹窗，源码为 Toast 提示）
+evidence/product_acceptance_20261111/android-ui_dump-1794391789779727900.xml | active | 坐标(360,350)再次点击链路状态后的 UI 原始树
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391021450101400.png | active | 设定页真机截图
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391053617105400.png | active | 我的页真机截图
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391093148578600.png | active | 网关与上传设置对话框真机截图
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391140017604900.png | active | 点“查看今日报告”后真机截图（页面已切到设定）
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391179785228100.png | active | 点“打开传感器列表”后真机截图（页面已切到设定）
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391217729581500.png | active | 首页真机截图
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391263136516300.png | active | “已保存的 ID（0）”列表页真机截图
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391332304900100.png | active | 守护启动后真机截图
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391448862202300.png | active | 冷启动首页真机截图（链路状态文本尚未渲染）
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391691333081700.png | active | 首页真机截图（“未配置网关地址（搜索附近网关）”可见）
+evidence/product_acceptance_20261111/android-ui_screenshot-1794391793645974100.png | active | 再次点击链路状态后真机截图
+evidence/product_acceptance_20261111/app_ui_info_after_cold_start.json | active | 冷启动后前台包/Activity/pid
+evidence/product_acceptance_20261111/app_ui_info_initial.json | active | 初始前台包/Activity/pid
+evidence/product_acceptance_20261111/cloud_config_static.txt | active | 候选 CloudConfig.kt（8.140.23.253/8883/5000）与 BE-EXP-004 既有服务对象的静态对照；本轮未连接/未写入
+evidence/product_acceptance_20261111/device_apk_hash.txt | active | 设备 base.apk SHA-256 d2054221…（与主机候选逐字节一致）
+evidence/product_acceptance_20261111/device_package_dump.txt | active | 设备 dumpsys package 原始输出（versionCode 10/versionName 1.9、debug、权限、安装/更新时间）
+evidence/product_acceptance_20261111/inspect_region.py | active | 截图像素区域有界检查脚本（用于核对文字可见性与渲染时序）
+evidence/product_acceptance_20261111/logcat_launch_session_1.txt | active | 会话 1 logcat（uiautomator 启动；未见应用 FATAL/ANR）
+evidence/product_acceptance_20261111/logcat_ui_session_2.txt | active | 会话 2 logcat（UI 操作期间；未见应用 FATAL/ANR）
+evidence/product_acceptance_20261111/parse_ui.py | active | uiautomator XML 有界解析脚本（输出可见/可点击节点与 bounds）
+evidence/product_acceptance_20261111/serial_capture_com43_20261111.bin | active | COM43/9600 8N1 原始捕获 160 B（S k=276/279，md5 7f50a340…；窗口 2026-11-11T09:50:46–09:55:46Z；*.bin 命中 .gitignore，本机留存，随仓库以 hex 文本复核）
+evidence/product_acceptance_20261111/serial_capture_hex.txt | active | 上述原始捕获的十六进制转储（便于随仓库复核）
+evidence/product_acceptance_20261111/serial_capture_meta.txt | active | 串口采集窗口、端口/波特率、字节数与 md5/sha256
+evidence/product_acceptance_20261111/toast_linkstatus_tap.png | active | 链路状态点击后的 Toast“请在‘我的 → 网关与上传设置’中选择或保存网关”（预期行为）
 evidence/programmed_prototype.md | active | 下载身份记录（EV-036 置顶：HEAD 5b9b7aa / 实现提交 82a7e74 / 发布包 FD-002r8 与独立重建 axf md5 b6a15fed… 逐字节一致、mdk_flash Verify OK、上电五行与 6 个 q=1 采样行运行证据；仅证明下载成功，不代表功能合格；EV-035 及更早保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）

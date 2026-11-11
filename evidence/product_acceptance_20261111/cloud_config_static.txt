@@ -1,0 +1,22 @@
+静态配置核对（本轮只读；不代表连接或写入成功）
+时点：2026-11-11（Asia/Shanghai）
+对象：安卓候选 APK（SHA-256 d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6）
+源码：dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt
+
+关键常量（原文）：
+  const val SERVER_HOST = "8.140.23.253"
+  const val MQTT_BROKER_PORT = 8883
+  const val HTTP_PORT = 5000
+  const val MQTT_BROKER_URI = "ssl://$SERVER_HOST:$MQTT_BROKER_PORT"
+  const val HTTP_BASE_URL = "http://$SERVER_HOST:$HTTP_PORT"
+
+对照既有服务（artifacts/backend_feasibility_current.md，BE-EXP-004，2026-11-10 只读核验）：
+  - user_script.service active，/root/venv/bin/python /root/abr.py 监听 0.0.0.0:5000
+  - EMQX 5.8.0，listener 8883 running
+  - 6 个客户端 POST 路由存在（/login /upload_data /sendVerificationCode /verifyCode /register /setmac）
+  - /upload_data 写入、幂等、持久化与回读未执行（无写/DB 授权）
+
+本轮边界：
+  - 未连接服务器、未调用任何接口、未读取服务端文件、未直连数据库。
+  - 当前能力未获 inspect_existing_service_readonly 外部动作；服务在线性引用 2026-11-10 的既有只读核验，不当作本轮复测。
+  - 结论仅证明“最终候选的配置常量与既有服务对象一致”，不证明上传链路可用。

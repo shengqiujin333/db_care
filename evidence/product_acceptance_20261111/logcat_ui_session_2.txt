@@ -1,0 +1,60 @@
+urces.getSystem(Resources.java:206)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at java.lang.reflect.Method.invoke(Native Method)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at com.wetest.uia2.Main.main(Main.java:74)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-11 18:09:04.172 15178 15178 E AssetManager: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-11 18:09:04.175 15178 15178 W asset   : unable to execute idmap2: Permission denied
+11-11 18:09:04.175 15178 15178 W AssetManager: 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-11 18:09:04.177 15178 15178 W asset   : unable to execute idmap2: Permission denied
+11-11 18:09:04.177 15178 15178 W AssetManagerInjector: 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-11 18:09:04.206 15178 15178 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-11 18:09:04.249 15178 15178 W Java7Support: Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-11 18:09:04.381 15178 15178 I UiDevice: Creating a new instance, old instance exists: false
+11-11 18:09:04.392   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-11 18:09:04.395   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-11 18:09:04.397  3361  3361 I LuckyMoneyAccessibilityService: onDestroy
+11-11 18:09:04.399  1577  1895 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@7e8b51
+11-11 18:09:04.407 15178 15178 D UiDevice: Setting accessibility service flags: 65618
+11-11 18:09:04.418 15178 15178 I uidumper: clipboardManager inited
+11-11 18:09:04.421 15178 15178 I uidumper: tmpdir is /data/local/tmp/u2
+11-11 18:09:04.440 15178 15178 I uidumper: http server listening on *:9008
+11-11 18:09:04.446 15178 15196 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-11 18:09:04.513 15178 15197 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "dumpWindowHierarchy", "params": [false, 50]}}
+11-11 18:09:04.584 15178 15197 W QueryController: Could not detect idle state.
+11-11 18:09:04.585 15178 15197 W QueryController: Could not detect idle state.
+11-11 18:09:04.686   771  1861 D         : readbrightness,out1:9
+11-11 18:09:04.686   771  1861 D         : .
+11-11 18:09:04.687   771  1861 D         : readbrightness,out2:9.
+11-11 18:09:04.692 15178 15197 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@b85c; boundsInParent: Rect(0, 0 - 128, 64); boundsInScreen: Rect(334, 1288 - 386, 1352); packageName: com.jinyuni.dengbei_care; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.jinyuni.dengbei_care:id/navigation_bar_item_active_indicator_view; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-11 18:09:04.696 15178 15197 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@d2a3; boundsInParent: Rect(0, 0 - 128, 64); boundsInScreen: Rect(574, 1288 - 626, 1352); packageName: com.jinyuni.dengbei_care; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.jinyuni.dengbei_care:id/navigation_bar_item_active_indicator_view; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-11 18:09:04.709 15178 15197 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@16484; boundsInParent: Rect(0, 0 - 720, 500); boundsInScreen: Rect(0, 0 - 720, 55); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/heads_up_scrim; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-11 18:09:04.736 15178 15197 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8f949; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(35, 34 - 35, 34); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_prompt_content_container; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-11 18:09:04.738 15178 15197 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@9da85; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(584, 35 - 584, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_1; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-11 18:09:04.738 15178 15197 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@9d303; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(584, 35 - 584, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_0; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-11 18:09:04.738 15178 15197 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@a6cec; boundsInParent: Rect(0, 0 - 0, 38); boundsInScreen: Rect(618, 16 - 618, 54); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-11 18:09:04.844 15178 15198 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-11 18:09:05.390 15178 15199 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-11 18:09:05.598  1577  1577 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@cf41beb
+11-11 18:09:05.689   771  1861 D         : readbrightness,out1:9
+11-11 18:09:05.689   771  1861 D         : .
+11-11 18:09:05.689   771  1861 D         : readbrightness,out2:9.
+11-11 18:09:05.780 11824 11824 W adbd    : timeout expired while flushing socket, closing
+11-11 18:09:05.821  1577  3212 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@9af6fa8
+11-11 18:09:05.825   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-11 18:09:05.831  1577  3212 D CompatibilityInfo: mCompatibilityFlags - 0
+11-11 18:09:05.831  1577  3212 D CompatibilityInfo: applicationDensity - 320
+11-11 18:09:05.831  1577  3212 D CompatibilityInfo: applicationScale - 1.0
+11-11 18:09:05.834  3361  3361 I LuckyMoneyAccessibilityService: onCreate
+11-11 18:09:05.834   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-11 18:09:05.929 11824 11824 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+

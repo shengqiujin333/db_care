@@ -1,0 +1,120 @@
+1  1861 D         : .
+11-11 17:55:56.905   771  1861 D         : readbrightness,out2:6.
+11-11 17:55:57.906   771  1861 D         : readbrightness,out1:6
+11-11 17:55:57.906   771  1861 D         : .
+11-11 17:55:57.906   771  1861 D         : readbrightness,out2:6.
+11-11 17:55:58.906   771  1861 D         : readbrightness,out1:6
+11-11 17:55:58.906   771  1861 D         : .
+11-11 17:55:58.907   771  1861 D         : readbrightness,out2:6.
+11-11 17:55:59.907   771  1861 D         : readbrightness,out1:6
+11-11 17:55:59.907   771  1861 D         : .
+11-11 17:55:59.907   771  1861 D         : readbrightness,out2:6.
+11-11 17:56:00.003  1916  1916 D KeyguardUpdateMonitor: handleTimeUpdate
+11-11 17:56:00.908   771  1861 D         : readbrightness,out1:6
+11-11 17:56:00.908   771  1861 D         : .
+11-11 17:56:00.908   771  1861 D         : readbrightness,out2:6.
+11-11 17:56:01.909   771  1861 D         : readbrightness,out1:6
+11-11 17:56:01.909   771  1861 D         : .
+11-11 17:56:01.909   771  1861 D         : readbrightness,out2:6.
+11-11 17:56:02.911   771  1861 D         : readbrightness,out1:6
+11-11 17:56:02.911   771  1861 D         : .
+11-11 17:56:02.911   771  1861 D         : readbrightness,out2:6.
+11-11 17:56:03.662     0     0 W swapper/4: type=1400 audit(0.0:82587): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-11 17:56:03.913   771  1861 D         : readbrightness,out1:6
+11-11 17:56:03.913   771  1861 D         : .
+11-11 17:56:03.913   771  1861 D         : readbrightness,out2:6.
+11-11 17:56:04.914   771  1861 D         : readbrightness,out1:6
+11-11 17:56:04.914   771  1861 D         : .
+11-11 17:56:04.914   771  1861 D         : readbrightness,out2:6.
+11-11 17:56:05.491 11824 11824 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-11 17:56:05.612 11824 11824 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-11 17:56:05.914   771  1861 D         : readbrightness,out1:6
+11-11 17:56:05.914   771  1861 D         : .
+11-11 17:56:05.915   771  1861 D         : readbrightness,out2:6.
+11-11 17:56:05.978 14028 14028 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-11 17:56:05.984 14028 14028 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-11 17:56:05.984 14028 14028 I AndroidRuntime: Using default boot image
+11-11 17:56:05.972 14028 14028 W app_process: type=1400 audit(0.0:82588): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-11 17:56:05.984 14028 14028 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-11 17:56:05.984 14028 14028 I AndroidRuntime: Leaving lock profiling enabled
+11-11 17:56:05.984 14028 14028 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-11 17:56:05.972 14028 14028 W app_process: type=1400 audit(0.0:82589): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-11 17:56:05.972 14028 14028 W app_process: type=1400 audit(0.0:82590): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-11 17:56:05.991 14028 14028 W app_process: Could not reserve sentinel fault page
+11-11 17:56:06.116 14028 14028 D ICU     : Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-11 17:56:06.205 11824 11824 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-11 17:56:06.433 14028 14028 W app_process: JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-11 17:56:06.448 14028 14028 D AndroidRuntime: Calling main entry com.wetest.uia2.Main
+11-11 17:56:06.458 14028 14028 I uidumper: [UiAutomator2Server] Starting Server
+11-11 17:56:06.494 14028 14028 D ThemeCompatibility: START loading theme compatibility config.
+11-11 17:56:06.494 14028 14028 D ThemeCompatibility: getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-11 17:56:06.501 14028 14028 D ThemeCompatibility: getConfigDocumentTree(): 140 vs -1
+11-11 17:56:06.501 14028 14028 D ThemeCompatibility:     parse file: /system/media/theme/theme_compatibility.xml
+11-11 17:56:06.506 14028 14028 D ThemeCompatibility: END loading: version=140 size=48
+11-11 17:56:06.507 14028 14028 E AssetManager: WTF--create system assets with illegal uid: 2000, gid:2000
+11-11 17:56:06.507 14028 14028 E AssetManager: java.lang.RuntimeException
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at android.content.res.Resources.<init>(Resources.java:285)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at java.lang.reflect.Method.invoke(Native Method)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at com.wetest.uia2.Main.main(Main.java:74)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-11 17:56:06.507 14028 14028 E AssetManager: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-11 17:56:06.502 14028 14028 W main    : type=1400 audit(0.0:82591): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-11 17:56:06.510 14028 14028 W asset   : unable to execute idmap2: Permission denied
+11-11 17:56:06.510 14028 14028 W AssetManager: 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-11 17:56:06.502 14028 14028 W main    : type=1400 audit(0.0:82592): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-11 17:56:06.513 14028 14028 W asset   : unable to execute idmap2: Permission denied
+11-11 17:56:06.513 14028 14028 W AssetManagerInjector: 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-11 17:56:06.538 14028 14028 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-11 17:56:06.581 14028 14028 W Java7Support: Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-11 17:56:06.714 14028 14028 I UiDevice: Creating a new instance, old instance exists: false
+11-11 17:56:06.726   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-11 17:56:06.730   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-11 17:56:06.733  3361  3361 I LuckyMoneyAccessibilityService: onDestroy
+--------- beginning of system
+11-11 17:56:06.735  1577  3212 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@76e631e
+11-11 17:56:06.747 14028 14028 D UiDevice: Setting accessibility service flags: 65618
+11-11 17:56:06.758 14028 14028 I uidumper: clipboardManager inited
+11-11 17:56:06.760 14028 14028 I uidumper: tmpdir is /data/local/tmp/u2
+11-11 17:56:06.779 14028 14028 I uidumper: http server listening on *:9008
+11-11 17:56:06.815 14028 14045 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-11 17:56:06.876 14028 14046 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "deviceInfo", "params": {}}}
+11-11 17:56:06.915   771  1861 D         : readbrightness,out1:6
+11-11 17:56:06.915   771  1861 D         : .
+11-11 17:56:06.915   771  1861 D         : readbrightness,out2:6.
+11-11 17:56:06.935 14028 14046 W QueryController: Could not detect idle state.
+11-11 17:56:06.958 14028 14046 I chatty  : uid=2000(shell) main identical 1 line
+11-11 17:56:06.959 14028 14046 W QueryController: Could not detect idle state.
+11-11 17:56:07.407 13337 13337 D MessageMonitor: Dump Looper message took 0ms
+11-11 17:56:07.417  2219  2219 D MessageMonitor: Dump Looper message took 1ms
+11-11 17:56:07.426  1577  1816 I MiuiNetworkPolicy: updateUidState uid = 9801, uidState = 6
+11-11 17:56:07.476  9871  9871 D MessageMonitor: Dump Looper message took 27ms
+11-11 17:56:07.590 14028 14059 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-11 17:56:07.916   771  1861 D         : readbrightness,out1:6
+11-11 17:56:07.916   771  1861 D         : .
+11-11 17:56:07.916   771  1861 D         : readbrightness,out2:6.
+11-11 17:56:08.167 14028 14060 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-11 17:56:08.434  1577  1816 I MiuiNetworkPolicy: updateUidState uid = 9801, uidState = 16
+11-11 17:56:08.509 11824 11824 W adbd    : timeout expired while flushing socket, closing
+11-11 17:56:08.540  1577  3897 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@c0b2182
+11-11 17:56:08.544   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-11 17:56:08.549  1577  3897 D CompatibilityInfo: mCompatibilityFlags - 0
+11-11 17:56:08.549  1577  3897 D CompatibilityInfo: applicationDensity - 320
+11-11 17:56:08.549  1577  3897 D CompatibilityInfo: applicationScale - 1.0
+11-11 17:56:08.552  3361  3361 I LuckyMoneyAccessibilityService: onCreate
+11-11 17:56:08.552   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-11 17:56:08.709 11824 11824 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+
