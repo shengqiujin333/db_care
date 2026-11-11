@@ -1,0 +1,15 @@
+PASS D-01 查看今日报告 控件存在且不被底部导航覆盖 :: bounds=(32, 327, 688, 423) nav=(0, 1264, 240, 1424) overlap=False
+PASS D-02 打开传感器列表 控件存在且不被底部导航覆盖 :: bounds=(32, 431, 688, 527) nav=(0, 1264, 240, 1424) overlap=False
+PASS D-01 点击后打开报告页（非切换页签） :: report texts=['早起报告', '尚未生成过报告', '暂无报告。点击下方「重新生成」可立即生成今日报告。', '重新生成']
+PASS D-02 点击后进入传感器列表页（显示已保存的 ID（0）） :: list texts=['已保存的 ID（0）', '点选可多选，删除选中可批量移除', '删除选中']
+PASS D-03 注册传感器与网关与上传设置 bounds 不相交 :: register=(32, 976, 688, 1072) gateway=(32, 1120, 688, 1216)
+PASS D-03 注册传感器点击中心不落在底部导航 :: register center=(360,1024) nav_top=1264
+PASS D-03 空输入点击注册传感器不打开网关与上传设置对话框 :: alertTitle 网关与上传设置 present=False
+PASS REGRESSION 网关与上传设置按钮仍能打开对话框 :: dialog present=True
+PASS D-04a 首页空态文案指向实际可达入口 :: new_copy=True old_copy=False
+PASS D-04a 首页「去添加」进入传感器列表页 :: texts=['已保存的 ID（0）', '点选可多选，删除选中可批量移除', '删除选中']
+PASS REGRESSION 守护可启动（按钮→停止） :: text=停止
+PASS REGRESSION 守护可停止（按钮→启动） :: text=启动
+PASS REGRESSION 冷启动后首页正常显示 :: home texts=['爱守护', '还没有添加设备', '点击下方「去添加」添加设备；也可在「我的」→「打开传感器列表」查看已保存 ID']
+
+RESULT: PASS (13/13)
