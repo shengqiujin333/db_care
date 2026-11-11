@@ -1,0 +1,132 @@
+DOC-VERIFY-003 文档—实现/证据逐项核对记录
+校核时点：2026-11-11（UTC）
+对象：docs/README.md + docs/01..06（DOC-PKG-001 rev 3，HEAD eac58ee）
+说明：行号为当前 rev 3 文件行号；“实现”列给源码/证据位置；“结果”列只记独立核对结论。
+
+[A. 上一轮 D-12..D-15 复验]
+
+D-12（docs/04 §4.1 步骤4，行124-128；docs/06 §3 #20，行92）
+  文档：打开传感器列表 [164,1296][456,1392] 整体位于底部导航 [0,1264][720,1424]，点击被拦截切到「设定」，当前无 UI 路径查看/删除；06 §3 新增 #20。
+  实现：NotificationsFragment.kt:312-317 仅此一处 navigate(action_notificationsFragment_to_SensorIdListFragment)；
+        res/navigation/mobile_navigation.xml:47-48 唯一定义；
+        真机 ui_my_page_rev3.xml：opensensorlistbutton bounds=[164,1296][456,1392]，nav_view=[0,1264][720,1424]；
+        真机点击后 ui_after_opensensorlist_click_rev3.xml：navigation_dashboard selected=true，未出现 SensorIdListFragment。
+  结果：与文档一致（P-04 仍为产品缺陷，文档已如实描述）。已修正。
+
+D-13（docs/04 §5，行191-193；docs/06 §2.3，行54-56）
+  文档：401/403 → 全局暂停；408/429 → 退避重试、不全局暂停；其余 4xx → 全局暂停；5xx/网络异常 → 重试。
+  实现：UploadResult.kt:25-33（401/403=AuthRejected；408/429=Retryable；其余 400..499=RequestRejected；5xx=Retryable）；
+        CloudUploadRepository.kt:184-198（Retryable 只 markFailed+markUploadRetryScheduled；Auth/RequestRejected 才 globalBlocked=true + park）；
+        GatewayBleSettingsDialog.kt:174-184（状态文案：退出重试中/被拒绝/请求被拒绝）。
+  结果：分类与暂停语义一致。已修正。
+
+D-14（docs/01 §1 行20）
+  文档：网关“不自带 MQTT/HTTP/WiFi 通路”，云端转发由 App 完成。
+  实现：CH592EVT/EVT/EXAM/BLE/beiwov2/APP 下检索 mqtt|MQTT|broker|HTTP|http|WiFi|WIFI → 0 命中；
+        MQTT/TLS 与 HTTP 客户端在 Android MqtttService.kt / CloudConfig.kt。
+  结果：一致。已修正。
+
+D-15（docs/04 §4.1 步骤3，行113-120）
+  文档：传感器编码 8 位十六进制（0-9/A-F，不区分大小写，不带分隔符）；别称纯中文≤3 字或纯英数(a-z0-9)1–8 位；
+        长度≠8 或别称为空→“请输入传感器编码和别称”；长度满足但非十六进制/别名格式不符→“添加传感器失败,请联系客服”。
+  实现：NotificationsFragment.kt:93-116（name.length>0 && input.length==8；失败 toast “添加传感器失败,请联系客服”；否则 toast “请输入传感器编码和别称”）；
+        MacIdBox.kt:74-79（sanitizeId12：trim 后 length==8 且 regex ^[0-9A-Fa-f]{8}$）；
+        MacIdBox.kt:87-103（sanitizeName：含汉字须全汉字且≤3；否则 ^[a-z0-9]{1,8}$）。
+  结果：编码/别名规则与两条提示一致。已修正（附 D-17 低级别完整性提示）。
+
+[B. rev 3 变更段的其他事实核对]
+
+docs/04 §4.1 行95 页面文字
+  真机 ui_my_page_rev3.xml：用户：未登录 / 账户 / 请输入网关编码： / 使用摄像头扫一扫 / 请输入网关上的字母串 / 保存 /
+  请输入传感器编码和别称： / 使用摄像头扫一扫 / 请输入传感器的字母串 / 请输入传感器别称用于显示 / 注册传感器 /
+  网关与上传设置 / 查看今日报告 / 打开传感器列表。逐字一致。
+
+docs/04 §4.2 行136-174 网关与上传设置
+  真机 ui_gateway_dialog_rev3.xml：标题「网关与上传设置」；状态“未配置网关地址\n平台身份（mac_addr）：”；
+  输入提示「网关 BLE 地址（AA:BB:CC:DD:EE:FF）」；按钮「搜索附近网关」「扩大搜索（不过滤）」「清除网关地址」「保存网关地址」；
+  “云端上传状态：无（待发 0 条）”；「重试上传」；「关闭」。与文档表格一致。
+  实现：GatewayBleSettingsDialog.kt:61-119 构造同文字；:149-165 状态文本；:169-185 上传状态文本；
+        :187-213 保存/清除语义（清除写 cleared 标记不回退默认）；:215-219 重试上传。
+        MqtttService.kt:1307-1310 GATEWAY_CHANGED → wakeReadNow（立即触发下一轮读取）。一致。
+
+docs/04 §4.2 O-PKG-1 行171 重叠尺寸
+  真机 ui_my_page_rev3.xml：gatewayBleButton=[32,1168][688,1264]；sensornameinput=[33,1104][533,1224]；
+  addsensorid=[452,1128][688,1224]；重叠 1224-1168=56 px。与文档数值一致。
+
+docs/04 §4.2 O-PKG-2 / 06 §3 #18「查看今日报告」
+  真机点击后 ui_after_report_click_rev3.xml：navigation_dashboard selected=true，未出现 ReportActivity。与文档一致。
+  实现：NotificationsFragment.kt:319-323（viewReportButton 的监听存在），但点击坐标落在底部导航容器内，先被 nav_view 处理。
+  注：文档把原因归于布局/导航拦截，与实测一致。
+
+docs/04 §5 行187-195 上传状态
+  实现：CloudUploadRepository.kt:116-143 门控（guardActive && phone 非空；未通过不入队）；
+        :153-203 分类处理；Config DEFAULT_MAX_ATTEMPTS=20、DEFAULT_MAX_BACKOFF_SECONDS=1800（行220-229）；
+        UploadOutbox.dueBatch 注释与实现“attempts>=maxAttempts 不再自动重试”（行74-76）。
+  → 见 D-18：文档未写最大 20 次后停止自动重试。
+
+docs/04 §2.5 行73 三页签
+  真机导航树含 navigation_home / navigation_dashboard / navigation_notifications，均可点击切换（本轮实际切换 首页↔设定↔我的）。一致。
+
+docs/04 §3 行81-87 权限
+  apk_badging.txt：BLUETOOTH_CONNECT、BLUETOOTH_SCAN、ACCESS_FINE/COARSE_LOCATION、CAMERA、POST_NOTIFICATIONS 均声明。一致。
+
+docs/04 §6 行203-205 报警
+  AlarmEvaluator.kt:26-30（EMERGENCY_TEMP_C=65.0，严格大于；DROP_WINDOW_MINUTES=[5,10,15]）；
+  MqtttService.kt:1117、1127、1204（普通报警 900 秒节流，紧急不节流）。一致。
+
+docs/06 §2.1 行31-38 排障流程
+  第5步“绑定是否≤9 台 → 删除多余绑定”与同文档 §3 #20（行92）“无法查看/删除已绑定传感器；无 UI 路径”矛盾。
+  → D-16（文档缺陷）。
+
+docs/06 §3 #20 行92 证据引用
+  evidence/doc_verification_20261111_rev2/ui_after_opensensorlist_click.xml 存在；fragment_notifications.xml、
+  NotificationsFragment.kt、mobile_navigation.xml 均存在。引用有效。
+
+docs/06 §4 行98-107 未执行清单
+  含 FW-LIGHT-DEF2-ENABLE（SKIP_CONFIRMED 2026-11-11T03:50:42Z）、升温/光强、跨链路、/upload_data、E2E-04、release。
+  与运行时延期记录一致；未写成通过。
+
+docs/01 §1 行12-15 拓扑
+  传感器→433→网关→BLE→App→MQTT/HTTP。与 interface_contract/源码一致。
+
+docs/01 §2 行31-39 八项修改
+  GXHT40（gxht40.c/h）、光敏（light.c、PB05/PB04、8 次平均）、180 s（SENSOR_SAMPLE_TICKS=3）、
+  判据（RISE=9/HIGH=350、T=0 未启用）、服务器（CloudConfig.kt）、Android 1.9、去光通讯/霍尔（仅注释残留）、UART1（PA06/PA05 9600）均与源码一致。
+
+docs/01 §3 行45-68 判定语义
+  fw_core.c sensor_decide_report：cur>350 优先；have_prev && dark && (cur-prev)>9；否则不上报。
+  sensor_config.h:138-139（RISE_X10=9、HIGH_X10=350，严格大于）；LIGHT_DARK_THRESHOLD_CODE=0（行128-129）。一致。
+
+docs/02 §2/§4/§6/§8
+  zip/成员摘要见 static_identity.txt；构建结果 Code=25964 RO-data=656 RW-data=116 ZI-data=1676、
+  0 Error/1 Warning 与 evidence/fw_release_20261111/PACKAGE.txt 一致；
+  上电五行与 S k=0 原文与 evidence/ev036/capture_analysis.txt 逐字一致；
+  无 OTA/Bootloader、升级=重烧、回退=上一发布包，与 FW-REL-001/源码一致。
+
+docs/03 §2/§4/§5/§6/§7
+  sensor_config.h:203-216（PA06 TXD/PA05 RXD、9600 8N1）；debug_trace.c:386-406（S 行字段顺序）、
+  :411-437（G 行 s/a44/a45/rd/at/raw）、:438-449（P 行 rq/s/y/t/h）、:462-476（≤96 B 预算）与文档逐字段一致；
+  EV-036 样本行逐字一致（VDD code=1480 bgrmv=1189 mv=3289；S k=0 ...）。
+  pyocd 0.36.0、探针 87094109484987710672FF50、target cortex_m 可用（见 static_identity.txt）。
+
+docs/05 §1/§2
+  CloudConfig.kt:18-30（8.140.23.253:8883/5000 唯一来源）；
+  MqtttService.kt:1588-1598（jd-ca.crt、TLSv1.2）、:116 clientId、:1260-1262 topic；
+  network_security_config.xml 3 域名；jd-ca.crt md5 f1a8212e…。一致。
+  未连接服务器、未调用写接口、未连数据库。
+
+[C. 本轮新发现]
+
+D-16（中）：docs/06 §2.1 第5步“删除多余绑定”与 §3 #20 冲突；当前构建无 UI 删除路径，步骤不可执行。
+D-17（低/提示）：docs/04 §4.1 步骤3 把“添加传感器失败,请联系客服”仅解释为输入格式问题；
+     MacIdBox.kt:24-33 中 id 已存在（map.containsKey(id)）也返回 false，触发同一提示，文档未覆盖重复编码。
+D-18（中）：docs/06 §2.3 第1行“自动退避重试，不需手动干预”与 docs/04 §5 的“手动重试上传”未说明有界重试；
+     CloudUploadRepository.kt:228-229 DEFAULT_MAX_ATTEMPTS=20；UploadOutbox.kt:74-76 达到 maxAttempts 的行
+     不再自动重试且保留在待发箱；只有 retryBlockedNow/resetForManualRetry 恢复（:206-213）。
+     长时间断网超过 20 次尝试后需要手动「重试上传」，文档“不需手动干预”不成立。
+
+[D. 非文档观察（不构成本轮文档判定依据）]
+P-06（安全观察）：Android 源码 CloudConfig.kt 的注释中包含 MQTT 共享固定后缀明文；
+     文档未复制该值，但源码存在凭据暴露面，建议 Android 实现改为引用配置/占位，不在源码注释保存口令。
+     （报告与证据不复述该值。）
+P-04/P-05：沿用上一轮，分别属 Android 布局/导航与输入提示改进。

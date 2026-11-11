@@ -1,0 +1,40 @@
+DOC-VERIFY-003 设备与包身份原始记录
+校核时点：2026-11-11（UTC 06:32–06:40）
+设备入口：android_test（Redmi 8A，serial 12f046690506）；adb 只读查询使用项目登记入口
+
+[android_test devices]
+12f046690506  device product:olivelite model:Redmi_8A device:olivelite transport_id:1
+
+[设备系统]
+Android release = 10
+SDK = 29
+
+[已安装包 dumpsys package com.jinyuni.dengbei_care]
+codePath=/data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==
+versionCode=10 minSdk=26 targetSdk=34
+versionName=1.9
+firstInstallTime=2026-11-10 19:25:25
+lastUpdateTime=2026-11-11 13:57:18
+
+[设备上 base.apk 摘要]
+package:/data/app/com.jinyuni.dengbei_care-O7DEsc1_5VmHNxf00zV_3w==/base.apk
+d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+
+[主机候选 APK]
+path=dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+size=10365460 B
+SHA-256=d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+MD5=58de16b8fef549f004b92ffcec0104d9
+结论：设备已安装 APK 与当前主机候选逐字节一致（SHA-256 相同）。
+
+[本轮真机操作（不改变业务数据）]
+1. launch com.jinyuni.dengbei_care → 启动成功，落在「设定」页（上一会话遗留页签）。
+2. 点击底部「我的」→ 「我的」页。
+3. ui_dump → ui_my_page_rev3.xml。
+4. 点击「打开传感器列表」→ 页面未进入 sensorIdList；navigation_dashboard（设定）selected=true → ui_after_opensensorlist_click_rev3.xml。
+5. 点击「我的」→ 点击「查看今日报告」→ 页面未进入 ReportActivity；navigation_dashboard selected=true → ui_after_report_click_rev3.xml。
+6. 点击「我的」→「网关与上传设置」→ 对话框 → ui_dump → ui_gateway_dialog_rev3.xml；点击「关闭」。
+未输入/保存网关编码或传感器、未注册/删除传感器、未改网关或网络状态、未卸载/清数据。
+
+[说明]
+ui_after_opensensorlist_click_rev3.xml 与 ui_after_report_click_rev3.xml 字节相同（md5 9b1de073920128d8d46273708995af0f），因为两次点击都落到同一「设定」页且页面状态一致；点击顺序与目标按钮由调用记录（时间 06:33:58 打开传感器列表、06:34:35 查看今日报告）区分。

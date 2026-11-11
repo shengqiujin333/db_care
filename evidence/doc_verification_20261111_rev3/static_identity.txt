@@ -1,0 +1,55 @@
+DOC-VERIFY-003 静态身份原始记录
+校核时点：2026-11-11（UTC 06:32–06:40）
+
+[仓库]
+HEAD = eac58ee26a0cf0936f9f1bfa2087215584289f7a（docs rev 3 提交；工作树干净）
+文档包 = DOC-PKG-001 rev 3（docs/README.md 与 docs/01..06 头部一致）
+上一轮校核对象 = 1b1b5fa（DOC-PKG-001 rev 2）
+本轮文档差异 = git diff 1b1b5fa eac58ee -- docs/（仅版本头、01 网关描述、04 §4.1/§4.2/§5/§7/§8、06 §2.3/§3#20/§5/§7）
+
+[固件发布包]
+fw_release/fw_sensor_FD-002r8.zip  134791 B  md5 5df0c6d45ecddc8aae8bddbbcfc9cfdf
+  fw_sensor_FD-002r8_b6a15fed.axf  297380 B  md5 b6a15fed2ed5e3d0c4adc51ac87a4830
+  fw_sensor_FD-002r8_4d728dec.hex   75275 B  md5 4d728dec9b0d28a352c46436b7586c72
+  PACKAGE.txt                       3202 B  md5 a58f67fcf5b760767ff5b65888c73dfb
+与 docs/02 §2 表、01 §5、fw_release/PACKAGE.txt 逐项一致。
+
+[当前 Keil 产物]
+MDK/output/exe/Project.axf  md5 b6a15fed2ed5e3d0c4adc51ac87a4830
+MDK/output/exe/Project.hex  md5 4d728dec9b0d28a352c46436b7586c72
+与发布包成员一致。
+
+[Keil 工程保存配置]
+Project.uvprojx: Device=CW32L010F8, Vendor=WHXY, PackID=WHXY.CW32L010_DFP.1.0.2
+FlashDriverDll=UL2CM3(... -FF0FlashCW32L010_TEST ... FlashCW32L010_TEST.FLM)
+与 docs/02 §1/§5、docs/README §2 的“使用工程保存的 Device/调试器/Flash 算法”一致。
+
+[Android APK]
+dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+size=10365460 B
+SHA-256=d20542219faeaf4be0d73ce4650c57e3ea25bc54183ff0117a3f61c0e41bd8b6
+MD5=58de16b8fef549f004b92ffcec0104d9
+签名：APK Signature Scheme v2=true；证书 DN=C=US, O=Android, CN=Android Debug；
+     证书 SHA-256=773e4ef63f06b85b2a1d20fd65a8df6b8dfafce1a41fcb2adddfd513b08d9255
+与 docs/04 §1（大小/SHA-256/MD5/v2/debug 证书摘要 773e4ef6…）一致。
+设备已安装 base.apk 的 SHA-256 与本候选相同（见 device_package_state.txt）。
+
+[USB 枚举（usb_list_devices）]
+Prolific USB-to-Serial Comm Port (COM43)  USB\VID_067B&PID_2303\...
+USB 串行设备 (COM26)                      USB\VID_C251&PID_F001&MI_00\...
+USB Composite Device (CW-DAPLink)         USB\VID_C251&PID_F001\87094109484987710672FF50
+fx2lafw                                   USB\VID_04B4&PID_8613\CYPRESS_FX2
+SDM439-QRD _SN:3AE89DF1                   USB\VID_18D1&PID_4EE7\12F046690506
+与 docs/README §2、03 §2、02 §3 的 COM43/COM26/调试器序列号一致。
+
+[pyocd（只读发现，不执行 reset/烧录）]
+pyocd --version = 0.36.0（C:\Users\kason\AppData\Roaming\Python\Python311\Scripts\pyocd）
+pyocd list → 0  P&S CW-DAPLINK(CMSIS-DAP)  87094109484987710672FF50  n/a
+pyocd reset --help 存在 -t/-M/-m 选项；pyocd list --targets 含 cortex_m。
+与 docs/02 §9#4、03 §8 的“pyocd 可用但未登记为项目环境入口”描述一致；本轮未执行 reset。
+
+[平台静态配置（未连接、未写入）]
+network_security_config.xml 恰 3 个 domain-config：8.140.23.253、117.72.84.210、192.168.4.1
+jd-ca.crt md5 = f1a8212e3c690d57894b8a3a5fd901ab
+CloudConfig.kt = 主机/端口唯一来源；MqtttService.kt 使用 TLSv1.2、clientId=android_client、topic /<mac>/a/r0、/<mac>/a/s0
+与 docs/05 §1/§2 一致。

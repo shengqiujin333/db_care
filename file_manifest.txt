@@ -357,6 +357,15 @@ evidence/doc_verification_20261111_rev2/ui_after_report_click.xml | active | 点
 evidence/doc_verification_20261111_rev2/ui_gateway_dialog_rev2.xml | active | 「网关与上传设置」对话框真实 UI 树（未配置/平台身份/搜索/扩大/清除/保存/待发 0 条/重试/关闭）
 evidence/doc_verification_20261111_rev2/ui_my_page_rev2.xml | active | 「我的」页真实 UI 树（网关编码/保存/注册传感器/网关与上传设置/查看今日报告/打开传感器列表及 bounds）
 evidence/doc_verification_20261111_rev2/usb_enumeration.txt | active | USB 枚举：COM43 Prolific、COM26/CW-DAPLink C251:F001、手机 12F046690506、fx2lafw
+evidence/doc_verification_20261111_rev3/ | active | 软件测试文档独立校核原始证据目录（DOC-VERIFY-003）：DOC-PKG-001 rev 3 对照固件 FD-002r8/Android 1.9 候选的真机 UI 复现、包身份与源码核对
+evidence/doc_verification_20261111_rev3/DOC-VERIFY-003.md | active | 产品文档独立校核报告：rev 3 复核 D-12..D-15 已修正；新发现 D-16（06 §2.1 删除指令与无 UI 路径矛盾）、D-18（上传 20 次上限/手动重试未说明）、D-17（注册失败原因遗漏）；列已执行/未执行项与修正建议；结论 TEST_FAIL
+evidence/doc_verification_20261111_rev3/device_package_state.txt | active | 设备/包版本、首次安装/更新时间、设备 APK 摘要与真机操作记录（本轮未重装、未改业务数据）
+evidence/doc_verification_20261111_rev3/source_checks.txt | active | 文档对照源码/UI/证据的逐项核对记录（含 D-12..D-18 行号与实测 bounds）
+evidence/doc_verification_20261111_rev3/static_identity.txt | active | HEAD、固件发布包/成员、Keil 产物、APK、USB、pyocd 与平台配置静态身份
+evidence/doc_verification_20261111_rev3/ui_after_opensensorlist_click_rev3.xml | active | 点击「打开传感器列表」后的 UI 树（navigation_dashboard 选中，未进入列表；D-12/P-04 复现）
+evidence/doc_verification_20261111_rev3/ui_after_report_click_rev3.xml | active | 点击「查看今日报告」后的 UI 树（navigation_dashboard 选中，复现 O-PKG-2）
+evidence/doc_verification_20261111_rev3/ui_gateway_dialog_rev3.xml | active | 「网关与上传设置」对话框真实 UI 树（未配置/平台身份/搜索/扩大/清除/保存/待发 0 条/重试/关闭）
+evidence/doc_verification_20261111_rev3/ui_my_page_rev3.xml | active | 「我的」页真实 UI 树（网关编码/保存/注册传感器/网关与上传设置/查看今日报告/打开传感器列表及 bounds）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检
