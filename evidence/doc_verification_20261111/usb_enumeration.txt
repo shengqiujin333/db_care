@@ -1,0 +1,15 @@
+USB enumeration (MCP tool usb_list_devices, 2026-11-11T06:03:46Z–06:03:48Z)
+Relevant entries observed (raw FriendlyName / InstanceId):
+
+- Prolific USB-to-Serial Comm Port (COM43)
+  USB\VID_067B&PID_2303\7&298A15B9&0&2
+- USB 串行设备 (COM26)
+  USB\VID_C251&PID_F001&MI_00\6&87FA922&0&0000
+- USB Composite Device (CW-DAPLink probe)
+  USB\VID_C251&PID_F001\87094109484987710672FF50
+- SDM439-QRD _SN:3AE89DF1 (Redmi 8A, ADB serial 12F046690506)
+  USB\VID_18D1&PID_4EE7\12F046690506
+- fx2lafw
+  USB\VID_04B4&PID_8613\CYPRESS_FX2
+
+Note: this enumeration proves presence/identity only; it does not prove serial capture, flashing or device business function.

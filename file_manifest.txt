@@ -338,6 +338,15 @@ evidence/codegraph_validation.md | history | CodeGraph 历史可用性验证证�
 evidence/codegraph_validation_20261109.json | history | ?????????????????????????????????????????????
 evidence/codegraph_validation_20261110.json | active | ???????????????????????????????UTC ???????????
 evidence/codegraph_verified_validation.json | history | Code intelligence: latest three-root incremental sync, current source queries, source versions and indexed file-set hashes
+evidence/doc_verification_20261111/ | active | 软件测试文档独立校核原始证据目录（DOC-VERIFY-001）：真实设备安装/UI 树、包身份与 USB 枚举、文档缺陷复现
+evidence/doc_verification_20261111/DOC-VERIFY-001.md | active | 产品文档独立校核报告：DOC-PKG-001 rev 1 对照固件 FD-002r8/Android 1.9 候选，记录 D-01..D-11 文档缺陷、P-01..P-03 产品观察、已执行/未执行项与修正建议；结论 TEST_FAIL
+evidence/doc_verification_20261111/android_install.json | active | android_test install 原始返回（包名/versionCode 10/versionName 1.9/SHA-256 d2054221…/确认点击 0 次）
+evidence/doc_verification_20261111/device_package_state.txt | active | 安装后包版本、firstInstallTime/lastUpdateTime、Redmi 8A/Android 10/API 29
+evidence/doc_verification_20261111/static_identity.txt | active | 校核身份原始输出：HEAD、发布包 md5/成员、APK 大小/MD5/SHA-256、JDK 版本
+evidence/doc_verification_20261111/ui_gateway_dialog.xml | active | “网关与上传设置”对话框真实 UI 树（未配置/平台身份/搜索/扩大/清除/保存/待发 0 条/重试/关闭）
+evidence/doc_verification_20261111/ui_home.xml | active | 首页真实 UI 树（爱守护/空态/首页-设定-我的三页签）
+evidence/doc_verification_20261111/ui_my_page.xml | active | “我的”页真实 UI 树（请输入网关编码/保存/注册传感器/网关与上传设置/查看今日报告/打开传感器列表）
+evidence/doc_verification_20261111/usb_enumeration.txt | active | USB 枚举：COM43 Prolific 067B:2303、CW-DAPLink C251:F001 序列号、COM26 CDC、手机 12F046690506、fx2lafw
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检
