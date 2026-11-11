@@ -1,0 +1,17 @@
+D-01/D-02/D-03/D-04a static checks
+PASS A1 NavHost height=0dp (constraint-bounded)
+PASS A2 NavHost bottom constrained to nav_view
+PASS B1 notifications root is NestedScrollView with fillViewport
+PASS B2 notifications has no bottom_toBottomOf=parent
+PASS B3 all required control ids preserved
+PASS B4 addsensorid precedes gatewayBleButton in vertical LinearLayout (no overlap)
+PASS B5 quick entries placed before address section (top reachable)
+PASS B6 viewReportButton click handler present
+PASS B6 opensensorlistbutton click handler present
+PASS B6 addsensorid click handler present
+PASS B6 gatewayBleButton click handler present
+PASS C1 home hint uses real path (去添加 / 打开传感器列表)
+PASS C2 old wrong hint removed
+PASS D1 version unchanged 10 / 1.9
+PASS D2 bottom navigation preserved
+RESULT: OK

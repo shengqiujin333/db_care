@@ -344,6 +344,45 @@ evidence/android_package_check_20261110/ui_08_my_tab_scrolled.xml | active | 我
 evidence/android_package_check_20261110/ui_09_after_report_click.xml | active | 点击“查看今日报告”后 UI 树（页签变为“设定”，证明点击被底部导航拦截）
 evidence/android_package_check_20261110/unit_test.log | active | 当前源码树 `testDebugUnitTest --offline --rerun-tasks` 原始输出（BUILD SUCCESSFUL）
 evidence/android_package_check_20261110/unit_test_summary.txt | active | JUnit XML 汇总（32 套件 / 257 项 / 0 失败 / 0 错误 / 0 跳过）
+evidence/android_package_check_20261111/ | active | 软件测试当前候选包独立核验原始证据目录（ST-AA005-R4）：APK 身份/签名、正式构建、安装/覆盖升级前后包哈希、真机 UI 树/截图/logcat、宿主机 261 项、独立静态 54 项/12 门禁/布局结构
+evidence/android_package_check_20261111/apk_badging.txt | active | aapt badging（包名/versionCode 10/versionName 1.9/minSdk 26/targetSdk 34/launchable MainActivity）
+evidence/android_package_check_20261111/apk_identity.txt | active | 本地 APK SHA-256 与大小
+evidence/android_package_check_20261111/apksigner_verify.txt | active | apksigner verify 原始输出（Verifies；v2；单签名者 Android Debug 证书）
+evidence/android_package_check_20261111/assemble_debug.log | active | `:app:assembleDebug --offline` 原始输出（BUILD SUCCESSFUL，35 tasks up-to-date）
+evidence/android_package_check_20261111/check_packaged_rule_strings.py | active | 包内规则文案检查脚本（读取 APK dex，确认升温 >0.9℃/无光/35.0℃/按条件上报文案已打包）
+evidence/android_package_check_20261111/device_apk_hash_post.txt | active | 安装后 base.apk SHA-256（71a041d3…，与本地候选一致）
+evidence/android_package_check_20261111/device_apk_hash_pre.txt | active | 安装前 base.apk SHA-256（71a041d3…）
+evidence/android_package_check_20261111/device_package_post.txt | active | 安装后 dumpsys package（firstInstallTime 保留、lastUpdateTime 更新）
+evidence/android_package_check_20261111/device_package_pre.txt | active | 安装前 dumpsys package 原始输出
+evidence/android_package_check_20261111/device_path_post.txt | active | 安装后 base.apk 路径
+evidence/android_package_check_20261111/device_path_pre.txt | active | 安装前 base.apk 路径
+evidence/android_package_check_20261111/device_state_final.txt | active | 收尾设备状态：进程/前台服务、蓝牙与定位开关不变
+evidence/android_package_check_20261111/device_state_pre.txt | active | 安装前设备型号/Android/API/蓝牙/定位与包路径
+evidence/android_package_check_20261111/gates.log | active | 独立门禁（SUMMARY: 12/12 gates passed）
+evidence/android_package_check_20261111/install_result.json | active | android_test install 校验结果（包名/10/1.9/sha256 71a041d3…，确认点击 0 次）
+evidence/android_package_check_20261111/logcat_guard_session.txt | active | 守护启停段原始 logcat（无本应用 FATAL/ANR）
+evidence/android_package_check_20261111/logcat_launch_session.txt | active | 启动会话原始 logcat（无本应用 FATAL/ANR）
+evidence/android_package_check_20261111/myprefs_after_reinstall.xml | active | 覆盖升级后 MyPrefs（隐私已同意、网关已清除、measure_state=starting、无上传阻塞）
+evidence/android_package_check_20261111/packaged_rule_strings.txt | active | 上述脚本输出（5 条文案均 FOUND，RESULT: OK）
+evidence/android_package_check_20261111/screen_01_home_after_launch.png | active | 启动后首页截图
+evidence/android_package_check_20261111/screen_02_settings.png | active | 设定页截图
+evidence/android_package_check_20261111/screen_03_home_guard_stopped_final.png | active | 收尾首页截图（守护已停止）
+evidence/android_package_check_20261111/static_check_aa005.log | active | 独立 AA-005 静态核查（54/54 PASS，0 观察）
+evidence/android_package_check_20261111/static_layout_check.log | active | 布局/文案结构检查（RESULT: OK）
+evidence/android_package_check_20261111/summarize_unit_tests.py | active | JUnit XML 汇总脚本（可复跑）
+evidence/android_package_check_20261111/test_report.md | active | 当前候选包独立核验报告：源码 `a421d0d`/APK `71a041d3…` 的包身份、构建、安装升级、启动与关键路径、回归、观察项与未执行项；结论 TEST_PASS（限定范围）
+evidence/android_package_check_20261111/ui_01_after_launch.xml | active | 启动后首页 UI 树（爱守护/启动/空态/三页签/NavHost 与导航不相交）
+evidence/android_package_check_20261111/ui_02_my_page.xml | active | 我的页 UI 树（账户/报告/传感器列表/输入区入口）
+evidence/android_package_check_20261111/ui_03_my_page_scrolled.xml | active | 我的页滚动后 UI 树（注册传感器与网关与上传设置 bounds 不相交）
+evidence/android_package_check_20261111/ui_04_gateway_dialog.xml | active | 网关与上传设置对话框 UI 树（未配置/平台身份空/待发 0 条/重试）
+evidence/android_package_check_20261111/ui_05_report_activity.xml | active | 报告页 UI 树（早起报告/尚未生成过报告/重新生成）
+evidence/android_package_check_20261111/ui_06_sensor_list.xml | active | 传感器列表 UI 树（已保存的 ID（0））
+evidence/android_package_check_20261111/ui_07_guard_started.xml | active | 守护启动 UI 树（按钮“停止”、链路状态“未配置网关地址”）
+evidence/android_package_check_20261111/ui_08_guard_stopped.xml | active | 守护停止 UI 树（按钮“启动”）
+evidence/android_package_check_20261111/ui_09_settings_page.xml | active | 设定页 UI 树（设备选择与参数默认值 2/0.1/35/29/75/40）
+evidence/android_package_check_20261111/ui_info_after_launch.json | active | 启动后当前包/Activity/PID/屏幕信息
+evidence/android_package_check_20261111/unit_test.log | active | `testDebugUnitTest --offline --rerun-tasks` 原始输出（BUILD SUCCESSFUL）
+evidence/android_package_check_20261111/unit_test_summary.txt | active | JUnit XML 汇总（33 套件 / 261 项 / 0 失败 / 0 错误 / 0 跳过）
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002/AT-015/AT-016/AT-017（261 项单测、基线告警、APK 身份、A1–A14/布局结构与独立静态/门禁核查）
 evidence/backend_exploration/ | active | 后端可行性探索原始证据目录（本地 Flask+SQLite 桩；对既有服务的只读 SSH 探测脚本与原始输出，仅状态/端口/日志，未写数据、未直连 DB）
 evidence/backend_exploration/http_history_counts.txt | active | 请求行 26（POST 14/GET 11）、journal 自 2026-09-25 起的原始计数

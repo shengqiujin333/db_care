@@ -1,0 +1,21 @@
+{
+  "apk": {
+    "package": "com.jinyuni.dengbei_care",
+    "label": "爱守护",
+    "version_code": 10,
+    "version_name": "1.9",
+    "sha256": "71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8"
+  },
+  "events": [
+    {
+      "stage": "starting"
+    },
+    {
+      "stage": "adb_success"
+    },
+    {
+      "stage": "installed_version_verified"
+    }
+  ],
+  "verified": true
+}

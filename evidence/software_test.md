@@ -1386,3 +1386,44 @@ expected:<[empty]> but was:<[upload_blocked]>
 # ST-ANDROID-RECHECK-20261111（追加索引）
 
 产品验收 D-01/D-02/D-03/D-04a 修复后的独立真机复验报告见 `evidence/android_check_20261111/SOFTWARE-TEST-ANDROID-RECHECK-001.md`，原始 UI 树/截图/日志与可复跑脚本在同目录。结论 **TEST_PASS（限定当前 APK 与已执行范围）**：当前 APK SHA-256 `71a041d3…` 已覆盖安装并与设备包逐字节一致；D-01 报告页、D-02 传感器列表从「我的」页顶部可直达；D-03 两个按钮 bounds 不相交且空输入点击注册不打开网关对话框；D-04a 首页文案与实际入口一致且「去添加」可达列表页；冷启动、页签、设定、网关对话框、上传状态/重试、守护启停无回归，无本应用 FATAL/ANR。真实 BLE/平台链路、“有数据时”删除、API 31+、多设备与调温/调光/功耗保持 NOT EXECUTED/NOT APPLICABLE，不因本结论视为通过。
+
+---
+
+## ST-AA005-R4 · 当前候选包独立核验（android_package_check）—— 结论 **TEST_PASS（限定包/安装/启动/回归范围）**
+
+**被测对象**：`artifacts/android_build.md`（AB-002，候选构建）；源码 Git `a421d0d`（工作区干净；产品树与 `dacf888` 一致，本轮产品源码零变化）。
+**被测包**：`dengbei_care/app/build/outputs/apk/debug/app-debug.apk`，10,365,464 B，SHA-256 `71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8`；`versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34`。
+**设备**：Redmi 8A / Android 10 / API 29 / `12f046690506`；蓝牙开、定位总开关开（mode=3）、无默认网络。
+**依据**：Project Goal（Android 同步修改；“网关与手机跨链路验证安排在后续联调阶段”）、`artifacts/android_build.md` §4–5、`artifacts/software_test_design.md` TD-SW-004。
+**原始证据**：`evidence/android_package_check_20261111/`（`test_report.md`、APK 身份/签名、安装结果与前后包哈希、真机 UI 树/截图/原始 logcat、单测/静态/门禁日志）。
+
+### 1. 独立执行摘要
+
+| 层 | 方法 | 结果 |
+|---|---|---|
+| 包身份/签名 | `sha256sum`/`md5sum`、`aapt dump badging`、`apksigner verify --print-certs --verbose` | **PASS**：哈希与声明一致；`10/1.9`、`26/34`、launchable `MainActivity`；v2 签名验证通过 |
+| 正式构建入口 | `./gradlew :app:assembleDebug --offline` | **BUILD SUCCESSFUL**（35 tasks；全部 up-to-date）；重建后 APK 哈希不变 |
+| 安装/升级 | `android_test install` | **PASS**：`installed_version_verified`（包名/`10`/`1.9`/sha256 `71a041d3…`）；设备 `base.apk` 与本地候选逐字节一致；`firstInstallTime` 保留、`lastUpdateTime` 更新；应用数据保留 |
+| 启动/资源装载 | `launch` + `ui_dump` + `ui_screenshot` + logcat | **PASS**：首页、我的、设定、网关对话框、报告页、传感器列表均正常渲染；无 `FATAL EXCEPTION`/本应用 ANR |
+| 关键用户路径 | 守护启停、页签切换、D-01/D-02/D-03/D-04a 回归 | **PASS**：启动→“停止”、停止→“启动”；报告页与传感器列表直达；`注册传感器` 与 `网关与上传设置` bounds 不相交；上传状态“无（待发 0 条）”；清除网关后不回退默认地址 |
+| 宿主机回归 | `:app:testDebugUnitTest --offline --rerun-tasks` | **33 套件 / 261 项 / 0 失败 / 0 错误 / 0 跳过** |
+| 独立静态/门禁 | `software_verify_aa005_android_check.py`、`aa005_android_check/run_gates.py`、`static_layout_check.py` | **54/54 PASS**、**12/12 EXIT=0**、**RESULT: OK** |
+| 包内规则文案 | `check_packaged_rule_strings.py` | **RESULT: OK**：APK 13 个 dex 命中“采样周期 3 分钟”“升高超过 0.9”“且无光”“35.0℃”“按条件上报” |
+| 真实跨链路 | — | **NOT EXECUTED**（上游明确属后续联调；无已配置网关、无隔离账号、无真实多设备） |
+
+### 2. 关键实测记录
+
+1. **安装字节 = 被测候选字节**：安装工具返回 `version_code=10`、`version_name=1.9`、`sha256=71a041d3…`；安装前后设备 `base.apk` SHA-256 均为 `71a041d3…`，与本地构建产物逐字节一致。
+2. **覆盖升级保留数据**：`firstInstallTime=2026-11-10 19:25:25` 不变、`lastUpdateTime=2026-11-11 19:18:26`；`privacy_policy_accepted=true`、`gateway_ble_addr_cleared=true`、`measure_state=starting` 等偏好保留。
+3. **D-01/D-02/D-03/D-04a 回归**：「查看今日报告」打开 `ReportActivity`（“早起报告/尚未生成过报告/重新生成”）；「打开传感器列表」进入 `SensorIdListFragment`（“已保存的 ID（0）”）;「注册传感器」`[32,976][688,1072]` 与「网关与上传设置」`[32,1120][688,1216]` 不相交且均在底部导航之上；首页文案“点击下方「去添加」…”且「去添加」可达列表页。
+4. **守护启停与网关状态**：按钮“启动”→“停止”→“启动”；链路状态“未配置网关地址（搜索附近网关）”，清除后的网关地址为空且 `gateway_ble_addr_cleared=true`，未回退默认地址；`finish_guard_time` 记录停止时刻。
+5. **无崩溃**：整段会话与守护操作段 logcat 均无本应用 `FATAL EXCEPTION`、无 ANR；进程存活（PID 18030）。
+6. **观察项 O-PKG-3**：守护停止后 `MqtttService` 仍以前台服务存在；该行为属既有已登记限制（P-08～P-13）范围，本轮未见用户可见崩溃或数据异常，未计入失败。观察项 O-PKG-4：设备详情页需已绑定设备与真实读数，本轮以宿主机用例覆盖逻辑，未做真机详情截图。
+
+### 3. 未执行项（不得写成通过）
+
+真实 BLE/GATT/MTU、真实网关发现与配对、真实 MQTT/`/upload_data` 写入与回读、401/403、传感器列表“有数据时”列出/删除、详情页真实读数、API 31+ 权限分支、9 台真实快照与第 10 台拒绝：**NOT EXECUTED**（上游明确跨链路属后续联调；无隔离账号/写读授权/多设备源）。调温/改变光强/遮光/功耗按用户明确要求 **NOT APPLICABLE**。固件 `FW-LIGHT-DEF2-ENABLE` 保持既有 `SKIP_CONFIRMED`（NOT EXECUTED），本报告不重复询问。
+
+### 4. 判定
+
+包身份与正式构建、安装/覆盖升级、启动与资源装载、已执行关键用户路径、宿主机 261 项回归、54 项独立静态与 12 项门禁全部通过；未发现与当前验收声明不符的失败。结论 **TEST_PASS（限定版本 `a421d0d` + APK `71a041d3…` 与本轮已测范围）**；观察项与未执行项不因本结论变为通过。设备收尾：守护已停止、网关保持未配置、App 保持安装、蓝牙/定位/网络设置未改、无遗留诊断任务。
