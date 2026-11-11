@@ -1,0 +1,66 @@
+EV-034 tool results (2026-11-11, UTC unless noted)
+
+1. serial_list_ports (02:58:25.358 .. 02:58:25.363)
+   COM43  Prolific USB-to-Serial Comm Port (COM43)  USB VID:PID=067B:2303 LOCATION=1-9.4.2
+   COM26  USB 串行设备 (COM26)  USB VID:PID=C251:F001 SER=87094109484987710672FF50
+   -> sensor debug port is COM43 (registered entry); COM26 is the debugger CDC, not used.
+
+2. usb_list_devices (02:58:25.445 .. 02:58:27.619)
+   CW-DAPLink            USB\VID_C251&PID_F001\87094109484987710672FF50   Status OK
+   Android phone         USB\VID_18D1&PID_4EE7\12F046690506               Status OK
+   FX2 logic analyzer    USB\VID_04B4&PID_8613\CYPRESS_FX2               Status OK
+   No power meter / SMU / oscilloscope present.
+
+3. mdk_build {"action":"rebuild"} (02:59:51.125 .. 02:59:53.060)
+   Compiler V6.24; Rebuild target 'Project'; 0 Error(s), 1 Warning(s)
+   warning: USER/src/main.c(254): while loop has empty body (pre-existing)
+   Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+   axf md5 b6a15fed2ed5e3d0c4adc51ac87a4830 ; hex md5 4d728dec9b0d28a352c46436b7586c72
+
+4. mdk_flash {} (03:00:06.302 .. 03:00:18.715)
+   Build target 'Project' -> 0 Error(s), 0 Warning(s)
+   Erase Done.Programming Done.Verify OK.Application running ...
+   (flash log local time 11:00:18; md5 unchanged after download)
+
+5. pyocd capability check (see pyocd_check.txt)
+   pyocd 0.36.0; probe P&S CW-DAPLINK(CMSIS-DAP) 87094109484987710672FF50 Target n/a
+   no CW32 target; builtin cortex_m Generic CoreSightTarget available
+   sysresetreq and hw reset both report Done; core status after reset: Sleeping
+
+6. serial_capture windows (see capture_windows.txt for the full table)
+   03:12:10.010 .. 03:17:10.224  bytes=156  S k=3, k=6
+   03:17:38.322 .. 03:22:38.531  bytes=157  S k=9, k=12
+   03:26:38.842 .. 03:30:39.032  bytes=79   S k=18
+   Earlier 0-byte windows and the port-first BOT capture are documented in
+   capture_windows.txt; the decisive BOT capture used capture_with_reset.py.
+
+7. BOT capture (capture_with_reset.py, pyserial + pyocd HW reset)
+   open COM43 9600 8N1 : 03:10:38.499
+   reset               : 03:10:40.508 .. 03:10:41.225 (returncode 0)
+   bytes               : 271
+   BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+   VDD ok=1 code=1481 bgrmv=1189 mv=3287
+   IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+   IOSIG scl=95555 sda=30300
+   BUS idle=3 scl=1 sda=1 ack=44
+   S k=0 p=0 H=0 V=0 o=8 n=3045 x=3054 a=3049 D=0 t=256 h=374 q=1 r=0 s=0 y=0
+
+8. sigrok_probe (03:23:37.519 .. 03:23:37.572)
+   fx2lafw:conn=2.32 --show exit 0
+
+9. sigrok_capture (03:23:43.235 .. 03:25:36.091)
+   fx2lafw:conn=2.32, D0=SCL, D1=SDA, 8,000,000 samples @4 MS/s (2.0 s),
+   trigger D1 falling, srzip. exit 0. raw sr md5 6de76678f0476d6b89a9b8df8a62d5b5
+
+10. sigrok_decode (03:25:45.411 .. 03:25:45.596)
+    i2c scl=D0 sda=D1; 2 starts/2 stops/8 ACK/1 NACK
+    Address write 44 / Data write FD / Address read 44 /
+    Data read 67 01 4B 59 D6 07 / NACK / Stop
+    CRC-8 (poly 0x31, init 0xFF): temp 0x6701 -> 0x4B MATCH; hum 0x59D6 -> 0x07 MATCH
+    converted 254 x10 (25.4 C), 379 x10 (37.9 %RH)
+    nominal: write 12.051 ms; cmd STOP->read START 32.528 ms; read 40.166 ms;
+    SCL bit interval 614.25 us (~1.628 kHz).  Digital levels only.
+
+11. Host harnesses (see host_harness_summary.txt)
+    implementer 222/0; tester 609/0; static 21/21; gcc build 0 errors,
+    FLASH 34840 B / RAM 1816 B.

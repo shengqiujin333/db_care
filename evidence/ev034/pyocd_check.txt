@@ -1,0 +1,52 @@
+EV-034 BOT-04: pyocd read-only capability assessment (no install, no config change)
+
+pyocd --version
+  0.36.0
+  executable: C:\Users\kason\AppData\Roaming\Python\Python311\Scripts\pyocd.exe
+
+pyocd list
+    #   Probe/Board                 Unique ID                  Target
+  ---------------------------------------------------------------------
+    0   P&S CW-DAPLINK(CMSIS-DAP)   87094109484987710672FF50   n/a
+
+pyocd list --targets --name CW32
+  (empty: no CW32L010 target definition loaded)
+
+pyocd list --targets --name cortex
+  cortex_m   Generic   CoreSightTarget   builtin
+
+pyocd reset -v -t cortex_m -u 87094109484987710672FF50 -M attach -m sysresetreq
+  0000418 I Target type is cortex_m [board]
+  0000437 I DP IDR = 0x0bc11477 (v1 MINDP rev0) [dap]
+  0000462 I AHB-AP#0 IDR = 0x04770031 (AHB-AP var3 rev0) [discovery]
+  0000477 I AHB-AP#0 Class 0x1 ROM table #0 @ 0xe00ff000 (designer=43b:Arm part=4c0) [rom_table]
+  0000488 I [0]<e000e000:SCS v6-M class=14 designer=43b:Arm part=008> [rom_table]
+  0000495 I [1]<e0001000:DWT v6-M class=14 designer=43b:Arm part=00a> [rom_table]
+  0000501 I [2]<e0002000:BPU v6-M class=14 designer=43b:Arm part=00b> [rom_table]
+  0000509 I CPU core #0: Cortex-M0+ r0p1, v6.0-M architecture [cortex_m]
+  0000516 I 1 hardware watchpoints [dwt]
+  0000521 I 4 hardware breakpoints, 0 literal comparators [fpb]
+  0000526 I Performing SW_SYSTEM reset... [reset_cmd]
+  0000652 I Done. [reset_cmd]
+  returncode=0
+
+pyocd reset -v -t cortex_m -u 87094109484987710672FF50 -M attach -m hw
+  0000420 I Target type is cortex_m [board]
+  0000424 I Performing HW reset... [reset_cmd]
+  0000637 I Done. [reset_cmd]
+  returncode=0
+
+pyocd cmd -t cortex_m -u 87094109484987710672FF50 -M attach -c status
+  Core 0 (None):  Sleeping
+
+Conclusion
+- Probe is present and the generic Cortex-M0+ core is discovered.
+- No CW32L010 DFP target is installed; generic `cortex_m` is the only usable target.
+- HW reset (nRESET) through the CW-DAPLink works and is the method that produced the
+  BOT-01 capture (see capture_with_reset.py / bot01_hw.bin).
+- pyocd is NOT registered as an entry in runtime/environment.yaml.  It was used only
+  because the Project Goal's supplementary condition #2 explicitly said to try the
+  connected CW-DAPLink and pyocd, and because the reset is required to capture the
+  boot lines.  Nothing was installed and no configuration was changed.
+  Recommendation to the configuration owner: register a pyocd reset entry (target
+  cortex_m, probe unique ID, timeout) or load WHXY.CW32L010_DFP 1.0.2.

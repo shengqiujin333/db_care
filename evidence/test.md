@@ -1,3 +1,148 @@
+# 嵌入式验证证据（EV-034 / LIGHT-DEF-2 交付固件实板复核 + BOT-01 自动编排成功）
+
+状态：`embedded_tester.embedded_verification` 独立验证证据（本轮独立 rebuild、下载、端口先开后复位、COM43 原始捕获（上电窗口 + 3 个周期窗口 + 1 份补充）、1 次位级 I²C 被动采集/离线解码、宿主与静态复核）
+输入：`runtime.artifacts.firmware_current` = `artifacts/firmware_implementation.md`（FWI-003 **rev 8**，LIGHT-DEF-2）；测试方案 = `artifacts/test_design.md`（TD-002 rev 8.0，6 项任务）
+负责角色：嵌入式测试
+
+**结论：`TEST_FAIL`（完整目标；`failure_cause=EXTERNAL_CONDITION_UNEXECUTED`）**
+
+本轮**无已测固件缺陷**。上一轮阻塞的 `FW-DIAG-BOOT`（BOT-01/02/03/04）本轮已通过：测试侧脚本先打开 COM43，再用 `pyocd` 经 CW-DAPLink 执行 **HW reset**，在同一窗口取得完整的 `BOOT→VDD→IOTEST→IOSIG→BUS` 五行与首条 `S k=0`。当前交付增量（LIGHT-DEF-2 形制、`T=0` 未启用等价性）与被动采样行为继续在真实板上成立；完整目标仍未通过，原因是其余必需项由用户约束/上游前置**未执行且无已测缺陷**：
+
+- `FW-LIGHT-DEF2-ENABLE`（EN-01/02）：**经人工确认未执行（`SKIP_CONFIRMED`，2026-11-11T03:50:42Z）**。原因：无判据形制/数值接受记录，无同板同构建双态被动证据；用户明确当前不能改变光强，并已回复「无法准备，先跳过」。该项按 `NOT_EXECUTED` 记录、不重测、不写成通过；`T` 保持 0。
+- 真实升温 >0.9 ℃ 且无光 / 稳定 >35 ℃ 触发：用户明确当前不能调节温度，不安排。
+- 网关/手机跨链路：按用户补充条件 4 属后续联调阶段，不在本固件阶段执行，也不据此退回固件实现。
+- `E2E-04`（CR2032 采样峰值/深睡电流）：属已批准 **DEFERABLE** 延期项（无电流表/SMU/示波器），本轮未测并在此列明。
+
+按能力契约，未执行/条件未满足的必需项不得从汇总删除后判通过，故本轮返回 `TEST_FAIL`；`failure_cause` 为外部条件未执行，而非实板测得的固件功能缺陷。
+
+---
+
+## 1. 被测身份、构建与部署
+
+| 项 | 原始结果 |
+|---|---|
+| 验证时 HEAD | `d7a645cc9aa732fd752d34933dd672d30d4932b3`（接手时工作树干净） |
+| 产品源码身份 | `git log -1 -- USER` = `82a7e74e5d6bae855a573e1f23f83936ba8db049`；`git diff --stat 82a7e74 HEAD -- USER/ MDK/ EWARM/` **为空**（产品源码/工程 = FWI-003 rev 8） |
+| 独立构建 | `mdk_build {"action":"rebuild"}`（02:59:51.125–02:59:53.060Z）：**0 Error / 1 Warning**（既有 `main.c(254)` 空循环体）；`Code=25964 RO=656 RW=116 ZI=1676` |
+| 产物身份 | axf **`b6a15fed2ed5e3d0c4adc51ac87a4830`**、hex **`4d728dec9b0d28a352c46436b7586c72`**（本能力独立复算；与 FWI-003 rev 8 一致） |
+| 部署 | `mdk_flash {}`（03:00:06.302–03:00:18.715Z）：`Build target 'Project'` 0E/0W → `Erase Done.Programming Done.Verify OK.Application running ...`；下载后 axf/hex md5 不变 |
+| GNU 交叉构建 | `gcc/build.sh` exit 0；0 error（27 项既有 warning）；FLASH **34840 B** / RAM **1816 B**（与实现记录一致） |
+| 调试串口 | `serial_list_ports`：`COM43` = Prolific `067B:2303`、`LOCATION=1-9.4.2`，9600 8N1；`COM26` = `C251:F001`（调试器 CDC，未使用） |
+| USB 在位 | CW-DAPLink `C251:F001` SN `87094109484987710672FF50`；手机 `18D1:4EE7` SN `12F046690506`；FX2 `04B4:8613`；**未见**电流表/SMU/示波器 |
+| 逻辑分析仪 | `sigrok_probe` conn=2.32 exit 0；`sigrok_capture`/`sigrok_decode` exit 0（参数与原始文件见 §3） |
+
+原始：`evidence/ev034/image_identity.txt`、`tool_results.txt`、`gcc_build.log`。
+
+## 2. 上电五行（BOT-01/02/03/04）——本轮已通过
+
+**编排方法（BOT-01，测试侧脚本，未改固件）**：`capture_with_reset.py` 用 pyserial 先打开 COM43 9600 8N1 并确认端口就绪，等待 2 s 后调用 `pyocd reset -t cortex_m -u <probe> -M attach -m hw`（nRESET），继续采集 25 s。原始字节 `bot01_hw.bin`（271 B，md5 `d6121c06834b6abc23bc4f0c74348746`）。
+
+| 顺序 | 原始行（含 CRLF 共 50/39/48/27/31 B，均 ≤96） |
+|---|---|
+| 1 | `BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600` |
+| 2 | `VDD ok=1 code=1481 bgrmv=1189 mv=3287` |
+| 3 | `IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0` |
+| 4 | `IOSIG scl=95555 sda=30300` |
+| 5 | `BUS idle=3 scl=1 sda=1 ack=44` |
+| — | `S k=0 p=0 H=0 V=0 o=8 n=3045 x=3054 a=3049 D=0 t=256 h=374 q=1 r=0 s=0 y=0`（76 B） |
+
+判读（`analyze_ev034.py` / `capture_analysis.txt`）：
+1. **顺序与次数**：五行各出现一次且相邻有序 `BOOT→VDD→IOTEST→IOSIG→BUS`（PASS）；不是只取得 `BUS`/后续 `S`。
+2. **身份闭合**：`BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600` 与当前交付（FWI-003 rev 8）和同板历史 UID 一致；构建摘要 `b6a15fed…` + `Verify OK` 绑定当前镜像。`Verify OK` 只证明下载校验。
+3. **VDD 自洽**：`ok=1 code=1481 bgrmv=1189 mv=3287`；独立复算 `4095*1189//1481 = 3287` **MATCH**（非伪造）。
+4. **总线自洽**：`BUS ack=44` 与 `IOSIG sda=30300`（地址 0x88 写事务 ACK 时隙被拉低）一致，且随后 `S k=0 q=1`；`gc=0`（0x44/0x45 已应答，未做 general-call 复位）。
+5. **`S` 首样本语义**：复位后首条 `S k=0 p=0 H=0`，符合“无前值”语义；下一周期 `p` 链见 §3。
+
+**BOT-04（pyocd 只读评估）**：`pyocd 0.36.0`；探针 `P&S CW-DAPLINK(CMSIS-DAP) 87094109484987710672FF50` 被识别；`pyocd list --targets --name CW32` **为空**，仅有 builtin `cortex_m`（Cortex-M0+ r0p1 可发现）；`sysresetreq`/`hw` 均报告 Done，`hw`（nRESET）产生了本轮的完整上电捕获。**pyocd 不是 `runtime/environment.yaml` 登记入口**；本轮按 Project Goal 补充条件 2 的明确要求仅使用现有安装与探针，未安装软件、未改配置。建议配置所有者登记 pyocd reset 入口（或加载 `WHXY.CW32L010_DFP 1.0.2`）。原始输出：`pyocd_check.txt`。
+
+**编排观察（不写成固件缺陷）**：先用 MCP `serial_capture` 开窗、再在 3–8 s 后外部复位时，4 个窗口均为 0 字节；同一复位确实生效（后续 `k` 从 0 重新计），说明是采集工具的端口就绪时刻与一次性上电输出之间的编排问题。改用“pyserial 先开端口确认 + 2 s 后 HW reset”后一次成功。该差异属测试侧编排，不是固件失败。
+
+**按 Runtime 的 BOT-01 重新评估要求**：自动测试已用测试侧脚本实现，**不需要新增固件测试接口**，因此不提出固件改动请求。最小验收方法（可复跑）：以 9600 8N1 打开 COM43 并确认端口就绪 → 调用 `pyocd reset -t cortex_m -M attach -m hw`（CW-DAPLink，nRESET）→ 同窗口采集 ≥10 s → 断言五行各一次且有序、`BOOT fw/uid/rst/uart` 可读、`VDD` 可复算、`BUS ack` 与 `IOSIG`/`S q=1` 自洽。脚本 `capture_with_reset.py` 与原始 `bot01_hw.bin` 已入库。
+
+## 3. 真实目标 COM43 周期（OBS-01..09，9600 8N1，无刺激）
+
+原始：`bot01_hw.bin`、`cap01_k3_k6.bin`、`cap02_k9_k12.bin`、`cap03_k18.bin`（补充：`cap00_k3_prior_reset.bin`）；窗口/字节/时间见 `capture_windows.txt`；独立解析 `analyze_ev034.py` → `capture_analysis.txt`（不引用实现常量）。
+
+| 窗口（UTC） | 原始 `S` 行 | 判读 |
+|---|---|---|
+| 03:10:38–03:11:06（端口先开 + HW reset） | `S k=0 p=0 H=0 V=0 o=8 n=3045 x=3054 a=3049 D=0 t=256 h=374 q=1 r=0 s=0 y=0` | 首样本；`q=1`；`V=0 D=0` |
+| 03:12:10–03:17:10 | `S k=3 p=256 … t=255 h=375 q=1 …`；`S k=6 p=255 … t=253 h=380 q=1 …` | 连续 k=3→6 |
+| 03:17:38–03:22:38 | `S k=9 p=253 … t=253 h=381 q=1 …`；`S k=12 p=253 … t=252 h=383 q=1 …` | 连续 k=9→12 |
+| 03:26:38–03:30:39 | `S k=18 p=254 … t=253 h=383 q=1 …` | `p(k=18)=254` 与位级 I²C 的 k=15 换算值配对（跨窗口推断） |
+
+判读：
+1. **连续性与节拍**：k=0、3、6、9、12 为**连续 5 个采样机会**（差值恒 3），另取得 k=18；同一 `k` 无重复行，采样间期无字节输出。
+2. **格式/预算**：全部行 76–79 B（含 CRLF）≤96；15 字段顺序与冻结字面一致；CRLF 完整、无 NUL、无杂散。
+3. **字段**：全部周期 `q=1`、`o=8`、`t∈[-400,1250]`、`h∈[0,1000]`、`a∈[n,x]`、`r=0 s=0 y=0`；无 `G`、无 `P`。
+4. **判据未启用等价性**：全部周期 `V=0 D=0`；`a=2959..3049` 仅作事实记录，不据此判“有光”或光路好坏；`T` 保持 0。
+5. **F-1 语义**：`p(k=3)=t(k=0)=256`、`p(k=6)=t(k=3)=255`、`p(k=9)=t(k=6)=253`、`p(k=12)=t(k=9)=253`（`p(k=9)==t(k=9)` 为同温巧合，由 `p(k=12)=253` 反证 `p` 取上一周期值）。
+6. **节拍精度**：readme 未给出 LSI 容差；以 `k` 增量 3 为内部证据，不声称 180.0 s 精度。
+
+## 4. 位级 I²C（可选补充，非替代任何实板行证据）
+
+- 采集：`fx2lafw:conn=2.32`、D0=SCL、D1=SDA、D1 下降沿触发、8,000,000 样点 @4 MS/s（2.0 s），窗口约 03:25:34–03:25:36Z。原始 `.sr` md5 `6de76678f0476d6b89a9b8df8a62d5b5`；`decoded_i2c.txt`。
+- 解码：`Start / Address write 44 / ACK / Data write FD / ACK / Stop`；`Start / Address read 44 / ACK / Data read 67 01 4B 59 D6 07 / NACK / Stop`。
+- 独立复算：温度字 `0x6701` CRC `0x4B` **MATCH**；湿度字 `0x59D6` CRC `0x07` **MATCH**；换算 **254 x10（25.4 ℃）/ 379 x10（37.9 %RH）**。
+- 名义时序：写事务 12.051 ms；命令 STOP→读 START **32.528 ms**；读事务 40.166 ms；SCL 位间隔 **614.25 µs**（≈1.628 kHz）。
+- 配对：`p(k=18)=254` 与本次温度换算值相等，故该事务对应 k=15（跨窗口推断，不是同窗直接配对）。
+- 边界：数字采样只证明逻辑电平与采样分辨率内时序，不证明模拟幅度/上升沿/上拉质量。
+
+## 5. 宿主与静态证据（同一源码）
+
+| 入口 | 结果 |
+|---|---|
+| 实现侧 `test/build_test.sh` | 48+61+54+28+31 = **222 / 0**，exit 0 |
+| 测试侧 13 个独立 harness | **609 / 0**（明细见 `host_harness_summary.txt`） |
+| LIGHT-DEF-2 形制/接线 | `host_fw_core_verify_ev` 59/0（含 `T=0`、`mean=T-1/T`、`T=4095`、`valid=false`）；`host_light_verify_ev` `T=0` 40/0、`T=3000` 41/0（真实 `light.c`）；`host_vdd_verify_ev` 31/0 |
+| T1/T2/T3/T4 回归 | `host_measure_flow` 79/0、`host_rf_report` 30/0、`host_diag_line` 38/0、`host_diag_probe` 109/0、`host_gxht40` 93/0、`host_sf_i2c` 51/0、`host_rtc` 17/0、`host_rf_frame` 10/0、`host_gw_compat` 11/0 |
+| 静态核查 | `static_check_ev034.py` **21/21 PASS**：`T=0`、旧宏零残留、无浮点/动态内存、无旧通路、`S` 行顺序、上电顺序、有界等待 |
+| 验证资产边界 | 实现提交 `82a7e74` 未修改任何 `*_verify_ev.c`/`mock_*_ev/`；本轮未改产品源码 |
+
+## 6. 验收目标 → 本轮结果
+
+| 任务 | 结果 | 依据 |
+|---|---|---|
+| FW-REG-ASBUILT | **通过（本任务范围）** | 独立重建 `b6a15fed…`/`4d728dec…`（与 FWI-003 rev 8 一致）；宿主/静态回归全部通过；`git diff 82a7e74..HEAD` 产品源码为空 |
+| FW-REG-REPORT | **通过（本任务范围）** | T1/T2/T3 独立 harness 全部通过；升温方向/冻结快照/有界等待在宿主可复现 |
+| FW-LIGHT-DEF2-MECH | **通过（本任务范围）** | 形制/接线/超时/旧宏/三构建/资产边界全部满足；实板 `T=0` 等价性成立（5 个连续周期 `V=0 D=0`） |
+| FW-OBS-PASSIVE | **通过** | k=0,3,6,9,12 连续 5 个采样机会 + k=18；全部 `q=1`、字段/节拍/行长/无杂散满足；无失败周期 |
+| FW-DIAG-BOOT | **通过（本轮新增）** | 端口先开 + HW reset；同一窗口取得 `BOOT→VDD→IOTEST→IOSIG→BUS` 五行各一次且有序；`uid/rst/uart` 可读；`VDD` 可复算；`BUS ack=44` 与 `IOSIG`/`S q=1` 自洽 |
+| FW-LIGHT-DEF2-ENABLE | **未执行（人工确认 `SKIP_CONFIRMED`）** | EN-01 无接受记录；EN-02 无双态被动证据；用户明确禁止改变光强并于 2026-11-11T03:50:42Z 回复「无法准备，先跳过」；`T=0` 保持。该未执行项不从汇总删除，阻断整体通过 |
+| 真实升温/超温触发、跨链路 | **未执行（用户阶段安排）** | 用户明确禁止调温；跨链路属后续联调；本轮无 `P`/发送 |
+| E2E-04 功耗 | **延期（已批准）** | 无电流表/SMU/示波器；`human_test_deferral_allowed_items=["E2E-04"]`，**未测并在此列明** |
+
+**人工确认与批准延期（明示）**：
+1. `FW-LIGHT-DEF2-ENABLE` 经人工确认**未执行**（`SKIP_CONFIRMED`，回复「无法准备，先跳过」，2026-11-11T03:50:42Z）；该项为**强制项**，不从交付范围删除、不写成通过，本报告与交付中明确列明。
+2. `BOT-01` 按 Runtime 重新评估要求已由测试侧脚本实际执行并通过（无需新增固件测试接口）。
+3. `E2E-04` 属已批准 `DEFERABLE`，本轮缺少功耗测量仪器，**未测**并在本报告列明。
+
+## 7. 失败/未执行报告（逐项关联目标、用例、身份与原始证据）
+
+| # | 目标/用例 | 预期 | 实际 | 原始证据 | 已尝试措施 | 尚未排除的假设 | 最小下一步 |
+|---|---|---|---|---|---|---|---|
+| F-1 | FW-LIGHT-DEF2-ENABLE / EN-01/02 | 存在判据形制/数值接受记录 + 同板同构建双态被动证据后才可启用 | **经人工确认未执行（`SKIP_CONFIRMED`）**：无接受记录（`interface_contract.md` 无 LIGHT-DEF-2 匹配）；无受光/无光双态；用户于 2026-11-11T03:50:42Z 回复「无法准备，先跳过」；`T=0` | 人工确认记录（2026-11-11T03:50:42Z，回复「无法准备，先跳过」）、`static_check_ev034.txt`（常量 0）、`capture_analysis.txt`（`V=0 D=0`、`a=2959..3049`） | 记录被动 `a` 事实；未回填、未遮光/照射；按指令不再重测该项 | 分离度与阈值数值仍待需求/架构接受 | 上游给出接受记录与被动双态证据后，由固件实现回填 `T` 并重建；测试侧再复验 `V=1 D=0/1`（本轮不再重复询问同一项） |
+| F-2 | 真实升温/超温触发与跨链路 | 暗 + 升温 >0.9 ℃ 或 >35.0 ℃ 时 `r=1`、`P` 冻结、`s=1`，手机同笔一致 | 全部周期 `r=0 s=0 y=0`，无 `P`、无发送 | `capture_analysis.txt` | 未施加刺激（用户禁止）；本能力无 `android_test` 入口 | 网关/手机链路是否可用（未观测） | 按用户安排的后续联调阶段执行；不伪造发送成功/失败，不据此退回固件实现 |
+| F-3 | T4-03 失败路径 | `q=0` 后紧跟 `G`，失败零副作用、下周期重探/恢复 | 本轮 5/5 连续周期 `q=1`、0 条 `G`；未触发 | `capture_analysis.txt` | 连续采集至 k=18 | 更长运行/不同供电条件下的失败率（未观测） | 出现真实 `q=0` 时按 `G` 原始行取证；不人为制造失败或改判据 |
+| F-4 | E2E-04 功耗 | CR2032 采样峰值/深睡电流实测值与条件 | 未执行（已批准延期） | `tool_results.txt` §2（无仪器枚举） | 枚举 USB 设备 | 是否存在未登记测量入口（无） | 仪器具备时由硬件测试测量并记录量程/接线/电池电压 |
+
+## 8. 证据局限（如实登记）
+
+1. MCP `serial_capture` 在“外部复位发生在窗口早期”时出现 0 字节（4 个窗口）；同一复位经后续 `k` 从 0 重置证明生效。改用 pyserial 先开端口 + 2 s 后 HW reset 后取得完整上电段。该差异属采集编排，不是固件缺陷，但说明“仅用 MCP 串口工具 + 外部复位”在本运行时不可靠。
+2. `pyocd` 非 `runtime/environment.yaml` 登记入口；本轮按 Project Goal 补充条件 2 使用现有安装/探针，未安装、未改配置；建议配置所有者补登记。
+3. 上电五行的 `BOOT` 不含 axf md5；镜像身份由独立 rebuild 摘要 + `Verify OK` + `fw=FD-002r4` 闭合，`uid=6A002C00` 与同板历史一致。
+4. LIGHT-DEF-2 **启用后**行为只在宿主 `T=3000` 变体验证；板上保持 `T=0`，未取得 `V=1`/`D=1` 实板证据。
+5. 无升温/超温、无网关/手机同窗、无功耗仪器；相应项未执行，不写通过。
+6. 位级 I²C 为数字采样（4 MS/s、250 ns 分辨率），不证明模拟幅度/上升沿；名义时间不能跨设备同步；k=15 配对为跨窗口推断（`p(k=18)=254` 与换算值相等）。
+7. 串口窗口之间存在未采集间隙（k=15 的 `S` 行未直接取得）；连续证据为 k=0,3,6,9,12。
+
+## 9. 本轮实际改动（只增测试侧证据）
+
+- 新增：`evidence/ev034/`（原始 `.bin`×5、原始 `.sr`、解码、分析/静态脚本与输出、pyocd 评估、工具结果、宿主日志汇总）
+- 更新：`evidence/test.md`（本段置顶；EV-033 及更早保留）、`evidence/programmed_prototype.md`（EV-034 下载身份置顶）、`file_manifest.txt`
+- **未修改**：`USER/**` 产品源码、Keil/IAR 工程、网关、Android、`runtime/permissions.yaml`、`runtime/environment.yaml`；未安装/卸载软件或驱动
+
+---
+
 # 嵌入式验证证据（EV-033 / LIGHT-DEF-2 交付固件再次实板复核）
 
 状态：`embedded_tester.embedded_verification` 独立验证证据（本轮独立 rebuild、下载、4 个 COM43 原始窗口、1 次位级 I²C 被动采集/离线解码、宿主与静态复核）

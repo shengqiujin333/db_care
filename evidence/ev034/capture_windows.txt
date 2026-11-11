@@ -1,0 +1,41 @@
+EV-034 COM43 capture windows (9600 8N1, no light/temperature stimulus)
+
+MCP serial_capture entries (tool start/end, UTC; the tool's receive path is not
+ready at the recorded start time - this is why early resets produced 0 bytes):
+
+#  start (UTC)          end (UTC)            bytes  reset inside window                     observed
+1  03:00:28.419        03:00:58.619          0     none (flash ended 03:00:18.7)             -
+2  03:02:14.921        03:02:45.120          0     pyocd sysresetreq at ~03:02:17.9          -
+3  03:03:30.166        03:04:00.379          0     pyocd sysresetreq (attach) ~03:03:33.3    -
+4  03:04:40.311        03:05:10.507          0     pyocd hw reset at ~03:04:43.3              -
+5  03:05:40.752        03:08:40.956         78     none                                       S k=3 p=258 t=256
+                                                   (cap00_k3_prior_reset.bin; belongs to the
+                                                    03:03:33 sysresetreq cycle - k=0 missed by
+                                                    window 3, k=3 captured here; supplementary)
+6  03:09:03.571        03:09:38.788          0     pyocd hw reset at ~03:09:11.6              -
+7  03:12:10.010        03:17:10.224        156     none                                       S k=3, k=6
+8  03:17:38.322        03:22:38.531        157     none                                       S k=9, k=12
+9  03:26:38.842        03:30:39.032         79     none                                       S k=18
+
+Port-first BOT capture (test-side script capture_with_reset.py):
+  open COM43 9600 8N1       : 03:10:38.499
+  pyocd HW reset            : 03:10:40.508 .. 03:10:41.225  (returncode 0)
+  capture end               : 03:11:06.289
+  bytes                     : 271  (bot01_hw.bin)
+  observed                  : BOOT, VDD, IOTEST, IOSIG, BUS, then S k=0
+  first byte at             : open + 2.782 s (03:10:41.281)
+
+Interpretation of the 0-byte windows:
+- The resets are real: the later cadence restarts (e.g. k=0 after the 03:10:40 reset,
+  then k=3/6/9/12), and pyocd reports DP/core discovery + reset Done.
+- The MCP serial_capture receive path was not ready when the reset happened in
+  windows 2/3/4/6, so the one-shot boot lines were missed.  The port-first script
+  (pyserial open confirmed, then HW reset 2 s later) captured the complete boot
+  sequence.  This is a capture-orchestration result, not a firmware defect.
+- Windows 5/7/8/9 show that periodic S rows are received normally by the MCP tool.
+- No `G` and no `P` rows appeared in any window.
+- k=0,3,6,9,12 are consecutive sampling opportunities (k difference 3).
+- liveness after reset: k=0 at 03:10:41, k=3/6/9/12 in the following windows,
+  k=15 by the bit-level I2C capture, k=18 in window 9.
+- Wall-clock tick spacing is about 57 s per minute tick (k wall-clock interval
+  about 171 s); readme gives no LSI tolerance, so no 180.0 s precision is claimed.

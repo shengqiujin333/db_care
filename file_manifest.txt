@@ -732,6 +732,60 @@ evidence/ev033/session_start.txt | active | 本轮开始 UTC 时间
 evidence/ev033/static_check_ev033.py | active | EV-033 静态核查脚本（常量/旧宏/判据接线/行序/引脚/浮点/旧通路/有界等待）
 evidence/ev033/static_check_ev033.txt | active | 上述脚本输出（21/21 PASS）
 evidence/ev033/tool_results.txt | active | 本轮设备/构建/下载/串口/逻辑分析仪/pyocd 原始结果与时间戳
+evidence/ev034/ | active | EV-034 原始证据目录：端口先开后 HW reset 的上电五行捕获、4 份 COM43 原始捕获、1 次 fx2lafw:2.32 位级 I²C 采集/离线解码、独立分析/静态核查脚本与输出、宿主 harness 日志、构建/下载/pyocd/工具原始结果
+evidence/ev034/analyze_ev034.py | active | EV-034 独立解析：上电五行顺序/字段/长度、VDD 复算、S 行字段/行长/节拍/p 链（不引用实现常量）
+evidence/ev034/analyze_i2c_ev034.py | active | EV-034 位级 I²C 分析：双字 CRC-8 复算、温湿度换算、名义时序（不引用实现常量）
+evidence/ev034/analyze_stdout.txt | active | analyze_ev034.py 运行输出
+evidence/ev034/bot01_hw.bin | active | BOT-01 原始字节：COM43 先开 + pyocd HW reset，271 B（BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 d6121c06…）
+evidence/ev034/cap00_k3_prior_reset.bin | active | COM43 补充原始字节：03:03:33 sysresetreq 后的 S k=3，78 B（md5 2f7f41b5…；不进入连续集，仅保留原始尝试）
+evidence/ev034/cap01_k3_k6.bin | active | COM43 原始字节：S k=3/k=6，156 B（md5 3f76727b…）
+evidence/ev034/cap02_k9_k12.bin | active | COM43 原始字节：S k=9/k=12，157 B（md5 7ade8e80…）
+evidence/ev034/cap03_k18.bin | active | COM43 原始字节：S k=18，79 B（md5 7fa69127…）
+evidence/ev034/capture_analysis.txt | active | 上电五行与 S 行独立分析输出（五行有序、VDD 复算 MATCH、连续 k=0/3/6/9/12 全 q=1/V=0/D=0、p 链匹配）
+evidence/ev034/capture_windows.txt | active | 全部 COM43 窗口起止/字节数/复位方式/观测 k；含早期 0 字节窗口与端口先开成功窗口的差异说明
+evidence/ev034/capture_with_reset.py | active | BOT-01 测试侧编排：pyserial 先开 COM43，延时后 pyocd HW reset，逐块记录原始字节与时间（未改固件）
+evidence/ev034/decoded_i2c.txt | active | 位级 I²C 完整注解（0x44 写 0xFD、读 6 字节 67 01 4B 59 D6 07、NACK/STOP，含样点号）
+evidence/ev034/delayed_reset.py | active | 延时 pyocd reset 辅助脚本（参数：延时/复位方式；用于复位时机探索，保留原始尝试）
+evidence/ev034/gcc_build.log | active | 独立 GNU 交叉构建原始输出（exit 0；FLASH 34840 B / RAM 1816 B）
+evidence/ev034/host_build_test.log | active | 实现侧 test/build_test.sh 原始输出（48+61+54+28+31=222 项 0 失败）
+evidence/ev034/host_diag_line_verify_ev.build.log | active | 测试侧 diag_line harness 编译日志
+evidence/ev034/host_diag_line_verify_ev.log | active | 测试侧 diag_line harness 输出（38/0）
+evidence/ev034/host_diag_probe_verify_ev.build.log | active | 测试侧 diag_probe harness 编译日志
+evidence/ev034/host_diag_probe_verify_ev.log | active | 测试侧 diag_probe harness 输出（109/0）
+evidence/ev034/host_fw_core_verify_ev.build.log | active | 测试侧 fw_core harness 编译日志
+evidence/ev034/host_fw_core_verify_ev.log | active | 测试侧 fw_core harness 输出（59/0）
+evidence/ev034/host_gw_compat_verify_ev.build.log | active | 测试侧 gw_compat harness 编译日志
+evidence/ev034/host_gw_compat_verify_ev.log | active | 测试侧 gw_compat harness 输出（11/0）
+evidence/ev034/host_gxht40_verify_ev.build.log | active | 测试侧 gxht40 harness 编译日志
+evidence/ev034/host_gxht40_verify_ev.log | active | 测试侧 gxht40 harness 输出（93/0）
+evidence/ev034/host_harness_summary.txt | active | 实现侧 222/0 与测试侧 609/0 用例计数、静态 21/21、GCC 构建汇总
+evidence/ev034/host_light_verify_ev.build.log | active | 测试侧 light.c（T=0）编译日志
+evidence/ev034/host_light_verify_ev.log | active | 测试侧 light.c（T=0）输出（40/0）
+evidence/ev034/host_light_verify_ev_enabled.build.log | active | 测试侧 light.c（T=3000）编译日志
+evidence/ev034/host_light_verify_ev_enabled.log | active | 测试侧 light.c（T=3000）输出（41/0）
+evidence/ev034/host_measure_flow_verify_ev.build.log | active | 测试侧 measure_flow harness 编译日志
+evidence/ev034/host_measure_flow_verify_ev.log | active | 测试侧 measure_flow harness 输出（79/0）
+evidence/ev034/host_rf_frame_verify_ev.build.log | active | 测试侧 rf_frame harness 编译日志
+evidence/ev034/host_rf_frame_verify_ev.log | active | 测试侧 rf_frame harness 输出（10/0）
+evidence/ev034/host_rf_report_verify_ev.build.log | active | 测试侧 rf_report harness 编译日志
+evidence/ev034/host_rf_report_verify_ev.log | active | 测试侧 rf_report harness 输出（30/0）
+evidence/ev034/host_rtc_cadence_verify_ev.harness.build.log | active | 测试侧 rtc harness 编译日志
+evidence/ev034/host_rtc_cadence_verify_ev.link.log | active | 测试侧 rtc harness 链接日志
+evidence/ev034/host_rtc_cadence_verify_ev.log | active | 测试侧 rtc harness 输出（17/0）
+evidence/ev034/host_rtc_cadence_verify_ev.main.build.log | active | 测试侧 rtc main.c 影子构建日志
+evidence/ev034/host_sf_i2c_verify_ev.build.log | active | 测试侧 sf_i2c harness 编译日志
+evidence/ev034/host_sf_i2c_verify_ev.log | active | 测试侧 sf_i2c harness 输出（51/0）
+evidence/ev034/host_vdd_verify_ev.build.log | active | 测试侧 vdd harness 编译日志
+evidence/ev034/host_vdd_verify_ev.log | active | 测试侧 vdd harness 输出（31/0）
+evidence/ev034/i2c_analysis.txt | active | 位级 I²C 分析输出（双 CRC MATCH、25.4 ℃/37.9 %RH、32.528 ms/614.25 µs）
+evidence/ev034/i2c_analysis_stdout.txt | active | analyze_i2c_ev034.py 运行输出
+evidence/ev034/image_identity.txt | active | HEAD、产品源码零差异、Keil/GCC 构建、axf/hex md5、下载校验身份
+evidence/ev034/pyocd_check.txt | active | pyocd 0.36.0 枚举/目标/复位原始输出与登记缺口建议（未安装/未改配置）
+evidence/ev034/raw_i2c_capture.sr | active | 位级 I²C 原始采集（8,000,000 样点 @4 MS/s，D0=SCL/D1=SDA，conn=2.32；md5 6de76678…）
+evidence/ev034/run_host_harnesses.sh | active | EV-034 测试侧独立 harness 构建/运行可复跑脚本（13 组，合计 609/0）
+evidence/ev034/static_check_ev034.py | active | EV-034 静态核查脚本（常量/旧宏/判据接线/行序/上电顺序/引脚/浮点/旧通路/有界等待）
+evidence/ev034/static_check_ev034.txt | active | 上述脚本输出（21/21 PASS）
+evidence/ev034/tool_results.txt | active | 本轮设备枚举/构建/下载/pyocd/串口/逻辑分析仪原始结果与时间戳
 evidence/firmware_assignment_referral.md | active | 固件实现失败分派转交证据（EV-028/029：GXHT40 与 F-1 已修复；剩余 T4-02/T5/INT/T4-07 为采集编排、遮光/刺激与仪器配置条件，非固件代码缺陷；列明责任与前置条件）
 evidence/firmware_assignment_referral_ev030.md | active | EV-030 失败分派转交报告：固件 5/5+2/2 周期 q=1、0 G、I2C 双 CRC、F-1 保持；未满足项为上电五行采集编排、T5 双态物理条件、跨链路/刺激、功耗仪器；结论 ASSIGNMENT_DECLINED，未改产品源码
 evidence/firmware_design_lightdef/ | active | 固件设计用于无光判据推导的可复跑统计目录：只读已提交的原始串口捕获，输出光敏均值分布与阈值余量
@@ -852,7 +906,7 @@ evidence/fw_impl_20261110/mdk_build_baseline.out.json | active | 基线 mdk_buil
 evidence/fw_impl_20261110/mdk_build_lightdef2.err.txt | active | LIGHT-DEF-2 构建 stderr（空）
 evidence/fw_impl_20261110/mdk_build_lightdef2.out.json | active | LIGHT-DEF-2 后 mdk_build rebuild 工具原始返回（0E/1W、Code 25964）
 evidence/interface_contract_validation.md | active | 系统架构：IC-002 v4.0源码核对与CRC/65536温度字/12资格向量/容量/缓存键算术自检、当前对象摘要和未验证边界
-evidence/programmed_prototype.md | active | 下载身份记录（EV-033 置顶：HEAD 0008dde / 实现提交 82a7e74 / axf md5 b6a15fed…、mdk_flash Verify OK、目标运行证据；上电五行/uid 经人工确认跳过；仅证明下载成功，不代表功能合格；EV-032 及更早保留为历史）
+evidence/programmed_prototype.md | active | 下载身份记录（EV-034 置顶：HEAD d7a645c / 实现提交 82a7e74 / axf md5 b6a15fed…、mdk_flash Verify OK、上电五行与 S k=0 运行证据；仅证明下载成功，不代表功能合格；EV-033 及更早保留为历史）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
@@ -866,7 +920,7 @@ evidence/software_verify_cloud_upload_item009.py | active | 由 software_tester 
 evidence/software_verify_detail_presentation_item012.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_release_item014.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_timestamp_write_item007.py | active | 由 software_tester 新增或修改的项目相关文件
-evidence/test.md | active | 嵌入式验证证据 EV-033（当前轮，置顶）：TEST_FAIL（完整目标，failure_cause=EXTERNAL_CONDITION_UNEXECUTED）— LIGHT-DEF-2 T=0 实板等价性成立（k=3/9/12/15/21，全 q=1/V=0/D=0，k=9/12/15 连续）、独立宿主 609/0、双字 CRC 匹配；BOT-01/02/03 经人工确认跳过（SKIP_CONFIRMED）未执行、判据启用与真实升温/跨链路未执行，E2E-04 已批准延期；EV-032 及更早保留为历史
+evidence/test.md | active | 嵌入式验证证据 EV-034（当前轮，置顶）：TEST_FAIL（完整目标，failure_cause=EXTERNAL_CONDITION_UNEXECUTED）— BOT-01/02/03/04 通过（端口先开 + pyocd HW reset 取得 BOOT/VDD/IOTEST/IOSIG/BUS 五行与 S k=0）、LIGHT-DEF-2 T=0 实板等价性成立（k=0/3/6/9/12 连续 5 周期，全 q=1/V=0/D=0）、独立宿主 609/0、双字 CRC 匹配；FW-LIGHT-DEF2-ENABLE 经人工确认未执行（SKIP_CONFIRMED，2026-11-11T03:50:42Z，不从汇总删除）、真实升温/跨链路（后续阶段）未执行，E2E-04 已批准延期；EV-033 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-030 置顶，EV-029/EV-027/EV-025/EV-023/EV-021 原文保留）：EV-030 完整交付 TEST_FAIL 复核——同一镜像新增 2 周期 q=1、F-1 保持；剩余为上电段采集编排（串口/下载串行、pyocd 未登记授权）、光敏双态/标定、升温与跨链路刺激、功耗仪器；未见新固件功能缺陷（仅归因，不代表整体通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）

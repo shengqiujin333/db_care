@@ -1,0 +1,25 @@
+EV-034 image / source identity (2026-11-11)
+
+verification HEAD              : d7a645cc9aa732fd752d34933dd672d30d4932b3  [role:embedded_tester]
+product source last commit     : 82a7e74e5d6bae855a573e1f23f83936ba8db049  [role:firmware_engineer]
+product source diff vs HEAD    : git diff --stat 82a7e74 HEAD -- USER/ MDK/ EWARM/  -> EMPTY
+                                 (product source and project files = FWI-003 rev 8; only tester assets/evidence changed)
+
+mdk_build {"action":"rebuild"} : 2026-11-11T02:59:51.125135+00:00 .. 02:59:53.060208+00:00
+                                 *** Using Compiler 'V6.24'
+                                 Rebuild target 'Project' -> 0 Error(s), 1 Warning(s)
+                                 warning: USER/src/main.c(254): while loop has empty body (pre-existing)
+                                 Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+
+Project.axf md5                : b6a15fed2ed5e3d0c4adc51ac87a4830
+Project.hex md5                : 4d728dec9b0d28a352c46436b7586c72
+(consistent with FWI-003 rev 8 / BUILD-003 declaration)
+
+mdk_flash {}                   : 2026-11-11T03:00:06.302566+00:00 .. 03:00:18.715376+00:00
+                                 Build target 'Project' -> 0 Error(s), 0 Warning(s)
+                                 Erase Done.Programming Done.Verify OK.Application running ...
+                                 axf/hex md5 unchanged after download
+                                 (Verify OK proves download read-back only, not functional pass)
+
+GNU cross build (gcc/build.sh) : exit 0, 0 errors, 27 pre-existing warnings
+                                 FLASH 34840 B / 64 KB, RAM 1816 B / 4 KB

@@ -1,0 +1,15 @@
+=== bit-level I2C (fx2lafw conn=2.32, D0=SCL, D1=SDA, 4 MS/s, 8,000,000 samples) ===
+starts=2 stops=2 acks=8 nacks=1
+address writes: ['Address write: 44']
+command writes: ['Data write: FD']
+address reads : ['Address read: 44']
+raw: 67 01 4B 59 D6 07
+temp word 0x6701: crc calc 0x4B == received 0x4B -> MATCH; 254 x10 = 25.4 C
+hum  word 0x59D6: crc calc 0x07 == received 0x07 -> MATCH; 379 x10 = 37.9 %RH
+write START->STOP      : 12.051 ms
+cmd STOP->read START   : 32.528 ms
+read START->STOP       : 40.166 ms
+SCL bit interval       : 614.25 us (nominal)
+SCL frequency          : 1628.00 Hz (nominal)
+boundary: digital levels only; no analog amplitude/rise-time claim; nominal sample time is not synchronized to the COM43 wall clock
+pairing: the converted value is matched against the later S rows in capture_analysis.txt (inference, not a same-window capture)
