@@ -1,7 +1,7 @@
 # 04 安卓 App 安装与使用（交付/运维视角）
 
 适用版本：`com.jinyuni.dengbei_care` **versionCode 10 / versionName 1.9**（应用名"爱守护"，debug 候选）
-文档包：DOC-PKG-001 rev 10（2026-11-11；按 AB-002 与 D-01～D-04a 修复重建）
+文档包：DOC-PKG-001 rev 11（2026-11-11；按 AB-002 与 D-01～D-04a 修复重建）
 依据：`artifacts/android_build.md`（AB-002）、`artifacts/android_implementation.md`、`evidence/android_check_20261111/`、`evidence/android_package_check_20261111/`、`dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/`、`dengbei_care/用户使用说明书.md`
 
 > 面向**安装、升级、配置、排障**；面向最终用户的完整操作说明见 `dengbei_care/用户使用说明书.md`。两者覆盖同一版本，若出现冲突以当前源码与本文档的构建身份为准。
@@ -20,7 +20,7 @@
 | SHA-256 | `71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8` |
 | MD5 | `1e17e0c281715fddd26d308246d6424c` |
 | 签名 | APK Signature Scheme v2；证书 `CN=Android Debug`（项目既有 debug keystore，摘要 `773e4ef6…`） |
-| 源码 | 交付提交 `ab72db9`；产品树与修复提交 `dacf888` 一致 |
+| 源码 | 交付提交 `ab72db9`；`dengbei_care/app` 与构建脚本相对修复提交 `dacf888` 零差异（随包说明书在 `dacf888` 后更新了 APK 身份行） |
 | 构建 | `cd dengbei_care && ./gradlew :app:assembleDebug --offline`（Gradle 8.4 / AGP 8.3.2 / JDK 21.0.2）；33 套件 / 261 项宿主机用例 |
 
 **范围限制**
