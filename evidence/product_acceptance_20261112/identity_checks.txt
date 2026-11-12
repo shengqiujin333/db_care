@@ -1,0 +1,39 @@
+== time (UTC) ==
+2026-11-12T02:57:10Z
+== HEAD ==
+db5320291b47ee93dd0d44611c1bf85ac874f189
+== status ==
+?? evidence/product_acceptance_20261112/
+== firmware zip ==
+-rw-r--r-- 1 kason 197121 134791 Nov 11 13:12 fw_release/fw_sensor_FD-002r8.zip
+5df0c6d45ecddc8aae8bddbbcfc9cfdf *fw_release/fw_sensor_FD-002r8.zip
+== zip members ==
+Archive:  fw_release/fw_sensor_FD-002r8.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+   297380  1980-01-01 00:00   fw_sensor_FD-002r8_b6a15fed.axf
+    75275  1980-01-01 00:00   fw_sensor_FD-002r8_4d728dec.hex
+     3202  1980-01-01 00:00   PACKAGE.txt
+---------                     -------
+   375857                     3 files
+== APK ==
+-rw-r--r-- 1 kason 197121 10365464 Nov 11 18:55 dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8 *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+1e17e0c281715fddd26d308246d6424c *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+== extracted member md5 (streamed, no files written) ==
+b6a15fed2ed5e3d0c4adc51ac87a4830 *-
+4d728dec9b0d28a352c46436b7586c72 *-
+a58f67fcf5b760767ff5b65888c73dfb *-
+== docs rev header ==
+# 蹬被报警器 交付文档包（DOC-PKG-001 rev 12）
+
+负责角色：技术文档
+文档时点：2026-11-12（Asia/Shanghai；rev 12 按 DOC-VERIFY-011 补齐清单并更新索引）
+覆盖的候选版本：
+
+| 子系统 | 版本/身份 | 依据产物 |
+|---|---|---|
+| 传感器固件（CW32L010） | FD-002 rev 8 源码；发布包 `fw_release/fw_sensor_FD-002r8.zip`（134,791 B，md5 `5df0c6d45ecddc8aae8bddbbcfc9cfdf`；发布记录 FW-REL-001 rev 2，包字节未变） | `artifacts/firmware_release.md`、`artifacts/firmware_implementation.md`（FWI-003 rev 8）、`evidence/test.md`（EV-038/EV-037/EV-036/EV-035） |
+| 安卓 App（爱守护） | `com.jinyuni.dengbei_care`，versionCode 10 / versionName 1.9，debug 候选；10,365,464 B，SHA-256 `71a041d3…`（AB-002） | `artifacts/android_build.md`（AB-002）、`artifacts/android_implementation.md`、`evidence/android_check_20261111/`、`evidence/android_package_check_20261111/` |
+| 中继器（网关，CH592） | **本轮未修改、未烧录** | `CH592EVT/EVT/EXAM/BLE/beiwov2/` |
+| 平台服务（broker + HTTP） | 既有部署，只读核验（EMQX 5.8.0 / Flask 5000） | `artifacts/backend_feasibility_current.md`（BE-EXP-004） |

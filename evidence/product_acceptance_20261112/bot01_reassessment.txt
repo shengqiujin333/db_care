@@ -1,0 +1,105 @@
+BOT-01 上电五行复用复核（人工 REASSESS，2026-11-12T03:47–03:54Z / 11:47–11:54 Asia/Shanghai）
+==============================================================================================
+
+背景
+----
+人工回复 HR-5BE4F69D9F33（收到 2026-11-12T03:41:48Z，terminal）：
+  "重新评估 不跳过。先核对已有上电五行实测证据是否仍对应当前固件，匹配则复用并说明依据，
+   不无理由重采。确需补采时自行编写限时采集控制脚本；缺少产品测试接口则提交失败报告按原
+   SOP 反馈实现配合。真正缺少设备授权时明确列出所需权限，不要求人代写脚本或手工复位。"
+选项：REASSESS（不是 READY，不是 SKIP）。
+本轮只做"已有上电五行证据 ↔ 当前固件"的一致性核对；未复位、未烧录、未改固件、未发送串口字节。
+
+核对对象
+--------
+- 当前候选发布包：fw_release/fw_sensor_FD-002r8.zip
+- 既有上电五行实测：evidence/ev038/bot01_hw.cap（EV-038，2026-11-11T12:00:20.923–12:00:45.692Z）
+- 当前板端运行观测：evidence/product_acceptance_20261112/serial_capture_com43_20261112.bin
+  （2026-11-12T03:02:42–03:07:42Z）
+
+核对项与结果
+------------
+[A] 发布包身份本轮复算（2026-11-12T03:47Z）
+    $ md5sum fw_release/fw_sensor_FD-002r8.zip
+    5df0c6d45ecddc8aae8bddbbcfc9cfdf  fw_release/fw_sensor_FD-002r8.zip   (134,791 B)
+    $ unzip -p fw_release/fw_sensor_FD-002r8.zip fw_sensor_FD-002r8_b6a15fed.axf | md5sum
+    b6a15fed2ed5e3d0c4adc51ac87a4830  -                                  (297,380 B)
+    $ unzip -p fw_release/fw_sensor_FD-002r8.zip fw_sensor_FD-002r8_4d728dec.hex | md5sum
+    4d728dec9b0d28a352c46436b7586c72  -                                  (75,275 B)
+    结论：与 EV-038 记录（evidence/ev038/tool_results.txt "Release package identity"）逐项一致。
+
+[B] EV-038 上电五行来自哪个镜像
+    evidence/ev038/tool_results.txt：
+      - "mdk_build rebuild" 11:59:40.689–11:59:42.640Z，Project.axf b6a15fed…、Project.hex
+        4d728dec…，与发布包成员逐字节一致。
+      - "mdk_flash {}" 11:59:59.554–12:00:11.910Z，日志 "Erase Done.Programming Done.
+        Verify OK.Application running ..."。
+      - "git diff --stat 82a7e74 HEAD -- <sensor>/USER <sensor>/MDK <sensor>/EWARM
+        <sensor>/gcc" 为空。
+    evidence/ev038/capture_windows.txt：
+      - bot01_hw.cap 12:00:20.923（先开端口）–12:00:45.692Z，271 B，
+        md5 a5cc02526b95b293bdabe3b3b3ddaee9；pyocd HW reset 12:00:22.932–12:00:23.645Z
+        （rc=0，外部复位源，无 flash/内存写）在窗口内。
+    结论：上电五行是在"由 82a7e74 源码独立重建、与发布包成员逐字节一致、mdk_flash Verify OK"
+    的镜像上，经一次外部 HW reset 后采集的。
+
+[C] 产品源码是否仍与 EV-038 构建源一致（2026-11-12T03:48Z）
+    $ git rev-parse HEAD
+    db5320291b47ee93dd0d44611c1bf85ac874f189
+    $ git diff --stat 82a7e74e5d6bae855a573e1f23f83936ba8db049..HEAD -- \
+        <sensor>/USER <sensor>/MDK <sensor>/EWARM
+    （空输出）
+    $ git diff --stat 82a7e74..HEAD -- <sensor>
+    .../test/host_fw_core_verify_ev.c                  |  70 ++++-----
+    .../test/host_light_verify_ev.c                    | 165 ++++++++++++---------
+    .../test/host_rf_report_verify_ev.c                |  29 +++-
+    .../test/host_vdd_verify_ev.c                      |   6 +-
+    .../test/mock_mcu/mock_cw32.h                      |   8 +-
+    5 files changed, 159 insertions(+), 119 deletions(-)
+    结论：固件产品源（USER/MDK/EWARM，含 Keil 工程与 Flash 算法配置）相对 EV-038 构建提交零差异；
+    差异仅在宿主测试 harness/mock（test/），不进入发布包（包内仅 axf/hex/PACKAGE.txt 三成员）。
+    发布包自 5b9b7aa 提交后无变更（git log --follow 仅 5b9b7aa 一条）。
+    注：82a7e74 是 5b9b7aa 的祖先，提交方向自洽。
+
+[D] 上电五行原始字节（复用对象本身）
+    evidence/ev038/bot01_hw.cap 逐行（CRLF 结尾，271 B）：
+      BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+      VDD ok=1 code=1481 bgrmv=1189 mv=3287
+      IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+      IOSIG scl=95555 sda=30300
+      BUS idle=3 scl=1 sda=1 ack=44
+      S k=0 p=0 H=0 V=0 o=8 n=3920 x=3926 a=3923 D=0 t=269 h=364 q=1 r=0 s=0 y=0
+    独立解析 evidence/ev038/capture_analysis.txt：RESULT PASS=129 FAIL=0
+    （五行各一次且顺序正确、行长 ≤96 B、VDD 复算 MATCH、BUS ack=44、首周期 p=0/H=0）。
+    "fw=FD-002r4" 不是版本错配：fw_release/PACKAGE.txt 明示
+    "Firmware banner : BOOT fw=FD-002r4 ... (fw string intentionally unchanged)"；
+    当前源码 USER/src/debug_trace.c:214 仍为 trace_puts("BOOT fw=FD-002r4 uid=")，与捕获一致。
+
+[E] 板端连续性（排除 EV-038 之后被重新复位/烧录）
+    以 EV-038 pyocd HW reset（2026-11-11T12:00:23Z，k 自此为 0）为基准：
+      本轮窗口起点 2026-11-12T03:02:42Z → 经过 902.3 min，观测 k=906（+0.41%）
+      本轮窗口终点 2026-11-12T03:07:42Z → 经过 907.3 min，观测 k=909（+0.19%）
+    两行 S 记录见 serial_capture_hex.txt（k=906/909，步长 3，p(k=909)=t(k=906)=246）。
+    结论：与"同一启动会话连续运行、未再复位/烧录"一致（偏差为 LSI 量级）。
+
+复用判定
+--------
+MATCH —— 既有上电五行证据与当前固件身份一致，可复用于 BOT-01：
+  1) 采集对象是当前发布包同一二进制（axf b6a15fed… / hex 4d728dec…，两次独立复算一致）；
+  2) 当前固件产品源相对该构建源零差异，发布包未再变更；
+  3) 上电行格式与当前源码输出一致（含 fw 字符串的有意保留）；
+  4) 板端 k 计数连续，支持该镜像自 EV-038 下载后持续运行。
+因此本轮不重采、不请求复位/烧录授权、不改固件；BOT-01 记为"复用已核实证据"，不是本轮新采集。
+
+证据局限（如实保留）
+--------------------
+- 板端镜像哈希无法回读；身份由"包成员哈希 + 产品源零差异 + k 连续性"闭合，属推断而非板端
+  哈希证明。
+- 复用证据采集于 2026-11-11（EV-038，嵌入式测试独立执行）；本轮未重新施加复位，未取得新的
+  上电时序样本。
+- 若后续固件产品源、发布包成员或板端镜像任一发生变化，本复用即失效，必须重新采集上电五行。
+
+本轮未执行（明确记录）
+----------------------
+- 未调用 mdk_flash / pyocd / 任何复位入口；未打开串口采集（本项不需要）。
+- 未修改固件、未修改项目配置、未扩大权限。

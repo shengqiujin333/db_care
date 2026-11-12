@@ -1349,6 +1349,36 @@ evidence/product_acceptance_20261111/software_triage_20261111/ui_after_view_repo
 evidence/product_acceptance_20261111/software_triage_20261111/ui_my_page.xml | active | 我的页 UI 原始树：底部按钮、注册按钮与底部导航/nav_host 的 bounds
 evidence/product_acceptance_20261111/software_triage_20261111/ui_via_home_add_route.xml | active | 首页「去添加」进入“已保存的 ID（0）”列表页的 UI 原始树（D-04b 文档表述反证）
 evidence/product_acceptance_20261111/toast_linkstatus_tap.png | active | 链路状态点击后的 Toast“请在‘我的 → 网关与上传设置’中选择或保存网关”（预期行为）
+evidence/product_acceptance_20261112/ | active | 软件测试产品整体功能验收原始证据目录（PRODUCT-ACCEPTANCE-002）：当前候选身份复算、COM43 实板周期、安卓真机 D-01～D-04a 关闭复核、平台静态核对
+evidence/product_acceptance_20261112/PRODUCT-ACCEPTANCE-002.md | active | 产品整体功能验收报告：当前完整候选（固件 FD-002r8 rev 2 / 安卓 AB-002 `71a041d3…` / 既有网关与平台 / 文档 rev 12）逐项结果；D-01～D-04a 已关闭、未发现新实测缺陷；需求 4 无光分支仍禁用、真实升温/光强/跨链路/平台写入/功耗未执行；BOT-01 上电五行经人工 REASSESS 复核为同镜像并复用（§3.5，非本轮新采集）；结论 TEST_FAIL（EXTERNAL_CONDITION_UNEXECUTED）
+evidence/product_acceptance_20261112/activity_after_report_click.txt | active | 点击「查看今日报告」后的 Activity 栈原始输出（mResumedActivity=ReportActivity）
+evidence/product_acceptance_20261112/activity_after_sensorlist_click.txt | active | 点击「打开传感器列表」后的 Activity 栈原始输出
+evidence/product_acceptance_20261112/activity_final.txt | active | 本轮结束时 Activity 状态原始输出（MainActivity 前台）
+evidence/product_acceptance_20261112/bot01_reassessment.txt | active | BOT-01 上电五行复用复核（人工 REASSESS，2026-11-12T03:47–03:54Z）：发布包/成员哈希复算、EV-038 镜像与复位窗口、产品源 82a7e74..HEAD 差异、板端 k 连续性、复用判定与局限；未复位/未烧录/未重采
+evidence/product_acceptance_20261112/collect_static.py | active | 可复跑静态收集脚本（规则宏/UART1/平台常量/退役引用/源码漂移）
+evidence/product_acceptance_20261112/device_apk_hash.txt | active | 设备侧 base.apk 大小/hash（10,365,464 B、SHA-256 71a041d3…，与候选逐字节一致）
+evidence/product_acceptance_20261112/device_apk_path.txt | active | 设备已安装 base.apk 路径
+evidence/product_acceptance_20261112/device_package_dump.txt | active | 设备 dumpsys package 原始输出（versionCode 10 / versionName 1.9 / 安装与更新时间）
+evidence/product_acceptance_20261112/identity_checks.txt | active | HEAD/status、固件包与三成员 md5、APK 大小/SHA-256/MD5、文档版本头
+evidence/product_acceptance_20261112/logcat_session_tail.txt | active | 本轮会话 logcat 尾部（0 条本应用 FATAL/ANR）
+evidence/product_acceptance_20261112/manifest_check_output.txt | active | 共享清单检查输出（主体时点 1404 条；BOT-01 修订后复核 1434 条；均 0 缺失、0 坏格式、0 通配，复核节见文末）
+evidence/product_acceptance_20261112/parse_nodes.py | active | 可复跑的 UI 树节点有界解析脚本
+evidence/product_acceptance_20261112/serial_capture_com43_20261112.bin | active | COM43/9600 8N1 原始捕获 160 B（S k=906/909，md5 85720b39…；窗口 2026-11-12T03:02:42–03:07:42Z；本机 .bin 留存，.gitignore 忽略，不随仓库分发；随仓库以 hex 文本复核）
+evidence/product_acceptance_20261112/serial_capture_hex.txt | active | 上述原始捕获的十六进制转储
+evidence/product_acceptance_20261112/serial_capture_meta.txt | active | 串口采集窗口、端口/波特率、字节数与 md5/sha256
+evidence/product_acceptance_20261112/static_checks.txt | active | 采样节拍/上报判据/光判据宏、UART1 引脚、平台常量、hall/OPTCFG 残留检查、产品源零差异
+evidence/product_acceptance_20261112/ui_home_add_route.txt | active | 首页「去添加」路径可见节点文本/bounds 提取
+evidence/product_acceptance_20261112/ui_home_add_route.xml | active | 首页「去添加」到达列表页的 UI 原始树
+evidence/product_acceptance_20261112/ui_home_launch.txt | active | 首页可见节点文本/bounds 提取
+evidence/product_acceptance_20261112/ui_home_launch.xml | active | 首页 UI 原始树（新文案与「去添加」）
+evidence/product_acceptance_20261112/ui_my_page.txt | active | 我的页顶部可见节点文本/bounds 提取
+evidence/product_acceptance_20261112/ui_my_page.xml | active | 我的页顶部 UI 原始树（报告/列表入口及 bounds）
+evidence/product_acceptance_20261112/ui_my_scrolled.txt | active | 我的页上滑后可见节点文本/bounds 提取
+evidence/product_acceptance_20261112/ui_my_scrolled.xml | active | 我的页上滑后 UI 原始树（注册传感器与网关按钮 bounds 不相交）
+evidence/product_acceptance_20261112/ui_report_activity.txt | active | 报告页可见节点文本/bounds 提取
+evidence/product_acceptance_20261112/ui_report_activity.xml | active | 点击「查看今日报告」后的 ReportActivity UI 原始树
+evidence/product_acceptance_20261112/ui_sensor_id_list.txt | active | 传感器列表可见节点文本/bounds 提取
+evidence/product_acceptance_20261112/ui_sensor_id_list.xml | active | 点击「打开传感器列表」后的 SensorIdListFragment UI 原始树
 evidence/product_android_rebuild_20261111/ | active | 产品验收修复后完整交付重建证据目录（commit dacf888）
 evidence/product_android_rebuild_20261111/apk_badging.txt | active | 重建 APK aapt badging（versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34）
 evidence/product_android_rebuild_20261111/apksigner_verify.txt | active | 重建 APK apksigner 验证（v2 通过；Android Debug 证书）
