@@ -1,0 +1,139 @@
+iceInfo;@5e32f73
+11-12 10:41:46.085 27198 27935 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-12 10:41:46.086 27198 27935 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-12 10:41:46.089 27198 27250 I BtGatt.ScanManager: msg.what = 0
+11-12 10:41:46.090 27198 27250 D BtGatt.ScanManager: handling starting scan
+11-12 10:41:46.092 27198 27250 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-12 10:41:46.098 27198 27236 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-12 10:41:46.098 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.099 27198 27250 D BtGatt.ScanManager: Available Filter size: 13
+11-12 10:41:46.100 27198 27236 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-12 10:41:46.100 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.100 27198 27250 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-12 10:41:46.110 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-12 10:41:46.110 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.111 27198 27236 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-12 10:41:46.111 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.111 27198 27250 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-12 10:41:46.123 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-12 10:41:46.123 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.124 27198 27236 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-12 10:41:46.124 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.125 27198 27250 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-12 10:41:46.135 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-12 10:41:46.135 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.136 27198 27236 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-12 10:41:46.136 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.136 27198 27250 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-12 10:41:46.148 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-12 10:41:46.148 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.149 27198 27236 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-12 10:41:46.149 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.149 27198 27250 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-12 10:41:46.161 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-12 10:41:46.161 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:41:46.161 27198 27250 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-12 10:41:46.161 27198 27250 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-12 10:41:46.163 27198 27250 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-12 10:41:46.164 27198 27236 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-12 10:41:46.289   771  1861 D         : readbrightness,out1:6
+11-12 10:41:46.289   771  1861 D         : .
+11-12 10:41:46.289   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:47.289   771  1861 D         : readbrightness,out1:6
+11-12 10:41:47.289   771  1861 D         : .
+11-12 10:41:47.289   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:48.290   771  1861 D         : readbrightness,out1:6
+11-12 10:41:48.290   771  1861 D         : .
+11-12 10:41:48.290   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:49.291   771  1861 D         : readbrightness,out1:6
+11-12 10:41:49.291   771  1861 D         : .
+11-12 10:41:49.291   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:50.292   771  1861 D         : readbrightness,out1:6
+11-12 10:41:50.292   771  1861 D         : .
+11-12 10:41:50.292   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:51.294   771  1861 D         : readbrightness,out1:6
+11-12 10:41:51.294   771  1861 D         : .
+11-12 10:41:51.294   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:51.592     0     0 W swapper/4: type=1400 audit(0.0:89485): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-12 10:41:52.294   771  1861 D         : readbrightness,out1:6
+11-12 10:41:52.294   771  1861 D         : .
+11-12 10:41:52.294   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:53.295   771  1861 D         : readbrightness,out1:6
+11-12 10:41:53.295   771  1861 D         : .
+11-12 10:41:53.295   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:54.297   771  1861 D         : readbrightness,out1:6
+11-12 10:41:54.297   771  1861 D         : .
+11-12 10:41:54.297   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:55.298   771  1861 D         : readbrightness,out1:6
+11-12 10:41:55.298   771  1861 D         : .
+11-12 10:41:55.298   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:56.300   771  1861 D         : readbrightness,out1:6
+11-12 10:41:56.300   771  1861 D         : .
+11-12 10:41:56.300   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:57.301   771  1861 D         : readbrightness,out1:6
+11-12 10:41:57.301   771  1861 D         : .
+11-12 10:41:57.301   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:58.302   771  1861 D         : readbrightness,out1:6
+11-12 10:41:58.302   771  1861 D         : .
+11-12 10:41:58.302   771  1861 D         : readbrightness,out2:6.
+11-12 10:41:59.304   771  1861 D         : readbrightness,out1:6
+11-12 10:41:59.304   771  1861 D         : .
+11-12 10:41:59.304   771  1861 D         : readbrightness,out2:6.
+11-12 10:42:00.003  1916  1916 D KeyguardUpdateMonitor: handleTimeUpdate
+11-12 10:42:00.016 18030 18069 D MqttService: Attempting to reconnect to broker
+11-12 10:42:00.024 18030 18069 I MqttService: Saved MAC address: 000000000000
+11-12 10:42:00.040 18030 32005 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-12 10:42:00.050 18030 32006 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-12 10:42:00.055 18030 18030 E MqttService: Failed to connect to broker
+11-12 10:42:00.055 18030 18030 E MqttService: 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:80)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:132)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-12 10:42:00.055 18030 18030 E MqttService: Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at libcore.io.IoBridge.connect(IoBridge.java:143)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at java.net.Socket.connect(Socket.java:621)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at com.android.org.conscrypt.AbstractConscryptSocket.connect(AbstractConscryptSocket.java:156)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:74)
+11-12 10:42:00.055 18030 18030 E MqttService: 	... 3 more
+11-12 10:42:00.055 18030 18030 E MqttService: Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at libcore.io.Linux.connect(Native Method)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at libcore.io.BlockGuardOs.connect(BlockGuardOs.java:136)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at libcore.io.IoBridge.connectErrno(IoBridge.java:174)
+11-12 10:42:00.055 18030 18030 E MqttService: 	at libcore.io.IoBridge.connect(IoBridge.java:135)
+11-12 10:42:00.055 18030 18030 E MqttService: 	... 11 more
+11-12 10:42:00.306   771  1861 D         : readbrightness,out1:6
+11-12 10:42:00.306   771  1861 D         : .
+11-12 10:42:00.306   771  1861 D         : readbrightness,out2:6.
+11-12 10:42:01.308   771  1861 D         : readbrightness,out1:6
+11-12 10:42:01.308   771  1861 D         : .
+11-12 10:42:01.308   771  1861 D         : readbrightness,out2:6.
+11-12 10:42:02.309   771  1861 D         : readbrightness,out1:6
+11-12 10:42:02.309   771  1861 D         : .
+11-12 10:42:02.309   771  1861 D         : readbrightness,out2:6.
+11-12 10:42:03.309   771  1861 D         : readbrightness,out1:6
+11-12 10:42:03.309   771  1861 D         : .
+11-12 10:42:03.309   771  1861 D         : readbrightness,out2:6.
+11-12 10:42:04.311   771  1861 D         : readbrightness,out1:6
+11-12 10:42:04.311   771  1861 D         : .
+11-12 10:42:04.311   771  1861 D         : readbrightness,out2:6.
+11-12 10:42:05.312   771  1861 D         : readbrightness,out1:6
+11-12 10:42:05.312   771  1861 D         : .
+11-12 10:42:05.312   771  1861 D         : readbrightness,out2:6.
+11-12 10:42:06.313   771  1861 D         : readbrightness,out1:6
+11-12 10:42:06.313   771  1861 D         : .
+11-12 10:42:06.313   771  1861 D         : readbrightness,out2:6.
+11-12 10:42:07.314   771  1861 D         : readbrightness,out1:6
+11-12 10:42:07.314   771  1861 D         : .
+11-12 10:42:07.315   771  1861 D         : readbrightness,out2:6.
+11-12 10:42:08.316   771  1861 D         : readbrightness,out1:6
+11-12 10:42:08.316   771  1861 D         : .
+11-12 10:42:08.316   771  1861 D         : readbrightness,out2:6.
+

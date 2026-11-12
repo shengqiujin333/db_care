@@ -1,0 +1,150 @@
+DOC-VERIFY-012 静态核对与复核原始记录
+=====================================
+校核时点：2026-11-12（Asia/Shanghai）；仓库 HEAD = 92bfcb257a6630ca705cace68985878bd086f7bf
+对象：DOC-PKG-001 rev 12（docs/README.md、docs/01–06）+ 随包 dengbei_care/用户使用说明书.md
+对照候选：固件 FD-002 rev 8 发布包；Android 1.9（versionCode 10 / versionName 1.9，AB-002）
+
+一、rev 12 变更范围（git show 92bfcb2）
+---------------------------------------
+docs/01_产品说明与版本变更.md        4 ++--   （版本头/交付物表 rev 12）
+docs/02_传感器固件安装与烧录.md      2 +-     （版本头）
+docs/03_传感器调试串口手册.md        2 +-     （版本头）
+docs/04_安卓App安装与使用.md         2 +-     （版本头）
+docs/05_平台服务器配置与联调前提.md  2 +-     （版本头）
+docs/06_维护排障与已知限制.md        7 ++++---（版本头、§5 证据索引、版本记录 rev 12）
+docs/README.md                       16 ++++---（索引 DOC-VERIFY-001～011、rev 12 记录/自查）
+file_manifest.txt                    62 +++---（4 条脚本 + .bin 本机留存标注 + rev 12 描述）
+dengbei_care/用户使用说明书.md       未改动
+结论：本轮文档内容变更集中在“清单补齐/索引更新/版本头”，未引入新的产品行为声明。
+
+二、D-44 复核（rev 11 失败项）
+------------------------------
+$ git ls-files evidence | 过滤 software_verify_
+evidence/software_verify_aa005_android_check.py
+evidence/software_verify_card_status_item011.py
+evidence/software_verify_cloud_upload_item009.py
+evidence/software_verify_db_migration_item006.py
+evidence/software_verify_detail_presentation_item012.py
+evidence/software_verify_orchestration_item010.py
+evidence/software_verify_release_item014.py
+evidence/software_verify_report_wording_item013.py
+evidence/software_verify_timestamp_write_item007.py
+evidence/software_verify_upload_payload_item008.py
+
+清单现有条目（9 个 item 脚本；行号为 rev 12 提交 92bfcb2 状态，本轮证据插入后顺延 14 行）：
+file_manifest.txt:1367 evidence/software_verify_card_status_item011.py
+file_manifest.txt:1368 evidence/software_verify_cloud_upload_item009.py
+file_manifest.txt:1369 evidence/software_verify_db_migration_item006.py
+file_manifest.txt:1370 evidence/software_verify_detail_presentation_item012.py
+file_manifest.txt:1371 evidence/software_verify_orchestration_item010.py
+file_manifest.txt:1372 evidence/software_verify_release_item014.py
+file_manifest.txt:1373 evidence/software_verify_report_wording_item013.py
+file_manifest.txt:1374 evidence/software_verify_timestamp_write_item007.py
+file_manifest.txt:1375 evidence/software_verify_upload_payload_item008.py
+（另 evidence/software_verify_aa005_android_check.py 已有独立条目 1384）
+
+逐项用途核对（读取脚本 docstring）：
+- item006：SQLite v1→v3 / v2→v3 迁移与数据保留；与清单描述一致。
+- item008：/upload_data 请求体 DTO/单位换算；与清单描述一致。
+- item010：BLE 读取/上传触发/重试编排；与清单描述一致。
+- item013：报告与条件上报文案；与清单描述一致。
+交叉引用：evidence/software_test.md、evidence/android_package_check_20261111/gates.log、
+evidence/product_android_rebuild_20261111/gates.log、evidence/product_fix_20261111/gates.log 均引用这些脚本。
+结论：D-44 已修正；4 个受控脚本均已入清单且用途描述与脚本内容相符。
+
+三、O-4 复核
+------------
+docs/06_维护排障与已知限制.md:131：
+  …`evidence/ev037/` 为同包历史复核；`evidence/ev036/release_identity.txt` 为历史身份记录；
+  上述目录的 `.bin` 采集文件为本机留存（`.gitignore` 忽略）…
+文件存在性：evidence/ev036/release_identity.txt = True；evidence/ev037/ = True。
+结论：O-4 已修正（release_identity.txt 明确归属 ev036）。
+
+四、O-5 复核（未跟踪 .bin 标注）
+--------------------------------
+未跟踪但存在的清单条目共 39 条：
+- 37 条 .bin（含 evidence/ev018、ev025、ev027–ev029、ev031、ev033–ev037、
+  firmware_exploration_current、product_acceptance_20261111）；
+- 1 条 evidence/ev026/Project.axf；
+- 1 条 服务器迁移记录.md（.git/info/exclude 排除）。
+逐条读取清单文本：37 条 .bin 全部含“本机 .bin 留存（.gitignore 忽略，不随仓库分发）”
+或 product_acceptance 条目的“*.bin 命中 .gitignore，本机留存，随仓库以 hex 文本复核”。
+结论：O-5 已修正（.bin 范围）。
+
+五、共享清单一致性与完整性
+--------------------------
+（a）rev 12 提交时基线（本轮新增证据目录之前，用于复核 README §6.2 的 1301 条声明）：
+$ python evidence/doc_verification_20261112_rev12/check_manifest.py D:/mypro/beiwo2/AIP
+manifest lines: 1390 / concrete entries: 1390 / glob entries: 0 / bad format: 0 /
+missing on disk: 0 / exists but not tracked: 39
+独立统计：1390 条 = files 1301 + dirs 89；missing files 0、missing dirs 0；
+状态计数 active 1361 / history 17 / coarse 12。
+README §6.2 “清单 1301 条具体路径均存在、0 缺失”复算一致。
+
+（b）本轮证据写入后的最终状态（交付前复核）：
+$ python evidence/doc_verification_20261112_rev12/check_manifest.py D:/mypro/beiwo2/AIP
+manifest lines: 1404 / concrete entries: 1404 / glob entries: 0 / bad format: 0 /
+missing on disk: 0 / exists but not tracked: 52
+说明：新增 14 条 = 本目录 1 条目录 + 13 个文件；52 条未跟踪信息项 = 原 39 条
+（37 .bin + Project.axf + 服务器迁移记录.md）+ 本轮 13 个新建文件（尚未提交，属正常）。
+（原始输出见 check_manifest_output.txt）
+
+项目相关根（artifacts/、docs/、evidence/、dengbei_care/、fw_release/、scripts/）
+被 Git 跟踪但既无独立条目、也不在任何目录级条目下的文件数 = 0。
+说明：2595 条“tracked but not listed”来自厂商 SDK 示例/资料树被 coarse 目录条目覆盖，
+不是项目交付文件遗漏；项目根下的具体文件均已被条目覆盖。
+
+结论：清单无通配条目、无格式错误、无缺失路径；rev 12 的 1301 条声明属实。
+
+六、文档内联路径引用
+--------------------
+$ python evidence/doc_verification_20261112_rev12/check_doc_refs.py <7 份 docs + 用户使用说明书>
+bases=6 checked=151 missing=0
+结论：151 个仓库相对路径引用全部可解析。
+
+七、跨文档一致性抽查
+--------------------
+1) 版本头：README + 01–06 全部为“DOC-PKG-001 rev 12（2026-11-12）”；用户使用说明书为 1.9（2026-11）。（identity_checks.txt §七）
+2) 已知限制数量：06 §3 编号 1–25 连续无缺口；README §1/§5 声明的 25 项一致。
+3) 校核索引：06 §5 为“DOC-VERIFY-001 至 DOC-VERIFY-011”；README 文档清单引用 DOC-VERIFY-001～011；
+   版本记录含 rev 12 条目；未发现残留“DOC-VERIFY-001～010”或“rev 11 为当前版本”的表述。
+4) 未执行披露：README §5 #1–#11、01 §6、04 §8、06 §4、用户手册 §5/§6.2/§11.2 的
+   T=0 无光分支、真实升温、跨链路、平台写入/回读、功耗、release、回退、有数据删除、
+   P-08～P-13 行为限制口径一致；均未写成通过。
+5) 规则语义：01 §3 的 `>350` 与 `have_prev && dark && (cur-prev)>9` 与
+   sensor_config.h `SENSOR_REPORT_HIGH_X10=350`、`SENSOR_REPORT_RISE_X10=9` 一致；
+   `LIGHT_DARK_THRESHOLD_CODE=0` 表示未启用，文档表述一致。
+6) 采集节拍：sensor_config.h `SENSOR_RTC_TICK_PERIOD_MIN=1`、`SENSOR_SAMPLE_TICKS=3`，
+   03 §3/01 §2 的“每 3 分钟、k 步长 3”一致。
+7) UART1：sensor_config.h PA06=TXD、PA05=RXD、9600、UCLK 8 MHz、行预算 96 B，
+   03 §2/§3 一致；debug_trace.h 字段语义与 03 §4–§7 一致。
+8) 固件包：134,791 B / md5 5df0c6d4… / 三成员摘要与 02 §2 表一致（identity_checks.txt §二）。
+9) 平台配置：CloudConfig.kt SERVER_HOST=8.140.23.253、MQTT 8883、HTTP 5000，
+   network_security_config.xml 恰为 3 个 domain-config（8.140.23.253、117.72.84.210、
+   192.168.4.1），与 05 §1/§2 一致。
+10) 安卓身份：APK 10,365,464 B、SHA-256 71a041d3…、MD5 1e17e0c2…，设备 base.apk md5 相同，
+    与 04 §1、用户手册 §2.1 一致。
+11) UI 文字/bounds：本轮真机 UI 树与 04 §4.1/§4.2、06 #17/#20、用户手册 §4.1 一致
+    （identity_checks.txt §四）。
+
+八、观察项（不单独构成失败）
+----------------------------
+O-6（编辑性）：清单中未跟踪文件 `evidence/ev026/Project.axf`
+    （file_manifest.txt:659，行号为 rev 12 提交状态；本轮插入后 673，“本轮下载受测镜像副本”）
+    与 `服务器迁移记录.md`（file_manifest.txt:1390，本轮插入后 1404，经 .git/info/exclude 排除）
+    未像 .bin 那样标注“本机留存/不随仓库分发”。两者路径均存在、用途描述无误。Project.axf 是 EV-026
+    历史受测镜像副本（md5 917bffe6…，与当前 FD-002r8 包成员 b6a15fed… 不同），
+    因 `*.axf` 命中 .gitignore 而不随仓库分发；服务器迁移记录属用户提供的含凭据资料、
+    按设计不入 Git。建议下一版统一标注，避免读者在克隆仓库后找不到该镜像副本。
+
+九、未执行项（本轮）
+--------------------
+- 固件重新烧录 / COM43 重新采集：本能力有效工具不含 mdk_flash / serial_capture；引用 EV-038/036 原始证据。
+- `FW-LIGHT-DEF2-ENABLE`：人工 SKIP_CONFIRMED（2026-11-11T03:50:42Z），NOT EXECUTED，不重测。
+- 真实升温 >0.9 ℃ / >35.0 ℃ 触发与 433 实发：用户明确不能调温。
+- 光强变化/遮光刺激：用户明确不能改变光强；不安排。
+- 网关→手机跨链路：用户安排后续联调。
+- `/upload_data` 真实写入/幂等/回读：无写授权。
+- E2E-04 功耗：无仪器，已批准延期。
+- Android release / 生产签名：离线缺 lint 依赖。
+- Android 回退、有数据时列表删除、P-08～P-13 真机行为：未执行。

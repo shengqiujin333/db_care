@@ -1,0 +1,137 @@
+DOC-VERIFY-012 身份与真机核验原始记录
+=====================================
+校核时点：2026-11-12（Asia/Shanghai；工具时间 UTC 2026-11-12T02:38~02:43）
+工作目录：D:\mypro\beiwo2\AIP
+
+一、仓库身份
+------------
+$ git rev-parse HEAD
+92bfcb257a6630ca705cace68985878bd086f7bf
+$ git status --short   （开始时）
+（空；仅本轮新建 evidence/doc_verification_20261112_rev12/ 后出现 ??）
+说明：92bfcb2 为 technical_writer 的 rev 12 文档/清单提交（10:36:24 +0800）。
+上一轮软件测试检查提交为 259d3f8（DOC-VERIFY-011）。
+
+二、固件发布包（复算）
+----------------------
+$ python -c "hashlib/size of fw_release/fw_sensor_FD-002r8.zip"
+134791  5df0c6d45ecddc8aae8bddbbcfc9cfdf  fw_release/fw_sensor_FD-002r8.zip
+
+zip 成员（size, md5, name）：
+297380  b6a15fed2ed5e3d0c4adc51ac87a4830  fw_sensor_FD-002r8_b6a15fed.axf
+75275   4d728dec9b0d28a352c46436b7586c72  fw_sensor_FD-002r8_4d728dec.hex
+3202    a58f67fcf5b760767ff5b65888c73dfb  PACKAGE.txt
+
+PACKAGE.txt 关键行（原文摘录）：
+Package tag       : FD-002r8
+Built from commit : 82a7e74e5d6bae855a573e1f23f83936ba8db049 (sensor product source)
+Design baseline   : FD-002 rev 8 - LIGHT-DEF-2 criterion form; delivery default T=0 (criterion disabled)
+Firmware banner   : BOOT fw=FD-002r4 uid=6A002C00 rst=.. uart=9600 (fw string intentionally unchanged)
+Build tool        : Keil MDK / ARMCLANG V6.24; project MDK/Project.uvprojx (saved settings, unchanged)
+Program size      : Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+Member MD5        : axf b6a15fed… / hex 4d728dec…
+结论：与 docs/README §1、docs/01 §5、docs/02 §2 声明一致。
+
+三、安卓候选 APK 与设备
+-----------------------
+$ python -c "hashlib/size of dengbei_care/app/build/outputs/apk/debug/app-debug.apk"
+10365464  1e17e0c281715fddd26d308246d6424c  71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8
+（size, md5, sha256）
+
+$ android_test devices
+List of devices attached
+12f046690506           device product:olivelite model:Redmi_8A device:olivelite transport_id:1
+
+$ adb -s 12f046690506 shell dumpsys package com.jinyuni.dengbei_care
+codePath=/data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==
+versionCode=10 minSdk=26 targetSdk=34
+versionName=1.9
+firstInstallTime=2026-11-10 19:25:25
+lastUpdateTime=2026-11-11 19:18:26
+
+$ adb -s 12f046690506 shell pm path com.jinyuni.dengbei_care
+package:/data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==/base.apk
+
+$ MSYS_NO_PATHCONV=1 adb -s 12f046690506 shell md5sum /data/app/.../base.apk
+1e17e0c281715fddd26d308246d6424c  /data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==/base.apk
+结论：设备在装包与主机候选逐字节一致（md5 相同），versionCode 10 / versionName 1.9。
+
+四、真机操作与 UI 观察（本轮有界复验）
+--------------------------------------
+4.1 启动
+$ android_test launch package=com.jinyuni.dengbei_care
+success=true exit_code=0
+$ android_test ui_info
+currentPackageName=com.jinyuni.dengbei_care activity=.MainActivity pid=18030
+sdkInt=29 displayWidth=720 displayHeight=1520
+（设备仍停留在上一轮最后页面：SensorIdList 空态）
+
+4.2 传感器列表空态（ui_sensor_list_live.txt）
+text='已保存的 ID（0）' bounds=[0,183][496,280]
+text='点选可多选，删除选中可批量移除' bounds=[0,280][461,318]
+text='删除选中' clickable=true bounds=[496,186][704,282]
+结论：空态入口与删除控件存在；有数据时的列出/删除未执行（与 docs/04 §4.1 步骤 4、06 #20 一致）。
+
+4.3 「我的」页（顶部，ui_my_page_live.txt）
+text='用户：未登录' clickable=false bounds=[32,222][496,303]
+text='账户' clickable=true bounds=[512,215][688,311]
+text='查看今日报告' clickable=true bounds=[32,327][688,423]
+text='打开传感器列表' clickable=true bounds=[32,431][688,527]
+text='请输入网关编码：' bounds=[32,559][343,640]
+text='请输入网关上的字母串' clickable=true bounds=[32,640][688,736]
+text='保存' clickable=true bounds=[32,744][360,840]
+text='注册传感器' clickable=true bounds=[32,1177][688,1264]
+底部导航 bounds=[0,1264][720,1424]
+结论：与 docs/04 §4.1、用户手册 §4.1 的界面文字一致。
+
+4.4 「我的」页上滑后（ui_my_scrolled_live.txt）
+text='注册传感器' clickable=true bounds=[32,976][688,1072]
+text='网关与上传设置' clickable=true bounds=[32,1120][688,1216]
+结论：两控件 bounds 不相交且均在底部导航（y=1264）之上；与 docs/04 §4.2、06 #17 引用完全一致。
+
+4.5 首页（ui_home_live.txt）
+底部页签：首页 / 设定 / 我的（bounds [0,1264][240,1424] / [240,1264][480,1424] / [480,1264][720,1424]）
+结论：三页签存在（docs/04 §2.5 第 2 条）；首页未观察到崩溃。
+
+4.6 logcat（logcat_session_tail.txt）
+行数 139；检索 'FATAL EXCEPTION' | 'ANR in' | 'Force finishing' → 0 条。
+可见 MqttService 连接失败：ENETUNREACH（手机无网络），属既有已披露条件，不是本次崩溃。
+结论：本会话窗口未见本应用崩溃/ANR；不构成长期稳定性结论。
+
+五、EV-038 固件实板证据复核（只读重读，不是本轮新采集）
+--------------------------------------------------------
+$ python -c "re-read evidence/ev038/capture_analysis.txt"
+PASS  BOOT->VDD->IOTEST->IOSIG->BUS each exactly once, in order
+PASS  VDD ok=1
+PASS  VDD mv == 4095*bgrmv/code (computed 3287)
+k=0  p=0   t=269 h=364 V=0 D=0 q=1 H=0 r=0 s=0 y=0
+k=3  p=269 t=264 h=371 V=0 D=0 q=1 H=1 r=0 s=0 y=0
+k=6  p=264 t=267 h=367 V=0 D=0 q=1 H=1 r=0 s=0 y=0
+k=9  p=267 t=263 h=374 V=0 D=0 q=1 H=1 r=0 s=0 y=0
+k=12 p=263 t=262 h=375 V=0 D=0 q=1 H=1 r=0 s=0 y=0
+k=15 p=262 t=262 h=376 V=0 D=0 q=1 H=1 r=0 s=0 y=0
+k=21 p=263 t=265 h=375 V=0 D=0 q=1 H=1 r=0 s=0 y=0
+== RESULT: PASS=129 FAIL=0
+结论：与 docs/01:67、docs/03 §11、docs/06 §4/§5 的 7 周期、V=0/D=0 表述一致。
+
+六、EV-036 样本复核（docs/01、docs/03 引用的原始值）
+---------------------------------------------------
+S k=0  ... a=2860 ... t=273 h=349 q=1 r=0 s=0 y=0
+S k=3  ... a=2869 ... t=269 h=355 q=1 r=0 s=0 y=0
+S k=6  ... a=2874 ... t=267 h=364 q=1 r=0 s=0 y=0
+S k=9  ... a=2879 ... t=266 h=361 q=1 r=0 s=0 y=0
+S k=15 ... a=2878 ... t=267 h=358 q=1 r=0 s=0 y=0
+S k=18 ... a=2886 ... t=266 h=362 q=1 r=0 s=0 y=0
+结论：docs/01 §2 第 7 项“a=2860..2886”与 docs/03 §5 首样本原文一致。
+
+七、文档版本头
+--------------
+docs/README.md                          : DOC-PKG-001 rev 12（2026-11-12）
+docs/01_产品说明与版本变更.md            : DOC-PKG-001 rev 12（2026-11-12）
+docs/02_传感器固件安装与烧录.md          : DOC-PKG-001 rev 12（2026-11-12）
+docs/03_传感器调试串口手册.md            : DOC-PKG-001 rev 12（2026-11-12）
+docs/04_安卓App安装与使用.md             : DOC-PKG-001 rev 12（2026-11-12）
+docs/05_平台服务器配置与联调前提.md      : DOC-PKG-001 rev 12（2026-11-12）
+docs/06_维护排障与已知限制.md            : DOC-PKG-001 rev 12（2026-11-12）
+dengbei_care/用户使用说明书.md           : 版本 1.9（2026-11）/ API 26 及以上
+结论：7 份 docs 的版本头与 README 声明一致。

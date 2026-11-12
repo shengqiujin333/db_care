@@ -1,0 +1,70 @@
+manifest lines: 1404
+concrete entries: 1404
+glob entries: 0
+bad format: 0
+missing on disk: 0
+exists but not tracked (informational): 52
+tracked but not listed (informational): 2595
+
+--- GLOB ENTRIES ---
+
+--- BAD FORMAT ---
+
+--- MISSING ON DISK ---
+
+--- EXISTS BUT NOT TRACKED ---
+529: evidence/doc_verification_20261112_rev12/DOC-VERIFY-012.md [active]
+530: evidence/doc_verification_20261112_rev12/check_doc_refs.py [active]
+531: evidence/doc_verification_20261112_rev12/check_doc_refs_output.txt [active]
+532: evidence/doc_verification_20261112_rev12/check_manifest.py [active]
+533: evidence/doc_verification_20261112_rev12/check_manifest_output.txt [active]
+534: evidence/doc_verification_20261112_rev12/extract_ui.py [active]
+535: evidence/doc_verification_20261112_rev12/identity_checks.txt [active]
+536: evidence/doc_verification_20261112_rev12/logcat_session_tail.txt [active]
+537: evidence/doc_verification_20261112_rev12/static_checks.txt [active]
+538: evidence/doc_verification_20261112_rev12/ui_home_live.txt [active]
+539: evidence/doc_verification_20261112_rev12/ui_my_page_live.txt [active]
+540: evidence/doc_verification_20261112_rev12/ui_my_scrolled_live.txt [active]
+541: evidence/doc_verification_20261112_rev12/ui_sensor_list_live.txt [active]
+555: evidence/ev018/com43_300s.bin [history]
+667: evidence/ev025/serial_capture_1.bin [active]
+668: evidence/ev025/serial_capture_2.bin [active]
+673: evidence/ev026/Project.axf [active]
+731: evidence/ev027/cap01_k75.bin [active]
+732: evidence/ev027/cap02_k84_k87.bin [active]
+741: evidence/ev028/cap01_k3_postflash.bin [active]
+742: evidence/ev028/cap02_k6_k9.bin [active]
+743: evidence/ev028/cap03_reset_bus_k0_k3.bin [active]
+744: evidence/ev028/cap04_k9_after_reset.bin [active]
+745: evidence/ev028/cap05_k18.bin [active]
+782: evidence/ev029/serial_capture_1204Z.bin [active]
+824: evidence/ev031/serial_capture_0852Z.bin [active]
+885: evidence/ev033/cap01_k3.bin [active]
+887: evidence/ev033/cap02_k9.bin [active]
+889: evidence/ev033/cap03_k12_k15.bin [active]
+891: evidence/ev033/cap04_k21.bin [active]
+947: evidence/ev034/bot01_hw.bin [active]
+948: evidence/ev034/cap00_k3_prior_reset.bin [active]
+949: evidence/ev034/cap01_k3_k6.bin [active]
+950: evidence/ev034/cap02_k9_k12.bin [active]
+951: evidence/ev034/cap03_k18.bin [active]
+1000: evidence/ev035/bot01_hw.bin [active]
+1001: evidence/ev035/cap01_k3_k6.bin [active]
+1002: evidence/ev035/cap02_k12.bin [active]
+1003: evidence/ev035/cap03_k15_k18.bin [active]
+1051: evidence/ev036/bot01_hw.bin [active]
+1052: evidence/ev036/cap01_k3.bin [active]
+1053: evidence/ev036/cap02_k6_k9.bin [active]
+1054: evidence/ev036/cap03_k15_k18.bin [active]
+1067: evidence/ev037/bot01_hw.bin [active]
+1068: evidence/ev037/cap01_k3.bin [active]
+1069: evidence/ev037/cap02_k6_k9.bin [active]
+1070: evidence/ev037/cap03_k12_k15.bin [active]
+1071: evidence/ev037/cap04_k21.bin [active]
+1241: evidence/firmware_exploration_current/serial_capture_after_300s.bin [active]
+1244: evidence/firmware_exploration_current/serial_capture_direct_280s.bin [active]
+1337: evidence/product_acceptance_20261111/serial_capture_com43_20261111.bin [active]
+1404: 服务器迁移记录.md [active]
+
+--- TRACKED BUT NOT LISTED (truncated) ---
+条目数: 2595（厂商 SDK/资料树，被 coarse 目录条目覆盖；完整列表可复跑脚本获取）
