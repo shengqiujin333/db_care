@@ -513,6 +513,18 @@ evidence/doc_verification_20261111_rev9/device_apk_path.txt | active | 设备已
 evidence/doc_verification_20261111_rev9/device_package_dump.txt | active | dumpsys package 原始输出（versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34 / 安装与更新时间）
 evidence/doc_verification_20261111_rev9/identity_checks.txt | active | HEAD ac27eb5、c21d13d..HEAD 变更范围（仅文档/手册/证据/清单）、固件包与 APK 摘要、设备在线与已装 10/1.9、设备 base.apk 与候选逐字节一致
 evidence/doc_verification_20261111_rev9/static_checks.txt | active | D-39/D-40/O-1 逐项复核与位置行号、整包版本/数量/追溯链与关键数值抽查、O-2 清单描述同步说明
+evidence/doc_verification_20261112_rev11/ | active | 软件测试文档独立校核原始证据目录（DOC-VERIFY-011）：DOC-PKG-001 rev 11 的 D-41/D-42/D-43/O-1～O-3 复核、真机入口重走、手册路径与共享清单一致性检查
+evidence/doc_verification_20261112_rev11/DOC-VERIFY-011.md | active | 产品文档独立校核报告：rev 11 复核 D-41/D-42/D-43 与 O-1～O-3 已修正；新发现 D-44（清单删除通配条目后 4 个现存受控脚本未记录）与 O-4/O-5；结论 TEST_FAIL
+evidence/doc_verification_20261112_rev11/check_doc_refs.py | active | 文档内联路径引用存在性检查脚本（可复跑，多源码根解析；本轮 151 checked / 0 missing）
+evidence/doc_verification_20261112_rev11/check_manifest.py | active | 共享清单—工作区—Git 一致性检查脚本（可复跑；报告缺失路径、通配条目、未跟踪与未入清单文件）
+evidence/doc_verification_20261112_rev11/extract_ui.py | active | uiautomator UI 树文本/bounds 提取脚本（可复跑，按包名过滤）
+evidence/doc_verification_20261112_rev11/filter_activity.py | active | dumpsys activity 输出中的 ResumedActivity 过滤脚本（可复跑）
+evidence/doc_verification_20261112_rev11/identity_checks.txt | active | HEAD ed6b96d、固件包/成员/PACKAGE.txt、APK 与设备 base.apk 摘要、设备版本、ReportActivity、UI bounds、EV-038 证据复核
+evidence/doc_verification_20261112_rev11/logcat_session_tail.txt | active | 本轮会话 logcat 尾部（0 条 FATAL/ANR）
+evidence/doc_verification_20261112_rev11/static_checks.txt | active | rev11 变更逐项核对、版本头、D-41/D-42/D-43/O-1～O-5、路径引用、清单统计与 D-44 证据
+evidence/doc_verification_20261112_rev11/ui_my_page_live.txt | active | 本轮「我的」页顶部 UI 文本/可点击性/bounds（含报告与传感器列表入口）
+evidence/doc_verification_20261112_rev11/ui_my_scrolled_live.txt | active | 本轮「我的」页上滑后 UI 文本与「注册传感器」「网关与上传设置」bounds
+evidence/doc_verification_20261112_rev11/ui_sensor_list_live.txt | active | 本轮「打开传感器列表」空态 UI（已保存的 ID（0）、删除选中）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检

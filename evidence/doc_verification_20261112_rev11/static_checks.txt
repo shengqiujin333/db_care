@@ -1,0 +1,169 @@
+DOC-VERIFY-011 静态核对原始记录
+================================
+对象：DOC-PKG-001 rev 11（docs/README.md、01–06、随包用户使用说明书）
+对照：HEAD ed6b96d；rev 10 → rev 11 变更提交 ed6b96d
+
+A. rev 11 变更范围（git show --stat ed6b96d）
+--------------------------------------------
+docs/01_产品说明与版本变更.md        |  8 ++--
+docs/02_传感器固件安装与烧录.md      |  2 +-
+docs/03_传感器调试串口手册.md        |  4 +-
+docs/04_安卓App安装与使用.md         |  4 +-
+docs/05_平台服务器配置与联调前提.md  |  2 +-
+docs/06_维护排障与已知限制.md        | 10 +++--
+docs/README.md                       | 16 ++++----
+file_manifest.txt                    | 47 ++++++++++------------
+8 files changed, 47 insertions(+), 46 deletions(-)
+
+B. 版本头一致性
+--------------
+docs/README.md:1                        DOC-PKG-001 rev 11
+docs/01:4                               DOC-PKG-001 rev 11
+docs/02:5                               DOC-PKG-001 rev 11
+docs/03:4                               DOC-PKG-001 rev 11
+docs/04:4                               DOC-PKG-001 rev 11
+docs/05:4                               DOC-PKG-001 rev 11
+docs/06:4                               DOC-PKG-001 rev 11
+docs/01:90                              文档包 | DOC-PKG-001 rev 11
+README §6.1 版本记录含 rev 11 行；README §6.2 标题为 rev 6–11。
+结论：一致，无遗漏的 rev 10 版本头（历史版本记录中的 rev 10 属正常历史条目）。
+
+C. D-41 复核（06 §5 证据引用）
+-----------------------------
+docs/06:131 现文：
+  evidence/ev038/（capture_analysis.txt、analyze_ev038.py、tool_results.txt（含包/成员复算与下载日志）、capture_windows.txt、decoded_i2c.txt、static_check_ev038.txt；.cap 采集文件已入库）；
+  evidence/ev037/、evidence/ev036/（含历史 release_identity.txt）为同包历史复核，其 .bin 采集文件为本机留存（.gitignore 忽略）
+
+存在性检查（os.path.exists）：
+OK  evidence/ev038/capture_analysis.txt
+OK  evidence/ev038/analyze_ev038.py
+OK  evidence/ev038/tool_results.txt
+OK  evidence/ev038/capture_windows.txt
+OK  evidence/ev038/decoded_i2c.txt
+OK  evidence/ev038/static_check_ev038.txt
+OK  evidence/ev036/release_identity.txt
+MISS evidence/ev038/release_identity.txt（已不再被引用）
+MISS evidence/ev037/release_identity.txt（ev037 无此文件；06 括号归属见 O-4）
+
+ev038 .cap 入库与 md5（Git 跟踪 + 本地复算）：
+tracked: bot01_hw.cap cap01_k3.cap cap02_k6_k9.cap cap03_k12_k15.cap cap04_k21.cap
+271  a5cc02526b95b293bdabe3b3b3ddaee9  evidence/ev038/bot01_hw.cap
+78   bd7072212bb2787b2d291a27d0efaeb9  evidence/ev038/cap01_k3.cap
+156  beac7054e584ba484b08282b92b1112f  evidence/ev038/cap02_k6_k9.cap
+158  36b79433b16863cb0193bb73fbf02ba4  evidence/ev038/cap03_k12_k15.cap
+79   fe3aa6d2b1c24d723619186a6173b762  evidence/ev038/cap04_k21.cap
+与 file_manifest.txt:1097–1101 的 md5 前缀逐项一致。
+结论：D-41 已修正（不存在文件引用已消除）。
+
+D. D-42 复核（清单 .cap → .bin）
+-------------------------------
+rev 11 diff 中 .cap→.bin 的条目共 14 条：
+ev028 cap02_k6_k9 (1)
+ev033 cap01_k3 / cap03_k12_k15 / cap04_k21 (3)
+ev034 bot01_hw (1)
+ev035 bot01_hw (1)
+ev036 bot01_hw / cap01_k3 / cap02_k6_k9 (3)
+ev037 bot01_hw / cap01_k3 / cap02_k6_k9 / cap03_k12_k15 / cap04_k21 (5)
+合计 1+3+1+1+3+5 = 14，与 README rev 11 记录一致。
+
+本地存在性（Glob）：
+evidence/ev028/*.bin   5 个全部存在
+evidence/ev033/*.bin   4 个全部存在
+evidence/ev034/*.bin   5 个全部存在
+evidence/ev035/*.bin   4 个全部存在
+evidence/ev036/*.bin   4 个全部存在
+evidence/ev037/*.bin   5 个全部存在
+证据目录中已无 *.cap 残留（ev038 的 5 个 .cap 为真实入库文件，保留正确）。
+结论：D-42 已修正。
+
+E. D-43 复核（06 §4 披露表新增三行）
+-----------------------------------
+docs/06:116  「打开传感器列表」有真实绑定数据时的列出/单项删除/批量删除 | 未执行 | 当前无绑定数据；仅验证空态入口与删除控件存在，不得写成通过（见 04 §8、06 #20）
+docs/06:117  当前候选 71a041d3… 的真实 BLE/GATT/MTU 扫描与配对、真实 /upload_data 与 401/403 | 未执行 | 无已配置网关/已绑定传感器与隔离账号；无平台写/读授权（见 README §5 #7、06 #9）
+docs/06:118  Android 回退流程（旧包 -r 覆盖回退） | 未执行 | 本轮未重复安装/回退；仅复用同日覆盖升级证据
+
+交叉引用核对：
+docs/04:129  「未验证：有真实绑定数据时的列出、单项删除与批量删除（当前无已绑定数据，不得写成通过）」
+docs/06:82   #9 ... 真实 BLE/GATT、上传/401 与「有数据时」列表删除仍未验证
+docs/06:93   #20 ... 有数据时的列出/删除仍未验证
+README:77    #7 ... 真实 BLE/GATT/上传/401 未在该候选重跑
+docs/04:67–69 §2.4 回退：保留上一构建的 APK，用 install -r 覆盖回退（同签名）
+结论：三行均有其他文档依据，D-43 已修正。
+
+F. O-1 / O-2 / O-3 复核
+-----------------------
+O-1  docs/01:88  安卓源码 | 交付提交 ab72db9；dengbei_care/app 与构建脚本相对修复提交 dacf888 零差异（随包说明书在 dacf888 后更新了 APK 身份行）
+     docs/04:23  同义表述
+     实测：$ git diff --stat dacf888..HEAD -- dengbei_care
+           .../用户使用说明书.md | 2 +-   (1 file changed, 1 insertion(+), 1 deletion(-))
+     结论：文档措辞与实测一致；artifacts/android_build.md:6 与 evidence/android_build_20261111/build_evidence.md:5 仍保留旧措辞（“git diff … 为空”），属 Android 角色产物，本轮作为交接观察，不影响随包手册结论。
+
+O-2  docs/03:221  evidence/test.md（EV-038 §2–§3 上电五行与周期；EV-036 §3–§4 历史原文；EV-034 §2 采集编排观察）
+     结论：已改为 §3–§4，修正。
+
+O-3  docs/01:67  实板观测（EV-036 6 周期；EV-038 7 周期）全部 V=0 D=0
+     结论：已补 EV-038 7 周期，与 capture_analysis.txt 一致。
+
+G. 手册路径引用检查
+-------------------
+$ python evidence/doc_verification_20261112_rev11/check_doc_refs.py docs/README.md docs/01… docs/06… dengbei_care/用户使用说明书.md
+bases=6 checked=151 missing=0
+
+H. 共享清单检查
+---------------
+$ python evidence/doc_verification_20261112_rev11/check_manifest.py D:/mypro/beiwo2/AIP
+manifest lines: 1374
+concrete entries: 1374
+glob entries: 0
+bad format: 0
+missing on disk: 0
+exists but not tracked (informational): 39
+tracked but not listed (informational): 2599
+
+非目录条目计数：1286（目录条目 88），与 README §6.2 自查“全清单非目录路径 1286 条均存在”一致。
+
+H.1 D-44：4 个受控脚本未入清单
+  evidence/software_verify_db_migration_item006.py
+  evidence/software_verify_upload_payload_item008.py
+  evidence/software_verify_orchestration_item010.py
+  evidence/software_verify_report_wording_item013.py
+  核验：
+    - 4 个文件均存在于工作区（Glob 命中）
+    - 4 个文件均被 Git 跟踪（git ls-files 命中）
+    - 清单中检索 item006/item008/item010/item013 均无记录
+    - 被 evidence/software_test.md 与多个 gates.log 引用
+  原因：rev 11 删除了通配条目 evidence/software_verify_*_item0NN.py，只补了 5 个具体条目。
+  结论：D-44 成立，TEST_FAIL 的阻断项。
+
+H.2 其他被删除的通配条目复核
+  evidence/ev032/host_*_verify_ev*.log  → 目录内 30 个 host_* 文件全部逐条在清单中
+  evidence/ev033/host_*_verify_ev*.log  → 30 个全部在清单中
+  evidence/ev037/host_*_verify_ev*.log  → 31 个全部在清单中
+  evidence/ev038/host_*_verify_ev*.log  → 31 个全部在清单中
+  结论：仅 software_verify_* 一处出现遗漏。
+
+I. 证据文件路径（06 §5）
+-----------------------
+OK  evidence/fw_release_20261111/package_verify.txt
+OK  evidence/fw_release_20261111/mdk_build_release.out.json
+OK  evidence/fw_release_20261111/gcc_build_release.log
+OK  evidence/ev038/（见 C）
+OK  evidence/ev037/  evidence/ev036/
+OK  evidence/test.md
+OK  evidence/android_build_20261111/（build.log、unit_test.log、apk_badging.txt、apksigner_verify.txt、build_evidence.md）
+OK  evidence/android_check_20261111/  evidence/android_package_check_20261111/  evidence/product_fix_20261111/
+OK  evidence/software_test.md
+OK  evidence/product_acceptance_20261111/PRODUCT-ACCEPTANCE-001.md
+OK  evidence/backend_exploration/ssh_readonly_inspection_g003.txt
+OK  evidence/doc_verification_20261111/DOC-VERIFY-001.md … evidence/doc_verification_20261111_rev10/DOC-VERIFY-010.md
+
+J. 未执行项一致性
+-----------------
+docs/06 §4、README §5、docs/01、docs/04 §8、用户手册对以下项口径一致，均标“未执行/未验证/不安排”：
+无光判据 T=0（人工 SKIP_CONFIRMED）、真实升温、光强变化、跨链路、平台写入/回读、功耗、release/生产签名、回退、有数据删除、P-08～P-13 真机行为、整产品验收未重跑。
+未发现把未执行项写成通过的新增表述。
+
+K. 观察项
+---------
+O-4  docs/06:131 的 release_identity.txt 括号紧跟 ev037/、ev036/ 两个目录，实际只在 ev036；建议写成 evidence/ev036/release_identity.txt。
+O-5  清单中未跟踪 .bin 的“本机留存”标注仅覆盖 rev 11 改名的 14 条，其余同类 .bin（如 evidence/ev033/cap02_k9.bin）未标注；路径均存在，不属 D-42 类错误。

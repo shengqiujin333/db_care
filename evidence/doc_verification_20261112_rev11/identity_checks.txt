@@ -1,0 +1,118 @@
+DOC-VERIFY-011 身份与真机核验原始记录
+=====================================
+校核时点：2026-11-12（Asia/Shanghai；工具时间 UTC）
+工作目录：D:\mypro\beiwo2\AIP
+
+一、仓库身份
+------------
+$ git rev-parse HEAD
+ed6b96d060dd45642051de5738a1da54e260ac89
+$ git status --short   （开始校核时）
+（空）
+说明：ed6b96d 为 technical_writer 的 rev 11 文档/清单提交。
+
+二、固件发布包
+--------------
+$ python -c "hashlib/size of fw_release/fw_sensor_FD-002r8.zip"
+134791  5df0c6d45ecddc8aae8bddbbcfc9cfdf  fw_release/fw_sensor_FD-002r8.zip
+
+zip 成员（size, md5, name）：
+297380  b6a15fed2ed5e3d0c4adc51ac87a4830  fw_sensor_FD-002r8_b6a15fed.axf
+75275   4d728dec9b0d28a352c46436b7586c72  fw_sensor_FD-002r8_4d728dec.hex
+3202    a58f67fcf5b760767ff5b65888c73dfb  PACKAGE.txt
+
+PACKAGE.txt 关键行：
+Package tag       : FD-002r8
+Built from commit : 82a7e74e5d6bae855a573e1f23f83936ba8db049 (sensor product source)
+Design baseline   : FD-002 rev 8 - LIGHT-DEF-2 criterion form; delivery default T=0 (criterion disabled)
+Firmware banner   : BOOT fw=FD-002r4 ... (fw string intentionally unchanged)
+Build tool        : Keil MDK / ARMCLANG V6.24; project MDK/Project.uvprojx
+Program size      : Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+Member MD5        : axf b6a15fed… / hex 4d728dec…
+结论：与 docs/01 §5、docs/02 §1–§2 声明一致。
+
+三、安卓候选 APK 与设备
+-----------------------
+$ python -c "hashlib/size of dengbei_care/app/build/outputs/apk/debug/app-debug.apk"
+10365464  1e17e0c281715fddd26d308246d6424c  71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8
+（size, md5, sha256）
+
+$ adb -s 12f046690506 shell dumpsys package com.jinyuni.dengbei_care
+codePath=/data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==
+versionCode=10 minSdk=26 targetSdk=34
+versionName=1.9
+firstInstallTime=2026-11-10 19:25:25
+lastUpdateTime=2026-11-11 19:18:26
+
+$ adb -s 12f046690506 shell pm path com.jinyuni.dengbei_care
+package:/data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==/base.apk
+
+$ adb -s 12f046690506 shell md5sum /data/app/.../base.apk
+1e17e0c281715fddd26d308246d6424c  /data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==/base.apk
+结论：设备在装包与主机候选逐字节一致（md5 相同）。
+
+$ adb shell getprop ro.product.model / ro.build.version.release / ro.build.version.sdk
+Redmi 8A
+10
+29
+结论：与 docs/README §2、docs/04 §1 的设备声明一致。
+
+四、真机操作与 UI 观察
+----------------------
+4.1 启动
+$ android_test launch package=com.jinyuni.dengbei_care
+success=true exit_code=0
+
+4.2 「我的」页（顶部，未滚动）
+ui_my_page_live.txt 摘要：
+text='用户：未登录' clickable=false bounds=[32,222][496,303]
+text='账户' clickable=true bounds=[512,215][688,311]
+text='查看今日报告' clickable=true bounds=[32,327][688,423]
+text='打开传感器列表' clickable=true bounds=[32,431][688,527]
+text='请输入网关编码：' bounds=[32,559][343,640]
+text='保存' clickable=true bounds=[32,744][360,840]
+text='注册传感器' clickable=true bounds=[32,1177][688,1264]
+底部导航 bounds=[0,1264][720,1424]
+
+4.3 「我的」页（上滑后）
+ui_my_scrolled_live.txt 摘要：
+text='注册传感器' clickable=true bounds=[32,976][688,1072]
+text='网关与上传设置' clickable=true bounds=[32,1120][688,1216]
+底部导航 bounds=[0,1264][720,1424]
+结论：两个按钮互不重叠，且均在导航栏之上；与 docs/06 #17 引用的 bounds 完全一致。
+
+4.4 点击「查看今日报告」
+$ android_test ui_click selector={"text":"查看今日报告"}
+success=true
+$ adb shell dumpsys activity activities | filter_activity.py
+mResumedActivity: ActivityRecord{... com.jinyuni.dengbei_care/.report.ReportActivity t91}
+结论：入口打开 ReportActivity，与 docs/04 §4.2/§4.3、06 #18 一致。
+
+4.5 点击「打开传感器列表」
+$ android_test ui_click selector={"text":"打开传感器列表"}
+success=true
+ui_sensor_list_live.txt：
+text='已保存的 ID（0）' bounds=[0,183][496,280]
+text='点选可多选，删除选中可批量移除' bounds=[0,280][461,318]
+text='删除选中' clickable=true bounds=[496,186][704,282]
+结论：空态入口可进入，删除控件存在；有数据时的列出/删除未执行，与 docs/04 §8、06 #20 一致。
+
+4.6 logcat
+本轮会话 logcat 尾部（logcat_session_tail.txt）检索：
+  FATAL EXCEPTION | ANR in | Force finishing  → 0 条
+结论：本会话窗口未见崩溃/ANR；不构成长期稳定性结论。
+
+五、EV-038 固件实板证据复核
+--------------------------
+$ rg "VDD|S k=|q=1" evidence/ev038/capture_analysis.txt
+52: PASS  BOOT->VDD->IOTEST->IOSIG->BUS each exactly once, in order
+56: PASS  VDD ok=1
+57: PASS  VDD mv == 4095*bgrmv/code (computed 3287)
+62: k=0  ... V=0 D=0 ... q=1 H=0
+63: k=3  ... V=0 D=0 ... q=1 H=1
+64: k=6  ... V=0 D=0 ... q=1 H=1
+65: k=9  ... V=0 D=0 ... q=1 H=1
+66: k=12 ... V=0 D=0 ... q=1 H=1
+67: k=15 ... V=0 D=0 ... q=1 H=1
+68: k=21 ... V=0 D=0 ... q=1 H=1
+结论：与 docs/01:67（EV-038 7 周期）、docs/03 §11、docs/06 §4/§5 一致。

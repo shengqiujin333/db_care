@@ -1,0 +1,132 @@
+ D CompatibilityInfo: applicationDensity - 320
+11-12 10:20:40.726  1577  3092 D CompatibilityInfo: applicationScale - 1.0
+11-12 10:20:40.729  3361  3361 I LuckyMoneyAccessibilityService: onCreate
+11-12 10:20:40.730   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-12 10:20:40.763   771  1861 D         : readbrightness,out1:9
+11-12 10:20:40.763   771  1861 D         : .
+11-12 10:20:40.763   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:40.832 11824 11824 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-12 10:20:41.442     0     0 W swapper/6: type=1400 audit(0.0:89323): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-12 10:20:41.764   771  1861 D         : readbrightness,out1:9
+11-12 10:20:41.764   771  1861 D         : .
+11-12 10:20:41.764   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:42.766   771  1861 D         : readbrightness,out1:9
+11-12 10:20:42.766   771  1861 D         : .
+11-12 10:20:42.766   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:43.767   771  1861 D         : readbrightness,out1:9
+11-12 10:20:43.767   771  1861 D         : .
+11-12 10:20:43.767   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:44.769   771  1861 D         : readbrightness,out1:9
+11-12 10:20:44.769   771  1861 D         : .
+11-12 10:20:44.769   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:44.900 27265 27350 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-12 10:20:44.900 27265 27350 D MiuiFastConnectService: stopBleScan: scanning: true
+11-12 10:20:44.902 27265 27350 D BluetoothAdapter: isLeEnabled(): ON
+11-12 10:20:44.903 27198 27935 D BtGatt.GattService: stopScan() - queue size =1
+11-12 10:20:44.905 27198 27250 I BtGatt.ScanManager: msg.what = 1
+11-12 10:20:44.905 27198 27250 D BtGatt.ScanManager: stop scan
+11-12 10:20:44.905 27198 27935 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-12 10:20:44.906 27198 27258 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-12 10:20:44.906 27198 27258 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-12 10:20:44.910 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-12 10:20:44.910 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:44.931 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-12 10:20:44.931 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:44.938 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-12 10:20:44.938 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:44.946 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-12 10:20:44.947 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:44.949 27265 27350 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-12 10:20:44.951 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-12 10:20:44.951 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:44.951 27198 27250 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-12 10:20:44.951 27198 27250 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-12 10:20:44.951 27198 27250 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-12 10:20:44.951 27198 27250 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-12 10:20:44.951 27265 27350 D BluetoothAdapter: isLeEnabled(): ON
+11-12 10:20:44.954 27198 27935 D BtGatt.GattService: registerScanner() - UUID=c08cd788-b2d8-4d09-be15-5a772aee6fc4
+11-12 10:20:44.955 27198 27258 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-12 10:20:44.955 27198 27258 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register c4b5a681-21a3-6f77-20ca-1d3c96e6a392
+11-12 10:20:44.955 27198 27258 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-12 10:20:44.955 27198 27258 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-12 10:20:44.955 27198 27258 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-12 10:20:44.955 27198 27258 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-12 10:20:44.955 27198 27236 D BtGatt.GattService: onScannerRegistered() - UUID=c08cd788-b2d8-4d09-be15-5a772aee6fc4, scannerId=5, status=0
+11-12 10:20:44.956 27265  2224 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-12 10:20:44.958 27198 27935 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-12 10:20:44.963 27198 27935 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@874bd2d
+11-12 10:20:44.965 27198 27935 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-12 10:20:44.966 27198 27935 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-12 10:20:44.969 27198 27250 I BtGatt.ScanManager: msg.what = 0
+11-12 10:20:44.970 27198 27250 D BtGatt.ScanManager: handling starting scan
+11-12 10:20:44.973 27198 27250 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-12 10:20:44.979 27198 27236 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-12 10:20:44.979 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:44.979 27198 27250 D BtGatt.ScanManager: Available Filter size: 13
+11-12 10:20:44.980 27198 27236 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-12 10:20:44.980 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:44.980 27198 27250 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-12 10:20:44.990 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-12 10:20:44.990 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:44.990 27198 27236 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-12 10:20:44.990 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:44.991 27198 27250 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-12 10:20:44.999 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-12 10:20:44.999 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:45.000 27198 27236 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-12 10:20:45.000 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:45.000 27198 27250 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-12 10:20:45.012 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-12 10:20:45.012 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:45.013 27198 27236 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-12 10:20:45.013 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:45.013 27198 27250 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-12 10:20:45.025 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-12 10:20:45.025 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:45.026 27198 27236 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-12 10:20:45.026 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:45.026 27198 27250 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-12 10:20:45.038 27198 27236 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-12 10:20:45.038 27198 27236 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-12 10:20:45.038 27198 27250 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-12 10:20:45.039 27198 27250 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-12 10:20:45.041 27198 27250 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-12 10:20:45.042 27198 27236 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-12 10:20:45.769   771  1861 D         : readbrightness,out1:9
+11-12 10:20:45.769   771  1861 D         : .
+11-12 10:20:45.769   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:46.770   771  1861 D         : readbrightness,out1:9
+11-12 10:20:46.770   771  1861 D         : .
+11-12 10:20:46.770   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:47.772   771  1861 D         : readbrightness,out1:9
+11-12 10:20:47.772   771  1861 D         : .
+11-12 10:20:47.772   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:48.772   771  1861 D         : readbrightness,out1:9
+11-12 10:20:48.772   771  1861 D         : .
+11-12 10:20:48.772   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:49.773   771  1861 D         : readbrightness,out1:9
+11-12 10:20:49.773   771  1861 D         : .
+11-12 10:20:49.773   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:50.774   771  1861 D         : readbrightness,out1:9
+11-12 10:20:50.774   771  1861 D         : .
+11-12 10:20:50.774   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:51.432     0     0 W swapper/4: type=1400 audit(0.0:89324): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-12 10:20:51.775   771  1861 D         : readbrightness,out1:9
+11-12 10:20:51.775   771  1861 D         : .
+11-12 10:20:51.775   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:52.775   771  1861 D         : readbrightness,out1:9
+11-12 10:20:52.775   771  1861 D         : .
+11-12 10:20:52.775   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:53.777   771  1861 D         : readbrightness,out1:9
+11-12 10:20:53.777   771  1861 D         : .
+11-12 10:20:53.777   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:54.778   771  1861 D         : readbrightness,out1:9
+11-12 10:20:54.778   771  1861 D         : .
+11-12 10:20:54.778   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:55.779   771  1861 D         : readbrightness,out1:9
+11-12 10:20:55.779   771  1861 D         : .
+11-12 10:20:55.780   771  1861 D         : readbrightness,out2:9.
+11-12 10:20:56.780   771  1861 D         : readbrightness,out1:9
+11-12 10:20:56.780   771  1861 D         : .
+11-12 10:20:56.780   771  1861 D         : readbrightness,out2:9.
+
