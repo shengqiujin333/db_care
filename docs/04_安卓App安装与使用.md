@@ -1,7 +1,7 @@
 # 04 安卓 App 安装与使用（交付/运维视角）
 
 适用版本：`com.jinyuni.dengbei_care` **versionCode 10 / versionName 1.9**（应用名"爱守护"，debug 候选）
-文档包：DOC-PKG-001 rev 11（2026-11-11；按 AB-002 与 D-01～D-04a 修复重建）
+文档包：DOC-PKG-001 rev 12（2026-11-12；按 AB-002 与 D-01～D-04a 修复重建）
 依据：`artifacts/android_build.md`（AB-002）、`artifacts/android_implementation.md`、`evidence/android_check_20261111/`、`evidence/android_package_check_20261111/`、`dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/`、`dengbei_care/用户使用说明书.md`
 
 > 面向**安装、升级、配置、排障**；面向最终用户的完整操作说明见 `dengbei_care/用户使用说明书.md`。两者覆盖同一版本，若出现冲突以当前源码与本文档的构建身份为准。
