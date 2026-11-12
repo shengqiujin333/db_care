@@ -1352,6 +1352,7 @@ evidence/product_acceptance_20261111/toast_linkstatus_tap.png | active | 链路�
 evidence/product_acceptance_20261112/ | active | 软件测试产品整体功能验收原始证据目录（PRODUCT-ACCEPTANCE-002）：当前候选身份复算、COM43 实板周期、安卓真机 D-01～D-04a 关闭复核、平台静态核对
 evidence/product_acceptance_20261112/ANDROID-ASSIGNMENT-REFERRAL-002.md | active | Android 失败分派转交报告（原始失败 PRODUCT-ACCEPTANCE-002）：已执行范围无 Android 实测缺陷、D-01～D-04a 已关闭；剩余为固件无光判据待上游接受与双态证据、温度/光强/功耗条件及后续联调；结论 ASSIGNMENT_DECLINED，未改产品源码
 evidence/product_acceptance_20261112/FIRMWARE-TRIAGE-002.md | active | 固件对象失败归因（原始失败 PRODUCT-ACCEPTANCE-002）：发布包/成员哈希与产品源零差异复算、COM43 最小实测（k=975/978，V=0 D=0，无 P、k 连续）、判据与上报公式源码核对；区分已排除与未执行；R4 无光分支 T=0 为明示交付默认，启用需上游判据接受记录与同板同构建被动双态证据；结论 RESPONSIBILITY_UNRESOLVED，未改产品源码
+evidence/product_acceptance_20261112/FIRMWARE-TRIAGE-003.md | active | 固件对象失败归因复核（原始失败 PRODUCT-ACCEPTANCE-002；operator 重评人工范围）：FW-LIGHT-DEF2-ENABLE 为人工 SKIP_CONFIRMED，不作为返工依据；指出原检查者 R4“未满足”标签与整体失败依据的范围错误；独立复算包/成员哈希与产品源零差异，COM43 最小实测（k=1035/1038，q=1、V=0 D=0、无 P/G、k 连续）；其余有效目标无实测固件缺陷；剩余为温度刺激/功耗仪器/跨链路/平台写授权等外部条件；结论 EXTERNAL_CONDITION_MISSING，未改产品源码
 evidence/product_acceptance_20261112/PRODUCT-ACCEPTANCE-002.md | active | 产品整体功能验收报告：当前完整候选（固件 FD-002r8 rev 2 / 安卓 AB-002 `71a041d3…` / 既有网关与平台 / 文档 rev 12）逐项结果；D-01～D-04a 已关闭、未发现新实测缺陷；需求 4 无光分支仍禁用、真实升温/光强/跨链路/平台写入/功耗未执行；BOT-01 上电五行经人工 REASSESS 复核为同镜像并复用（§3.5，非本轮新采集）；结论 TEST_FAIL（EXTERNAL_CONDITION_UNEXECUTED）
 evidence/product_acceptance_20261112/SOFTWARE-TRIAGE-002.md | active | 安卓对象失败归因（原始失败 PRODUCT-ACCEPTANCE-002）：对象/版本独立闭合、D-01～D-04a 关闭、无新实测缺陷；区分已排除与未执行，逐项列责任边界；结论 ASSIGNMENT_DECLINED（转交固件/需求、现场与联调、硬件测试与文档），未改产品源码
 evidence/product_acceptance_20261112/activity_after_report_click.txt | active | 点击「查看今日报告」后的 Activity 栈原始输出（mResumedActivity=ReportActivity）
@@ -1368,10 +1369,13 @@ evidence/product_acceptance_20261112/manifest_check_output.txt | active | 共享
 evidence/product_acceptance_20261112/parse_nodes.py | active | 可复跑的 UI 树节点有界解析脚本
 evidence/product_acceptance_20261112/serial_capture_com43_20261112.bin | active | COM43/9600 8N1 原始捕获 160 B（S k=906/909，md5 85720b39…；窗口 2026-11-12T03:02:42–03:07:42Z；本机 .bin 留存，.gitignore 忽略，不随仓库分发；随仓库以 hex 文本复核）
 evidence/product_acceptance_20261112/serial_capture_com43_20261112_triage.bin | active | 固件失败归因 COM43/9600 8N1 原始捕获 160 B（S k=975/978，V=0 D=0，md5 ca04706e…；窗口 2026-11-12T04:11:14–04:16:15Z；本机 .bin 留存，.gitignore 忽略，不随仓库分发；随仓库以 hex 文本复核）
+evidence/product_acceptance_20261112/serial_capture_com43_20261112_triage3.bin | active | 固件失败归因复核 COM43/9600 8N1 原始捕获 162 B（S k=1035/1038，q=1、V=0 D=0，md5 cb499268…；窗口 2026-11-12T05:11:31–05:16:31Z；本机 .bin 留存，.gitignore 忽略，不随仓库分发；随仓库以 hex 文本复核）
 evidence/product_acceptance_20261112/serial_capture_hex.txt | active | 上述原始捕获的十六进制转储
 evidence/product_acceptance_20261112/serial_capture_hex_triage.txt | active | 固件失败归因串口捕获（k=975/978）的十六进制转储
+evidence/product_acceptance_20261112/serial_capture_hex_triage3.txt | active | 固件失败归因复核串口捕获（k=1035/1038）的十六进制转储与 ASCII 两行原文
 evidence/product_acceptance_20261112/serial_capture_meta.txt | active | 串口采集窗口、端口/波特率、字节数与 md5/sha256
 evidence/product_acceptance_20261112/serial_capture_meta_triage.txt | active | 固件失败归因串口采集窗口、端口/波特率、字节数、md5/sha256 与两行原文
+evidence/product_acceptance_20261112/serial_capture_meta_triage3.txt | active | 固件失败归因复核串口采集窗口、端口/波特率、字节数、md5/sha256、两行原文与 k 连续性计算
 evidence/product_acceptance_20261112/static_checks.txt | active | 采样节拍/上报判据/光判据宏、UART1 引脚、平台常量、hall/OPTCFG 残留检查、产品源零差异
 evidence/product_acceptance_20261112/ui_home_add_route.txt | active | 首页「去添加」路径可见节点文本/bounds 提取
 evidence/product_acceptance_20261112/ui_home_add_route.xml | active | 首页「去添加」到达列表页的 UI 原始树

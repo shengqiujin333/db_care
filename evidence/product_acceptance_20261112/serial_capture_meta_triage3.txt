@@ -1,0 +1,37 @@
+COM43 passive serial capture - firmware triage round 3 (CALL-64328871)
+=====================================================================
+
+port            = COM43
+description     = Prolific USB-to-Serial Comm Port (COM43)
+hwid            = USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2
+baudrate        = 9600
+data_bits       = 8
+parity          = none
+stop_bits       = 1
+window_start    = 2026-11-12T05:11:31.458907+00:00
+window_end      = 2026-11-12T05:16:31.665357+00:00
+duration_sec    = 300
+bytes_received  = 162
+md5             = cb4992686bfdadb0ed088acc40618088
+sha256          = 123d30e6c334c825f70e60d626821077f3f35ef67043f1f289cc44f033b17c75
+
+Captured lines (CRLF terminated, no other bytes):
+S k=1035 p=253 H=1 V=0 o=8 n=2930 x=2938 a=2933 D=0 t=253 h=411 q=1 r=0 s=0 y=0
+S k=1038 p=253 H=1 V=0 o=8 n=2932 x=2940 a=2935 D=0 t=252 h=413 q=1 r=0 s=0 y=0
+
+Observations (facts only):
+- k delta = 3, matching SENSOR_RTC_TICK_PERIOD_MIN=1 and SENSOR_SAMPLE_TICKS=3.
+- q=1: GXHT40 temperature/humidity measurement valid in both periods.
+- V=0 D=0: delivery default LIGHT_DARK_THRESHOLD_CODE=0 (criterion disabled); NOT evidence of "lit detected".
+- r=0 s=0 y=0, no P/G line: no upload trigger in this window.
+- o=8: all 8 light ADC conversions succeeded; n/x/a in range and varying.
+- p(k=1038)=253 equals t(k=1035)=253; previous-value semantics self-consistent.
+
+Continuity (inference, not a board hash):
+- EV-038 reset reference 2026-11-11T12:00:23Z, k=0.
+- PRODUCT-ACCEPTANCE-002 window 2026-11-12T03:02:42Z, k=906 (elapsed 902.3 min, +0.41%).
+- FIRMWARE-TRIAGE-002 window 2026-11-12T04:11:14Z, k=975 (elapsed 970.9 min, +0.42%).
+- This window 2026-11-12T05:11:31Z, k=1035 (elapsed 1031.1 min, +0.38%).
+- Monotonic k with LSI-order deviation supports one continuous boot session and no reset.
+- Board image hash cannot be read back; identity remains an inference from package hash,
+  zero product-source drift and k continuity.
