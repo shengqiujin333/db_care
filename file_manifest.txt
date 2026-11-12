@@ -1392,6 +1392,7 @@ evidence/product_acceptance_20261112/ui_sensor_id_list.txt | active | 传感器�
 evidence/product_acceptance_20261112/ui_sensor_id_list.xml | active | 点击「打开传感器列表」后的 SensorIdListFragment UI 原始树
 evidence/product_acceptance_20261112_scope_recheck/ | active | 产品整体功能验收范围复核原始证据目录（PRODUCT-ACCEPTANCE-RECHECK-002）：候选身份复算、COM43 实板周期、BOT-01 自动上电五行、安卓真机关键路径、静态核对与人工延期披露
 evidence/product_acceptance_20261112_scope_recheck/PRODUCT-ACCEPTANCE-RECHECK-002.md | active | 产品整体功能验收复核报告：当前候选逐项结果；人工 APPROVED_DEFERRED 的 FW-LIGHT-DEF2-ENABLE 显式列为 NOT EXECUTED 且不作返工依据；纠正原检查者 R4 范围错误；BOT-01 自编脚本+pyocd HW reset 取得五行 PASS；结论 TEST_FAIL（EXTERNAL_CONDITION_UNEXECUTED）
+evidence/product_acceptance_20261112_scope_recheck/SOFTWARE-TRIAGE-003.md | active | 安卓对象失败归因（原始失败 PRODUCT-ACCEPTANCE-RECHECK-002）：复核人工 APPROVED_DEFERRED 与原检查者 R4 范围错误；对象身份独立闭合；已执行范围无实测缺陷；剩余为外部条件/授权/后续阶段；结论 EXTERNAL_CONDITION_MISSING，未改产品源码
 evidence/product_acceptance_20261112_scope_recheck/activity_after_report_click.txt | active | 点击「查看今日报告」后的 Activity 栈原始输出（mResumedActivity=ReportActivity）
 evidence/product_acceptance_20261112_scope_recheck/activity_after_sensorlist_click.txt | active | 点击「打开传感器列表」后的 Activity 栈原始输出
 evidence/product_acceptance_20261112_scope_recheck/activity_final.txt | active | 本轮结束时 Activity 状态原始输出（MainActivity 前台）
