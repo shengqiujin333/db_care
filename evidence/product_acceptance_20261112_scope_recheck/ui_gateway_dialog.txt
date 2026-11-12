@@ -1,0 +1,33 @@
+== text / content-desc nodes ==
+text='网关与上传设置' desc='' class=android.widget.TextView id=android:id/alertTitle bounds=[98,372][622,426] clickable=false enabled=true
+    rect=(98,372)-(622,426)
+text='未配置网关地址\n平台身份（mac_addr）：' desc='' class=android.widget.TextView id= bounds=[98,450][622,541] clickable=false enabled=true
+    rect=(98,450)-(622,541)
+text='网关 BLE 地址（AA:BB:CC:DD:EE:FF）' desc='' class=android.widget.EditText id= bounds=[98,541][622,632] clickable=true enabled=true
+    rect=(98,541)-(622,632)
+text='搜索附近网关' desc='' class=android.widget.Button id= bounds=[98,632][272,747] clickable=true enabled=true
+    rect=(98,632)-(272,747)
+text='扩大搜索（不过滤）' desc='' class=android.widget.Button id= bounds=[272,632][447,747] clickable=true enabled=true
+    rect=(272,632)-(447,747)
+text='清除网关地址' desc='' class=android.widget.Button id= bounds=[447,632][622,747] clickable=true enabled=true
+    rect=(447,632)-(622,747)
+text='保存网关地址' desc='' class=android.widget.Button id= bounds=[98,747][622,843] clickable=true enabled=true
+    rect=(98,747)-(622,843)
+text='云端上传状态：无（待发 0 条）' desc='' class=android.widget.TextView id= bounds=[98,843][622,911] clickable=false enabled=true
+    rect=(98,843)-(622,911)
+text='重试上传' desc='' class=android.widget.Button id= bounds=[98,911][622,1007] clickable=true enabled=true
+    rect=(98,911)-(622,1007)
+text='关闭' desc='' class=android.widget.Button id=android:id/button2 bounds=[518,1039][638,1111] clickable=true enabled=true
+    rect=(518,1039)-(638,1111)
+== clickable nodes ==
+class=android.widget.EditText id= text='网关 BLE 地址（AA:BB:CC:DD:EE:FF）' desc='' bounds=[98,541][622,632] enabled=true
+class=android.widget.Button id= text='搜索附近网关' desc='' bounds=[98,632][272,747] enabled=true
+class=android.widget.Button id= text='扩大搜索（不过滤）' desc='' bounds=[272,632][447,747] enabled=true
+class=android.widget.Button id= text='清除网关地址' desc='' bounds=[447,632][622,747] enabled=true
+class=android.widget.Button id= text='保存网关地址' desc='' bounds=[98,747][622,843] enabled=true
+class=android.widget.Button id= text='重试上传' desc='' bounds=[98,911][622,1007] enabled=true
+class=android.widget.Button id=android:id/button2 text='关闭' desc='' bounds=[518,1039][638,1111] enabled=true
+class=android.widget.ImageView id=com.miui.securitycenter:id/iv_desktop_float_view text='' desc='小米红包助手' bounds=[669,430][720,533] enabled=true
+class=android.widget.ImageView id=com.android.systemui:id/recent_apps text='' desc='概览' bounds=[155,1424][265,1520] enabled=true
+class=android.widget.ImageView id=com.android.systemui:id/home text='' desc='主屏幕' bounds=[304,1424][414,1520] enabled=true
+class=android.widget.ImageView id=com.android.systemui:id/back text='' desc='返回' bounds=[453,1424][563,1520] enabled=true

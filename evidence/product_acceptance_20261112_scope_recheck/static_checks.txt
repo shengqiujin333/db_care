@@ -1,0 +1,88 @@
+== sensor_config.h cadence/report/light/UART1 constants ==
+file: CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\inc\sensor_config.h
+  26: #define SENSOR_RTC_TICK_PERIOD_MIN      1u      /* RTC 节拍: 1 分钟 */
+  27: #define SENSOR_SAMPLE_TICKS             3u      /* 1 min x 3 = 每 3 分钟采样一次 */
+ 110:  *   dark  = valid && (mean_adc_code >= LIGHT_DARK_THRESHOLD_CODE)
+ 111:  *   valid = adc_ok(samples_ok>0) && (LIGHT_DARK_THRESHOLD_CODE != 0)
+ 119:  * LIGHT_DARK_THRESHOLD_CODE:
+ 128: #ifndef LIGHT_DARK_THRESHOLD_CODE
+ 129: #define LIGHT_DARK_THRESHOLD_CODE       0u              /* 0 = 未启用 (唯一禁用值) */
+ 138: #define SENSOR_REPORT_RISE_X10          9       /* 0.9 C; 严格大于: >9 即升温>=1.0 C 才触发 */
+ 139: #define SENSOR_REPORT_HIGH_X10          350     /* 35.0 C; 严格大于: 恰好 350 不满足超温分支 */
+ 208: #define DEBUG_UART_BaudRate             9600u
+ 212: #define DEBUG_UART_TX_GPIO_PIN          GPIO_PIN_6      /* PA06 */
+ 214: #define DEBUG_UART_RX_GPIO_PIN          GPIO_PIN_5      /* PA05 */
+
+== fw_core.c criterion and report logic ==
+file: CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\src\fw_core.c
+  94: bool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t threshold_code)
+  99:     if (threshold_code == 0u) {
+ 102:     return (mean_adc_code >= threshold_code);   /* 边界相等为暗 */
+ 115:     if ((int32_t)cur_temp_x10 > (int32_t)SENSOR_REPORT_HIGH_X10) {
+ 121:     if (!dark) {
+ 125:            > (int32_t)SENSOR_REPORT_RISE_X10;   /* 升温 > 0.9C (0.1C 量化下即 >=1.0C) */
+
+== light.c valid/dark wiring ==
+file: CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\src\light.c
+  11:  *   判据未启用 (LIGHT_DARK_THRESHOLD_CODE=0) 时 valid=false -> 不得判暗。
+ 157:     r.valid         = false;
+ 163:     r.dark          = false;
+ 203:     r.valid = r.adc_ok && (LIGHT_DARK_THRESHOLD_CODE != 0);
+ 204:     r.dark  = light_is_dark(r.mean_adc_code, r.valid, (uint16_t)LIGHT_DARK_THRESHOLD_CODE);
+
+== debug_trace.c banner/line formats ==
+file: CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\src\debug_trace.c
+ 214:     trace_puts("BOOT fw=FD-002r4 uid=");
+ 242:      *   BUS idle=<0..3> scl=<0|1> sda=<0|1> ack=<addr7[,addr7...]|none[+]>
+ 248:     trace_puts("BUS idle=");
+ 287:      *   IOTEST sda_lo=<0|1> scl_lo=<0|1> idle=<0..3> swap=<addr7[,addr7]|none>
+ 293:     trace_puts("IOTEST sda_lo=");
+ 329:      *   IOSIG scl=<5 位大写 hex> sda=<5 位大写 hex>
+ 335:     trace_puts("IOSIG scl=");
+ 356:      *   VDD ok=<0|1> code=<0..4095> bgrmv=<0..4095> mv=<0..6000>
+ 360:     trace_puts("VDD ok=");
+ 386:      *   S k=<tick> p=<prev> H=<have> V=<lvalid> o=<ok> n=<min> x=<max> a=<mean>
+ 465:  *   IOTEST 行:
+ 468:  *   IOSIG 行:
+
+== interrupts_cw32l010.c hall retirement ==
+file: CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\src\interrupts_cw32l010.c
+ 186:     /* PB04 已改为 LIGHT_ADC (AIN11 模拟输入), 不再有霍尔 EXTI; 本中断未使用 */
+
+== hall/OPTCFG residue scan (USER/) ==
+CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\inc\fw_core.h:9:  * ITEM-009: 原 OPTCFG/1 解码器与参数(NVM 阈值)纯逻辑随 hall/OPTCFG/params/history
+CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\src\fw_core.c:5:  * ITEM-009: 移除随 hall/OPTCFG/params/history 退役的 OPTCFG 解码器与参数(NVM 阈值)纯逻辑；
+CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\src\interrupts_cw32l010.c:186:     /* PB04 已改为 LIGHT_ADC (AIN11 模拟输入), 不再有霍尔 EXTI; 本中断未使用 */
+CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\USER\src\measure.c:9:  * 边界: 3 分钟节拍属 ITEM-007; 433 发送路径对齐属 ITEM-008; 旧 hall/OPTCFG/params/history
+residue_hits=4 (all are retirement comments if only *.c/*.h comments appear)
+
+== Android CloudConfig.kt server constants ==
+file: dengbei_care\app\src\main\java\com\jinyuni\dengbei_care\cloud\CloudConfig.kt
+  18:     const val SERVER_HOST = "8.140.23.253"
+  21:     const val MQTT_BROKER_PORT = 8883
+  24:     const val HTTP_PORT = 5000
+  27:     const val MQTT_BROKER_URI = "ssl://$SERVER_HOST:$MQTT_BROKER_PORT"
+  30:     const val HTTP_BASE_URL = "http://$SERVER_HOST:$HTTP_PORT"
+
+== Android SensorCadence.kt cadence/wording ==
+file: dengbei_care\app\src\main\java\com\jinyuni\dengbei_care\telemetry\SensorCadence.kt
+   4:  * 传感器采样节拍（readme 修改点 3：采集时间改为 3 分钟）。
+   6:  * 3 分钟是**传感器**的采样周期；它不等于每 3 分钟上报一次——上报由传感器侧条件门控
+   7:  * （温度较上次升高 >0.9℃ 且无光，或温度 >35.0℃）决定（IC-002 §2/§6）。
+  14:     const val SAMPLE_PERIOD_SECONDS: Long = 180L
+
+== docs/README.md version header ==
+file: docs\README.md
+   1: # 蹬被报警器 交付文档包（DOC-PKG-001 rev 12）
+   4: 文档时点：2026-11-12（Asia/Shanghai；rev 12 按 DOC-VERIFY-011 补齐清单并更新索引）
+   5: 覆盖的候选版本：
+   7: | 子系统 | 版本/身份 | 依据产物 |
+   9: | 传感器固件（CW32L010） | FD-002 rev 8 源码；发布包 `fw_release/fw_sensor_FD-002r8.zip`（134,791 B，md5 `5df0c6d45ecddc8aae8bddbbcfc9cfdf`；发布记录 FW-REL-001 rev 2，包字节未变） | `artifacts/firmware_release.md`、`artifacts/firmware_implementation.md`（FWI-003 rev 8）、`evidence/test.md`（EV-038/EV-037/EV-036/EV-035） |
+  14: > 本文档包描述的是**上述版本的当前实现与已验证行为**。文档本身不是独立验证结论；未执行项一律标注"未执行/未验证"，不得解读为通过。
+  22: | `docs/01_产品说明与版本变更.md` | 系统组成、本次 8 项需求落地情况、上报判定规则、交付物 | 全体 | 源码、FD-002、FWR-002、IC-002 |
+  23: | `docs/02_传感器固件安装与烧录.md` | 发布包校验、Keil 构建、下载、升级/回退 | 固件/生产/测试人员 | FW-REL-001 rev 2、EV-038/EV-037、`MDK/Project.uvprojx` |
+  27: | `docs/06_维护排障与已知限制.md` | 例行维护、排障路径、**25 项限制/已修复记录（#1–#25；#17/#18/#20 已修复保留编号）**、未执行测试清单 | 运维/支持/验收 | 各能力产物与证据、DOC-VERIFY-001～011 |
+  58: ## 4. 版本与来源引用规则
+  60: - 固件身份以**源码提交 + 产物摘要**为准，不以 `BOOT fw=FD-002r4` 横幅为准（该横幅是字节冻结的字符串，不代表版本号）。
+  62: - 平台服务身份以**部署对象元数据 + 运行版本**为准（`/root/abr.py` 8949 B、mtime 2026-10-22、EMQX 5.8.0）。
+

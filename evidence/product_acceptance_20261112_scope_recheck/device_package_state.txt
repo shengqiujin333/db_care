@@ -1,0 +1,96 @@
+== device props ==
+Redmi 8A
+10
+29
+12f046690506
+== package path ==
+package:/data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==/base.apk
+== package dump ==
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        879bb88 com.jinyuni.dengbei_care/.MainActivity filter f5a380d
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      android.intent.action.BATTERY_OKAY:
+        6287921 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter 7cee5d3
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.ACTION_POWER_DISCONNECTED:
+        4a9d146 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter d8c03c2
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+      androidx.profileinstaller.action.SAVE_PROFILE:
+        c359f07 com.jinyuni.dengbei_care/androidx.profileinstaller.ProfileInstallReceiver filter d233c4b
+          Action: "androidx.profileinstaller.action.SAVE_PROFILE"
+      android.intent.action.DEVICE_STORAGE_LOW:
+        fb30834 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter 1505510
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      android.net.conn.CONNECTIVITY_CHANGE:
+        7f2865d com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy filter 37f4809
+          Action: "android.net.conn.CONNECTIVITY_CHANGE"
+      android.intent.action.DEVICE_STORAGE_OK:
+        fb30834 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy filter 1505510
+          Action: "android.intent.action.DEVICE_STORAGE_LOW"
+          Action: "android.intent.action.DEVICE_STORAGE_OK"
+      androidx.profileinstaller.action.INSTALL_PROFILE:
+        c359f07 com.jinyuni.dengbei_care/androidx.profileinstaller.ProfileInstallReceiver filter 4cb5bc5
+          Action: "androidx.profileinstaller.action.INSTALL_PROFILE"
+      android.intent.action.BATTERY_LOW:
+        6287921 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter 7cee5d3
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.TIMEZONE_CHANGED:
+        21bbd2 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.RescheduleReceiver filter 51a9a0e
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.TIME_SET:
+        21bbd2 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.RescheduleReceiver filter 51a9a0e
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      androidx.profileinstaller.action.SKIP_FILE:
+        c359f07 com.jinyuni.dengbei_care/androidx.profileinstaller.ProfileInstallReceiver filter fea491a
+          Action: "androidx.profileinstaller.action.SKIP_FILE"
+      androidx.profileinstaller.action.BENCHMARK_OPERATION:
+        c359f07 com.jinyuni.dengbei_care/androidx.profileinstaller.ProfileInstallReceiver filter 161b628
+          Action: "androidx.profileinstaller.action.BENCHMARK_OPERATION"
+      android.intent.action.BOOT_COMPLETED:
+        21bbd2 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.RescheduleReceiver filter 51a9a0e
+          Action: "android.intent.action.BOOT_COMPLETED"
+          Action: "android.intent.action.TIME_SET"
+          Action: "android.intent.action.TIMEZONE_CHANGED"
+      android.intent.action.ACTION_POWER_CONNECTED:
+        4a9d146 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter d8c03c2
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+      androidx.work.diagnostics.REQUEST_DIAGNOSTICS:
+        c0324a3 com.jinyuni.dengbei_care/androidx.work.impl.diagnostics.DiagnosticsReceiver filter 54db23c
+          Action: "androidx.work.diagnostics.REQUEST_DIAGNOSTICS"
+      androidx.work.impl.background.systemalarm.UpdateProxies:
+        b9273a0 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver filter c180c2f
+          Action: "androidx.work.impl.background.systemalarm.UpdateProxies"
+
+Permissions:
+  Permission [com.jinyuni.dengbei_care.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION] (6dfef5d):
+    sourcePackage=com.jinyuni.dengbei_care
+    uid=10169 gids=null type=0 prot=signature
+    perm=Permission{a562b59 com.jinyuni.dengbei_care.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION}
+    packageSetting=PackageSetting{e8d35a3 com.jinyuni.dengbei_care/10169}
+
+Registered ContentProviders:
+  com.jinyuni.dengbei_care/androidx.startup.InitializationProvider:
+    Provider{7bbc31e com.jinyuni.dengbei_care/androidx.startup.InitializationProvider}
+== base apk stat/hash ==
+path=/data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==/base.apk
+stat: 'C:/Program': No such file or directory
+stat: 'Files/Git/data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==/base.apk': No such file or directory
+md5sum: C:/Program: No such file or directory
+md5sum: Files/Git/data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==/base.apk: No such file or directory
+sha256sum: C:/Program: No such file or directory
+sha256sum: Files/Git/data/app/com.jinyuni.dengbei_care-uAuDOuV-VKufDQNnGGCFNg==/base.apk: No such file or directory

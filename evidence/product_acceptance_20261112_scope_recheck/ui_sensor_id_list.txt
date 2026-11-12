@@ -1,0 +1,27 @@
+== text / content-desc nodes ==
+text='已保存的 ID（0）' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/titleSavedIds bounds=[0,183][496,280] clickable=false enabled=true
+    rect=(0,183)-(496,280)
+text='点选可多选，删除选中可批量移除' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/tvCountHint bounds=[0,280][461,318] clickable=false enabled=true
+    rect=(0,280)-(461,318)
+text='删除选中' desc='' class=android.widget.Button id=com.jinyuni.dengbei_care:id/btnDeleteSelected bounds=[496,186][704,282] clickable=true enabled=false
+    rect=(496,186)-(704,282)
+text='' desc='首页' class=android.widget.FrameLayout id=com.jinyuni.dengbei_care:id/navigation_home bounds=[0,1264][240,1424] clickable=true enabled=true
+    rect=(0,1264)-(240,1424)
+text='首页' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/navigation_bar_item_small_label_view bounds=[95,1366][145,1399] clickable=false enabled=true
+    rect=(95,1366)-(145,1399)
+text='' desc='设定' class=android.widget.FrameLayout id=com.jinyuni.dengbei_care:id/navigation_dashboard bounds=[240,1264][480,1424] clickable=true enabled=true
+    rect=(240,1264)-(480,1424)
+text='设定' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/navigation_bar_item_small_label_view bounds=[335,1366][385,1399] clickable=false enabled=true
+    rect=(335,1366)-(385,1399)
+text='' desc='我的' class=android.widget.FrameLayout id=com.jinyuni.dengbei_care:id/navigation_notifications bounds=[480,1264][720,1424] clickable=false enabled=true
+    rect=(480,1264)-(720,1424)
+text='我的' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/navigation_bar_item_large_label_view bounds=[575,1366][625,1399] clickable=false enabled=true
+    rect=(575,1366)-(625,1399)
+== clickable nodes ==
+class=android.widget.ImageView id=com.miui.securitycenter:id/iv_desktop_float_view text='' desc='小米红包助手' bounds=[669,430][720,533] enabled=true
+class=android.widget.ImageView id=com.android.systemui:id/recent_apps text='' desc='概览' bounds=[155,1424][265,1520] enabled=true
+class=android.widget.ImageView id=com.android.systemui:id/home text='' desc='主屏幕' bounds=[304,1424][414,1520] enabled=true
+class=android.widget.ImageView id=com.android.systemui:id/back text='' desc='返回' bounds=[453,1424][563,1520] enabled=true
+class=android.widget.Button id=com.jinyuni.dengbei_care:id/btnDeleteSelected text='删除选中' desc='' bounds=[496,186][704,282] enabled=false
+class=android.widget.FrameLayout id=com.jinyuni.dengbei_care:id/navigation_home text='' desc='首页' bounds=[0,1264][240,1424] enabled=true
+class=android.widget.FrameLayout id=com.jinyuni.dengbei_care:id/navigation_dashboard text='' desc='设定' bounds=[240,1264][480,1424] enabled=true

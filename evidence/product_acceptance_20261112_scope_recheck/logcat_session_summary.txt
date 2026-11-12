@@ -1,0 +1,79 @@
+== app FATAL/ANR count ==
+0
+== MqttService line count (ENETUNREACH retries; device has no network) ==
+9404
+== report/activity lines ==
+11-11 20:50:46.615  1577 10705 I ActivityTaskManager: START u0 {cmp=com.jinyuni.dengbei_care/.report.ReportActivity} from uid 10169
+11-11 20:50:47.342  1577  1649 I Timeline: Timeline: Activity_windows_visible id: ActivityRecord{43b6e u0 com.jinyuni.dengbei_care/.report.ReportActivity t89} time:784876864
+11-11 21:11:03.265  1577  4607 I ActivityTaskManager: START u0 {cmp=com.jinyuni.dengbei_care/.report.ReportActivity} from uid 10169
+11-11 21:11:03.939  1577  1649 I Timeline: Timeline: Activity_windows_visible id: ActivityRecord{ddd0a55 u0 com.jinyuni.dengbei_care/.report.ReportActivity t89} time:786093460
+11-11 21:12:27.884  1577  1612 I ActivityTaskManager: START u0 {cmp=com.jinyuni.dengbei_care/.ui.zhuce.PrivacyPolicyActivity} from uid 10169
+11-11 21:12:35.136  1577  4607 I ActivityTaskManager: START u0 {cmp=com.jinyuni.dengbei_care/.ui.zhuce.TermsOfServiceActivity} from uid 10169
+11-12 10:19:58.171  1577  1612 I ActivityTaskManager: START u0 {cmp=com.jinyuni.dengbei_care/.report.ReportActivity} from uid 10169
+11-12 10:19:58.350  1577  1662 I ActivityTaskManager: Displayed com.jinyuni.dengbei_care/.report.ReportActivity: +176ms
+11-12 10:19:58.843  1577  1649 I Timeline: Timeline: Activity_windows_visible id: ActivityRecord{8783557 u0 com.jinyuni.dengbei_care/.report.ReportActivity t91} time:833428364
+11-12 10:59:50.407  1577  3092 I ActivityTaskManager: START u0 {cmp=com.jinyuni.dengbei_care/.report.ReportActivity} from uid 10169
+11-12 10:59:50.558  1577  1662 I ActivityTaskManager: Displayed com.jinyuni.dengbei_care/.report.ReportActivity: +145ms
+11-12 10:59:51.047  1577  1649 I Timeline: Timeline: Activity_windows_visible id: ActivityRecord{4b5702d u0 com.jinyuni.dengbei_care/.report.ReportActivity t91} time:835820568
+11-12 18:10:00.481 18030 18030 I ReportScheduler: Enqueued one-shot daily report
+11-12 18:10:00.484  1577  2701 I ActivityTaskManager: START u0 {cmp=com.jinyuni.dengbei_care/.report.ReportActivity} from uid 10169
+11-12 18:10:00.548 18030 18030 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@7162fde
+11-12 18:10:00.549 18030 18030 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@7162fde
+11-12 18:10:00.591 18030 18030 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@7162fde
+11-12 18:10:00.675  1577  1662 I ActivityTaskManager: Displayed com.jinyuni.dengbei_care/.report.ReportActivity: +187ms
+11-12 18:10:00.681 18030 18584 W DailyReportWorker: No saved devices, skipping report
+11-12 18:10:00.685 18030 18062 I WM-WorkerWrapper: Worker result SUCCESS for Work [ id=d66bbe07-0288-4ba8-bd75-9616ba7ae567, tags={ com.jinyuni.dengbei_care.report.DailyReportWorker } ]
+11-12 18:10:01.160  1577  1649 I Timeline: Timeline: Activity_windows_visible id: ActivityRecord{6fd35a9 u0 com.jinyuni.dengbei_care/.report.ReportActivity t91} time:861630681
+11-12 18:20:19.914 18030 18030 I ReportScheduler: Enqueued one-shot daily report
+11-12 18:20:19.919  1577  2451 I ActivityTaskManager: START u0 {cmp=com.jinyuni.dengbei_care/.report.ReportActivity} from uid 10169
+11-12 18:20:19.978 18030 18030 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@c518dc3
+11-12 18:20:19.979 18030 18030 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@c518dc3
+11-12 18:20:20.018 18030 18030 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@c518dc3
+11-12 18:20:20.099  1577  1662 I ActivityTaskManager: Displayed com.jinyuni.dengbei_care/.report.ReportActivity: +176ms
+11-12 18:20:20.106 18030 18067 W DailyReportWorker: No saved devices, skipping report
+11-12 18:20:20.113 18030 18054 I WM-WorkerWrapper: Worker result SUCCESS for Work [ id=998673e7-9ca6-4d26-86f1-6d36f7f6af20, tags={ com.jinyuni.dengbei_care.report.DailyReportWorker } ]
+11-12 18:20:20.585  1577  1649 I Timeline: Timeline: Activity_windows_visible id: ActivityRecord{8476795 u0 com.jinyuni.dengbei_care/.report.ReportActivity t91} time:862250106
+11-12 18:20:27.109 18030 18030 I ReportScheduler: Enqueued one-shot daily report
+11-12 18:20:27.229 18030 18067 W DailyReportWorker: No saved devices, skipping report
+11-12 18:20:27.237 18030 18062 I WM-WorkerWrapper: Worker result SUCCESS for Work [ id=4c052b9b-6926-4992-be89-6540448da251, tags={ com.jinyuni.dengbei_care.report.DailyReportWorker } ]
+== last 40 lines of buffer ==
+11-12 18:20:51.740   771  1861 D         : .
+11-12 18:20:51.740   771  1861 D         : readbrightness,out2:9.
+11-12 18:20:52.741   771  1861 D         : readbrightness,out1:9
+11-12 18:20:52.741   771  1861 D         : .
+11-12 18:20:52.741   771  1861 D         : readbrightness,out2:9.
+11-12 18:20:53.741   771  1861 D         : readbrightness,out1:9
+11-12 18:20:53.741   771  1861 D         : .
+11-12 18:20:53.741   771  1861 D         : readbrightness,out2:9.
+11-12 18:20:54.741   771  1861 D         : readbrightness,out1:9
+11-12 18:20:54.741   771  1861 D         : .
+11-12 18:20:54.741   771  1861 D         : readbrightness,out2:9.
+11-12 18:20:55.362     0     0 W swapper/4: type=1400 audit(0.0:92429): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-12 18:20:55.742   771  1861 D         : readbrightness,out1:9
+11-12 18:20:55.742   771  1861 D         : .
+11-12 18:20:55.742   771  1861 D         : readbrightness,out2:9.
+11-12 18:20:56.742   771  1861 D         : readbrightness,out1:9
+11-12 18:20:56.742   771  1861 D         : .
+11-12 18:20:56.742   771  1861 D         : readbrightness,out2:9.
+11-12 18:20:57.743   771  1861 D         : readbrightness,out1:9
+11-12 18:20:57.743   771  1861 D         : .
+11-12 18:20:57.743   771  1861 D         : readbrightness,out2:9.
+11-12 18:20:58.743   771  1861 D         : readbrightness,out1:9
+11-12 18:20:58.743   771  1861 D         : .
+11-12 18:20:58.744   771  1861 D         : readbrightness,out2:9.
+11-12 18:20:59.744   771  1861 D         : readbrightness,out1:9
+11-12 18:20:59.744   771  1861 D         : .
+11-12 18:20:59.744   771  1861 D         : readbrightness,out2:9.
+11-12 18:21:00.004  1916  1916 D KeyguardUpdateMonitor: handleTimeUpdate
+11-12 18:21:00.745   771  1861 D         : readbrightness,out1:9
+11-12 18:21:00.745   771  1861 D         : .
+11-12 18:21:00.745   771  1861 D         : readbrightness,out2:9.
+11-12 18:21:01.745   771  1861 D         : readbrightness,out1:9
+11-12 18:21:01.745   771  1861 D         : .
+11-12 18:21:01.745   771  1861 D         : readbrightness,out2:9.
+11-12 18:21:02.746   771  1861 D         : readbrightness,out1:9
+11-12 18:21:02.746   771  1861 D         : .
+11-12 18:21:02.746   771  1861 D         : readbrightness,out2:9.
+11-12 18:21:03.746   771  1861 D         : readbrightness,out1:9
+11-12 18:21:03.746   771  1861 D         : .
+11-12 18:21:03.746   771  1861 D         : readbrightness,out2:9.

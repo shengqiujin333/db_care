@@ -1,0 +1,56 @@
+== text / content-desc nodes ==
+text='用户：未登录' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/usernameText bounds=[32,222][496,303] clickable=false enabled=true
+    rect=(32,222)-(496,303)
+text='账户' desc='' class=android.widget.Button id=com.jinyuni.dengbei_care:id/registerButton bounds=[512,215][688,311] clickable=true enabled=true
+    rect=(512,215)-(688,311)
+text='查看今日报告' desc='' class=android.widget.Button id=com.jinyuni.dengbei_care:id/viewReportButton bounds=[32,327][688,423] clickable=true enabled=true
+    rect=(32,327)-(688,423)
+text='打开传感器列表' desc='' class=android.widget.Button id=com.jinyuni.dengbei_care:id/opensensorlistbutton bounds=[32,431][688,527] clickable=true enabled=true
+    rect=(32,431)-(688,527)
+text='请输入网关编码：' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/sensorAddressLabel bounds=[32,559][343,640] clickable=false enabled=true
+    rect=(32,559)-(343,640)
+text='请输入网关上的字母串' desc='' class=android.widget.EditText id=com.jinyuni.dengbei_care:id/sensorAddressInput bounds=[32,640][688,736] clickable=true enabled=true
+    rect=(32,640)-(688,736)
+text='保存' desc='' class=android.widget.Button id=com.jinyuni.dengbei_care:id/macSendButton bounds=[32,744][360,840] clickable=true enabled=true
+    rect=(32,744)-(360,840)
+text='使用摄像头扫一扫' desc='' class=android.widget.Button id=com.jinyuni.dengbei_care:id/macScanButton bounds=[368,744][688,840] clickable=true enabled=true
+    rect=(368,744)-(688,840)
+text='请输入传感器编码和别称：' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/sensoridinfo bounds=[32,872][688,953] clickable=false enabled=true
+    rect=(32,872)-(688,953)
+text='请输入传感器的字母串' desc='' class=android.widget.EditText id=com.jinyuni.dengbei_care:id/sensoridinput bounds=[32,961][360,1057] clickable=true enabled=true
+    rect=(32,961)-(360,1057)
+text='使用摄像头扫一扫' desc='' class=android.widget.Button id=com.jinyuni.dengbei_care:id/sensoridscan bounds=[368,963][688,1057] clickable=true enabled=true
+    rect=(368,963)-(688,1057)
+text='请输入传感器别称用于显示' desc='' class=android.widget.EditText id=com.jinyuni.dengbei_care:id/sensornameinput bounds=[32,1065][688,1161] clickable=true enabled=true
+    rect=(32,1065)-(688,1161)
+text='注册传感器' desc='' class=android.widget.Button id=com.jinyuni.dengbei_care:id/addsensorid bounds=[32,1177][688,1264] clickable=true enabled=true
+    rect=(32,1177)-(688,1264)
+text='' desc='首页' class=android.widget.FrameLayout id=com.jinyuni.dengbei_care:id/navigation_home bounds=[0,1264][240,1424] clickable=true enabled=true
+    rect=(0,1264)-(240,1424)
+text='首页' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/navigation_bar_item_small_label_view bounds=[95,1366][145,1399] clickable=false enabled=true
+    rect=(95,1366)-(145,1399)
+text='' desc='设定' class=android.widget.FrameLayout id=com.jinyuni.dengbei_care:id/navigation_dashboard bounds=[240,1264][480,1424] clickable=true enabled=true
+    rect=(240,1264)-(480,1424)
+text='设定' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/navigation_bar_item_small_label_view bounds=[335,1366][385,1399] clickable=false enabled=true
+    rect=(335,1366)-(385,1399)
+text='' desc='我的' class=android.widget.FrameLayout id=com.jinyuni.dengbei_care:id/navigation_notifications bounds=[480,1264][720,1424] clickable=false enabled=true
+    rect=(480,1264)-(720,1424)
+text='我的' desc='' class=android.widget.TextView id=com.jinyuni.dengbei_care:id/navigation_bar_item_large_label_view bounds=[575,1366][625,1399] clickable=false enabled=true
+    rect=(575,1366)-(625,1399)
+== clickable nodes ==
+class=android.widget.ImageView id=com.miui.securitycenter:id/iv_desktop_float_view text='' desc='小米红包助手' bounds=[669,430][720,533] enabled=true
+class=android.widget.ImageView id=com.android.systemui:id/recent_apps text='' desc='概览' bounds=[155,1424][265,1520] enabled=true
+class=android.widget.ImageView id=com.android.systemui:id/home text='' desc='主屏幕' bounds=[304,1424][414,1520] enabled=true
+class=android.widget.ImageView id=com.android.systemui:id/back text='' desc='返回' bounds=[453,1424][563,1520] enabled=true
+class=android.widget.Button id=com.jinyuni.dengbei_care:id/registerButton text='账户' desc='' bounds=[512,215][688,311] enabled=true
+class=android.widget.Button id=com.jinyuni.dengbei_care:id/viewReportButton text='查看今日报告' desc='' bounds=[32,327][688,423] enabled=true
+class=android.widget.Button id=com.jinyuni.dengbei_care:id/opensensorlistbutton text='打开传感器列表' desc='' bounds=[32,431][688,527] enabled=true
+class=android.widget.EditText id=com.jinyuni.dengbei_care:id/sensorAddressInput text='请输入网关上的字母串' desc='' bounds=[32,640][688,736] enabled=true
+class=android.widget.Button id=com.jinyuni.dengbei_care:id/macSendButton text='保存' desc='' bounds=[32,744][360,840] enabled=true
+class=android.widget.Button id=com.jinyuni.dengbei_care:id/macScanButton text='使用摄像头扫一扫' desc='' bounds=[368,744][688,840] enabled=true
+class=android.widget.EditText id=com.jinyuni.dengbei_care:id/sensoridinput text='请输入传感器的字母串' desc='' bounds=[32,961][360,1057] enabled=true
+class=android.widget.Button id=com.jinyuni.dengbei_care:id/sensoridscan text='使用摄像头扫一扫' desc='' bounds=[368,963][688,1057] enabled=true
+class=android.widget.EditText id=com.jinyuni.dengbei_care:id/sensornameinput text='请输入传感器别称用于显示' desc='' bounds=[32,1065][688,1161] enabled=true
+class=android.widget.Button id=com.jinyuni.dengbei_care:id/addsensorid text='注册传感器' desc='' bounds=[32,1177][688,1264] enabled=true
+class=android.widget.FrameLayout id=com.jinyuni.dengbei_care:id/navigation_home text='' desc='首页' bounds=[0,1264][240,1424] enabled=true
+class=android.widget.FrameLayout id=com.jinyuni.dengbei_care:id/navigation_dashboard text='' desc='设定' bounds=[240,1264][480,1424] enabled=true

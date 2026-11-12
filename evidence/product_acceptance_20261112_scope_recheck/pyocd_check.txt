@@ -1,0 +1,13 @@
+== pyocd --version ==
+0.36.0
+== pyocd list (probes) ==
+  #   Probe/Board                 Unique ID                  Target  
+---------------------------------------------------------------------
+  0   P&S CW-DAPLINK(CMSIS-DAP)   87094109484987710672FF50   n/a     
+== pyocd list --targets --name CW32 ==
+  Name   Vendor   Part Number   Families   Source  
+---------------------------------------------------
+== pyocd list --targets --name cortex_m (head) ==
+  Name       Vendor    Part Number       Families   Source   
+-------------------------------------------------------------
+  cortex_m   Generic   CoreSightTarget              builtin  

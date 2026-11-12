@@ -1390,6 +1390,51 @@ evidence/product_acceptance_20261112/ui_report_activity.txt | active | 报告页
 evidence/product_acceptance_20261112/ui_report_activity.xml | active | 点击「查看今日报告」后的 ReportActivity UI 原始树
 evidence/product_acceptance_20261112/ui_sensor_id_list.txt | active | 传感器列表可见节点文本/bounds 提取
 evidence/product_acceptance_20261112/ui_sensor_id_list.xml | active | 点击「打开传感器列表」后的 SensorIdListFragment UI 原始树
+evidence/product_acceptance_20261112_scope_recheck/ | active | 产品整体功能验收范围复核原始证据目录（PRODUCT-ACCEPTANCE-RECHECK-002）：候选身份复算、COM43 实板周期、BOT-01 自动上电五行、安卓真机关键路径、静态核对与人工延期披露
+evidence/product_acceptance_20261112_scope_recheck/PRODUCT-ACCEPTANCE-RECHECK-002.md | active | 产品整体功能验收复核报告：当前候选逐项结果；人工 APPROVED_DEFERRED 的 FW-LIGHT-DEF2-ENABLE 显式列为 NOT EXECUTED 且不作返工依据；纠正原检查者 R4 范围错误；BOT-01 自编脚本+pyocd HW reset 取得五行 PASS；结论 TEST_FAIL（EXTERNAL_CONDITION_UNEXECUTED）
+evidence/product_acceptance_20261112_scope_recheck/activity_after_report_click.txt | active | 点击「查看今日报告」后的 Activity 栈原始输出（mResumedActivity=ReportActivity）
+evidence/product_acceptance_20261112_scope_recheck/activity_after_sensorlist_click.txt | active | 点击「打开传感器列表」后的 Activity 栈原始输出
+evidence/product_acceptance_20261112_scope_recheck/activity_final.txt | active | 本轮结束时 Activity 状态原始输出（MainActivity 前台）
+evidence/product_acceptance_20261112_scope_recheck/bot01_hex.txt | active | 上述 271 B 的十六进制转储
+evidence/product_acceptance_20261112_scope_recheck/bot01_hw_20261112_scope_recheck.bin | active | BOT-01 上电段原始字节 271 B（BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 56ed15a5…；本机 .bin 留存，.gitignore 忽略）
+evidence/product_acceptance_20261112_scope_recheck/bot01_meta.txt | active | 复位时间、端口参数、字节数与 md5/sha256
+evidence/product_acceptance_20261112_scope_recheck/bot01_run.txt | active | BOT-01 原始运行日志（10:18:32 OPEN / 10:18:35 reset rc=0 / 271 B / BOOT_LINES_FOUND / BOT01_RESULT=PASS / EXIT=0）
+evidence/product_acceptance_20261112_scope_recheck/capture_bot01.py | active | 测试侧 BOT-01 自动测试脚本：COM43 先开→pyocd 通用 cortex_m HW reset→有界采集→五行顺序校验；不烧录/不写内存
+evidence/product_acceptance_20261112_scope_recheck/collect_static.py | active | 可复跑的只读静态收集脚本
+evidence/product_acceptance_20261112_scope_recheck/device_apk_hash.txt | active | 设备 base.apk 大小 10,365,464 B、md5 1e17e0c2…、SHA-256 71a041d3…（与候选逐字节一致）
+evidence/product_acceptance_20261112_scope_recheck/device_package_dump_full.txt | active | 设备 dumpsys package 原始输出（versionCode 10 / versionName 1.9 / debug / 安装与更新时间）
+evidence/product_acceptance_20261112_scope_recheck/device_package_state.txt | active | 设备属性、包路径、dumpsys package 前段
+evidence/product_acceptance_20261112_scope_recheck/identity_checks.txt | active | HEAD/status、固件包与三成员 md5、APK 大小/SHA-256/MD5、产品源 82a7e74..HEAD 零差异、文档提交
+evidence/product_acceptance_20261112_scope_recheck/logcat_session_summary.txt | active | 本应用 FATAL/ANR 计数（0）、报告/Activity 关键行、MqttService ENETUNREACH 说明与缓冲尾部
+evidence/product_acceptance_20261112_scope_recheck/parse_ui.py | active | 可复跑的 uiautomator XML 有界解析脚本（文本/内容描述/可点击 bounds）
+evidence/product_acceptance_20261112_scope_recheck/pyocd_check.txt | active | pyocd 0.36.0、CW-DAPLink 探针 UID、CW32 专用 target 为空、通用 cortex_m target 存在
+evidence/product_acceptance_20261112_scope_recheck/serial_capture_com43_20261112_scope_recheck.bin | active | COM43/9600 8N1 原始捕获 162 B（S k=1338/1341，md5 6522c775…；本机 .bin 留存，.gitignore 忽略，不随仓库分发；随仓库以 hex 文本复核）
+evidence/product_acceptance_20261112_scope_recheck/serial_capture_hex.txt | active | 上述原始捕获的十六进制转储
+evidence/product_acceptance_20261112_scope_recheck/serial_capture_meta.txt | active | 串口采集窗口、端口/波特率、字节数与 md5/sha256
+evidence/product_acceptance_20261112_scope_recheck/services_guard_running.txt | active | 守护运行中 MqtttService 前台服务状态（isForeground=true）
+evidence/product_acceptance_20261112_scope_recheck/static_checks.txt | active | 采样节拍/上报判据/光判据宏、UART1 引脚、hall/OPTCFG 残留、Android 平台常量与节拍、文档版本头
+evidence/product_acceptance_20261112_scope_recheck/ui_after_back.txt | active | 返回后首页 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_after_back.xml | active | 返回后首页 UI 原始树（爱守护/启动/去添加/未配置网关）
+evidence/product_acceptance_20261112_scope_recheck/ui_gateway_dialog.txt | active | 上述 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_gateway_dialog.xml | active | 「网关与上传设置」对话框 UI 原始树（未配置/平台身份空/待发 0 条/重试/关闭）
+evidence/product_acceptance_20261112_scope_recheck/ui_guard_started.txt | active | 上述 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_guard_started.xml | active | 守护启动后 UI 原始树（按钮「停止」）
+evidence/product_acceptance_20261112_scope_recheck/ui_guard_stopped.txt | active | 上述 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_guard_stopped.xml | active | 守护停止后 UI 原始树（按钮「启动」）
+evidence/product_acceptance_20261112_scope_recheck/ui_home_launch.txt | active | 首页 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_home_launch.xml | active | 启动后首页 UI 原始树
+evidence/product_acceptance_20261112_scope_recheck/ui_my_page.txt | active | 我的页顶部 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_my_page.xml | active | 我的页顶部 UI 原始树（报告/列表入口 bounds）
+evidence/product_acceptance_20261112_scope_recheck/ui_my_scrolled.txt | active | 我的页上滑后 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_my_scrolled.xml | active | 我的页上滑后 UI 原始树（注册传感器与网关按钮 bounds 不相交）
+evidence/product_acceptance_20261112_scope_recheck/ui_report_activity.txt | active | 报告页 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_report_activity.xml | active | 点击「查看今日报告」后的 ReportActivity UI 原始树
+evidence/product_acceptance_20261112_scope_recheck/ui_report_generated.txt | active | 上述 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_report_generated.xml | active | 零已保存设备时点击「重新生成」后的报告页 UI 原始树
+evidence/product_acceptance_20261112_scope_recheck/ui_sensor_id_list.txt | active | 上述 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_sensor_id_list.xml | active | 点击「打开传感器列表」后的 SensorIdListFragment UI 原始树（已保存的 ID（0））
+evidence/product_acceptance_20261112_scope_recheck/ui_settings_page.txt | active | 上述 UI 文本/bounds 提取
+evidence/product_acceptance_20261112_scope_recheck/ui_settings_page.xml | active | 设定页 UI 原始树（默认参数 2/0.1/35/29/75）
 evidence/product_android_rebuild_20261111/ | active | 产品验收修复后完整交付重建证据目录（commit dacf888）
 evidence/product_android_rebuild_20261111/apk_badging.txt | active | 重建 APK aapt badging（versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34）
 evidence/product_android_rebuild_20261111/apksigner_verify.txt | active | 重建 APK apksigner 验证（v2 通过；Android Debug 证书）

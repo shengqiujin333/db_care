@@ -1,0 +1,20 @@
+== UTC start ==
+2026-11-12T10:04:56Z
+== HEAD ==
+6aabc565e15ec7335099cd60d84863cc16f2d031
+?? evidence/product_acceptance_20261112_scope_recheck/
+== firmware package ==
+5df0c6d45ecddc8aae8bddbbcfc9cfdf *fw_release/fw_sensor_FD-002r8.zip
+-rw-r--r-- 1 kason 197121 134791 Nov 11 13:12 fw_release/fw_sensor_FD-002r8.zip
+== firmware members ==
+fw_sensor_FD-002r8_b6a15fed.axf  b6a15fed2ed5e3d0c4adc51ac87a4830 *-
+fw_sensor_FD-002r8_4d728dec.hex  4d728dec9b0d28a352c46436b7586c72 *-
+PACKAGE.txt  a58f67fcf5b760767ff5b65888c73dfb *-
+== apk ==
+71a041d322368c20a181d5716c44ac4d1b2c8a3869926b0047cd96b61e2c10d8 *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+1e17e0c281715fddd26d308246d6424c *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+-rw-r--r-- 1 kason 197121 10365464 Nov 11 18:55 dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+== product source drift since 82a7e74 ==
+drift_exit=0
+== docs HEAD commit ==
+92bfcb257a6630ca705cace68985878bd086f7bf 2026-11-12 10:36:24 +0800 [role:technical_writer] Update project work
