@@ -1,13 +1,13 @@
-# 蹬被报警器 交付文档包（DOC-PKG-001 rev 12）
+# 蹬被报警器 交付文档包（DOC-PKG-001 rev 13）
 
 负责角色：技术文档
-文档时点：2026-11-12（Asia/Shanghai；rev 12 按 DOC-VERIFY-011 补齐清单并更新索引）
+文档时点：2026-11-13（Asia/Shanghai；rev 13 按 AB-003、EV-040 与产品验收复核更新）
 覆盖的候选版本：
 
 | 子系统 | 版本/身份 | 依据产物 |
 |---|---|---|
-| 传感器固件（CW32L010） | FD-002 rev 8 源码；发布包 `fw_release/fw_sensor_FD-002r8.zip`（134,791 B，md5 `5df0c6d45ecddc8aae8bddbbcfc9cfdf`；发布记录 FW-REL-001 rev 2，包字节未变） | `artifacts/firmware_release.md`、`artifacts/firmware_implementation.md`（FWI-003 rev 8）、`evidence/test.md`（EV-038/EV-037/EV-036/EV-035） |
-| 安卓 App（爱守护） | `com.jinyuni.dengbei_care`，versionCode 10 / versionName 1.9，debug 候选；10,365,464 B，SHA-256 `71a041d3…`（AB-002） | `artifacts/android_build.md`（AB-002）、`artifacts/android_implementation.md`、`evidence/android_check_20261111/`、`evidence/android_package_check_20261111/` |
+| 传感器固件（CW32L010） | FD-002 rev 8 源码；发布包 `fw_release/fw_sensor_FD-002r8.zip`（134,791 B，md5 `5df0c6d45ecddc8aae8bddbbcfc9cfdf`；发布记录 FW-REL-001 rev 3，包字节未变） | `artifacts/firmware_release.md`、`artifacts/firmware_implementation.md`（FWI-004 rev 9）、`evidence/test.md`（EV-040/EV-039/EV-038/EV-037/EV-036/EV-035） |
+| 安卓 App（爱守护） | `com.jinyuni.dengbei_care`，versionCode 10 / versionName 1.9，debug 候选；10,370,964 B，SHA-256 `80232c50…`（AB-003） | `artifacts/android_build.md`（AB-003）、`artifacts/android_implementation.md`、`evidence/aa006_software_test_20261113/`、`evidence/android_package_check_20261113/` |
 | 中继器（网关，CH592） | **本轮未修改、未烧录** | `CH592EVT/EVT/EXAM/BLE/beiwov2/` |
 | 平台服务（broker + HTTP） | 既有部署，只读核验（EMQX 5.8.0 / Flask 5000） | `artifacts/backend_feasibility_current.md`（BE-EXP-004） |
 
@@ -20,11 +20,11 @@
 | 文件 | 覆盖对象 | 主要读者 | 事实来源 |
 |---|---|---|---|
 | `docs/01_产品说明与版本变更.md` | 系统组成、本次 8 项需求落地情况、上报判定规则、交付物 | 全体 | 源码、FD-002、FWR-002、IC-002 |
-| `docs/02_传感器固件安装与烧录.md` | 发布包校验、Keil 构建、下载、升级/回退 | 固件/生产/测试人员 | FW-REL-001 rev 2、EV-038/EV-037、`MDK/Project.uvprojx` |
-| `docs/03_传感器调试串口手册.md` | UART1 接线与参数、上电五行、`S`/`G`/`P` 行字段、采集与判读 | 固件/测试/现场支持 | `USER/inc/debug_trace.h`、`USER/src/debug_trace.c`、EV-038/EV-036 原始捕获 |
-| `docs/04_安卓App安装与使用.md` | APK 身份与安装/升级、权限、「我的」页真实界面、报告/传感器列表入口（已修复）、网关 BLE 地址与上传设置、401/403 与 408/429 处理、剩余行为限制 | 交付/运维/测试人员 | AB-002、`NotificationsFragment.kt`、`GatewayBleSettingsDialog.kt`、`MqtttService.kt`、`UploadResult.kt`、`evidence/android_check_20261111/`、DOC-VERIFY-001～011、`dengbei_care/用户使用说明书.md` |
+| `docs/02_传感器固件安装与烧录.md` | 发布包校验、Keil 构建、下载、升级/回退 | 固件/生产/测试人员 | FW-REL-001 rev 3、EV-040/EV-039、`MDK/Project.uvprojx` |
+| `docs/03_传感器调试串口手册.md` | UART1 接线与参数、上电五行、`S`/`G`/`P` 行字段、采集与判读 | 固件/测试/现场支持 | `USER/inc/debug_trace.h`、`USER/src/debug_trace.c`、EV-040/EV-038 原始捕获 |
+| `docs/04_安卓App安装与使用.md` | APK 身份与安装/升级、权限、真实界面与链路状态、报告/传感器列表入口、网关 BLE 地址与上传设置、401/403 与 408/429 处理、剩余行为限制 | 交付/运维/测试人员 | AB-003、`NotificationsFragment.kt`、`GatewayBleSettingsDialog.kt`、`MqtttService.kt`、`UploadResult.kt`、`evidence/aa006_software_test_20261113/`、DOC-VERIFY-001～012、`dengbei_care/用户使用说明书.md` |
 | `docs/05_平台服务器配置与联调前提.md` | 服务器地址/端口、客户端配置点、只读核验结论、联调前置 | 后端/联调人员 | `artifacts/backend_feasibility_current.md`、`CloudConfig.kt`、`服务器迁移记录.md`（仅引用，不复制凭据） |
-| `docs/06_维护排障与已知限制.md` | 例行维护、排障路径、**25 项限制/已修复记录（#1–#25；#17/#18/#20 已修复保留编号）**、未执行测试清单 | 运维/支持/验收 | 各能力产物与证据、DOC-VERIFY-001～011 |
+| `docs/06_维护排障与已知限制.md` | 例行维护、排障路径、**26 项限制/已修复记录（#1–#26；#17/#18/#20 已修复保留编号）**、未执行测试清单 | 运维/支持/验收 | 各能力产物与证据、DOC-VERIFY-001～012 |
 | `dengbei_care/用户使用说明书.md` | 面向最终用户的 App 操作说明（1.9） | 终端用户 | Android 源码/布局 |
 
 推荐阅读顺序：新产品接手 → 01 → 02/04 → 03/05 → 06；现场排障 → 06 → 对应子系统手册。
@@ -68,17 +68,17 @@
 
 | # | 项 | 当前状态 | 处理 |
 |---|---|---|---|
-| 1 | 无光判据的启用与实板双态（`FW-LIGHT-DEF2-ENABLE`） | **未执行**（人工确认 `SKIP_CONFIRMED`，2026-11-11T03:50:42Z） | 交付固件保持 `T=0`；升温+无光分支不触发 |
+| 1 | 无光判据的启用与实板双态（`FW-LIGHT-DEF2-ENABLE`） | **未执行**（人工确认 `SKIP_CONFIRMED`，2026-11-11T03:50:42Z） | 交付固件保持 `T=0`；升温+无光分支不触发。原检查者把该项计入“未满足/整体失败”属范围错误，复核报告已纠正；本包不据此返工、不重测、不重复询问 |
 | 2 | 真实升温 >0.9 ℃ / >35.0 ℃ 触发与 433 实发 | 未执行（用户禁止调温） | 后续具备条件时按 03 文档判读 |
 | 3 | 网关→手机跨链路（433+BLE）联调 | 未执行（后续联调阶段） | 见 05 文档联调前提 |
 | 4 | `/upload_data` 真实写入、幂等与回读 | 未执行（无写授权） | 见 05 文档 §5 |
 | 5 | CR2032 采样峰值/深睡电流（`E2E-04`） | 已批准延期，未测（无仪器） | 见 06 文档 §4 |
 | 6 | Android release 变体与生产签名 | 未产出（离线缺 lint 依赖） | 仅 debug 候选可用于内部测试 |
-| 7 | 本次候选 APK 的实机安装字节一致性 | 当前候选 `71a041d3…`（AB-002）**已安装并与设备 `base.apk` 逐字节一致**；覆盖升级保留数据；D-01～D-04a 回归与关键页面已复验 | 真实 BLE/GATT/上传/401 未在该候选重跑 |
+| 7 | 本次候选 APK 的实机安装字节一致性 | 当前候选 `80232c50…`（AB-003）**已安装并与设备 `base.apk` 逐字节一致**；AA-006 的 N-1/N-2/N-3 已执行用例通过（限定范围），真实网关读取到达 `GATEWAY_NO_DEVICE` 终态 | 有效批次 `DATA_OK`、全占位 `GATEWAY_NO_DATA`、多设备/MTU 边界未执行 |
 | 8 | 原「我的」页布局/导航缺陷（O-PKG-1、O-PKG-2、P-04） | **已修复并独立复验**：报告页与传感器列表可直接打开，控件不重叠，页面可滚动；「有数据时」的列表/删除仍未验证 | 见 06 §3 #17/#18/#20；剩余风险见 04 §8 |
 | 9 | App 写网关绑定列表路径 | 未发现发送路径（`BLE_ENQUEUE_WRITE_IDS` 仅接收端） | 待 Android 实现确认；文档不声称已写入 |
-| 10 | App 行为限制（P-08～P-13） | 关闭守护后仍读取/MQTT 转发/紧急提醒/记录；剩余倒计时恢复放大约 60 倍；震动无 5 分钟上限；「报警间隔」无效；紧急报警忽略震动/响铃开关 | 文档按当前实现披露（06 §3 #21–#25），修复属 Android 实现 |
-| 11 | 产品整体验收状态 | `PRODUCT-ACCEPTANCE-001`（17:49–18:15）在**旧 APK `d2054221…`** 上判 `TEST_FAIL`（D-01～D-04）；修复后的 `71a041d3…` 仅由 Android 复验（限定范围）证明这些项不再复现，**整产品验收尚未重跑** | 不得据局部 PASS 宣称整产品通过；见 06 §4 |
+| 10 | App 行为限制（P-08～P-13） | 关闭守护后仍读取/MQTT 转发/紧急提醒/记录；剩余倒计时恢复放大约 60 倍；震动无 5 分钟上限；「报警间隔」无效；紧急报警忽略震动/响铃开关 | 文档按当前实现披露（06 §3 #21–#26，其中 #26 为 AA-006 观察），修复属 Android 实现 |
+| 11 | 产品整体验收状态 | `PRODUCT-ACCEPTANCE-002` 与 `PRODUCT-ACCEPTANCE-RECHECK-002` 已在 **AB-002 候选**（`71a041d3…` + 同一固件包）上重跑，结论仍为 `TEST_FAIL`（`EXTERNAL_CONDITION_UNEXECUTED`）：真实升温/光强、跨链路、平台写入/回读、功耗、`DATA_OK` 等外部条件未具备。AB-003 仅完成 AA-006 限定范围验证，**整产品验收未在 AB-003 上重跑**。原检查者把人工已延期的 `FW-LIGHT-DEF2-ENABLE` 计入“未满足/整体失败”属范围错误，复核报告已纠正，该项仅按 NOT EXECUTED 披露 | 不得据局部 PASS 宣称整产品通过；见 06 §4 |
 
 ---
 
@@ -104,10 +104,11 @@
 | rev 10 | 2026-11-11 | 按新 Android 候选 AB-002 重建：APK 身份改为 `71a041d3…`（10,365,464 B）、D-01～D-04a 修复后报告/传感器列表入口可达、控件无重叠、页面可滚动；同步 04/06/01/README，修正“无 UI 路径”旧表述；补充 EV-037/EV-038 与整体验收状态 |
 | rev 11 | 2026-11-11 | 按 DOC-VERIFY-010 修正：D-41 06 §5 改引真实证据文件；D-43 06 §4 补充有数据删除/当前候选 BLE/上传/401 未重跑/回退未执行三行；D-42 共享清单 14 条 `.cap` 恢复为真实 `.bin` 并标注本机留存；O-1～O-3 措辞/章节引用/周期数更新 |
 | rev 12 | 2026-11-12 | 按 DOC-VERIFY-011 修正：D-44 清单补回 4 个现存受控验证脚本（item006/008/010/013）；O-4 06 §5 明确历史 `release_identity.txt` 属 ev036；O-5 统一未跟踪 `.bin` 的本机留存标注 |
+| rev 13 | 2026-11-13 | 按 AB-003、EV-040、AA-006 与产品验收复核重建：APK 身份改为 `80232c50…`（10,370,964 B）；补扫描权限自动续跑、`GATEWAY_NO_DEVICE` 终态、报告再生成反馈与 O-AA006 观察项；固件引用升至 FW-REL-001 rev 3 / FWI-004 rev 9 / EV-040；产品整体验收状态为“AB-002 重跑仍 `TEST_FAIL`（外部条件）、AB-003 未重跑”，并披露人工跳过项的范围纠错；按 O-6 统一 `Project.axf` 与用户资料的本机留存标注 |
 
-> rev 12 的修正依据为清单—工作区—Git 对照与 DOC-VERIFY-011，**尚未经独立文档校核复验**；旧版 DOC-VERIFY 结论不适用于 rev 12。
+> rev 13 的修正依据为当前候选源码/包/证据与独立报告，**尚未经独立文档校核复验**；旧版 DOC-VERIFY 结论不适用于 rev 13。
 
-### 6.2 rev 6–12 写作者整包自查记录（自查，不是独立验证）
+### 6.2 rev 6–13 写作者整包自查记录（自查，不是独立验证）
 
 | 自查项 | 方法 | 结果 |
 |---|---|---|
@@ -115,7 +116,7 @@
 | 用户手册数值与规则 | 对照 `MainActivity` 默认值、`DashboardFragment` 默认值按钮、`AlarmEvaluator`（5/10/15 分、>65℃、900 s）、`CloudUploadRepository`（20 次/1800 s） | 首次安装值与「默认值」填充值分列；节流/重试/时间窗一致 |
 | 时间语义 | 对照 `MqtttService`（BLE=receiveTime；MQTT=payload time）、`UploadPayload` | 01 §4、04 §4.3、手册 §11.1 三处一致 |
 | 安装/包身份 | 复算 APK 大小/SHA-256、历史 APK 大小与时间 | 与 04 §1、手册 §2.1 一致 |
-| 未执行项/限制 | 对照 06 §4、EV-038/EV-036/EV-035、DOC-VERIFY 系列 | `FW-LIGHT-DEF2-ENABLE` 仍为 SKIP_CONFIRMED（未执行），无光分支禁用披露在 01/06/手册一致 |
+| 未执行项/限制 | 对照 06 §4、EV-040/EV-039/EV-038/EV-036/EV-035、DOC-VERIFY 系列 | `FW-LIGHT-DEF2-ENABLE` 仍为 SKIP_CONFIRMED（未执行），无光分支禁用披露在 01/06/手册一致 |
 | 跨文档矛盾 | 比较 01–06 与手册的入口、重试上限、时间语义、限制编号 | 未发现新的互斥表述；已修正 06 的 4xx 状态文字与 04 的「响铃」用词 |
 | rev 7 行为声明复核 | 对照 `MqtttService`（BLE 循环/入库门控/900 s 节流/delayalarm 使用）、`HomeFragment`（恢复乘数）、`VibrationPlayer`（waveform repeat） | 修正 4 处与实现对不上的声明；06 新增 #21–#24 并标注为源码静态结论 |
 | rev 8 关闭守护边界复核 | 对照 `MqtttService` 紧急报警/`storeAlarmEvent`/`forwardBleBatch`/守护门控位置、`CloudUploadRepository` 门控 | 明确“停止”仅覆盖入库/`/upload_data`/下降超限提醒；紧急提醒、报警记录、卡片、MQTT 转发仍继续；新增 #25 |
@@ -123,5 +124,6 @@
 | rev 10 候选身份与入口复核 | 对照 AB-002、`android_check_20261111`、`android_package_check_20261111` 与当前布局/源码 | 可构建源码/字节身份统一为 `71a041d3…`/`ab72db9`/`dacf888`（随包说明书身份行在之后更新）；报告与传感器列表入口改为“已修复”；保留 P-08～P-13 行为限制与“有数据时删除未验证”；标记整体验收未重跑 |
 | rev 11 引用/披露复核 | 对照 `evidence/ev038/` 实际文件、06 §4 与共享清单全路径存在性 | 修正 06 §5 的不存在文件引用；06 §4 补 3 项未执行；共享清单 14 条 `.cap` 改为真实 `.bin`（本机留存）；全清单非目录路径均存在 |
 | rev 12 清单完整性复核 | 对照 Git 受控文件清单与 `file_manifest.txt`，并抽取 `software_test.md`/门禁日志引用 | 补回 item006/008/010/013 四条受控脚本；所有未跟踪 `.bin` 统一标注“本机留存”；清单 1301 条具体路径均存在、0 缺失 |
+| rev 13 候选身份与行为复核 | 对照 AB-003、ST-AA006、EV-040、PRODUCT-ACCEPTANCE-RECHECK-002 与当前源码/UI 文字 | APK 身份统一为 `80232c50…`/10,370,964 B；扫描授权后自动续扫、读取终态 `GATEWAY_NO_DEVICE`、报告再生成反馈写入 04/手册；产品验收状态为 AB-002 重跑仍 `TEST_FAIL`（外部条件）、AB-003 仅有 AA-006 限定验证；人工跳过项按 NOT EXECUTED 披露并记录范围纠错 |
 
 > 自查仅覆盖本轮文档事实与表述；未重新烧录/串口采集/平台写入/跨链路，不构成功能验收。
