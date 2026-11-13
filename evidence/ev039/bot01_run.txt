@@ -1,0 +1,12 @@
+06:29:22.377 OPEN COM43 9600 8N1
+06:29:23.386 RESET_START method=hw
+0000577 I Target type is cortex_m [board]
+0000579 I Performing HW reset... [reset_cmd]
+0000792 I Done. [reset_cmd]
+06:29:24.410 RESET_DONE rc=0
+06:29:49.429 CAPTURE_DONE bytes=271 chunks=5 file=evidence/ev039/bot01_hw.cap
+  t+2.079s 164 bytes: b'BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600\r\nVDD ok=1 code=1480 bgrmv=1189 mv=3289\r\nIOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0\r\nIOSIG scl=95555 sda=30300\r\n'
+  t+3.079s 11 bytes: b'BUS idle=3 '
+  t+3.141s 20 bytes: b'scl=1 sda=1 ack=44\r\n'
+  t+3.375s 31 bytes: b'S k=0 p=0 H=0 V=0 o=8 n=3280 x='
+  t+3.438s 45 bytes: b'3293 a=3284 D=0 t=319 h=321 q=1 r=0 s=0 y=0\r\n'

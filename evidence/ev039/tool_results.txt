@@ -1,0 +1,107 @@
+EV-039 tool results and identities (2026-11-13, UTC)
+Round: embedded_tester.embedded_verification / firmware_check
+Subject: firmware implementation FWI-004 rev 9 (product source 82a7e74, no code change this round)
+Design: artifacts/test_design.md TD-002 rev 9.0
+
+== 1. Preflight enumeration (06:26:49Z) ==
+serial_list_ports (exit 0, 06:26:49.211-06:26:49.227Z):
+  COM43  Prolific USB-to-Serial Comm Port  VID:PID=067B:2303  LOCATION=1-9.4.2
+  COM26  USB Serial Device                VID:PID=C251:F001  SN=87094109484987710672FF50  (debugger CDC, not used)
+usb_list_devices (exit 0, 06:26:49.465-06:26:52.087Z) relevant entries:
+  067B:2303  Prolific USB-to-Serial Comm Port (COM43)
+  C251:F001  USB Composite Device / HID / Ports, SN 87094109484987710672FF50  (CW-DAPLink)
+  18D1:4EE7  USBDevice "SDM439-QRD _SN:3AE89DF1", InstanceId ...\12F046690506  (Redmi 8A)
+  04B4:8613  "Unknown Device #1"  (Cypress FX2 identity present)
+  No oscilloscope / current meter / SMU / VDS1022 enumerated.
+sigrok_info (exit 0, 06:26:52.275Z):
+  enabled=true, driver=fx2lafw, connection=2.32, channels=[D0,D1],
+  signal_labels={D0:scl,D1:sda}, triggers={D1:f}, samplerate_hz=4000000,
+  max_samplerate_hz=8000000, max_samples=20000000, timeout_sec=240,
+  online=not_checked (configuration only; no USB access)
+
+== 2. Build identity ==
+mdk_build {"action":"rebuild"} (06:27:00.469-06:27:03.205Z, exit 0):
+  ARMCLANG V6.24; 0 Error / 1 Warning (pre-existing main.c(254) while loop has empty body)
+  Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+  md5 Project.axf = b6a15fed2ed5e3d0c4adc51ac87a4830 (297380 B)
+  md5 Project.hex = 4d728dec9b0d28a352c46436b7586c72 (75275 B)
+
+Release package fw_release/fw_sensor_FD-002r8.zip:
+  size 134791 B, md5 5df0c6d45ecddc8aae8bddbbcfc9cfdf
+  members=3:
+    fw_sensor_FD-002r8_b6a15fed.axf 297380 B  b6a15fed2ed5e3d0c4adc51ac87a4830
+    fw_sensor_FD-002r8_4d728dec.hex  75275 B  4d728dec9b0d28a352c46436b7586c72
+    PACKAGE.txt                      3202 B   a58f67fcf5b760767ff5b65888c73dfb
+  no harness/mock/test member -> formal package purity re-confirmed this round.
+
+Source identity:
+  HEAD = 9ce380cfb7fc5779d85df1f41db5f59a673e622d
+  git diff --stat 82a7e74..HEAD -- <sensor>/{USER,MDK,EWARM,UM2005C,COMMON} = empty
+  MDK/Project.uvprojx contains no "test"/"mock" source path.
+
+== 3. Download ==
+mdk_flash {} (06:28:51.227-06:29:04.466Z, exit 0):
+  build step incremental 0 Error / 0 Warning (up to date)
+  flash_log: Load "...\Project.axf"
+             Erase Done.Programming Done.Verify OK.Application running ...
+             Flash Load finished at 14:29:04
+  Loaded image is the same Project.axf (md5 b6a15fed...). "Verify OK" = read-back only.
+
+== 4. Host test evidence ==
+test/build_test.sh (06:28Z, exit 0): 48 + 61 + 54 + 28 + 31 = 222 passed, 0 failed
+  stages: host_sensor_core_test(48), host_measure_flow_check(61),
+          host_debug_trace_check(54), host_light_check T=0(28), host_light_check T=3590(31)
+Independent tester harness suite (run_host_harnesses.sh, RESULT: FAILED=[]):
+  fw_core 59/0, gxht40 93/0, sf_i2c 51/0, diag_line 38/0, diag_probe 109/0,
+  measure_flow 79/0, rf_frame 10/0, rf_report 30/0, rtc 17/0, gw_compat 11/0,
+  vdd 31/0, light_disabled 40/0, light_enabled 41/0  => 609/0
+Static checks (static_check_ev039.py): 21 passed, 0 failed
+Debug-off build (-DSENSOR_DEBUG_UART=0, RPT-13):
+  all 8 USER translation units exit 0;
+  debug_trace.o has no defined symbols; measure.o/main.o/debug_trace.o reference no UART symbols.
+  (Warnings are pre-existing in main.c / sf_i2c.c / encrytogate.c, unchanged categories.)
+
+== 5. Real board: BOT-01 automated power-on capture ==
+capture_with_reset.py (test-side asset; pyocd only as external reset source):
+  06:29:22.377 OPEN COM43 9600 8N1
+  06:29:23.386 RESET_START method=hw
+    pyocd 0.36.0 reset -t cortex_m -M attach -m hw, probe UID 87094109484987710672FF50
+    "Performing HW reset... Done." rc=0
+  06:29:49.429 CAPTURE_DONE bytes=271 chunks=5 -> evidence/ev039/bot01_hw.cap
+  raw lines:
+    BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+    VDD ok=1 code=1480 bgrmv=1189 mv=3289
+    IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+    IOSIG scl=95555 sda=30300
+    BUS idle=3 scl=1 sda=1 ack=44
+    S k=0 p=0 H=0 V=0 o=8 n=3280 x=3293 a=3284 D=0 t=319 h=321 q=1 r=0 s=0 y=0
+
+== 6. Real board: passive COM43 observation (no stimulus) ==
+serial_capture 1: 06:30:01.718-06:35:01.943Z, duration 300 s, 78 B
+  artifact serial-capture-1794551701924596900.bin -> cap01_k3.cap (md5 d025737c62ba6a04ec8fa004b3cf1487)
+  observed: S k=3
+serial_capture 2: 06:37:16.463-06:42:16.675Z, duration 300 s, 157 B
+  artifact serial-capture-1794552136673755800.bin -> cap02_k9_k12.cap (md5 2cbd9e24b511c23a1b38272913f83bf3)
+  observed: S k=9, S k=12
+serial_capture 3: 06:42:24.122-06:47:24.323Z, duration 300 s, 158 B
+  artifact serial-capture-1794552444322464700.bin -> cap03_k15_k18.cap (md5 c6cd6b77e71ee9f05369f34f02bf9eb5)
+  observed: S k=15, S k=18
+Window gap (tool turn-around): 06:35:01.943 -> 06:37:16.463 (2 min 14.5 s); k=6 fell in this gap and
+was not observed. This is a capture-window gap, not a cadence anomaly; the four cycles
+k=9/12/15/18 were observed consecutively with step 3.
+
+== 7. Optional L3 bit-level I2C (not a required acceptance item) ==
+sigrok_probe (06:48:13.087-06:48:14.451Z, exit 1, error_code SIGROK_FAILED):
+  command: sigrok-cli --driver fx2lafw:conn=2.32 --show
+  stderr: "No devices found."
+  Interpretation: the configured connection 2.32 did not resolve in this session. USB enumeration
+  still shows a Cypress FX2 identity (04B4:8613, "Unknown Device #1"), but its current bus/address
+  was not verified. Per project constraints, no global scan and no guessed address were used, and
+  the environment configuration was not modified. Recorded as NOT EXECUTED for this optional
+  supplement; it substitutes for no required evidence.
+
+== 8. Scope/deferral context (read-only, not retested) ==
+FW-LIGHT-DEF2-ENABLE: human SKIP_CONFIRMED ("无法准备，先跳过", 2026-11-11T03:50:42Z),
+  APPROVED_DEFERRED, delivery_status APPROVED_DEFERRED. NOT EXECUTED this round; no retest.
+E2E-04 (CR2032 sampling peak / deep-sleep current): DEFERABLE per runtime acceptance scope,
+  no current instrument. NOT EXECUTED; disclosed.

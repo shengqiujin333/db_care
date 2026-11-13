@@ -1379,6 +1379,56 @@ evidence/ev038/raw_i2c_capture.sr | active | 位级 I²C 原始采集（8,000,00
 evidence/ev038/run_host_harnesses.sh | active | EV-038 测试侧独立 harness 构建/运行可复跑脚本（本机 MinGW-w64 gcc）
 evidence/ev038/static_check_ev038.txt | active | 只读静态核查输出（沿用测试侧 21 项检查；21/21 PASS）
 evidence/ev038/tool_results.txt | active | 本轮设备枚举/包身份/构建/下载/pyocd/串口/逻辑分析仪/宿主测试原始结果与时间戳；未执行与延期项
+evidence/ev039/ | active | EV-039 当前固件独立实板验证原始证据目录：独立重建/下载、端口先开后 pyocd HW reset 的上电五行、4 份 COM43 原始捕获（6 个采样行、4 连续周期）、独立分析/静态/宿主 harness 日志与工具原始结果；含人工 SKIP_CONFIRMED / E2E-04 DEFERABLE 披露
+evidence/ev039/EV-039_prototype_section.md | active | EV-039 下载身份段落（已并入 evidence/programmed_prototype.md 顶部）
+evidence/ev039/EV-039_section.md | active | EV-039 证据正文（已并入 evidence/test.md 顶部）：身份/重建下载/宿主 222+609/0/静态 21/21/上电五行/COM43 4 连续周期/可选 L3 未执行/延期与阶段外未执行披露/结论 TEST_PASS（限定 TD-002 rev 9.0 适用范围内）
+evidence/ev039/analyze_ev039.py | active | 本轮独立解析脚本（行字段/行长/CRLF/杂散/节拍/p 链/可选 I2C 段；不引用实现常量）
+evidence/ev039/bot01_hw.cap | active | BOT-01 原始字节 271 B（BOOT/VDD/IOTEST/IOSIG/BUS + S k=0；md5 3cbb7c68…）
+evidence/ev039/bot01_run.txt | active | 端口先开/复位时间/pyocd 原始输出/逐块接收的 BOT-01 原始运行日志
+evidence/ev039/build_debug_off.log | active | SENSOR_DEBUG_UART=0 构建与符号检查原始输出（8 个翻译单元 exit 0；无 UART 符号）
+evidence/ev039/build_debug_off.sh | active | SENSOR_DEBUG_UART=0 构建与符号检查脚本（可复跑）
+evidence/ev039/cap01_k3.cap | active | COM43 被动原始字节：S k=3，78 B（md5 d025737c…）
+evidence/ev039/cap02_k9_k12.cap | active | COM43 被动原始字节：S k=9/k=12，157 B（md5 2cbd9e24…）
+evidence/ev039/cap03_k15_k18.cap | active | COM43 被动原始字节：S k=15/k=18，158 B（md5 c6cd6b77…）
+evidence/ev039/capture_analysis.txt | active | analyze_ev039.py 输出（104 项断言 0 失败：行格式/字段/节拍/p 链/无杂散/判据未启用等价性）
+evidence/ev039/capture_windows.txt | active | 4 个捕获窗口起止/字节数/md5/观测 k/窗口间隙与连续集说明（k=6 落在工具间隙）
+evidence/ev039/capture_with_reset.py | active | BOT-01 编排脚本（COM43 先开->pyocd 通用 cortex_m HW reset->有界采集；仅复位，不写 Flash/内存）
+evidence/ev039/host_build_test.log | active | 实现侧 test/build_test.sh 原始输出（48+61+54+28+31=222 项 0 失败）
+evidence/ev039/host_diag_line_verify_ev.build.log | active | 诊断行独立 harness 编译日志
+evidence/ev039/host_diag_line_verify_ev.log | active | 诊断行独立 harness 输出（38/0）
+evidence/ev039/host_diag_probe_verify_ev.build.log | active | 总线诊断独立 harness 编译日志
+evidence/ev039/host_diag_probe_verify_ev.log | active | 总线诊断独立 harness 输出（109/0）
+evidence/ev039/host_fw_core_verify_ev.build.log | active | fw_core 独立 harness 编译日志（空=0 error）
+evidence/ev039/host_fw_core_verify_ev.log | active | fw_core 独立 harness 输出（59/0）
+evidence/ev039/host_gw_compat_verify_ev.build.log | active | 网关兼容独立 harness 编译日志
+evidence/ev039/host_gw_compat_verify_ev.log | active | 网关兼容独立 harness 输出（11/0）
+evidence/ev039/host_gxht40_verify_ev.build.log | active | GXHT40 独立 harness 编译日志
+evidence/ev039/host_gxht40_verify_ev.log | active | GXHT40 独立 harness 输出（93/0）
+evidence/ev039/host_harness_run.stdout | active | 测试侧独立 harness 复跑 stdout（13 组 609/0；RESULT: FAILED=[]）
+evidence/ev039/host_light_verify_ev.build.log | active | light.c（T=0）独立 harness 编译日志
+evidence/ev039/host_light_verify_ev.log | active | light.c（T=0）独立 harness 输出（40/0）
+evidence/ev039/host_light_verify_ev_enabled.build.log | active | light.c（T=3000）独立 harness 编译日志
+evidence/ev039/host_light_verify_ev_enabled.log | active | light.c（T=3000）独立 harness 输出（41/0）
+evidence/ev039/host_measure_flow_verify_ev.build.log | active | 采样流程独立 harness 编译日志
+evidence/ev039/host_measure_flow_verify_ev.log | active | 采样流程独立 harness 输出（79/0）
+evidence/ev039/host_rf_frame_verify_ev.build.log | active | 空口帧独立 harness 编译日志
+evidence/ev039/host_rf_frame_verify_ev.log | active | 空口帧独立 harness 输出（10/0）
+evidence/ev039/host_rf_report_verify_ev.build.log | active | 条件上报发送路径独立 harness 编译日志
+evidence/ev039/host_rf_report_verify_ev.log | active | 条件上报发送路径独立 harness 输出（30/0）
+evidence/ev039/host_rtc_cadence_verify_ev.harness.build.log | active | RTC 节拍 harness 编译日志
+evidence/ev039/host_rtc_cadence_verify_ev.link.log | active | RTC 节拍 harness 链接日志
+evidence/ev039/host_rtc_cadence_verify_ev.log | active | RTC 节拍独立 harness 输出（17/0）
+evidence/ev039/host_rtc_cadence_verify_ev.main.build.log | active | RTC 节拍 harness 的 main.c 影子构建日志
+evidence/ev039/host_sf_i2c_verify_ev.build.log | active | 软 I2C 独立 harness 编译日志
+evidence/ev039/host_sf_i2c_verify_ev.log | active | 软 I2C 独立 harness 输出（51/0）
+evidence/ev039/host_vdd_verify_ev.build.log | active | 供电轨测量独立 harness 编译日志
+evidence/ev039/host_vdd_verify_ev.log | active | 供电轨测量独立 harness 输出（31/0）
+evidence/ev039/mdk_build_flash.log | active | mdk_build rebuild 与 mdk_flash 原始日志（0E/1W、Code=25964、axf b6a15fed…、Verify OK/Application running）
+evidence/ev039/run_host_harnesses.sh | active | 测试侧独立 harness 构建/运行脚本（13 组）
+evidence/ev039/static_check_ev039.py | active | 只读静态核查脚本（21 项；可复跑）
+evidence/ev039/static_check_ev039.txt | active | 只读静态核查输出（21/21 PASS：常量/判据/行序/上电顺序/引脚/无浮点/无可疑旧通路/有界等待）
+evidence/ev039/tool_results.txt | active | 本轮端口/USB/sigrok 枚举、构建与下载身份、宿主与静态计数、BOT 与 COM43 工具原始返回、pyocd 参数与未执行项
+evidence/ev039/update_manifest_ev039.py | active | 本轮清单更新脚本（新增 EV-039 条目并刷新聚合证据描述；可复跑）
 evidence/firmware_assignment_referral.md | active | 固件实现失败分派转交证据（EV-028/029：GXHT40 与 F-1 已修复；剩余 T4-02/T5/INT/T4-07 为采集编排、遮光/刺激与仪器配置条件，非固件代码缺陷；列明责任与前置条件）
 evidence/firmware_assignment_referral_ev030.md | active | EV-030 失败分派转交报告：固件 5/5+2/2 周期 q=1、0 G、I2C 双 CRC、F-1 保持；未满足项为上电五行采集编排、T5 双态物理条件、跨链路/刺激、功耗仪器；结论 ASSIGNMENT_DECLINED，未改产品源码
 evidence/firmware_design_lightdef/ | active | 固件设计用于无光判据推导的可复跑统计目录：只读已提交的原始串口捕获，输出光敏均值分布与阈值余量
@@ -1682,7 +1732,7 @@ evidence/product_fix_20261111/static_layout_check.py | active | 可复跑布局/
 evidence/product_fix_20261111/static_layout_check.txt | active | 上述脚本输出（15/15 PASS）
 evidence/product_fix_20261111/test_summary.txt | active | 修复后全量宿主机用例汇总（261/0/0/0，33 套件）
 evidence/product_fix_20261111/unit_test.log | active | 全量 testDebugUnitTest --rerun-tasks 原始输出（32 套件 / 257 项 / 0 失败）
-evidence/programmed_prototype.md | active | 下载身份记录（EV-038 置顶：HEAD 15f70a5 / 实现提交 82a7e74 / 独立重建 axf md5 b6a15fed… 与发布包成员逐字节一致、mdk_flash Verify OK、上电五行与 7 个 q=1 采样行、位级 I²C 双 CRC 匹配；EV-037/EV-036 及更早保留为历史；仅证明下载成功，不代表功能合格）
+evidence/programmed_prototype.md | active | 下载身份记录（EV-039 置顶：HEAD 9ce380c / 实现提交 82a7e74、独立重建 axf md5 b6a15fed… 与发布包成员逐字节一致、mdk_flash Verify OK、上电五行与 6 个 q=1 采样行（k=9/12/15/18 连续）；EV-038/EV-037 及更早保留为历史；仅证明下载成功，不代表功能合格）
 evidence/protocol_test.md | active | 协议测试证据 PROTO-002（空口往返，真实传感器 encrytogate.c ↔ 真实网关 feistel_al.c）
 evidence/software_reference_frame_codec.py | active | 软件验证独立 Python 参考（65536 温度/湿度字期望值与 FNV-1a 表哈希）
 evidence/software_static_check_no_little_endian_parser.py | active | 可复跑静态核查（ITEM-002：无 parseHexData/小端组合、BLE 解析入口唯一）
@@ -1699,7 +1749,7 @@ evidence/software_verify_release_item014.py | active | 由 software_tester 新�
 evidence/software_verify_report_wording_item013.py | active | Android ITEM-013 独立验证脚本（报告与条件上报文案）
 evidence/software_verify_timestamp_write_item007.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_upload_payload_item008.py | active | Android ITEM-008 独立验证脚本（/upload_data 请求体构造）
-evidence/test.md | active | 嵌入式验证证据 EV-038（当前轮，置顶）：发布包 FD-002r8 rev 2 独立 HIL_PASS（限定已执行范围）— 包/成员身份复算一致、独立重建 axf b6a15fed…/hex 4d728dec… 与包逐字节一致、mdk_flash Verify OK、端口先开后 HW reset 取得上电五行与 S k=0、7 周期 k=0/3/6/9/12/15/21 全 q=1/V=0/D=0 且 p 链匹配、位级 I²C 双 CRC MATCH 且 p(k=21)=温度 263、宿主 222+609/0、静态 21/21；FW-LIGHT-DEF2-ENABLE 为 SKIP_CONFIRMED（2026-11-11T03:50:42Z，未执行不写成通过）、真实升温/光强与跨链路未执行、E2E-04 已批准延期；EV-037/EV-036 及更早保留为历史
+evidence/test.md | active | 嵌入式验证证据 EV-039（当前轮，置顶）：TD-002 rev 9.0 适用范围内 TEST_PASS（限定已执行范围）— 产品源 82a7e74 零差异、重建 axf b6a15fed…/hex 4d728dec… 与发布包成员一致、mdk_flash Verify OK、端口先开后 pyocd HW reset 取上电五行与 S k=0、COM43 6 个采样行 q=1（k=9/12/15/18 连续）且 p 链匹配、宿主 222+609/0、静态 21/21、SENSOR_DEBUG_UART=0 无 UART 符号；FW-LIGHT-DEF2-ENABLE 为 SKIP_CONFIRMED/NOT EXECUTED、E2E-04 已批准延期、真实升温/光强与跨链路未执行、可选 L3 未解析；EV-038/EV-037 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-030 置顶，EV-029/EV-027/EV-025/EV-023/EV-021 原文保留）：EV-030 完整交付 TEST_FAIL 复核——同一镜像新增 2 周期 q=1、F-1 保持；剩余为上电段采集编排（串口/下载串行、pyocd 未登记授权）、光敏双态/标定、升温与跨链路刺激、功耗仪器；未见新固件功能缺陷（仅归因，不代表整体通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 fw_release/ | active | 传感器固件发布包目录（发布候选；二进制以确定性 zip 入库，避开 .gitignore 的构建产物与 **/Release/ 规则）

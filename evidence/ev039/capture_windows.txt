@@ -1,0 +1,25 @@
+EV-039 COM43 capture windows (2026-11-13, UTC; COM43 = Prolific 067B:2303, 9600 8N1)
+All windows are passive: no temperature change, no light change, no shading/illumination, no
+power measurement, no gateway/phone operation. Device left in normal state.
+
+| # | file | start (UTC) | end (UTC) | duration | bytes | md5 | observed S k | notes |
+|---|------|-------------|-----------|----------|-------|-----|--------------|-------|
+| 1 | bot01_hw.cap | 06:29:22.377 (port open) | 06:29:49.429 | 27.05 s | 271 | 3cbb7c685c5eed554b847cfbaf1fcb57 | k=0 | port opened first; pyocd HW reset at 06:29:23.386 (rc=0); BOOT/VDD/IOTEST/IOSIG/BUS captured in the same window |
+| 2 | cap01_k3.cap | 06:30:01.718 | 06:35:01.943 | 300 s | 78 | d025737c62ba6a04ec8fa004b3cf1487 | k=3 | one S line only |
+| 3 | cap02_k9_k12.cap | 06:37:16.463 | 06:42:16.675 | 300 s | 157 | 2cbd9e24b511c23a1b38272913f83bf3 | k=9, k=12 | two S lines only |
+| 4 | cap03_k15_k18.cap | 06:42:24.122 | 06:47:24.323 | 300 s | 158 | c6cd6b77e71ee9f05369f34f02bf9eb5 | k=15, k=18 | two S lines only |
+
+Gaps:
+- 06:29:49.429 -> 06:30:01.718 : 12.3 s tool turn-around; previous cycle already captured.
+- 06:35:01.943 -> 06:37:16.463 : 2 min 14.5 s tool turn-around; the k=6 opportunity
+  (~06:35:24 by the k=0 anchor) fell inside this gap and was NOT observed. Declared, not hidden.
+- 06:42:16.675 -> 06:42:24.122 : 7.4 s tool turn-around; no sampling opportunity in between.
+
+Consecutive observation set: k = 9, 12, 15, 18 (four consecutive opportunities, step 3).
+Also consecutive: k = 0, 3 (BOT window + window 2).
+
+Capture-integrity summary (from capture_analysis.txt, independent parser):
+- every capture: no NUL bytes, ends on a CRLF boundary, no trailing partial line;
+- every line (including CRLF) 27..79 B <= 96 B;
+- no stray bytes between lines; one S line per observed opportunity; no duplicate k;
+- no G line (no q=0 cycle) and no P line (r=0, no send attempt) in any window.

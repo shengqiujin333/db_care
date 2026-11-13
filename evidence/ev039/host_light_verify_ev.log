@@ -1,0 +1,50 @@
+==== independent light path verification (embedded_tester, LIGHT-DEF-2) ====
+     delivery LIGHT_DARK_THRESHOLD_CODE = 0 (criterion DISABLED)
+[T1] light_init pin ownership and ADC configuration
+    PASS  PB05 configured as push-pull output (light power)
+    PASS  PB04 configured as analog input (AIN11)
+    PASS  no other pin configured by the light module
+    PASS  PB05 driven low at init (no divider current outside sampling)
+    PASS  ADC_Init called once
+    PASS  ADC channel = AIN11 (PB04)
+    PASS  ADCCLK = PCLK/8 (1 MHz)
+    PASS  390 clk sample time (5 MOhm source)
+    PASS  single conversion mode
+    PASS  ADC left disabled after init
+[T2] sampling sequence and delivery-configured validity gate
+    PASS  all 8 conversions succeed
+    PASS  mean/min/max of the scripted burst = 100
+    PASS  exactly one PB05 high and one PB05 low per sample
+    PASS  PB05 raised BEFORE sampling
+    PASS  PB05 lowered AFTER sampling
+    PASS  no other pin writes during sampling
+    PASS  settle delay of the configured 100 ms before sampling
+    PASS  exactly LIGHT_ADC_SAMPLES(8) conversions per sample
+    PASS  ADC enabled then disabled around the burst
+    PASS  ADC disabled after the burst
+    PASS  T=0: adc_ok sample is NOT valid and NOT dark (criterion disabled)
+[T3] arithmetic mean / min / max of the burst
+    PASS  all 8 conversions used
+    PASS  mean of 4x0 + 4x4095 = 2047 (integer)
+    PASS  min/max come from the successful samples
+    PASS  T=0 stays not-valid/not-dark regardless of mean
+[T4] partial EOC timeout
+    PASS  6 successful samples recorded (not 8)
+    PASS  average over the successful conversions only
+    PASS  min/max from the successful samples
+    PASS  a conversion was attempted for every slot
+    PASS  PB05/ADC restored on the partial-failure path
+    PASS  T=0 keeps the gate closed
+[T5] all EOC timeouts (open/failed divider)
+    PASS  no successful conversion
+    PASS  mean/min/max stay 0 (no 4095 full-scale synthesis)
+    PASS  invalid sample is never valid/dark
+    PASS  PB05 still lowered on the failure path
+    PASS  ADC disabled on the failure path
+    poll count = 800008 (bounded guard, 800000..800008 expected)
+    PASS  polling is bounded by LIGHT_ADC_EOC_GUARD per conversion (no infinite wait)
+[T6] stateless decision across successive samples
+    PASS  T=0: full-scale mean is still not dark (disabled criterion)
+    PASS  T=0: zero mean is still not dark
+    PASS  conversions still recorded when the criterion is disabled
+==== result: 40 passed, 0 failed ====

@@ -1,0 +1,89 @@
+== compile USER sources with -DSENSOR_DEBUG_UART=0 ==
+== USER/src/debug_trace.c: exit=0
+== USER/src/measure.c: exit=0
+USER/src/main.c:183:9: warning: return type of 'main' is not 'int' [-Wmain]
+  183 | int32_t main(void)
+      |         ^~~~
+USER/src/main.c: In function 'assert_failed':
+USER/src/main.c:295:29: warning: unused parameter 'file' [-Wunused-parameter]
+  295 | void assert_failed(uint8_t* file, uint32_t line)
+      |                    ~~~~~~~~~^~~~
+USER/src/main.c:295:44: warning: unused parameter 'line' [-Wunused-parameter]
+  295 | void assert_failed(uint8_t* file, uint32_t line)
+      |                                   ~~~~~~~~~^~~~
+== USER/src/main.c: exit=0
+== USER/src/light.c: exit=0
+== USER/src/gxht40.c: exit=0
+== USER/src/fw_core.c: exit=0
+USER/src/sf_i2c.c: In function 'i2c_write_multi_byte':
+USER/src/sf_i2c.c:298:12: warning: 'err' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  298 |     return err;
+      |            ^~~
+USER/src/sf_i2c.c: In function 'i2c_write_multi_byte_16bit':
+USER/src/sf_i2c.c:486:12: warning: 'err' may be used uninitialized in this function [-Wmaybe-uninitialized]
+  486 |     return err;
+      |            ^~~
+== USER/src/sf_i2c.c: exit=0
+USER/src/encrytogate.c: In function 'print_hex':
+USER/src/encrytogate.c:142:3: warning: this 'for' clause does not guard... [-Wmisleading-indentation]
+  142 |   for(size_t i=0;i<n;i++) printf("%02X ", b[i]); printf("\n");
+      |   ^~~
+USER/src/encrytogate.c:142:50: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'for'
+  142 |   for(size_t i=0;i<n;i++) printf("%02X ", b[i]); printf("\n");
+      |                                                  ^~~~~~
+At top level:
+USER/src/encrytogate.c:144:13: warning: 'uid4_hex' defined but not used [-Wunused-function]
+  144 | static void uid4_hex(const uint8_t u4[4], char out9[9]){
+      |             ^~~~~~~~
+USER/src/encrytogate.c:140:13: warning: 'print_hex' defined but not used [-Wunused-function]
+  140 | static void print_hex(const char* title, const uint8_t* b, size_t n){
+      |             ^~~~~~~~~
+USER/src/encrytogate.c:17:22: warning: 'IPERM' defined but not used [-Wunused-const-variable=]
+   17 | static const uint8_t IPERM[10] = {4, 2, 8, 0, 6, 3, 9, 7, 1, 5};
+      |                      ^~~~~
+== USER/src/encrytogate.c: exit=0
+== symbol check on debug-off objects ==
+-- debug_trace.o defined symbols:
+-- undefined UART symbols referenced by measure.o/main.o/debug_trace.o:
+
+gcc/obj_debugoff_ev039/measure.o:
+         U app_um2005C_send_data_timeout
+         U encode_frame10
+         U GPIO_Init
+         U GPIO_ReadPin
+         U GPIO_WritePin
+         U gxht40_diag_fetch
+         U gxht40_init
+         U gxht40_measure
+         U i2c_init
+         U i2c_obj_find
+         U light_init
+         U light_sample
+         U memcpy
+         U sensor_decide_report
+         U SYSCTRL_GotoDeepSleep
+
+gcc/obj_debugoff_ev039/main.o:
+         U DIGITALSIGN_GetChipUid
+         U go_to_sleep
+         U mcu_uid
+         U memset
+         U RTC_ClearITPendingBit
+         U RTC_Cmd
+         U RTC_GetITState
+         U RTC_Init
+         U RTC_ITConfig
+         U RTC_SetInterval
+         U sample_flag
+         U send_data_to_gateway
+         U SYSCTRL_APBPeriphClk_Enable2
+         U SYSCTRL_GetHClkFreq
+         U SYSCTRL_GetPClkFreq
+         U SYSCTRL_HCLKPRS_Config
+         U SYSCTRL_HSI_Enable
+         U SYSCTRL_LSI_Enable
+         U SYSCTRL_PCLKPRS_Config
+         U temperature_process
+
+gcc/obj_debugoff_ev039/debug_trace.o:
+== RESULT: FAIL=0 ==
