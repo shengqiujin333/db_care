@@ -1,0 +1,138 @@
+tManager.java:217)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 15:57:55.338  2784  2784 E AssetManager: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 15:57:55.332  2784  2784 W main    : type=1400 audit(0.0:102425): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 15:57:55.342  2784  2784 W asset   : unable to execute idmap2: Permission denied
+11-13 15:57:55.342  2784  2784 W AssetManager: 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 15:57:55.332  2784  2784 W main    : type=1400 audit(0.0:102426): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 15:57:55.344  2784  2784 W asset   : unable to execute idmap2: Permission denied
+11-13 15:57:55.344  2784  2784 W AssetManagerInjector: 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 15:57:55.372  2784  2784 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 15:57:55.416  2784  2784 W Java7Support: Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 15:57:55.548  2784  2784 I UiDevice: Creating a new instance, old instance exists: false
+11-13 15:57:55.559   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 15:57:55.563   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 15:57:55.566  3361  3361 I LuckyMoneyAccessibilityService: onDestroy
+11-13 15:57:55.568  1577  4608 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@1a7d447
+11-13 15:57:55.577  2784  2784 D UiDevice: Setting accessibility service flags: 65618
+11-13 15:57:55.587  2784  2784 I uidumper: clipboardManager inited
+11-13 15:57:55.590  2784  2784 I uidumper: tmpdir is /data/local/tmp/u2
+11-13 15:57:55.599 11824 11824 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-13 15:57:55.609  2784  2784 I uidumper: http server listening on *:9008
+11-13 15:57:55.838   771  1861 D         : readbrightness,out1:9
+11-13 15:57:55.838   771  1861 D         : .
+11-13 15:57:55.838   771  1861 D         : readbrightness,out2:9.
+11-13 15:57:56.165  2784  2806 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 15:57:56.228  2784  2807 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "takeScreenshot", "params": [1, 80]}}
+11-13 15:57:56.307   430   430 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 15:57:56.307  2784  2807 W Gralloc3: mapper 3.x is not supported
+11-13 15:57:56.337  2784  2808 D libEGL  : loaded /vendor/lib/egl/libEGL_adreno.so
+11-13 15:57:56.354  2784  2808 D libEGL  : loaded /vendor/lib/egl/libGLESv1_CM_adreno.so
+11-13 15:57:56.366  2784  2808 D libEGL  : loaded /vendor/lib/egl/libGLESv2_adreno.so
+11-13 15:57:56.410  2784  2808 I AdrenoGLES: QUALCOMM build                   : c692a3f, Ie3bb699d95
+11-13 15:57:56.410  2784  2808 I AdrenoGLES: Build Date                       : 09/29/20
+11-13 15:57:56.410  2784  2808 I AdrenoGLES: OpenGL ES Shader Compiler Version: EV031.27.05.02
+11-13 15:57:56.410  2784  2808 I AdrenoGLES: Local Branch                     : 
+11-13 15:57:56.410  2784  2808 I AdrenoGLES: Remote Branch                    : refs/tags/AU_LINUX_ANDROID_LA.UM.8.6.2.R1.10.00.00.537.053
+11-13 15:57:56.410  2784  2808 I AdrenoGLES: Remote Branch                    : NONE
+11-13 15:57:56.410  2784  2808 I AdrenoGLES: Reconstruct Branch               : NOTHING
+11-13 15:57:56.410  2784  2808 I AdrenoGLES: Build Config                     : S L 8.0.10 AArch32
+11-13 15:57:56.413  2784  2808 I AdrenoGLES: PFP: 0x005ff112, ME: 0x005ff066
+11-13 15:57:56.421   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.display.config@1.7::IDisplayConfig/default in either framework or device manifest.
+11-13 15:57:56.424   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.display.config@1.7::IDisplayConfig/default in either framework or device manifest.
+11-13 15:57:56.692  2784  2810 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 15:57:56.840   771  1861 D         : readbrightness,out1:9
+11-13 15:57:56.840   771  1861 D         : .
+11-13 15:57:56.840   771  1861 D         : readbrightness,out2:9.
+11-13 15:57:57.237  2784  2811 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 15:57:57.640 11824 11824 W adbd    : timeout expired while flushing socket, closing
+11-13 15:57:57.693  1577  4608 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@a52dd9d
+11-13 15:57:57.696   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 15:57:57.699  1577  4608 D CompatibilityInfo: mCompatibilityFlags - 0
+11-13 15:57:57.699  1577  4608 D CompatibilityInfo: applicationDensity - 320
+11-13 15:57:57.699  1577  4608 D CompatibilityInfo: applicationScale - 1.0
+11-13 15:57:57.701  3361  3361 I LuckyMoneyAccessibilityService: onCreate
+11-13 15:57:57.702   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 15:57:57.798 11824 11824 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-13 15:57:57.841   771  1861 D         : readbrightness,out1:9
+11-13 15:57:57.841   771  1861 D         : .
+11-13 15:57:57.841   771  1861 D         : readbrightness,out2:9.
+11-13 15:57:58.842   771  1861 D         : readbrightness,out1:9
+11-13 15:57:58.842   771  1861 D         : .
+11-13 15:57:58.842   771  1861 D         : readbrightness,out2:9.
+11-13 15:57:59.842   771  1861 D         : readbrightness,out1:9
+11-13 15:57:59.842   771  1861 D         : .
+11-13 15:57:59.843   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:00.003  1916  1916 D KeyguardUpdateMonitor: handleTimeUpdate
+11-13 15:58:00.844   771  1861 D         : readbrightness,out1:9
+11-13 15:58:00.844   771  1861 D         : .
+11-13 15:58:00.844   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:01.845   771  1861 D         : readbrightness,out1:9
+11-13 15:58:01.845   771  1861 D         : .
+11-13 15:58:01.845   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:02.332     0     0 W swapper/4: type=1400 audit(0.0:102427): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 15:58:02.845   771  1861 D         : readbrightness,out1:9
+11-13 15:58:02.845   771  1861 D         : .
+11-13 15:58:02.846   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:03.847   771  1861 D         : readbrightness,out1:9
+11-13 15:58:03.847   771  1861 D         : .
+11-13 15:58:03.847   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:04.848   771  1861 D         : readbrightness,out1:9
+11-13 15:58:04.848   771  1861 D         : .
+11-13 15:58:04.848   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:05.850   771  1861 D         : readbrightness,out1:9
+11-13 15:58:05.850   771  1861 D         : .
+11-13 15:58:05.850   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:06.852   771  1861 D         : readbrightness,out1:9
+11-13 15:58:06.852   771  1861 D         : .
+11-13 15:58:06.852   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:07.852   771  1861 D         : readbrightness,out1:9
+11-13 15:58:07.852   771  1861 D         : .
+11-13 15:58:07.852   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:08.853   771  1861 D         : readbrightness,out1:9
+11-13 15:58:08.853   771  1861 D         : .
+11-13 15:58:08.853   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:09.854   771  1861 D         : readbrightness,out1:9
+11-13 15:58:09.854   771  1861 D         : .
+11-13 15:58:09.854   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:10.855   771  1861 D         : readbrightness,out1:9
+11-13 15:58:10.855   771  1861 D         : .
+11-13 15:58:10.855   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:11.856   771  1861 D         : readbrightness,out1:9
+11-13 15:58:11.856   771  1861 D         : .
+11-13 15:58:11.856   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:12.332     0     0 W swapper/6: type=1400 audit(0.0:102428): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 15:58:12.858   771  1861 D         : readbrightness,out1:9
+11-13 15:58:12.858   771  1861 D         : .
+11-13 15:58:12.858   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:13.859   771  1861 D         : readbrightness,out1:9
+11-13 15:58:13.859   771  1861 D         : .
+11-13 15:58:13.859   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:14.860   771  1861 D         : readbrightness,out1:9
+11-13 15:58:14.860   771  1861 D         : .
+11-13 15:58:14.860   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:15.860   771  1861 D         : readbrightness,out1:9
+11-13 15:58:15.860   771  1861 D         : .
+11-13 15:58:15.860   771  1861 D         : readbrightness,out2:9.
+11-13 15:58:16.556 11596 11596 I PowerKeeperBackgroundService: onStartCommand()
+11-13 15:58:16.557 11596 11596 I PowerKeeperService: onAlarm
+11-13 15:58:16.861   771  1861 D         : readbrightness,out1:9
+11-13 15:58:16.861   771  1861 D         : .
+11-13 15:58:16.861   771  1861 D         : readbrightness,out2:9.
+

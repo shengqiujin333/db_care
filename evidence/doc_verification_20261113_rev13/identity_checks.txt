@@ -1,0 +1,52 @@
+DOC-VERIFY-013 身份核对原始记录
+执行：2026-11-13（Asia/Shanghai；工具时间戳 UTC）
+仓库：D:\mypro\beiwo2\AIP
+HEAD：a83861fcf4b360520c56223b09446ca9508547bd（[role:technical_writer] 2026-11-13 15:50:12 +0800）
+开工时工作树：仅本轮新建 evidence/doc_verification_20261113_rev13/ 未跟踪；无其它改动
+
+1) 文档包
+- docs/README.md、docs/01..06、dengbei_care/用户使用说明书.md 头部均为 DOC-PKG-001 rev 13（2026-11-13）。
+- 引用路径检查（复用 check_doc_refs.py，bases=6）：
+  docs/README.md checked=25 missing=0
+  docs/01 checked=35 missing=0
+  docs/02..06 + 用户使用说明书 checked=97 missing=0
+  合计 checked=157 missing=0
+
+2) 传感器固件发布包
+- 文件：fw_release/fw_sensor_FD-002r8.zip
+- 大小：134,791 B
+- md5：5df0c6d45ecddc8aae8bddbbcfc9cfdf
+- 成员（unzip -l / 流式 md5）：
+  fw_sensor_FD-002r8_b6a15fed.axf  297,380 B  b6a15fed2ed5e3d0c4adc51ac87a4830
+  fw_sensor_FD-002r8_4d728dec.hex   75,275 B  4d728dec9b0d28a352c46436b7586c72
+  PACKAGE.txt                        3,202 B  a58f67fcf5b760767ff5b65888c73dfb
+- 发布记录：artifacts/firmware_release.md 头部 FW-REL-001 rev 3；实现记录 FWI-004 rev 9。
+- 证据：evidence/test.md 顶部 EV-040；EV-039 段保留；EV-040 原始目录 evidence/ev040/ 存在。
+
+3) Android 候选 APK（主机）
+- 路径：dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+- 大小：10,370,964 B
+- SHA-256：80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b
+- MD5：a97ed9bef658ee89cdf6e2b49447ce69
+- 构建记录：artifacts/android_build.md 头部 AB-003；AA-006 报告 evidence/aa006_software_test_20261113/ST-AA006.md。
+
+4) Android 设备（Redmi 8A，serial 12f046690506，Android 10 / API 29）
+- android_test devices：12f046690506 device product:olivelite model:Redmi_8A
+- dumpsys package com.jinyuni.dengbei_care：
+  versionCode=10 minSdk=26 targetSdk=34
+  versionName=1.9
+  firstInstallTime=2026-11-10 19:25:25
+  lastUpdateTime=2026-11-13 13:45:30
+- pm path：/data/app/com.jinyuni.dengbei_care-kHWUNkgPLfteysMFGQ9Xog==/base.apk
+- 设备 base.apk 摘要（adb shell sha256sum；另 pull 后主机复算后删除副本）：
+  SHA-256 80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b
+  MD5     a97ed9bef658ee89cdf6e2b49447ce69
+  大小   10,370,964 B
+  => 与主机候选逐字节一致。
+- 本会话 logcat：0 条 FATAL EXCEPTION / ANR in com.jinyuni.dengbei_care（见 logcat_session_full.txt）。
+
+5) 平台静态身份（未连接）
+- cloud/CloudConfig.kt：SERVER_HOST=8.140.23.253；MQTT 8883；HTTP 5000；URI ssl://8.140.23.253:8883；HTTP http://8.140.23.253:5000。
+- res/xml/network_security_config.xml：3 个 domain-config（8.140.23.253 / 117.72.84.210 / 192.168.4.1）。
+- assets/jd-ca.crt：1,512 B，md5 f1a8212e3c690d57894b8a3a5fd901ab。
+- MqtttService.kt：clientId=android_client；topic /<mac>/a/r0、/<mac>/a/s0；TLSv1.2。

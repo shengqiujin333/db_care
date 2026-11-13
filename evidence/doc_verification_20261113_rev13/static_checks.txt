@@ -1,0 +1,43 @@
+DOC-VERIFY-013 静态核对记录（文档 ↔ 源码/产物/证据）
+执行：2026-11-13；HEAD a83861f；设备 Redmi 8A / API 29。
+
+A. 文档版本与引用
+- 7 份交付文档 + 随包用户说明书头部均为 DOC-PKG-001 rev 13（2026-11-13）。
+- 内联路径引用 157 项，0 缺失（check_doc_refs.py，bases=6）。
+- file_manifest.txt：交付前检查 1812 条具体路径；glob=0；格式错=0；磁盘缺失=0；72 条存在但未跟踪（信息项，含本轮新增证据在 Runtime 提交前状态）；2594 条厂商跟踪文件未逐条登记（信息项，历史基线同类）。
+
+B. 固件文档（docs/02、docs/03）
+- 发布包 134,791 B / md5 5df0c6d4…；三成员大小与 md5 与 docs/02 §2 表一致（本轮独立复算）。
+- 构建预期 Code=25964 RO=656 RW=116 ZI=1676 与 EV-039/EV-040 记录一致。
+- 下载预期日志 Erase Done./Programming Done./Verify OK./Application running ... 与 EV-039/EV-040 原始记录一致。
+- UART1：sensor_config.h DEBUG_UARTx=CW_UART1、9600、PA06 TXD、PA05 RXD；debug_trace.h 注释 PA06→J3.1、PA05→J3.2、J3.3 GND、9600 8N1；docs/03 §2/§8 与之一致。
+- 行格式：debug_trace.c 的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G/P 格式与 docs/03 §3–§7 一致（S k/p/H/V/o/n/x/a/D/t/h/q/r/s/y；G s/a44/a45/rd/at/raw；P rq/s/y/t/h）。
+- 采样节拍：SENSOR_RTC_TICK_PERIOD_MIN=1、SENSOR_SAMPLE_TICKS=3；EV-040 实测 k=0/3/6/9、节拍 179.66/179.59 s，与 docs/02 §6、docs/03 §4 一致。
+- 判定常量：SENSOR_REPORT_RISE_X10=9、SENSOR_REPORT_HIGH_X10=350、LIGHT_DARK_THRESHOLD_CODE=0；与 docs/01 §3 的边界语义（差值 9 不触发、35.0 不触发超温、T=0 无光分支不触发）一致。
+
+C. Android 文档（docs/04、用户使用说明书）
+- 身份：versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34 / debug / 10,370,964 B / SHA-256 80232c50… 与 AB-003、设备 dumpsys 一致。
+- 权限策略（BlePermissionPolicy.kt）：
+  API<31 扫描需 FINE_LOCATION 且定位总开关开启；API31+ 扫描需 BLUETOOTH_SCAN；直连 API31+ 需 BLUETOOTH_CONNECT、不需要定位；通知 API33+。
+  与 docs/04 §3、用户说明书 §2.2 一致。
+- 扫描续跑（GatewayBleSettingsDialog.kt）：pendingScan 在 onPermissionResult 中消费，canScan 时直接 action()（自动开始）；stopScan() 在 onDismiss 时清 pendingScan；提示语来自 BlePermissionPolicy.userMessage（蓝牙未开启/定位关闭/定位权限缺失），与 docs/04 §3.5、用户说明书 §4.4 一致。
+- 读取终态（GatewayReadState.kt / MqtttService.kt）：DATA_OK、GATEWAY_NO_DEVICE（文案“网关已连接，暂无设备（N=0）”）、GATEWAY_NO_DATA、READ_INCOMPLETE、READ_INVALID；CONNECT_FAILED 由 MqtttService 设置。与 docs/04 §4.2 表一致。
+- 报告再生成（ReportActivity.kt / ReportRegenerateFeedback.kt）：点击后 generating=true、loading 可见、按钮禁用；终态恢复；NO_DATA 文案“暂无可生成的数据（尚无设备读数）”；FAILED 文案“报告生成失败，请稍后重试”；generating 守卫串行。与 docs/04 §4.4、用户说明书 §9.2 一致。
+- 上传分类（UploadResult.kt / CloudUploadRepository.kt）：2xx Success；401/403 AuthRejected 全局暂停；408/429 Retryable；其余 4xx RequestRejected；5xx Retryable；DEFAULT_MAX_ATTEMPTS=20；DEFAULT_MAX_BACKOFF_SECONDS=1800。与 docs/04 §5 一致。
+- 报警：紧急 >65℃ 不受 900 s 节流（MqtttService.kt 1216/1135）；普通报警 900 s；与 docs/04 §6、06 #21–#25 一致。
+- 登录限制：ZhuCeFragment.kt LOGIN_CNT > 30（第 31 次）拦截；与 docs/04 §7 一致。
+- 用户说明书历史包：dengbei_care/爱守护.apk 8,144,628 B、2024-11-06，与说明书 §2.1 一致。
+
+D. 平台文档（docs/05）
+- CloudConfig.kt 值、network_security_config.xml 3 个明文放行域、jd-ca.crt md5、MqtttService topic/clientId/TLSv1.2 与 docs/05 §1/§2 一致。
+- 文档未复述凭据；检索 docs/ 与用户说明书未发现固定后缀/口令/AccessKey 明文。
+
+E. 维护文档（docs/06）
+- §3 限制表编号 #1–#26 连续；#17/#18/#20 标为已修复；#26 为 AA-006 观察项。
+- §4 未执行项覆盖 API31+、9 台快照、多设备/MTU、DATA_OK、GATEWAY_NO_DATA、报告真机失败路径、有数据刷新、/upload_data 写入/回读/401/403、回退流程。
+- §5 证据索引引用的目录/文件存在：ev039、ev040、ev038、fw_release_20261111、fw_release_20261113、android_build_20261113、aa006_software_test_20261113、android_package_check_20261113、product_acceptance_20261112、product_acceptance_20261112_scope_recheck、backend_exploration。
+- 产品整体验收状态：PRODUCT-ACCEPTANCE-002 与 RECHECK-002 均为 TEST_FAIL / EXTERNAL_CONDITION_UNEXECUTED；AB-003 仅 AA-006 限定验证。与 docs/README §5 #11、docs/01 §6、docs/06 §4 一致。
+
+F. 本轮发现（详见 DOC-VERIFY-013 §5）
+- D-01：docs/06 §3 #26 证据引用写 `ST-AA006.md §8`，实际四条观察在 §7，§8 为结论。
+- D-02：docs/01 §5 与 docs/04 §1 写 `git diff a12d12b..HEAD -- dengbei_care` “仅新增测试侧独立验证用例”；实际差异还包括 `dengbei_care/用户使用说明书.md`（见 source_diff_files.txt / source_diff_stat.txt）。

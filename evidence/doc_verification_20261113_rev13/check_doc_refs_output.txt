@@ -1,0 +1,13 @@
+DOC-VERIFY-013 文档内联路径引用检查（复用 evidence/doc_verification_20261112_rev12/check_doc_refs.py，只读）
+执行：2026-11-13；仓库 D:\mypro\beiwo2\AIP
+
+命令 1：python check_doc_refs.py docs/README.md
+bases=6 checked=25 missing=0
+
+命令 2：python check_doc_refs.py "docs/01_产品说明与版本变更.md"
+bases=6 checked=35 missing=0
+
+命令 3：python check_doc_refs.py "docs/02_传感器固件安装与烧录.md" "docs/03_传感器调试串口手册.md" "docs/04_安卓App安装与使用.md" "docs/05_平台服务器配置与联调前提.md" "docs/06_维护排障与已知限制.md" "dengbei_care/用户使用说明书.md"
+bases=6 checked=97 missing=0
+
+合计：checked=157 missing=0

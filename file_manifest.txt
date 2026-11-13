@@ -750,6 +750,35 @@ evidence/doc_verification_20261112_rev12/ui_home_live.txt | active | 本轮首�
 evidence/doc_verification_20261112_rev12/ui_my_page_live.txt | active | 本轮「我的」页顶部 UI 文本/可点击性/bounds（报告与传感器列表入口、网关编码、注册传感器）
 evidence/doc_verification_20261112_rev12/ui_my_scrolled_live.txt | active | 本轮「我的」页上滑后 UI 文本与「注册传感器」「网关与上传设置」bounds
 evidence/doc_verification_20261112_rev12/ui_sensor_list_live.txt | active | 本轮「打开传感器列表」空态 UI（已保存的 ID（0）、删除选中）
+evidence/doc_verification_20261113_rev13/ | active | 软件测试文档独立校核原始证据目录（DOC-VERIFY-013）：DOC-PKG-001 rev 13 的候选身份/引用/真机关键界面复核与 D-01/D-02 文档缺陷证据
+evidence/doc_verification_20261113_rev13/DOC-VERIFY-013.md | active | 产品文档独立校核报告：rev 13 对照固件 FD-002r8/Android AB-003 候选，记录 D-01（06 #26 引用 §8 应为 §7）、D-02（git diff 声明遗漏用户说明书更新）、已执行/未执行项与结论 TEST_FAIL
+evidence/doc_verification_20261113_rev13/check_doc_refs_output.txt | active | 文档内联路径引用检查结果（bases=6 checked=157 missing=0）
+evidence/doc_verification_20261113_rev13/check_manifest_output.txt | active | 共享清单—工作区—Git 一致性检查原始输出（交付前 1812 条、0 通配/0 格式错/0 缺失、72 条未跟踪信息项）
+evidence/doc_verification_20261113_rev13/device_apk_hash.txt | active | 设备在装 base.apk 的 SHA-256/MD5/大小（与 AB-003 候选逐字节一致；主机副本核对后删除）
+evidence/doc_verification_20261113_rev13/device_apk_path.txt | active | pm path 原始输出（设备已安装 base.apk 路径）
+evidence/doc_verification_20261113_rev13/device_package_dump.txt | active | dumpsys package 原始输出（versionCode 10 / versionName 1.9 / 安装与更新时间）
+evidence/doc_verification_20261113_rev13/git_status.txt | active | 本轮开工时 git status --porcelain（仅本轮证据目录未跟踪）
+evidence/doc_verification_20261113_rev13/head.txt | active | 本轮 HEAD 提交（a83861f）
+evidence/doc_verification_20261113_rev13/identity_checks.txt | active | 文档/固件包/成员/APK/设备/平台身份与摘要原始记录
+evidence/doc_verification_20261113_rev13/logcat_session_full.txt | active | 本轮真机会话完整 logcat（0 条 FATAL/ANR）
+evidence/doc_verification_20261113_rev13/logcat_tail.txt | active | 报告再生成后 logcat 尾部（138 行，无 FATAL/ANR）
+evidence/doc_verification_20261113_rev13/pull.log | active | 设备 base.apk pull 首次因 Git Bash 路径转换失败、改用 adb shell sha256sum 的原始日志
+evidence/doc_verification_20261113_rev13/screen_07_report_after_regen.png | active | 报告再生成后界面截图（按钮恢复 enabled、仍“尚未生成过报告”）
+evidence/doc_verification_20261113_rev13/source_diff_files.txt | active | D-02 原始证据：git diff a12d12b..HEAD -- dengbei_care 文件清单（3 测试用例 + 用户使用说明书）
+evidence/doc_verification_20261113_rev13/source_diff_stat.txt | active | D-02 原始证据：上述 diff 的 stat 输出（4 文件、488 insertions/3 deletions）
+evidence/doc_verification_20261113_rev13/static_checks.txt | active | 逐文档静态核对、源码/格式/常量/路径/清单检查与 D-01/D-02 定位
+evidence/doc_verification_20261113_rev13/ui_00_home.xml | active | 首页真机 UI 原始树（空态提示、链路条、三页签）
+evidence/doc_verification_20261113_rev13/ui_01_my_page.xml | active | 「我的」页真机 UI 原始树（账户、报告/列表入口、网关编码、注册传感器）
+evidence/doc_verification_20261113_rev13/ui_02_my_scrolled.xml | active | 「我的」页上滑后 UI 原始树（注册传感器/网关与上传设置 bounds）
+evidence/doc_verification_20261113_rev13/ui_03_gateway_dialog.xml | active | 「网关与上传设置」对话框真机 UI 原始树
+evidence/doc_verification_20261113_rev13/ui_04_after_scan.xml | active | 点「搜索附近网关」后的 UI 原始树（正在搜索、真实候选 84:C2:E4:03:02:02）
+evidence/doc_verification_20261113_rev13/ui_05_my_after_dialog.xml | active | 关闭网关对话框后的「我的」页 UI 原始树
+evidence/doc_verification_20261113_rev13/ui_06_report_activity.xml | active | 「查看今日报告」打开的 ReportActivity UI 原始树
+evidence/doc_verification_20261113_rev13/ui_07_report_after_regen.xml | active | 点「重新生成」后的 ReportActivity UI 原始树（按钮恢复、仍无报告）
+evidence/doc_verification_20261113_rev13/ui_08_after_back.xml | active | 从报告页返回后的「我的」页 UI 原始树
+evidence/doc_verification_20261113_rev13/ui_09_account_page.xml | active | 「账户」注册/登录页 UI 原始树（登录/注册勾选与字段）
+evidence/doc_verification_20261113_rev13/ui_10_settings.xml | active | 「设定」页 UI 原始树（下降 2/0.1、阈值 35/29/75）
+evidence/doc_verification_20261113_rev13/ui_11_sensor_list.xml | active | 「打开传感器列表」空态 UI 原始树（已保存的 ID（0）、删除选中）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检
