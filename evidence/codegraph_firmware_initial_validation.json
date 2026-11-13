@@ -1,1715 +1,773 @@
 {
-  "responsible_role": "code intelligence",
-  "launcher_resolution_note": "First direct optional-bundle path assertion failed before any process or index action; exact nested npm dependency exists and was used. No installation or network fallback.",
-  "git_head": {
-    "command": [
-      "git",
-      "rev-parse",
-      "HEAD"
-    ],
-    "started_utc": "2026-11-10T08:46:42.566600+00:00",
-    "finished_utc": "2026-11-10T08:46:42.589665+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "82a7e74e5d6bae855a573e1f23f83936ba8db049\n",
-    "stderr": ""
-  },
-  "initial_git_status": {
-    "command": [
-      "git",
-      "status",
-      "--porcelain=v1"
-    ],
-    "started_utc": "2026-11-10T08:46:42.589665+00:00",
-    "finished_utc": "2026-11-10T08:46:42.628185+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "",
-    "stderr": ""
-  },
-  "cli_version": {
-    "command": [
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-      "--liftoff-only",
-      "--disable-warning=ExperimentalWarning",
-      "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-      "--version"
-    ],
-    "started_utc": "2026-11-10T08:46:42.628185+00:00",
-    "finished_utc": "2026-11-10T08:46:42.703308+00:00",
-    "timeout_seconds": 30,
-    "timed_out": false,
-    "exit_code": 0,
-    "stdout": "1.6.0\n",
-    "stderr": ""
-  },
-  "container_has_index": false,
-  "roots": [
-    {
-      "name": "sensor",
-      "projectPath": "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
-      "indexPath": "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\.codegraph",
-      "existing_index": true,
-      "query": "light_is_dark",
-      "config": {
-        "exclude": [
-          "MDK/RTE/",
-          "MDK/output/",
-          "EWARM/Debug/",
-          "EWARM/Release/",
-          "obj/",
-          "build/"
-        ],
-        "deprioritize": [
-          "test/"
-        ]
-      },
-      "git_tree": {
-        "command": [
-          "git",
-          "rev-parse",
-          "HEAD:CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output"
-        ],
-        "started_utc": "2026-11-10T08:46:42.703827+00:00",
-        "finished_utc": "2026-11-10T08:46:42.728561+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "5666aa1c9d86618144fda4c0e046c8f84fd81a95\n",
-        "stderr": ""
-      },
-      "latest_source_commit": {
-        "command": [
-          "git",
-          "log",
-          "-1",
-          "--format=%H",
-          "--",
-          "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output"
-        ],
-        "started_utc": "2026-11-10T08:46:42.728561+00:00",
-        "finished_utc": "2026-11-10T08:46:42.751591+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "82a7e74e5d6bae855a573e1f23f83936ba8db049\n",
-        "stderr": ""
-      },
-      "worktree_diff": {
-        "command": [
-          "git",
-          "diff",
-          "HEAD",
-          "--stat",
-          "--",
-          "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output"
-        ],
-        "started_utc": "2026-11-10T08:46:42.751591+00:00",
-        "finished_utc": "2026-11-10T08:46:42.778864+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "",
-        "stderr": ""
-      },
-      "status_before": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "status",
-          "--json",
-          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
-        ],
-        "started_utc": "2026-11-10T08:46:42.778864+00:00",
-        "finished_utc": "2026-11-10T08:46:42.949046+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\\\\.codegraph\",\"lastIndexed\":\"2026-11-09T05:00:55.777Z\",\"fileCount\":99,\"nodeCount\":1255,\"edgeCount\":3476,\"dbSizeBytes\":3444736,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"constant\":18,\"enum\":41,\"enum_member\":117,\"file\":99,\"function\":464,\"import\":291,\"struct\":51,\"variable\":174},\"languages\":[\"c\"],\"pendingChanges\":{\"added\":0,\"modified\":9,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
-        "stderr": ""
-      },
-      "sync": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "sync",
-          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
-        ],
-        "started_utc": "2026-11-10T08:46:42.949046+00:00",
-        "finished_utc": "2026-11-10T08:46:43.587892+00:00",
-        "timeout_seconds": 45,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "T  Syncing CodeGraph\n|\nScanning files...\nParsing code...\nResolving refs...\n|\n*  Synced 9 changed files\n|\n•  Modified: 9 - 96 nodes in 249ms\n|\n—  Done\n\n",
-        "stderr": ""
-      },
-      "status_after": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "status",
-          "--json",
-          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
-        ],
-        "started_utc": "2026-11-10T08:46:43.587892+00:00",
-        "finished_utc": "2026-11-10T08:46:43.754412+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\\\\.codegraph\",\"lastIndexed\":\"2026-11-10T08:46:43.347Z\",\"fileCount\":99,\"nodeCount\":1255,\"edgeCount\":3498,\"dbSizeBytes\":3444736,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"constant\":18,\"enum\":41,\"enum_member\":117,\"file\":99,\"function\":464,\"import\":291,\"struct\":51,\"variable\":174},\"languages\":[\"c\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
-        "stderr": ""
-      },
-      "files": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "files",
-          "-p",
-          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
-          "--format",
-          "flat",
-          "--no-metadata"
-        ],
-        "started_utc": "2026-11-10T08:46:43.754412+00:00",
-        "finished_utc": "2026-11-10T08:46:43.907395+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "\nFiles (99):\n\n  COMMON/convert.c\n  COMMON/convert.h\n  COMMON/delay.c\n  COMMON/delay.h\n  COMMON/type.h\n  rfconfig.h\n  test/host_debug_trace_check.c\n  test/host_diag_line_verify_ev.c\n  test/host_diag_probe_verify_ev.c\n  test/host_fw_core_pure_check.c\n  test/host_fw_core_verify_ev.c\n  test/host_gw_compat_verify_ev.c\n  test/host_gxht40_check.c\n  test/host_gxht40_verify_ev.c\n  test/host_light_check.c\n  test/host_light_verify_ev.c\n  test/host_measure_flow_check.c\n  test/host_measure_flow_verify_ev.c\n  test/host_rf_frame_check.c\n  test/host_rf_frame_verify_ev.c\n  test/host_rf_report_verify_ev.c\n  test/host_rtc_cadence_verify_ev.c\n  test/host_sensor_core_test.c\n  test/host_sf_i2c_bus_check.c\n  test/host_sf_i2c_verify_ev.c\n  test/host_vdd_verify_ev.c\n  test/mock_diagline_ev/cw32l010_adc.h\n  test/mock_diagline_ev/cw32l010_gpio.h\n  test/mock_diagline_ev/cw32l010_sysctrl.h\n  test/mock_diagline_ev/cw32l010_uart.h\n  test/mock_diagline_ev/mock_diagline_hw.h\n  test/mock_light/cw32l010_adc.h\n  test/mock_light/cw32l010_gpio.h\n  test/mock_light/cw32l010_sysctrl.h\n  test/mock_light/mock_light_hw.h\n  test/mock_main_ev/cw32l010_adc.h\n  test/mock_main_ev/cw32l010_digitalsign.h\n  test/mock_main_ev/cw32l010_flash.h\n  test/mock_main_ev/cw32l010_gpio.h\n  test/mock_main_ev/cw32l010_rtc.h\n  test/mock_main_ev/cw32l010_sysctrl.h\n  test/mock_main_ev/cw32l010_systick.h\n  test/mock_main_ev/cw32l010_uart.h\n  test/mock_main_ev/cw32l010.h\n  test/mock_main_ev/interrupts_cw32l010.h\n  test/mock_main_ev/mock_main_hw.h\n  test/mock_main_ev/system_cw32l010.h\n  test/mock_mcu/cw32l010_adc.h\n  test/mock_mcu/cw32l010_gpio.h\n  test/mock_mcu/cw32l010_sysctrl.h\n  test/mock_mcu/mock_cw32.h\n  test/mock_measure_ev/cw32l010_adc.h\n  test/mock_measure_ev/cw32l010_gpio.h\n  test/mock_measure_ev/cw32l010_sysctrl.h\n  test/mock_measure_ev/cw32l010_uart.h\n  test/mock_measure_ev/mock_measure_hw.h\n  test/mock_measure_mcu/cw32l010_gpio.h\n  test/mock_measure_mcu/cw32l010_sysctrl.h\n  test/mock_measure_mcu/cw32l010_uart.h\n  test/mock_trace/cw32l010_adc.h\n  test/mock_trace/cw32l010_gpio.h\n  test/mock_trace/cw32l010_sysctrl.h\n  test/mock_trace/cw32l010_uart.h\n  test/mock_trace/mock_trace_hw.h\n  test/mock_vdd_ev/cw32l010_adc.h\n  test/mock_vdd_ev/cw32l010_gpio.h\n  test/mock_vdd_ev/cw32l010_sysctrl.h\n  test/mock_vdd_ev/mock_vdd_hw.h\n  UM2005C/app_gtimer.c\n  UM2005C/app_gtimer.h\n  UM2005C/app_um2005C.c\n  UM2005C/app_um2005C.h\n  UM2005C/radio.c\n  UM2005C/radio.h\n  UM2005C/rfconfig.h\n  UM2005C/um2005C_defs.h\n  UM2005C/um2005C_hal.c\n  UM2005C/um2005C_hal.h\n  UM2005C/um2005C.c\n  UM2005C/um2005C.h\n  USER/inc/debug_trace.h\n  USER/inc/encrytogate.h\n  USER/inc/fw_core.h\n  USER/inc/gxht40.h\n  USER/inc/interrupts_cw32l010.h\n  USER/inc/light.h\n  USER/inc/main.h\n  USER/inc/measure.h\n  USER/inc/sensor_config.h\n  USER/inc/sf_i2c.h\n  USER/src/debug_trace.c\n  USER/src/encrytogate.c\n  USER/src/fw_core.c\n  USER/src/gxht40.c\n  USER/src/interrupts_cw32l010.c\n  USER/src/light.c\n  USER/src/main.c\n  USER/src/measure.c\n  USER/src/sf_i2c.c\n\n",
-        "stderr": ""
-      },
-      "queries": [
-        {
-          "command": [
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-            "--liftoff-only",
-            "--disable-warning=ExperimentalWarning",
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-            "explore",
-            "-p",
-            "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
-            "--max-files",
-            "1",
-            "light_is_dark"
-          ],
-          "started_utc": "2026-11-10T08:47:13.762320+00:00",
-          "finished_utc": "2026-11-10T08:47:13.946967+00:00",
-          "timeout_seconds": 30,
-          "timed_out": false,
-          "exit_code": 0,
-          "stderr": "",
-          "query": "light_is_dark",
-          "stdout_sha256": "0bc09e5b2834b0694f889c47e4f3e285650da0eefd85f405892e5261ff053234",
-          "stdout_characters": 6999,
-          "overview": "**Exploration: light_is_dark**\n\nFound 7 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `light_is_dark` (USER/src/fw_core.c:94) — 4 callers in `USER/src/light.c`; tests: `test/host_fw_core_verify_ev.c`, `test/host_fw_core_pure_check.c`, `test/host_sensor_core_test.c`\n- `light_init` (USER/src/light.c:42) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `light_sample` (USER/src/light.c:148) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `light_adc_config` (USER/src/light.c:26) — 1 caller in `USER/src/light.c`; no tests found within 3 caller hops",
-          "source_excerpt": [
-            "**Exploration: light_is_dark**",
-            "- `light_is_dark` (USER/src/fw_core.c:94) — 4 callers in `USER/src/light.c`; tests: `test/host_fw_core_verify_ev.c`, `test/host_fw_core_pure_check.c`, `test/host_sensor_core_test.c`",
-            "**`USER/src/fw_core.c`** — light_is_dark(function), fw_crc8_gxht(function), gxht40_temp_raw_to_x10(function), gxht40_hum_raw_to_x10(function), gxht40_temp_x10_valid(function), +2 more",
-            "94\tbool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t threshold_code)",
-            "99\t    if (threshold_code == 0u) {",
-            "102\t    return (mean_adc_code >= threshold_code);   /* 边界相等为暗 */"
-          ],
-          "has_numbered_source": true
-        },
-        {
-          "command": [
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-            "--liftoff-only",
-            "--disable-warning=ExperimentalWarning",
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-            "explore",
-            "-p",
-            "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
-            "--max-files",
-            "1",
-            "light_sample"
-          ],
-          "started_utc": "2026-11-10T08:47:13.947972+00:00",
-          "finished_utc": "2026-11-10T08:47:14.128094+00:00",
-          "timeout_seconds": 30,
-          "timed_out": false,
-          "exit_code": 0,
-          "stderr": "",
-          "query": "light_sample",
-          "stdout_sha256": "9a442516f1154d48b22a1d332f254122056c7f67c0a811cb9509bed7f3effc38",
-          "stdout_characters": 9118,
-          "overview": "**Exploration: light_sample**\n\nFound 5 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `light_sample` (USER/src/light.c:148) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `light_init` (USER/src/light.c:42) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `light_adc_config` (USER/src/light.c:26) — 1 caller in `USER/src/light.c`; no tests found within 3 caller hops\n- `light_read_vdd_mv` (USER/src/light.c:90) — 3 callers in `USER/src/main.c`; tests: `test/host_vdd_verify_ev.c`, `test/host_light_check.c`\n- `light_adc_read_once` (USER/src/light.c:65) — 1 caller in `USER/src/light.c`; no tests found within 3 caller hops",
-          "source_excerpt": [
-            "10\t *   LIGHT-DEF-2 (FD-002 rev 8 §6.2): 绝对阈值判据 light_is_dark(mean, valid, T);",
-            "11\t *   判据未启用 (LIGHT_DARK_THRESHOLD_CODE=0) 时 valid=false -> 不得判暗。",
-            "16\t#include \"fw_core.h\"      /* 纯逻辑: light_is_dark (FD-002 §6.3) */",
-            "157\t    r.valid         = false;",
-            "163\t    r.dark          = false;",
-            "203\t    r.valid = r.adc_ok && (LIGHT_DARK_THRESHOLD_CODE != 0);",
-            "204\t    r.dark  = light_is_dark(r.mean_adc_code, r.valid, (uint16_t)LIGHT_DARK_THRESHOLD_CODE);",
-            "- USER/src/fw_core.c: light_is_dark:94, fw_crc8_gxht:36, gxht40_temp_raw_to_x10:53, gxht40_hum_raw_to_x10:61, gxht40_temp_x10_valid:72, gxht40_raw_to_x10:78, +1 more"
-          ],
-          "has_numbered_source": true
-        },
-        {
-          "command": [
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-            "--liftoff-only",
-            "--disable-warning=ExperimentalWarning",
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-            "explore",
-            "-p",
-            "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
-            "--max-files",
-            "1",
-            "gxht40_measure"
-          ],
-          "started_utc": "2026-11-10T08:47:14.128094+00:00",
-          "finished_utc": "2026-11-10T08:47:14.302825+00:00",
-          "timeout_seconds": 30,
-          "timed_out": false,
-          "exit_code": 0,
-          "stderr": "",
-          "query": "gxht40_measure",
-          "stdout_sha256": "89f1c165729d174047519ffbcdce09cc5aa7312e9181f20ac87da1a3564a1ccd",
-          "stdout_characters": 10086,
-          "overview": "**Exploration: gxht40_measure**\n\nFound 12 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `gxht40_measure` (USER/src/gxht40.c:170) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `gxht40_init` (USER/src/gxht40.c:63) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `measure_sample` (USER/src/measure.c:460) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `gxht40_acquire` (USER/src/gxht40.c:124) — 1 caller in `USER/src/gxht40.c`; no tests found within 3 caller hops\n- `gxht40_diag_clear` (USER/src/gxht40.c:20) — 2 callers in `USER/src/gxht40.c`; no tests found within 3 caller hops",
-          "source_excerpt": [],
-          "has_numbered_source": true
-        },
-        {
-          "command": [
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-            "--liftoff-only",
-            "--disable-warning=ExperimentalWarning",
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-            "explore",
-            "-p",
-            "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
-            "--max-files",
-            "1",
-            "trace_uart_open"
-          ],
-          "started_utc": "2026-11-10T08:47:14.302825+00:00",
-          "finished_utc": "2026-11-10T08:47:14.487430+00:00",
-          "timeout_seconds": 30,
-          "timed_out": false,
-          "exit_code": 0,
-          "stderr": "",
-          "query": "trace_uart_open",
-          "stdout_sha256": "6b0015d86b6b77f31507c2e7e4661a50a947e2261cb5aa50efdd27e9e417877b",
-          "stdout_characters": 12726,
-          "overview": "**Exploration: trace_uart_open**\n\nFound 16 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `trace_uart_open` (USER/src/debug_trace.c:115) — 6 callers in `USER/src/debug_trace.c`; no tests found within 3 caller hops\n- `trace_hex` (USER/src/debug_trace.c:102) — 5 callers in `USER/src/debug_trace.c`; no tests found within 3 caller hops\n- `trace_u32` (USER/src/debug_trace.c:70) — 6 callers in `USER/src/debug_trace.c`; no tests found within 3 caller hops\n- `trace_i32` (USER/src/debug_trace.c:91) — 1 caller in `USER/src/debug_trace.c`; no tests found within 3 caller hops\n- `trace_putc` (USER/src/debug_trace.c:50) — 7 callers in `USER/src/debug_trace.c`; no tests found within 3 caller hops",
-          "source_excerpt": [
-            "115\tstatic void trace_uart_open(void)",
-            "151\t    UART_Init(DEBUG_UARTx, &uart);"
-          ],
-          "has_numbered_source": true
-        }
-      ],
-      "indexed_source_hashes": [
-        {
-          "path": "COMMON/convert.c",
-          "sha256": "e1501fac0a4f1d92bf48ce6e0556e2e19996f54a3f39a59ca5cd9eabb6cc9a9a"
-        },
-        {
-          "path": "COMMON/convert.h",
-          "sha256": "972200d079cbbb4dadff5bebfad646ec5a47680cf2adf0b019b2c681f3fe39c2"
-        },
-        {
-          "path": "COMMON/delay.c",
-          "sha256": "f6662c01e3329acccfd20bc3df4924de9d8660da7269635d45dfaa024f346994"
-        },
-        {
-          "path": "COMMON/delay.h",
-          "sha256": "375c3f84c3d98ca296d09fa9c46aee2f4f42cfd7dfbe0bc970272b2378267555"
-        },
-        {
-          "path": "COMMON/type.h",
-          "sha256": "b4de841b1dfeed263a4064d076e611cc3e72cfab57217f1be0e2df683325f8f1"
-        },
-        {
-          "path": "UM2005C/app_gtimer.c",
-          "sha256": "4f3eaee4dd25872fac985d5b3c02fab98819fab04fbe4f9880a58ccf156b6651"
-        },
-        {
-          "path": "UM2005C/app_gtimer.h",
-          "sha256": "a9f7135138ff9efaadc5b1f0130dde4be7321dbc2de5a24fcceadec7a5a75fb0"
-        },
-        {
-          "path": "UM2005C/app_um2005C.c",
-          "sha256": "72531cbdd10c14fbfd024f7e26dcd93183b035a2cb88e036a4631fd7acb5640a"
-        },
-        {
-          "path": "UM2005C/app_um2005C.h",
-          "sha256": "74eba987edf0d2866eb726e410113c8f2e4006ccdb8385f2aa9bd525c8865d9f"
-        },
-        {
-          "path": "UM2005C/radio.c",
-          "sha256": "ace8ee5609c21353731dc0d460f399033ce8b029100d8069399e69f8002ae1d1"
-        },
-        {
-          "path": "UM2005C/radio.h",
-          "sha256": "fb255e6d01f3f1c6f66b898368298c35b6621fe04bcdb0a07c1bfd4981bd0167"
-        },
-        {
-          "path": "UM2005C/rfconfig.h",
-          "sha256": "f77bd8ebf7503770516a4a2b633db78d7892186257d0ba7b08c59fe6c97958fb"
-        },
-        {
-          "path": "UM2005C/um2005C.c",
-          "sha256": "28c12c7d8d2035928f6cdaae2e19231c781b9be2605382a748b3220dfdb19ae9"
-        },
-        {
-          "path": "UM2005C/um2005C.h",
-          "sha256": "d82db802009b85f1c9e7c5d77e6c729ec2b44d1a52f7be6a7fc77187b68920be"
-        },
-        {
-          "path": "UM2005C/um2005C_defs.h",
-          "sha256": "25aefbd7f9fe2296bf747f57c9286acabcf9a7bc9d749594781b2e3d97760e42"
-        },
-        {
-          "path": "UM2005C/um2005C_hal.c",
-          "sha256": "647b9a5288461a2b414916d499ed9fb8b469c323f65565963ce03be2cdea758e"
-        },
-        {
-          "path": "UM2005C/um2005C_hal.h",
-          "sha256": "67c040ac182e4c7fdd60d9bc373c63f3c6f90a95d049acef9fcca2c82398effb"
-        },
-        {
-          "path": "USER/inc/debug_trace.h",
-          "sha256": "cfcf239422c8f03dae62bb8c0270bbb2b1fa091d453597f303d510be5c78cf75"
-        },
-        {
-          "path": "USER/inc/encrytogate.h",
-          "sha256": "de55825c3afcb22528bfed68301eb40ca43526f0be289b6ac7fb503fcbba0d63"
-        },
-        {
-          "path": "USER/inc/fw_core.h",
-          "sha256": "0e313f6b373cdd9b35500cd37ccdb60239492fa0ac59a77ec82c15ee78381d0b"
-        },
-        {
-          "path": "USER/inc/gxht40.h",
-          "sha256": "cc26ebc902a2ce9c9193fc9e5d07adcf53b0b98de5f06dc33b0b3b79563937de"
-        },
-        {
-          "path": "USER/inc/interrupts_cw32l010.h",
-          "sha256": "e28d230ba9ceea6119e232f4985c8949122d72ca8f566956c10cbb5232d5e613"
-        },
-        {
-          "path": "USER/inc/light.h",
-          "sha256": "4f265e182a5be1658f46c3f5a64198fa856a47ef8245a7d01101a3e708c99dbb"
-        },
-        {
-          "path": "USER/inc/main.h",
-          "sha256": "0cc03af2a1bf7427e37d01c51a3a5e33960e951679b74bfe1bc5dce04c09cfba"
-        },
-        {
-          "path": "USER/inc/measure.h",
-          "sha256": "2513bd134eb045d020c8beb27525c3c89b606db9ee56ec365dffe351a7f21f04"
-        },
-        {
-          "path": "USER/inc/sensor_config.h",
-          "sha256": "dacf70fa72103d9d05c506e21075ea22969e26363c630b91fae9bbc96b806af3"
-        },
-        {
-          "path": "USER/inc/sf_i2c.h",
-          "sha256": "f2d588a27400edd22af6a40c293aebb18141dcb237b167665cbe86201242877a"
-        },
-        {
-          "path": "USER/src/debug_trace.c",
-          "sha256": "7800991c14589f8ec936a119392ee99e707d7c01ef95f3e57f19295a945708e9"
-        },
-        {
-          "path": "USER/src/encrytogate.c",
-          "sha256": "c88265618b91278b36981838d424d23931fddebed5bbbdeacb4365b30d7106d0"
-        },
-        {
-          "path": "USER/src/fw_core.c",
-          "sha256": "5e23d7bf6005451ab09272dafd33e7684c5de715b57bf1dbec5ba6e9cf9d0b2f"
-        },
-        {
-          "path": "USER/src/gxht40.c",
-          "sha256": "250fa66939838f28bb16748a036deab3fd00d7e5a6b07f03c1c734fb538356e9"
-        },
-        {
-          "path": "USER/src/interrupts_cw32l010.c",
-          "sha256": "2c2a7116eb18a2acaf7677128b18403a11bbff9a7f8d193cfdf818452c74e13c"
-        },
-        {
-          "path": "USER/src/light.c",
-          "sha256": "ba7e5443afe0c56e5692293f63c6d4c47768f2acc190ba9c0590ad99842190a4"
-        },
-        {
-          "path": "USER/src/main.c",
-          "sha256": "fe189adc095260a9d60ef1a5a9cf317d1b507f4c2319ecc85559c9954d620d1b"
-        },
-        {
-          "path": "USER/src/measure.c",
-          "sha256": "aaa82d4bd42d168d4e660f0444868ae20e620b9b417b4d53b852e8ef2e97f7e7"
-        },
-        {
-          "path": "USER/src/sf_i2c.c",
-          "sha256": "99cb4968ffc87aef4ee37db6bc2e80f182229944409db5ef8aaf1c35bfa8a161"
-        },
-        {
-          "path": "rfconfig.h",
-          "sha256": "de887dd12d96bd95b156cc0df2db00a5ad55eb5a4b94c7fcdc4a7bea25cd4539"
-        },
-        {
-          "path": "test/host_debug_trace_check.c",
-          "sha256": "6b878ddb6e123e5f2e7e0c9561346fd8aa5ed92febb68c2c1b6ff5762c387e12"
-        },
-        {
-          "path": "test/host_diag_line_verify_ev.c",
-          "sha256": "6de91032d650b3a92307095ef3c4c8311ab7cd9194bffa2432dc15a9f436daf7"
-        },
-        {
-          "path": "test/host_diag_probe_verify_ev.c",
-          "sha256": "3203dd81487b5d6fc9319d66c0cff6b05daca642809dce9db9f4324c8c364ef4"
-        },
-        {
-          "path": "test/host_fw_core_pure_check.c",
-          "sha256": "abb87401b31190da19e8c6f127d32fb40d6624ff8ac42c1d9ef30dcc448a9aa8"
-        },
-        {
-          "path": "test/host_fw_core_verify_ev.c",
-          "sha256": "f9c288c54e6010da3c7697fef45f9b0b8f5cbcb9dd8ef33da3ae404850a2a687"
-        },
-        {
-          "path": "test/host_gw_compat_verify_ev.c",
-          "sha256": "26733738b79eecc991e3218a10e0dadfd3040e7b5a6140d26fafa50660e68617"
-        },
-        {
-          "path": "test/host_gxht40_check.c",
-          "sha256": "f7b1f9ac075d1fb32e21c95e84821ab20a80e445a4379ce8a6dce14986c4e0de"
-        },
-        {
-          "path": "test/host_gxht40_verify_ev.c",
-          "sha256": "b69b3dd0a428833decbd6de690d0cc64987cbc8dcdbdc5fe537930d2fe85d641"
-        },
-        {
-          "path": "test/host_light_check.c",
-          "sha256": "bdc8c2a045a719088a847e68f33c76bad8ef7db7c5c2798a62ad4376702ca38b"
-        },
-        {
-          "path": "test/host_light_verify_ev.c",
-          "sha256": "0673a527961c7b1b7e23ffaf6a71b504d0a9d3fb6812eadc5eb0a23f58a4cff3"
-        },
-        {
-          "path": "test/host_measure_flow_check.c",
-          "sha256": "c5874ace463fb05a97d80635c56283c1b0425b0e9aa9321193f6e54899025eaf"
-        },
-        {
-          "path": "test/host_measure_flow_verify_ev.c",
-          "sha256": "48fe6a2cdf72d8c3e88191fe09841de2f17fbd3d9ed68d27c2120a82ff5b595f"
-        },
-        {
-          "path": "test/host_rf_frame_check.c",
-          "sha256": "a48e00c02743366c7c5e7be2375c82b9191d8f2e0f5fc8f5c241a03ae9f0db00"
-        },
-        {
-          "path": "test/host_rf_frame_verify_ev.c",
-          "sha256": "2c02b3bdf3482d1089a4e522c24d6379ab2180f4d46fc813d8a766274f1c1dd2"
-        },
-        {
-          "path": "test/host_rf_report_verify_ev.c",
-          "sha256": "0437e81b004226a62b268780d2203f3d3f2ce0a934bec3e8cd1918aa75c7230d"
-        },
-        {
-          "path": "test/host_rtc_cadence_verify_ev.c",
-          "sha256": "0ee806db78f14d5facbbfa3dff684243def71942a5d56a4840c30d57ed685b5b"
-        },
-        {
-          "path": "test/host_sensor_core_test.c",
-          "sha256": "d5e6203f903c68a8ef8809079f4462a4513901dd8c517a9e718f67a32a920c9b"
-        },
-        {
-          "path": "test/host_sf_i2c_bus_check.c",
-          "sha256": "0d31be3da3a97a08888ca9b5ae101ccf9b5eda5aacdf5441bd288e98ad586ea6"
-        },
-        {
-          "path": "test/host_sf_i2c_verify_ev.c",
-          "sha256": "328dcfb41d61d66c6bc22ffd4e183bbe17d96fcbe4d7804ec9767d8b5b678d3b"
-        },
-        {
-          "path": "test/host_vdd_verify_ev.c",
-          "sha256": "3c291a8179e0e389e7f28d0d481796d16b64cb7ad4a5021e177ee4f0f85fab50"
-        },
-        {
-          "path": "test/mock_diagline_ev/cw32l010_adc.h",
-          "sha256": "d629f85640c85b3a4c7afe57395049e6249d875da75ec7c0a3ea0c6bd891fc36"
-        },
-        {
-          "path": "test/mock_diagline_ev/cw32l010_gpio.h",
-          "sha256": "2b29977a85b4a458d704fa3008481f04069d5d03c48c53dbe3ffd7450710000f"
-        },
-        {
-          "path": "test/mock_diagline_ev/cw32l010_sysctrl.h",
-          "sha256": "f722a777de35ea7388cf4fa4b60d1eee212b49e5128c3bbae68d25d695104020"
-        },
-        {
-          "path": "test/mock_diagline_ev/cw32l010_uart.h",
-          "sha256": "7747e87ad009e9d3afc4fdaec6a1a032991d05ff69ba8393af2cc42de03ae43e"
-        },
-        {
-          "path": "test/mock_diagline_ev/mock_diagline_hw.h",
-          "sha256": "a87a52218ddd172580aafc141c416afc08050df66e74371731f58a86a7e3fcc7"
-        },
-        {
-          "path": "test/mock_light/cw32l010_adc.h",
-          "sha256": "8db96bfd8b19fd9fedf5140336ed80cc196e63a260a6a7b832bc2cc9751ad53f"
-        },
-        {
-          "path": "test/mock_light/cw32l010_gpio.h",
-          "sha256": "09c035f33ec547ff0bc78cbd38f0e2ff9c4eb2285167f7ed793f059c6996934b"
-        },
-        {
-          "path": "test/mock_light/cw32l010_sysctrl.h",
-          "sha256": "7cc1a6e81b9d6101e65c7f594660ef489365a3f59cf736bfe87bb5d27b2186d1"
-        },
-        {
-          "path": "test/mock_light/mock_light_hw.h",
-          "sha256": "fb73b3cd3a597f8a33836556baad8d6774bd494778dc6750a39459286ab67601"
-        },
-        {
-          "path": "test/mock_main_ev/cw32l010.h",
-          "sha256": "097352fe6e67755357dae9fc08c6e307e46c9271715d88c795bbec9381617109"
-        },
-        {
-          "path": "test/mock_main_ev/cw32l010_adc.h",
-          "sha256": "4982b384457f3e30f4d2533b2f01b5f993061b3b90ce5e3d8a612abcaf302105"
-        },
-        {
-          "path": "test/mock_main_ev/cw32l010_digitalsign.h",
-          "sha256": "aef78b1fbdc16aa89b9a8f8f84caa8e9188139f8253a2043fe92ebba2e18a71e"
-        },
-        {
-          "path": "test/mock_main_ev/cw32l010_flash.h",
-          "sha256": "7367f98bfddbe81f37aea8ad62193713bdb4155ba36875c4ca4dc38a099f92d9"
-        },
-        {
-          "path": "test/mock_main_ev/cw32l010_gpio.h",
-          "sha256": "88a10ca4a293153e29b8a0c61198c761bae6858ba8dbf46797938f2de8349d4b"
-        },
-        {
-          "path": "test/mock_main_ev/cw32l010_rtc.h",
-          "sha256": "1b6af1d125da4d76781f0061a059d7a8809613755f14296fc2b4fbf75a96fa96"
-        },
-        {
-          "path": "test/mock_main_ev/cw32l010_sysctrl.h",
-          "sha256": "6a82fb0358c7573de5151d13e750d94be161ade14acd3427d158178fca96363a"
-        },
-        {
-          "path": "test/mock_main_ev/cw32l010_systick.h",
-          "sha256": "140a6032b4e176d3f6f3ab53173ca229fee118adfbdb2b9e98002c22514202db"
-        },
-        {
-          "path": "test/mock_main_ev/cw32l010_uart.h",
-          "sha256": "bd7c827272295b7bc91781843f4e423066401267c0b75a1cf92c81f553796bc0"
-        },
-        {
-          "path": "test/mock_main_ev/interrupts_cw32l010.h",
-          "sha256": "205d75f1adbb35dac0f19d94ea4c83510c8dd4334205d953a3f5eb607babbedb"
-        },
-        {
-          "path": "test/mock_main_ev/mock_main_hw.h",
-          "sha256": "1dd1a3ba73743def2d2561b57c49c967e4bb543793412811daba1005da080045"
-        },
-        {
-          "path": "test/mock_main_ev/system_cw32l010.h",
-          "sha256": "21195394c8bf9688346506cf353f4253493514d05d81aa04728f468eecaf8454"
-        },
-        {
-          "path": "test/mock_mcu/cw32l010_adc.h",
-          "sha256": "f0de33c074da6f778c653cdd8c0f8b60909b2bbf81e455a2e4b21542f1833b29"
-        },
-        {
-          "path": "test/mock_mcu/cw32l010_gpio.h",
-          "sha256": "655ed047b78d40c0627e65f79f7a863e7a91ab4fd8754ace3c0102350cf2fa3b"
-        },
-        {
-          "path": "test/mock_mcu/cw32l010_sysctrl.h",
-          "sha256": "c01b6bc3ea16f35c4fbe253127c4cad3f373befb5ae471d5c1624d4b02fcc0e0"
-        },
-        {
-          "path": "test/mock_mcu/mock_cw32.h",
-          "sha256": "273d9b492152265aa04871094515fc01530c872e6de4d688d17e5503b1da5163"
-        },
-        {
-          "path": "test/mock_measure_ev/cw32l010_adc.h",
-          "sha256": "1c23d3465a18f352fd7521269dd8921a1814536a72ee215bc9f89e07cc28e930"
-        },
-        {
-          "path": "test/mock_measure_ev/cw32l010_gpio.h",
-          "sha256": "b526e919d7cd07f8fd42629a5e06e3fbe8e9614728c3dbe3624b2acd66d7ecec"
-        },
-        {
-          "path": "test/mock_measure_ev/cw32l010_sysctrl.h",
-          "sha256": "9a1f05d5511bff045bd97b6ac678c5b22beed61b871008995c087cc486f607cf"
-        },
-        {
-          "path": "test/mock_measure_ev/cw32l010_uart.h",
-          "sha256": "6fbeec6960aa19fe63f38578bbf460f4e630facafafee9dd4bafda9db6a3e1dd"
-        },
-        {
-          "path": "test/mock_measure_ev/mock_measure_hw.h",
-          "sha256": "2bb6a9c8a0e3b3b846b6a656c900c440e5fc1aeaa32d935bcc225de3660cc84a"
-        },
-        {
-          "path": "test/mock_measure_mcu/cw32l010_gpio.h",
-          "sha256": "92c8c1d0d00f503380023651ee36ddf08f67977de150c285c014c92a674e31cb"
-        },
-        {
-          "path": "test/mock_measure_mcu/cw32l010_sysctrl.h",
-          "sha256": "c09ede4f27126c77d98f2b72799c860b9c61814d33813b6d7914b9e9d5f772b0"
-        },
-        {
-          "path": "test/mock_measure_mcu/cw32l010_uart.h",
-          "sha256": "13ad93dc96d25ac1bc59f6816852f769a630b870c6f96baa7190084239265e50"
-        },
-        {
-          "path": "test/mock_trace/cw32l010_adc.h",
-          "sha256": "f49a3af0e14469bbc22741e31cc13eb5ba2492428f34f6ba0efdd96d700dcaba"
-        },
-        {
-          "path": "test/mock_trace/cw32l010_gpio.h",
-          "sha256": "133c564b6fe714f52f001b084af55dfb4f8c0b824096559a5ec09397ebce9f4e"
-        },
-        {
-          "path": "test/mock_trace/cw32l010_sysctrl.h",
-          "sha256": "2ad38a212b80f108097f48d4a8fb13743833cc0a68549892ccc8594f35cea5a8"
-        },
-        {
-          "path": "test/mock_trace/cw32l010_uart.h",
-          "sha256": "40c652cc260b80a880a847f1a35640ac0b0c51186cdfcadd1ab52bd6468f8e8d"
-        },
-        {
-          "path": "test/mock_trace/mock_trace_hw.h",
-          "sha256": "53e1820c88dd5e4855af019da7d3a8f0934c78853052638069173bd1cbc87f70"
-        },
-        {
-          "path": "test/mock_vdd_ev/cw32l010_adc.h",
-          "sha256": "7618d851f0a0bd69f9b64765932a3d5a578178bdfef482bd46e71e77aa7d66cc"
-        },
-        {
-          "path": "test/mock_vdd_ev/cw32l010_gpio.h",
-          "sha256": "cfc92c05ee08e0a6b88f5ed65abd6c1f74584e0ff34dc319acc5896750c9597c"
-        },
-        {
-          "path": "test/mock_vdd_ev/cw32l010_sysctrl.h",
-          "sha256": "75f35aa54c5051833cd1ae68f17e252102c9d15bfec618f981249c5942238654"
-        },
-        {
-          "path": "test/mock_vdd_ev/mock_vdd_hw.h",
-          "sha256": "b27fec4c28f031f7f5be07afa2e46a225548484df23dd53fdf8594949a5f306d"
-        }
-      ],
-      "indexed_source_set_sha256": "36c2e8c0ac67aa0fc50c2cc3220e5b110add9273a225b8976dae4302e1c55f86",
-      "ignore_check": {
-        "command": [
-          "git",
-          "check-ignore",
-          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\.codegraph"
-        ],
-        "started_utc": "2026-11-10T08:47:55.612507+00:00",
-        "finished_utc": "2026-11-10T08:47:55.639215+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\\\\.codegraph\"\n",
-        "stderr": ""
-      },
-      "tracked_index_check": {
-        "command": [
-          "git",
-          "ls-files",
-          "--",
-          "CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\.codegraph"
-        ],
-        "started_utc": "2026-11-10T08:47:55.639215+00:00",
-        "finished_utc": "2026-11-10T08:47:55.661013+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "",
-        "stderr": ""
-      },
-      "upstream_source_change_summary": {
-        "command": [
-          "git",
-          "diff",
-          "e787681",
-          "HEAD",
-          "--stat",
-          "--",
-          "CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
-        ],
-        "started_utc": "2026-11-10T08:47:55.661013+00:00",
-        "finished_utc": "2026-11-10T08:47:55.686565+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": " .../gpio_input_output/USER/inc/debug_trace.h       |  4 +-\n .../sensor/gpio_input_output/USER/inc/fw_core.h    | 11 ++--\n .../sensor/gpio_input_output/USER/inc/light.h      |  8 +--\n .../gpio_input_output/USER/inc/sensor_config.h     | 36 +++++++------\n .../sensor/gpio_input_output/USER/src/fw_core.c    | 12 +++--\n .../sensor/gpio_input_output/USER/src/light.c      | 13 ++---\n .../sensor/gpio_input_output/test/build_test.sh    | 10 ++--\n .../test/host_fw_core_pure_check.c                 | 36 ++++++-------\n .../gpio_input_output/test/host_light_check.c      | 61 ++++++++++++++--------\n .../gpio_input_output/test/host_sensor_core_test.c | 19 +++----\n 10 files changed, 118 insertions(+), 92 deletions(-)\n",
-        "stderr": ""
-      }
-    },
-    {
-      "name": "gateway",
-      "projectPath": "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2",
-      "indexPath": "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2\\.codegraph",
-      "existing_index": true,
-      "query": "decode_frame10",
-      "config": {
-        "exclude": [
-          ".settings/",
-          ".idea/",
-          "obj/",
-          "Debug/",
-          "Release/",
-          "build/"
-        ]
-      },
-      "git_tree": {
-        "command": [
-          "git",
-          "rev-parse",
-          "HEAD:CH592EVT/EVT/EXAM/BLE/beiwov2"
-        ],
-        "started_utc": "2026-11-10T08:46:43.907395+00:00",
-        "finished_utc": "2026-11-10T08:46:43.929520+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "22c8a193daffea87408c971a53db566633f7c6ea\n",
-        "stderr": ""
-      },
-      "latest_source_commit": {
-        "command": [
-          "git",
-          "log",
-          "-1",
-          "--format=%H",
-          "--",
-          "CH592EVT/EVT/EXAM/BLE/beiwov2"
-        ],
-        "started_utc": "2026-11-10T08:46:43.929520+00:00",
-        "finished_utc": "2026-11-10T08:46:43.955710+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "4d101ae6459f89fa7f26f0d437d1d86a8be7a369\n",
-        "stderr": ""
-      },
-      "worktree_diff": {
-        "command": [
-          "git",
-          "diff",
-          "HEAD",
-          "--stat",
-          "--",
-          "CH592EVT/EVT/EXAM/BLE/beiwov2"
-        ],
-        "started_utc": "2026-11-10T08:46:43.955710+00:00",
-        "finished_utc": "2026-11-10T08:46:43.983360+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "",
-        "stderr": ""
-      },
-      "status_before": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "status",
-          "--json",
-          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2"
-        ],
-        "started_utc": "2026-11-10T08:46:43.983360+00:00",
-        "finished_utc": "2026-11-10T08:46:44.140588+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CH592EVT\\\\EVT\\\\EXAM\\\\BLE\\\\beiwov2\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CH592EVT\\\\EVT\\\\EXAM\\\\BLE\\\\beiwov2\\\\.codegraph\",\"lastIndexed\":\"2026-10-02T12:17:46.875Z\",\"fileCount\":34,\"nodeCount\":508,\"edgeCount\":1066,\"dbSizeBytes\":1167360,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"constant\":35,\"enum\":18,\"enum_member\":78,\"file\":34,\"function\":154,\"import\":79,\"struct\":9,\"type_alias\":4,\"variable\":97},\"languages\":[\"c\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
-        "stderr": ""
-      },
-      "sync": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "sync",
-          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2"
-        ],
-        "started_utc": "2026-11-10T08:46:44.140588+00:00",
-        "finished_utc": "2026-11-10T08:46:44.308164+00:00",
-        "timeout_seconds": 45,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "T  Syncing CodeGraph\n|\nScanning files...\n|\n•  Already up to date\n|\n—  Done\n\n",
-        "stderr": ""
-      },
-      "status_after": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "status",
-          "--json",
-          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2"
-        ],
-        "started_utc": "2026-11-10T08:46:44.308164+00:00",
-        "finished_utc": "2026-11-10T08:46:44.464935+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CH592EVT\\\\EVT\\\\EXAM\\\\BLE\\\\beiwov2\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CH592EVT\\\\EVT\\\\EXAM\\\\BLE\\\\beiwov2\\\\.codegraph\",\"lastIndexed\":\"2026-10-02T12:17:46.875Z\",\"fileCount\":34,\"nodeCount\":508,\"edgeCount\":1066,\"dbSizeBytes\":1167360,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"constant\":35,\"enum\":18,\"enum_member\":78,\"file\":34,\"function\":154,\"import\":79,\"struct\":9,\"type_alias\":4,\"variable\":97},\"languages\":[\"c\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
-        "stderr": ""
-      },
-      "files": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "files",
-          "-p",
-          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2",
-          "--format",
-          "flat",
-          "--no-metadata"
-        ],
-        "started_utc": "2026-11-10T08:46:44.464935+00:00",
-        "finished_utc": "2026-11-10T08:46:44.620893+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "\nFiles (34):\n\n  APP/app_ev1527.c\n  APP/app_ev1527.h\n  APP/app_i2c.c\n  APP/app_i2c.h\n  APP/app_uart.c\n  APP/app_uart.h\n  APP/app_um2006A.c\n  APP/app_um2006A.h\n  APP/bleencrypt.c\n  APP/bleencrypt.h\n  APP/feistel_al.c\n  APP/feistel_al.h\n  APP/include/peripheral.h\n  APP/measure.c\n  APP/measure.h\n  APP/peripheral_main.c\n  APP/peripheral.c\n  APP/radio.c\n  APP/radio.h\n  APP/rfconfig.h\n  APP/rfconfigbkp.h\n  APP/rfconfigok.h\n  APP/sf_i2c.c\n  APP/sf_i2c.h\n  APP/type.h\n  APP/um2006A_defs.h\n  APP/um2006A_hal.c\n  APP/um2006A_hal.h\n  APP/um2006A.c\n  APP/um2006A.h\n  Profile/devinfoservice.c\n  Profile/gattprofile.c\n  Profile/include/devinfoservice.h\n  Profile/include/gattprofile.h\n\n",
-        "stderr": ""
-      },
-      "queries": [
-        {
-          "command": [
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-            "--liftoff-only",
-            "--disable-warning=ExperimentalWarning",
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-            "explore",
-            "-p",
-            "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2",
-            "--max-files",
-            "1",
-            "decode_frame10"
-          ],
-          "started_utc": "2026-11-10T08:47:14.494510+00:00",
-          "finished_utc": "2026-11-10T08:47:14.667091+00:00",
-          "timeout_seconds": 30,
-          "timed_out": false,
-          "exit_code": 0,
-          "stderr": "",
-          "query": "decode_frame10",
-          "stdout_sha256": "744fd37bd2f052d8cfc9dc80926fc98470ae95cefd5e13b8747447f2c96f67c6",
-          "stdout_characters": 7238,
-          "overview": "**Exploration: decode_frame10**\n\nFound 9 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `decode_frame10` (APP/feistel_al.c:119) — 1 caller in `APP/app_um2006A.c`; no tests found within 3 caller hops",
-          "source_excerpt": [
-            "**Exploration: decode_frame10**",
-            "- `decode_frame10` (APP/feistel_al.c:119) — 1 caller in `APP/app_um2006A.c`; no tests found within 3 caller hops",
-            "**`APP/feistel_al.c`** — decode_frame10(function), feistel10_decrypt(function), crc16_ccitt(function), subkeys_gen(function), permute10(function), +4 more",
-            "119\tbool decode_frame10(uint8_t in10[10], uint8_t uid_pick_out[4], int16_t *temp_out, uint16_t *hum_out){",
-            "129\t  if (temp_out) *temp_out = (int16_t)(p[4] | ((int16_t)p[5]<<8));",
-            "130\t  if (hum_out)  *hum_out  = (uint16_t)(p[6] | ((uint16_t)p[7]<<8));"
-          ],
-          "has_numbered_source": true
-        }
-      ],
-      "indexed_source_hashes": [
-        {
-          "path": "APP/app_ev1527.c",
-          "sha256": "9f9361c61264ba04087f88ed184c4281cfcb05087ec507761dd3cf46fd4bda87"
-        },
-        {
-          "path": "APP/app_ev1527.h",
-          "sha256": "032941ae13c9ddda9cf0caa2dbb52a15d41d48c788919b290ded5bd01f5f68d1"
-        },
-        {
-          "path": "APP/app_i2c.c",
-          "sha256": "84ada7dcd2fde00976202d59fdc99508a49644ef913593aaa59c298bfbd6a875"
-        },
-        {
-          "path": "APP/app_i2c.h",
-          "sha256": "1b9a6f8396e55e88bd22014b33de0ff53f1c4bb4adf98cce874a2a7895dc1d60"
-        },
-        {
-          "path": "APP/app_uart.c",
-          "sha256": "65aa4758b9751f280063835184380b0de862989838841af658bb02076ec330c8"
-        },
-        {
-          "path": "APP/app_uart.h",
-          "sha256": "14bca682dd87395ad212b867b71a7f35eb843f91f7a5c4e6f3ae394eac78f986"
-        },
-        {
-          "path": "APP/app_um2006A.c",
-          "sha256": "b351b44161635c0339b9be1ab3c21213d50a4520660d3c557f41d29ebabba78a"
-        },
-        {
-          "path": "APP/app_um2006A.h",
-          "sha256": "2b42401f338f1a556e71c4dd640cc6ba2d96381c3bff556d89dade92a2aefb36"
-        },
-        {
-          "path": "APP/bleencrypt.c",
-          "sha256": "982060bfab94ee6d93c3b91942c41802d84adc22cddf87f4196166af7903d2a6"
-        },
-        {
-          "path": "APP/bleencrypt.h",
-          "sha256": "12179453f7f34f4019d77e6c2d2c320bc2869962f985f63346fd9fe654e57f8f"
-        },
-        {
-          "path": "APP/feistel_al.c",
-          "sha256": "b1c14ae82067a4ef5ba69d3c6bd04aa8fdec7524a07a58d28cf5c5df2d6ad300"
-        },
-        {
-          "path": "APP/feistel_al.h",
-          "sha256": "7102936750274772f67f8f2f6a82532d1614ef0809b409109cc87f095410dbbf"
-        },
-        {
-          "path": "APP/include/peripheral.h",
-          "sha256": "7be073b1152ff0f67f5acd11d0ac735170a9ef6a2dd9bf129524537d334046ad"
-        },
-        {
-          "path": "APP/measure.c",
-          "sha256": "eb9d60f823956f60b0d00520ea6abb9b611d4b38a6e30a434491ed7e51ec4b97"
-        },
-        {
-          "path": "APP/measure.h",
-          "sha256": "2440339e21d8b8b2b59b19d9c8fe8b0b81621a72097a9d2433300d563fd33ed7"
-        },
-        {
-          "path": "APP/peripheral.c",
-          "sha256": "e9725621708b76767bc49f1b5375676e9bd9716a4cc6c7e047ed43afc89f6298"
-        },
-        {
-          "path": "APP/peripheral_main.c",
-          "sha256": "2c408d290854d3a41ee2d8c0d69c922c4775bc042baa7599f3dbcc8b36ebb6f5"
-        },
-        {
-          "path": "APP/radio.c",
-          "sha256": "cad82367e7f0d8a41ca0fdf543b54f9d5e942b316c9153828ba1c8858fe099f2"
-        },
-        {
-          "path": "APP/radio.h",
-          "sha256": "09e2d4081924fc0a0f912bf4b22932af81131859f35b05e06f5147288158e1ad"
-        },
-        {
-          "path": "APP/rfconfig.h",
-          "sha256": "30f6f753c8707cb5b8879f4ca9343b675557da522f05815d2515afdcf88f2b40"
-        },
-        {
-          "path": "APP/rfconfigbkp.h",
-          "sha256": "995d5b975e356d08fa34b5d400d565615fabbad626a4d432ae1980d2ee633d5e"
-        },
-        {
-          "path": "APP/rfconfigok.h",
-          "sha256": "acc2df6232b75ae12b27fe52ae75f0756af5363a84b152c39e657329619953bf"
-        },
-        {
-          "path": "APP/sf_i2c.c",
-          "sha256": "01f922141dff1382f4b2aaa00773d50dade6c9cda516ae798547d8b352df20aa"
-        },
-        {
-          "path": "APP/sf_i2c.h",
-          "sha256": "799eea382ef341f0220f9ba7f2979bae589a120cc77ad34f3dccb6720001c4c6"
-        },
-        {
-          "path": "APP/type.h",
-          "sha256": "d7e2cb068c799a5cfb1443ed11254716751346750bd4b238785f1742b14c48bc"
-        },
-        {
-          "path": "APP/um2006A.c",
-          "sha256": "8ed2ec3f42ee244ec2a0603d1c7e7071c8b0af17084f10c091df8c2792d17020"
-        },
-        {
-          "path": "APP/um2006A.h",
-          "sha256": "bf8a25de0a6b7ce3a2cdf779fd6c874eecfeeeada45e7e781cd68169daa578dd"
-        },
-        {
-          "path": "APP/um2006A_defs.h",
-          "sha256": "18fec3036888d32f068ae51a9be290cd3e182a35bdc8e66badc63d0925aebe67"
-        },
-        {
-          "path": "APP/um2006A_hal.c",
-          "sha256": "d8f95b63d1a9a6f45beb9351dfaf312e7ec7fe6af1a7ada68f57d03d6be8c0a8"
-        },
-        {
-          "path": "APP/um2006A_hal.h",
-          "sha256": "155ed12d851eba20383d24e6ac6c3569b83b87799ff554b28dcdef956455ba39"
-        },
-        {
-          "path": "Profile/devinfoservice.c",
-          "sha256": "d84ebc3aa5c8072a9432aad8e2c5f3e6849a37510a474fd9763d2da96885ec1d"
-        },
-        {
-          "path": "Profile/gattprofile.c",
-          "sha256": "1678efa31d36b662b619a791d2ebd5c902e454c2c4f743ac372995d08b269790"
-        },
-        {
-          "path": "Profile/include/devinfoservice.h",
-          "sha256": "fcf926fc62939953b6511f0532be84070bda7a1bba6ec0739efcb87dd21660c5"
-        },
-        {
-          "path": "Profile/include/gattprofile.h",
-          "sha256": "83215c5e4f1be55b642cf304857380b92485528a1f6d1f20f5d168f0a0bd82c7"
-        }
-      ],
-      "indexed_source_set_sha256": "2d7a74f42db9cbbd4a6db67aacc32ac3abb59125810fec441225e6a33408979d",
-      "ignore_check": {
-        "command": [
-          "git",
-          "check-ignore",
-          "D:\\mypro\\beiwo2\\AIP\\CH592EVT\\EVT\\EXAM\\BLE\\beiwov2\\.codegraph"
-        ],
-        "started_utc": "2026-11-10T08:47:55.686565+00:00",
-        "finished_utc": "2026-11-10T08:47:55.709556+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CH592EVT\\\\EVT\\\\EXAM\\\\BLE\\\\beiwov2\\\\.codegraph\"\n",
-        "stderr": ""
-      },
-      "tracked_index_check": {
-        "command": [
-          "git",
-          "ls-files",
-          "--",
-          "CH592EVT\\EVT\\EXAM\\BLE\\beiwov2\\.codegraph"
-        ],
-        "started_utc": "2026-11-10T08:47:55.709556+00:00",
-        "finished_utc": "2026-11-10T08:47:55.732141+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "",
-        "stderr": ""
-      },
-      "upstream_source_change_summary": {
-        "command": [
-          "git",
-          "diff",
-          "e787681",
-          "HEAD",
-          "--stat",
-          "--",
-          "CH592EVT\\EVT\\EXAM\\BLE\\beiwov2"
-        ],
-        "started_utc": "2026-11-10T08:47:55.732141+00:00",
-        "finished_utc": "2026-11-10T08:47:55.754812+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "",
-        "stderr": ""
-      }
-    },
-    {
-      "name": "android",
-      "projectPath": "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
-      "indexPath": "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\.codegraph",
-      "existing_index": true,
-      "query": "GatewayFrameCodec",
-      "config": {
-        "exclude": [
-          "iOS开发资料/",
-          ".idea/",
-          ".gradle/",
-          "build/",
-          "app/build/"
-        ],
-        "deprioritize": [
-          "app/src/test/",
-          "app/src/androidTest/",
-          "app/src/main/java/org/eclipse/paho/"
-        ]
-      },
-      "git_tree": {
-        "command": [
-          "git",
-          "rev-parse",
-          "HEAD:dengbei_care"
-        ],
-        "started_utc": "2026-11-10T08:46:44.620893+00:00",
-        "finished_utc": "2026-11-10T08:46:44.643016+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "3c9feeb9ce399b3ba5ac359b31090af583ce4781\n",
-        "stderr": ""
-      },
-      "latest_source_commit": {
-        "command": [
-          "git",
-          "log",
-          "-1",
-          "--format=%H",
-          "--",
-          "dengbei_care"
-        ],
-        "started_utc": "2026-11-10T08:46:44.643016+00:00",
-        "finished_utc": "2026-11-10T08:46:44.669666+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "4d101ae6459f89fa7f26f0d437d1d86a8be7a369\n",
-        "stderr": ""
-      },
-      "worktree_diff": {
-        "command": [
-          "git",
-          "diff",
-          "HEAD",
-          "--stat",
-          "--",
-          "dengbei_care"
-        ],
-        "started_utc": "2026-11-10T08:46:44.669666+00:00",
-        "finished_utc": "2026-11-10T08:46:44.693828+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "",
-        "stderr": ""
-      },
-      "status_before": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "status",
-          "--json",
-          "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
-        ],
-        "started_utc": "2026-11-10T08:46:44.693828+00:00",
-        "finished_utc": "2026-11-10T08:46:44.883376+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\",\"lastIndexed\":\"2026-10-07T01:53:21.977Z\",\"fileCount\":88,\"nodeCount\":2396,\"edgeCount\":4770,\"dbSizeBytes\":9977856,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"class\":147,\"constant\":92,\"enum\":7,\"enum_member\":26,\"field\":322,\"file\":86,\"function\":49,\"import\":768,\"interface\":8,\"method\":804,\"namespace\":82,\"variable\":5},\"languages\":[\"java\",\"kotlin\",\"properties\",\"xml\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
-        "stderr": ""
-      },
-      "sync": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "sync",
-          "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
-        ],
-        "started_utc": "2026-11-10T08:46:44.883376+00:00",
-        "finished_utc": "2026-11-10T08:46:45.095375+00:00",
-        "timeout_seconds": 45,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "T  Syncing CodeGraph\n|\nScanning files...\n|\n•  Already up to date\n|\n—  Done\n\n",
-        "stderr": ""
-      },
-      "status_after": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "status",
-          "--json",
-          "D:\\mypro\\beiwo2\\AIP\\dengbei_care"
-        ],
-        "started_utc": "2026-11-10T08:46:45.095375+00:00",
-        "finished_utc": "2026-11-10T08:46:45.278887+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\",\"lastIndexed\":\"2026-10-07T01:53:21.977Z\",\"fileCount\":88,\"nodeCount\":2396,\"edgeCount\":4770,\"dbSizeBytes\":9977856,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"class\":147,\"constant\":92,\"enum\":7,\"enum_member\":26,\"field\":322,\"file\":86,\"function\":49,\"import\":768,\"interface\":8,\"method\":804,\"namespace\":82,\"variable\":5},\"languages\":[\"java\",\"kotlin\",\"properties\",\"xml\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
-        "stderr": ""
-      },
-      "files": {
-        "command": [
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-          "--liftoff-only",
-          "--disable-warning=ExperimentalWarning",
-          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-          "files",
-          "-p",
-          "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
-          "--format",
-          "flat",
-          "--no-metadata"
-        ],
-        "started_utc": "2026-11-10T08:46:45.278887+00:00",
-        "finished_utc": "2026-11-10T08:46:45.441130+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "\nFiles (88):\n\n  app/build.gradle.kts\n  app/src/androidTest/java/com/jinyuni/dengbei_care/ExampleInstrumentedTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt\n  app/src/androidTest/java/com/jinyuni/dengbei_care/verification/UploadOutboxItem009VerificationTest.kt\n  app/src/main/AndroidManifest.xml\n  app/src/main/java/com/jinyuni/dengbei_care/BaseActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt\n  app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt\n  app/src/main/java/com/jinyuni/dengbei_care/DeviceParamsBook.kt\n  app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MainActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt\n  app/src/main/java/com/jinyuni/dengbei_care/MyApplication.kt\n  app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/DailyReportWorker.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt\n  app/src/main/java/com/jinyuni/dengbei_care/report/ReportScheduler.kt\n  app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt\n  app/src/main/java/com/jinyuni/dengbei_care/SensorIdAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt\n  app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt\n  app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/denglu/DengLuFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/AlarmEventAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DeviceDetailFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/sensorid/SensorIdListFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/PrivacyPolicyActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/TermsOfServiceActivity.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeFragment.kt\n  app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt\n  app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt\n  app/src/main/java/org/eclipse/paho/android/service/AlarmPingSender.java\n  app/src/main/java/org/eclipse/paho/android/service/DatabaseMessageStore.java\n  app/src/main/java/org/eclipse/paho/android/service/MessageStore.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttAndroidClient.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttConnection.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttDeliveryTokenAndroid.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttService.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttServiceBinder.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttServiceConstants.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttTokenAndroid.java\n  app/src/main/java/org/eclipse/paho/android/service/MqttTraceHandler.java\n  app/src/main/java/org/eclipse/paho/android/service/ParcelableMqttMessage.java\n  app/src/main/java/org/eclipse/paho/android/service/Status.java\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadPayloadTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt\n  app/src/test/java/com/jinyuni/dengbei_care/db/TemperatureWriteItem007Test.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ExampleUnitTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/report/ReportGeneratorTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/ui/home/DeviceStateTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/AlarmEvaluatorItem005VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/DeviceStateItem011VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/PlayerDegradationItem010VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/ReadingAttributionItem003VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/ReportGeneratorItem013VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt\n  app/src/test/java/com/jinyuni/dengbei_care/verification/UploadPayloadItem008VerificationTest.kt\n  build.gradle.kts\n  gradle.properties\n  gradle/wrapper/gradle-wrapper.properties\n  settings.gradle.kts\n\n",
-        "stderr": ""
-      },
-      "queries": [
-        {
-          "command": [
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
-            "--liftoff-only",
-            "--disable-warning=ExperimentalWarning",
-            "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
-            "explore",
-            "-p",
-            "D:\\mypro\\beiwo2\\AIP\\dengbei_care",
-            "--max-files",
-            "1",
-            "GatewayFrameCodec"
-          ],
-          "started_utc": "2026-11-10T08:47:14.669580+00:00",
-          "finished_utc": "2026-11-10T08:47:14.860850+00:00",
-          "timeout_seconds": 30,
-          "timed_out": false,
-          "exit_code": 0,
-          "stderr": "",
-          "query": "GatewayFrameCodec",
-          "stdout_sha256": "47f72170a2be69134b76dbdb243923047db414be55c0ba9f05a871eabcd56041",
-          "stdout_characters": 8968,
-          "overview": "**Exploration: GatewayFrameCodec**\n\nFound 17 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `GatewayFrameCodec` (app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt:16) — 11 callers in `app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt`; tests: `app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt`, `app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001VerificationTest.kt`, `app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt`\n- `gatewayMac` (app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt:47) — 1 caller in `app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt`; tested via callers: `app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt`, `app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt`\n- `u16be` (app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt:31) — 2 callers in `app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt`; tested via callers: `app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt`, `app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt` +1",
-          "source_excerpt": [
-            "9\t * 设备块 16 B : 取前 8 B 有效 = sensor_id(4 B 原字节序) | humidity_x10(u16be@4) | temperature_x10(s16be@6)",
-            "31\t    fun u16be(b: ByteArray, offset: Int): Int =",
-            "35\t    fun s16be(b: ByteArray, offset: Int): Int {",
-            "124\t            samples += decodeDeviceBlock(frame, off)",
-            "134\t    fun decodeDeviceBlock(block: ByteArray, offset: Int): SensorSample {"
-          ],
-          "has_numbered_source": true
-        }
-      ],
-      "indexed_source_hashes": [
-        {
-          "path": "app/build.gradle.kts",
-          "sha256": "9130aec418832e5859f57d1d8de98c3b86071bab87349cf50acde178f96bb75c"
-        },
-        {
-          "path": "app/src/androidTest/java/com/jinyuni/dengbei_care/ExampleInstrumentedTest.kt",
-          "sha256": "efd6e6bc19fafd4f7558556806a155208bea5af83a0161bec6ea055b2ebc10e4"
-        },
-        {
-          "path": "app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureDatabaseItem006VerificationTest.kt",
-          "sha256": "a0e06adb23d9711a8813dd1530f3aeb17631788c9cf0902a2e3f8772f56e4b45"
-        },
-        {
-          "path": "app/src/androidTest/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt",
-          "sha256": "ae60ae4ce67df41bdb4bc1a4a493d02c73f2bc6a701b3a695ee2b87ba07bec79"
-        },
-        {
-          "path": "app/src/androidTest/java/com/jinyuni/dengbei_care/verification/UploadOutboxItem009VerificationTest.kt",
-          "sha256": "9a3318802244162afeb3ddf430cea885d7be38887438edd06cd741dc9ee448d1"
-        },
-        {
-          "path": "app/src/main/AndroidManifest.xml",
-          "sha256": "9812cf28d39e59f8743584bb2ba25d486675be18172fc2a3304ca3e534d9b440"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/BaseActivity.kt",
-          "sha256": "25fcd5f2cc227b958bbf573bbc1ac47518d46f961d020348c75f6b7da910ccd7"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/DeviceParamsBook.kt",
-          "sha256": "b59f3c747bbe3caf264c035627c48bd4d73350c9bf4d41fb9a7e95895648632c"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt",
-          "sha256": "ec814658b69d4805b80d66249e37d876a761dccf1110b239a726825c0571e897"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt",
-          "sha256": "eb0ee0d776920c9d199d97e06c8782c2512ce012efcac6da3b0392306dd25ee0"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/MainActivity.kt",
-          "sha256": "1ba0302584f9cfb4db27eee0da678758219e2f38ae419d3a3a5b88d40209d849"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt",
-          "sha256": "dd3847ff2fec80289f0e82282140fab77b8f0c78e85e59ff6a94040b934a88ac"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/MyApplication.kt",
-          "sha256": "ad8ddbdcc7c43506a60f6264355345834c71fd3f5f7d8d6f6b7317493fff521d"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/RingtonePlayer.kt",
-          "sha256": "64c33c25a11aa1b88ad50240f894374a9fa335611191dceea50ccd39d227e086"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/SensorIdAdapter.kt",
-          "sha256": "1240fe7986d02396bda5315f7cc64671a24ed795368b3367c48987e40025d5a4"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt",
-          "sha256": "e9b8c57badef775dd5c1983ed40c6eeb36211ac864c69685bdf0a26b50328ca5"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt",
-          "sha256": "dc87ea8cafdd0bb3161fa1f8e8f82c16c3b820fcc642f6c7a39609d8c7f0edd4"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt",
-          "sha256": "d7daae2db108ec9b8f349ec61a9148bfd762e58d3fdd78e110fd81a7279b6cfb"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt",
-          "sha256": "c221de8da8d78ecc4b41e341daca69ece754fe8e18fd95920cdb065612b84a1c"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt",
-          "sha256": "63d06a21e4f2c22d9e77580b81fc6056fe523d8e17ddfef6c6246a6da543dbf7"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadPayload.kt",
-          "sha256": "c0fff0ed06404895c52b216d4ce0c31657c2c4a6a509f29d015e6d579a6d98a9"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt",
-          "sha256": "76f669ad4ad88a786b3bec95d70bf76c1c8f865ff901938a626a34f84ccde464"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/report/DailyReportWorker.kt",
-          "sha256": "36b712d64f5237d6040e78fbd37390092c00afd14d5e61a775a6a8ad6615e620"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/report/ReportActivity.kt",
-          "sha256": "0c971580c8282a2655c937157fb6c0fefc5f77fdbac830bafc882ff0eff26e18"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt",
-          "sha256": "970ac3fe91ce25005d8d8b0a04270e00c9921f9295bc1938d1d91aea1ebe22e7"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/report/ReportScheduler.kt",
-          "sha256": "e4a08fc063e2d2c9ebaf1026e2489856901c7a9483721f4b7af6aa2142f5bceb"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluator.kt",
-          "sha256": "207af1d97b28cc61d326bbf92c157edcd7b6fb9994efc05cb75bcc385c33542e"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt",
-          "sha256": "8b31db2523b5416c74e03297659d49ad7384d5d2b5446adc817edb388416306a"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt",
-          "sha256": "fe863f0339bcf3f23c42423561557a62e28ae777adb9a9f9901902b72ff27e68"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardFragment.kt",
-          "sha256": "a1f93d8106acf077ee1e552ea738368d86784ae840569a94d275889c71420e68"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardViewModel.kt",
-          "sha256": "7c3f58ddda6ad49cfacd5e46dd7f8cd8480ed01058f6f3d4e44b59e26c119395"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/denglu/DengLuFragment.kt",
-          "sha256": "3f2ebda138ceb258ae1d79961623a59cc1017e7d3aac86ca8cc8514ad9db8590"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/detail/AlarmEventAdapter.kt",
-          "sha256": "196ed146d64047319820e11672591e8fc34ed3ea21495a1ad3d2bc3e3eae6790"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt",
-          "sha256": "ba96c065c3769a6aa3ac27c9e4d3ac88ab33ae5caaf4ef08ce7c30b104486709"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DeviceDetailFragment.kt",
-          "sha256": "2a67ecd0abc260997cd5d4190941bd25e476482214e987a1f3b3e9b0c75a0458"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayFragment.kt",
-          "sha256": "a2ad9029cb2fa161965b60cf821a83ff8a1fcd1ad0b990ed2963e1a97356bc6a"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/home/DeviceCardAdapter.kt",
-          "sha256": "c77a5197f8622979c5ee800b61195c9d2dae5686a05371e56043cf5ef032cb96"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeFragment.kt",
-          "sha256": "3bd7861174c0ef397001497b6554d45af56133441f353bdd5e25145d809bc694"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt",
-          "sha256": "d2a1a21fc3df650274e98677a249f300f8a366661e671cd6b4955fa7ccc83b15"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt",
-          "sha256": "90286df259e03b6ace9a294eedc6617646f8fb3f591383111e9f98dcffbe37e2"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsViewModel.kt",
-          "sha256": "96bdd94f7351327bcef74e69252caf352c019bbf8d18c7952919cb7ebe9146dc"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/sensorid/SensorIdListFragment.kt",
-          "sha256": "86237195c5bcc6653f7f64a506a95d9d1d1b6ec7bb80c1ea9e51bd0c3251c359"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt",
-          "sha256": "7d9fd0d15994174f13857fff29db880edd697f156fbfc4bbc4316237aab7b444"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/PrivacyPolicyActivity.kt",
-          "sha256": "e99890374b6da250079ec9cb15e39dd16601d7c8d43f4cb00e0f4181ecfd5a87"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/TermsOfServiceActivity.kt",
-          "sha256": "0c7c48a44fbe85c6d9eae061dc0bd73db5879d633400d401608a5392e382818e"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeFragment.kt",
-          "sha256": "2a20945fea1286509cc4771ef6a1c06443456efa7e4ea9859553daa5878b894f"
-        },
-        {
-          "path": "app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeViewModel.kt",
-          "sha256": "b3058244b74b22df870129c623d09a89ab6509b16310c2b87577b0ab4cfff358"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/AlarmPingSender.java",
-          "sha256": "622bcf7a0e699dcf42dc5a72b81e3f584b7c11975f79241e3173092c5bbbe56d"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/DatabaseMessageStore.java",
-          "sha256": "ed5f11d4183b36825e06b90e57c2b12089034e4fefe0e32bb4e3fb67209e2773"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/MessageStore.java",
-          "sha256": "d053d7e301607f06cdfb2e7d4f73019cb5d920125eed12919f384b54c4ad23e7"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/MqttAndroidClient.java",
-          "sha256": "eed8fc4e77cbeac08b533d13dfe2f6d9c9164acf4d105b9b1c6a464e63c8a07e"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/MqttConnection.java",
-          "sha256": "264f6dd885ed63d9440362e9def7207ba6981710b140093d4e8565e0179bf55a"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/MqttDeliveryTokenAndroid.java",
-          "sha256": "f6030e12a03f44cec21fc994d5e27fc21b71013a1da085157c3cbcc05934bcae"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/MqttService.java",
-          "sha256": "ab8373fa2f7869cca10296aa68cc7abadd4f33a9786eda5b51e88071b83acfe1"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/MqttServiceBinder.java",
-          "sha256": "0fe1f2cbcef79fa3a001fbb44338ec735fabe85a937e95ec8e65441eafa30770"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/MqttServiceConstants.java",
-          "sha256": "d3ba1806f9c1a3030441cc8b5fc2c1d1800a7ab09c7184d16a4055ce99eed2db"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/MqttTokenAndroid.java",
-          "sha256": "3adc3a70e098a9a198466694763d47f3e4745185aa6b74c8f3a0555e333a0af9"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/MqttTraceHandler.java",
-          "sha256": "b0ac4a9d6cce107ca54becf73fecef4f3bbe15c80edd44e9e5c3ab39d512edeb"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/ParcelableMqttMessage.java",
-          "sha256": "44c3d60895d3a0aba421aaee3b6b3820068b6c9a72ced45035d1e6b76de16b5a"
-        },
-        {
-          "path": "app/src/main/java/org/eclipse/paho/android/service/Status.java",
-          "sha256": "f1375f03fdf029c00e2178444cb83ec1519b3a29ef9eb00a477fbbd2e42a998e"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/ExampleUnitTest.kt",
-          "sha256": "47670182f060ec990301fefbfab3d7d49d3c3d8d631895292966a57f75009af4"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudConfigTest.kt",
-          "sha256": "2a217cc042f8a3e127210dd42fe640fa30e1e2acf26478245894fbd64d4af2f5"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepositoryTest.kt",
-          "sha256": "a169f11a7943f98d022866e6d5c81a5a70d9d6ade626b848c18110049705b3b4"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/cloud/UploadPayloadTest.kt",
-          "sha256": "2832acd192d1a449a0b13fbed7fe647299439d7165493922e15175edef751c08"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/db/DatabaseSchemaV3Test.kt",
-          "sha256": "71635eabba2effba7e76e34d43863c4c029c4c740dfc4254c98c91872b5893f9"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/db/TemperatureWriteItem007Test.kt",
-          "sha256": "005910126d6bbe22b5c57342dfd4c967f1f4026fa871742309804d40177d307a"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodecTest.kt",
-          "sha256": "52f1f11fa3951877efe6a6b039e51ae3c1bd45c056836ecfd6e1e65c66ea07ef"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/report/ReportGeneratorTest.kt",
-          "sha256": "747d789a23edea09d5536a4dfc172eac0f48fbc4b5a2e4e5f65d23f3c62fec03"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/telemetry/AlarmEvaluatorTest.kt",
-          "sha256": "7967cd691a2a666152b6bb6a099e4a47274a83db402438524ce530260b6de9ca"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/telemetry/ReadingAttributionTest.kt",
-          "sha256": "dc678096c659dc0b6f36cff1f58a3c61e70863fee34ebd1d8f79bb3595fe1d3a"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/telemetry/SensorCadenceTest.kt",
-          "sha256": "da55c3cd69b741ecc228082dfa92afbbe312ec6e9e2c7b810dc90bd614720bc9"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentationTest.kt",
-          "sha256": "5b6a22b9baad17cb63620ad82b2940bbcd36e4a0328d66a3236fa8e7be62e7a0"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/ui/home/DeviceStateTest.kt",
-          "sha256": "bbf3ead4e5cc043663b0de1774ae05b4e5dfc632469f29f9a2847e38a8f5a3f2"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/AlarmEvaluatorItem005VerificationTest.kt",
-          "sha256": "e8ec6182da90702ae71b8f4623a5004c69e4751cc942fec5839c35cea221585a"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/CloudUploadItem009VerificationTest.kt",
-          "sha256": "e9cd3d48daeb8792fd6697cc20c4c58d8b5f99c048cb98eacf98e5cb1364524a"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt",
-          "sha256": "34d3a765fd70c8e2d9ce05343d9f0e3cd3e75f43f747e204cf5d70a73d337367"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/DeviceStateItem011VerificationTest.kt",
-          "sha256": "1c74cc04621bd9e5d252d0d697550ca3fbe38522d549be3054225cd0beafa722"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001LegacyParityTest.kt",
-          "sha256": "83dca5d061740cd6c9e1cd3d6ccc68884ebeb89fc4fd192534a7dce71bcd24d1"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayFrameCodecItem001VerificationTest.kt",
-          "sha256": "2e2bf9d39668a1c301a2ca25e8641e99481fca6079e4ce40a91aad212fcace3c"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/PlayerDegradationItem010VerificationTest.kt",
-          "sha256": "6dee43bb28da662a7907e8b1f824e3945a338c63ad28f745f26e14f1e1317d6e"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/ReadingAttributionItem003VerificationTest.kt",
-          "sha256": "579e2e080f1afec9e218ad58ed425a2d5268a6429d1c46e3068ecf588264cbaa"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/ReportGeneratorItem013VerificationTest.kt",
-          "sha256": "1c90fab1666d758e0734237f76cf92f6936fc13ce4ad7d765bfef3462182339b"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/TemperatureWriteItem007VerificationTest.kt",
-          "sha256": "5f6a3b058604be6b7c8245b88ab20615ba8f5e98091d2fd3f179c833939aca70"
-        },
-        {
-          "path": "app/src/test/java/com/jinyuni/dengbei_care/verification/UploadPayloadItem008VerificationTest.kt",
-          "sha256": "24ce32b51fe99fbbb6f634261b0218dbe7ed39655d2a824e6ca8f21b46063486"
-        },
-        {
-          "path": "build.gradle.kts",
-          "sha256": "5d63a173221d633491e8638e89053080eda2d53905f86278d8bc989b4d1e82a9"
-        },
-        {
-          "path": "gradle.properties",
-          "sha256": "1c8bb149ddb87dfe8a3de4372b7df65da0e826af581821a5345a89570e780a16"
-        },
-        {
-          "path": "gradle/wrapper/gradle-wrapper.properties",
-          "sha256": "11264a850d743d87c056c7dbc790ad974d1d1ba8c7d2cffe669157d1d044d7a0"
-        },
-        {
-          "path": "settings.gradle.kts",
-          "sha256": "4d4af1f9c1afb466f0297c8db4d22ad722441b7b59843e6b4ebb4ff0dd401854"
-        }
-      ],
-      "indexed_source_set_sha256": "f0ef6c66056f70c3857f4881bc7dcfc6e958a4bad2462067ca33e2124327f824",
-      "ignore_check": {
-        "command": [
-          "git",
-          "check-ignore",
-          "D:\\mypro\\beiwo2\\AIP\\dengbei_care\\.codegraph"
-        ],
-        "started_utc": "2026-11-10T08:47:55.754812+00:00",
-        "finished_utc": "2026-11-10T08:47:55.780838+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\dengbei_care\\\\.codegraph\"\n",
-        "stderr": ""
-      },
-      "tracked_index_check": {
-        "command": [
-          "git",
-          "ls-files",
-          "--",
-          "dengbei_care\\.codegraph"
-        ],
-        "started_utc": "2026-11-10T08:47:55.780838+00:00",
-        "finished_utc": "2026-11-10T08:47:55.805030+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "",
-        "stderr": ""
-      },
-      "upstream_source_change_summary": {
-        "command": [
-          "git",
-          "diff",
-          "e787681",
-          "HEAD",
-          "--stat",
-          "--",
-          "dengbei_care"
-        ],
-        "started_utc": "2026-11-10T08:47:55.805030+00:00",
-        "finished_utc": "2026-11-10T08:47:55.828126+00:00",
-        "timeout_seconds": 30,
-        "timed_out": false,
-        "exit_code": 0,
-        "stdout": "",
-        "stderr": ""
-      }
-    }
-  ],
-  "validation_summary": {
-    "all_three_roots_ready": true,
-    "all_queries_have_current_numbered_source": true,
-    "all_commands_complete": true,
-    "no_background_tasks": true,
-    "hash_format": "For each indexed file: SHA256(raw bytes). Set hash: SHA256(UTF8(concat(sorted normalized_relative_path + TAB + lowercase_file_sha256 + LF))). This serialization differs from prior records; compare file digests or Git trees, not unlike set-hash formats."
-  },
-  "input_artifact_hashes": {
-    "artifacts/firmware_implementation.md": "d119a7b6221da5edb99bca3e3bc242c639b8864f0826e6fc505bfc75acd67784",
-    "artifacts/system_analysis_current.md": "672d3f51ff960dd79a098efbd6253e4a08a760cb43d2f5f88948efff6959ef5f",
-    "artifacts/codegraph_prepare_index.md": "a60184946df93635b9569bcbad762618ac2f769755a5eab2ee4af16b43c4e52c"
-  }
+    "responsible_role":  "code intelligence",
+    "scope":  "current sensor firmware root only",
+    "projectPath":  "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+    "indexPath":  "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\.codegraph",
+    "container_has_index":  false,
+    "existing_index":  true,
+    "prior_record_sha256":  "23b336b3789c5aa533532829247e404f4bc916caf0847208288d7b1346c2c1ea",
+    "prior_record_location":  "Git history: evidence/codegraph_firmware_initial_validation.json",
+    "git_head":  {
+                     "command":  [
+                                     "git",
+                                     "rev-parse",
+                                     "HEAD"
+                                 ],
+                     "started_utc":  "2026-11-13T03:45:40.732733+00:00",
+                     "finished_utc":  "2026-11-13T03:45:40.812165+00:00",
+                     "timeout_seconds":  30,
+                     "timed_out":  false,
+                     "exit_code":  0,
+                     "stdout":  "dae8008d248ce11e3e3af5b7658c967f8b4d8bcb\n",
+                     "stderr":  ""
+                 },
+    "initial_git_status":  {
+                               "command":  [
+                                               "git",
+                                               "status",
+                                               "--porcelain=v1"
+                                           ],
+                               "started_utc":  "2026-11-13T03:45:40.812165+00:00",
+                               "finished_utc":  "2026-11-13T03:45:40.870908+00:00",
+                               "timeout_seconds":  30,
+                               "timed_out":  false,
+                               "exit_code":  0,
+                               "stdout":  "",
+                               "stderr":  ""
+                           },
+    "git_tree":  {
+                     "command":  [
+                                     "git",
+                                     "rev-parse",
+                                     "HEAD:CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output"
+                                 ],
+                     "started_utc":  "2026-11-13T03:45:40.870908+00:00",
+                     "finished_utc":  "2026-11-13T03:45:40.910079+00:00",
+                     "timeout_seconds":  30,
+                     "timed_out":  false,
+                     "exit_code":  0,
+                     "stdout":  "d0535fee6ade459755b270a803887770a781978f\n",
+                     "stderr":  ""
+                 },
+    "source_change_summary":  {
+                                  "command":  [
+                                                  "git",
+                                                  "diff",
+                                                  "82a7e74",
+                                                  "HEAD",
+                                                  "--stat",
+                                                  "--",
+                                                  "CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
+                                              ],
+                                  "started_utc":  "2026-11-13T03:45:40.910079+00:00",
+                                  "finished_utc":  "2026-11-13T03:45:40.979238+00:00",
+                                  "timeout_seconds":  30,
+                                  "timed_out":  false,
+                                  "exit_code":  0,
+                                  "stdout":  " .../sensor/gpio_input_output/test/build_test.sh    |   8 +-\n .../test/host_fw_core_verify_ev.c                  |  70 ++++-----\n .../gpio_input_output/test/host_light_verify_ev.c  | 165 ++++++++++++---------\n .../test/host_rf_report_verify_ev.c                |  29 +++-\n .../gpio_input_output/test/host_vdd_verify_ev.c    |   6 +-\n .../gpio_input_output/test/mock_mcu/mock_cw32.h    |   8 +-\n 6 files changed, 165 insertions(+), 121 deletions(-)\n",
+                                  "stderr":  ""
+                              },
+    "config":  {
+                   "exclude":  [
+                                   "MDK/RTE/",
+                                   "MDK/output/",
+                                   "EWARM/Debug/",
+                                   "EWARM/Release/",
+                                   "obj/",
+                                   "build/"
+                               ],
+                   "deprioritize":  [
+                                        "test/"
+                                    ]
+               },
+    "cli_version":  {
+                        "command":  [
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                        "--liftoff-only",
+                                        "--disable-warning=ExperimentalWarning",
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                        "--version"
+                                    ],
+                        "started_utc":  "2026-11-13T03:45:40.980222+00:00",
+                        "finished_utc":  "2026-11-13T03:45:41.097402+00:00",
+                        "timeout_seconds":  30,
+                        "timed_out":  false,
+                        "exit_code":  0,
+                        "stdout":  "1.6.0\n",
+                        "stderr":  ""
+                    },
+    "status_before":  {
+                          "command":  [
+                                          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                          "--liftoff-only",
+                                          "--disable-warning=ExperimentalWarning",
+                                          "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                          "status",
+                                          "--json",
+                                          "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
+                                      ],
+                          "started_utc":  "2026-11-13T03:45:41.097402+00:00",
+                          "finished_utc":  "2026-11-13T03:45:41.446340+00:00",
+                          "timeout_seconds":  30,
+                          "timed_out":  false,
+                          "exit_code":  0,
+                          "stdout":  "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\\\\.codegraph\",\"lastIndexed\":\"2026-11-10T08:46:43.347Z\",\"fileCount\":99,\"nodeCount\":1255,\"edgeCount\":3498,\"dbSizeBytes\":3444736,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"constant\":18,\"enum\":41,\"enum_member\":117,\"file\":99,\"function\":464,\"import\":291,\"struct\":51,\"variable\":174},\"languages\":[\"c\"],\"pendingChanges\":{\"added\":0,\"modified\":5,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
+                          "stderr":  ""
+                      },
+    "sync":  {
+                 "command":  [
+                                 "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                 "--liftoff-only",
+                                 "--disable-warning=ExperimentalWarning",
+                                 "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                 "sync",
+                                 "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
+                             ],
+                 "started_utc":  "2026-11-13T03:45:41.446340+00:00",
+                 "finished_utc":  "2026-11-13T03:45:42.188121+00:00",
+                 "timeout_seconds":  45,
+                 "timed_out":  false,
+                 "exit_code":  0,
+                 "stdout":  "T  Syncing CodeGraph\n|\nScanning files...\nParsing code...\nResolving refs...\nLinking dynamic dispatch...\n|\n*  Synced 5 changed files\n|\n•  Modified: 5 - 131 nodes in 206ms\n|\n—  Done\n\n",
+                 "stderr":  ""
+             },
+    "status_after":  {
+                         "command":  [
+                                         "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                         "--liftoff-only",
+                                         "--disable-warning=ExperimentalWarning",
+                                         "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                         "status",
+                                         "--json",
+                                         "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output"
+                                     ],
+                         "started_utc":  "2026-11-13T03:45:42.189391+00:00",
+                         "finished_utc":  "2026-11-13T03:45:42.384114+00:00",
+                         "timeout_seconds":  30,
+                         "timed_out":  false,
+                         "exit_code":  0,
+                         "stdout":  "{\"initialized\":true,\"version\":\"1.6.0\",\"projectPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\",\"indexPath\":\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\\\\.codegraph\",\"lastIndexed\":\"2026-11-13T03:45:41.842Z\",\"fileCount\":99,\"nodeCount\":1257,\"edgeCount\":3496,\"dbSizeBytes\":3444736,\"walSizeBytes\":0,\"backend\":\"node-sqlite\",\"journalMode\":\"wal\",\"nodesByKind\":{\"constant\":18,\"enum\":41,\"enum_member\":117,\"file\":99,\"function\":465,\"import\":291,\"struct\":52,\"variable\":174},\"languages\":[\"c\"],\"pendingChanges\":{\"added\":0,\"modified\":0,\"removed\":0},\"worktreeMismatch\":null,\"index\":{\"builtWithVersion\":\"1.6.0\",\"builtWithExtractionVersion\":25,\"currentExtractionVersion\":25,\"reindexRecommended\":false,\"state\":\"complete\",\"pendingRefs\":0}}\n",
+                         "stderr":  ""
+                     },
+    "files":  {
+                  "command":  [
+                                  "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                  "--liftoff-only",
+                                  "--disable-warning=ExperimentalWarning",
+                                  "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                  "files",
+                                  "-p",
+                                  "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+                                  "--format",
+                                  "flat",
+                                  "--no-metadata"
+                              ],
+                  "started_utc":  "2026-11-13T03:45:42.384114+00:00",
+                  "finished_utc":  "2026-11-13T03:45:42.574149+00:00",
+                  "timeout_seconds":  30,
+                  "timed_out":  false,
+                  "exit_code":  0,
+                  "stdout":  "\nFiles (99):\n\n  COMMON/convert.c\n  COMMON/convert.h\n  COMMON/delay.c\n  COMMON/delay.h\n  COMMON/type.h\n  rfconfig.h\n  test/host_debug_trace_check.c\n  test/host_diag_line_verify_ev.c\n  test/host_diag_probe_verify_ev.c\n  test/host_fw_core_pure_check.c\n  test/host_fw_core_verify_ev.c\n  test/host_gw_compat_verify_ev.c\n  test/host_gxht40_check.c\n  test/host_gxht40_verify_ev.c\n  test/host_light_check.c\n  test/host_light_verify_ev.c\n  test/host_measure_flow_check.c\n  test/host_measure_flow_verify_ev.c\n  test/host_rf_frame_check.c\n  test/host_rf_frame_verify_ev.c\n  test/host_rf_report_verify_ev.c\n  test/host_rtc_cadence_verify_ev.c\n  test/host_sensor_core_test.c\n  test/host_sf_i2c_bus_check.c\n  test/host_sf_i2c_verify_ev.c\n  test/host_vdd_verify_ev.c\n  test/mock_diagline_ev/cw32l010_adc.h\n  test/mock_diagline_ev/cw32l010_gpio.h\n  test/mock_diagline_ev/cw32l010_sysctrl.h\n  test/mock_diagline_ev/cw32l010_uart.h\n  test/mock_diagline_ev/mock_diagline_hw.h\n  test/mock_light/cw32l010_adc.h\n  test/mock_light/cw32l010_gpio.h\n  test/mock_light/cw32l010_sysctrl.h\n  test/mock_light/mock_light_hw.h\n  test/mock_main_ev/cw32l010_adc.h\n  test/mock_main_ev/cw32l010_digitalsign.h\n  test/mock_main_ev/cw32l010_flash.h\n  test/mock_main_ev/cw32l010_gpio.h\n  test/mock_main_ev/cw32l010_rtc.h\n  test/mock_main_ev/cw32l010_sysctrl.h\n  test/mock_main_ev/cw32l010_systick.h\n  test/mock_main_ev/cw32l010_uart.h\n  test/mock_main_ev/cw32l010.h\n  test/mock_main_ev/interrupts_cw32l010.h\n  test/mock_main_ev/mock_main_hw.h\n  test/mock_main_ev/system_cw32l010.h\n  test/mock_mcu/cw32l010_adc.h\n  test/mock_mcu/cw32l010_gpio.h\n  test/mock_mcu/cw32l010_sysctrl.h\n  test/mock_mcu/mock_cw32.h\n  test/mock_measure_ev/cw32l010_adc.h\n  test/mock_measure_ev/cw32l010_gpio.h\n  test/mock_measure_ev/cw32l010_sysctrl.h\n  test/mock_measure_ev/cw32l010_uart.h\n  test/mock_measure_ev/mock_measure_hw.h\n  test/mock_measure_mcu/cw32l010_gpio.h\n  test/mock_measure_mcu/cw32l010_sysctrl.h\n  test/mock_measure_mcu/cw32l010_uart.h\n  test/mock_trace/cw32l010_adc.h\n  test/mock_trace/cw32l010_gpio.h\n  test/mock_trace/cw32l010_sysctrl.h\n  test/mock_trace/cw32l010_uart.h\n  test/mock_trace/mock_trace_hw.h\n  test/mock_vdd_ev/cw32l010_adc.h\n  test/mock_vdd_ev/cw32l010_gpio.h\n  test/mock_vdd_ev/cw32l010_sysctrl.h\n  test/mock_vdd_ev/mock_vdd_hw.h\n  UM2005C/app_gtimer.c\n  UM2005C/app_gtimer.h\n  UM2005C/app_um2005C.c\n  UM2005C/app_um2005C.h\n  UM2005C/radio.c\n  UM2005C/radio.h\n  UM2005C/rfconfig.h\n  UM2005C/um2005C_defs.h\n  UM2005C/um2005C_hal.c\n  UM2005C/um2005C_hal.h\n  UM2005C/um2005C.c\n  UM2005C/um2005C.h\n  USER/inc/debug_trace.h\n  USER/inc/encrytogate.h\n  USER/inc/fw_core.h\n  USER/inc/gxht40.h\n  USER/inc/interrupts_cw32l010.h\n  USER/inc/light.h\n  USER/inc/main.h\n  USER/inc/measure.h\n  USER/inc/sensor_config.h\n  USER/inc/sf_i2c.h\n  USER/src/debug_trace.c\n  USER/src/encrytogate.c\n  USER/src/fw_core.c\n  USER/src/gxht40.c\n  USER/src/interrupts_cw32l010.c\n  USER/src/light.c\n  USER/src/main.c\n  USER/src/measure.c\n  USER/src/sf_i2c.c\n\n",
+                  "stderr":  ""
+              },
+    "queries":  [
+                    {
+                        "command":  [
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                        "--liftoff-only",
+                                        "--disable-warning=ExperimentalWarning",
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                        "explore",
+                                        "-p",
+                                        "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+                                        "--max-files",
+                                        "1",
+                                        "light_is_dark"
+                                    ],
+                        "started_utc":  "2026-11-13T03:45:42.574149+00:00",
+                        "finished_utc":  "2026-11-13T03:45:42.769401+00:00",
+                        "timeout_seconds":  30,
+                        "timed_out":  false,
+                        "exit_code":  0,
+                        "stderr":  "",
+                        "query":  "light_is_dark",
+                        "stdout_sha256":  "84f92c776fb15123c2878a0c5c4e97ef333cc40dbcb7aac71fd6e28408771aa7",
+                        "overview":  "**Exploration: light_is_dark**\n\nFound 7 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `light_is_dark` (USER/src/fw_core.c:94) — 4 callers in `USER/src/light.c`; tests: `test/host_fw_core_pure_check.c`, `test/host_sensor_core_test.c`, `test/host_fw_core_verify_ev.c`\n- `light_init` (USER/src/light.c:42) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `light_sample` (USER/src/light.c:148) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `light_adc_config` (USER/src/light.c:26) — 1 caller in `USER/src/light.c`; no tests found within 3 caller hops\n\n",
+                        "source_files":  [
+                                             "USER/src/fw_core.c"
+                                         ],
+                        "has_numbered_source":  true,
+                        "source_excerpt":  [
+                                               "94\tbool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t threshold_code)",
+                                               "99\t    if (threshold_code == 0u) {",
+                                               "102\t    return (mean_adc_code \u003e= threshold_code);   /* 边界相等为暗 */",
+                                               "112\tbool sensor_decide_report(int16_t prev_temp_x10, bool have_prev,",
+                                               "113\t                          int16_t cur_temp_x10, bool dark)",
+                                               "115\t    if ((int32_t)cur_temp_x10 \u003e (int32_t)SENSOR_REPORT_HIGH_X10) {",
+                                               "124\t    return ((int32_t)cur_temp_x10 - (int32_t)prev_temp_x10)"
+                                           ]
+                    },
+                    {
+                        "command":  [
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                        "--liftoff-only",
+                                        "--disable-warning=ExperimentalWarning",
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                        "explore",
+                                        "-p",
+                                        "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+                                        "--max-files",
+                                        "1",
+                                        "sensor_decide_report"
+                                    ],
+                        "started_utc":  "2026-11-13T03:45:42.770401+00:00",
+                        "finished_utc":  "2026-11-13T03:45:42.970811+00:00",
+                        "timeout_seconds":  30,
+                        "timed_out":  false,
+                        "exit_code":  0,
+                        "stderr":  "",
+                        "query":  "sensor_decide_report",
+                        "stdout_sha256":  "21e3a1adc8dfa95a28fd00ba17215368e88f3c56865d870ab59368fb2f69a872",
+                        "overview":  "**Exploration: sensor_decide_report**\n\nFound 2 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `sensor_decide_report` (USER/src/fw_core.c:112) — 4 callers in `USER/src/measure.c`; tests: `test/host_fw_core_pure_check.c`, `test/host_sensor_core_test.c`, `test/host_fw_core_verify_ev.c`\n- `report_req` (USER/src/measure.c:416) — 4 callers in `USER/src/measure.c`; tested via callers: `test/host_diag_probe_verify_ev.c`, `test/host_measure_flow_check.c`\n- `sensor_io_sig_scan` (USER/src/measure.c:267) — 2 callers in `USER/src/main.c`; tests: `test/host_measure_flow_check.c`\n- `sensor_trace_fetch` (USER/src/measure.c:539) — 3 callers in `USER/src/main.c`; tests: `test/host_diag_probe_verify_ev.c`, `test/host_measure_flow_check.c`\n\n",
+                        "source_files":  [
+                                             "USER/src/fw_core.c"
+                                         ],
+                        "has_numbered_source":  true,
+                        "source_excerpt":  [
+                                               "94\tbool light_is_dark(uint16_t mean_adc_code, bool valid, uint16_t threshold_code)",
+                                               "99\t    if (threshold_code == 0u) {",
+                                               "102\t    return (mean_adc_code \u003e= threshold_code);   /* 边界相等为暗 */",
+                                               "112\tbool sensor_decide_report(int16_t prev_temp_x10, bool have_prev,",
+                                               "113\t                          int16_t cur_temp_x10, bool dark)",
+                                               "115\t    if ((int32_t)cur_temp_x10 \u003e (int32_t)SENSOR_REPORT_HIGH_X10) {",
+                                               "124\t    return ((int32_t)cur_temp_x10 - (int32_t)prev_temp_x10)"
+                                           ]
+                    },
+                    {
+                        "command":  [
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                        "--liftoff-only",
+                                        "--disable-warning=ExperimentalWarning",
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                        "explore",
+                                        "-p",
+                                        "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+                                        "--max-files",
+                                        "1",
+                                        "gxht40_measure"
+                                    ],
+                        "started_utc":  "2026-11-13T03:45:42.970811+00:00",
+                        "finished_utc":  "2026-11-13T03:45:43.182254+00:00",
+                        "timeout_seconds":  30,
+                        "timed_out":  false,
+                        "exit_code":  0,
+                        "stderr":  "",
+                        "query":  "gxht40_measure",
+                        "stdout_sha256":  "4350e0cac399bb24efae17c09ff2e61d73ef37de6dea364e57a02a8172861b8d",
+                        "overview":  "**Exploration: gxht40_measure**\n\nFound 12 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `gxht40_measure` (USER/src/gxht40.c:170) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `gxht40_init` (USER/src/gxht40.c:63) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `measure_sample` (USER/src/measure.c:460) — 1 caller in `USER/src/measure.c`; no tests found within 3 caller hops\n- `gxht40_acquire` (USER/src/gxht40.c:124) — 1 caller in `USER/src/gxht40.c`; no tests found within 3 caller hops\n- `gxht40_diag_clear` (USER/src/gxht40.c:20) — 2 callers in `USER/src/gxht40.c`; no tests found within 3 caller hops\n\n",
+                        "source_files":  [
+                                             "USER/src/gxht40.c"
+                                         ],
+                        "has_numbered_source":  true,
+                        "source_excerpt":  [
+                                               "86\t * 返回 GXHT40_OK / GXHT40_ERR_NO_DEVICE (命令未被 ACK) / GXHT40_ERR_IO (读失败)。",
+                                               "106\t            return GXHT40_OK;",
+                                               "134\t        if (st == GXHT40_OK) {",
+                                               "135\t            return GXHT40_OK;",
+                                               "144\t    if (st == GXHT40_OK) {",
+                                               "150\t    if (st_b == GXHT40_OK) {",
+                                               "158\t        return GXHT40_OK;",
+                                               "162\t        return GXHT40_OK;           /* A 成功且 B 未应答: A 的帧仍然有效 */",
+                                               "170\tgxht40_status_t gxht40_measure(int16_t *temp_x10, uint16_t *hum_x10)",
+                                               "197\t        if (st != GXHT40_OK) {",
+                                               "223\t        s_diag.status = (uint8_t)GXHT40_OK;",
+                                               "224\t        return GXHT40_OK;"
+                                           ]
+                    },
+                    {
+                        "command":  [
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\node.exe",
+                                        "--liftoff-only",
+                                        "--disable-warning=ExperimentalWarning",
+                                        "C:\\Users\\kason\\AppData\\Roaming\\npm\\node_modules\\@colbymchenry\\codegraph\\node_modules\\@colbymchenry\\codegraph-win32-x64\\lib\\dist\\bin\\codegraph.js",
+                                        "explore",
+                                        "-p",
+                                        "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output",
+                                        "--max-files",
+                                        "1",
+                                        "trace_uart_open"
+                                    ],
+                        "started_utc":  "2026-11-13T03:45:43.183279+00:00",
+                        "finished_utc":  "2026-11-13T03:45:43.385392+00:00",
+                        "timeout_seconds":  30,
+                        "timed_out":  false,
+                        "exit_code":  0,
+                        "stderr":  "",
+                        "query":  "trace_uart_open",
+                        "stdout_sha256":  "6b0015d86b6b77f31507c2e7e4661a50a947e2261cb5aa50efdd27e9e417877b",
+                        "overview":  "**Exploration: trace_uart_open**\n\nFound 16 symbols across 1 file.\n\n**Blast radius — what depends on these (update/verify before editing)**\n\n- `trace_uart_open` (USER/src/debug_trace.c:115) — 6 callers in `USER/src/debug_trace.c`; no tests found within 3 caller hops\n- `trace_hex` (USER/src/debug_trace.c:102) — 5 callers in `USER/src/debug_trace.c`; no tests found within 3 caller hops\n- `trace_u32` (USER/src/debug_trace.c:70) — 6 callers in `USER/src/debug_trace.c`; no tests found within 3 caller hops\n- `trace_i32` (USER/src/debug_trace.c:91) — 1 caller in `USER/src/debug_trace.c`; no tests found within 3 caller hops\n- `trace_putc` (USER/src/debug_trace.c:50) — 7 callers in `USER/src/debug_trace.c`; no tests found within 3 caller hops\n\n",
+                        "source_files":  [
+                                             "USER/src/debug_trace.c"
+                                         ],
+                        "has_numbered_source":  true,
+                        "source_excerpt":  [
+                                               "115\tstatic void trace_uart_open(void)",
+                                               "151\t    UART_Init(DEBUG_UARTx, \u0026uart);"
+                                           ]
+                    }
+                ],
+    "indexed_source_hashes":  [
+                                  {
+                                      "path":  "COMMON/convert.c",
+                                      "sha256":  "e1501fac0a4f1d92bf48ce6e0556e2e19996f54a3f39a59ca5cd9eabb6cc9a9a"
+                                  },
+                                  {
+                                      "path":  "COMMON/convert.h",
+                                      "sha256":  "972200d079cbbb4dadff5bebfad646ec5a47680cf2adf0b019b2c681f3fe39c2"
+                                  },
+                                  {
+                                      "path":  "COMMON/delay.c",
+                                      "sha256":  "f6662c01e3329acccfd20bc3df4924de9d8660da7269635d45dfaa024f346994"
+                                  },
+                                  {
+                                      "path":  "COMMON/delay.h",
+                                      "sha256":  "375c3f84c3d98ca296d09fa9c46aee2f4f42cfd7dfbe0bc970272b2378267555"
+                                  },
+                                  {
+                                      "path":  "COMMON/type.h",
+                                      "sha256":  "b4de841b1dfeed263a4064d076e611cc3e72cfab57217f1be0e2df683325f8f1"
+                                  },
+                                  {
+                                      "path":  "UM2005C/app_gtimer.c",
+                                      "sha256":  "4f3eaee4dd25872fac985d5b3c02fab98819fab04fbe4f9880a58ccf156b6651"
+                                  },
+                                  {
+                                      "path":  "UM2005C/app_gtimer.h",
+                                      "sha256":  "a9f7135138ff9efaadc5b1f0130dde4be7321dbc2de5a24fcceadec7a5a75fb0"
+                                  },
+                                  {
+                                      "path":  "UM2005C/app_um2005C.c",
+                                      "sha256":  "72531cbdd10c14fbfd024f7e26dcd93183b035a2cb88e036a4631fd7acb5640a"
+                                  },
+                                  {
+                                      "path":  "UM2005C/app_um2005C.h",
+                                      "sha256":  "74eba987edf0d2866eb726e410113c8f2e4006ccdb8385f2aa9bd525c8865d9f"
+                                  },
+                                  {
+                                      "path":  "UM2005C/radio.c",
+                                      "sha256":  "ace8ee5609c21353731dc0d460f399033ce8b029100d8069399e69f8002ae1d1"
+                                  },
+                                  {
+                                      "path":  "UM2005C/radio.h",
+                                      "sha256":  "fb255e6d01f3f1c6f66b898368298c35b6621fe04bcdb0a07c1bfd4981bd0167"
+                                  },
+                                  {
+                                      "path":  "UM2005C/rfconfig.h",
+                                      "sha256":  "f77bd8ebf7503770516a4a2b633db78d7892186257d0ba7b08c59fe6c97958fb"
+                                  },
+                                  {
+                                      "path":  "UM2005C/um2005C.c",
+                                      "sha256":  "28c12c7d8d2035928f6cdaae2e19231c781b9be2605382a748b3220dfdb19ae9"
+                                  },
+                                  {
+                                      "path":  "UM2005C/um2005C.h",
+                                      "sha256":  "d82db802009b85f1c9e7c5d77e6c729ec2b44d1a52f7be6a7fc77187b68920be"
+                                  },
+                                  {
+                                      "path":  "UM2005C/um2005C_defs.h",
+                                      "sha256":  "25aefbd7f9fe2296bf747f57c9286acabcf9a7bc9d749594781b2e3d97760e42"
+                                  },
+                                  {
+                                      "path":  "UM2005C/um2005C_hal.c",
+                                      "sha256":  "647b9a5288461a2b414916d499ed9fb8b469c323f65565963ce03be2cdea758e"
+                                  },
+                                  {
+                                      "path":  "UM2005C/um2005C_hal.h",
+                                      "sha256":  "67c040ac182e4c7fdd60d9bc373c63f3c6f90a95d049acef9fcca2c82398effb"
+                                  },
+                                  {
+                                      "path":  "USER/inc/debug_trace.h",
+                                      "sha256":  "cfcf239422c8f03dae62bb8c0270bbb2b1fa091d453597f303d510be5c78cf75"
+                                  },
+                                  {
+                                      "path":  "USER/inc/encrytogate.h",
+                                      "sha256":  "de55825c3afcb22528bfed68301eb40ca43526f0be289b6ac7fb503fcbba0d63"
+                                  },
+                                  {
+                                      "path":  "USER/inc/fw_core.h",
+                                      "sha256":  "0e313f6b373cdd9b35500cd37ccdb60239492fa0ac59a77ec82c15ee78381d0b"
+                                  },
+                                  {
+                                      "path":  "USER/inc/gxht40.h",
+                                      "sha256":  "cc26ebc902a2ce9c9193fc9e5d07adcf53b0b98de5f06dc33b0b3b79563937de"
+                                  },
+                                  {
+                                      "path":  "USER/inc/interrupts_cw32l010.h",
+                                      "sha256":  "e28d230ba9ceea6119e232f4985c8949122d72ca8f566956c10cbb5232d5e613"
+                                  },
+                                  {
+                                      "path":  "USER/inc/light.h",
+                                      "sha256":  "4f265e182a5be1658f46c3f5a64198fa856a47ef8245a7d01101a3e708c99dbb"
+                                  },
+                                  {
+                                      "path":  "USER/inc/main.h",
+                                      "sha256":  "0cc03af2a1bf7427e37d01c51a3a5e33960e951679b74bfe1bc5dce04c09cfba"
+                                  },
+                                  {
+                                      "path":  "USER/inc/measure.h",
+                                      "sha256":  "2513bd134eb045d020c8beb27525c3c89b606db9ee56ec365dffe351a7f21f04"
+                                  },
+                                  {
+                                      "path":  "USER/inc/sensor_config.h",
+                                      "sha256":  "dacf70fa72103d9d05c506e21075ea22969e26363c630b91fae9bbc96b806af3"
+                                  },
+                                  {
+                                      "path":  "USER/inc/sf_i2c.h",
+                                      "sha256":  "f2d588a27400edd22af6a40c293aebb18141dcb237b167665cbe86201242877a"
+                                  },
+                                  {
+                                      "path":  "USER/src/debug_trace.c",
+                                      "sha256":  "7800991c14589f8ec936a119392ee99e707d7c01ef95f3e57f19295a945708e9"
+                                  },
+                                  {
+                                      "path":  "USER/src/encrytogate.c",
+                                      "sha256":  "c88265618b91278b36981838d424d23931fddebed5bbbdeacb4365b30d7106d0"
+                                  },
+                                  {
+                                      "path":  "USER/src/fw_core.c",
+                                      "sha256":  "5e23d7bf6005451ab09272dafd33e7684c5de715b57bf1dbec5ba6e9cf9d0b2f"
+                                  },
+                                  {
+                                      "path":  "USER/src/gxht40.c",
+                                      "sha256":  "250fa66939838f28bb16748a036deab3fd00d7e5a6b07f03c1c734fb538356e9"
+                                  },
+                                  {
+                                      "path":  "USER/src/interrupts_cw32l010.c",
+                                      "sha256":  "2c2a7116eb18a2acaf7677128b18403a11bbff9a7f8d193cfdf818452c74e13c"
+                                  },
+                                  {
+                                      "path":  "USER/src/light.c",
+                                      "sha256":  "ba7e5443afe0c56e5692293f63c6d4c47768f2acc190ba9c0590ad99842190a4"
+                                  },
+                                  {
+                                      "path":  "USER/src/main.c",
+                                      "sha256":  "fe189adc095260a9d60ef1a5a9cf317d1b507f4c2319ecc85559c9954d620d1b"
+                                  },
+                                  {
+                                      "path":  "USER/src/measure.c",
+                                      "sha256":  "aaa82d4bd42d168d4e660f0444868ae20e620b9b417b4d53b852e8ef2e97f7e7"
+                                  },
+                                  {
+                                      "path":  "USER/src/sf_i2c.c",
+                                      "sha256":  "99cb4968ffc87aef4ee37db6bc2e80f182229944409db5ef8aaf1c35bfa8a161"
+                                  },
+                                  {
+                                      "path":  "rfconfig.h",
+                                      "sha256":  "de887dd12d96bd95b156cc0df2db00a5ad55eb5a4b94c7fcdc4a7bea25cd4539"
+                                  },
+                                  {
+                                      "path":  "test/host_debug_trace_check.c",
+                                      "sha256":  "6b878ddb6e123e5f2e7e0c9561346fd8aa5ed92febb68c2c1b6ff5762c387e12"
+                                  },
+                                  {
+                                      "path":  "test/host_diag_line_verify_ev.c",
+                                      "sha256":  "6de91032d650b3a92307095ef3c4c8311ab7cd9194bffa2432dc15a9f436daf7"
+                                  },
+                                  {
+                                      "path":  "test/host_diag_probe_verify_ev.c",
+                                      "sha256":  "3203dd81487b5d6fc9319d66c0cff6b05daca642809dce9db9f4324c8c364ef4"
+                                  },
+                                  {
+                                      "path":  "test/host_fw_core_pure_check.c",
+                                      "sha256":  "abb87401b31190da19e8c6f127d32fb40d6624ff8ac42c1d9ef30dcc448a9aa8"
+                                  },
+                                  {
+                                      "path":  "test/host_fw_core_verify_ev.c",
+                                      "sha256":  "a5845e2928af8c29e9d7f086c9467ff6393e0abc408a94a7d76f1b44f3701fd6"
+                                  },
+                                  {
+                                      "path":  "test/host_gw_compat_verify_ev.c",
+                                      "sha256":  "26733738b79eecc991e3218a10e0dadfd3040e7b5a6140d26fafa50660e68617"
+                                  },
+                                  {
+                                      "path":  "test/host_gxht40_check.c",
+                                      "sha256":  "f7b1f9ac075d1fb32e21c95e84821ab20a80e445a4379ce8a6dce14986c4e0de"
+                                  },
+                                  {
+                                      "path":  "test/host_gxht40_verify_ev.c",
+                                      "sha256":  "b69b3dd0a428833decbd6de690d0cc64987cbc8dcdbdc5fe537930d2fe85d641"
+                                  },
+                                  {
+                                      "path":  "test/host_light_check.c",
+                                      "sha256":  "bdc8c2a045a719088a847e68f33c76bad8ef7db7c5c2798a62ad4376702ca38b"
+                                  },
+                                  {
+                                      "path":  "test/host_light_verify_ev.c",
+                                      "sha256":  "928280b805852915a5c16f441eb686db71b4790cbd5f87c130e99c74d949d515"
+                                  },
+                                  {
+                                      "path":  "test/host_measure_flow_check.c",
+                                      "sha256":  "c5874ace463fb05a97d80635c56283c1b0425b0e9aa9321193f6e54899025eaf"
+                                  },
+                                  {
+                                      "path":  "test/host_measure_flow_verify_ev.c",
+                                      "sha256":  "48fe6a2cdf72d8c3e88191fe09841de2f17fbd3d9ed68d27c2120a82ff5b595f"
+                                  },
+                                  {
+                                      "path":  "test/host_rf_frame_check.c",
+                                      "sha256":  "a48e00c02743366c7c5e7be2375c82b9191d8f2e0f5fc8f5c241a03ae9f0db00"
+                                  },
+                                  {
+                                      "path":  "test/host_rf_frame_verify_ev.c",
+                                      "sha256":  "2c02b3bdf3482d1089a4e522c24d6379ab2180f4d46fc813d8a766274f1c1dd2"
+                                  },
+                                  {
+                                      "path":  "test/host_rf_report_verify_ev.c",
+                                      "sha256":  "1d20111275347266f43a512a2736fe4059ed143129949c221b99bb730095f43c"
+                                  },
+                                  {
+                                      "path":  "test/host_rtc_cadence_verify_ev.c",
+                                      "sha256":  "0ee806db78f14d5facbbfa3dff684243def71942a5d56a4840c30d57ed685b5b"
+                                  },
+                                  {
+                                      "path":  "test/host_sensor_core_test.c",
+                                      "sha256":  "d5e6203f903c68a8ef8809079f4462a4513901dd8c517a9e718f67a32a920c9b"
+                                  },
+                                  {
+                                      "path":  "test/host_sf_i2c_bus_check.c",
+                                      "sha256":  "0d31be3da3a97a08888ca9b5ae101ccf9b5eda5aacdf5441bd288e98ad586ea6"
+                                  },
+                                  {
+                                      "path":  "test/host_sf_i2c_verify_ev.c",
+                                      "sha256":  "328dcfb41d61d66c6bc22ffd4e183bbe17d96fcbe4d7804ec9767d8b5b678d3b"
+                                  },
+                                  {
+                                      "path":  "test/host_vdd_verify_ev.c",
+                                      "sha256":  "796a35b986d48a899635a6731315fd2c6307d50650e82c6e4aa77fd1fed3ec8c"
+                                  },
+                                  {
+                                      "path":  "test/mock_diagline_ev/cw32l010_adc.h",
+                                      "sha256":  "d629f85640c85b3a4c7afe57395049e6249d875da75ec7c0a3ea0c6bd891fc36"
+                                  },
+                                  {
+                                      "path":  "test/mock_diagline_ev/cw32l010_gpio.h",
+                                      "sha256":  "2b29977a85b4a458d704fa3008481f04069d5d03c48c53dbe3ffd7450710000f"
+                                  },
+                                  {
+                                      "path":  "test/mock_diagline_ev/cw32l010_sysctrl.h",
+                                      "sha256":  "f722a777de35ea7388cf4fa4b60d1eee212b49e5128c3bbae68d25d695104020"
+                                  },
+                                  {
+                                      "path":  "test/mock_diagline_ev/cw32l010_uart.h",
+                                      "sha256":  "7747e87ad009e9d3afc4fdaec6a1a032991d05ff69ba8393af2cc42de03ae43e"
+                                  },
+                                  {
+                                      "path":  "test/mock_diagline_ev/mock_diagline_hw.h",
+                                      "sha256":  "a87a52218ddd172580aafc141c416afc08050df66e74371731f58a86a7e3fcc7"
+                                  },
+                                  {
+                                      "path":  "test/mock_light/cw32l010_adc.h",
+                                      "sha256":  "8db96bfd8b19fd9fedf5140336ed80cc196e63a260a6a7b832bc2cc9751ad53f"
+                                  },
+                                  {
+                                      "path":  "test/mock_light/cw32l010_gpio.h",
+                                      "sha256":  "09c035f33ec547ff0bc78cbd38f0e2ff9c4eb2285167f7ed793f059c6996934b"
+                                  },
+                                  {
+                                      "path":  "test/mock_light/cw32l010_sysctrl.h",
+                                      "sha256":  "7cc1a6e81b9d6101e65c7f594660ef489365a3f59cf736bfe87bb5d27b2186d1"
+                                  },
+                                  {
+                                      "path":  "test/mock_light/mock_light_hw.h",
+                                      "sha256":  "fb73b3cd3a597f8a33836556baad8d6774bd494778dc6750a39459286ab67601"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/cw32l010.h",
+                                      "sha256":  "097352fe6e67755357dae9fc08c6e307e46c9271715d88c795bbec9381617109"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/cw32l010_adc.h",
+                                      "sha256":  "4982b384457f3e30f4d2533b2f01b5f993061b3b90ce5e3d8a612abcaf302105"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/cw32l010_digitalsign.h",
+                                      "sha256":  "aef78b1fbdc16aa89b9a8f8f84caa8e9188139f8253a2043fe92ebba2e18a71e"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/cw32l010_flash.h",
+                                      "sha256":  "7367f98bfddbe81f37aea8ad62193713bdb4155ba36875c4ca4dc38a099f92d9"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/cw32l010_gpio.h",
+                                      "sha256":  "88a10ca4a293153e29b8a0c61198c761bae6858ba8dbf46797938f2de8349d4b"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/cw32l010_rtc.h",
+                                      "sha256":  "1b6af1d125da4d76781f0061a059d7a8809613755f14296fc2b4fbf75a96fa96"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/cw32l010_sysctrl.h",
+                                      "sha256":  "6a82fb0358c7573de5151d13e750d94be161ade14acd3427d158178fca96363a"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/cw32l010_systick.h",
+                                      "sha256":  "140a6032b4e176d3f6f3ab53173ca229fee118adfbdb2b9e98002c22514202db"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/cw32l010_uart.h",
+                                      "sha256":  "bd7c827272295b7bc91781843f4e423066401267c0b75a1cf92c81f553796bc0"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/interrupts_cw32l010.h",
+                                      "sha256":  "205d75f1adbb35dac0f19d94ea4c83510c8dd4334205d953a3f5eb607babbedb"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/mock_main_hw.h",
+                                      "sha256":  "1dd1a3ba73743def2d2561b57c49c967e4bb543793412811daba1005da080045"
+                                  },
+                                  {
+                                      "path":  "test/mock_main_ev/system_cw32l010.h",
+                                      "sha256":  "21195394c8bf9688346506cf353f4253493514d05d81aa04728f468eecaf8454"
+                                  },
+                                  {
+                                      "path":  "test/mock_mcu/cw32l010_adc.h",
+                                      "sha256":  "f0de33c074da6f778c653cdd8c0f8b60909b2bbf81e455a2e4b21542f1833b29"
+                                  },
+                                  {
+                                      "path":  "test/mock_mcu/cw32l010_gpio.h",
+                                      "sha256":  "655ed047b78d40c0627e65f79f7a863e7a91ab4fd8754ace3c0102350cf2fa3b"
+                                  },
+                                  {
+                                      "path":  "test/mock_mcu/cw32l010_sysctrl.h",
+                                      "sha256":  "c01b6bc3ea16f35c4fbe253127c4cad3f373befb5ae471d5c1624d4b02fcc0e0"
+                                  },
+                                  {
+                                      "path":  "test/mock_mcu/mock_cw32.h",
+                                      "sha256":  "1e591e5814e6d7ead1ce6d8879ef29193734ff395338361458bd43dcea1da51b"
+                                  },
+                                  {
+                                      "path":  "test/mock_measure_ev/cw32l010_adc.h",
+                                      "sha256":  "1c23d3465a18f352fd7521269dd8921a1814536a72ee215bc9f89e07cc28e930"
+                                  },
+                                  {
+                                      "path":  "test/mock_measure_ev/cw32l010_gpio.h",
+                                      "sha256":  "b526e919d7cd07f8fd42629a5e06e3fbe8e9614728c3dbe3624b2acd66d7ecec"
+                                  },
+                                  {
+                                      "path":  "test/mock_measure_ev/cw32l010_sysctrl.h",
+                                      "sha256":  "9a1f05d5511bff045bd97b6ac678c5b22beed61b871008995c087cc486f607cf"
+                                  },
+                                  {
+                                      "path":  "test/mock_measure_ev/cw32l010_uart.h",
+                                      "sha256":  "6fbeec6960aa19fe63f38578bbf460f4e630facafafee9dd4bafda9db6a3e1dd"
+                                  },
+                                  {
+                                      "path":  "test/mock_measure_ev/mock_measure_hw.h",
+                                      "sha256":  "2bb6a9c8a0e3b3b846b6a656c900c440e5fc1aeaa32d935bcc225de3660cc84a"
+                                  },
+                                  {
+                                      "path":  "test/mock_measure_mcu/cw32l010_gpio.h",
+                                      "sha256":  "92c8c1d0d00f503380023651ee36ddf08f67977de150c285c014c92a674e31cb"
+                                  },
+                                  {
+                                      "path":  "test/mock_measure_mcu/cw32l010_sysctrl.h",
+                                      "sha256":  "c09ede4f27126c77d98f2b72799c860b9c61814d33813b6d7914b9e9d5f772b0"
+                                  },
+                                  {
+                                      "path":  "test/mock_measure_mcu/cw32l010_uart.h",
+                                      "sha256":  "13ad93dc96d25ac1bc59f6816852f769a630b870c6f96baa7190084239265e50"
+                                  },
+                                  {
+                                      "path":  "test/mock_trace/cw32l010_adc.h",
+                                      "sha256":  "f49a3af0e14469bbc22741e31cc13eb5ba2492428f34f6ba0efdd96d700dcaba"
+                                  },
+                                  {
+                                      "path":  "test/mock_trace/cw32l010_gpio.h",
+                                      "sha256":  "133c564b6fe714f52f001b084af55dfb4f8c0b824096559a5ec09397ebce9f4e"
+                                  },
+                                  {
+                                      "path":  "test/mock_trace/cw32l010_sysctrl.h",
+                                      "sha256":  "2ad38a212b80f108097f48d4a8fb13743833cc0a68549892ccc8594f35cea5a8"
+                                  },
+                                  {
+                                      "path":  "test/mock_trace/cw32l010_uart.h",
+                                      "sha256":  "40c652cc260b80a880a847f1a35640ac0b0c51186cdfcadd1ab52bd6468f8e8d"
+                                  },
+                                  {
+                                      "path":  "test/mock_trace/mock_trace_hw.h",
+                                      "sha256":  "53e1820c88dd5e4855af019da7d3a8f0934c78853052638069173bd1cbc87f70"
+                                  },
+                                  {
+                                      "path":  "test/mock_vdd_ev/cw32l010_adc.h",
+                                      "sha256":  "7618d851f0a0bd69f9b64765932a3d5a578178bdfef482bd46e71e77aa7d66cc"
+                                  },
+                                  {
+                                      "path":  "test/mock_vdd_ev/cw32l010_gpio.h",
+                                      "sha256":  "cfc92c05ee08e0a6b88f5ed65abd6c1f74584e0ff34dc319acc5896750c9597c"
+                                  },
+                                  {
+                                      "path":  "test/mock_vdd_ev/cw32l010_sysctrl.h",
+                                      "sha256":  "75f35aa54c5051833cd1ae68f17e252102c9d15bfec618f981249c5942238654"
+                                  },
+                                  {
+                                      "path":  "test/mock_vdd_ev/mock_vdd_hw.h",
+                                      "sha256":  "b27fec4c28f031f7f5be07afa2e46a225548484df23dd53fdf8594949a5f306d"
+                                  }
+                              ],
+    "indexed_source_set_sha256":  "9bb96e89455f6e8d66d95bc9d843fcb521d1769f07b5da806e46948f4a9f17f8",
+    "hash_format":  "SHA256(raw bytes); set=SHA256(UTF8(sorted path+TAB+lowercase_sha256+LF))",
+    "ignore_check":  {
+                         "command":  [
+                                         "git",
+                                         "check-ignore",
+                                         "D:\\mypro\\beiwo2\\AIP\\CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\.codegraph"
+                                     ],
+                         "started_utc":  "2026-11-13T03:45:43.392647+00:00",
+                         "finished_utc":  "2026-11-13T03:45:43.434038+00:00",
+                         "timeout_seconds":  30,
+                         "timed_out":  false,
+                         "exit_code":  0,
+                         "stdout":  "\"D:\\\\mypro\\\\beiwo2\\\\AIP\\\\CW32L010_StandardPeripheralLib_V1.0.5\\\\Examples\\\\sensor\\\\gpio_input_output\\\\.codegraph\"\n",
+                         "stderr":  ""
+                     },
+    "tracked_index_check":  {
+                                "command":  [
+                                                "git",
+                                                "ls-files",
+                                                "--",
+                                                "CW32L010_StandardPeripheralLib_V1.0.5\\Examples\\sensor\\gpio_input_output\\.codegraph"
+                                            ],
+                                "started_utc":  "2026-11-13T03:45:43.434038+00:00",
+                                "finished_utc":  "2026-11-13T03:45:43.494252+00:00",
+                                "timeout_seconds":  30,
+                                "timed_out":  false,
+                                "exit_code":  0,
+                                "stdout":  "",
+                                "stderr":  ""
+                            },
+    "input_artifact_hashes":  {
+                                  "artifacts/firmware_implementation.md":  "18a861c25734bd4654131c8425ca83789cdd69c80d097978dbaf1cb109c864c1",
+                                  "artifacts/system_analysis_current.md":  "672d3f51ff960dd79a098efbd6253e4a08a760cb43d2f5f88948efff6959ef5f",
+                                  "artifacts/test_design.md":  "7790e2113b335d43d6de07b21fb47f9d2c1570249e5972fca7b332f77b963413",
+                                  "evidence/product_acceptance_20261112_scope_recheck/PRODUCT-ACCEPTANCE-RECHECK-002.md":  "0f8069d2424771c71bf0943df4b9562e316c1842e78461a8135aac492acb3e0d"
+                              },
+    "all_commands_completed":  true,
+    "background_tasks":  [
+
+                         ],
+    "changed_manifest_paths_readback":  [
+                                            {
+                                                "path":  "artifacts/codegraph_firmware_initial_index.md",
+                                                "local_exists":  true,
+                                                "manifest_unique":  true,
+                                                "readback_nonempty":  true
+                                            },
+                                            {
+                                                "path":  "evidence/codegraph_firmware_initial_validation.json",
+                                                "local_exists":  true,
+                                                "manifest_unique":  true,
+                                                "readback_nonempty":  true
+                                            }
+                                        ],
+    "repository_manifest_checker":  "scripts/check_file_manifest.py absent; changed entries checked, no claim of repository-wide manifest validation or archive inclusion."
 }

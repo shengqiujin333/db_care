@@ -1,63 +1,65 @@
-# 固件候选更新后的代码图入口（既有检查记录）
+# 当前传感器固件代码图入口
 
-负责角色：代码智能。本文件修复先前说明文字被问号替换的编码问题；依据原始结构化证据重新整理，不重新赋予检查时点、不修改原始证据，也不宣称当前再次核验三个根。Android 新候选的当前入口见 artifacts/codegraph_android_index.md。
+负责角色：代码智能。检查日期：2026-11-13。源码基线：`dae8008d248ce11e3e3af5b7658c967f8b4d8bcb`；传感器工程Git tree：`d0535fee6ade459755b270a803887770a781978f`。接手工作区干净，已读取共享清单、最近提交、FWI-004 rev9、当前系统分析和相关测试范围记录。
 
-原始检查源码基线：`82a7e74e5d6bae855a573e1f23f83936ba8db049`。原始证据：[codegraph_firmware_initial_validation.json](../evidence/codegraph_firmware_initial_validation.json)。当时产品容器根无 .codegraph，沿用三个现有子索引，使用已安装 CodeGraph 1.6.0，未初始化、重建或安装软件。
+本次范围仅为当前传感器固件根的索引同步与可查询性确认。FWI-004的“无产品代码改动交付”、重建/宿主自检和实板身份是上游记录，不是本次执行或产品通过证据。相对82a7e74，当前工程目录差异为测试脚本、验证C及mock头文件；不把测试资产变化混同于产品固件逻辑修复。
 
-## sensor
+## 真实入口、覆盖和排除
 
 - projectPath：`D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output`
 - indexPath：`D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output\.codegraph`
-- 当时工程 Git tree：`5666aa1c9d86618144fda4c0e046c8f84fd81a95`；最近工程提交：`82a7e74e5d6bae855a573e1f23f83936ba8db049`。
-- 同步结束 UTC：2026-11-10T08:46:43.587892+00:00；文件/节点/边：99/1255/3498。
-- 当时排除：MDK/RTE/、MDK/output/、EWARM/Debug/、EWARM/Release/、obj/、build/。
-- 当时文件集合 SHA-256：`36c2e8c0ac67aa0fc50c2cc3220e5b110add9273a225b8976dae4302e1c55f86`；逐文件摘要及序列化格式见原证据。
-- 实际查询：light_is_dark（结束UTC 2026-11-10T08:47:13.946967+00:00）；light_sample（结束UTC 2026-11-10T08:47:14.128094+00:00）；gxht40_measure（结束UTC 2026-11-10T08:47:14.302825+00:00）；trace_uart_open（结束UTC 2026-11-10T08:47:14.487430+00:00）。当前行号源码节选、调用方及完整响应摘要在原证据中，不以报告文字替代查询。
+- 产品容器根无`.codegraph/`；沿用传感器已有子索引，不在容器根建图。
+- 工具：已安装`@colbymchenry/codegraph 1.6.0`及Windows bundle CLI；未初始化、全量重建、安装、升级或联网下载。
+- 覆盖：USER/、COMMON/、UM2005C/、rfconfig.h和本工程可解析C测试/头文件；test/降低排序优先级，不作为真实驱动或测试通过的证明。
+- 配置排除：MDK/RTE/、MDK/output/、EWARM/Debug/、EWARM/Release/、obj/、build/；不扩到工程外CW32 SDK、其他示例、归档和生成产物。test/build_test.sh未作为C源码被索引。
 
-最小查询示例：
+证据：[codegraph_firmware_initial_validation.json](../evidence/codegraph_firmware_initial_validation.json)。包含源码版本、配置、实际命令、UTC起止/限时/退出码/stderr、同步前后状态、当前源码查询节选及响应摘要、99个索引文件SHA-256。先前三根检查记录保留在Git历史；当前证据保留前次记录摘要，不把旧查询当成本次查询。
 
-```powershell
-codegraph explore -p "D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output" --max-files 1 "light_is_dark"
-```
+## 同步与源码查询
 
-## gateway
+同步窗口2026-11-13 03:45:41.446–03:45:42.188 UTC（本地11:45）。正常增量同步5个被索引文件、处理131节点；工程差异另含未解析的测试shell脚本，因此与git差异6文件数量不同。同步后99文件、1257节点、3496边，state=complete、pendingRefs=0、added/modified/removed=0、worktreeMismatch=null、reindexRecommended=false。
 
-- projectPath：`D:\mypro\beiwo2\AIP\CH592EVT\EVT\EXAM\BLE\beiwov2`
-- indexPath：`D:\mypro\beiwo2\AIP\CH592EVT\EVT\EXAM\BLE\beiwov2\.codegraph`
-- 当时工程 Git tree：`22c8a193daffea87408c971a53db566633f7c6ea`；最近工程提交：`4d101ae6459f89fa7f26f0d437d1d86a8be7a369`。
-- 同步结束 UTC：2026-11-10T08:46:44.308164+00:00；文件/节点/边：34/508/1066。
-- 当时排除：.settings/、.idea/、obj/、Debug/、Release/、build/。
-- 当时文件集合 SHA-256：`2d7a74f42db9cbbd4a6db67aacc32ac3abb59125810fec441225e6a33408979d`；逐文件摘要及序列化格式见原证据。
-- 实际查询：decode_frame10（结束UTC 2026-11-10T08:47:14.667091+00:00）。当前行号源码节选、调用方及完整响应摘要在原证据中，不以报告文字替代查询。
+查询结束时间03:45:42.769–03:45:43.385 UTC，均返回当前有行号源码：
 
-最小查询示例：
+| 查询 | 实际源码位置及用途 |
+|---|---|
+| light_is_dark | USER/src/fw_core.c:94；threshold_code参数、99行未启用门禁及102行比较；图列出light.c调用方 |
+| sensor_decide_report | USER/src/fw_core.c:112；当前上报判定及measure.c调用上下文 |
+| gxht40_measure | USER/src/gxht40.c:170；测量返回码、CRC与measure_sample调用上下文 |
+| trace_uart_open | USER/src/debug_trace.c:115；UART_Init:151与轨迹调用上下文 |
 
-```powershell
-codegraph explore -p "D:\mypro\beiwo2\AIP\CH592EVT\EVT\EXAM\BLE\beiwov2" --max-files 1 "decode_frame10"
-```
+这些是定位和调用关系证据，不批准阈值、不证明串口初始化实测或采样/发送行为通过。直接使用图返回源码，不重复打开已展示正文；若被裁剪则继续定向查询缺失符号。
 
-## android
-
-- projectPath：`D:\mypro\beiwo2\AIP\dengbei_care`
-- indexPath：`D:\mypro\beiwo2\AIP\dengbei_care\.codegraph`
-- 当时工程 Git tree：`3c9feeb9ce399b3ba5ac359b31090af583ce4781`；最近工程提交：`4d101ae6459f89fa7f26f0d437d1d86a8be7a369`。
-- 同步结束 UTC：2026-11-10T08:46:45.095375+00:00；文件/节点/边：88/2396/4770。
-- 当时排除：iOS开发资料/、.idea/、.gradle/、build/、app/build/。
-- 当时文件集合 SHA-256：`f0ef6c66056f70c3857f4881bc7dcfc6e958a4bad2462067ca33e2124327f824`；逐文件摘要及序列化格式见原证据。
-- 实际查询：GatewayFrameCodec（结束UTC 2026-11-10T08:47:14.860850+00:00）。当前行号源码节选、调用方及完整响应摘要在原证据中，不以报告文字替代查询。
-
-最小查询示例：
+最小查询：
 
 ```powershell
-codegraph explore -p "D:\mypro\beiwo2\AIP\dengbei_care" --max-files 1 "GatewayFrameCodec"
+codegraph explore -p "D:\mypro\beiwo2\AIP\CW32L010_StandardPeripheralLib_V1.0.5\Examples\sensor\gpio_input_output" --max-files 1 "sensor_decide_report"
 ```
 
-## 覆盖和限制
+MCP等价调用必须指定上述真实projectPath，可用query=light_is_dark、maxFiles=1。消费者需核对实际返回源码文件，不能仅依概览出现某符号推定读到实现。
 
-传感器覆盖 USER/、COMMON/、UM2005C/、rfconfig.h 与本工程可解析 C 测试/头文件，不扩到外部 CW32 SDK 或其他示例；网关覆盖 APP/、Profile/，不扩到上级 HAL、预编译库或其他 EVT；Android 覆盖可解析 Kotlin/Java、Manifest、properties 及工程内测试/Paho，不扩到外部 SDK、Gradle 缓存、APK 和 iOS。测试/mock 的排序降级不是测试有效性或实板行为证明。
+## 人工范围决定与原失败记录边界
 
-原检查中传感器同步9个变更文件；网关和Android返回 Already up to date。三个根同步后均 state=complete、pendingRefs=0、pendingChanges=0、worktreeMismatch=null、reindexRecommended=false，命令 exit0、stderr空、未超时，无遗留后台任务。该结论仅对应原证据窗口，不能覆盖后续 Android 源码变化。
+当前调用明确FW-LIGHT-DEF2-ENABLE为APPROVED_DEFERRED，保持NOT EXECUTED，不重新请求遮光、重测或将其作为固件返工依据。TD-002 rev9已单列排除该项的本阶段退出门槛；PRODUCT-ACCEPTANCE-RECHECK-002明确指出原检查者将该人工跳过项计入R4未满足/失败依据属于范围错误。需要原检查者按生效范围评价剩余目标，不能据原范围错误回填3590或虚构新代码修复任务。
 
-普通命令原上限30s，同步45s。原证据确认三个 .codegraph 被Git忽略且无数据库被跟踪；细粒度图只留本地。初次同级bundle路径断言失败后，确认实际嵌套依赖目录并执行同一CLI，没有安装或联网。
+BOT-01的REASSESS不是跳过、就绪或新增权限；其自动测试方式及现有采集证据由测试角色负责。本次没有执行或复判该测项。原失败报告中其他未执行项和真实缺陷保持各自证据/处理范围，本能力不撤销TEST_FAIL、不判断产品通过，也不承担测试、修复或流程重排职责。
 
-后续消费者必须传真实 projectPath；直接使用图返回源码和调用关系。修改代码、切换版本或改变排除规则后，依次执行 codegraph sync、codegraph status --json、相关 explore 小查询，确认来源与状态再沿用。需要覆盖清单时使用 codegraph files -p "<projectPath>" --format flat --no-metadata。图不证明编译、设备、跨进程链路、业务测试或部署验收通过；硬件、iOS、其他SDK/归档/生成目录及无独立本地源码入口的后端均未纳入。
+## 身份、可用性和后续同步
+
+99个索引文件集合SHA-256：`9bb96e89455f6e8d66d95bc9d843fcb521d1769f07b5da806e46948f4a9f17f8`。逐文件为原始字节SHA-256；集合为规范化相对路径字典序排序后，将`path + TAB + lowercase_sha256 + LF`拼接为UTF-8再SHA-256。文件摘要只识别本地源码，不认证板上镜像或发布包内容。
+
+全部CLI/Git命令前台完成、exit0、stderr空、未超时；普通命令30s、同步45s上限，无遗留后台任务。git check-ignore和git ls-files确认本地.codegraph被忽略且数据库未被跟踪，不提交大型数据库。未访问硬件或服务、未构建或运行产品测试、未修改产品实现或用户资料。
+
+本次必需且未验证代码根：无（声明范围仅当前传感器根）。已知网关与Android各有子索引，但本次不刷新其可用性结论；对应历史入口见原Git记录及artifacts/codegraph_android_index.md。硬件、iOS、其他SDK/示例/归档/生成目录和未提供本地源码根的后端不纳入。本图不证明条件编译、外部库、RF/BLE/HTTP跨进程关系或真实环境验收。
+
+后续代码修改、切换版本或排除配置变化后执行：
+
+```powershell
+codegraph sync "<projectPath>"
+codegraph status --json "<projectPath>"
+codegraph explore -p "<projectPath>" --max-files 1 "<相关符号或文件>"
+```
+
+确认当前来源、同步状态和源码查询后再沿用。覆盖清单使用`codegraph files -p "<projectPath>" --format flat --no-metadata`。
+
+本次仅更新入口、证据和文件清单。本次变更的两个清单路径均需在工作区读回确认存在；scripts/check_file_manifest.py当前不存在，未宣称执行全库机械检查。文件本地存在、Git已跟踪和已收入交付包是独立状态，本次不核验交付归档收录，也不自行Git提交。
