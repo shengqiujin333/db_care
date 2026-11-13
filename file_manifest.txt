@@ -70,13 +70,13 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/moc
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_measure_mcu/ | active | 实现侧影子 MCU 层（供 measure.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_trace/ | active | 实现侧影子 MCU 层（供 debug_trace.c 宿主机编译）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/mock_vdd_ev/ | active | 测试能力自建影子 MCU 层（供电轨测量 harness，mock_bgr_trim_value 替身修调值）
-artifacts/android_architecture.md | active | Android 方案设计 AA-005 rev 4.0（承接 IC-002 v4.0：BLE 权限策略、网关发现绑定、批次转发与载荷格式、网关全零占位、上传失败分类与 401 可观测、升温规则/时间注释同步、绑定 ≤9 台与 MTU/返回长度完整性守卫；含 as-built 行号证据、当前有光与固件判据未启用的数据预期、宿主机/真机验证分工与未决项交接）
+artifacts/android_architecture.md | active | Android 方案设计 AA-006 rev 5.0（复核人工范围决定与原检查者 R4 范围错误；当前交付/验证状态与 NOT EXECUTED 归属；3 项增量 N-1 扫描权限结果与自动续跑/N-2 读取终态/N-3 报告再生成反馈；兼容面、验证分工与未决交接）
 artifacts/android_build.md | active | Android 构建产物 AB-002（debug 测试候选：包名/versionCode 10/1.9、构建命令、APK SHA-256 71a041d3…/MD5、v2 签名与 debug 证书、与独立真机复验安装字节一致、安装/升级说明、候选范围与 release 未产出原因）
 artifacts/android_feasibility.md | active | Android 真机/模拟环境可行性探索 AF-001（Redmi 8A Android 10/API 29 只读事实、API<31 定位权限门阻断、硬编码网关 MAC、AVD API 34 对照与差异、未证实项与最小下一步）
 artifacts/android_fix_D-AA005-1.md | active | Android 集成调试修复 FIX-AA005-1（401/403/4xx 后全局暂停自动上传；根因、改动、独立用例复验、APK 身份与未执行项）
 artifacts/android_fix_product_D01-D04a.md | active | Android 集成调试修复 FIX-PROD-01（产品验收 D-01/D-02 底部按钮可达、D-03 控件重叠、D-04a 首页文案；根因/改动/自检/实机复测方法与 D-04b 文档交接）
 artifacts/android_implementation.md | active | Android 实现记录 AIMPL-002（按队列项追加；AA-005 七项增量 + D-AA005-1 全局上传阻塞修复 + 产品验收 D-01/D-02/D-03/D-04a 修复；dacf888 完整交付重建）
-artifacts/android_tasks.yaml | active | Android 待实现任务清单（7 项：BLE 权限模型、网关身份发现与绑定、BLE 批次转发与载荷格式、观测有效性与全零占位、绑定容量 ≤9 与读取完整性、上传失败分类与 401 阻塞、升温规则文案与时间/节拍注释；按前置依赖排序）
+artifacts/android_tasks.yaml | active | Android 待实现任务清单（AA-006 3 项：N-1 扫描权限结果交付与自动续跑、N-2 BLE 读取终态链路状态、N-3 报告再生成可感知反馈；含设备条件、正常/异常目标与兼容面）
 artifacts/backend_feasibility.md | history | 后端可行性探索 BE-EXP-002（2026-11-09 只读 SSH 实测：EMQX 5.8.0/端口/unit/6 路由/401/零业务流量；历史记录保留不改写，当前入口见 backend_feasibility_current.md）
 artifacts/backend_feasibility_current.md | active | 后端可行性探索 BE-EXP-004（2026-11-10 15:47 重新只读核验：同一 abr.py 8949B/2026-10-22 未变、21 命令/7.2 s、EMQX 5.8.0 uptime 17d9h/0 连接、6 路由 405、OPTIONS 200、POST 仍 14 条/末次 10-22、本地桩复跑逐项一致；新增网关缓存复读→同值不同秒重复行的数据语义假设；service_context 与 D1–D6；上传受理条件仍未定性）
 artifacts/backend_feasibility_g002.md | active | 后端可行性探索 BE-EXP-003 原文保留（2026-11-10 07:08–07:14：同一 abr.py 未变、OPTIONS 无鉴权头提示、10-22 的 200 已进入 mysql.connect、仍无业务流量；历史记录不改写，当前入口见 backend_feasibility_current.md）

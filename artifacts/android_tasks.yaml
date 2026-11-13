@@ -1,245 +1,93 @@
 items:
   - objective: >-
-      修正 BLE 运行时权限模型与请求流程：新增纯逻辑 ble/BlePermissionPolicy.kt，按 API 级别与连接方式判定所需权限
-      （API 26–30 直连 GATT 不再要求 ACCESS_FINE_LOCATION；API 31+ 直连需 BLUETOOTH_CONNECT；仅实际使用 BLE 扫描时
-      API<31 才要求 ACCESS_FINE_LOCATION 且定位总开关开启、API 31+ 才要求 BLUETOOTH_SCAN），并让
-      MqtttService.checkBluetoothPermission/isBluetoothBusy/connectToBluetoothDevice 共用该策略；同时改造
-      MainActivity 的权限请求流程（按 API 请求已声明权限、处理拒绝与“不再询问”、去掉不可达/重复请求分支）与首页链路状态展示，
-      使权限缺失/蓝牙关闭/定位关闭不再表现为每 180 s 静默返回。保留 Manifest 中的 ACCESS_FINE_LOCATION 声明
-      （既有 Wi-Fi 配网页 GatewayFragment 仍需要），仅移除其作为 BLE 直连前置的用法。
+      修复“首次授予扫描权限后待执行扫描不自动开始、权限失败原因不精确”的实测行为（O-AA005-5 / O-AA005-1）：
+      将扫描权限请求从 `NotificationsFragment` 经 `ActivityCompat.requestPermissions(requireActivity(), …)` 的 Activity 级路径，
+      改为 fragment 自身 `registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions())` 发起与消费；
+      授权后重新用 `BlePermissionPolicy.evaluate(needScan=true)` 判定，`canScan=true` 时立即执行挂起的扫描动作，
+      否则按 `reason/userMessage` 显示真实原因（蓝牙关闭/定位关闭/权限缺失），不得统一提示“未授予扫描权限”；
+      拒绝/不再询问时清除挂起动作与提示具体缺失项，不自动重复请求；对话框/页面销毁时清除挂起与回调。
     input_refs:
       - artifacts/android_architecture.md
-      - artifacts/android_feasibility.md
-      - artifacts/system_analysis_current.md
-      - artifacts/software_test_design.md
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MainActivity.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayFragment.kt
-      - dengbei_care/app/src/main/AndroidManifest.xml
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeFragment.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/home/HomeViewModel.kt
-    acceptance:
-      - 新增 ble/BlePermissionPolicy.kt 为无 Android 依赖的纯逻辑；宿主机用例覆盖 SDK 26/29/30/31/33 × 直连/扫描 × 授予/拒绝 × 适配器开关/定位开关矩阵，输出 canConnect/canScan/missing/reason/userMessage。
-      - API<31 直连恒 canConnect=true 且 missing 不含 ACCESS_FINE_LOCATION；适配器关闭时 canConnect=false 且 reason=BLUETOOTH_OFF；API 31+ 缺 BLUETOOTH_CONNECT 时拒绝连接。
-      - needScan 时 API<31 要求 FINE_LOCATION 且 locationEnabled=true（否则 reason=LOCATION_OFF），API 31+ 要求 BLUETOOTH_SCAN；直连路径不受定位总开关影响。
-      - MqtttService 的直连前置不再检查 ACCESS_FINE_LOCATION；权限门失败写入一次可读链路状态（含原因与动作），日志包含 sdkInt、缺失权限、needScan、adapterEnabled；不存在仅一行 “Bluetooth permission not granted” 后返回的路径。
-      - MainActivity 启动/开启守护时按 API 请求权限：仅 API>=31 请求 BLUETOOTH_CONNECT 与（扫描场景）BLUETOOTH_SCAN，仅 API>=33 请求 POST_NOTIFICATIONS，仅 API<31 的扫描流程请求定位；请求集合与 AndroidManifest 声明一致，不出现不可达或拒绝后无限重复请求的分支。
-      - 权限被拒绝或“不再询问”时，首页状态区显示具体缺失项与可执行动作（去授权/打开系统设置/去开启定位），MqtttService 日志同条包含原因；权限恢复后无需重启进程即可继续下一轮连接，既有本地库与待上传队列不被清空。
-      - 既有 Wi-Fi 配网页（GatewayFragment）保持可用：不因本项移除其 API<33 的定位权限请求路径。
-      - 现有宿主机单元测试全部通过、assembleDebug 成功且无新增编译告警。
-      - 真机权限弹窗、拒绝后行为与真实 GATT 连接由软件测试独立验收，不在本项宣称通过。
-    metadata:
-      scope: android_implementation
-      relates_to: AA-005 G-1 / D-16 / D-19
-      upstream_acceptance: TD-SW-004 T-SW-L1-25/32、T-SW-L2-35/36/37/38/39、T-SW-L0d-12
-      device_dependency: 真实 BLE 弹窗与 GATT 行为需真机（Redmi 8A/API 29）；API 31+ 分支需另一台设备或 AVD，由测试能力验收
-      normal_targets: 未授予定位仍发起 GATT 尝试；授权后下一轮恢复；API31+ 授予 CONNECT 后可连接；Wi-Fi 配网扫描不受影响
-      abnormal_targets: 拒绝/不再询问显示具体原因与动作；蓝牙关闭、定位关闭、权限运行中撤销均停止并有状态；不崩溃、不清数据、不重复弹窗
-      compatibility_hold: 不改 AES/证书/UUID/topic/上传契约/SQLite 表结构；不删除 Manifest 既有权限声明
-
-  - objective: >-
-      用正常发现/绑定流程确认网关身份并替换硬编码 BLE 地址：新增 protocol/GatewayIdentity.kt（MAC 规范化与校验、
-      扫描候选去重排序、迁移默认与已清除判定）与 ble/GatewayDiscovery.kt（有界 10 s 扫描，优先按服务 UUID FFE0 过滤，
-      用户显式操作时可退化为无过滤扫描，所有结束路径必须 stopScan），新增 MyPrefs gateway_ble_addr 作为唯一 GATT
-      连接身份；在网关设置区呈现候选名称/MAC/RSSI 并允许手动输入/清除，保存后持久化；mac_addr（topic 与
-      /upload_data.mac）语义保持不变，两者分别展示、不互相推导。既有 ui/gateway/GatewayFragment 是 Wi-Fi 配网页，
-      不得复用作 BLE 发现入口。
-    input_refs:
-      - artifacts/android_architecture.md
-      - artifacts/android_feasibility.md
-      - artifacts/interface_contract.md
-      - CH592EVT/EVT/EXAM/BLE/beiwov2/APP/peripheral.c
-      - CH592EVT/EVT/EXAM/BLE/beiwov2/Profile/include/gattprofile.h
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt
+      - artifacts/android_implementation.md
+      - evidence/android_check_20261111/SOFTWARE-TEST-ANDROID-RECHECK-001.md
+      - evidence/software_test.md
       - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt
+      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/gateway/GatewayBleSettingsDialog.kt
+      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ble/BlePermissionPolicy.kt
     acceptance:
-      - Android 应用源码（dengbei_care/app/src/main）内，除迁移默认常量一处外不再出现硬编码 84:C2:E4:03:02:02；连接目标只来自 MyPrefs.gateway_ble_addr（缺失且未被清除时使用迁移默认值并在界面标注“未确认”）。
-      - 用户显式清除后写“已清除”标记，后续读取不得静默回退到迁移默认值；清除状态与“未配置”在界面可区分。
-      - GatewayIdentity 宿主机用例覆盖：大小写/单双位段/分隔符规范化、非法长度与字符拒绝、空值、候选按 FFE0 优先与 RSSI 降序排序且 MAC 去重、绑定状态判定、迁移默认判定。
-      - 扫描为有界操作（上限 10 s），超时、取消、页面销毁、蓝牙关闭、权限撤销均执行 stopScan 并释放回调；停止后 ≥15 s 无新回调；不存在持续扫描或泄漏。
-      - 扫描无结果时显示“未找到网关”并保留手动输入与“扩大搜索（不过滤）”；不自动连接任何未确认地址；多候选由用户显式选择。
-      - 保存后下一轮读取使用该地址；连接日志同条记录 gateway_ble_addr 与 mac_addr 并分别标注用途；两者在任何代码路径都不互相推导或覆盖。
-      - API<31 仅在扫描流程请求 ACCESS_FINE_LOCATION 并提示开启定位总开关；API 31+ 扫描仅请求 BLUETOOTH_SCAN。
-      - 现有宿主机单元测试全部通过、assembleDebug 成功且无新增编译告警。
-      - 真实网关广播内容、候选列表、保存后重连与配对行为由软件测试在真机独立验收；本项不宣称网关已可被发现或连接。
+      - 扫描权限请求由 NotificationsFragment 的 registerForActivityResult(RequestMultiplePermissions) 发起并消费；对话框路径不再直接调用 ActivityCompat.requestPermissions(Activity)，结果不依赖 Activity 的 FragmentManager 分发。
+      - API<31 真机首次点击「搜索附近网关」并授予定位后，无需再次点击即自动开始扫描（≤3 s 内出现 GatewayDiscovery scan started），10 s 内 stopScan；扫描停止后无新回调。
+      - 授权后若蓝牙关闭，提示“蓝牙未开启（去开启）”，不启动扫描；定位总开关关闭提示“搜索网关需要开启定位（去开启定位）”；权限被拒绝提示具体缺失权限；不得统一显示“未授予扫描权限，无法搜索网关”。
+      - 拒绝或“不再询问”后清除 pendingScan，不自动弹出第二次请求；用户再次点击才重新请求；对话框关闭/页面销毁后不迟发扫描、不调用已销毁视图。
+      - 启动 App 与保存/清除网关均不请求定位权限；仅“搜索附近网关/扩大搜索”用户动作触发请求。
+      - 新增宿主机静态核查（launcher 存在、对话框无 Activity 级 requestPermissions、销毁清理）并通过；现有 261 项宿主机用例全通过、assembleDebug 成功且无新增编译告警。
+      - 首次授权自动开始扫描、拒绝/蓝牙关闭/定位关闭文案与无重复请求由软件测试在真机独立验收；本项不以宿主机断言代替。
     metadata:
       scope: android_implementation
-      relates_to: AA-005 G-2 / D-17 / D-18 / D-29
-      upstream_acceptance: TD-SW-004 T-SW-L1-26/27/32、T-SW-L0d-11、T-SW-L2-40/41/42
-      unknown: 网关是否在真实空中广播 FFE0 与名称未验证（源码显示 advertData 含 0xFFE0、扫描响应名 "xxx"）；设计以过滤 + 无过滤回退兼容
-      device_dependency: 真实 BLE 扫描与网关身份需真机与网关上电，由测试能力验收
-      normal_targets: 扫描得到候选并由用户保存；重启后仍使用已保存地址；连接日志两身份分列
-      abnormal_targets: 无候选/超时/取消/页面销毁/蓝牙关闭/权限撤销均停止扫描并提示；非法/无法解析地址回到未配置；不自动连接他人网关
-      compatibility_hold: mac_addr/topic/上传契约不变；不新增 BLE 服务或控制命令；不改既有 Wi-Fi 配网页
+      relates_to: AA-006 N-1 / D-35 / D-36；O-AA005-5、O-AA005-1
+      upstream_acceptance: ST-AA005-R2 §5 O-AA005-5；software_triage_20261111 §5 O-AA005-1；TD-SW-004 T-SW-L2-40/42
+      device_dependency: Redmi 8A / Android 10 / API 29（12f046690506）；首次定位授权、拒绝、不再询问、蓝牙关闭、定位关闭；由测试能力执行
+      normal_targets: 授权后自动开始且有界停止；扫描候选正常呈现；重复点击不并行扫描
+      abnormal_targets: 拒绝/不再询问无扫描且提示具体权限；蓝牙关闭/定位关闭提示真实原因；页面销毁/对话框关闭无迟发回调；不崩溃
+      compatibility_hold: 不改 BLE 协议/扫描过滤/10 s 上限/stopScan 全路径；不改 gateway_ble_addr/mac_addr 语义；不新增权限声明
 
   - objective: >-
-      修正 BLE 读取批次向 MQTT 的转发：新增纯逻辑 telemetry/BleBatchForwarding.kt，把一次读取的全部读数与当前绑定顺序
-      比对，数量/ID/顺序一致时按契约构造 `<epoch_seconds>:<temps csv>:<humis csv>`（冒号三段、温度在前、逗号分隔、无空格、
-      Locale.US）并发布，否则拒绝转发并记录原因；MqtttService 删除“只保留最后一笔”的 bletime/bleTempData/bleHumiData
-      覆盖写法，改为每次成功读取后在 MQTT 已连接时立即发布，未连接时只保留最近一批并在连接成功后发布一次；本地按 ID
-      逐条处理与上传不受转发拒绝影响；保留既有 topic 选择分支。
+      修复 BLE 读取尝试结束后链路状态无终态的问题（O-AA005-6）：新增纯逻辑读取状态映射（RejectionReason/LengthVerdict/
+      Success → DATA_OK / GATEWAY_NO_DATA / GATEWAY_NO_DEVICE / READ_INCOMPLETE / READ_INVALID），并在 MqtttService 的
+      onCharacteristicRead 所有分支统一设置终态；`devCount=0` 的 NO_DEVICE 不再停留在“正在连接网关…”，
+      长度不足/非 16 对齐保持 READ_INCOMPLETE，解密失败/帧头不足为 READ_INVALID（带原因）；
+      有效批次/全占位分别保持 DATA_OK / GATEWAY_NO_DATA；状态码稳定可被测试与日志断言。
     input_refs:
       - artifacts/android_architecture.md
-      - artifacts/interface_contract.md
-      - artifacts/system_analysis_current.md
-      - artifacts/software_test_design.md
+      - artifacts/android_implementation.md
+      - evidence/android_check_20261111/SOFTWARE-TEST-ANDROID-RECHECK-001.md
+      - evidence/software_test.md
       - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt
       - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/ReadingAttribution.kt
+      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayReadGuard.kt
     acceptance:
-      - 单设备且 ID 匹配时生成的载荷逐字为 `<epoch_seconds>:<temp>:<humi>`（例如 `1700000000:25.5:60.0`），可被 ReadingAttribution 正常解析；格式化固定 Locale.US，小数点必为 `.`。
-      - 多设备时载荷按当前绑定顺序包含本次全部读数，温度为前段、湿度为后段；数量不符、未知 ID、重复 ID、顺序不符、全占位时拒绝转发，且不产出任何部分载荷。
-      - 空批次/devCount=0/帧被拒绝时不发布、不入库、不上传。
-      - 转发拒绝只影响发布：本次读数仍按各自 devId 完成告警判定、入库（接收时刻）与上传入队。
-      - 工程内不存在“只保留最后一笔”的转发状态变量；不存在 `bletime + ',' + ...` 形式或 `humi...,temp...` 顺序的载荷拼接；载荷构造只有一处。
-      - MQTT 未连接时的成功读取只保留最近一批待转发（有界为 1），连接成功后发布一次；发布失败不阻塞本地处理，下一批覆盖。
-      - 新增宿主机用例覆盖 Forward/Refuse 全部分支、绑定顺序、单/多设备载荷逐字断言；现有宿主机单元测试全部通过、assembleDebug 成功且无新增编译告警。
-      - 真实网关多设备批次与 MQTT 实际发布由软件测试在真机联调验收。
+      - 新增纯逻辑 GatewayReadState（无 Android 依赖），覆盖：Success+至少一条有效读数→DATA_OK；全占位→GATEWAY_NO_DATA；NO_DEVICE→GATEWAY_NO_DEVICE；FRAME_TOO_SHORT→READ_INVALID；LENGTH_MISMATCH/LENGTH_NOT_ALIGNED→READ_INCOMPLETE；DECRYPT_FAILED/CIPHERTEXT_NOT_ALIGNED→READ_INVALID；未知→READ_INVALID；映射带稳定状态码与文案类别。
+      - MqtttService 在每次 onCharacteristicRead 的 Success/Rejected/长度拒绝分支都调用同一映射并写首页链路状态；读取结束后不存在仍停留在 CONNECTING 的路径。
+      - 真实网关 devCount=0 读取（MTU 240、FFE2 160 B）后首页显示“网关已连接，暂无设备（N=0）”，下一个 180 s 周期仍可正常读取；不再出现长时间“正在连接网关…”。
+      - 有效批次仍显示 DATA_OK；全占位显示 GATEWAY_NO_DATA；READ_INCOMPLETE/READ_INVALID 文案与原因可区分；状态更新不改变本地入库/上传/告警。
+      - 新增宿主机映射矩阵测试并全通过；现有 261 项宿主机用例全通过、assembleDebug 成功且无新增编译告警。
+      - 真实 devCount=0、占位与完整批次的状态显示由软件测试在真机独立验收；本项不宣称真实多设备/9 台已通过。
     metadata:
       scope: android_implementation
-      relates_to: AA-005 G-3 / D-20 / D-26 / IC-002 §7
-      upstream_acceptance: TD-SW-004 T-SW-L1-28、T-SW-L2-43/44/49
-      device_dependency: 真实多设备帧与 broker 侧收包需真机与网关，由测试能力验收
-      normal_targets: 单设备载荷与既有格式一致；多设备按绑定顺序完整发布；未连接时连接后补发最近一批
-      abnormal_targets: 数量/ID/顺序不符或全占位拒绝发布并记录原因；本地处理不中断；不发布部分批次
-      compatibility_hold: MQTT topic、AES、BLE 布局不变；不改网关固件
+      relates_to: AA-006 N-2 / D-37；O-AA005-6
+      upstream_acceptance: ST-AA005-R2 §5 O-AA005-6；TD-SW-004 T-SW-L2-45/53/54
+      device_dependency: 真实网关（当前 devCount=0）与 Redmi 8A/API29；多设备/占位由测试能力在可得条件下验收
+      normal_targets: 有效批次 DATA_OK；全占位 GATEWAY_NO_DATA；devCount=0 GATEWAY_NO_DEVICE；终态在首页可见
+      abnormal_targets: 长度不足/非对齐 READ_INCOMPLETE；解密/帧头失败 READ_INVALID；不再残留 CONNECTING；不产生读数或错误入库
+      compatibility_hold: 不改帧解码/长度判定/容量守卫/入库/上传/告警；不新增线上字段
 
   - objective: >-
-      修正 BLE 观测有效性：新增纯逻辑 telemetry/BleObservation.kt 判定网关“无数据占位”（设备块 8 B 全零：ID 00000000
-      且 temperature_x10=0 且 humidity_x10=0），占位不产生读数、不入库、不入待发箱、不生成/更新设备卡片、不触发报警，
-      链路状态显示“网关暂无传感器数据”；删除 MqtttService 的 isZeroValue/bleZeroCount 连续 3 次门槛，使带有效绑定 ID 的
-      0.0℃/0.0%RH 首次即按合法读数处理；同步观测语义与界面措辞（接收时间≠传感器采样时刻，卡片相对时间标注“最近读取/更新”），
-      并保持“每次成功读取按接收时间入库/上传”的观测语义（不引入按值去重）。
+      修复报告页“重新生成”在零设备/无数据时无可感知反馈的问题（RECHECK-002 O-2）：新增纯逻辑
+      ReportRegenerateFeedback 判定（succeeded / hasContent / deviceCount / sampleCount → 消息类别与是否恢复按钮），
+      ReportActivity 点击后显示进度并禁用按钮；Worker 成功但无数据时提示“暂无可生成的数据（尚无设备读数）”，
+      失败提示“报告生成失败，请稍后重试”，有数据成功则刷新文本与生成时间并恢复按钮；
+      连续点击不产生并行任务；不改变报告内容/统计规则与 KEY_REPORT_TEXT/KEY_REPORT_TIME 契约。
     input_refs:
       - artifacts/android_architecture.md
-      - artifacts/interface_contract.md
-      - CH592EVT/EVT/EXAM/BLE/beiwov2/APP/app_um2006A.c
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/DeviceState.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt
+      - artifacts/android_implementation.md
+      - evidence/product_acceptance_20261112_scope_recheck/PRODUCT-ACCEPTANCE-RECHECK-002.md
+      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/report/ReportActivity.kt
+      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/report/DailyReportWorker.kt
+      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/report/ReportGenerator.kt
+      - dengbei_care/app/src/main/res/layout/activity_report.xml
     acceptance:
-      - 8 B 全零设备块（ID 00000000、T_x10=0、H_x10=0）被判为 Placeholder：不写入 temperature/alarm_events/pending_uploads，不生成 00000000 设备卡片，不触发通知，日志/链路状态记录“网关暂无传感器数据”。
-      - 整批均为占位时不发布 MQTT、不处理任何设备；混合批次中占位块被跳过，其余有效 ID 读数照常处理。
-      - 带有效绑定 ID 的 0.0℃/0.0%RH 首次读取即进入正常处理路径（告警/入库/入队/卡片），工程内不存在 isZeroValue 或“连续 3 次”门槛。
-      - 每次成功读取（非占位）仍按接收 Unix 秒入库并进入上传编排；不新增按值去重分支，不改 (dev_id,time) 幂等键与既有表结构。
-      - GatewayFrameCodec.SensorSample 增加 temperatureX10/humidityX10（additive），不改变现有字段、偏移、字节序与符号；占位判定以原始 x10 整数为准，不用浮点比较。
-      - 卡片/详情的相对时间基于最近一次成功读取并标注“最近读取/更新”；详情说明“接收时间为手机读取网关缓存的时刻，不是传感器采样时刻”；不出现“离线”推断。
-      - 新增宿主机用例覆盖 Placeholder/Reading 分类、0.0/0.0 合法路径、占位不落库不发布；现有宿主机单元测试全部通过、assembleDebug 成功且无新增编译告警。
-      - 真实 BLE 占位帧与真实 0.0/0.0 源由软件测试在真机验收；无可控源时记 NOT EXECUTED，不以 MQTT 注入替代 BLE 结论。
+      - 新增纯逻辑 ReportRegenerateFeedback（无 Android 依赖）：零设备、无当日读数、生成内容为空、成功、失败、重复点击等输入均返回确定的消息类别/按钮状态；无数据不算错误但必须提示。
+      - 点击「重新生成」立即显示进度并禁用按钮；结束（成功/失败/无数据）后按钮恢复，不出现无反馈的静默完成。
+      - Worker 成功但无可生成数据（无设备或无当日样本或文本为空/与上次相同）→ Toast/Snackbar“暂无可生成的数据（尚无设备读数）”；Worker 失败 → “报告生成失败，请稍后重试”；有数据成功 → 刷新报告文本与生成时间。
+      - 连续点击不并行触发多次生成；页面销毁后回调不操作已销毁视图、不崩溃。
+      - 报告内容/统计规则、KEY_REPORT_TEXT/KEY_REPORT_TIME、ReportGenerator 输出与通知行为不变；不新增线上字段。
+      - 新增宿主机纯逻辑测试并全通过；现有 261 项宿主机用例全通过、assembleDebug 成功且无新增编译告警。
+      - 零设备/无数据提示与按钮恢复由软件测试在真机独立验收；有数据时刷新沿用既有行为与证据。
     metadata:
       scope: android_implementation
-      relates_to: AA-005 G-5 / D-21 / D-24 / D-25 / D-30
-      upstream_acceptance: TD-SW-004 T-SW-L1-29、T-SW-L0d-13、T-SW-L2-45/46
-      device_dependency: 真实网关无数据占位帧需网关与真机；真实 0.0/0.0 源按可得性；无可控源记 NOT EXECUTED
-      known_condition: 现场有光且固件无光判据未启用，不得通过调温/改变光强制造占位或升温条件
-      normal_targets: 有效读数（含 0.0/0.0）首次即处理；占位显示“网关暂无数据”且无假设备
-      abnormal_targets: 全占位/混合占位不产生假读数、不发布整批；占位不触发报警；不清空既有设备与历史
-      compatibility_hold: BLE 布局、0.1℃ 单位、负温符号、SQLite 表结构、上传契约不变
-
-  - objective: >-
-      让云上传失败可区分、可观测、不丢数据：新增纯逻辑 cloud/UploadResult.kt 把 HTTP 状态/异常分为
-      Success(2xx)/AuthRejected(401,403)/RequestRejected(其余 4xx，408/429 除外)/Retryable(5xx,408,429,超时,IO,解析异常)；
-      CloudUploadRepository 对 Retryable 沿用既有退避，对 AuthRejected/RequestRejected 不自动重试、保留全部待发行、
-      写入 MyPrefs 阻塞状态（原因码/HTTP 状态/时间/待发条数）并在网关设置区展示与提供“重试上传”；手动重试清除阻塞并
-      恢复被暂停的到期行后立即上传一次；不新增 Authorization/token/签名头，只在 CloudApiClient 预留唯一拦截器注入点（空实现）。
-    input_refs:
-      - artifacts/android_architecture.md
-      - artifacts/backend_feasibility_current.md
-      - artifacts/interface_contract.md
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/UploadOutbox.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt
-    acceptance:
-      - UploadResult 宿主机用例覆盖 200/201/204、401、403、400、404、413、422、408、429、500、502、超时/IO/解析异常的分类，边界无歧义。
-      - 2xx 逐行 ack 删除；Retryable 逐行 attempts+1 并按既有 60→1800 s 退避，达到 20 次后保留行不再自动重试（现状保持）。
-      - 401/403 与其他 4xx 不产生自动重试请求；本次批次行全部保留且不被删除；MyPrefs 写入原因码/HTTP 状态/时间/待发条数；界面显示具体“上传被拒绝/请求被拒绝”状态与待发条数。
-      - “重试上传”清除阻塞状态、把被暂停的到期行恢复为可重试（批量 UPDATE，不改表结构）并立即触发一次上传；重试后成功则删除对应行，失败按新结果重新分类。
-      - 上传阻塞与失败不影响 BLE/MQTT/告警/入库；日志不打印手机号、MAC 之外的凭据，不输出请求体全文。
-      - 工程内不存在新增的 Authorization/Bearer/token 使用；ApiService 契约与 /upload_data 字段不变；CloudApiClient 仅有一个空的拦截器注入点并有注释说明待端到端 D1 定性。
-      - 现有宿主机单元测试全部通过、assembleDebug 成功且无新增编译告警。
-      - 真实 401/403 行为、手动重试与持久化回读由端到端/软件测试在获准入口执行；本项不宣称上传可用或 401 原因已定性。
-    metadata:
-      scope: android_implementation
-      relates_to: AA-005 G-6 / D-27 / D-28 / BE-EXP-004
-      upstream_acceptance: TD-SW-004 T-SW-L1-30、T-SW-L0d-14/15、T-SW-L2-47/48、T-SW-REG-09
-      unknown: 401 的具体机制（token/归属/注册态）未定性；本项不猜测协议，只做分类与可观测状态
-      device_dependency: 真实 HTTP 状态与服务端行为需网络与获准测试入口；由端到端阶段执行
-      normal_targets: 2xx 删除待发行；网络失败退避；手动重试可恢复
-      abnormal_targets: 401/403/4xx 停止自动重试、保留数据、显示原因；不静默滞留、不丢行、不阻塞主链路
-      compatibility_hold: /upload_data 请求体、端点、字段、SQLite 表结构不变；不新增未证实鉴权
-
-  - objective: >-
-      更正用户可见的上报规则文案为升温方向并冻结严格边界表述：DetailPresentation.REPORT_RULE_TEXT 与布局
-      fragment_device_detail.xml 的展示文本改为“采样周期 3 分钟。仅当温度较上次升高超过 0.9℃且无光，或温度超过 35.0℃ 时
-      才上报；未满足条件时不会上报，因此可能长时间没有新数据。”；同步 dengbei_care/用户使用说明书.md 与
-      dengbei_care/readme.txt 变更记录，并递增版本号；同步 IC-002 §7 要求的契约注释（ApiService.SensorReading.time
-      改为“BLE 接收 Unix 秒 / MQTT 载荷首段秒，不是物理采样时刻”；SensorCadence 注释改为“升温 >0.9℃ 且无光，或 >35℃”）；
-      保留 App 自身“温度湿度下降报警”功能与措辞不变，不新增 App 侧门控或光照推断。
-    input_refs:
-      - artifacts/android_architecture.md
-      - artifacts/interface_contract.md
-      - artifacts/firmware_design.md
-      - readme.txt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/detail/DetailPresentation.kt
-      - dengbei_care/app/src/main/res/layout/fragment_device_detail.xml
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/telemetry/SensorCadence.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ApiService.kt
-      - dengbei_care/用户使用说明书.md
-      - dengbei_care/readme.txt
-      - dengbei_care/app/build.gradle.kts
-    acceptance:
-      - 详情页规则文案逐字为“仅当温度较上次升高超过 0.9℃且无光，或温度超过 35.0℃ 时才上报”，表达严格边界（0.9℃ 需超过、35.0℃ 需超过、等于不触发）；布局静态文本与代码常量一致。
-      - 工程内不存在“较上次下降超过 0.9”表述；用户说明书与变更记录同步为升高方向；App 自身“温度湿度下降报警”面板与文案保持不变。
-      - 文案不显示光照状态、照度或 lux，也不给出 App 推断的上报原因；不新增任何 0.9℃/35℃ 门控计算；不加入固件判据启用状态等内部实现说明。
-      - ApiService.SensorReading.time 注释改为“BLE 接收 Unix 秒 / MQTT 载荷首段秒，不是物理采样时刻”；SensorCadence 注释方向改为升温；字段名/类型/单位不变。
-      - 新增或更新的宿主机用例断言方向、严格边界、禁词与“无推断原因”；现有全部宿主机用例通过、assembleDebug 成功。
-      - app/build.gradle.kts 的 versionCode/versionName 递增，且构建产物中版本一致；file_manifest.txt 同步本次新增与修改文件。
-      - 真机界面呈现由软件测试截图验收，本项不以宿主机断言代替界面结论。
-    metadata:
-      scope: android_implementation
-      relates_to: AA-005 G-4 / D-22 / D-34 / IC-002 §7
-      upstream_acceptance: TD-SW-004 T-SW-L1-31、T-SW-L1-32、T-SW-L3-18
-      device_dependency: 界面呈现需真机截图；本能力无设备工具，不执行
-      normal_targets: 详情页显示升温方向与严格边界；说明书/变更记录/注释一致
-      abnormal_targets: 不出现“下降超过 0.9”；不出现光照/照度/推断原因/固件内部状态；不改 App 报警功能与阈值
-      compatibility_hold: 不改 App 报警功能、阈值、去抖与报警文案；不改 iOS；字段名/类型不变
-  - objective: >-
-      落实 IC-002 v4.0 的容量与读取完整性约束：新增纯逻辑 protocol/GatewayReadGuard.kt 提供 MAX_DEVICES=9、
-      MAX_FRAME_BYTES=160、expectedFrameSize(devCount)=16*(1+devCount)、capacityVerdict(boundCount)、
-      mtuVerdict(negotiatedMtu, devCount) 与 lengthVerdict(returnedBytes, devCount)；在绑定新增入口
-      （MacIdBook 唯一调用方/绑定界面）达到 9 台时明确拒绝并提示，已绑定 >9 台时读路径不发起连接/读取并显示
-      BINDING_CAPACITY_EXCEEDED；读路径要求协商 MTU >= 16*(1+N)+3 才读取，并在 onCharacteristicRead 使用
-      实际 value.size 校验覆盖完整快照与 16 B 对齐，不满足则整帧拒绝并显示“读取不完整（MTU/长度不足）”；
-      不补零、不跨次拼接、不裁掉余字节、不把部分批次当整批；同时修正 buildAllSavedIdsA1SinglePacket 的 50 台
-      静默截断，使其与 9 台容量一致。
-    input_refs:
-      - artifacts/android_architecture.md
-      - artifacts/interface_contract.md
-      - artifacts/system_analysis_current.md
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MacIdBook.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/protocol/GatewayFrameCodec.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt
-      - dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/sensorid/SensorIdListFragment.kt
-    acceptance:
-      - GatewayReadGuard 为无 Android 依赖纯逻辑；宿主机用例覆盖 capacityVerdict(0..9)=Ok、(10..255)=Exceeded(bound)，expectedFrameSize(1..9)=32..160，mtuVerdict 的 MTU 不足/充足，以及 lengthVerdict 的返回长度不足、非 16 对齐、正常（单/多设备）分支。
-      - 绑定第 10 台被明确拒绝（提示“超过网关完整传输上限 9 台”），既有 9 台不变；工程内不再存在按 50 台静默截断写入 0xA1 的路径（容量常量只在一处定义）。
-      - 已绑定 >9 台（历史/异常数据）时不发起读取、不写入 0xA1、不转发，链路状态为 BINDING_CAPACITY_EXCEEDED；删除多余设备后下一轮恢复。
-      - 读路径使用协商 MTU 判定：MTU < 16*(1+N)+3 时不读取；协商失败只重连重试一次，仍失败则本轮记 READ_INCOMPLETE，不无限重试。
-      - onCharacteristicRead 以实际 value.size 判定：< 16*(1+N) 或非 16 B 整数倍时整帧拒绝并记录实际/期望字节；不补零、不使用上次快照、不拼接跨次读取、不裁掉余字节。
-      - 读取完整性失败不产生读数、不入库、不入待发箱、不转发；与其他拒绝原因（帧头/N=0/解密/占位）在日志与状态上可区分。
-      - 完整快照读取成功时行为与既有解码一致（布局/偏移/字节序/符号不变）；多余 16 B 对齐尾部按 devCount 消费，不把尾块当设备。
-      - 现有宿主机单元测试全部通过、assembleDebug 成功且无新增编译告警。
-      - 真实 MTU 协商值、FFE2 实际返回字节数与 9 台容量边界由软件测试在真机独立验收；本项不宣称已支持 9 台或真实读取完整。
-    metadata:
-      scope: android_implementation
-      relates_to: AA-005 G-7 / D-31 / D-32 / IC-002 §6
-      upstream_acceptance: TD-SW-004 现有用例未覆盖容量与 MTU 完整性，需软件测试能力增补（本设计不代写）；关联既有 T-SW-L1-32 回归
-      unknown: 真实网关协商 MTU 与 FFE2 单次返回长度未测；9 台仅为 160 B 静态容量上界，不是已通过 9 设备联调
-      device_dependency: 真实 MTU/返回长度与多设备快照需真机与网关；本能力无设备工具，不执行
-      normal_targets: 单/多设备完整快照按原布局解码；绑定 ≤9 台正常保存与读取
-      abnormal_targets: 第 10 台被拒；>9 台不读取；MTU 不足/返回不足/非对齐整帧拒绝且有可读状态；不产生部分读数或错误快照
-      compatibility_hold: 160 B 属性、16 B 块布局、AES、0xA1 头与分块格式、topic/上传契约不变（0xA1 数量上限按 9 台收紧）；不改网关
-
+      relates_to: AA-006 N-3 / D-38；RECHECK-002 O-2
+      upstream_acceptance: PRODUCT-ACCEPTANCE-RECHECK-002 §3.1 O-2；既有报告页回归 ST-013
+      device_dependency: Redmi 8A/API29；当前零设备即可验证无数据提示；有数据刷新由测试能力按可得数据验收
+      normal_targets: 点击有进度、结束有结果提示；有数据成功刷新文本/时间；按钮恢复
+      abnormal_targets: 零设备/无数据有明确提示；失败提示；连续点击不并行；销毁后无崩溃
+      compatibility_hold: 不改报告内容/统计/存储键/通知调度；不改 WorkManager 唯一工作名之外的契约
