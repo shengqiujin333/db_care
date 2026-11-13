@@ -1,0 +1,605 @@
+--------- beginning of main
+11-13 13:55:37.841 D/        (  771): readbrightness,out1:9
+11-13 13:55:37.841 D/        (  771): .
+11-13 13:55:37.841 D/        (  771): readbrightness,out2:9.
+11-13 13:55:38.841 D/        (  771): readbrightness,out1:9
+11-13 13:55:38.841 D/        (  771): .
+11-13 13:55:38.841 D/        (  771): readbrightness,out2:9.
+11-13 13:55:39.842 D/        (  771): readbrightness,out1:9
+11-13 13:55:39.842 D/        (  771): .
+11-13 13:55:39.842 D/        (  771): readbrightness,out2:9.
+11-13 13:55:39.960 D/MiuiFastConnectService(27265): handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-13 13:55:39.960 D/MiuiFastConnectService(27265): stopBleScan: scanning: true
+11-13 13:55:39.962 D/BluetoothAdapter(27265): isLeEnabled(): ON
+11-13 13:55:39.963 D/BtGatt.GattService(26457): stopScan() - queue size =1
+11-13 13:55:39.965 I/BtGatt.ScanManager(26457): msg.what = 1
+11-13 13:55:39.966 D/BtGatt.GattService(26457): unregisterScanner() - scannerId=5
+11-13 13:55:39.967 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-13 13:55:39.967 V/bt_stack(26457): [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-13 13:55:39.968 D/BtGatt.ScanManager(26457): stop scan
+11-13 13:55:39.975 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-13 13:55:39.975 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:39.988 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-13 13:55:39.988 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:39.992 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-13 13:55:39.993 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:39.997 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-13 13:55:39.997 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.003 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-13 13:55:40.003 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.004 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=0
+11-13 13:55:40.004 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-13 13:55:40.004 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue emtpy, scan stopped
+11-13 13:55:40.004 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue emtpy, scan stopped
+11-13 13:55:40.013 D/MiuiFastConnectService(27265): handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-13 13:55:40.015 D/BluetoothAdapter(27265): isLeEnabled(): ON
+11-13 13:55:40.017 D/BtGatt.GattService(26457): registerScanner() - UUID=45f5ae49-f91b-40a1-9597-05fc08ba7666
+11-13 13:55:40.018 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 13:55:40.019 I/bt_stack(26457): [INFO:gatt_api.cc(959)] GATT_Register 6d34cd9a-b963-c51f-02e6-ac6481f5413b
+11-13 13:55:40.019 I/bt_stack(26457): [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-13 13:55:40.019 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-13 13:55:40.019 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 13:55:40.019 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 13:55:40.019 D/BtGatt.GattService(26457): onScannerRegistered() - UUID=45f5ae49-f91b-40a1-9597-05fc08ba7666, scannerId=5, status=0
+11-13 13:55:40.019 D/BluetoothLeScanner(27265): onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-13 13:55:40.021 D/BtGatt.GattService(26457): start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-13 13:55:40.025 E/BtGatt.GattService(26457):  [Landroid.content.pm.ServiceInfo;@e1ef072
+11-13 13:55:40.028 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:55:40.028 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:55:40.032 I/BtGatt.ScanManager(26457): msg.what = 0
+11-13 13:55:40.033 D/BtGatt.ScanManager(26457): handling starting scan
+11-13 13:55:40.035 D/BtGatt.ScanManager(26457): isAptXLowLatencyModeEnabled: false
+11-13 13:55:40.041 D/BtGatt.GattService(26457): onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-13 13:55:40.041 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.041 D/BtGatt.ScanManager(26457): Available Filter size: 13
+11-13 13:55:40.042 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:55:40.042 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.043 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:55:40.049 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-13 13:55:40.049 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.050 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:55:40.050 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.050 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:55:40.060 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-13 13:55:40.060 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.061 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:55:40.061 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.061 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:55:40.070 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-13 13:55:40.070 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.071 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:55:40.071 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.071 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:55:40.079 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-13 13:55:40.079 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.080 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:55:40.080 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.080 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:55:40.093 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-13 13:55:40.093 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:55:40.093 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=1
+11-13 13:55:40.093 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-13 13:55:40.096 D/BtGatt.ScanManager(26457): configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-13 13:55:40.096 D/BtGatt.GattService(26457): onScanParamSetupCompleted : 0
+11-13 13:55:40.520 D/DropBoxManager(  777): About to call service->add()
+--------- beginning of system
+11-13 13:55:40.521 I/DropBoxManagerService( 1577): add tag=keymaster isTagEnabled=true flags=0x0
+11-13 13:55:40.588 D/DropBoxManager(  777): service->add returned No error
+11-13 13:55:40.843 D/        (  771): readbrightness,out1:9
+11-13 13:55:40.843 D/        (  771): .
+11-13 13:55:40.843 D/        (  771): readbrightness,out2:9.
+11-13 13:55:40.881 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:55:40.974 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:55:41.356 D/AndroidRuntime(30547): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:55:41.361 E/libc    (30547): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:55:41.352 W/app_process(30547): type=1400 audit(0.0:101344): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:55:41.362 I/AndroidRuntime(30547): Using default boot image
+11-13 13:55:41.362 E/libc    (30547): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:55:41.362 I/AndroidRuntime(30547): Leaving lock profiling enabled
+11-13 13:55:41.362 E/libc    (30547): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:55:41.352 W/app_process(30547): type=1400 audit(0.0:101345): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:55:41.352 W/app_process(30547): type=1400 audit(0.0:101346): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:55:41.369 W/app_process(30547): Could not reserve sentinel fault page
+11-13 13:55:41.402 W/swapper/5(    0): type=1400 audit(0.0:101347): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:55:41.495 D/ICU     (30547): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:55:41.520 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:55:41.811 W/app_process(30547): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:55:41.825 D/AndroidRuntime(30547): Calling main entry com.wetest.uia2.Main
+11-13 13:55:41.836 I/uidumper(30547): [UiAutomator2Server] Starting Server
+11-13 13:55:41.844 D/        (  771): readbrightness,out1:9
+11-13 13:55:41.844 D/        (  771): .
+11-13 13:55:41.844 D/        (  771): readbrightness,out2:9.
+11-13 13:55:41.871 D/ThemeCompatibility(30547): START loading theme compatibility config.
+11-13 13:55:41.871 D/ThemeCompatibility(30547): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 13:55:41.877 D/ThemeCompatibility(30547): getConfigDocumentTree(): 140 vs -1
+11-13 13:55:41.877 D/ThemeCompatibility(30547):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 13:55:41.883 D/ThemeCompatibility(30547): END loading: version=140 size=48
+11-13 13:55:41.884 E/AssetManager(30547): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 13:55:41.884 E/AssetManager(30547): java.lang.RuntimeException
+11-13 13:55:41.884 E/AssetManager(30547): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 13:55:41.884 E/AssetManager(30547): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 13:55:41.884 E/AssetManager(30547): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 13:55:41.884 E/AssetManager(30547): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 13:55:41.884 E/AssetManager(30547): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 13:55:41.884 E/AssetManager(30547): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 13:55:41.884 E/AssetManager(30547): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 13:55:41.884 E/AssetManager(30547): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 13:55:41.884 E/AssetManager(30547): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 13:55:41.884 E/AssetManager(30547): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 13:55:41.884 E/AssetManager(30547): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 13:55:41.884 E/AssetManager(30547): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 13:55:41.884 E/AssetManager(30547): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 13:55:41.884 E/AssetManager(30547): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 13:55:41.884 E/AssetManager(30547): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 13:55:41.884 E/AssetManager(30547): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 13:55:41.884 E/AssetManager(30547): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 13:55:41.884 E/AssetManager(30547): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 13:55:41.884 E/AssetManager(30547): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 13:55:41.872 W/main    (30547): type=1400 audit(0.0:101348): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:55:41.886 W/asset   (30547): unable to execute idmap2: Permission denied
+11-13 13:55:41.887 W/AssetManager(30547): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 13:55:41.889 W/asset   (30547): unable to execute idmap2: Permission denied
+11-13 13:55:41.889 W/AssetManagerInjector(30547): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 13:55:41.917 I/FeatureParser(30547): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 13:55:41.960 W/Java7Support(30547): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 13:55:42.093 I/UiDevice(30547): Creating a new instance, old instance exists: false
+11-13 13:55:42.097 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:55:42.102 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:55:42.106 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:55:42.108 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+11-13 13:55:42.110 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@f04a448
+11-13 13:55:42.118 D/UiDevice(30547): Setting accessibility service flags: 65618
+11-13 13:55:42.131 I/uidumper(30547): clipboardManager inited
+11-13 13:55:42.134 I/uidumper(30547): tmpdir is /data/local/tmp/u2
+11-13 13:55:42.153 I/uidumper(30547): http server listening on *:9008
+11-13 13:55:42.675 D/UIAutomatorStub(30547): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:55:42.739 D/UIAutomatorStub(30547): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "count", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u4fdd\u5b58\u7f51\u5173\u5730\u5740"}]}}
+11-13 13:55:42.845 D/        (  771): readbrightness,out1:9
+11-13 13:55:42.845 D/        (  771): .
+11-13 13:55:42.845 D/        (  771): readbrightness,out2:9.
+11-13 13:55:42.849 D/UiObject(30547): Waiting 0ms for UiSelector[TEXT=保存网关地址].
+11-13 13:55:42.850 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:42.862 I/QueryController(30547): Matched selector: UiSelector[TEXT=保存网关地址] <<==>> [android.view.accessibility.AccessibilityNodeInfo@4d032; boundsInParent: Rect(0, 0 - 524, 96); boundsInScreen: Rect(98, 747 - 622, 843); packageName: com.jinyuni.dengbei_care; className: android.widget.Button; text: 保存网关地址; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: true; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_CLICK - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]]
+11-13 13:55:42.862 D/UiObject(30547): Waiting 0ms for UiSelector[TEXT=保存网关地址, INSTANCE=1].
+11-13 13:55:42.863 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:42.943 D/UIAutomatorStub(30547): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "waitForExists", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u4fdd\u5b58\u7f51\u5173\u5730\u5740"}, 10000]}}
+11-13 13:55:42.960 D/UiDevice(30547): Waiting 10000ms for SearchCondition[hasObject=BySelector [TEXT='\Q保存网关地址\E']].
+11-13 13:55:42.961 D/UiDevice(30547): Searching for node with selector: BySelector [TEXT='\Q保存网关地址\E'].
+11-13 13:55:42.961 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.066 D/UIAutomatorStub(30547): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "objInfo", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u4fdd\u5b58\u7f51\u5173\u5730\u5740"}]}}
+11-13 13:55:43.073 D/UiDevice(30547): Retrieving node with selector: BySelector [TEXT='\Q保存网关地址\E'].
+11-13 13:55:43.074 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.135 D/MqttService(29336): Attempting to reconnect to broker
+11-13 13:55:43.140 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.149 I/chatty  (30547): uid=2000(shell) app_process identical 2 lines
+11-13 13:55:43.153 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.155 I/MqttService(29336): Saved MAC address: 000000000000
+11-13 13:55:43.165 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.168 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.171 D/AlarmPingSender(29336): Unregister alarmreceiver to MqttServiceandroid_client
+11-13 13:55:43.171 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.177 I/chatty  (30547): uid=2000(shell) app_process identical 2 lines
+11-13 13:55:43.180 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.183 D/AlarmPingSender(29336): Unregister alarmreceiver to MqttServiceandroid_client
+11-13 13:55:43.183 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.186 I/chatty  (30547): uid=2000(shell) app_process identical 1 line
+11-13 13:55:43.190 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.190 E/MqttService(29336): Failed to connect to broker
+11-13 13:55:43.190 E/MqttService(29336): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-13 13:55:43.190 E/MqttService(29336): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:80)
+11-13 13:55:43.190 E/MqttService(29336): 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:132)
+11-13 13:55:43.190 E/MqttService(29336): 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-13 13:55:43.190 E/MqttService(29336): 	at java.lang.Thread.run(Thread.java:919)
+11-13 13:55:43.190 E/MqttService(29336): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-13 13:55:43.190 E/MqttService(29336): 	at libcore.io.IoBridge.connect(IoBridge.java:143)
+11-13 13:55:43.190 E/MqttService(29336): 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-13 13:55:43.190 E/MqttService(29336): 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-13 13:55:43.190 E/MqttService(29336): 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-13 13:55:43.190 E/MqttService(29336): 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-13 13:55:43.190 E/MqttService(29336): 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-13 13:55:43.190 E/MqttService(29336): 	at java.net.Socket.connect(Socket.java:621)
+11-13 13:55:43.190 E/MqttService(29336): 	at com.android.org.conscrypt.AbstractConscryptSocket.connect(AbstractConscryptSocket.java:156)
+11-13 13:55:43.190 E/MqttService(29336): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:74)
+11-13 13:55:43.190 E/MqttService(29336): 	... 3 more
+11-13 13:55:43.190 E/MqttService(29336): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-13 13:55:43.190 E/MqttService(29336): 	at libcore.io.Linux.connect(Native Method)
+11-13 13:55:43.190 E/MqttService(29336): 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-13 13:55:43.190 E/MqttService(29336): 	at libcore.io.BlockGuardOs.connect(BlockGuardOs.java:136)
+11-13 13:55:43.190 E/MqttService(29336): 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-13 13:55:43.190 E/MqttService(29336): 	at libcore.io.IoBridge.connectErrno(IoBridge.java:174)
+11-13 13:55:43.190 E/MqttService(29336): 	at libcore.io.IoBridge.connect(IoBridge.java:135)
+11-13 13:55:43.190 E/MqttService(29336): 	... 11 more
+11-13 13:55:43.193 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.203 I/chatty  (30547): uid=2000(shell) app_process identical 3 lines
+11-13 13:55:43.205 W/QueryController(30547): Could not detect idle state.
+11-13 13:55:43.303 D/UIAutomatorStub(30547): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "click", "params": [360.0, 795.0]}}
+11-13 13:55:43.449 I/GatewayBleSettings(29336): gateway_ble_addr saved=84:C2:E4:03:02:02 (platform mac_addr untouched)
+11-13 13:55:43.458 D/ForceDarkHelper(29336): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:55:43.512 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:55:43.460 D/ForceDarkHelper(29336): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:55:43.513 I/MqttService(29336): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-13 13:55:43.514 I/MqttService(29336): link_state=CONNECTING msg=正在连接网关…
+11-13 13:55:43.514 I/MqttService(29336): Attempt 1 to connect to Bluetooth device...
+11-13 13:55:43.516 D/BluetoothGatt(29336): connect() - device: 84:C2:E4:03:02:02, auto: false
+11-13 13:55:43.516 D/BluetoothGatt(29336): registerApp()
+11-13 13:55:43.516 D/BluetoothGatt(29336): registerApp() - UUID=92d24187-2805-4c91-90ab-540fcac0af86
+11-13 13:55:43.517 D/BtGatt.GattService(26457): registerClient() - UUID=92d24187-2805-4c91-90ab-540fcac0af86
+11-13 13:55:43.518 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 13:55:43.518 I/bt_stack(26457): [INFO:gatt_api.cc(959)] GATT_Register bab73f29-e417-8064-b3a8-39d18e19147d
+11-13 13:55:43.518 I/bt_stack(26457): [INFO:gatt_api.cc(979)] allocated gatt_if=6
+11-13 13:55:43.518 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=6
+11-13 13:55:43.518 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 13:55:43.519 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 13:55:43.519 D/BtGatt.GattService(26457): onClientRegistered() - UUID=92d24187-2805-4c91-90ab-540fcac0af86, clientIf=6
+11-13 13:55:43.519 D/BluetoothGatt(29336): onClientRegistered() - status=0 clientIf=6
+11-13 13:55:43.521 D/BtGatt.GattService(26457): clientConnect() - address=84:C2:E4:03:02:02, isDirect=true, opportunistic=false, phy=1
+11-13 13:55:43.521 D/bt_btif_config(26457): btif_get_address_type: Device [XXXX] address type 0
+11-13 13:55:43.521 D/bt_btif_config(26457): btif_get_device_type: Device [XXXX] type 2
+11-13 13:55:43.521 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:55:43.521 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_OPEN_EVT
+11-13 13:55:43.521 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x00 [GATTC_IDLE_ST], Event 0x1f00[BTA_GATTC_API_OPEN_EVT]
+11-13 13:55:43.521 I/bt_stack(26457): [INFO:gatt_api.cc(1131)] GATT_Connect gatt_if=6, address=84:c2:e4:03:02:02 is_direct 1
+11-13 13:55:43.521 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=0
+11-13 13:55:43.521 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1073)] gatt_set_ch_state: old=0 new=0x02
+11-13 13:55:43.521 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=2
+11-13 13:55:43.522 V/bt_stack(26457): [VERBOSE1:connection_manager.cc(216)] direct_connect_add : address:84:c2:e4:03:02:02
+11-13 13:55:43.522 V/bt_stack(26457): [VERBOSE1:btm_ble_bgconn.cc(488)] BTM_WhiteListAdd: 84:c2:e4:03:02:02
+11-13 13:55:43.522 I/Toast   (29336): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 13:55:43.522 V/bt_stack(26457): [VERBOSE1:connection_manager.cc(53)] scheduling timer %spc:0x83e5df5b
+11-13 13:55:43.522 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(359)] gatt_update_app_use_link_flag: is_add=1 chk_link=0
+11-13 13:55:43.522 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(325)] gatt_update_app_hold_link_status
+11-13 13:55:43.522 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(329)] added gatt_if=6
+11-13 13:55:43.522 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=2
+11-13 13:55:43.522 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1314)] GATT_GetConnIdIfConnected status= 0
+11-13 13:55:43.522 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x00 -> 0x01 after Event 0x1f00
+11-13 13:55:43.532 I/bt_stack(26457): [INFO:connection_manager.cc(277)] lower the scan parameters used for connecting
+11-13 13:55:43.532 V/bt_stack(26457): [VERBOSE1:btm_ble_bgconn.cc(506)] BTM_WhiteListRemove: 84:c2:e4:03:02:02
+11-13 13:55:43.532 V/bt_stack(26457): [VERBOSE1:btm_ble_bgconn.cc(89)] background_connection_remove : 84:c2:e4:03:02:02
+11-13 13:55:43.532 I/bt_stack(26457): [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-13 13:55:43.532 V/bt_stack(26457): [VERBOSE1:btm_ble.cc(1905)] btm_ble_connected Security Manager: handle:10 enc_mode:0000  bda: 84:c2:e4:03:02:02 RName:  p_dev_rec:0x94c26380
+11-13 13:55:43.532 W/bt_btm  (26457): btm_acl_created hci_handle=10 link_role=0  transport=2
+11-13 13:55:43.533 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:55:43.533 I/bt_stack(26457): [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-13 13:55:43.535 D/UIAutomatorStub(30547): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:55:43.567 I/uidumper(30547): detect toast:[爱守护：已保存网关地址]
+11-13 13:55:43.606 W/Parcel  ( 3361): **** enforceInterface() expected 'com.miui.gamebooster.service.ISecurityCenterNotificationListener' but read 'android.service.notification.INotificationListener'
+11-13 13:55:43.608 W/Binder  ( 3361): Caught a RuntimeException from the binder stub implementation.
+11-13 13:55:43.608 W/Binder  ( 3361): java.lang.SecurityException: Binder invocation to an incorrect interface
+11-13 13:55:43.608 W/Binder  ( 3361): 	at android.os.Parcel.nativeEnforceInterface(Native Method)
+11-13 13:55:43.608 W/Binder  ( 3361): 	at android.os.Parcel.enforceInterface(Parcel.java:626)
+11-13 13:55:43.608 W/Binder  ( 3361): 	at com.miui.gamebooster.service.ISecurityCenterNotificationListener$Stub.onTransact(Unknown Source:22)
+11-13 13:55:43.608 W/Binder  ( 3361): 	at android.os.Binder.execTransactInternal(Binder.java:1021)
+11-13 13:55:43.608 W/Binder  ( 3361): 	at android.os.Binder.execTransact(Binder.java:994)
+11-13 13:55:43.609 D/StatusBar( 1916): onNotificationPosted key=0|com.jinyuni.dengbei_care|1|null|10169 isUpdate=true
+11-13 13:55:43.611 D/StatusBar( 1916): updateNotification old=StatusBarNotification(pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null key=0|com.jinyuni.dengbei_care|1|null|10169: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+11-13 13:55:43.611 D/StatusBar( 1916):     pkgName=com.jinyuni.dengbei_care appUid=10169 sdk=34 imp=3 sysApp=F priApp=F hasShown=F float=F keyguard=F peek=F fullscreen=F
+11-13 13:55:43.611 D/StatusBar( 1916):     showMiuiAction=F enableFloat=T enableKeyguard=T floatTime=5000 messageCount=1 persistent=F customHeight=F customHideBorder=F
+11-13 13:55:43.612 D/AudioManager( 1577): getStreamVolume isRestricted mode = 0
+11-13 13:55:43.613 D/APM::AudioPolicyEngine(  653): XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-13 13:55:43.614 D/AudioManager( 1577): getStreamVolume isRestricted mode = 0
+11-13 13:55:43.614 D/APM::AudioPolicyEngine(  653): XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-13 13:55:43.624 V/onNotificationPostedCallBack( 3361): flags=98
+11-13 13:55:43.626 V/h       ( 3361): ret=0
+11-13 13:55:43.650 D/StatusBar( 1916): No peeking: unimportant notification: 0|com.jinyuni.dengbei_care|1|null|10169
+11-13 13:55:43.651 D/StatusBar( 1916): updateHeadsUp wasHeadsUp=false shouldPeek=false alertAgain=true
+11-13 13:55:43.797 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(457)] GATT   ATT protocol channel with BDA: 84:c2:e4:03:02:02 is connected
+11-13 13:55:43.797 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(312)] gatt_is_bda_in_the_srv_chg_clt_list: 84:c2:e4:03:02:02
+11-13 13:55:43.797 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=2
+11-13 13:55:43.798 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1073)] gatt_set_ch_state: old=2 new=0x04
+11-13 13:55:43.798 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(858)] gatt_send_conn_cback : address 84:c2:e4:03:02:02
+11-13 13:55:43.798 V/bt_stack(26457): [VERBOSE1:gatt_attr.cc(245)] gatt_connect_cback: from 84:c2:e4:03:02:02 connected: 1, conn_id: 0x0001reason: 000000
+11-13 13:55:43.798 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(936)] GATT_SetIdleTimeout idle_tout=65535, status=1 (1-OK 0-not performed)
+11-13 13:55:43.798 W/bt_btm  (26457): btm_read_remote_version_complete lmp_version 12 manufacturer 2007 lmp_subversion 49424
+11-13 13:55:43.798 E/bt_btif (26457): bta_dm_acl_change new acl connetion:count = 1
+11-13 13:55:43.798 W/bt_btif (26457): bta_dm_acl_change info: 0x0
+11-13 13:55:43.798 W/bt_l2cap(26457): L2CA_SetDesireRole() new:x1, disallow_switch:0
+11-13 13:55:43.798 D/bt_btif_dm(26457): remote version info [XXXX]: 0, 0, 0
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 3
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 4
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 5
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x01 [GATTC_W4_CONN_ST], Event 0x1f0c[BTA_GATTC_INT_CONN_EVT]
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(462)] bta_gattc_conn: server cache state=0
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(465)] bta_gattc_conn: conn_id=0x0006
+11-13 13:55:43.799 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1278)] GATT_GetConnectionInfor conn_id=0x0006
+11-13 13:55:43.800 E/bt_stack(26457): [ERROR:bta_gattc_cache.cc(733)] bta_gattc_cache_load: can't open GATT cache file /data/misc/bluetooth/gatt_cache_84c2e4030202 for reading, error: No such file or directory
+11-13 13:55:43.800 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(641)] bta_gattc_start_discover: conn_id:0x0006 p_clcb->p_srcb->state:3
+11-13 13:55:43.800 I/bt_stack(26457): [INFO:hearing_aid.cc(1804)] GetDeviceCount: Not initialized yet
+11-13 13:55:43.801 I/bt_stack(26457): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=1, s_handle=0x0001, e_handle=0xffff
+11-13 13:55:43.801 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x01 -> 0x03 after Event 0x1f0c
+11-13 13:55:43.805 D/BtGatt.GattService(26457): onConnected() - clientIf=6, connId=6, address=84:C2:E4:03:02:02
+11-13 13:55:43.807 W/BluetoothEventManager( 1916): AclStateChangedHandler: activeDevice is null
+11-13 13:55:43.812 D/BluetoothGatt(29336): onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-13 13:55:43.812 W/BluetoothEventManager(27265): AclStateChangedHandler: activeDevice is null
+11-13 13:55:43.812 I/MqttService(29336): Connected to device, discovering services...
+11-13 13:55:43.817 I/CNSS    ( 2817): EVENT_WLAN_LOG_COMPLETE event received Reason code 4104	 indicator = 3	 ring_id = 0
+11-13 13:55:43.822 D/BluetoothGatt(29336): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-13 13:55:43.823 D/BtGatt.GattService(26457): configureMTU() - address=84:C2:E4:03:02:02 mtu=240
+11-13 13:55:43.823 E/WifiHAL (  606): Received fatal event, sending alert
+11-13 13:55:43.824 W/WifiVendorHal( 1577): onDebugErrorAlert 4104
+11-13 13:55:43.824 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CFG_MTU_EVT
+11-13 13:55:43.824 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x03 [GATTC_DISCOVER_ST], Event 0x1f07[BTA_GATTC_API_CFG_MTU_EVT]
+11-13 13:55:43.824 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x03 -> 0x03 after Event 0x1f07
+11-13 13:55:43.827 W/WifiDiags( 1577): CaptureBugReport 3848
+11-13 13:55:43.846 D/        (  771): readbrightness,out1:9
+11-13 13:55:43.846 D/        (  771): .
+11-13 13:55:43.846 D/        (  771): readbrightness,out2:9.
+11-13 13:55:43.846 I/CNSS    ( 2817): EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-13 13:55:43.925 I/chatty  ( 2817): uid=1000(system) /system/vendor/bin/cnss_diag identical 3 lines
+11-13 13:55:43.953 I/CNSS    ( 2817): EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-13 13:55:43.954 E/WifiHAL (  606): Error reading from socket
+11-13 13:55:43.954 E/WifiHAL (  606): Error :-5 while reading nl msg
+11-13 13:55:43.992 W/bt_l2cap(26457): l2cble_process_conn_update_evt: Error status: 32
+11-13 13:55:43.992 D/BtGatt.GattService(26457): onClientConnUpdate() - connId=6, status=32
+11-13 13:55:43.993 D/BluetoothGatt(29336): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=32
+11-13 13:55:44.041 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:44.041 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 17, msg_len = 7
+11-13 13:55:44.041 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 17, len = 7rsp_code: 17
+11-13 13:55:44.041 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-13 13:55:44.041 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=1
+11-13 13:55:44.041 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-13 13:55:44.041 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(168)] Start service discovery
+11-13 13:55:44.041 I/bt_stack(26457): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=3, s_handle=0x0001, e_handle=0xffff
+11-13 13:55:44.070 D/UIAutomatorStub(30547): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:55:44.186 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:44.187 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 1, msg_len = 4
+11-13 13:55:44.187 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 1, len = 4rsp_code: 9
+11-13 13:55:44.187 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(519)] gatt_process_error_rsp
+11-13 13:55:44.187 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(481)] gatt_proc_disc_error_rspreason: 0a cmd_code 0008
+11-13 13:55:44.187 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(491)] Discovery completed
+11-13 13:55:44.187 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=3
+11-13 13:55:44.187 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-13 13:55:44.187 I/bt_stack(26457): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=4, s_handle=0x0001, e_handle=0xffff
+11-13 13:55:44.284 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:44.285 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 9, msg_len = 22
+11-13 13:55:44.285 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 9, len = 22rsp_code: 9
+11-13 13:55:44.285 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-13 13:55:44.285 I/chatty  (26457): uid=1002(bluetooth) btu message loo identical 1 line
+11-13 13:55:44.285 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-13 13:55:44.381 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:44.382 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 9, msg_len = 8
+11-13 13:55:44.382 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 9, len = 8rsp_code: 9
+11-13 13:55:44.382 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-13 13:55:44.480 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:44.480 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 1, msg_len = 4
+11-13 13:55:44.480 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 1, len = 4rsp_code: 9
+11-13 13:55:44.480 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(519)] gatt_process_error_rsp
+11-13 13:55:44.480 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(481)] gatt_proc_disc_error_rspreason: 0a cmd_code 0008
+11-13 13:55:44.480 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(491)] Discovery completed
+11-13 13:55:44.480 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=4
+11-13 13:55:44.480 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-13 13:55:44.480 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-13 13:55:44.481 I/bt_stack(26457): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x0004, e_handle=0x0004
+11-13 13:55:44.568 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 13:55:44.576 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:44.577 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-13 13:55:44.577 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-13 13:55:44.577 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-13 13:55:44.577 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-13 13:55:44.577 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-13 13:55:44.577 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-13 13:55:44.577 I/bt_stack(26457): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x0007, e_handle=0x0007
+11-13 13:55:44.601 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@941fc1d
+11-13 13:55:44.605 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:55:44.609 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:55:44.609 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:55:44.609 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:55:44.612 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 13:55:44.612 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:55:44.620 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:55:44.674 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:44.674 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-13 13:55:44.674 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-13 13:55:44.674 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-13 13:55:44.674 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-13 13:55:44.675 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-13 13:55:44.675 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-13 13:55:44.675 I/bt_stack(26457): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x000a, e_handle=0x000a
+11-13 13:55:44.846 D/        (  771): readbrightness,out1:9
+11-13 13:55:44.846 D/        (  771): .
+11-13 13:55:44.846 D/        (  771): readbrightness,out2:9.
+11-13 13:55:44.871 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:44.871 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-13 13:55:44.872 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-13 13:55:44.872 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-13 13:55:44.872 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-13 13:55:44.872 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-13 13:55:44.872 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-13 13:55:44.872 I/bt_stack(26457): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x000d, e_handle=0xffff
+11-13 13:55:44.969 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:44.969 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-13 13:55:44.970 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-13 13:55:44.970 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-13 13:55:45.162 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:45.162 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 1, msg_len = 4
+11-13 13:55:45.162 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 1, len = 4rsp_code: 5
+11-13 13:55:45.162 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(519)] gatt_process_error_rsp
+11-13 13:55:45.162 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(481)] gatt_proc_disc_error_rspreason: 0a cmd_code 0004
+11-13 13:55:45.162 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(491)] Discovery completed
+11-13 13:55:45.162 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-13 13:55:45.162 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-13 13:55:45.163 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-13 13:55:45.163 I/bt_stack(26457): [INFO:bta_gattc_cache.cc(183)] bta_gattc_explore_srvc_finished: service discovery finished
+11-13 13:55:45.163 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x03 [GATTC_DISCOVER_ST], Event 0x1f0e[BTA_GATTC_DISCOVER_CMPL_EVT]
+11-13 13:55:45.163 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(693)] bta_gattc_disc_cmpl: conn_id=0x0006
+11-13 13:55:45.163 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f07[BTA_GATTC_API_CFG_MTU_EVT]
+11-13 13:55:45.163 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(578)] GATTC_ConfigureMTU: conn_id=0x0006, mtu=240
+11-13 13:55:45.163 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f07
+11-13 13:55:45.164 E/bt_btif_gattc(26457): btif_gattc_upstreams_evt: Unhandled event (8)!
+11-13 13:55:45.164 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x03 -> 0x02 after Event 0x1f0e
+11-13 13:55:45.505 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@7d495c1
+11-13 13:55:45.595 D/IdProviderImpl(15906): getOAID
+11-13 13:55:45.698 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:45.698 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 3, msg_len = 2
+11-13 13:55:45.698 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 3, len = 2rsp_code: 3
+11-13 13:55:45.698 W/bt_l2cap(26457): l2cble_set_fixed_channel_tx_data_length, request not supported
+11-13 13:55:45.698 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=5 subtype=0
+11-13 13:55:45.698 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(1309)] bta_gattc_cmpl_cback: conn_id:6 op:5 status:0
+11-13 13:55:45.698 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_OP_CMPL_EVT
+11-13 13:55:45.699 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f0f[BTA_GATTC_OP_CMPL_EVT]
+11-13 13:55:45.699 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(936)] bta_gattc_op_cmpl: op:5
+11-13 13:55:45.699 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f0f
+11-13 13:55:45.699 D/BtGatt.GattService(26457): onConfigureMTU() address=84:C2:E4:03:02:02, status=0, mtu=240
+11-13 13:55:45.702 D/BluetoothGatt(29336): onConfigureMTU() - Device=84:C2:E4:03:02:02 mtu=240 status=0
+11-13 13:55:45.702 I/MqttService(29336): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-13 13:55:45.702 D/BluetoothGatt(29336): discoverServices() - device: 84:C2:E4:03:02:02
+11-13 13:55:45.704 D/BtGatt.GattService(26457): discoverServices() - address=84:C2:E4:03:02:02, connId=6
+11-13 13:55:45.704 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_SEARCH_EVT
+11-13 13:55:45.704 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f09[BTA_GATTC_API_SEARCH_EVT]
+11-13 13:55:45.704 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(1004)] bta_gattc_search: conn_id=0x0006
+11-13 13:55:45.705 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f09
+11-13 13:55:45.705 D/BtGatt.GattService(26457): onSearchCompleted() - connId=6, status=0
+11-13 13:55:45.706 D/bt_bta_gattc(26457): bta_gattc_get_gatt_db
+11-13 13:55:45.706 V/bt_stack(26457): [VERBOSE1:bta_gattc_cache.cc(618)] bta_gattc_get_gatt_db_impl: start_handle 0x0000, end_handle 0xffff
+11-13 13:55:45.706 D/BtGatt.GattService(26457): onGetGattDb() - address=84:C2:E4:03:02:02
+11-13 13:55:45.707 D/BtGatt.GattService(26457): got service with UUID=0000ffe0-0000-1000-8000-00805f9b34fb id: 1
+11-13 13:55:45.707 D/BtGatt.GattService(26457): got characteristic with UUID=0000ffe1-0000-1000-8000-00805f9b34fb id: 3
+11-13 13:55:45.707 D/BtGatt.GattService(26457): got descriptor with UUID=00002901-0000-1000-8000-00805f9b34fb id: 4
+11-13 13:55:45.707 D/BtGatt.GattService(26457): got characteristic with UUID=0000ffe2-0000-1000-8000-00805f9b34fb id: 6
+11-13 13:55:45.707 D/BtGatt.GattService(26457): got descriptor with UUID=00002901-0000-1000-8000-00805f9b34fb id: 7
+11-13 13:55:45.707 D/BtGatt.GattService(26457): got characteristic with UUID=0000ffe3-0000-1000-8000-00805f9b34fb id: 9
+11-13 13:55:45.707 D/BtGatt.GattService(26457): got descriptor with UUID=00002901-0000-1000-8000-00805f9b34fb id: 10
+11-13 13:55:45.707 D/BtGatt.GattService(26457): got characteristic with UUID=0000ffe4-0000-1000-8000-00805f9b34fb id: 12
+11-13 13:55:45.707 D/BtGatt.GattService(26457): got descriptor with UUID=00002901-0000-1000-8000-00805f9b34fb id: 13
+11-13 13:55:45.709 D/BluetoothGatt(29336): onSearchComplete() = Device=84:C2:E4:03:02:02 Status=0
+11-13 13:55:45.718 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_READ_EVT
+11-13 13:55:45.718 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f04[BTA_GATTC_API_READ_EVT]
+11-13 13:55:45.719 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(701)] GATTC_Read: conn_id=0x0006, type=0x02
+11-13 13:55:45.719 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f04
+11-13 13:55:45.847 D/        (  771): readbrightness,out1:9
+11-13 13:55:45.847 D/        (  771): .
+11-13 13:55:45.847 D/        (  771): readbrightness,out2:9.
+11-13 13:55:46.090 D/BtGatt.GattService(26457): onClientConnUpdate() - connId=6, status=0
+11-13 13:55:46.091 D/BluetoothGatt(29336): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=0
+11-13 13:55:46.478 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:46.478 I/bt_stack(26457): [INFO:gatt_main.cc(915)] gatt_data_process op_code = 11, msg_len = 160
+11-13 13:55:46.478 V/bt_stack(26457): [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 11, len = 160rsp_code: 11
+11-13 13:55:46.479 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=2 subtype=2
+11-13 13:55:46.479 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(1309)] bta_gattc_cmpl_cback: conn_id:6 op:2 status:0
+11-13 13:55:46.479 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_OP_CMPL_EVT
+11-13 13:55:46.479 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f0f[BTA_GATTC_OP_CMPL_EVT]
+11-13 13:55:46.479 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(936)] bta_gattc_op_cmpl: op:2
+11-13 13:55:46.479 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f0f
+11-13 13:55:46.481 I/MqttService(29336): cipher length = 160
+11-13 13:55:46.483 W/MqttService(29336): BLE frame rejected: NO_DEVICE (devCount=0) link_state=GATEWAY_NO_DEVICE
+11-13 13:55:46.484 I/MqttService(29336): link_state=GATEWAY_NO_DEVICE msg=网关已连接，暂无设备（N=0）
+11-13 13:55:46.484 I/MqttService(29336): No ids to write (or capacity exceeded)
+11-13 13:55:46.486 D/BluetoothGatt(29336): cancelOpen() - device: 84:C2:E4:03:02:02
+11-13 13:55:46.487 D/BluetoothGatt(29336): cancelOpen() - device: 84:C2:E4:03:02:02
+11-13 13:55:46.487 D/BtGatt.GattService(26457): clientDisconnect() - address=84:C2:E4:03:02:02, connId=6
+11-13 13:55:46.487 D/BluetoothGatt(29336): close()
+11-13 13:55:46.488 D/BluetoothGatt(29336): unregisterApp() - mClientIf=6
+11-13 13:55:46.488 D/BtGatt.GattService(26457): clientDisconnect() - address=84:C2:E4:03:02:02, connId=6
+11-13 13:55:46.488 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CLOSE_EVT
+11-13 13:55:46.488 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f08[BTA_GATTC_API_CLOSE_EVT]
+11-13 13:55:46.488 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(538)] bta_gattc_close: conn_id=0x0006
+11-13 13:55:46.488 I/bt_stack(26457): [INFO:gatt_api.cc(1246)] GATT_Disconnect conn_id=0x0006
+11-13 13:55:46.488 D/BluetoothGatt(29336): close()
+11-13 13:55:46.488 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(359)] gatt_update_app_use_link_flag: is_add=0 chk_link=1
+11-13 13:55:46.488 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(325)] gatt_update_app_hold_link_status
+11-13 13:55:46.488 D/BluetoothGatt(29336): unregisterApp() - mClientIf=6
+11-13 13:55:46.488 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(342)] removed gatt_if=6
+11-13 13:55:46.488 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(389)]  start link idle timer = 1 sec
+11-13 13:55:46.489 D/BtGatt.GattService(26457): unregisterClient() - clientIf=6
+11-13 13:55:46.489 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(936)] GATT_SetIdleTimeout idle_tout=1, status=1 (1-OK 0-not performed)
+11-13 13:55:46.489 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x00 after Event 0x1f08
+11-13 13:55:46.489 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CANCEL_OPEN_EVT
+11-13 13:55:46.489 E/bt_stack(26457): [ERROR:bta_gattc_utils.cc(458)] bta_gattc_mark_bg_conn unable to find the bg connection mask for bd_addr=XXXX
+11-13 13:55:46.489 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CLOSE_EVT
+11-13 13:55:46.489 D/BtGatt.GattService(26457): onDisconnected() - clientIf=6, connId=6, address=84:C2:E4:03:02:02
+11-13 13:55:46.489 D/BtGatt.GattService(26457): unregisterClient() - clientIf=6
+11-13 13:55:46.489 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 6
+11-13 13:55:46.489 E/BtGatt.ContextMap(26457): Context not found for ID 6
+11-13 13:55:46.489 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CANCEL_OPEN_EVT
+11-13 13:55:46.489 E/bt_stack(26457): [ERROR:bta_gattc_utils.cc(458)] bta_gattc_mark_bg_conn unable to find the bg connection mask for bd_addr=XXXX
+11-13 13:55:46.490 I/MqttService(29336): Successfully connected and read data on attempt 1
+11-13 13:55:46.491 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=6
+11-13 13:55:46.491 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-13 13:55:46.491 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(307)] gatt_is_app_holding_linkgatt_if= 6not found;
+11-13 13:55:46.491 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(359)] gatt_update_app_use_link_flag: is_add=0 chk_link=1
+11-13 13:55:46.491 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(325)] gatt_update_app_hold_link_status
+11-13 13:55:46.491 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(338)] attempt to remove nonexisting gatt_if=6
+11-13 13:55:46.491 V/bt_stack(26457): [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x06
+11-13 13:55:46.492 E/bt_stack(26457): [ERROR:bta_gattc_act.cc(211)] bta_gattc_deregister: Deregister Failed unknown client cif
+11-13 13:55:46.494 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:55:46.494 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:55:46.494 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:55:46.496 D/MiuiNearbyService(27265): getNearbyService() - returning com.android.bluetooth.ble.app.MiuiNearbyService@967c12b
+11-13 13:55:46.496 E/MiuiThirdPartAppScanManager(27265): DeviceDisconnected : 84:C2:E4:03:02:02
+11-13 13:55:46.847 D/        (  771): readbrightness,out1:9
+11-13 13:55:46.847 D/        (  771): .
+11-13 13:55:46.848 D/        (  771): readbrightness,out2:9.
+11-13 13:55:47.016 W/WindowManager( 1577): Unable to start animation, surface is null or no children.
+11-13 13:55:47.513 I/bt_stack(26457): [INFO:btsnoop.cc(380)] clear_l2cap_whitelist: Clearing whitelist from l2cap channel. conn_handle=10 cid=4:4
+11-13 13:55:47.513 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(457)] GATT   ATT protocol channel with BDA: 84:c2:e4:03:02:02 is disconnected
+11-13 13:55:47.514 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(312)] gatt_is_bda_in_the_srv_chg_clt_list: 84:c2:e4:03:02:02
+11-13 13:55:47.514 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1247)] gatt_cleanup_upon_disc
+11-13 13:55:47.514 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1073)] gatt_set_ch_state: old=4 new=0000
+11-13 13:55:47.514 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(92)] gatt_free_pending_ind
+11-13 13:55:47.514 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=1  conn_id=0x1
+11-13 13:55:47.514 V/bt_stack(26457): [VERBOSE1:gatt_attr.cc(245)] gatt_connect_cback: from 84:c2:e4:03:02:02 connected: 0, conn_id: 0x0001reason: 0x0016
+11-13 13:55:47.514 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=2  conn_id=0x2
+11-13 13:55:47.514 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=3  conn_id=0x3
+11-13 13:55:47.514 W/bt_stack(26457): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=3 connected=0 conn_id=0x0003 reason=0x0016
+11-13 13:55:47.514 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=4  conn_id=0x4
+11-13 13:55:47.514 W/bt_stack(26457): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=4 connected=0 conn_id=0x0004 reason=0x0016
+11-13 13:55:47.514 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=5  conn_id=0x5
+11-13 13:55:47.515 W/bt_stack(26457): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=5 connected=0 conn_id=0x0005 reason=0x0016
+11-13 13:55:47.515 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1287)] gatt_cleanup_upon_disc: exit
+11-13 13:55:47.515 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(470)] ATT disconnected
+11-13 13:55:47.515 I/bt_btm_sec(26457): btm_sec_disconnected clearing pending flag handle:10 reason:22
+11-13 13:55:47.515 I/bt_stack(26457): [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-13 13:55:47.515 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-13 13:55:47.515 V/bt_stack(26457): [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:3 not used by BTA
+11-13 13:55:47.515 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 3
+11-13 13:55:47.515 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-13 13:55:47.515 V/bt_stack(26457): [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:4 not used by BTA
+11-13 13:55:47.515 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 4
+11-13 13:55:47.515 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-13 13:55:47.515 V/bt_stack(26457): [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:5 not used by BTA
+11-13 13:55:47.516 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 5
+11-13 13:55:47.516 W/bt_l2cap(26457): L2CA_SetDesireRole() new:x1, disallow_switch:0
+11-13 13:55:47.516 D/bt_btif (26457): btif_av_move_idle: Already in IDLE
+11-13 13:55:47.523 W/BluetoothEventManager(27265): AclStateChangedHandler: activeDevice is null
+11-13 13:55:47.524 D/BluetoothMapService(26457): onReceive: android.bluetooth.device.action.ACL_DISCONNECTED
+11-13 13:55:47.524 I/BluetoothMapService(26457): sRemoteDevice :null device:84:C2:E4:03:02:02
+11-13 13:55:47.524 W/BluetoothEventManager( 1916): AclStateChangedHandler: activeDevice is null
+11-13 13:55:47.849 D/        (  771): readbrightness,out1:9
+11-13 13:55:47.849 D/        (  771): .
+11-13 13:55:47.849 D/        (  771): readbrightness,out2:9.
+11-13 13:55:48.851 D/        (  771): readbrightness,out1:9
+11-13 13:55:48.851 D/        (  771): .
+11-13 13:55:48.851 D/        (  771): readbrightness,out2:9.
+11-13 13:55:49.851 D/        (  771): readbrightness,out1:9
+11-13 13:55:49.851 D/        (  771): .
+11-13 13:55:49.851 D/        (  771): readbrightness,out2:9.
+11-13 13:55:50.853 D/        (  771): readbrightness,out1:9
+11-13 13:55:50.853 D/        (  771): .
+11-13 13:55:50.853 D/        (  771): readbrightness,out2:9.
+11-13 13:55:51.855 D/        (  771): readbrightness,out1:9
+11-13 13:55:51.855 D/        (  771): .
+11-13 13:55:51.855 D/        (  771): readbrightness,out2:9.
+11-13 13:55:52.856 D/        (  771): readbrightness,out1:9
+11-13 13:55:52.856 D/        (  771): .
+11-13 13:55:52.856 D/        (  771): readbrightness,out2:9.
+11-13 13:55:53.820 D/StatusBar( 1916): updateNotificationRankingDelayed messageReceiveTime=932783140
+11-13 13:55:53.857 D/        (  771): readbrightness,out1:9
+11-13 13:55:53.857 D/        (  771): .
+11-13 13:55:53.857 D/        (  771): readbrightness,out2:9.
+11-13 13:55:54.482 I/AppOpsAdapter( 4289): start apply permission record!, writeAll:true
+11-13 13:55:54.483 I/DatabaseUtil( 4289): writeApplyOperatorDetailInfo
+11-13 13:55:54.555 I/chatty  ( 4289): uid=10062(com.lbe.security.miui) PermissionRecor identical 2 lines
+11-13 13:55:54.558 I/DatabaseUtil( 4289): writeApplyOperatorDetailInfo
+11-13 13:55:54.857 D/        (  771): readbrightness,out1:9
+11-13 13:55:54.857 D/        (  771): .
+11-13 13:55:54.857 D/        (  771): readbrightness,out2:9.
+11-13 13:55:55.858 D/        (  771): readbrightness,out1:9
+11-13 13:55:55.858 D/        (  771): .
+11-13 13:55:55.858 D/        (  771): readbrightness,out2:9.
+11-13 13:55:56.491 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@1f9b460
+11-13 13:55:56.859 D/        (  771): readbrightness,out1:9
+11-13 13:55:56.859 D/        (  771): .
+11-13 13:55:56.859 D/        (  771): readbrightness,out2:9.

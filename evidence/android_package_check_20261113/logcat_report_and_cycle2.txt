@@ -1,0 +1,675 @@
+--------- beginning of main
+11-13 13:52:21.643 D/        (  771): readbrightness,out1:9
+11-13 13:52:21.643 D/        (  771): .
+11-13 13:52:21.643 D/        (  771): readbrightness,out2:9.
+11-13 13:52:22.202 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:22.326 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:22.643 D/        (  771): readbrightness,out1:9
+11-13 13:52:22.643 D/        (  771): .
+11-13 13:52:22.643 D/        (  771): readbrightness,out2:9.
+11-13 13:52:22.677 D/AndroidRuntime(30294): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:52:22.684 E/libc    (30294): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:52:22.672 W/app_process(30294): type=1400 audit(0.0:101291): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:22.684 I/AndroidRuntime(30294): Using default boot image
+11-13 13:52:22.672 W/app_process(30294): type=1400 audit(0.0:101292): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:22.672 W/app_process(30294): type=1400 audit(0.0:101293): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:22.684 E/libc    (30294): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:52:22.684 I/AndroidRuntime(30294): Leaving lock profiling enabled
+11-13 13:52:22.684 E/libc    (30294): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:52:22.691 W/app_process(30294): Could not reserve sentinel fault page
+11-13 13:52:22.816 D/ICU     (30294): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:52:22.887 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:23.134 W/app_process(30294): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:52:23.149 D/AndroidRuntime(30294): Calling main entry com.wetest.uia2.Main
+11-13 13:52:23.160 I/uidumper(30294): [UiAutomator2Server] Starting Server
+11-13 13:52:23.195 D/ThemeCompatibility(30294): START loading theme compatibility config.
+11-13 13:52:23.196 D/ThemeCompatibility(30294): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 13:52:23.202 D/ThemeCompatibility(30294): getConfigDocumentTree(): 140 vs -1
+11-13 13:52:23.202 D/ThemeCompatibility(30294):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 13:52:23.207 D/ThemeCompatibility(30294): END loading: version=140 size=48
+11-13 13:52:23.208 E/AssetManager(30294): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 13:52:23.208 E/AssetManager(30294): java.lang.RuntimeException
+11-13 13:52:23.208 E/AssetManager(30294): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 13:52:23.208 E/AssetManager(30294): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 13:52:23.208 E/AssetManager(30294): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 13:52:23.208 E/AssetManager(30294): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 13:52:23.208 E/AssetManager(30294): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 13:52:23.208 E/AssetManager(30294): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 13:52:23.208 E/AssetManager(30294): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 13:52:23.208 E/AssetManager(30294): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 13:52:23.208 E/AssetManager(30294): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 13:52:23.208 E/AssetManager(30294): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 13:52:23.208 E/AssetManager(30294): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 13:52:23.208 E/AssetManager(30294): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 13:52:23.208 E/AssetManager(30294): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 13:52:23.208 E/AssetManager(30294): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 13:52:23.208 E/AssetManager(30294): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 13:52:23.208 E/AssetManager(30294): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 13:52:23.208 E/AssetManager(30294): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 13:52:23.208 E/AssetManager(30294): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 13:52:23.208 E/AssetManager(30294): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 13:52:23.202 W/main    (30294): type=1400 audit(0.0:101294): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:52:23.212 W/asset   (30294): unable to execute idmap2: Permission denied
+11-13 13:52:23.212 W/AssetManager(30294): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 13:52:23.202 W/main    (30294): type=1400 audit(0.0:101295): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:52:23.214 W/asset   (30294): unable to execute idmap2: Permission denied
+11-13 13:52:23.214 W/AssetManagerInjector(30294): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 13:52:23.242 I/FeatureParser(30294): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 13:52:23.285 W/Java7Support(30294): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 13:52:23.419 I/UiDevice(30294): Creating a new instance, old instance exists: false
+11-13 13:52:23.429 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:23.431 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:23.433 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+--------- beginning of system
+11-13 13:52:23.438 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@d6be435
+11-13 13:52:23.445 D/UiDevice(30294): Setting accessibility service flags: 65618
+11-13 13:52:23.455 I/uidumper(30294): clipboardManager inited
+11-13 13:52:23.459 I/uidumper(30294): tmpdir is /data/local/tmp/u2
+11-13 13:52:23.465 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:23.477 I/uidumper(30294): http server listening on *:9008
+11-13 13:52:23.645 D/        (  771): readbrightness,out1:9
+11-13 13:52:23.645 D/        (  771): .
+11-13 13:52:23.645 D/        (  771): readbrightness,out2:9.
+11-13 13:52:24.047 D/UIAutomatorStub(30294): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:24.128 D/UIAutomatorStub(30294): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "dumpWindowHierarchy", "params": [false, 50]}}
+11-13 13:52:24.203 W/QueryController(30294): Could not detect idle state.
+11-13 13:52:24.204 W/QueryController(30294): Could not detect idle state.
+11-13 13:52:24.287 I/AccessibilityNodeInfoDumper(30294): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@16484; boundsInParent: Rect(0, 0 - 720, 500); boundsInScreen: Rect(0, 0 - 720, 55); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/heads_up_scrim; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 13:52:24.316 I/AccessibilityNodeInfoDumper(30294): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8f949; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(35, 34 - 35, 34); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_prompt_content_container; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 13:52:24.318 I/AccessibilityNodeInfoDumper(30294): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@9da85; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(584, 35 - 584, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_1; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 13:52:24.318 I/AccessibilityNodeInfoDumper(30294): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@9d303; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(584, 35 - 584, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_0; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 13:52:24.319 I/AccessibilityNodeInfoDumper(30294): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@a6cec; boundsInParent: Rect(0, 0 - 0, 38); boundsInScreen: Rect(618, 16 - 618, 54); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 13:52:24.425 D/UIAutomatorStub(30294): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:24.646 D/        (  771): readbrightness,out1:9
+11-13 13:52:24.646 D/        (  771): .
+11-13 13:52:24.646 D/        (  771): readbrightness,out2:9.
+11-13 13:52:24.986 D/UIAutomatorStub(30294): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:25.364 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 13:52:25.395 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@72a1717
+11-13 13:52:25.398 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:25.403 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:52:25.403 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:52:25.403 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:52:25.406 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 13:52:25.408 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:25.560 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:25.646 D/        (  771): readbrightness,out1:9
+11-13 13:52:25.646 D/        (  771): .
+11-13 13:52:25.646 D/        (  771): readbrightness,out2:9.
+11-13 13:52:26.647 D/        (  771): readbrightness,out1:9
+11-13 13:52:26.647 D/        (  771): .
+11-13 13:52:26.647 D/        (  771): readbrightness,out2:9.
+11-13 13:52:27.648 D/        (  771): readbrightness,out1:9
+11-13 13:52:27.648 D/        (  771): .
+11-13 13:52:27.648 D/        (  771): readbrightness,out2:9.
+11-13 13:52:28.650 D/        (  771): readbrightness,out1:9
+11-13 13:52:28.650 D/        (  771): .
+11-13 13:52:28.650 D/        (  771): readbrightness,out2:9.
+11-13 13:52:29.650 D/        (  771): readbrightness,out1:9
+11-13 13:52:29.650 D/        (  771): .
+11-13 13:52:29.650 D/        (  771): readbrightness,out2:9.
+11-13 13:52:30.651 D/        (  771): readbrightness,out1:9
+11-13 13:52:30.651 D/        (  771): .
+11-13 13:52:30.651 D/        (  771): readbrightness,out2:9.
+11-13 13:52:31.382 W/swapper/5(    0): type=1400 audit(0.0:101296): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:52:31.653 D/        (  771): readbrightness,out1:9
+11-13 13:52:31.653 D/        (  771): .
+11-13 13:52:31.653 D/        (  771): readbrightness,out2:9.
+11-13 13:52:32.654 D/        (  771): readbrightness,out1:9
+11-13 13:52:32.654 D/        (  771): .
+11-13 13:52:32.654 D/        (  771): readbrightness,out2:9.
+11-13 13:52:33.654 D/        (  771): readbrightness,out1:9
+11-13 13:52:33.654 D/        (  771): .
+11-13 13:52:33.655 D/        (  771): readbrightness,out2:9.
+11-13 13:52:34.656 D/        (  771): readbrightness,out1:9
+11-13 13:52:34.656 D/        (  771): .
+11-13 13:52:34.656 D/        (  771): readbrightness,out2:9.
+11-13 13:52:35.656 D/        (  771): readbrightness,out1:9
+11-13 13:52:35.656 D/        (  771): .
+11-13 13:52:35.656 D/        (  771): readbrightness,out2:9.
+11-13 13:52:36.657 D/        (  771): readbrightness,out1:9
+11-13 13:52:36.657 D/        (  771): .
+11-13 13:52:36.657 D/        (  771): readbrightness,out2:9.
+11-13 13:52:37.658 D/        (  771): readbrightness,out1:9
+11-13 13:52:37.658 D/        (  771): .
+11-13 13:52:37.658 D/        (  771): readbrightness,out2:9.
+11-13 13:52:38.659 D/        (  771): readbrightness,out1:9
+11-13 13:52:38.659 D/        (  771): .
+11-13 13:52:38.659 D/        (  771): readbrightness,out2:9.
+11-13 13:52:39.084 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:39.207 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:39.568 D/AndroidRuntime(30320): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:52:39.562 W/app_process(30320): type=1400 audit(0.0:101297): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:39.562 W/app_process(30320): type=1400 audit(0.0:101298): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:39.574 E/libc    (30320): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:52:39.574 I/AndroidRuntime(30320): Using default boot image
+11-13 13:52:39.574 E/libc    (30320): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:52:39.574 I/AndroidRuntime(30320): Leaving lock profiling enabled
+11-13 13:52:39.575 E/libc    (30320): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:52:39.562 W/app_process(30320): type=1400 audit(0.0:101299): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:39.581 W/app_process(30320): Could not reserve sentinel fault page
+11-13 13:52:39.660 D/        (  771): readbrightness,out1:9
+11-13 13:52:39.660 D/        (  771): .
+11-13 13:52:39.660 D/        (  771): readbrightness,out2:9.
+11-13 13:52:39.706 D/ICU     (30320): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:52:39.763 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:39.883 D/MiuiFastConnectService(27265): handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-13 13:52:39.883 D/MiuiFastConnectService(27265): stopBleScan: scanning: true
+11-13 13:52:39.885 D/BluetoothAdapter(27265): isLeEnabled(): ON
+11-13 13:52:39.886 D/BtGatt.GattService(26457): stopScan() - queue size =1
+11-13 13:52:39.887 I/BtGatt.ScanManager(26457): msg.what = 1
+11-13 13:52:39.888 D/BtGatt.ScanManager(26457): stop scan
+11-13 13:52:39.888 D/BtGatt.GattService(26457): unregisterScanner() - scannerId=5
+11-13 13:52:39.889 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-13 13:52:39.889 V/bt_stack(26457): [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-13 13:52:39.893 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-13 13:52:39.893 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.906 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-13 13:52:39.906 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.910 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-13 13:52:39.910 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.914 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-13 13:52:39.914 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.918 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-13 13:52:39.918 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.919 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=0
+11-13 13:52:39.919 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-13 13:52:39.919 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue emtpy, scan stopped
+11-13 13:52:39.919 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue emtpy, scan stopped
+11-13 13:52:39.930 D/MiuiFastConnectService(27265): handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-13 13:52:39.932 D/BluetoothAdapter(27265): isLeEnabled(): ON
+11-13 13:52:39.934 D/BtGatt.GattService(26457): registerScanner() - UUID=e2848f34-c2da-4635-b9ad-8040abe060a4
+11-13 13:52:39.935 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 13:52:39.935 I/bt_stack(26457): [INFO:gatt_api.cc(959)] GATT_Register 149a32c0-e1f1-ebf6-7c2d-23c43e5746fc
+11-13 13:52:39.935 I/bt_stack(26457): [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-13 13:52:39.936 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-13 13:52:39.936 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 13:52:39.936 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 13:52:39.936 D/BtGatt.GattService(26457): onScannerRegistered() - UUID=e2848f34-c2da-4635-b9ad-8040abe060a4, scannerId=5, status=0
+11-13 13:52:39.936 D/BluetoothLeScanner(27265): onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-13 13:52:39.938 D/BtGatt.GattService(26457): start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-13 13:52:39.942 E/BtGatt.GattService(26457):  [Landroid.content.pm.ServiceInfo;@69fd936
+11-13 13:52:39.944 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:52:39.945 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:52:39.947 I/BtGatt.ScanManager(26457): msg.what = 0
+11-13 13:52:39.948 D/BtGatt.ScanManager(26457): handling starting scan
+11-13 13:52:39.950 D/BtGatt.ScanManager(26457): isAptXLowLatencyModeEnabled: false
+11-13 13:52:39.956 D/BtGatt.GattService(26457): onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-13 13:52:39.956 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.957 D/BtGatt.ScanManager(26457): Available Filter size: 13
+11-13 13:52:39.957 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:52:39.957 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.958 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:52:39.965 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-13 13:52:39.965 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.965 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:52:39.965 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.966 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:52:39.973 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-13 13:52:39.973 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.974 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:52:39.974 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.974 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:52:39.981 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-13 13:52:39.981 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.982 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:52:39.982 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.982 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:52:39.989 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-13 13:52:39.989 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.990 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:52:39.991 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.991 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:52:39.998 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-13 13:52:39.998 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 13:52:39.998 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=1
+11-13 13:52:39.998 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-13 13:52:40.001 D/BtGatt.ScanManager(26457): configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-13 13:52:40.001 D/BtGatt.GattService(26457): onScanParamSetupCompleted : 0
+11-13 13:52:40.026 W/app_process(30320): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:52:40.041 D/AndroidRuntime(30320): Calling main entry com.wetest.uia2.Main
+11-13 13:52:40.051 I/uidumper(30320): [UiAutomator2Server] Starting Server
+11-13 13:52:40.087 D/ThemeCompatibility(30320): START loading theme compatibility config.
+11-13 13:52:40.087 D/ThemeCompatibility(30320): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 13:52:40.093 D/ThemeCompatibility(30320): getConfigDocumentTree(): 140 vs -1
+11-13 13:52:40.093 D/ThemeCompatibility(30320):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 13:52:40.098 D/ThemeCompatibility(30320): END loading: version=140 size=48
+11-13 13:52:40.092 W/main    (30320): type=1400 audit(0.0:101300): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:52:40.100 E/AssetManager(30320): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 13:52:40.100 E/AssetManager(30320): java.lang.RuntimeException
+11-13 13:52:40.100 E/AssetManager(30320): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 13:52:40.100 E/AssetManager(30320): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 13:52:40.100 E/AssetManager(30320): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 13:52:40.100 E/AssetManager(30320): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 13:52:40.100 E/AssetManager(30320): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 13:52:40.100 E/AssetManager(30320): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 13:52:40.100 E/AssetManager(30320): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 13:52:40.100 E/AssetManager(30320): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 13:52:40.100 E/AssetManager(30320): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 13:52:40.100 E/AssetManager(30320): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 13:52:40.100 E/AssetManager(30320): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 13:52:40.100 E/AssetManager(30320): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 13:52:40.100 E/AssetManager(30320): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 13:52:40.100 E/AssetManager(30320): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 13:52:40.100 E/AssetManager(30320): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 13:52:40.100 E/AssetManager(30320): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 13:52:40.100 E/AssetManager(30320): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 13:52:40.100 E/AssetManager(30320): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 13:52:40.100 E/AssetManager(30320): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 13:52:40.102 W/asset   (30320): unable to execute idmap2: Permission denied
+11-13 13:52:40.102 W/AssetManager(30320): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 13:52:40.092 W/main    (30320): type=1400 audit(0.0:101301): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:52:40.105 W/asset   (30320): unable to execute idmap2: Permission denied
+11-13 13:52:40.105 W/AssetManagerInjector(30320): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 13:52:40.132 I/FeatureParser(30320): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 13:52:40.175 W/Java7Support(30320): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 13:52:40.308 I/UiDevice(30320): Creating a new instance, old instance exists: false
+11-13 13:52:40.317 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:40.321 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:40.323 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+11-13 13:52:40.324 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@b82d20f
+11-13 13:52:40.331 D/UiDevice(30320): Setting accessibility service flags: 65618
+11-13 13:52:40.340 I/uidumper(30320): clipboardManager inited
+11-13 13:52:40.344 I/uidumper(30320): tmpdir is /data/local/tmp/u2
+11-13 13:52:40.353 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:40.362 I/uidumper(30320): http server listening on *:9008
+11-13 13:52:40.662 D/        (  771): readbrightness,out1:9
+11-13 13:52:40.662 D/        (  771): .
+11-13 13:52:40.662 D/        (  771): readbrightness,out2:9.
+11-13 13:52:40.917 D/UIAutomatorStub(30320): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:40.996 D/UIAutomatorStub(30320): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "count", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u91cd\u65b0\u751f\u6210"}]}}
+11-13 13:52:41.107 D/UiObject(30320): Waiting 0ms for UiSelector[TEXT=重新生成].
+11-13 13:52:41.107 W/QueryController(30320): Could not detect idle state.
+11-13 13:52:41.116 I/QueryController(30320): Matched selector: UiSelector[TEXT=重新生成] <<==>> [android.view.accessibility.AccessibilityNodeInfo@46353; boundsInParent: Rect(0, 0 - 208, 96); boundsInScreen: Rect(256, 410 - 464, 506); packageName: com.jinyuni.dengbei_care; className: android.widget.Button; text: 重新生成; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.jinyuni.dengbei_care:id/regenerateButton; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: true; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_CLICK - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]]
+11-13 13:52:41.116 D/UiObject(30320): Waiting 0ms for UiSelector[TEXT=重新生成, INSTANCE=1].
+11-13 13:52:41.117 W/QueryController(30320): Could not detect idle state.
+11-13 13:52:41.184 D/UIAutomatorStub(30320): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "waitForExists", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u91cd\u65b0\u751f\u6210"}, 10000]}}
+11-13 13:52:41.201 D/UiDevice(30320): Waiting 10000ms for SearchCondition[hasObject=BySelector [TEXT='\Q重新生成\E']].
+11-13 13:52:41.201 D/UiDevice(30320): Searching for node with selector: BySelector [TEXT='\Q重新生成\E'].
+11-13 13:52:41.202 W/QueryController(30320): Could not detect idle state.
+11-13 13:52:41.307 D/UIAutomatorStub(30320): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "objInfo", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u91cd\u65b0\u751f\u6210"}]}}
+11-13 13:52:41.314 D/UiDevice(30320): Retrieving node with selector: BySelector [TEXT='\Q重新生成\E'].
+11-13 13:52:41.315 W/QueryController(30320): Could not detect idle state.
+11-13 13:52:41.384 I/chatty  (30320): uid=2000(shell) app_process identical 2 lines
+11-13 13:52:41.388 W/QueryController(30320): Could not detect idle state.
+11-13 13:52:41.372 W/swapper/4(    0): type=1400 audit(0.0:101302): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:52:41.390 W/QueryController(30320): Could not detect idle state.
+11-13 13:52:41.432 I/chatty  (30320): uid=2000(shell) app_process identical 13 lines
+11-13 13:52:41.435 W/QueryController(30320): Could not detect idle state.
+11-13 13:52:41.557 D/UIAutomatorStub(30320): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "click", "params": [360.0, 458.0]}}
+11-13 13:52:41.663 D/        (  771): readbrightness,out1:9
+11-13 13:52:41.663 D/        (  771): .
+11-13 13:52:41.663 D/        (  771): readbrightness,out2:9.
+11-13 13:52:41.711 I/ReportScheduler(29336): Enqueued one-shot daily report
+11-13 13:52:41.759 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:41.762 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:52:41.762 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:52:41.762 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:52:41.764 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:41.783 D/UIAutomatorStub(30320): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:41.821 W/DailyReportWorker(29336): No saved devices, skipping report
+11-13 13:52:41.828 I/WM-WorkerWrapper(29336): Worker result SUCCESS for Work [ id=16edcee6-cc94-43da-9e93-7f05534912b9, tags={ com.jinyuni.dengbei_care.report.DailyReportWorker } ]
+11-13 13:52:41.836 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:41.839 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:41.874 D/ForceDarkHelper(29336): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@690b75f
+11-13 13:52:41.918 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:52:41.876 D/ForceDarkHelper(29336): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@690b75f
+11-13 13:52:41.926 I/Toast   (29336): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 13:52:41.928 I/uidumper(30320): detect toast:[爱守护：暂无可生成的数据（尚无设备读数）]
+11-13 13:52:42.336 D/UIAutomatorStub(30320): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:42.664 D/        (  771): readbrightness,out1:9
+11-13 13:52:42.664 D/        (  771): .
+11-13 13:52:42.664 D/        (  771): readbrightness,out2:9.
+11-13 13:52:42.902 D/UIAutomatorStub(30320): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:42.929 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 13:52:42.961 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@a5f44a5
+11-13 13:52:42.963 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:42.966 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:52:42.966 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:52:42.966 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:52:42.967 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:42.968 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 13:52:43.429 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:43.665 D/        (  771): readbrightness,out1:9
+11-13 13:52:43.665 D/        (  771): .
+11-13 13:52:43.665 D/        (  771): readbrightness,out2:9.
+11-13 13:52:43.914 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@a3918ce
+11-13 13:52:44.666 D/        (  771): readbrightness,out1:9
+11-13 13:52:44.666 D/        (  771): .
+11-13 13:52:44.666 D/        (  771): readbrightness,out2:9.
+11-13 13:52:45.421 W/WindowManager( 1577): Unable to start animation, surface is null or no children.
+11-13 13:52:45.667 D/        (  771): readbrightness,out1:9
+11-13 13:52:45.667 D/        (  771): .
+11-13 13:52:45.667 D/        (  771): readbrightness,out2:9.
+11-13 13:52:46.668 D/        (  771): readbrightness,out1:9
+11-13 13:52:46.668 D/        (  771): .
+11-13 13:52:46.668 D/        (  771): readbrightness,out2:9.
+11-13 13:52:47.668 D/        (  771): readbrightness,out1:9
+11-13 13:52:47.668 D/        (  771): .
+11-13 13:52:47.668 D/        (  771): readbrightness,out2:9.
+11-13 13:52:48.558 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:48.667 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:48.669 D/        (  771): readbrightness,out1:9
+11-13 13:52:48.669 D/        (  771): .
+11-13 13:52:48.669 D/        (  771): readbrightness,out2:9.
+11-13 13:52:49.035 D/AndroidRuntime(30350): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:52:49.041 E/libc    (30350): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:52:49.032 W/app_process(30350): type=1400 audit(0.0:101303): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:49.041 I/AndroidRuntime(30350): Using default boot image
+11-13 13:52:49.041 E/libc    (30350): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:52:49.041 I/AndroidRuntime(30350): Leaving lock profiling enabled
+11-13 13:52:49.041 E/libc    (30350): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:52:49.032 W/app_process(30350): type=1400 audit(0.0:101304): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:49.032 W/app_process(30350): type=1400 audit(0.0:101305): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:49.047 W/app_process(30350): Could not reserve sentinel fault page
+11-13 13:52:49.173 D/ICU     (30350): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:52:49.211 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:49.488 W/app_process(30350): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:52:49.503 D/AndroidRuntime(30350): Calling main entry com.wetest.uia2.Main
+11-13 13:52:49.513 I/uidumper(30350): [UiAutomator2Server] Starting Server
+11-13 13:52:49.549 D/ThemeCompatibility(30350): START loading theme compatibility config.
+11-13 13:52:49.549 D/ThemeCompatibility(30350): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 13:52:49.555 D/ThemeCompatibility(30350): getConfigDocumentTree(): 140 vs -1
+11-13 13:52:49.555 D/ThemeCompatibility(30350):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 13:52:49.561 D/ThemeCompatibility(30350): END loading: version=140 size=48
+11-13 13:52:49.562 E/AssetManager(30350): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 13:52:49.562 E/AssetManager(30350): java.lang.RuntimeException
+11-13 13:52:49.562 E/AssetManager(30350): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 13:52:49.562 E/AssetManager(30350): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 13:52:49.562 E/AssetManager(30350): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 13:52:49.562 E/AssetManager(30350): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 13:52:49.562 E/AssetManager(30350): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 13:52:49.562 E/AssetManager(30350): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 13:52:49.562 E/AssetManager(30350): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 13:52:49.562 E/AssetManager(30350): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 13:52:49.562 E/AssetManager(30350): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 13:52:49.562 E/AssetManager(30350): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 13:52:49.562 E/AssetManager(30350): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 13:52:49.562 E/AssetManager(30350): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 13:52:49.562 E/AssetManager(30350): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 13:52:49.562 E/AssetManager(30350): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 13:52:49.562 E/AssetManager(30350): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 13:52:49.562 E/AssetManager(30350): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 13:52:49.562 E/AssetManager(30350): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 13:52:49.562 E/AssetManager(30350): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 13:52:49.562 E/AssetManager(30350): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 13:52:49.552 W/main    (30350): type=1400 audit(0.0:101306): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:52:49.564 W/asset   (30350): unable to execute idmap2: Permission denied
+11-13 13:52:49.564 W/AssetManager(30350): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 13:52:49.552 W/main    (30350): type=1400 audit(0.0:101307): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:52:49.567 W/asset   (30350): unable to execute idmap2: Permission denied
+11-13 13:52:49.567 W/AssetManagerInjector(30350): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 13:52:49.594 I/FeatureParser(30350): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 13:52:49.638 W/Java7Support(30350): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 13:52:49.670 D/        (  771): readbrightness,out1:9
+11-13 13:52:49.670 D/        (  771): .
+11-13 13:52:49.670 D/        (  771): readbrightness,out2:9.
+11-13 13:52:49.771 I/UiDevice(30350): Creating a new instance, old instance exists: false
+11-13 13:52:49.780 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:49.785 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:49.787 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+11-13 13:52:49.789 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@ae7ddcd
+11-13 13:52:49.798 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:49.800 D/UiDevice(30350): Setting accessibility service flags: 65618
+11-13 13:52:49.811 I/uidumper(30350): clipboardManager inited
+11-13 13:52:49.814 I/uidumper(30350): tmpdir is /data/local/tmp/u2
+11-13 13:52:49.833 I/uidumper(30350): http server listening on *:9008
+11-13 13:52:50.372 D/UIAutomatorStub(30350): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:50.416 D/UIAutomatorStub(30350): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "takeScreenshot", "params": [1, 80]}}
+11-13 13:52:50.491 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 13:52:50.491 W/Gralloc3(30350): mapper 3.x is not supported
+11-13 13:52:50.521 D/libEGL  (30350): loaded /vendor/lib/egl/libEGL_adreno.so
+11-13 13:52:50.531 D/libEGL  (30350): loaded /vendor/lib/egl/libGLESv1_CM_adreno.so
+11-13 13:52:50.540 D/libEGL  (30350): loaded /vendor/lib/egl/libGLESv2_adreno.so
+11-13 13:52:50.580 I/AdrenoGLES(30350): QUALCOMM build                   : c692a3f, Ie3bb699d95
+11-13 13:52:50.580 I/AdrenoGLES(30350): Build Date                       : 09/29/20
+11-13 13:52:50.580 I/AdrenoGLES(30350): OpenGL ES Shader Compiler Version: EV031.27.05.02
+11-13 13:52:50.580 I/AdrenoGLES(30350): Local Branch                     : 
+11-13 13:52:50.580 I/AdrenoGLES(30350): Remote Branch                    : refs/tags/AU_LINUX_ANDROID_LA.UM.8.6.2.R1.10.00.00.537.053
+11-13 13:52:50.580 I/AdrenoGLES(30350): Remote Branch                    : NONE
+11-13 13:52:50.580 I/AdrenoGLES(30350): Reconstruct Branch               : NOTHING
+11-13 13:52:50.580 I/AdrenoGLES(30350): Build Config                     : S L 8.0.10 AArch32
+11-13 13:52:50.582 I/AdrenoGLES(30350): PFP: 0x005ff112, ME: 0x005ff066
+11-13 13:52:50.590 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.display.config@1.7::IDisplayConfig/default in either framework or device manifest.
+11-13 13:52:50.593 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.display.config@1.7::IDisplayConfig/default in either framework or device manifest.
+11-13 13:52:50.671 D/        (  771): readbrightness,out1:9
+11-13 13:52:50.671 D/        (  771): .
+11-13 13:52:50.671 D/        (  771): readbrightness,out2:9.
+11-13 13:52:50.886 D/UIAutomatorStub(30350): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:51.382 W/swapper/4(    0): type=1400 audit(0.0:101308): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:52:51.417 D/UIAutomatorStub(30350): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:51.672 D/        (  771): readbrightness,out1:9
+11-13 13:52:51.672 D/        (  771): .
+11-13 13:52:51.672 D/        (  771): readbrightness,out2:9.
+11-13 13:52:51.781 D/NtpTrustedTime( 1577): currentTimeMillis() cache hit
+11-13 13:52:51.800 I/netd    (  509): trafficSwapActiveStatsMap() <18.78ms>
+11-13 13:52:51.806 I/netd    (  509): tetherGetStats() <2.96ms>
+11-13 13:52:51.813 D/NtpTrustedTime( 1577): currentTimeMillis() cache hit
+11-13 13:52:51.816 I/netd    (  509): bandwidthSetGlobalAlert(131072) <0.65ms>
+11-13 13:52:51.816 I/TrafficManageService( 3361): mina mTrafficStatsReceiver onReceive
+11-13 13:52:51.832 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 13:52:51.881 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@51f3da
+11-13 13:52:51.883 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:51.888 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:52:51.888 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:52:51.888 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:52:51.890 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 13:52:51.891 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:51.973 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:52.662 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:52.673 D/        (  771): readbrightness,out1:9
+11-13 13:52:52.673 D/        (  771): .
+11-13 13:52:52.673 D/        (  771): readbrightness,out2:9.
+11-13 13:52:52.769 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:53.136 D/AndroidRuntime(30378): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:52:53.132 W/app_process(30378): type=1400 audit(0.0:101309): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:53.132 I/chatty  (30378): uid=2000(shell) app_process identical 1 line
+11-13 13:52:53.132 W/app_process(30378): type=1400 audit(0.0:101311): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:52:53.143 E/libc    (30378): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:52:53.144 I/AndroidRuntime(30378): Using default boot image
+11-13 13:52:53.144 E/libc    (30378): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:52:53.144 I/AndroidRuntime(30378): Leaving lock profiling enabled
+11-13 13:52:53.144 E/libc    (30378): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:52:53.150 W/app_process(30378): Could not reserve sentinel fault page
+11-13 13:52:53.276 D/ICU     (30378): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:52:53.348 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:53.589 W/app_process(30378): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:52:53.604 D/AndroidRuntime(30378): Calling main entry com.wetest.uia2.Main
+11-13 13:52:53.614 I/uidumper(30378): [UiAutomator2Server] Starting Server
+11-13 13:52:53.649 D/ThemeCompatibility(30378): START loading theme compatibility config.
+11-13 13:52:53.650 D/ThemeCompatibility(30378): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 13:52:53.656 D/ThemeCompatibility(30378): getConfigDocumentTree(): 140 vs -1
+11-13 13:52:53.656 D/ThemeCompatibility(30378):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 13:52:53.652 W/main    (30378): type=1400 audit(0.0:101312): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:52:53.661 D/ThemeCompatibility(30378): END loading: version=140 size=48
+11-13 13:52:53.662 E/AssetManager(30378): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 13:52:53.662 E/AssetManager(30378): java.lang.RuntimeException
+11-13 13:52:53.662 E/AssetManager(30378): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 13:52:53.662 E/AssetManager(30378): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 13:52:53.662 E/AssetManager(30378): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 13:52:53.662 E/AssetManager(30378): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 13:52:53.662 E/AssetManager(30378): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 13:52:53.662 E/AssetManager(30378): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 13:52:53.662 E/AssetManager(30378): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 13:52:53.662 E/AssetManager(30378): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 13:52:53.662 E/AssetManager(30378): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 13:52:53.662 E/AssetManager(30378): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 13:52:53.662 E/AssetManager(30378): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 13:52:53.662 E/AssetManager(30378): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 13:52:53.662 E/AssetManager(30378): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 13:52:53.662 E/AssetManager(30378): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 13:52:53.662 E/AssetManager(30378): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 13:52:53.662 E/AssetManager(30378): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 13:52:53.662 E/AssetManager(30378): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 13:52:53.662 E/AssetManager(30378): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 13:52:53.662 E/AssetManager(30378): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 13:52:53.665 W/asset   (30378): unable to execute idmap2: Permission denied
+11-13 13:52:53.665 W/AssetManager(30378): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 13:52:53.667 W/asset   (30378): unable to execute idmap2: Permission denied
+11-13 13:52:53.667 W/AssetManagerInjector(30378): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 13:52:53.652 W/main    (30378): type=1400 audit(0.0:101313): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:52:53.674 D/        (  771): readbrightness,out1:9
+11-13 13:52:53.674 D/        (  771): .
+11-13 13:52:53.674 D/        (  771): readbrightness,out2:9.
+11-13 13:52:53.695 I/FeatureParser(30378): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 13:52:53.738 W/Java7Support(30378): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 13:52:53.873 I/UiDevice(30378): Creating a new instance, old instance exists: false
+11-13 13:52:53.883 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:53.886 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:53.889 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+11-13 13:52:53.891 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@6180300
+11-13 13:52:53.898 D/UiDevice(30378): Setting accessibility service flags: 65618
+11-13 13:52:53.910 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:53.911 I/uidumper(30378): clipboardManager inited
+11-13 13:52:53.914 I/uidumper(30378): tmpdir is /data/local/tmp/u2
+11-13 13:52:53.933 I/uidumper(30378): http server listening on *:9008
+11-13 13:52:54.504 D/UIAutomatorStub(30378): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:54.566 D/UIAutomatorStub(30378): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "dumpWindowHierarchy", "params": [false, 50]}}
+11-13 13:52:54.642 W/QueryController(30378): Could not detect idle state.
+11-13 13:52:54.643 W/QueryController(30378): Could not detect idle state.
+11-13 13:52:54.675 D/        (  771): readbrightness,out1:9
+11-13 13:52:54.675 D/        (  771): .
+11-13 13:52:54.675 D/        (  771): readbrightness,out2:9.
+11-13 13:52:54.728 I/AccessibilityNodeInfoDumper(30378): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@16484; boundsInParent: Rect(0, 0 - 720, 500); boundsInScreen: Rect(0, 0 - 720, 55); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/heads_up_scrim; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 13:52:54.757 I/AccessibilityNodeInfoDumper(30378): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8f949; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(35, 34 - 35, 34); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_prompt_content_container; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 13:52:54.760 I/AccessibilityNodeInfoDumper(30378): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@9da85; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(584, 35 - 584, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_1; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 13:52:54.760 I/AccessibilityNodeInfoDumper(30378): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@9d303; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(584, 35 - 584, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_0; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 13:52:54.761 I/AccessibilityNodeInfoDumper(30378): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@a6cec; boundsInParent: Rect(0, 0 - 0, 38); boundsInScreen: Rect(618, 16 - 618, 54); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 13:52:54.881 D/UIAutomatorStub(30378): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:54.902 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@2f43934
+11-13 13:52:55.425 D/UIAutomatorStub(30378): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:52:55.676 D/        (  771): readbrightness,out1:9
+11-13 13:52:55.676 D/        (  771): .
+11-13 13:52:55.676 D/        (  771): readbrightness,out2:9.
+11-13 13:52:55.802 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 13:52:55.833 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@b83517e
+11-13 13:52:55.837 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:55.844 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:52:55.844 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:52:55.844 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:52:55.847 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 13:52:55.848 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:52:55.966 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:52:56.676 D/        (  771): readbrightness,out1:9
+11-13 13:52:56.676 D/        (  771): .
+11-13 13:52:56.676 D/        (  771): readbrightness,out2:9.
+11-13 13:52:57.678 D/        (  771): readbrightness,out1:9
+11-13 13:52:57.678 D/        (  771): .
+11-13 13:52:57.678 D/        (  771): readbrightness,out2:9.
+11-13 13:52:58.680 D/        (  771): readbrightness,out1:9
+11-13 13:52:58.680 D/        (  771): .
+11-13 13:52:58.680 D/        (  771): readbrightness,out2:9.
+11-13 13:52:59.680 D/        (  771): readbrightness,out1:9
+11-13 13:52:59.680 D/        (  771): .
+11-13 13:52:59.681 D/        (  771): readbrightness,out2:9.
+11-13 13:53:00.002 D/KeyguardUpdateMonitor( 1916): handleTimeUpdate
+11-13 13:53:00.681 D/        (  771): readbrightness,out1:9
+11-13 13:53:00.681 D/        (  771): .
+11-13 13:53:00.682 D/        (  771): readbrightness,out2:9.
+11-13 13:53:01.382 W/swapper/6(    0): type=1400 audit(0.0:101314): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:53:01.683 D/        (  771): readbrightness,out1:9
+11-13 13:53:01.683 D/        (  771): .
+11-13 13:53:01.683 D/        (  771): readbrightness,out2:9.
+11-13 13:53:02.684 D/        (  771): readbrightness,out1:9
+11-13 13:53:02.684 D/        (  771): .
+11-13 13:53:02.684 D/        (  771): readbrightness,out2:9.
+11-13 13:53:03.685 D/        (  771): readbrightness,out1:9
+11-13 13:53:03.685 D/        (  771): .
+11-13 13:53:03.685 D/        (  771): readbrightness,out2:9.
+11-13 13:53:04.686 D/        (  771): readbrightness,out1:9
+11-13 13:53:04.686 D/        (  771): .
+11-13 13:53:04.686 D/        (  771): readbrightness,out2:9.
+11-13 13:53:05.687 D/        (  771): readbrightness,out1:9
+11-13 13:53:05.687 D/        (  771): .
+11-13 13:53:05.688 D/        (  771): readbrightness,out2:9.
+11-13 13:53:06.689 D/        (  771): readbrightness,out1:9
+11-13 13:53:06.689 D/        (  771): .
+11-13 13:53:06.689 D/        (  771): readbrightness,out2:9.
+11-13 13:53:07.689 D/        (  771): readbrightness,out1:9
+11-13 13:53:07.689 D/        (  771): .
+11-13 13:53:07.689 D/        (  771): readbrightness,out2:9.
+11-13 13:53:08.690 D/        (  771): readbrightness,out1:9
+11-13 13:53:08.690 D/        (  771): .
+11-13 13:53:08.690 D/        (  771): readbrightness,out2:9.
+11-13 13:53:09.692 D/        (  771): readbrightness,out1:9
+11-13 13:53:09.692 D/        (  771): .
+11-13 13:53:09.692 D/        (  771): readbrightness,out2:9.
+11-13 13:53:10.692 D/        (  771): readbrightness,out1:9
+11-13 13:53:10.692 D/        (  771): .
+11-13 13:53:10.692 D/        (  771): readbrightness,out2:9.
+11-13 13:53:11.382 W/swapper/4(    0): type=1400 audit(0.0:101315): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:53:11.693 D/        (  771): readbrightness,out1:9
+11-13 13:53:11.693 D/        (  771): .
+11-13 13:53:11.693 D/        (  771): readbrightness,out2:9.
+11-13 13:53:12.694 D/        (  771): readbrightness,out1:9
+11-13 13:53:12.694 D/        (  771): .
+11-13 13:53:12.694 D/        (  771): readbrightness,out2:9.
+11-13 13:53:13.695 D/        (  771): readbrightness,out1:9
+11-13 13:53:13.695 D/        (  771): .
+11-13 13:53:13.695 D/        (  771): readbrightness,out2:9.
+11-13 13:53:14.463 D/KeyguardUpdateMonitor( 1916): received broadcast android.intent.action.BATTERY_CHANGED
+11-13 13:53:14.464 D/QtiCarrierConfigHelper( 2194): WARNING, no carrier configs on phone Id: 0
+11-13 13:53:14.467 I/BatteryInfoReceiver( 3361): ACTION_BATTERY_CHANGED
+11-13 13:53:14.473 D/PowerCheckerService(11596): onBatteryChanged, mBatteryLevel = 100, status = 5, level = 100, plug = 2, scale = 100
+11-13 13:53:14.695 D/        (  771): readbrightness,out1:9
+11-13 13:53:14.695 D/        (  771): .
+11-13 13:53:14.695 D/        (  771): readbrightness,out2:9.
+11-13 13:53:15.697 D/        (  771): readbrightness,out1:9
+11-13 13:53:15.697 D/        (  771): .
+11-13 13:53:15.697 D/        (  771): readbrightness,out2:9.
+11-13 13:53:16.698 D/        (  771): readbrightness,out1:9
+11-13 13:53:16.698 D/        (  771): .
+11-13 13:53:16.698 D/        (  771): readbrightness,out2:9.
+11-13 13:53:17.699 D/        (  771): readbrightness,out1:9
+11-13 13:53:17.699 D/        (  771): .
+11-13 13:53:17.699 D/        (  771): readbrightness,out2:9.
+11-13 13:53:18.700 D/        (  771): readbrightness,out1:9
+11-13 13:53:18.700 D/        (  771): .
+11-13 13:53:18.700 D/        (  771): readbrightness,out2:9.
+11-13 13:53:19.701 D/        (  771): readbrightness,out1:9
+11-13 13:53:19.701 D/        (  771): .
+11-13 13:53:19.701 D/        (  771): readbrightness,out2:9.
+11-13 13:53:20.702 D/        (  771): readbrightness,out1:9
+11-13 13:53:20.702 D/        (  771): .
+11-13 13:53:20.702 D/        (  771): readbrightness,out2:9.
+11-13 13:53:21.382 W/swapper/5(    0): type=1400 audit(0.0:101316): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:53:21.703 D/        (  771): readbrightness,out1:9
+11-13 13:53:21.703 D/        (  771): .
+11-13 13:53:21.703 D/        (  771): readbrightness,out2:9.
+11-13 13:53:22.704 D/        (  771): readbrightness,out1:9
+11-13 13:53:22.704 D/        (  771): .
+11-13 13:53:22.704 D/        (  771): readbrightness,out2:9.
+11-13 13:53:23.705 D/        (  771): readbrightness,out1:6
+11-13 13:53:23.705 D/        (  771): .
+11-13 13:53:23.705 D/        (  771): readbrightness,out2:6.
+11-13 13:53:24.707 D/        (  771): readbrightness,out1:6
+11-13 13:53:24.707 D/        (  771): .
+11-13 13:53:24.707 D/        (  771): readbrightness,out2:6.
+11-13 13:53:25.707 D/        (  771): readbrightness,out1:6
+11-13 13:53:25.707 D/        (  771): .
+11-13 13:53:25.707 D/        (  771): readbrightness,out2:6.
+11-13 13:53:26.708 D/        (  771): readbrightness,out1:6
+11-13 13:53:26.708 D/        (  771): .
+11-13 13:53:26.708 D/        (  771): readbrightness,out2:6.
+11-13 13:53:27.709 D/        (  771): readbrightness,out1:6
+11-13 13:53:27.709 D/        (  771): .
+11-13 13:53:27.709 D/        (  771): readbrightness,out2:6.
+11-13 13:53:28.710 D/        (  771): readbrightness,out1:6
+11-13 13:53:28.710 D/        (  771): .
+11-13 13:53:28.710 D/        (  771): readbrightness,out2:6.
+11-13 13:53:29.712 D/        (  771): readbrightness,out1:6
+11-13 13:53:29.712 D/        (  771): .
+11-13 13:53:29.712 D/        (  771): readbrightness,out2:6.
+11-13 13:53:30.712 D/        (  771): readbrightness,out1:6
+11-13 13:53:30.712 D/        (  771): .
+11-13 13:53:30.712 D/        (  771): readbrightness,out2:6.
+11-13 13:53:31.382 W/swapper/4(    0): type=1400 audit(0.0:101317): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:53:31.713 D/        (  771): readbrightness,out1:6
+11-13 13:53:31.713 D/        (  771): .
+11-13 13:53:31.713 D/        (  771): readbrightness,out2:6.
+11-13 13:53:32.714 D/        (  771): readbrightness,out1:6
+11-13 13:53:32.714 D/        (  771): .
+11-13 13:53:32.714 D/        (  771): readbrightness,out2:6.
+11-13 13:53:33.714 D/        (  771): readbrightness,out1:6
+11-13 13:53:33.714 D/        (  771): .
+11-13 13:53:33.714 D/        (  771): readbrightness,out2:6.

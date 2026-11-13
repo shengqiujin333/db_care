@@ -1,0 +1,284 @@
+--------- beginning of main
+11-13 13:58:54.841 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:58:54.963 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:58:55.039 D/        (  771): readbrightness,out1:9
+11-13 13:58:55.039 D/        (  771): .
+11-13 13:58:55.039 D/        (  771): readbrightness,out2:9.
+11-13 13:58:55.322 D/AndroidRuntime(31072): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:58:55.328 E/libc    (31072): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:58:55.312 W/app_process(31072): type=1400 audit(0.0:101422): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:58:55.312 W/app_process(31072): type=1400 audit(0.0:101423): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:58:55.328 I/AndroidRuntime(31072): Using default boot image
+11-13 13:58:55.312 W/app_process(31072): type=1400 audit(0.0:101424): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:58:55.328 E/libc    (31072): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:58:55.328 I/AndroidRuntime(31072): Leaving lock profiling enabled
+11-13 13:58:55.328 E/libc    (31072): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:58:55.335 W/app_process(31072): Could not reserve sentinel fault page
+11-13 13:58:55.460 D/ICU     (31072): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:58:55.540 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:58:55.774 W/app_process(31072): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:58:55.790 D/AndroidRuntime(31072): Calling main entry com.wetest.uia2.Main
+11-13 13:58:55.800 I/uidumper(31072): [UiAutomator2Server] Starting Server
+11-13 13:58:55.835 D/ThemeCompatibility(31072): START loading theme compatibility config.
+11-13 13:58:55.835 D/ThemeCompatibility(31072): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 13:58:55.842 D/ThemeCompatibility(31072): getConfigDocumentTree(): 140 vs -1
+11-13 13:58:55.842 D/ThemeCompatibility(31072):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 13:58:55.847 D/ThemeCompatibility(31072): END loading: version=140 size=48
+11-13 13:58:55.848 E/AssetManager(31072): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 13:58:55.848 E/AssetManager(31072): java.lang.RuntimeException
+11-13 13:58:55.848 E/AssetManager(31072): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 13:58:55.848 E/AssetManager(31072): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 13:58:55.848 E/AssetManager(31072): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 13:58:55.848 E/AssetManager(31072): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 13:58:55.848 E/AssetManager(31072): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 13:58:55.848 E/AssetManager(31072): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 13:58:55.848 E/AssetManager(31072): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 13:58:55.848 E/AssetManager(31072): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 13:58:55.848 E/AssetManager(31072): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 13:58:55.848 E/AssetManager(31072): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 13:58:55.848 E/AssetManager(31072): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 13:58:55.848 E/AssetManager(31072): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 13:58:55.848 E/AssetManager(31072): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 13:58:55.848 E/AssetManager(31072): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 13:58:55.848 E/AssetManager(31072): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 13:58:55.848 E/AssetManager(31072): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 13:58:55.848 E/AssetManager(31072): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 13:58:55.848 E/AssetManager(31072): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 13:58:55.848 E/AssetManager(31072): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 13:58:55.842 W/main    (31072): type=1400 audit(0.0:101425): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:58:55.851 W/asset   (31072): unable to execute idmap2: Permission denied
+11-13 13:58:55.851 W/AssetManager(31072): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 13:58:55.842 W/main    (31072): type=1400 audit(0.0:101426): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:58:55.853 W/asset   (31072): unable to execute idmap2: Permission denied
+11-13 13:58:55.853 W/AssetManagerInjector(31072): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 13:58:55.880 I/FeatureParser(31072): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 13:58:55.924 W/Java7Support(31072): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 13:58:56.039 D/        (  771): readbrightness,out1:9
+11-13 13:58:56.039 D/        (  771): .
+11-13 13:58:56.040 D/        (  771): readbrightness,out2:9.
+11-13 13:58:56.056 I/UiDevice(31072): Creating a new instance, old instance exists: false
+11-13 13:58:56.068 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:58:56.070 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:58:56.072 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+11-13 13:58:56.076 I/MiuiNetworkPolicy( 1577): updateUidState uid = 10048, uidState = 20
+--------- beginning of system
+11-13 13:58:56.077 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@3979b9a
+11-13 13:58:56.085 D/UiDevice(31072): Setting accessibility service flags: 65618
+11-13 13:58:56.099 I/uidumper(31072): clipboardManager inited
+11-13 13:58:56.102 I/uidumper(31072): tmpdir is /data/local/tmp/u2
+11-13 13:58:56.121 I/uidumper(31072): http server listening on *:9008
+11-13 13:58:56.131 D/UIAutomatorStub(31072): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:58:56.182 D/UIAutomatorStub(31072): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "count", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u7f51\u5173\u4e0e\u4e0a\u4f20\u8bbe\u7f6e"}]}}
+11-13 13:58:56.289 D/UiObject(31072): Waiting 0ms for UiSelector[TEXT=网关与上传设置].
+11-13 13:58:56.290 W/QueryController(31072): Could not detect idle state.
+11-13 13:58:56.310 I/QueryController(31072): Matched selector: UiSelector[TEXT=网关与上传设置] <<==>> [android.view.accessibility.AccessibilityNodeInfo@42740; boundsInParent: Rect(0, 0 - 656, 96); boundsInScreen: Rect(32, 1120 - 688, 1216); packageName: com.jinyuni.dengbei_care; className: android.widget.Button; text: 网关与上传设置; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.jinyuni.dengbei_care:id/gatewayBleButton; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: true; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_CLICK - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]]
+11-13 13:58:56.310 D/UiObject(31072): Waiting 0ms for UiSelector[TEXT=网关与上传设置, INSTANCE=1].
+11-13 13:58:56.311 W/QueryController(31072): Could not detect idle state.
+11-13 13:58:56.421 D/UIAutomatorStub(31072): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "waitForExists", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u7f51\u5173\u4e0e\u4e0a\u4f20\u8bbe\u7f6e"}, 10000]}}
+11-13 13:58:56.439 D/UiDevice(31072): Waiting 10000ms for SearchCondition[hasObject=BySelector [TEXT='\Q网关与上传设置\E']].
+11-13 13:58:56.440 D/UiDevice(31072): Searching for node with selector: BySelector [TEXT='\Q网关与上传设置\E'].
+11-13 13:58:56.440 W/QueryController(31072): Could not detect idle state.
+11-13 13:58:56.542 D/UIAutomatorStub(31072): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "objInfo", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u7f51\u5173\u4e0e\u4e0a\u4f20\u8bbe\u7f6e"}]}}
+11-13 13:58:56.548 D/UiDevice(31072): Retrieving node with selector: BySelector [TEXT='\Q网关与上传设置\E'].
+11-13 13:58:56.549 W/QueryController(31072): Could not detect idle state.
+11-13 13:58:56.688 I/chatty  (31072): uid=2000(shell) app_process identical 17 lines
+11-13 13:58:56.692 W/QueryController(31072): Could not detect idle state.
+11-13 13:58:56.793 D/UIAutomatorStub(31072): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "click", "params": [360.0, 1168.0]}}
+11-13 13:58:56.928 D/ForceDarkHelper(29336): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:58:56.963 I/chatty  (29336): uid=10169(com.jinyuni.dengbei_care) identical 10 lines
+11-13 13:58:56.964 D/ForceDarkHelper(29336): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:58:56.981 D/UIAutomatorStub(31072): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:58:57.032 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:58:57.042 D/        (  771): readbrightness,out1:9
+11-13 13:58:57.042 D/        (  771): .
+11-13 13:58:57.042 D/        (  771): readbrightness,out2:9.
+11-13 13:58:57.526 D/UIAutomatorStub(31072): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:58:57.931 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 13:58:57.964 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@9d80ebb
+11-13 13:58:57.968 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:58:57.972 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:58:57.972 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:58:57.972 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:58:57.975 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:58:57.975 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 13:58:58.042 D/        (  771): readbrightness,out1:9
+11-13 13:58:58.042 D/        (  771): .
+11-13 13:58:58.042 D/        (  771): readbrightness,out2:9.
+11-13 13:58:58.081 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:58:59.043 D/        (  771): readbrightness,out1:9
+11-13 13:58:59.043 D/        (  771): .
+11-13 13:58:59.043 D/        (  771): readbrightness,out2:9.
+11-13 13:59:00.002 D/KeyguardUpdateMonitor( 1916): handleTimeUpdate
+11-13 13:59:00.043 D/        (  771): readbrightness,out1:9
+11-13 13:59:00.043 D/        (  771): .
+11-13 13:59:00.043 D/        (  771): readbrightness,out2:9.
+11-13 13:59:01.045 D/        (  771): readbrightness,out1:9
+11-13 13:59:01.045 D/        (  771): .
+11-13 13:59:01.045 D/        (  771): readbrightness,out2:9.
+11-13 13:59:01.422 W/swapper/5(    0): type=1400 audit(0.0:101427): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:59:02.047 D/        (  771): readbrightness,out1:9
+11-13 13:59:02.047 D/        (  771): .
+11-13 13:59:02.047 D/        (  771): readbrightness,out2:9.
+11-13 13:59:03.048 D/        (  771): readbrightness,out1:9
+11-13 13:59:03.048 D/        (  771): .
+11-13 13:59:03.048 D/        (  771): readbrightness,out2:9.
+11-13 13:59:03.748 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:59:03.854 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:59:04.049 D/        (  771): readbrightness,out1:9
+11-13 13:59:04.049 D/        (  771): .
+11-13 13:59:04.049 D/        (  771): readbrightness,out2:9.
+11-13 13:59:04.220 D/AndroidRuntime(31104): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:59:04.225 E/libc    (31104): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:59:04.212 W/app_process(31104): type=1400 audit(0.0:101428): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:59:04.225 I/AndroidRuntime(31104): Using default boot image
+11-13 13:59:04.212 W/app_process(31104): type=1400 audit(0.0:101429): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:59:04.212 W/app_process(31104): type=1400 audit(0.0:101430): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:59:04.226 E/libc    (31104): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:59:04.226 I/AndroidRuntime(31104): Leaving lock profiling enabled
+11-13 13:59:04.226 E/libc    (31104): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:59:04.232 W/app_process(31104): Could not reserve sentinel fault page
+11-13 13:59:04.359 D/ICU     (31104): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:59:04.433 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:59:04.676 W/app_process(31104): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:59:04.691 D/AndroidRuntime(31104): Calling main entry com.wetest.uia2.Main
+11-13 13:59:04.703 I/uidumper(31104): [UiAutomator2Server] Starting Server
+11-13 13:59:04.738 D/ThemeCompatibility(31104): START loading theme compatibility config.
+11-13 13:59:04.738 D/ThemeCompatibility(31104): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 13:59:04.745 D/ThemeCompatibility(31104): getConfigDocumentTree(): 140 vs -1
+11-13 13:59:04.745 D/ThemeCompatibility(31104):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 13:59:04.750 D/ThemeCompatibility(31104): END loading: version=140 size=48
+11-13 13:59:04.751 E/AssetManager(31104): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 13:59:04.751 E/AssetManager(31104): java.lang.RuntimeException
+11-13 13:59:04.751 E/AssetManager(31104): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 13:59:04.751 E/AssetManager(31104): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 13:59:04.751 E/AssetManager(31104): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 13:59:04.751 E/AssetManager(31104): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 13:59:04.751 E/AssetManager(31104): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 13:59:04.751 E/AssetManager(31104): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 13:59:04.751 E/AssetManager(31104): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 13:59:04.751 E/AssetManager(31104): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 13:59:04.751 E/AssetManager(31104): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 13:59:04.751 E/AssetManager(31104): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 13:59:04.751 E/AssetManager(31104): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 13:59:04.751 E/AssetManager(31104): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 13:59:04.751 E/AssetManager(31104): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 13:59:04.751 E/AssetManager(31104): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 13:59:04.751 E/AssetManager(31104): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 13:59:04.751 E/AssetManager(31104): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 13:59:04.751 E/AssetManager(31104): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 13:59:04.751 E/AssetManager(31104): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 13:59:04.751 E/AssetManager(31104): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 13:59:04.742 W/main    (31104): type=1400 audit(0.0:101431): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:59:04.754 W/asset   (31104): unable to execute idmap2: Permission denied
+11-13 13:59:04.754 W/AssetManager(31104): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 13:59:04.742 W/main    (31104): type=1400 audit(0.0:101432): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 13:59:04.756 W/asset   (31104): unable to execute idmap2: Permission denied
+11-13 13:59:04.756 W/AssetManagerInjector(31104): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 13:59:04.783 I/FeatureParser(31104): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 13:59:04.826 W/Java7Support(31104): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 13:59:04.961 I/UiDevice(31104): Creating a new instance, old instance exists: false
+11-13 13:59:04.972 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:59:04.974 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:59:04.979 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+11-13 13:59:04.980 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@91e6352
+11-13 13:59:04.990 D/UiDevice(31104): Setting accessibility service flags: 65618
+11-13 13:59:05.005 I/uidumper(31104): clipboardManager inited
+11-13 13:59:05.005 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:59:05.009 I/uidumper(31104): tmpdir is /data/local/tmp/u2
+11-13 13:59:05.028 I/uidumper(31104): http server listening on *:9008
+11-13 13:59:05.050 D/        (  771): readbrightness,out1:9
+11-13 13:59:05.050 D/        (  771): .
+11-13 13:59:05.050 D/        (  771): readbrightness,out2:9.
+11-13 13:59:05.583 D/UIAutomatorStub(31104): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:59:05.634 D/UIAutomatorStub(31104): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "count", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u641c\u7d22\u9644\u8fd1\u7f51\u5173"}]}}
+11-13 13:59:05.746 D/UiObject(31104): Waiting 0ms for UiSelector[TEXT=搜索附近网关].
+11-13 13:59:05.747 W/QueryController(31104): Could not detect idle state.
+11-13 13:59:05.758 I/QueryController(31104): Matched selector: UiSelector[TEXT=搜索附近网关] <<==>> [android.view.accessibility.AccessibilityNodeInfo@5d6fc; boundsInParent: Rect(0, 0 - 174, 115); boundsInScreen: Rect(98, 632 - 272, 747); packageName: com.jinyuni.dengbei_care; className: android.widget.Button; text: 搜索附近网关; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: true; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_CLICK - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]]
+11-13 13:59:05.759 D/UiObject(31104): Waiting 0ms for UiSelector[TEXT=搜索附近网关, INSTANCE=1].
+11-13 13:59:05.759 W/QueryController(31104): Could not detect idle state.
+11-13 13:59:05.852 D/UIAutomatorStub(31104): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "waitForExists", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u641c\u7d22\u9644\u8fd1\u7f51\u5173"}, 10000]}}
+11-13 13:59:05.869 D/UiDevice(31104): Waiting 10000ms for SearchCondition[hasObject=BySelector [TEXT='\Q搜索附近网关\E']].
+11-13 13:59:05.870 D/UiDevice(31104): Searching for node with selector: BySelector [TEXT='\Q搜索附近网关\E'].
+11-13 13:59:05.871 W/QueryController(31104): Could not detect idle state.
+11-13 13:59:05.979 D/UIAutomatorStub(31104): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "objInfo", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u641c\u7d22\u9644\u8fd1\u7f51\u5173"}]}}
+11-13 13:59:05.985 D/UiDevice(31104): Retrieving node with selector: BySelector [TEXT='\Q搜索附近网关\E'].
+11-13 13:59:05.986 W/QueryController(31104): Could not detect idle state.
+11-13 13:59:06.050 D/        (  771): readbrightness,out1:9
+11-13 13:59:06.050 D/        (  771): .
+11-13 13:59:06.051 D/        (  771): readbrightness,out2:9.
+11-13 13:59:06.054 W/QueryController(31104): Could not detect idle state.
+11-13 13:59:06.111 I/chatty  (31104): uid=2000(shell) app_process identical 16 lines
+11-13 13:59:06.114 W/QueryController(31104): Could not detect idle state.
+11-13 13:59:06.214 D/UIAutomatorStub(31104): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "click", "params": [185.0, 689.5]}}
+11-13 13:59:06.364 D/ForceDarkHelper(29336): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:59:06.397 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:59:06.366 D/ForceDarkHelper(29336): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:59:06.406 I/Toast   (29336): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 13:59:06.409 I/uidumper(31104): detect toast:[爱守护：搜索网关需要开启定位（去开启）]
+11-13 13:59:06.417 D/UIAutomatorStub(31104): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:59:06.958 D/UIAutomatorStub(31104): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 13:59:07.051 D/        (  771): readbrightness,out1:9
+11-13 13:59:07.051 D/        (  771): .
+11-13 13:59:07.051 D/        (  771): readbrightness,out2:9.
+11-13 13:59:07.412 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 13:59:07.444 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@6f62720
+11-13 13:59:07.447 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:59:07.454 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:59:07.454 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:59:07.454 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:59:07.457 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 13:59:07.457 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:59:07.506 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 13:59:08.052 D/        (  771): readbrightness,out1:9
+11-13 13:59:08.052 D/        (  771): .
+11-13 13:59:08.052 D/        (  771): readbrightness,out2:9.
+11-13 13:59:08.401 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@8ac1981
+11-13 13:59:09.052 D/        (  771): readbrightness,out1:9
+11-13 13:59:09.052 D/        (  771): .
+11-13 13:59:09.052 D/        (  771): readbrightness,out2:9.
+11-13 13:59:09.130 D/MqttService(29336): Attempting to reconnect to broker
+11-13 13:59:09.148 I/MqttService(29336): Saved MAC address: 000000000000
+11-13 13:59:09.172 D/AlarmPingSender(29336): Unregister alarmreceiver to MqttServiceandroid_client
+11-13 13:59:09.187 D/AlarmPingSender(29336): Unregister alarmreceiver to MqttServiceandroid_client
+11-13 13:59:09.197 E/MqttService(29336): Failed to connect to broker
+11-13 13:59:09.197 E/MqttService(29336): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-13 13:59:09.197 E/MqttService(29336): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:80)
+11-13 13:59:09.197 E/MqttService(29336): 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:132)
+11-13 13:59:09.197 E/MqttService(29336): 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-13 13:59:09.197 E/MqttService(29336): 	at java.lang.Thread.run(Thread.java:919)
+11-13 13:59:09.197 E/MqttService(29336): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-13 13:59:09.197 E/MqttService(29336): 	at libcore.io.IoBridge.connect(IoBridge.java:143)
+11-13 13:59:09.197 E/MqttService(29336): 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-13 13:59:09.197 E/MqttService(29336): 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-13 13:59:09.197 E/MqttService(29336): 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-13 13:59:09.197 E/MqttService(29336): 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-13 13:59:09.197 E/MqttService(29336): 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-13 13:59:09.197 E/MqttService(29336): 	at java.net.Socket.connect(Socket.java:621)
+11-13 13:59:09.197 E/MqttService(29336): 	at com.android.org.conscrypt.AbstractConscryptSocket.connect(AbstractConscryptSocket.java:156)
+11-13 13:59:09.197 E/MqttService(29336): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:74)
+11-13 13:59:09.197 E/MqttService(29336): 	... 3 more
+11-13 13:59:09.197 E/MqttService(29336): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-13 13:59:09.197 E/MqttService(29336): 	at libcore.io.Linux.connect(Native Method)
+11-13 13:59:09.197 E/MqttService(29336): 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-13 13:59:09.197 E/MqttService(29336): 	at libcore.io.BlockGuardOs.connect(BlockGuardOs.java:136)
+11-13 13:59:09.197 E/MqttService(29336): 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-13 13:59:09.197 E/MqttService(29336): 	at libcore.io.IoBridge.connectErrno(IoBridge.java:174)
+11-13 13:59:09.197 E/MqttService(29336): 	at libcore.io.IoBridge.connect(IoBridge.java:135)
+11-13 13:59:09.197 E/MqttService(29336): 	... 11 more
+11-13 13:59:09.902 W/WindowManager( 1577): Unable to start animation, surface is null or no children.
+11-13 13:59:10.053 D/        (  771): readbrightness,out1:9
+11-13 13:59:10.053 D/        (  771): .
+11-13 13:59:10.053 D/        (  771): readbrightness,out2:9.
+11-13 13:59:11.055 D/        (  771): readbrightness,out1:9
+11-13 13:59:11.055 D/        (  771): .
+11-13 13:59:11.055 D/        (  771): readbrightness,out2:9.
+11-13 13:59:11.432 W/swapper/6(    0): type=1400 audit(0.0:101433): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:59:12.056 D/        (  771): readbrightness,out1:9
+11-13 13:59:12.056 D/        (  771): .
+11-13 13:59:12.056 D/        (  771): readbrightness,out2:9.
+11-13 13:59:13.058 D/        (  771): readbrightness,out1:9
+11-13 13:59:13.058 D/        (  771): .
+11-13 13:59:13.058 D/        (  771): readbrightness,out2:9.
+11-13 13:59:14.059 D/        (  771): readbrightness,out1:9
+11-13 13:59:14.059 D/        (  771): .
+11-13 13:59:14.060 D/        (  771): readbrightness,out2:9.

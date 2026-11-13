@@ -538,6 +538,62 @@ evidence/android_package_check_20261111/ui_09_settings_page.xml | active | 设�
 evidence/android_package_check_20261111/ui_info_after_launch.json | active | 启动后当前包/Activity/PID/屏幕信息
 evidence/android_package_check_20261111/unit_test.log | active | `testDebugUnitTest --offline --rerun-tasks` 原始输出（BUILD SUCCESSFUL）
 evidence/android_package_check_20261111/unit_test_summary.txt | active | JUnit XML 汇总（33 套件 / 261 项 / 0 失败 / 0 错误 / 0 跳过）
+evidence/android_package_check_20261113/apk_badging.txt | active | aapt 包名/版本/SDK/启动组件
+evidence/android_package_check_20261113/apk_content_check.txt | active | APK 条目扫描：无测试专用/instrumentation 条目
+evidence/android_package_check_20261113/apk_identity.txt | active | 本轮 APK 路径、大小、SHA-256、MD5、版本与提交
+evidence/android_package_check_20261113/apksigner_verify.txt | active | apksigner 签名方案与证书摘要
+evidence/android_package_check_20261113/assemble_debug.log | active | assembleDebug 构建日志（up-to-date，哈希不变）
+evidence/android_package_check_20261113/device_apk_hash.txt | active | 设备 base.apk SHA-256（与主机一致）
+evidence/android_package_check_20261113/device_apk_path.txt | active | 设备 base.apk 路径
+evidence/android_package_check_20261113/device_package_post.txt | active | 安装后设备包信息（版本/时间/权限）
+evidence/android_package_check_20261113/device_package_pre.txt | active | 安装前设备包信息（版本/时间/权限）
+evidence/android_package_check_20261113/device_state_final.txt | active | 验证证据
+evidence/android_package_check_20261113/gates.log | active | 独立门禁 12/12
+evidence/android_package_check_20261113/install_result.json | active | android_test install 结果与设备包摘要/升级时间
+evidence/android_package_check_20261113/logcat_cycle_cadence.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_final.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_grant_autoscan.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_grant_autoscan_stop.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_guard_cycle1.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_permission_denied.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_report_and_cycle2.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_save_trigger.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_scan.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_scan_bt_off.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_scan_granted_again.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/logcat_scan_location_off.txt | active | 原始 logcat 证据
+evidence/android_package_check_20261113/packaged_rule_strings.txt | active | 包内规则文案（3 分钟/0.9/无光/35.0℃/按条件上报）
+evidence/android_package_check_20261113/screen_00_home.png | active | 真机截图
+evidence/android_package_check_20261113/screen_19_final_home.png | active | 真机截图
+evidence/android_package_check_20261113/screen_20_final_home_after_grant.png | active | 真机截图
+evidence/android_package_check_20261113/source_diff_stat.txt | active | a12d12b..HEAD 产品源码差异（仅 3 个测试文件）
+evidence/android_package_check_20261113/static_aa005.log | active | AA-005 独立静态核查 54/54
+evidence/android_package_check_20261113/static_layout_check.log | active | 布局/文案结构核查 OK
+evidence/android_package_check_20261113/test_report.md | active | Android 候选包独立核验报告（ST-APK-007）：身份/构建/安装/真机 N-1/N-2/N-3/未执行披露/观察项/结论
+evidence/android_package_check_20261113/ui_00_launch.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_01_my_page.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_02_sensor_list.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_03_settings.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_04_gateway_dialog.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_05_after_scan.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_06_gateway_saved.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_07_after_start.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_08_report_page.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_09_quick_settings.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_10_scan_bt_off.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_11_quick_settings_2.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_12_scan_location_off.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_13_quick_settings_3.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_14_cold_start_no_location.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_15_permission_prompt.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_16_after_deny.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_17_gateway_cleared.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_18_home_before_stop.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_19_final_home.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/ui_20_after_grant_scan.xml | active | 实际 UI 树快照
+evidence/android_package_check_20261113/unit_test.log | active | 宿主机单测首次执行（up-to-date）
+evidence/android_package_check_20261113/unit_test_rerun.log | active | 宿主机单测 --rerun-tasks 日志
+evidence/android_package_check_20261113/unit_test_summary.txt | active | 39 套件/300 项/0 失败/0 错误/0 跳过
 evidence/android_test.md | active | Android 实现侧自检证据 AT-002/AT-015/AT-016/AT-017/AT-018（279 项单测、基线告警、APK 身份、布局/静态/门禁核查与 AA-006 三项增量）
 evidence/backend_exploration/ | active | 后端可行性探索原始证据目录（本地 Flask+SQLite 桩；对既有服务的只读 SSH 探测脚本与原始输出，仅状态/端口/日志，未写数据、未直连 DB）
 evidence/backend_exploration/http_history_counts.txt | active | 请求行 26（POST 14/GET 11）、journal 自 2026-09-25 起的原始计数
