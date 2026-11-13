@@ -1,4 +1,95 @@
-# 固件实现（FWI-003 rev 8）
+# 固件实现（FWI-004 rev 9）
+
+状态：固件实现（负责角色：固件工程）
+本轮范围：2026-11-13 **无代码改动交付（无需修改确认）**。对当前任务、生效测试范围（TD-002 rev 9.0）、最新实现与失败证据逐项核对后，判当前源码已覆盖本阶段可实施范围，**无具体代码改动需要实施**；本轮交付实现位置/版本/核查依据/已执行与未执行的自检，不把"无需修改"写成测试通过。**未烧录、未复位、未采集串口、未调温/改光、未测功耗、未访问平台。**
+依据：`artifacts/firmware_design.md`（FD-002 rev 8）、`artifacts/firmware_requirements.md`（FWR-002 rev 8）、`artifacts/test_design.md`（TD-002 **rev 9.0**）、`readme.txt`、`evidence/product_acceptance_20261112_scope_recheck/PRODUCT-ACCEPTANCE-RECHECK-002.md`、`evidence/product_acceptance_20261112/FIRMWARE-TRIAGE-003.md`、`artifacts/failure_resolution_product_stage_delivery_gate.md`（FR-006）、`evidence/fw_impl_20261112/assignment_referral.md`（FW-REFUSAL-002）。
+
+---
+
+## 0. 本轮结论
+
+| 项 | 结果 |
+|---|---|
+| 是否有代码改动 | **无**。产品源 `82a7e74..HEAD`（`USER/MDK/EWARM/UM2005C/COMMON`）为空；工程文件未改 |
+| 是否新增测试专用代码 | **无**。TD-002 rev 9.0 明确"当前证据表明不需要固件新增测试接口"（BOT-01 已由测试侧脚本以 pyocd HW reset 自动完成） |
+| 实现位置/版本 | `CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output`（产品源提交 `82a7e74`）；交付包 `fw_release/fw_sensor_FD-002r8.zip` |
+| 产物身份 | axf `b6a15fed2ed5e3d0c4adc51ac87a4830`、hex `4d728dec9b0d28a352c46436b7586c72`；包 134,791 B / `5df0c6d4…`（本轮重建与包内成员一致） |
+| 已执行自检 | 独立重建 0E/1W（`Code=25964 RO=656 RW=116 ZI=1676`）；宿主 5 阶段 **222/0**；工程源列表无 `test/mock`；包身份复核 PASS |
+| 未执行自检 | 烧录/复位/COM43 采集、真实升温与 `>35.0℃` 触发、光强双态、跨链路、平台写入回读、功耗（均非本能力当前条件；明细见 §5） |
+| 结论含义 | 本次 `IMPLEMENTED` 仅表示**当前实现已交付且自检可复现**，**不是**需求 4 无光分支可用、**不是**产品验收通过；`RECHECK-002` 的 `TEST_FAIL` 仍有效 |
+
+## 1. 生效的测试范围与失败证据（本轮核对）
+
+1. `artifacts/test_design.md`（TD-002 rev 9.0）已按人工范围决定调整：`FW-LIGHT-DEF2-ENABLE`（`APPROVED_DEFERRED`/NOT EXECUTED）被**单列并排除出本阶段退出门槛**；本阶段范围为 ITEM-001/002/003/004/006；真实升温/超温、光强双态、功耗、跨链路、平台写入/回读为**阶段外项**；并明确"阶段通过 ≠ 完整产品通过"。
+2. `PRODUCT-ACCEPTANCE-RECHECK-002` 仍为 `TEST_FAIL`（`EXTERNAL_CONDITION_UNEXECUTED`），但已修正原报告 R4 的范围错误：正确分解为"上报公式实现一致 / 无光判据启用 NOT EXECUTED（人工延期）/ 真实升温超温 NOT EXECUTED（外部条件）"。
+3. `FIRMWARE-TRIAGE-003` 结论 `EXTERNAL_CONDITION_MISSING`：无实测证据表明固件实现需要修复；直接回填候选阈值 3590 会把设计禁止的猜测升级为返工。
+4. `FR-006`（项目协调，`REPLAN_REQUIRED`）确认：固件拒接依据成立，再次分派固件返工只会重复同一结论；剩余缺口是产品级验收/交付门禁与联调职责，不是固件代码。
+
+因此本轮**不因人工已跳过的测项或阶段外项修改代码**，也不为产生改动而重复改代码。
+
+## 2. 现行实现与任务清单对照（本阶段）
+
+| 任务 | 状态 | 依据 |
+|---|---|---|
+| FW-REG-ASBUILT | 已实现并回归（本轮重建 + 摘要一致） | `evidence/fw_impl_20261113/build_evidence.md` |
+| FW-REG-REPORT | 已实现并回归（宿主 222/0 含 T1/T2/T3 向量） | `evidence/fw_impl_20261113/driver_test_evidence.md` |
+| FW-LIGHT-DEF2-MECH | 已实现（`T=0` 默认，形制与旧宏清除已核） | `USER/inc/sensor_config.h`、`USER/src/fw_core.c`、`light.c` |
+| FW-OBS-PASSIVE | 已由测试角色在实板执行（同 axf/hex） | EV-036/037/038 |
+| FW-LIGHT-DEF2-ENABLE | **NOT EXECUTED（人工 `APPROVED_DEFERRED`）**；不作为返工依据 | `evidence/fw_impl_20261112/assignment_referral.md` §2/§5 |
+| FW-DIAG-BOOT | 已由测试角色自动编排取得五行（无需固件测试接口） | EV-038、TD-002 rev 9.0 |
+
+## 3. 本轮执行与未执行的自检
+
+**已执行**（可直接复跑，证据在 `evidence/fw_impl_20261113/`）：
+
+1. 源身份：`git diff --stat 82a7e74 HEAD -- <sensor>/{USER,MDK,EWARM,UM2005C,COMMON}` 为空；
+2. 独立重建：`mdk_build {"action":"rebuild"}` → 0E/1W，`25964/656/116/1676`，axf/hex 摘要同包；
+3. 实现侧宿主自检：`bash test/build_test.sh` → 5 阶段 222/0、exit 0；
+4. 包/产物身份：zip `5df0c6d4…`、`PACKAGE.txt` `a58f67fc…`、成员摘要与重建一致；
+5. 隔离核查：`Project.uvprojx` 的 27 个源项无 `test/`/`mock/` 路径。
+
+**未执行**（保留为未测范围，不写成通过）：烧录/复位/COM43 采集（本能力无 `mdk_flash`/`serial_capture`）；真实升温与 `>35.0℃` 触发（用户禁止调温）；光强双态（人工跳过）；网关→手机跨链路（后续联调）；平台 `/upload_data` 写入/回读（无授权）；CR2032 功耗（无仪器）。
+
+## 4. 测试专用实现与正式固件隔离（本轮清单，按契约五项）
+
+1. **新增/修改的测试专用文件、函数/符号**：无。
+2. **仅测试固件启用的编译定义与调用方式**：无新增（既有 `SENSOR_DEBUG_UART` 是产品调试通道，非测试专用开关；`-DLIGHT_DARK_THRESHOLD_CODE` 仅供宿主变体验证阈值形制）。
+3. **正式固件中排除的构建规则**：`test/` 与 `mock_*` 不在 Keil 工程源列表（27 项核对），仅在宿主 `test/build_test.sh` 内编译；正式镜像仅由工程保存配置生成。
+4. **验证正式镜像排除入口的方法与结果**：重建后 axf/hex 摘要（`b6a15fed…`/`4d728dec…`）与发布包成员逐字节一致，且工程源列表无测试路径——两者共同表明正式镜像不含测试代码；本轮未新增可被链接的测试符号。
+5. **测试版与正式版构建配置/提交/产物**：正式构建 = `MDK/Project.uvprojx` + ARMCLANG V6.24，提交 `82a7e74`，产物 `MDK/output/exe/Project.axf|hex`（摘要同上）并已打包为 `fw_release/fw_sensor_FD-002r8.zip`；宿主测试构建 = `test/build_test.sh`（MinGW-w64 gcc 12.2.0，产物在 `test/_hostbin/`，不入库、不进包）。
+
+## 5. 未测范围与现存问题（不因本轮交付而改变）
+
+| 项 | 状态 |
+|---|---|
+| 需求 4 的"升温 >0.9℃ 且无光"分支 | 交付默认 `T=0` ⇒ 不触发；启用需 IC-002 §4.2 接受记录 + 同板同构建被动双态证据（人工已延期，不得再排） |
+| 真实升温/`>35.0℃` 触发与 433 实发 | 未执行（用户禁止调温） |
+| 光强双态 | NOT EXECUTED（人工 `APPROVED_DEFERRED`） |
+| 网关→手机跨链路、平台写入/回读 | 未执行（后续联调/无授权） |
+| CR2032 峰值/深睡电流 | 未测（无仪器，已批准 DEFERABLE） |
+| 板端镜像身份 | 由测试角色以同摘要下载校验（EV-036/037/038），不属本能力行为 |
+
+## 6. 给独立测试者的复验方法
+
+```text
+# 1) 源身份（期望：无输出）
+git diff --stat 82a7e74 HEAD -- CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/{USER,MDK,EWARM,UM2005C,COMMON}
+
+# 2) 重建（期望 0E/1W；axf b6a15fed2ed5e3d0c4adc51ac87a4830）
+mdk_build {"action":"rebuild"}
+
+# 3) 宿主自检（期望 5 阶段 222 项 0 失败、exit 0）
+bash CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh
+
+# 4) 包身份（期望 5df0c6d45ecddc8aae8bddbbcfc9cfdf）
+md5sum fw_release/fw_sensor_FD-002r8.zip
+```
+
+实板复验须由具备烧录与采集入口的职责重新下载并采集（不得沿用本轮，也不得把宿主结果当实板通过）；异常路径建议：`q=0` 时取同周期 `G` 行核对结果码/ACK/重读/`raw`，失败周期应不报/不推进前值/不构造 0。
+
+---
+
+# 固件实现（FWI-003 rev 8，历史保留，不改写）
 
 状态：固件实现（负责角色：固件工程）
 本轮范围：2026-11-10 **FW-REG-ASBUILT → FW-REG-REPORT → FW-LIGHT-DEF2-MECH**：先用当前源码重建确认 as-built 基线身份（未改源码时产物摘要与历史交付逐字符一致），再按 FD-002 rev 8 §6.2 实现无光判据形制 **LIGHT-DEF-2**（绝对阈值、单一配置常量、交付默认 `T=0` 即判据未启用），并同步实现侧自检。**未改空口/BLE 布局、采样节拍、`S/G/P` 行格式、引脚所有权；未烧录/下载/复位；未做 COM43 实板观测、判据启用、上电五行与跨链路。**FW-OBS-PASSIVE / FW-LIGHT-DEF2-ENABLE / FW-DIAG-BOOT 不在本能力当前可执行条件内（§6）。
