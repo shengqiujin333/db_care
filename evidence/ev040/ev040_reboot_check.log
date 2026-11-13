@@ -1,0 +1,12 @@
+07:20:50.716 OPEN COM43 9600 8N1 total=45.0s
+07:20:52.905 RESET_START method=hw
+  pyocd! 0000557 I Target type is cortex_m [board]
+  pyocd! 0000559 I Performing HW reset... [reset_cmd]
+  pyocd! 0000772 I Done. [reset_cmd]
+07:20:53.891 RESET_DONE rc=0
+07:21:35.963 CAPTURE_DONE bytes=271 chunks=5 file=D:/mypro/beiwo2/AIP/evidence/ev040/ev040_reboot_check.cap
+  t+3.047s 164 bytes: b'BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600\r\nVDD ok=1 code=1480 bgrmv=1189 mv=3289\r\nIOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0\r\nIOSIG scl=95555 sda=30300\r\n'
+  t+4.047s 23 bytes: b'BUS idle=3 scl=1 sda=1 '
+  t+4.109s 8 bytes: b'ack=44\r\n'
+  t+4.359s 46 bytes: b'S k=0 p=0 H=0 V=0 o=8 n=3371 x=3386 a=3376 D=0'
+  t+4.422s 30 bytes: b' t=301 h=344 q=1 r=0 s=0 y=0\r\n'

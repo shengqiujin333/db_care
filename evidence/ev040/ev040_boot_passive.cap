@@ -1,0 +1,9 @@
+BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+VDD ok=1 code=1480 bgrmv=1189 mv=3289
+IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+IOSIG scl=95555 sda=30300
+BUS idle=3 scl=1 sda=1 ack=44
+S k=0 p=0 H=0 V=0 o=8 n=3258 x=3270 a=3263 D=0 t=316 h=322 q=1 r=0 s=0 y=0
+S k=3 p=316 H=1 V=0 o=8 n=3268 x=3278 a=3272 D=0 t=310 h=331 q=1 r=0 s=0 y=0
+S k=6 p=310 H=1 V=0 o=8 n=3305 x=3316 a=3309 D=0 t=309 h=333 q=1 r=0 s=0 y=0
+S k=9 p=309 H=1 V=0 o=8 n=3330 x=3340 a=3335 D=0 t=304 h=339 q=1 r=0 s=0 y=0

@@ -1,0 +1,137 @@
+EV-040 tool results (raw, current run 2026-11-13)
+=================================================
+Role: embedded_tester / capability embedded_integration_verification (action firmware_package_check)
+Subject: artifacts/firmware_release.md (FW-REL-001 rev 3) + fw_release/fw_sensor_FD-002r8.zip
+Tool timestamps are UTC unless noted; local host time (Asia/Shanghai) = UTC+8.
+
+1. Repository / source identity
+-------------------------------
+$ git rev-parse HEAD
+4657076356d316f639dae30ccc67d50272ffa54a
+$ git status --porcelain
+(empty at start of work)
+$ git diff --stat 82a7e74e5d6bae855a573e1f23f83936ba8db049 HEAD -- \
+    <sensor>/{USER,MDK,EWARM,UM2005C,COMMON}
+(empty; diff_rc=0)
+
+2. Release package identity
+---------------------------
+fw_release/fw_sensor_FD-002r8.zip  134,791 B
+md5 5df0c6d45ecddc8aae8bddbbcfc9cfdf
+zip CRC test: OK
+member fw_sensor_FD-002r8_b6a15fed.axf  297,380 B  md5 b6a15fed2ed5e3d0c4adc51ac87a4830
+member fw_sensor_FD-002r8_4d728dec.hex   75,275 B  md5 4d728dec9b0d28a352c46436b7586c72
+member PACKAGE.txt                        3,202 B  md5 a58f67fcf5b760767ff5b65888c73dfb
+(3 members, no harness/mock/test members)
+
+3. Independent rebuild (mdk_build)
+----------------------------------
+started 2026-11-13T07:08:38.268Z  finished 2026-11-13T07:08:40.599Z
+*** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+Rebuild target 'Project'
+../USER/src/main.c(254): warning: while loop has empty body [-Wempty-body]
+Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+
+Rebuilt artifacts:
+output/exe/Project.axf  md5 b6a15fed2ed5e3d0c4adc51ac87a4830  (matches package member)
+output/exe/Project.hex  md5 4d728dec9b0d28a352c46436b7586c72  (matches package member)
+
+4. Download (mdk_flash, saved project/debugger/flash algorithm, parameters {})
+-----------------------------------------------------------------------------
+started 2026-11-13T07:08:49.267Z  finished 2026-11-13T07:09:02.194Z
+Load "...\MDK\output\exe\Project.axf"
+Erase Done.Programming Done.Verify OK.Application running ...
+Flash Load finished at 15:09:01 (local)
+
+5. Ports / probes
+-----------------
+serial_list_ports (2026-11-13T07:08:08.498Z):
+  COM43  Prolific USB-to-Serial Comm Port  USB VID:PID=067B:2303 LOCATION=1-9.4.2
+  COM26  USB 串行设备                      USB VID:PID=C251:F001 SER=87094109484987710672FF50
+usb_list_devices (2026-11-13T07:08:08.823Z), relevant identities:
+  USB\VID_C251&PID_F001\87094109484987710672FF50   (CW-DAPLink composite)
+  USB\VID_067B&PID_2303\7&298A15B9&0&2             (COM43 cable)
+  USB\VID_04B4&PID_8613\7&298A15B9&0&4             (Cypress FX2, "Unknown Device #1")
+  USB\VID_18D1&PID_4EE7\12F046690506               (Android phone, not operated)
+
+6. pyocd (external HW reset source only)
+----------------------------------------
+pyocd 0.36.0 at C:\Users\kason\AppData\Roaming\Python\Python311\Scripts\pyocd.exe
+command: pyocd reset -v -t cortex_m -u 87094109484987710672FF50 -M attach -m hw
+run 1: 07:09:36.233Z start, 07:09:37.219Z done rc=0
+       0000552 I Target type is cortex_m [board]
+       0000554 I Performing HW reset... [reset_cmd]
+       0000767 I Done. [reset_cmd]
+run 2: 07:20:52.905Z start, 07:20:53.891Z done rc=0 (same output)
+No flash programming or memory write performed by pyocd.
+
+7. Serial capture (COM43, 9600 8N1, port opened before reset)
+------------------------------------------------------------
+Run 1 - boot + 4 sampling opportunities:
+  OPEN    2026-11-13T07:09:34.040Z
+  RESET   2026-11-13T07:09:36.233Z
+  DONE    2026-11-13T07:19:19.261Z  bytes=505 chunks=13
+  raw: evidence/ev040/ev040_boot_passive.cap
+  md5 581c27926ce043a24aca3b67a6fbb45c
+  log: evidence/ev040/ev040_boot_passive.log
+  md5 99d06c1e5a76ea6aac171e73e8653458
+Run 2 - reset repeatability:
+  OPEN    2026-11-13T07:20:50.716Z
+  RESET   2026-11-13T07:20:52.905Z
+  DONE    2026-11-13T07:21:35.963Z  bytes=271 chunks=5
+  raw: evidence/ev040/ev040_reboot_check.cap
+  md5 aca27779d816e86b207f0866662e7cf4
+  log: evidence/ev040/ev040_reboot_check.log
+  md5 39ceb791834e16ec56886f53da566bfc
+
+Decoded lines (run 1):
+  BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+  VDD ok=1 code=1480 bgrmv=1189 mv=3289
+  IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+  IOSIG scl=95555 sda=30300
+  BUS idle=3 scl=1 sda=1 ack=44
+  S k=0 p=0 H=0 V=0 o=8 n=3258 x=3270 a=3263 D=0 t=316 h=322 q=1 r=0 s=0 y=0
+  S k=3 p=316 H=1 V=0 o=8 n=3268 x=3278 a=3272 D=0 t=310 h=331 q=1 r=0 s=0 y=0
+  S k=6 p=310 H=1 V=0 o=8 n=3305 x=3316 a=3309 D=0 t=309 h=333 q=1 r=0 s=0 y=0
+  S k=9 p=309 H=1 V=0 o=8 n=3330 x=3340 a=3335 D=0 t=304 h=339 q=1 r=0 s=0 y=0
+
+Decoded lines (run 2):
+  BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+  VDD ok=1 code=1480 bgrmv=1189 mv=3289
+  IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+  IOSIG scl=95555 sda=30300
+  BUS idle=3 scl=1 sda=1 ack=44
+  S k=0 p=0 H=0 V=0 o=8 n=3371 x=3386 a=3376 D=0 t=301 h=344 q=1 r=0 s=0 y=0
+
+8. Analysis scripts (test-side, not in release package)
+-------------------------------------------------------
+evidence/ev040/boot_and_passive_capture.py  (open port -> pyocd HW reset -> continuous capture)
+evidence/ev040/analyze_ev040.py             (independent parser/assertions)
+run 1 full: 38 assertions, FAILED=0, RESULT: PASS
+            evidence/ev040/capture_analysis.txt  md5 a092b05694d379959cb0a158d079d06e
+run 2 boot: 33 assertions, FAILED=0, RESULT: PASS
+            evidence/ev040/reboot_check_analysis.txt  md5 c955e4a8b9891bb9a6f359ccc1e8be29
+
+9. Optional logic analyzer (not required by this scope)
+-------------------------------------------------------
+sigrok_probe (2026-11-13T07:21:43.035Z):
+  command: sigrok-cli --driver fx2lafw:conn=2.32 --show
+  exit_code=1, stderr="No devices found."
+  USB enumeration still lists Cypress FX2 04B4:8613 ("Unknown Device #1").
+  No global scan, no address guess, no EEPROM write, no configuration change.
+  L3 bit-level I2C remains NOT EXECUTED (optional evidence only).
+
+10. Project cleanliness checks
+-----------------------------
+Grep on MDK/Project.uvprojx for "test", "mock", "harness": no matches.
+Grep on <sensor>/USER for "hall|HALL|optcfg|light_comm|lightcomm":
+  only 3 comment references describing the retirement of the old
+  hall/OPTCFG/params/history path (measure.c:9, fw_core.c:5, fw_core.h:9);
+  no active hall or optical-communication code found.
+Release zip members: exactly 3 production members (no test assets).
+No product source, project file, configuration or acceptance file was modified.
+Working tree after this run (git status --porcelain):
+  M evidence/test.md
+  M file_manifest.txt
+  ?? evidence/ev040/

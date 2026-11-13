@@ -1,0 +1,40 @@
+EV-040 COM43 capture analysis
+capture=D:/mypro/beiwo2/AIP/evidence/ev040/ev040_reboot_check.cap bytes=271 lines=6
+boot-only run (cadence checked in the full capture)
+
+no NUL byte                                   PASS  nul=0
+ends with CRLF                                PASS  tail=b'=0\r\n'
+ascii decodable                               PASS  replacement_chars=0
+line length <= 96 B                           PASS  max=76
+boot five unique in order                     PASS  ['BOOT', 'VDD', 'IOTEST', 'IOSIG', 'BUS']
+each boot line once                           PASS  {'BOOT': 1, 'VDD': 1, 'IOTEST': 1, 'IOSIG': 1, 'BUS': 1}
+BOOT fields                                   PASS  BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+BOOT uart=9600                                PASS  9600
+BOOT uid matches board history                PASS  6A002C00
+VDD ok=1                                      PASS  VDD ok=1 code=1480 bgrmv=1189 mv=3289
+VDD mv formula                                PASS  4095*1189//1480=3289 vs 3289
+IOTEST fields                                 PASS  IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+IOTEST gc=0 (no general-call reset)           PASS  0
+BUS fields                                    PASS  BUS idle=3 scl=1 sda=1 ack=44
+BUS ack=44 (GXHT40 address)                   PASS  44
+S line 5 parses                               PASS  S k=0 p=0 H=0 V=0 o=8 n=3371 x=3386 a=3376 D=0 t=301 h=344 q=1 r=0 s=0 y=0
+S samples >= 1                                PASS  count=1
+k strictly increasing                         PASS  [0]
+k step == 3                                   PASS  []
+first H=0 p=0                                 PASS  H=0 p=0
+later H=1                                     PASS  [0]
+p chain == previous t                         PASS  []
+all q=1                                       PASS  [1]
+all r=s=y=0                                   PASS  [(0, 0, 0)]
+all V=0 D=0 (delivery default T=0)            PASS  [(0, 0)]
+all o=8                                       PASS  [8]
+t in [-400,1250] (0.1 C)                      PASS  [301]
+h in [0,1000] (0.1 %RH)                       PASS  [344]
+n <= a <= x                                   PASS  [(3371, 3376, 3386)]
+no P (report) lines                           PASS  []
+no G (failure) lines                          PASS  []
+no unexpected line prefixes                   PASS  ['BOOT', 'BUS', 'IOSIG', 'IOTEST', 'S', 'VDD']
+cadence detail available                      PASS  boot-only run (cadence checked in the full capture)
+
+TOTAL=33 FAILED=0
+RESULT: PASS

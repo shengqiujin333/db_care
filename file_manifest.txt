@@ -1429,6 +1429,17 @@ evidence/ev039/static_check_ev039.py | active | 只读静态核查脚本（21 �
 evidence/ev039/static_check_ev039.txt | active | 只读静态核查输出（21/21 PASS：常量/判据/行序/上电顺序/引脚/无浮点/无可疑旧通路/有界等待）
 evidence/ev039/tool_results.txt | active | 本轮端口/USB/sigrok 枚举、构建与下载身份、宿主与静态计数、BOT 与 COM43 工具原始返回、pyocd 参数与未执行项
 evidence/ev039/update_manifest_ev039.py | active | 本轮清单更新脚本（新增 EV-039 条目并刷新聚合证据描述；可复跑）
+evidence/ev040/ | active | EV-040 当前发布候选 FW-REL-001 rev 3 独立实板复核原始证据目录：包身份/独立重建/下载、两次上电五行、COM43 四连续采样机会与节拍分析、可选 sigrok 未解析、人工 SKIP_CONFIRMED 披露
+evidence/ev040/EV-040_section.md | active | EV-040 证据正文：包身份与重建一致、Verify OK、上电五行（两次）、k=0/3/6/9 与字段 38/38 断言、范围复核（人工跳过项不作返工依据）、未执行项披露、结论 HIL_PASS（限当前有效范围）
+evidence/ev040/analyze_ev040.py | active | EV-040 独立解析/断言脚本（五行/字段/行长/p 链/节拍；不引用固件常量）
+evidence/ev040/boot_and_passive_capture.py | active | EV-040 测试侧编排脚本（先开 COM43→pyocd HW reset→有界连续采集；仅复位，不写 Flash/内存）
+evidence/ev040/capture_analysis.txt | active | 完整捕获 38 项断言 0 失败（节拍 165.515/179.656/179.594 s、无 G/P、V=0 D=0）
+evidence/ev040/ev040_boot_passive.cap | active | 本轮 COM43 原始字节 505 B（五行 + S k=0/3/6/9；md5 581c2792…）
+evidence/ev040/ev040_boot_passive.log | active | 本轮开窗/复位/逐块接收原始日志与时间戳（md5 99d06c1e…）
+evidence/ev040/ev040_reboot_check.cap | active | 第二次复位 COM43 原始字节 271 B（五行 + S k=0；md5 aca27779…）
+evidence/ev040/ev040_reboot_check.log | active | 第二次复位开窗/复位/逐块接收原始日志（md5 39ceb791…）
+evidence/ev040/reboot_check_analysis.txt | active | 复位复现 33 项断言 0 失败
+evidence/ev040/tool_results.txt | active | 端口/USB/包身份/构建下载/pyocd 参数/捕获摘要/可选 sigrok 结果原始记录
 evidence/firmware_assignment_referral.md | active | 固件实现失败分派转交证据（EV-028/029：GXHT40 与 F-1 已修复；剩余 T4-02/T5/INT/T4-07 为采集编排、遮光/刺激与仪器配置条件，非固件代码缺陷；列明责任与前置条件）
 evidence/firmware_assignment_referral_ev030.md | active | EV-030 失败分派转交报告：固件 5/5+2/2 周期 q=1、0 G、I2C 双 CRC、F-1 保持；未满足项为上电五行采集编排、T5 双态物理条件、跨链路/刺激、功耗仪器；结论 ASSIGNMENT_DECLINED，未改产品源码
 evidence/firmware_design_lightdef/ | active | 固件设计用于无光判据推导的可复跑统计目录：只读已提交的原始串口捕获，输出光敏均值分布与阈值余量
@@ -1755,7 +1766,7 @@ evidence/software_verify_release_item014.py | active | 由 software_tester 新�
 evidence/software_verify_report_wording_item013.py | active | Android ITEM-013 独立验证脚本（报告与条件上报文案）
 evidence/software_verify_timestamp_write_item007.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_upload_payload_item008.py | active | Android ITEM-008 独立验证脚本（/upload_data 请求体构造）
-evidence/test.md | active | 嵌入式验证证据 EV-039（当前轮，置顶）：TD-002 rev 9.0 适用范围内 TEST_PASS（限定已执行范围）— 产品源 82a7e74 零差异、重建 axf b6a15fed…/hex 4d728dec… 与发布包成员一致、mdk_flash Verify OK、端口先开后 pyocd HW reset 取上电五行与 S k=0、COM43 6 个采样行 q=1（k=9/12/15/18 连续）且 p 链匹配、宿主 222+609/0、静态 21/21、SENSOR_DEBUG_UART=0 无 UART 符号；FW-LIGHT-DEF2-ENABLE 为 SKIP_CONFIRMED/NOT EXECUTED、E2E-04 已批准延期、真实升温/光强与跨链路未执行、可选 L3 未解析；EV-038/EV-037 及更早保留为历史
+evidence/test.md | active | 嵌入式验证证据 EV-040（当前轮，置顶）：当前发布候选 FW-REL-001 rev 3 独立实板复核 — 包 134791 B/md5 5df0c6d4… 三成员 CRC OK、产品源 82a7e74 零差异、重建 axf b6a15fed…/hex 4d728dec… 与包成员逐字节一致、mdk_flash Verify OK、两次端口先开后 pyocd HW reset 取上电五行、COM43 k=0/3/6/9 四连续机会 38/38 断言（q=1、V=0 D=0、p 链匹配、稳定节拍 179.66/179.59 s、无 G/P）；人工 SKIP_CONFIRMED 的 FW-LIGHT-DEF2-ENABLE 明示 NOT EXECUTED 且不作返工依据、E2E-04/真实升温光强/跨链路未执行、可选 L3 未解析；EV-039/EV-038/EV-037 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-030 置顶，EV-029/EV-027/EV-025/EV-023/EV-021 原文保留）：EV-030 完整交付 TEST_FAIL 复核——同一镜像新增 2 周期 q=1、F-1 保持；剩余为上电段采集编排（串口/下载串行、pyocd 未登记授权）、光敏双态/标定、升温与跨链路刺激、功耗仪器；未见新固件功能缺陷（仅归因，不代表整体通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）
 fw_release/ | active | 传感器固件发布包目录（发布候选；二进制以确定性 zip 入库，避开 .gitignore 的构建产物与 **/Release/ 规则）

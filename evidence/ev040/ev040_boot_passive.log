@@ -1,0 +1,20 @@
+07:09:34.040 OPEN COM43 9600 8N1 total=585.0s
+07:09:36.233 RESET_START method=hw
+  pyocd! 0000552 I Target type is cortex_m [board]
+  pyocd! 0000554 I Performing HW reset... [reset_cmd]
+  pyocd! 0000767 I Done. [reset_cmd]
+07:09:37.219 RESET_DONE rc=0
+07:19:19.261 CAPTURE_DONE bytes=505 chunks=13 file=D:/mypro/beiwo2/AIP/evidence/ev040/ev040_boot_passive.cap
+  t+3.047s 163 bytes: b'BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600\r\nVDD ok=1 code=1480 bgrmv=1189 mv=3289\r\nIOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0\r\nIOSIG scl=95555 sda=30300\r'
+  t+3.110s 1 bytes: b'\n'
+  t+4.047s 13 bytes: b'BUS idle=3 sc'
+  t+4.110s 18 bytes: b'l=1 sda=1 ack=44\r\n'
+  t+4.360s 33 bytes: b'S k=0 p=0 H=0 V=0 o=8 n=3258 x=32'
+  t+4.422s 43 bytes: b'70 a=3263 D=0 t=316 h=322 q=1 r=0 s=0 y=0\r\n'
+  t+169.875s 40 bytes: b'S k=3 p=316 H=1 V=0 o=8 n=3268 x=3278 a='
+  t+169.938s 38 bytes: b'3272 D=0 t=310 h=331 q=1 r=0 s=0 y=0\r\n'
+  t+349.531s 59 bytes: b'S k=6 p=310 H=1 V=0 o=8 n=3305 x=3316 a=3309 D=0 t=309 h=33'
+  t+349.594s 19 bytes: b'3 q=1 r=0 s=0 y=0\r\n'
+  t+529.125s 14 bytes: b'S k=9 p=309 H='
+  t+529.188s 59 bytes: b'1 V=0 o=8 n=3330 x=3340 a=3335 D=0 t=304 h=339 q=1 r=0 s=0 '
+  t+529.250s 5 bytes: b'y=0\r\n'
