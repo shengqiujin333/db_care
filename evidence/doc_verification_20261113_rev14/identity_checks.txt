@@ -1,0 +1,67 @@
+DOC-VERIFY-014 identity checks
+time_local: 2026-11-13 16:47:44 +0800
+time_utc: 2026-11-13T08:47:44Z
+repo: D:/mypro/beiwo2/AIP
+HEAD: d3408014bc6d5d7841f4203756f61067c44167c0
+HEAD_subject: [role:technical_writer] Update project work
+branch: main
+--- git status --porcelain (start) ---
+?? evidence/doc_verification_20261113_rev14/
+--- doc version headers ---
+docs/README.md :: 
+docs/01_产品说明与版本变更.md :: 文档包：DOC-PKG-001 rev 14（2026-11-13）
+docs/02_传感器固件安装与烧录.md :: 文档包：DOC-PKG-001 rev 14（2026-11-13）
+docs/03_传感器调试串口手册.md :: 文档包：DOC-PKG-001 rev 14（2026-11-13）
+docs/04_安卓App安装与使用.md :: 文档包：DOC-PKG-001 rev 14（2026-11-13；按 AB-003 与 AA-006 N-1～N-3 重建）
+docs/05_平台服务器配置与联调前提.md :: 文档包：DOC-PKG-001 rev 14（2026-11-13）
+docs/06_维护排障与已知限制.md :: 文档包：DOC-PKG-001 rev 14（2026-11-13）
+docs/README.md title :: # 蹬被报警器 交付文档包（DOC-PKG-001 rev 14）
+user manual version :: > 版本:1.9(2026-11，候选 AB-003)
+--- firmware release package ---
+-rw-r--r-- 1 kason 197121 134791 Nov 11 13:12 fw_release/fw_sensor_FD-002r8.zip
+5df0c6d45ecddc8aae8bddbbcfc9cfdf *fw_release/fw_sensor_FD-002r8.zip
+--- APK candidate ---
+-rw-r--r-- 1 kason 197121 10370964 Nov 13 12:49 dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+a97ed9bef658ee89cdf6e2b49447ce69 *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+--- TLS CA ---
+f1a8212e3c690d57894b8a3a5fd901ab *dengbei_care/app/src/main/assets/jd-ca.crt
+--- Android identity evidence ---
+commit: 548cc3301bdb87e00084136a0cff5fe8c63005e1
+product_source_commit: a12d12b
+variant: debug
+apk: app/build/outputs/apk/debug/app-debug.apk
+size: 10370964
+sha256: 80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b
+md5: a97ed9bef658ee89cdf6e2b49447ce69
+versionCode: 10
+versionName: 1.9
+tests: 300 failures: 0 errors: 0 skipped: 0 suites: 39
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+package: name='com.jinyuni.dengbei_care' versionCode='10' versionName='1.9' platformBuildVersionName='14' platformBuildVersionCode='34' compileSdkVersion='34' compileSdkVersionCodename='14'
+sdkVersion:'26'
+targetSdkVersion:'34'
+tests=300 failures=0 errors=0 skipped=0 suites=39
+--- firmware build evidence ---
+zip        : fw_release\fw_sensor_FD-002r8.zip (134791 bytes)
+zip md5    : 5df0c6d45ecddc8aae8bddbbcfc9cfdf (expected 5df0c6d45ecddc8aae8bddbbcfc9cfdf) OK
+crc test   : OK
+members    : ['fw_sensor_FD-002r8_b6a15fed.axf', 'fw_sensor_FD-002r8_4d728dec.hex', 'PACKAGE.txt']
+  PACKAGE.txt                                        3202  a58f67fcf5b760767ff5b65888c73dfb  OK
+  fw_sensor_FD-002r8_4d728dec.hex                   75275  4d728dec9b0d28a352c46436b7586c72  OK
+  fw_sensor_FD-002r8_b6a15fed.axf                  297380  b6a15fed2ed5e3d0c4adc51ac87a4830  OK
+keil Project.axf : b6a15fed2ed5e3d0c4adc51ac87a4830  OK
+keil Project.hex : 4d728dec9b0d28a352c46436b7586c72  OK
+RESULT: PASS
+--- source diff a12d12b..HEAD -- dengbei_care ---
+A	dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayReadStateItem002VerificationTest.kt
+A	dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/NotificationsPermissionWiringItem001VerificationTest.kt
+A	dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/ReportRegenerateFeedbackItem003VerificationTest.kt
+M	"dengbei_care/\347\224\250\346\210\267\344\275\277\347\224\250\350\257\264\346\230\216\344\271\246.md"
+--- product source diff (should be empty) ---
+--- firmware source diff 82a7e74..HEAD (should be empty) ---

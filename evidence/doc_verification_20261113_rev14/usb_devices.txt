@@ -1,0 +1,19 @@
+usb_list_devices (MCP hardware-verification backend) — captured 2026-11-13T08:44:04Z
+Device FriendlyName values below are copied from the tool JSON; the original tool output
+contained mojibake for non-ASCII names, so non-ASCII names are shown as originally decoded.
+
+[
+  {"Status":"OK","Class":"Ports","FriendlyName":"Prolific USB-to-Serial Comm Port (COM43)","InstanceId":"USB\\VID_067B&PID_2303\\7&298A15B9&0&2"},
+  {"Status":"OK","Class":"Ports","FriendlyName":"USB <mojibake> (COM26)","InstanceId":"USB\\VID_C251&PID_F001&MI_00\\6&87FA922&0&0000"},
+  {"Status":"OK","Class":"USB","FriendlyName":"USB Composite Device","InstanceId":"USB\\VID_C251&PID_F001\\87094109484987710672FF50"},
+  {"Status":"OK","Class":"USBDevice","FriendlyName":"SDM439-QRD _SN:3AE89DF1","InstanceId":"USB\\VID_18D1&PID_4EE7\\12F046690506"},
+  {"Status":"OK","Class":"USBDevice","FriendlyName":"Unknown Device #1","InstanceId":"USB\\VID_04B4&PID_8613\\7&298A15B9&0&4"},
+  {"Status":"OK","Class":"HIDClass","FriendlyName":"USB <mojibake>","InstanceId":"USB\\VID_C251&PID_F001&MI_02\\6&87FA922&0&0002"}
+]
+
+Relevant conclusions (identity only; not a protocol test):
+- COM43 is enumerated from VID_067B / PID_2303 (Prolific), consistent with docs/README §2,
+  docs/02 §1 and docs/03 §2.
+- COM26 is the C251:F001 debugger CDC interface, consistent with docs/README §2 and docs/03 §2.
+- CW-DAPLink serial 87094109484987710672FF50 is present, consistent with docs/02 §3.
+- FX2 logic analyzer 04B4:8613 is present (not used by this capability).

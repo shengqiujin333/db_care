@@ -779,6 +779,36 @@ evidence/doc_verification_20261113_rev13/ui_08_after_back.xml | active | 从报�
 evidence/doc_verification_20261113_rev13/ui_09_account_page.xml | active | 「账户」注册/登录页 UI 原始树（登录/注册勾选与字段）
 evidence/doc_verification_20261113_rev13/ui_10_settings.xml | active | 「设定」页 UI 原始树（下降 2/0.1、阈值 35/29/75）
 evidence/doc_verification_20261113_rev13/ui_11_sensor_list.xml | active | 「打开传感器列表」空态 UI 原始树（已保存的 ID（0）、删除选中）
+evidence/doc_verification_20261113_rev14/ | active | 软件测试文档独立校核原始证据目录（DOC-VERIFY-014）：DOC-PKG-001 rev 14 的候选身份、路径/清单一致性、覆盖安装与真机关键界面复核
+evidence/doc_verification_20261113_rev14/DOC-VERIFY-014.md | active | 产品文档独立校核报告：rev 14 对照固件 FD-002r8/Android AB-003 候选，确认 D-01/D-02/O-1 修复，记录真机步骤、未执行项、4 项非阻断观察与结论 TEST_PASS（限文档范围）
+evidence/doc_verification_20261113_rev14/check_doc_refs.py | active | 文档内联路径引用检查脚本（限定仓库顶层路径，只读）
+evidence/doc_verification_20261113_rev14/check_doc_refs_output.txt | active | 文档内联路径引用检查结果（128 checked / 0 missing）
+evidence/doc_verification_20261113_rev14/check_manifest.py | active | file_manifest.txt 与工作区一致性检查脚本（只读）
+evidence/doc_verification_20261113_rev14/check_manifest_output.txt | active | 清单一致性检查结果（1812 条、0 缺失/0 格式错/0 通配）
+evidence/doc_verification_20261113_rev14/collect_identity.sh | active | 本轮身份采集脚本（HEAD、文档版本头、包/APK/CA 摘要、源码差异）
+evidence/doc_verification_20261113_rev14/device_apk_hash.txt | active | 覆盖安装后在装 base.apk 的 SHA-256/MD5/大小（与 AB-003 候选逐字节一致）
+evidence/doc_verification_20261113_rev14/device_apk_path.txt | active | 覆盖安装后 pm path 原始输出
+evidence/doc_verification_20261113_rev14/device_package_dump.txt | active | dumpsys package 原始输出（versionCode 10 / versionName 1.9 / 安装与更新时间）
+evidence/doc_verification_20261113_rev14/device_state.txt | active | 安装前后设备状态（firstInstallTime/lastUpdateTime、在装摘要、进程存活）
+evidence/doc_verification_20261113_rev14/git_status.txt | active | 本轮开工时 git status --porcelain（仅本轮证据目录未跟踪）
+evidence/doc_verification_20261113_rev14/head.txt | active | 本轮 HEAD 提交（d340801）
+evidence/doc_verification_20261113_rev14/identity_checks.txt | active | 文档/固件包/成员/APK/CA/设备/USB/构建/源码差异身份与摘要原始记录
+evidence/doc_verification_20261113_rev14/install_result.json | active | 覆盖安装工具原始结果（包名/versionCode/versionName/SHA-256 已核验）
+evidence/doc_verification_20261113_rev14/logcat_crash.txt | active | crash buffer 原始输出（0 行）
+evidence/doc_verification_20261113_rev14/logcat_tail.txt | active | 本轮真机会话 logcat 尾部（无 FATAL/ANR）
+evidence/doc_verification_20261113_rev14/product_main_diff_stat.txt | active | git diff a12d12b..HEAD -- dengbei_care/app/src/main 的空输出（产品源码无差异）
+evidence/doc_verification_20261113_rev14/screen_report_after_regen.png | active | 报告再生成后界面截图（按钮恢复 enabled、仍“尚未生成过报告”）
+evidence/doc_verification_20261113_rev14/source_diff_files.txt | active | D-02 复算：git diff a12d12b..HEAD -- dengbei_care 文件清单（3 测试用例 + 用户说明书）
+evidence/doc_verification_20261113_rev14/source_diff_stat.txt | active | D-02 复算：上述 diff 的 stat 输出
+evidence/doc_verification_20261113_rev14/static_checks.txt | active | 逐项静态/实机核对、D-01/D-02/O-1 关闭证据、源码行号、观察项与未执行清单
+evidence/doc_verification_20261113_rev14/ui_00_my_page.xml | active | 「我的」页真机 UI 原始树（账户、报告/列表入口、网关编码、注册传感器）
+evidence/doc_verification_20261113_rev14/ui_01_my_scrolled.xml | active | 「我的」页上滑后 UI 原始树（注册传感器/网关与上传设置 bounds）
+evidence/doc_verification_20261113_rev14/ui_02_gateway_dialog.xml | active | 「网关与上传设置」对话框真机 UI 原始树
+evidence/doc_verification_20261113_rev14/ui_03_report.xml | active | 「查看今日报告」打开的 ReportActivity UI 原始树
+evidence/doc_verification_20261113_rev14/ui_04_report_after_regen.xml | active | 点「重新生成」后的 ReportActivity UI 原始树（按钮恢复、仍无报告）
+evidence/doc_verification_20261113_rev14/ui_05_home_after_reinstall.xml | active | 覆盖安装并启动后的首页 UI 原始树（空态文案、启动按钮、三页签）
+evidence/doc_verification_20261113_rev14/ui_06_sensor_list_empty.xml | active | 「打开传感器列表」空态 UI 原始树（已保存的 ID（0）、删除选中 disabled）
+evidence/doc_verification_20261113_rev14/usb_devices.txt | active | USB 枚举身份记录（COM43 Prolific 067B:2303、COM26 C251:F001 CDC、CW-DAPLink 序列号）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检

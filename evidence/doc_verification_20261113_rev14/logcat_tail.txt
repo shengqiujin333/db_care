@@ -1,0 +1,537 @@
+--------- beginning of main
+11-13 16:46:55.344   771  1861 D         : readbrightness,out2:6.
+11-13 16:46:56.345   771  1861 D         : readbrightness,out1:6
+11-13 16:46:56.345   771  1861 D         : .
+11-13 16:46:56.345   771  1861 D         : readbrightness,out2:6.
+11-13 16:46:57.345   771  1861 D         : readbrightness,out1:6
+11-13 16:46:57.345   771  1861 D         : .
+11-13 16:46:57.345   771  1861 D         : readbrightness,out2:6.
+11-13 16:46:58.346   771  1861 D         : readbrightness,out1:6
+11-13 16:46:58.346   771  1861 D         : .
+11-13 16:46:58.346   771  1861 D         : readbrightness,out2:6.
+11-13 16:46:59.347   771  1861 D         : readbrightness,out1:6
+11-13 16:46:59.347   771  1861 D         : .
+11-13 16:46:59.347   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:00.003  1916  1916 D KeyguardUpdateMonitor: handleTimeUpdate
+11-13 16:47:00.289  4495  4532 D MqttService: Attempting to reconnect to broker
+11-13 16:47:00.323  4495  4532 I MqttService: Saved MAC address: 000000000000
+11-13 16:47:00.330  1577  3092 D CompatibilityInfo: mCompatibilityFlags - 0
+11-13 16:47:00.330  1577  3092 D CompatibilityInfo: applicationDensity - 320
+11-13 16:47:00.330  1577  3092 D CompatibilityInfo: applicationScale - 1.0
+11-13 16:47:00.336   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 16:47:00.341   430   430 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 16:47:00.347   771  1861 D         : readbrightness,out1:6
+11-13 16:47:00.347   771  1861 D         : .
+11-13 16:47:00.347   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:00.488  4495  4633 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-13 16:47:00.495  4495  4634 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-13 16:47:00.528  4495  4495 E MqttService: Failed to connect to broker
+11-13 16:47:00.528  4495  4495 E MqttService: 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:80)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:132)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-13 16:47:00.528  4495  4495 E MqttService: Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at libcore.io.IoBridge.connect(IoBridge.java:143)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at java.net.Socket.connect(Socket.java:621)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at com.android.org.conscrypt.AbstractConscryptSocket.connect(AbstractConscryptSocket.java:156)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:74)
+11-13 16:47:00.528  4495  4495 E MqttService: 	... 3 more
+11-13 16:47:00.528  4495  4495 E MqttService: Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at libcore.io.Linux.connect(Native Method)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at libcore.io.BlockGuardOs.connect(BlockGuardOs.java:136)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at libcore.io.IoBridge.connectErrno(IoBridge.java:174)
+11-13 16:47:00.528  4495  4495 E MqttService: 	at libcore.io.IoBridge.connect(IoBridge.java:135)
+11-13 16:47:00.528  4495  4495 E MqttService: 	... 11 more
+11-13 16:47:01.348   771  1861 D         : readbrightness,out1:6
+11-13 16:47:01.348   771  1861 D         : .
+11-13 16:47:01.348   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:02.349   771  1861 D         : readbrightness,out1:6
+11-13 16:47:02.349   771  1861 D         : .
+11-13 16:47:02.349   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:02.722     0     0 W swapper/6: type=1400 audit(0.0:102879): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:47:03.349   771  1861 D         : readbrightness,out1:6
+11-13 16:47:03.349   771  1861 D         : .
+11-13 16:47:03.349   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:04.351   771  1861 D         : readbrightness,out1:6
+11-13 16:47:04.351   771  1861 D         : .
+11-13 16:47:04.351   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:05.353   771  1861 D         : readbrightness,out1:6
+11-13 16:47:05.353   771  1861 D         : .
+11-13 16:47:05.353   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:06.353   771  1861 D         : readbrightness,out1:6
+11-13 16:47:06.353   771  1861 D         : .
+11-13 16:47:06.354   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:07.354   771  1861 D         : readbrightness,out1:6
+11-13 16:47:07.354   771  1861 D         : .
+11-13 16:47:07.354   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:08.356   771  1861 D         : readbrightness,out1:6
+11-13 16:47:08.356   771  1861 D         : .
+11-13 16:47:08.356   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:09.356   771  1861 D         : readbrightness,out1:6
+11-13 16:47:09.356   771  1861 D         : .
+11-13 16:47:09.357   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:10.358   771  1861 D         : readbrightness,out1:6
+11-13 16:47:10.358   771  1861 D         : .
+11-13 16:47:10.358   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:11.359   771  1861 D         : readbrightness,out1:6
+11-13 16:47:11.359   771  1861 D         : .
+11-13 16:47:11.359   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:12.360   771  1861 D         : readbrightness,out1:6
+11-13 16:47:12.360   771  1861 D         : .
+11-13 16:47:12.360   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:12.732     0     0 W swapper/4: type=1400 audit(0.0:102880): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:47:13.361   771  1861 D         : readbrightness,out1:6
+11-13 16:47:13.361   771  1861 D         : .
+11-13 16:47:13.361   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:14.361   771  1861 D         : readbrightness,out1:6
+11-13 16:47:14.361   771  1861 D         : .
+11-13 16:47:14.361   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:15.363   771  1861 D         : readbrightness,out1:6
+11-13 16:47:15.363   771  1861 D         : .
+11-13 16:47:15.363   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:16.364   771  1861 D         : readbrightness,out1:6
+11-13 16:47:16.364   771  1861 D         : .
+11-13 16:47:16.364   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:17.364   771  1861 D         : readbrightness,out1:6
+11-13 16:47:17.364   771  1861 D         : .
+11-13 16:47:17.365   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:18.366   771  1861 D         : readbrightness,out1:6
+11-13 16:47:18.366   771  1861 D         : .
+11-13 16:47:18.366   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:19.367   771  1861 D         : readbrightness,out1:6
+11-13 16:47:19.367   771  1861 D         : .
+11-13 16:47:19.367   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:20.367   771  1861 D         : readbrightness,out1:6
+11-13 16:47:20.367   771  1861 D         : .
+11-13 16:47:20.367   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:21.368   771  1861 D         : readbrightness,out1:6
+11-13 16:47:21.368   771  1861 D         : .
+11-13 16:47:21.368   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:22.369   771  1861 D         : readbrightness,out1:6
+11-13 16:47:22.369   771  1861 D         : .
+11-13 16:47:22.369   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:22.722     0     0 W swapper/5: type=1400 audit(0.0:102881): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:47:23.369   771  1861 D         : readbrightness,out1:6
+11-13 16:47:23.369   771  1861 D         : .
+11-13 16:47:23.369   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:24.371   771  1861 D         : readbrightness,out1:6
+11-13 16:47:24.371   771  1861 D         : .
+11-13 16:47:24.371   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:25.372   771  1861 D         : readbrightness,out1:6
+11-13 16:47:25.372   771  1861 D         : .
+11-13 16:47:25.372   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:26.373   771  1861 D         : readbrightness,out1:6
+11-13 16:47:26.373   771  1861 D         : .
+11-13 16:47:26.373   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:27.373   771  1861 D         : readbrightness,out1:6
+11-13 16:47:27.373   771  1861 D         : .
+11-13 16:47:27.373   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:28.375   771  1861 D         : readbrightness,out1:6
+11-13 16:47:28.375   771  1861 D         : .
+11-13 16:47:28.375   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:29.377   771  1861 D         : readbrightness,out1:6
+11-13 16:47:29.377   771  1861 D         : .
+11-13 16:47:29.377   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:30.379   771  1861 D         : readbrightness,out1:6
+11-13 16:47:30.379   771  1861 D         : .
+11-13 16:47:30.379   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:31.379   771  1861 D         : readbrightness,out1:6
+11-13 16:47:31.379   771  1861 D         : .
+11-13 16:47:31.379   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:32.380   771  1861 D         : readbrightness,out1:6
+11-13 16:47:32.380   771  1861 D         : .
+11-13 16:47:32.380   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:32.732     0     0 W swapper/4: type=1400 audit(0.0:102882): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:47:33.381   771  1861 D         : readbrightness,out1:6
+11-13 16:47:33.381   771  1861 D         : .
+11-13 16:47:33.381   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:34.382   771  1861 D         : readbrightness,out1:6
+11-13 16:47:34.382   771  1861 D         : .
+11-13 16:47:34.382   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:35.383   771  1861 D         : readbrightness,out1:6
+11-13 16:47:35.383   771  1861 D         : .
+11-13 16:47:35.384   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:36.385   771  1861 D         : readbrightness,out1:6
+11-13 16:47:36.385   771  1861 D         : .
+11-13 16:47:36.385   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:37.386   771  1861 D         : readbrightness,out1:6
+11-13 16:47:37.386   771  1861 D         : .
+11-13 16:47:37.386   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:37.766 27265 31012 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-13 16:47:37.766 27265 31012 D MiuiFastConnectService: stopBleScan: scanning: true
+11-13 16:47:37.768 27265 31012 D BluetoothAdapter: isLeEnabled(): ON
+11-13 16:47:37.769 30914 30933 D BtGatt.GattService: stopScan() - queue size =1
+11-13 16:47:37.770 30914 30967 I BtGatt.ScanManager: msg.what = 1
+11-13 16:47:37.771 30914 30967 D BtGatt.ScanManager: stop scan
+11-13 16:47:37.771 30914 30933 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-13 16:47:37.771 30914 30975 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-13 16:47:37.772 30914 30975 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-13 16:47:37.775 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-13 16:47:37.775 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.789 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-13 16:47:37.789 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.793 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-13 16:47:37.793 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.795 27265 31012 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-13 16:47:37.797 27265 31012 D BluetoothAdapter: isLeEnabled(): ON
+11-13 16:47:37.797 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-13 16:47:37.798 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.800 30914 30933 D BtGatt.GattService: registerScanner() - UUID=71a1e41b-bc64-475c-be06-49ca798753ca
+11-13 16:47:37.801 30914 30975 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 16:47:37.801 30914 30975 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register e99b9374-3b0f-2ae8-c501-5e64787abfb8
+11-13 16:47:37.801 30914 30975 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-13 16:47:37.801 30914 30975 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-13 16:47:37.801 30914 30975 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 16:47:37.801 30914 30975 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 16:47:37.802 30914 30953 D BtGatt.GattService: onScannerRegistered() - UUID=71a1e41b-bc64-475c-be06-49ca798753ca, scannerId=5, status=0
+11-13 16:47:37.802 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-13 16:47:37.802 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.802 27265 30724 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-13 16:47:37.803 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-13 16:47:37.803 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-13 16:47:37.803 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-13 16:47:37.803 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-13 16:47:37.804 30914 30933 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-13 16:47:37.808 30914 30933 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@ee1e995
+11-13 16:47:37.811 30914 30933 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-13 16:47:37.812 30914 30933 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 16:47:37.815 30914 30967 I BtGatt.ScanManager: msg.what = 0
+11-13 16:47:37.816 30914 30967 D BtGatt.ScanManager: handling starting scan
+11-13 16:47:37.818 30914 30967 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-13 16:47:37.825 30914 30953 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-13 16:47:37.825 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.825 30914 30967 D BtGatt.ScanManager: Available Filter size: 13
+11-13 16:47:37.826 30914 30953 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 16:47:37.826 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.826 30914 30967 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 16:47:37.833 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-13 16:47:37.833 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.834 30914 30953 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 16:47:37.834 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.834 30914 30967 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 16:47:37.847 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-13 16:47:37.847 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.848 30914 30953 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 16:47:37.848 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.848 30914 30967 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 16:47:37.857 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-13 16:47:37.857 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.860 30914 30953 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 16:47:37.860 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.861 30914 30967 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 16:47:37.867 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-13 16:47:37.868 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.868 30914 30953 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 16:47:37.868 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.869 30914 30967 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 16:47:37.880 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-13 16:47:37.880 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:47:37.880 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-13 16:47:37.880 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-13 16:47:37.883 30914 30967 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-13 16:47:37.883 30914 30953 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-13 16:47:38.386   771  1861 D         : readbrightness,out1:6
+11-13 16:47:38.386   771  1861 D         : .
+11-13 16:47:38.386   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:39.387   771  1861 D         : readbrightness,out1:6
+11-13 16:47:39.387   771  1861 D         : .
+11-13 16:47:39.387   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:40.389   771  1861 D         : readbrightness,out1:6
+11-13 16:47:40.389   771  1861 D         : .
+11-13 16:47:40.389   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:41.390   771  1861 D         : readbrightness,out1:6
+11-13 16:47:41.390   771  1861 D         : .
+11-13 16:47:41.390   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:42.390   771  1861 D         : readbrightness,out1:6
+11-13 16:47:42.390   771  1861 D         : .
+11-13 16:47:42.391   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:42.732     0     0 W swapper/5: type=1400 audit(0.0:102883): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:47:43.391   771  1861 D         : readbrightness,out1:6
+11-13 16:47:43.391   771  1861 D         : .
+11-13 16:47:43.391   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:44.393   771  1861 D         : readbrightness,out1:6
+11-13 16:47:44.393   771  1861 D         : .
+11-13 16:47:44.393   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:45.393   771  1861 D         : readbrightness,out1:6
+11-13 16:47:45.393   771  1861 D         : .
+11-13 16:47:45.393   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:46.394   771  1861 D         : readbrightness,out1:6
+11-13 16:47:46.394   771  1861 D         : .
+11-13 16:47:46.394   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:47.395   771  1861 D         : readbrightness,out1:6
+11-13 16:47:47.395   771  1861 D         : .
+11-13 16:47:47.395   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:48.396   771  1861 D         : readbrightness,out1:6
+11-13 16:47:48.396   771  1861 D         : .
+11-13 16:47:48.396   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:49.397   771  1861 D         : readbrightness,out1:6
+11-13 16:47:49.397   771  1861 D         : .
+11-13 16:47:49.397   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:50.399   771  1861 D         : readbrightness,out1:6
+11-13 16:47:50.399   771  1861 D         : .
+11-13 16:47:50.399   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:51.400   771  1861 D         : readbrightness,out1:6
+11-13 16:47:51.400   771  1861 D         : .
+11-13 16:47:51.400   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:52.401   771  1861 D         : readbrightness,out1:6
+11-13 16:47:52.401   771  1861 D         : .
+11-13 16:47:52.401   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:52.732     0     0 W swapper/4: type=1400 audit(0.0:102884): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:47:53.401   771  1861 D         : readbrightness,out1:6
+11-13 16:47:53.401   771  1861 D         : .
+11-13 16:47:53.401   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:54.402   771  1861 D         : readbrightness,out1:6
+11-13 16:47:54.402   771  1861 D         : .
+11-13 16:47:54.402   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:55.403   771  1861 D         : readbrightness,out1:6
+11-13 16:47:55.403   771  1861 D         : .
+11-13 16:47:55.403   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:56.404   771  1861 D         : readbrightness,out1:6
+11-13 16:47:56.404   771  1861 D         : .
+11-13 16:47:56.404   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:57.405   771  1861 D         : readbrightness,out1:6
+11-13 16:47:57.405   771  1861 D         : .
+11-13 16:47:57.405   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:58.406   771  1861 D         : readbrightness,out1:6
+11-13 16:47:58.406   771  1861 D         : .
+11-13 16:47:58.406   771  1861 D         : readbrightness,out2:6.
+11-13 16:47:59.408   771  1861 D         : readbrightness,out1:6
+11-13 16:47:59.408   771  1861 D         : .
+11-13 16:47:59.408   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:00.002  1916  1916 D KeyguardUpdateMonitor: handleTimeUpdate
+11-13 16:48:00.175  4495  4532 I MqttService: BLE connect blocked: gateway address cleared/unset
+11-13 16:48:00.176  4495  4532 I MqttService: link_state=GATEWAY_UNSET msg=未配置网关地址（搜索附近网关）
+11-13 16:48:00.409   771  1861 D         : readbrightness,out1:6
+11-13 16:48:00.409   771  1861 D         : .
+11-13 16:48:00.409   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:01.409   771  1861 D         : readbrightness,out1:6
+11-13 16:48:01.409   771  1861 D         : .
+11-13 16:48:01.409   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:02.409   771  1861 D         : readbrightness,out1:6
+11-13 16:48:02.409   771  1861 D         : .
+11-13 16:48:02.409   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:02.742     0     0 W swapper/5: type=1400 audit(0.0:102885): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:48:03.411   771  1861 D         : readbrightness,out1:6
+11-13 16:48:03.411   771  1861 D         : .
+11-13 16:48:03.411   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:04.412   771  1861 D         : readbrightness,out1:6
+11-13 16:48:04.412   771  1861 D         : .
+11-13 16:48:04.412   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:05.412   771  1861 D         : readbrightness,out1:6
+11-13 16:48:05.412   771  1861 D         : .
+11-13 16:48:05.413   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:06.414   771  1861 D         : readbrightness,out1:6
+11-13 16:48:06.414   771  1861 D         : .
+11-13 16:48:06.414   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:07.415   771  1861 D         : readbrightness,out1:6
+11-13 16:48:07.415   771  1861 D         : .
+11-13 16:48:07.415   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:08.416   771  1861 D         : readbrightness,out1:6
+11-13 16:48:08.416   771  1861 D         : .
+11-13 16:48:08.416   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:09.417   771  1861 D         : readbrightness,out1:6
+11-13 16:48:09.417   771  1861 D         : .
+11-13 16:48:09.417   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:10.418   771  1861 D         : readbrightness,out1:6
+11-13 16:48:10.418   771  1861 D         : .
+11-13 16:48:10.418   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:11.419   771  1861 D         : readbrightness,out1:6
+11-13 16:48:11.419   771  1861 D         : .
+11-13 16:48:11.419   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:12.419   771  1861 D         : readbrightness,out1:6
+11-13 16:48:12.419   771  1861 D         : .
+11-13 16:48:12.420   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:12.742     0     0 W swapper/5: type=1400 audit(0.0:102886): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:48:13.420   771  1861 D         : readbrightness,out1:6
+11-13 16:48:13.420   771  1861 D         : .
+11-13 16:48:13.420   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:14.421   771  1861 D         : readbrightness,out1:6
+11-13 16:48:14.421   771  1861 D         : .
+11-13 16:48:14.421   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:15.422   771  1861 D         : readbrightness,out1:6
+11-13 16:48:15.422   771  1861 D         : .
+11-13 16:48:15.422   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:16.423   771  1861 D         : readbrightness,out1:6
+11-13 16:48:16.423   771  1861 D         : .
+11-13 16:48:16.424   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:16.558 11596 11596 I PowerKeeperBackgroundService: onStartCommand()
+11-13 16:48:16.558 11596 11596 I PowerKeeperService: onAlarm
+11-13 16:48:17.425   771  1861 D         : readbrightness,out1:6
+11-13 16:48:17.425   771  1861 D         : .
+11-13 16:48:17.425   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:18.426   771  1861 D         : readbrightness,out1:6
+11-13 16:48:18.426   771  1861 D         : .
+11-13 16:48:18.426   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:19.427   771  1861 D         : readbrightness,out1:6
+11-13 16:48:19.427   771  1861 D         : .
+11-13 16:48:19.427   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:20.428   771  1861 D         : readbrightness,out1:6
+11-13 16:48:20.428   771  1861 D         : .
+11-13 16:48:20.428   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:21.429   771  1861 D         : readbrightness,out1:6
+11-13 16:48:21.429   771  1861 D         : .
+11-13 16:48:21.429   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:22.430   771  1861 D         : readbrightness,out1:6
+11-13 16:48:22.430   771  1861 D         : .
+11-13 16:48:22.430   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:22.732     0     0 W swapper/4: type=1400 audit(0.0:102887): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:48:23.430   771  1861 D         : readbrightness,out1:6
+11-13 16:48:23.430   771  1861 D         : .
+11-13 16:48:23.430   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:24.431   771  1861 D         : readbrightness,out1:6
+11-13 16:48:24.431   771  1861 D         : .
+11-13 16:48:24.431   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:25.431   771  1861 D         : readbrightness,out1:6
+11-13 16:48:25.431   771  1861 D         : .
+11-13 16:48:25.431   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:26.433   771  1861 D         : readbrightness,out1:6
+11-13 16:48:26.433   771  1861 D         : .
+11-13 16:48:26.433   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:27.434   771  1861 D         : readbrightness,out1:6
+11-13 16:48:27.434   771  1861 D         : .
+11-13 16:48:27.434   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:28.435   771  1861 D         : readbrightness,out1:6
+11-13 16:48:28.435   771  1861 D         : .
+11-13 16:48:28.435   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:29.437   771  1861 D         : readbrightness,out1:6
+11-13 16:48:29.437   771  1861 D         : .
+11-13 16:48:29.437   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:30.438   771  1861 D         : readbrightness,out1:6
+11-13 16:48:30.438   771  1861 D         : .
+11-13 16:48:30.438   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:31.439   771  1861 D         : readbrightness,out1:6
+11-13 16:48:31.439   771  1861 D         : .
+11-13 16:48:31.439   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:32.440   771  1861 D         : readbrightness,out1:6
+11-13 16:48:32.440   771  1861 D         : .
+11-13 16:48:32.440   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:32.742     0     0 W swapper/5: type=1400 audit(0.0:102888): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:48:33.441   771  1861 D         : readbrightness,out1:6
+11-13 16:48:33.441   771  1861 D         : .
+11-13 16:48:33.441   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:34.441   771  1861 D         : readbrightness,out1:6
+11-13 16:48:34.441   771  1861 D         : .
+11-13 16:48:34.441   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:35.442   771  1861 D         : readbrightness,out1:6
+11-13 16:48:35.442   771  1861 D         : .
+11-13 16:48:35.442   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:36.442   771  1861 D         : readbrightness,out1:6
+11-13 16:48:36.442   771  1861 D         : .
+11-13 16:48:36.443   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:37.444   771  1861 D         : readbrightness,out1:6
+11-13 16:48:37.444   771  1861 D         : .
+11-13 16:48:37.444   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:37.796 27265 31012 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-13 16:48:37.796 27265 31012 D MiuiFastConnectService: stopBleScan: scanning: true
+11-13 16:48:37.798 27265 31012 D BluetoothAdapter: isLeEnabled(): ON
+11-13 16:48:37.799 30914 30933 D BtGatt.GattService: stopScan() - queue size =1
+11-13 16:48:37.801 30914 30967 I BtGatt.ScanManager: msg.what = 1
+11-13 16:48:37.801 30914 30967 D BtGatt.ScanManager: stop scan
+11-13 16:48:37.802 30914 30933 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-13 16:48:37.802 30914 30975 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-13 16:48:37.803 30914 30975 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-13 16:48:37.804 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-13 16:48:37.804 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.816 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-13 16:48:37.816 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.819 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-13 16:48:37.819 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.821 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-13 16:48:37.821 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.823 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-13 16:48:37.824 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.824 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-13 16:48:37.824 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-13 16:48:37.824 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-13 16:48:37.824 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-13 16:48:37.849 27265 31012 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-13 16:48:37.851 27265 31012 D BluetoothAdapter: isLeEnabled(): ON
+11-13 16:48:37.853 30914 30933 D BtGatt.GattService: registerScanner() - UUID=0b52315f-4fa2-4cb9-8a31-889c55fb809a
+11-13 16:48:37.854 30914 30975 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 16:48:37.854 30914 30975 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register 65c8c8d8-cf6a-dc69-df7e-786e6fdb8323
+11-13 16:48:37.854 30914 30975 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-13 16:48:37.854 30914 30975 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-13 16:48:37.855 30914 30953 D BtGatt.GattService: onScannerRegistered() - UUID=0b52315f-4fa2-4cb9-8a31-889c55fb809a, scannerId=5, status=0
+11-13 16:48:37.855 30914 30975 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 16:48:37.855 30914 30975 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 16:48:37.855 27265 30724 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-13 16:48:37.857 30914 30933 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-13 16:48:37.862 30914 30933 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@d48f177
+11-13 16:48:37.865 30914 30933 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-13 16:48:37.866 30914 30933 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 16:48:37.869 30914 30967 I BtGatt.ScanManager: msg.what = 0
+11-13 16:48:37.870 30914 30967 D BtGatt.ScanManager: handling starting scan
+11-13 16:48:37.873 30914 30967 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-13 16:48:37.879 30914 30953 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-13 16:48:37.879 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.879 30914 30967 D BtGatt.ScanManager: Available Filter size: 13
+11-13 16:48:37.880 30914 30953 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 16:48:37.880 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.880 30914 30967 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 16:48:37.887 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-13 16:48:37.887 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.888 30914 30953 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 16:48:37.888 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.888 30914 30967 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 16:48:37.895 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-13 16:48:37.895 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.896 30914 30953 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 16:48:37.896 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.897 30914 30967 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 16:48:37.903 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-13 16:48:37.904 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.904 30914 30953 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 16:48:37.904 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.904 30914 30967 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 16:48:37.911 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-13 16:48:37.911 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.911 30914 30953 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 16:48:37.911 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.912 30914 30967 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 16:48:37.918 30914 30953 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-13 16:48:37.918 30914 30953 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-13 16:48:37.919 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-13 16:48:37.919 30914 30967 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-13 16:48:37.923 30914 30967 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-13 16:48:37.923 30914 30953 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-13 16:48:37.937  1577  1606 I system_server: Background young concurrent copying GC freed 289725(13MB) AllocSpace objects, 45(2400KB) LOS objects, 35% free, 29MB/45MB, paused 443us total 131.715ms
+11-13 16:48:37.942  1577  1608 W System  : A resource failed to call release. 
+11-13 16:48:38.445   771  1861 D         : readbrightness,out1:6
+11-13 16:48:38.445   771  1861 D         : .
+11-13 16:48:38.445   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:39.446   771  1861 D         : readbrightness,out1:6
+11-13 16:48:39.446   771  1861 D         : .
+11-13 16:48:39.446   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:40.448   771  1861 D         : readbrightness,out1:6
+11-13 16:48:40.448   771  1861 D         : .
+11-13 16:48:40.448   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:41.448   771  1861 D         : readbrightness,out1:6
+11-13 16:48:41.448   771  1861 D         : .
+11-13 16:48:41.448   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:42.449   771  1861 D         : readbrightness,out1:6
+11-13 16:48:42.449   771  1861 D         : .
+11-13 16:48:42.449   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:42.742     0     0 W swapper/4: type=1400 audit(0.0:102889): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 16:48:43.450   771  1861 D         : readbrightness,out1:6
+11-13 16:48:43.450   771  1861 D         : .
+11-13 16:48:43.450   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:44.450   771  1861 D         : readbrightness,out1:6
+11-13 16:48:44.450   771  1861 D         : .
+11-13 16:48:44.451   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:45.451   771  1861 D         : readbrightness,out1:6
+11-13 16:48:45.451   771  1861 D         : .
+11-13 16:48:45.451   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:46.451   771  1861 D         : readbrightness,out1:6
+11-13 16:48:46.451   771  1861 D         : .
+11-13 16:48:46.452   771  1861 D         : readbrightness,out2:6.
+11-13 16:48:47.453   771  1861 D         : readbrightness,out1:6
+11-13 16:48:47.453   771  1861 D         : .
+11-13 16:48:47.453   771  1861 D         : readbrightness,out2:6.

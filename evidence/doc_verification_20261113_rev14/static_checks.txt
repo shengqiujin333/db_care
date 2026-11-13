@@ -1,0 +1,206 @@
+DOC-VERIFY-014 静态与实机核对记录（原始观察/命令/结果）
+被测文档：DOC-PKG-001 rev 14（docs/README.md + docs/01–06 + dengbei_care/用户使用说明书.md）
+被测候选：固件 FD-002 rev 8 发布包 fw_sensor_FD-002r8.zip；Android AB-003（versionCode 10 / 1.9）
+仓库 HEAD：d3408014bc6d5d7841f4203756f61067c44167c0
+执行者：software_tester.documentation_verification（独立校核；不改产品源码、不烧录、不采集串口、不写平台）
+
+========================================================================
+A. DOC-VERIFY-013 两项文档缺陷的关闭核对（本轮独立复算）
+========================================================================
+D-01  docs/06 §3 #26 证据章节 §8 -> §7
+      命令：Read docs/06、Read evidence/aa006_software_test_20261113/ST-AA006.md
+      现状：docs/06 第 99 行引用 “ST-AA006.md §7 观察项”；
+            ST-AA006.md 第 136 行 “## 7 观察项（不构成本轮失败）”，第 145 行 “## 8 结论”，
+            O-AA006-1..4 正文位于 §7（第 138–141 行）。
+      判定：FIXED（引用与原文一致）。
+
+D-02  docs/01 §5、docs/04 §1 的源码差异声明
+      命令：git diff --name-status a12d12b..HEAD -- dengbei_care
+      结果：
+        A app/src/test/java/.../GatewayReadStateItem002VerificationTest.kt
+        A app/src/test/java/.../NotificationsPermissionWiringItem001VerificationTest.kt
+        A app/src/test/java/.../ReportRegenerateFeedbackItem003VerificationTest.kt
+        M dengbei_care/用户使用说明书.md
+      git diff --stat a12d12b..HEAD -- dengbei_care/app/src/main  →  空
+      文档现状（01 第 89 行、04 第 23 行）：“含 3 个测试侧独立验证用例与随包用户说明书更新；
+      dengbei_care/app/src/main 无产品源码差异”。
+      判定：FIXED（与命令输出逐项一致）。
+
+O-1   docs/06 §5 EV-039 数字表述
+      原文 evidence/ev039/EV-039_section.md §3：ASB-01 实现侧宿主 222/0；测试侧独立 harness 609/0；
+      静态 21/21。
+      文档现状（06 第 133 行）：“宿主 222/0、测试侧 609/0、静态 21/21”。
+      判定：FIXED（不再简写为“222/609”）。
+
+范围复核（操作员恢复指令）：
+- FW-LIGHT-DEF2-ENABLE 的人工结论为 APPROVED_DEFERRED / NOT EXECUTED
+  （2026-11-11T03:50:42Z，「无法准备，先跳过」）。本轮未重测、未重复询问、不作为返工依据。
+- 原检查者把该人工跳过项计入“需求 4 未满足/整体失败”属范围错误；
+  PRODUCT-ACCEPTANCE-RECHECK-002 §2 E-1..E-4 已纠正，rev 14 文档（README §5 #1、01 §3/§6、06 §4）
+  按 NOT EXECUTED 披露，本轮核对原文一致，不据此判文档失败。
+
+========================================================================
+B. 文档包身份与引用
+========================================================================
+B1  各文档版本头：README 标题 rev 14；01–06 均为 “文档包：DOC-PKG-001 rev 14（2026-11-13）”；
+    用户说明书 “版本:1.9(2026-11，候选 AB-003)”。
+    原始：identity_checks.txt“doc version headers”。
+B2  路径引用检查：python evidence/doc_verification_20261113_rev14/check_doc_refs.py
+    结果：8 份文档，128 个可解析仓库路径引用，missing=0。
+    原始：check_doc_refs_output.txt。
+B3  共享清单检查：python evidence/doc_verification_20261113_rev14/check_manifest.py
+    结果：1842 条（含本轮新增 30 条），missing=0，bad_format=0，wildcards=0。
+    原始：check_manifest_output.txt。
+B4  清单新条目：docs/ 与 docs/01–06、docs/README.md 描述均标 rev 14（file_manifest.txt 184–191 行）。
+
+========================================================================
+C. 固件候选与文档声明（静态 + 既有真实板证据复核）
+========================================================================
+C1  发布包：134,791 B；md5 5df0c6d45ecddc8aae8bddbbcfc9cfdf（独立复算一致）；zip CRC OK；
+    恰 3 成员：axf 297,380 B b6a15fed…、hex 75,275 B 4d728dec…、PACKAGE.txt 3,202 B a58f67fc…。
+    原始：identity_checks.txt；evidence/fw_release_20261111/package_verify.txt（RESULT: PASS）。
+C2  源码身份：git diff --stat 82a7e74..HEAD -- <sensor>/{USER,MDK,EWARM,UM2005C,COMMON} 为空。
+C3  常量（USER/inc/sensor_config.h）：
+      SENSOR_SAMPLE_TICKS=3（3×1 min）；SENSOR_REPORT_RISE_X10=9；SENSOR_REPORT_HIGH_X10=350；
+      LIGHT_DARK_THRESHOLD_CODE=0；UART1 9600 8N1；PA06 TXD / PA05 RXD；SENSOR_DEBUG_UART_MAXLINE=96。
+    与 docs/01 §2–§3、docs/02 §6/§9、docs/03 §2/§5/§10 一致。
+C4  判定语义（USER/src/fw_core.c sensor_decide_report）：
+      cur > 350 → 上报；否则 have_prev && dark && (cur-prev) > 9 → 上报；否则不上报。
+    与 docs/01 §3 边界表（差值=9 不触发、35.0 不触发超温、首周期无前值）一致。
+C5  光判据（USER/src/light.c）：valid = adc_ok && (T != 0)；dark = valid && mean >= T；T=0 时 V=D=0。
+    与 docs/01 §3、docs/03 §5/§5.2 一致。
+C6  串口行格式（USER/src/debug_trace.c）：
+      BOOT/VDD/IOTEST/IOSIG/BUS 五行字段；S 行字段顺序 k,p,H,V,o,n,x,a,D,t,h,q,r,s,y；
+      G 行 s,a44,a45,rd,at,raw；P 行 rq,s,y,t,h；
+      最坏行宽注释：S=92 B（含 CRLF）< 96 B。
+    与 docs/03 §3–§7 一致。
+C7  实板证据（evidence/test.md EV-040 §0/§3、evidence/ev040/）：
+      上电五行两次一致；S k=0/3/6/9；节拍 179.66/179.59 s；全部 q=1、V=0 D=0；无 G/P 行。
+    与 docs/01 §6、docs/02 §6/§10、docs/03 §4/§5、docs/06 §5 一致。
+C8  构建：Keil 0E/1W（main.c 第 254 行 while(k--); 既有 warning），
+      Code=25964 RO=656 RW=116 ZI=1676；gcc/build.sh FLASH 34840 B / RAM 1816 B。
+      main.c 第 254 行原文经本轮读取确认。
+    与 docs/02 §4 一致。
+C9  工程保存配置：Project.uvprojx Device=CW32L010F8；Project.uvoptx 调试器
+      “CW-DAPLINK(CMSIS-DAP)” SN 87094109484987710672FF50、Flash 算法 FlashCW32L010.FLM。
+    与 docs/02 §1/§3、README §2 一致。
+C10 硬件：sensor_hardware/pstxnet.dat LIGHT_ADC 节点 = J4.1 + R3.1 + U7 PB04；
+      LIGTHT_POWER = R3.2 + U7 PB05；J4.2 = GND；BOM R3=5M；U7=CW32L010Y8M6；U9=gxht40。
+    与 docs/01 §2 行 1/2/7、docs/02 §9 行 2 一致。
+C11 串口 USB 枚举：usb_list_devices 显示
+      “Prolific USB-to-Serial Comm Port (COM43)” VID_067B&PID_2303；
+      “USB 复合设备 (COM26)” VID_C251&PID_F001；CW-DAPLink 复合设备 SN 87094109484987710672FF50。
+    与 docs/README §2、docs/02 §1/§3、docs/03 §2 一致。
+C12 未执行：本能力无 mdk_flash / serial_capture；未烧录、未采集 COM43、未复位。
+      docs/02/03 中相应真实执行证据来自 EV-040/EV-039（复用，不写成本轮新执行）。
+
+========================================================================
+D. Android 候选身份（静态 + 设备实测）
+========================================================================
+D1  候选 APK：10,370,964 B；SHA-256 80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b；
+    MD5 a97ed9bef658ee89cdf6e2b49447ce69（主机独立复算）。
+    apksigner：v2=true，证书 CN=Android Debug，证书 SHA-256 773e4ef6…；
+    aapt badging：versionCode 10 / versionName 1.9，minSdk 26 / targetSdk 34。
+    与 docs/04 §1、docs/README §1、用户说明书 §2.1、docs/06 §3 #8 一致。
+D2  设备：Redmi 8A / API 29 / serial 12f046690506（android_test devices 16:32:59）。
+    与 docs/README §2、docs/04 §2/§8 一致。
+D3  文档安装步骤实测：android_test install（同一候选 APK，覆盖安装路径）16:41:37–16:41:44
+    → installed_version_verified，package/version/SHA-256 与候选一致（install_result.json）。
+    安装后 firstInstallTime=2026-11-10 19:25:25 保持；lastUpdateTime=2026-11-13 16:41:41 更新；
+    shared_prefs/MyPrefs.xml 仍存在（run-as ls）。与 docs/04 §2.2 预期一致。
+D4  设备在装字节：当前 base.apk（/data/app/...-y-2Zz0gI8LFLM2OTRh8xsQ==/base.apk）
+    SHA-256 80232c50…、MD5 a97ed9be…、10,370,964 B —— 与候选逐字节一致。
+    与 docs/04 §1、README §5 #7、docs/06 §4 一致。
+D5  安装后启动：MainActivity 正常，进程 pid 4495；crash buffer 0 行；logcat 尾部无 FATAL/ANR。
+    docs/04 §2.5 第 1 条（启动无崩溃）在本次安装会话得到复核。
+
+========================================================================
+E. 真机读者步骤复核（Redmi 8A / API 29；未改业务配置）
+========================================================================
+E1  首页（16:42）：标题“爱守护”、“启动”、空态“还没有添加设备”、
+    “点击下方「去添加」添加设备；也可在「我的」→「打开传感器列表」查看已保存 ID”、
+    三页签（首页/设定/我的）。原始：ui_05_home_after_reinstall.xml。
+    与 docs/04 §4.2“修复后 UI 状态”第 3 条一致。
+E2  我的页（16:37）：用户：未登录 / 账户 / 查看今日报告 / 打开传感器列表 /
+    请输入网关编码：+ 请输入网关上的字母串 + 保存 + 使用摄像头扫一扫 /
+    请输入传感器编码和别称：+ 请输入传感器的字母串 + 传感器别称 + 注册传感器。
+    原始：ui_00_my_page.xml。与 docs/04 §4.1、用户说明书 §4.1 一致。
+E3  我的页滚动（16:37）：出现“网关与上传设置”，bounds [32,1120][688,1216]；
+    “注册传感器” bounds [32,976][688,1072]，二者不相交。
+    原始：ui_01_my_scrolled.xml。与 docs/04 §4.2 注、docs/06 #17 一致。
+E4  网关对话框（16:38）：标题“网关与上传设置”；状态“未配置网关地址 / 平台身份（mac_addr）：”；
+    输入框“网关 BLE 地址（AA:BB:CC:DD:EE:FF）”；按钮 搜索附近网关 / 扩大搜索（不过滤）/
+    清除网关地址 / 保存网关地址 / 重试上传 / 关闭；“云端上传状态：无（待发 0 条）”。
+    原始：ui_02_gateway_dialog.xml。与 docs/04 §4.2、用户说明书 §4.4 一致。
+    本次未扫描、未保存、未清除；关闭对话框（16:38:36）未改配置。
+E5  传感器列表（开工时页面）：已保存的 ID（0）/ 点选可多选… / 删除选中（disabled）。
+    原始：ui_06_sensor_list_empty.xml。与 docs/04 §4.1 步骤 4、用户说明书 §4.3 一致。
+E6  报告页（16:38:44）：早起报告 / 尚未生成过报告 / “暂无报告。点击下方「重新生成」可立即生成今日报告。”
+    / 重新生成（enabled）。原始：ui_03_report.xml。与 docs/04 §4.4、用户说明书 §9.2 一致。
+E7  点击“重新生成”（16:39:08）后：16:39:22 截图与 16:39:26 dump 显示按钮恢复 enabled、
+    仍未生成报告；未捕获瞬时 Toast（与 AA-006 N3-D-01 一致）。
+    原始：screen_report_after_regen.png、ui_04_report_after_regen.xml。
+E8  源码/证据复核（与文档逐条对照，行号为当前文件）：
+    - 读取终态文案：protocol/GatewayReadState.kt 第 33/34/45/47/49/51/53 行
+      （GATEWAY_NO_DEVICE = “网关已连接，暂无设备（N=0）”）→ docs/04 §4.2 一致。
+    - 容量：protocol/GatewayReadGuard.kt 第 18 行 MAX_DEVICES=9；
+      ui/notifications/NotificationsFragment.kt 第 106–111 行超限提示 → docs/04 §4.1 一致。
+    - 扫描/权限：ble/BlePermissionPolicy.kt 第 125–142 行提示文本；
+      ui/gateway/GatewayBleSettingsDialog.kt 第 94–123 行按钮与 onDismiss→stopScan、
+      第 124–150 行 onPermissionResult/pendingScan、第 263–281 行 10 s 扫描状态；
+      ble/GatewayDiscovery.kt 第 31 行 SCAN_TIMEOUT_MS=10_000 → docs/04 §3/§4.2 一致。
+    - 清除/保存语义：GatewayBleSettingsDialog.kt 第 197–226 行 → docs/04 §4.2 一致。
+    - 上传分类：cloud/UploadResult.kt 第 25–33 行（401/403、408/429、其他 4xx、5xx）；
+      cloud/CloudUploadRepository.kt 第 226/229 行 1800 s / 20 次；第 209–214 行 retryBlockedNow；
+      第 117/130 行 未注册手机号门控 → docs/04 §5、docs/06 §2.3 一致。
+    - BLE 周期：MqtttService.kt 第 260 行 READ_INTERVAL_MS=SensorCadence.SAMPLE_PERIOD_MS；
+      telemetry/SensorCadence.kt 第 14–17 行 180 s → docs/04 §4.3 一致。
+    - MQTT/TLS：MqtttService.kt 第 117 行 clientId=android_client；第 1268/1270 行 topic；
+      第 1606 行 TLSv1.2；cloud/CloudConfig.kt SERVER_HOST/8883/5000 →
+      docs/05 §1/§2、docs/README §2 一致。
+    - 平台：assets/jd-ca.crt md5 f1a8212e3c690d57894b8a3a5fd901ab；
+      res/xml/network_security_config.xml 恰 3 个 domain-config（8.140.23.253、117.72.84.210、
+      192.168.4.1）；Kotlin 源码无 117.72.84.210 → docs/05 §1/§2 一致。
+    - 报警：telemetry/AlarmEvaluator.kt 第 27 行 65.0、第 29 行 5/10/15 分钟、
+      第 112 行紧急优先；MqtttService.kt 第 1216 行 900 s 节流、第 1140 行紧急忽略开关；
+      VibrationPlayer.kt createWaveform(repeatIndex=0) → docs/04 §6、docs/06 #22–#25 一致。
+    - 守护恢复乘数：ui/home/HomeFragment.kt 第 137 行 *3600000L → docs/06 #22 一致。
+    - 注册/登录：ui/zhuce/ZhuCeFragment.kt 第 204–210 行 LOGIN_CNT>30；
+      第 221–222 行 clickCount>3；第 238–251 行 60 s 倒计时；
+      第 420–427 行手机号 ^1[3-9]\d{9}$、验证码 6 位 → 用户说明书 §3/§6 一致（§3.1 表述见 O-1）。
+    - 设备参数：MainActivity.kt 第 146–153 行首次安装默认值（2 / 0.1 / 35 / 29 / 75 / 40 / 8 / 10）；
+      ui/dashboard/DashboardFragment.kt 第 90–103 行“默认值”按钮（1 / 4 / 35 / 29 / 70 / 40 / 8 / 5，全开）
+      → 用户说明书 §7.1 一致。
+    - 传感器绑定：MacIdBox.kt 第 74–102 行 8 位 HEX、别称规则；第 30 行重复 ID 返回 false；
+      ui/sensorid/SensorIdListFragment.kt 第 29–30/42–43 行删除同时清设备参数 →
+      docs/04 §4.1、用户说明书 §4.1–§4.3 一致。
+    - 报告再生成：report/ReportActivity.kt 第 39–52 行 loading+禁用、第 67–76 行终态恢复；
+      report/ReportRegenerateFeedback.kt 第 20 行 TEXT_NO_DATA 原文 → docs/04 §4.4、用户说明书 §9.2 一致。
+    - 应用识别：MainActivity/Manifest 的 POST_NOTIFICATIONS；BlePermissionPolicy
+      scanRequestPermissions（API<31 仅定位，API31+ 仅 SCAN/CONNECT）→ docs/04 §3 一致。
+D7  未执行：全新安装（先卸载）、签名不一致失败、回退安装、权限首次弹窗/拒绝、
+    真实网关扫描与保存、守护启动、有效批次 DATA_OK、平台写入/401。
+    这些在 docs/04 §8 与 docs/06 §4 已披露，本轮不写成通过。
+
+========================================================================
+F. 观察项（不构成本轮失败）
+========================================================================
+OBS-1  用户说明书 §3.1 写“输入手机号(11 位,1 开头)”，实现校验为 ^1[3-9]\d{9}$
+     （ui/zhuce/ZhuCeFragment.kt 第 420–421 行）。对真实手机号无影响，
+     但“1 开头”不足以覆盖实现规则；建议后续写为“11 位、1[3-9] 开头”。
+OBS-2  docs/04 §4.1 列出的失败提示为“mac 设置失败，请先登录 / mac 设置失败，请先注册...”，
+     实现另有“请登录...”（registerphone 格式不合法时）与“mac 设置失败，请重试...”
+     （fragment 未挂载时）两条边缘提示；未写入文档，不影响主步骤。
+OBS-3  docs/04 §4.2 写“候选优先过滤 FFE0”。实现默认使用 FFE0 ScanFilter（仅 FFE0），
+     “扩大搜索”才不过滤；文档同一表格的“扩大搜索（不过滤）”已表达该差异，
+     建议后续将“优先过滤”改为“默认仅 FFE0”。
+OBS-4  本轮点击“重新生成”未截到瞬时 Toast；源码常量与 AA-006 N3-D-01 真机证据一致，
+     按“未捕获瞬时提示”记录，不判失败。
+
+========================================================================
+G. 环境与授权边界
+========================================================================
+- 使用入口：android_test（devices/install/launch/ui_*/logcat）、usb_list_devices、只读 ADB。
+- 未安装/卸载其它应用、未清数据、未改网关/服务器配置、未调用平台写接口。
+- 未烧录、未采集串口、未复位、未调温/改光/测功耗（当前能力无对应工具/授权，且用户明确禁止）。
+- 未使用 SSH/服务器入口（当前能力 external_actions 仅 operate_test_equipment）。
