@@ -1089,3 +1089,37 @@ BLE 记录布局/字节序/负温符号、AES/ECB/NoPadding 与密钥、GATT UUI
 
 重建证据：`evidence/product_android_rebuild_20261111/`（`build.log`、`unit_test.log`、`static_layout_check.log`、`static_aa005.log`、`gates.log`、`apk_badging.txt`、`apksigner_verify.txt`、`rebuild_identity.txt`、`test_summary.txt`）。
 实机安装/点击复测、真实 BLE/GATT、真实 `/upload_data`/401/回读、API 31+、9 台快照等保持 NOT EXECUTED，交独立产品验收；本次重建不替代真机验收。
+
+---
+
+# AA-006 三项增量实现（N-1/N-2/N-3）
+
+依据：`artifacts/android_architecture.md`（AA-006 rev 5.0）与 `artifacts/android_tasks.yaml`（3 项）。范围：仅 Android；不改固件判据、不改调温/调光/功耗安排、不改随包手册 `docs/`。
+
+## 1. 改动
+
+| 任务 | 文件 | 内容 |
+|---|---|---|
+| N-1 扫描权限结果与自动续跑 | `ui/notifications/NotificationsFragment.kt`、`ui/gateway/GatewayBleSettingsDialog.kt` | 扫描权限改由 fragment 的 `registerForActivityResult(RequestMultiplePermissions)` 发起与消费；对话框回调改为单参数；授权后重新用 `BlePermissionPolicy.evaluate(needScan=true)` 判定，`canScan` 才执行挂起扫描，否则显示 `policy.userMessage`（区分布蓝牙/定位/权限）；拒绝不自动重复请求；`stopScan()` 清除 `pendingScan`，避免对话框关闭后迟发扫描 |
+| N-2 读取终态状态 | `protocol/GatewayReadState.kt`（新增）、`MqtttService.kt` | 新增纯逻辑映射：有效→DATA_OK、全占位→GATEWAY_NO_DATA、NO_DEVICE→GATEWAY_NO_DEVICE、长度/MTU 不足→READ_INCOMPLETE、帧头/解密/密文未对齐→READ_INVALID；`onCharacteristicRead` 的 Success/Rejected/长度拒绝分支全部设置终态，不再残留 CONNECTING |
+| N-3 报告再生成反馈 | `report/ReportRegenerateFeedback.kt`（新增）、`report/ReportActivity.kt` | 新增纯逻辑反馈判定（成功/无内容/零设备/无昨日样本/失败）；点击立即显示进度并禁用按钮，结束恢复；无数据显示“暂无可生成的数据（尚无设备读数）”，失败显示重试提示；连续点击不并行；读取昨日样本数用既有 DB API，失败时按未知处理 |
+
+未改：BLE 协议布局/AES/topic/`/upload_data`/SQLite/告警阈值/180 s 节拍/报告内容与存储键/版本（仍 10 / 1.9）。
+
+## 2. 自检
+
+| 检查 | 结果 |
+|---|---|
+| 宿主机全量 | **36 套件 / 279 项 / 0 失败 / 0 错误 / 0 跳过**（新增 18 项：`GatewayReadStateTest` 8、`ReportRegenerateFeedbackTest` 7、`ScanPermissionWiringTest` 3） |
+| 编译 | 0 error；**11 条 warning，与基线集合一致** |
+| 构建 | `clean assembleDebug` 成功；APK 10,370,964 B，sha256 `5e5465d84d5e611ab5077e52ba61b6ed14ce9900bdc49879248d8b8610a38251`，md5 `214036ba0ca8add1e428e73229169f56`；v2 签名通过 |
+| 既有静态/门禁 | `software_verify_aa005_android_check.py` **54/54**；布局静态 **15/15**；`run_gates.py` **12/12** |
+
+证据：`evidence/android_aa006_20261113/`（`build.log`、`unit_test.log`、`compile_rerun.log`、`static_aa005.log`、`static_layout_check.log`、`gates.log`、`apk_badging.txt`、`apksigner_verify.txt`、`identity.txt`）。
+
+## 3. 未执行与边界
+
+1. **未安装/操作手机**：本能力无 `android_test`；N-1 首次授权自动扫描/拒绝/蓝牙与定位关闭文案、N-2 真实 devCount=0 状态、N-3 零设备提示与按钮恢复均交软件测试真机验收。
+2. **人工范围决定**：`FW-LIGHT-DEF2-ENABLE` 保持 `APPROVED_DEFERRED`/NOT EXECUTED，不属 Android；`BOT-01` 已执行 PASS；原检查者 R4 范围错误已由 RECHECK-002 纠正，未据此返工。
+3. **外部条件项**：真实 BLE/GATT/MTU/多设备/9 台、平台 `/upload_data` 写入/401/回读、API 31+、真实触发/光强/功耗均保持 NOT EXECUTED；产品级失败不由本实现关闭。
+4. `docs/` 随包手册 D-04b 属技术文档角色；Android 侧说明书已按上一轮修复同步。

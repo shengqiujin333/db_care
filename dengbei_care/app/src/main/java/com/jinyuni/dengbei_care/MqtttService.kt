@@ -42,6 +42,7 @@ import com.jinyuni.dengbei_care.cloud.UploadOutbox
 import com.jinyuni.dengbei_care.protocol.GatewayFrameCodec
 import com.jinyuni.dengbei_care.protocol.GatewayIdentity
 import com.jinyuni.dengbei_care.protocol.GatewayReadGuard
+import com.jinyuni.dengbei_care.protocol.GatewayReadState
 import com.jinyuni.dengbei_care.telemetry.AlarmEvaluator
 import com.jinyuni.dengbei_care.telemetry.BleBatchForwarding
 import com.jinyuni.dengbei_care.telemetry.BleObservation
@@ -884,41 +885,39 @@ class MqtttService : MqttService() {
                             // AA-005 D-32：先按实际返回字节数判定完整性，再解密/解码；
                             // 不补零、不拼接跨次快照、不裁掉余字节。
                             if (value == null || size % 16 != 0) {
+                                val linkStatus = GatewayReadState.unaligned(size)
                                 Log.w(
                                     "MqttService",
-                                    "link_state=READ_INCOMPLETE reason=LENGTH_NOT_ALIGNED valueSize=$size expectedAligned16=true"
+                                    "link_state=${linkStatus.code.name} reason=LENGTH_NOT_ALIGNED valueSize=$size"
                                 )
-                                setLinkStatus("READ_INCOMPLETE", "读取不完整（返回 $size 字节，非 16 字节对齐）")
+                                setLinkStatus(linkStatus.code.name, linkStatus.text)
                             } else {
                                 try {
                                     when (val parsed = decryptAndParseEcbFrame(value)) {
                                         is GatewayFrameCodec.Result.Rejected -> {
-                                            // 帧长不足/无设备/密文未对齐/解密失败：明确拒绝，不产生读数
+                                            // 帧长不足/无设备/密文未对齐/解密失败：明确拒绝，不产生读数；
+                                            // 每次拒绝都必须设置终态，不得残留在 CONNECTING（O-AA005-6）
+                                            val linkStatus = GatewayReadState.rejected(parsed.reason, parsed.detail)
                                             Log.w(
                                                 "MqttService",
-                                                "BLE frame rejected: ${parsed.reason} (${parsed.detail})"
+                                                "BLE frame rejected: ${parsed.reason} (${parsed.detail}) " +
+                                                        "link_state=${linkStatus.code.name}"
                                             )
-                                            if (parsed.reason == GatewayFrameCodec.RejectionReason.LENGTH_MISMATCH) {
-                                                Log.w(
-                                                    "MqttService",
-                                                    "link_state=READ_INCOMPLETE reason=LENGTH_TOO_SMALL valueSize=$size detail=${parsed.detail}"
-                                                )
-                                                setLinkStatus("READ_INCOMPLETE", "读取不完整（${parsed.detail}）")
-                                            }
+                                            setLinkStatus(linkStatus.code.name, linkStatus.text)
                                         }
                                         is GatewayFrameCodec.Result.Success -> {
                                             when (
                                                 val length = GatewayReadGuard.lengthVerdict(size, parsed.devCount)
                                             ) {
                                                 is GatewayReadGuard.LengthVerdict.Refuse -> {
+                                                    val linkStatus = GatewayReadState.lengthRefused(
+                                                        length.reason, length.actualBytes, length.expectedBytes
+                                                    )
                                                     Log.w(
                                                         "MqttService",
-                                                        "link_state=READ_INCOMPLETE reason=${length.reason} actual=${length.actualBytes} expected=${length.expectedBytes} devCount=${parsed.devCount}"
+                                                        "link_state=${linkStatus.code.name} reason=${length.reason} actual=${length.actualBytes} expected=${length.expectedBytes} devCount=${parsed.devCount}"
                                                     )
-                                                    setLinkStatus(
-                                                        "READ_INCOMPLETE",
-                                                        "读取不完整（返回 ${length.actualBytes} 字节 / 需要 ${length.expectedBytes} 字节）"
-                                                    )
+                                                    setLinkStatus(linkStatus.code.name, linkStatus.text)
                                                 }
                                                 is GatewayReadGuard.LengthVerdict.Proceed -> {
                                                     Log.i(
@@ -1002,13 +1001,22 @@ class MqtttService : MqttService() {
         }
 
         if (valid.isEmpty() && frame.devCount > 0) {
-            setLinkStatus("GATEWAY_NO_DATA", "网关暂无传感器数据（等待传感器上报）")
-        } else {
-            setLinkStatus(
-                "DATA_OK",
-                "网关已连接（最近读取 " + java.text.SimpleDateFormat("HH:mm", java.util.Locale.US)
-                    .format(java.util.Date(receiveTime * 1000)) + "）"
+            Log.i("MqttService", "link_state=GATEWAY_NO_DATA reason=ALL_PLACEHOLDER")
+            val linkStatus = GatewayReadState.success(
+                timeLabel = java.text.SimpleDateFormat("HH:mm", java.util.Locale.US)
+                    .format(java.util.Date(receiveTime * 1000)),
+                devCount = frame.devCount,
+                validCount = 0
             )
+            setLinkStatus(linkStatus.code.name, linkStatus.text)
+        } else {
+            val linkStatus = GatewayReadState.success(
+                timeLabel = java.text.SimpleDateFormat("HH:mm", java.util.Locale.US)
+                    .format(java.util.Date(receiveTime * 1000)),
+                devCount = frame.devCount,
+                validCount = valid.size
+            )
+            setLinkStatus(linkStatus.code.name, linkStatus.text)
         }
 
         Log.i(

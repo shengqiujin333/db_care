@@ -20,6 +20,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -57,6 +58,12 @@ class NotificationsFragment : Fragment() {
     private val CAMERA_PERMISSION_REQUEST_CODE = 100
     private var isPermissionRequested = false // 标志位，记录是否已经弹过窗
     private var gatewayBleDialog: GatewayBleSettingsDialog? = null
+
+    /** 扫描权限结果由 fragment 自身 launcher 接收（不依赖 Activity 级 requestPermissions 分发）。 */
+    private val scanPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            gatewayBleDialog?.onPermissionResult(result)
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -324,25 +331,12 @@ class NotificationsFragment : Fragment() {
 
         binding.gatewayBleButton.setOnClickListener {
             gatewayBleDialog?.stopScan()
-            gatewayBleDialog = GatewayBleSettingsDialog(this, ::requestPermissionsCompat).also { it.show() }
+            gatewayBleDialog = GatewayBleSettingsDialog(this) { permissions ->
+                scanPermissionLauncher.launch(permissions)
+            }.also { it.show() }
         }
     }
 
-    private fun requestPermissionsCompat(permissions: Array<String>, requestCode: Int) {
-        ActivityCompat.requestPermissions(requireActivity(), permissions, requestCode)
-    }
-
-    @Suppress("DEPRECATION")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == GatewayBleSettingsDialog.REQUEST_SCAN_PERMISSIONS) {
-            gatewayBleDialog?.onPermissionResult()
-        }
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -1191,3 +1191,40 @@ cd D:\mypro\beiwo2\AIP\dengbei_care
 ### 4. 未执行
 
 未安装/操作手机；真实点击/布局 bounds 复测、真实 BLE/平台链路、D-04b 随包手册（技术文档角色）均不在本能力；保持 NOT EXECUTED，不得写成通过。
+
+---
+
+## AT-018 · AA-006 N-1/N-2/N-3 实现自检
+
+对象：`dengbei_care` 当前源码（HEAD `2ef3840` 基础上未提交变更），版本仍 `10 / 1.9`。
+执行：本机 Windows / Gradle 8.4 / JDK 21 / `--offline`。
+证据目录：`evidence/android_aa006_20261113/`。
+
+### 1. 构建与测试
+
+| 项 | 结果 |
+|---|---|
+| `clean assembleDebug` | `BUILD SUCCESSFUL` |
+| 全量宿主机 | **36 套件 / 279 项 / 0 失败 / 0 错误 / 0 跳过** |
+| 编译 | 0 error；**11 条 warning（与基线一致，无新增）** |
+| APK | 10,370,964 B，sha256 `5e5465d84d5e611ab5077e52ba61b6ed14ce9900bdc49879248d8b8610a38251`，md5 `214036ba0ca8add1e428e73229169f56` |
+| 签名/版本 | v2 通过（Android Debug 证书）；`versionCode 10 / versionName 1.9`，`minSdk 26 / targetSdk 34` |
+
+### 2. 新增用例
+
+| 套件 | 项数 | 覆盖 |
+|---|---|---|
+| `protocol/GatewayReadStateTest` | 8 | 有效/全占位/零设备/长度拒绝/帧头/解密/密文对齐/未对齐终态映射 |
+| `report/ReportRegenerateFeedbackTest` | 7 | 零设备/无内容/无样本/未知样本/成功/失败/负设备数 |
+| `ui/notifications/ScanPermissionWiringTest` | 3 | fragment launcher、对话框无 Activity 级请求、挂起动作清理 |
+
+### 3. 既有核查复跑
+
+- `software_verify_aa005_android_check.py`：**54/54 PASS，0 FINDING**（含 `GATEWAY_NO_DATA` 可读）
+- 布局结构静态核查：**15/15 PASS**
+- `aa005_android_check/run_gates.py`：**12/12 EXIT=0**
+
+### 4. 未执行
+
+未连接/安装手机；N-1 首次授权自动扫描与拒绝/蓝牙/定位关闭文案、N-2 真实 `devCount=0` 终态显示、N-3 零设备提示与按钮恢复均由软件测试真机验收；真实 BLE/GATT/MTU、平台上传/回读/401、API31+、9 台快照、真实升温/光强/功耗等保持 NOT EXECUTED。
+人工延期 `FW-LIGHT-DEF2-ENABLE` 不属 Android；`BOT-01` 已闭合；原检查者 R4 范围错误不构成返工依据。

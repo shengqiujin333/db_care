@@ -39,11 +39,10 @@ import com.jinyuni.dengbei_care.protocol.GatewayIdentity
  */
 class GatewayBleSettingsDialog(
     private val fragment: Fragment,
-    private val requestPermissions: (Array<String>, Int) -> Unit
+    private val requestPermissions: (Array<String>) -> Unit
 ) {
 
     companion object {
-        const val REQUEST_SCAN_PERMISSIONS = 4401
         private const val TAG = "GatewayBleSettings"
     }
 
@@ -122,19 +121,30 @@ class GatewayBleSettingsDialog(
         refresh()
     }
 
-    fun onPermissionResult() {
+    fun onPermissionResult(@Suppress("UNUSED_PARAMETER") result: Map<String, Boolean>) {
         val action = pendingScan
         pendingScan = null
         if (action == null) return
-        if (hasScanPermission()) {
+        val policy = BlePermissionPolicy.evaluate(
+            sdkInt = Build.VERSION.SDK_INT,
+            granted = grantedNeeds(),
+            needScan = true,
+            adapterEnabled = adapterEnabled(),
+            locationEnabled = locationEnabled()
+        )
+        if (policy.canScan) {
             action()
         } else {
-            toast("未授予扫描权限，无法搜索网关")
-            refresh()
+            // 区分权限缺失/定位关闭/蓝牙关闭，不使用笼统的“未授予扫描权限”
+            val message = policy.userMessage.ifBlank { "无法开始扫描" }
+            statusView.text = message
+            toast(message)
         }
     }
 
     fun stopScan() {
+        // 对话框关闭/页面销毁时挂起的扫描动作一并失效，避免权限结果迟到后启动无界面扫描
+        pendingScan = null
         discovery?.stop("扫描已停止")
         discovery = null
     }
@@ -247,7 +257,7 @@ class GatewayBleSettingsDialog(
             return
         }
         pendingScan = action
-        requestPermissions(needed.map { platformPermission(it) }.toTypedArray(), REQUEST_SCAN_PERMISSIONS)
+        requestPermissions(needed.map { platformPermission(it) }.toTypedArray())
     }
 
     private fun startScan(filterByFfe0: Boolean) {
