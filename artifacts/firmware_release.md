@@ -1,16 +1,28 @@
-# 固件发布（FW-REL-001 rev 2）
+# 固件发布（FW-REL-001 rev 3）
 
 负责角色：固件工程
-时点：2026-11-11（Asia/Shanghai；工具时间戳为 UTC）；rev 1 = 首次发布，rev 2 = 同一包的整包自查与证据重绑
+时点：2026-11-13（Asia/Shanghai；工具时间戳为 UTC）；rev 1 = 首次发布，rev 2 = 整包自查与证据重绑，rev 3 = 按当前人工范围与最新测试证据重发（包字节不变）
 发布对象：蹬被报警器**传感器**固件（CW32L010，Keil MDK 工程）
 本次范围：核对源版本与构建配置 → 固定工具链重建同一源版本 → 打包发布候选（二进制 + 身份 + 下载说明 + 限制）→ 绑定实际版本的测试记录。
 **不负责烧录、不复位设备、不做独立实板验收**；`CANDIDATE_READY` 只表示"包可交付"，不表示功能合格，也不表示已部署。
 
-依据：`artifacts/firmware_implementation.md`（FWI-003 rev 8）、`artifacts/firmware_design.md`（FD-002 rev 8）、`artifacts/firmware_requirements.md`（FWR-002 rev 8）、`artifacts/test_design.md`（TD-002）、`evidence/test.md`（EV-035 / EV-036 / EV-037）、`evidence/ev035`、`evidence/ev036`、`evidence/ev037`、`evidence/fw_release_20261111/package_selfcheck.md`、`CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/Project.uvprojx`（工程保存配置）。
+依据：`artifacts/firmware_implementation.md`（**FWI-004 rev 9**，本轮无代码改动）、`artifacts/firmware_design.md`（FD-002 rev 8）、`artifacts/firmware_requirements.md`（FWR-002 rev 8）、`artifacts/test_design.md`（**TD-002 rev 9.0**）、`evidence/test.md`（EV-035/036/037/**EV-039**）、`evidence/ev039/`、`evidence/fw_release_20261111/package_selfcheck.md`、`evidence/product_acceptance_20261112_scope_recheck/PRODUCT-ACCEPTANCE-RECHECK-002.md`、`artifacts/failure_resolution_product_stage_delivery_gate.md`（FR-006）、`CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/MDK/Project.uvprojx`（工程保存配置）。
 
 ---
 
-## 0. rev 2 变更摘要（本轮）
+## 0. rev 3 变更摘要（本轮）
+
+| 项 | 内容 |
+|---|---|
+| 包字节 | **不变**：zip 134,791 B / md5 `5df0c6d45ecddc8aae8bddbbcfc9cfdf`；成员 axf `b6a15fed…`、hex `4d728dec…`、`PACKAGE.txt` `a58f67fc…`（本轮重建与包内成员逐字节一致） |
+| 产品源 | 本轮核对 HEAD `9224053`；`git diff 82a7e74 HEAD -- <sensor>/{USER,MDK,EWARM,UM2005C,COMMON}` **为空**；FWI-004 rev 9 为无代码改动交付 |
+| 新增证据绑定 | **EV-039**（`TEST_PASS`，仅限 TD-002 rev 9.0 范围 ITEM-001/002/003/004/006：独立重建 + `mdk_flash` Verify OK + 4 连续周期 + 上电五行自动编排 + 宿主 222/0 + 测试侧 609/0 + 静态 21/21；同 axf/hex）；EV-035/036/037 保留为历史同身份证据 |
+| 人工范围与检查者范围错误 | `FW-LIGHT-DEF2-ENABLE` 为人工 `APPROVED_DEFERRED` / NOT EXECUTED（2026-11-11T03:50:42Z），**不作为返工依据、不重测、不重复询问**；原检查者把它标为 R4「未满足」并列为整体失败依据之一属范围错误，已在 `RECHECK-002` §2 与 `FIRMWARE-TRIAGE-003` §2（E-1..E-4）纠正；本文件采用纠正后的分类（§4.1） |
+| 实测缺陷 | 本发布对象**无已测固件缺陷**（EV-039 与 `RECHECK-002` 一致）；本轮不因人工跳过项或阶段外项改代码、改包 |
+| 产品级门禁 | 产品整体验收/交付门禁尚未对齐（`FR-006`：`REPLAN_REQUIRED`）；本包仍是可交付候选，但**不是**产品验收通过 |
+| 文档引用 | `docs/README.md`（DOC-PKG-001 rev 12）仍引用 FW-REL-001 **rev 2** 与 FWI-003；引用的是**同一包 md5**（未变），不影响包身份，但版本号落后于本记录（§8 转交文档所有者） |
+
+## 0.1 rev 2 变更摘要（历史）
 
 | 项 | 内容 |
 |---|---|
@@ -66,32 +78,44 @@
 
 ## 4. 测试记录与版本绑定（引用实际版本，不宣称功能合格）
 
-绑定对象：`evidence/test.md` 的 **EV-035**（验证时 HEAD `cfe98a1`；其声称产品源 `git diff 82a7e74 HEAD` 为空，与本轮核对一致）、**EV-036**（`firmware_package_check`，HEAD `5b9b7aa`，`HIL_PASS`）与 **EV-037**（`firmware_check`，HEAD `d5701f5`，`TEST_PASS`）。三轮均独立重建并复核到**同一** axf/hex 摘要，且 EV-036/EV-037 以 `mdk_flash {}` 下载校验 `Verify OK` 后在真实目标上采集。
+绑定对象：`evidence/test.md` 的 **EV-039**（最新，`firmware_check`，HEAD `9ce380c`，`TEST_PASS`，仅限 TD-002 rev 9.0 范围）为主；EV-035/EV-036/EV-037 保留为历史同身份证据。四轮均独立重建并复核到**同一** axf/hex 摘要；EV-036/037/039 以 `mdk_flash {}` 下载校验 `Verify OK` 后在真实目标上采集（属测试角色的行为，非本能力）。
 
-| 任务/项 | EV-035 / EV-036 / EV-037 结果 | 与本发布的关系 |
+| 任务/项 | EV-039（及历史同身份轮次）结果 | 与本发布的关系 |
 |---|---|---|
-| FW-REG-ASBUILT | 通过（独立重建 0E/1W，摘要逐字符一致；宿主 222/0、测试侧 harness 609/0、静态 21/21） | 支持"构建身份可复现" |
-| FW-REG-REPORT | 通过（T1/T2/T3 向量） | 支持判定/冻结/有界等待行为 |
-| FW-LIGHT-DEF2-MECH | 通过（形制、`T=0` 未启用等价性） | 本发布的实质变更 |
-| FW-OBS-PASSIVE | 通过（EV-035 6 行；EV-036 6 行；EV-037 7 行，均 `q=1`、`V=0 D=0`、`k` 步长 3、行 ≤96 B、间期无输出） | 支持"默认未启用"在板上的表现 |
-| FW-DIAG-BOOT | 通过（EV-035/036/037：先开端口 + pyocd HW reset，同一窗口取得五行与首条 `S k=0`） | 支持上电诊断行可用 |
-| 包身份（EV-036） | `HIL_PASS`：zip md5/CRC/三成员与包内 `PACKAGE.txt` 一致；独立重建与包成员逐字节一致；包内无测试资产 | 支持"包即交付物" |
-| FW-LIGHT-DEF2-ENABLE | **未执行（人工确认 `SKIP_CONFIRMED`，2026-11-11T03:50:42Z，「无法准备，先跳过」）** | **本交付的未执行项**；`T` 保持 0，绝不写成通过 |
-| 真实升温/`>35.0℃` 触发、跨链路 | 未执行（用户禁止调温；跨链路属后续联调阶段） | 未验证项 |
+| FW-REG-ASBUILT | 通过（独立重建 0E/1W，摘要逐字符一致；实现侧宿主 222/0、测试侧 harness 609/0、静态 21/21） | 支持"构建身份可复现" |
+| FW-REG-REPORT | 通过（T1/T2/T3 向量：升温/严格 >35.0℃、冻结/重试/不覆盖/`P` 行、有界等待） | 支持判定/冻结/有界等待行为 |
+| FW-LIGHT-DEF2-MECH | 通过（形制、`T=0` 未启用等价性、旧宏无残留） | 本发布的实质变更 |
+| FW-OBS-PASSIVE | 通过（EV-039 4 连续周期；EV-037 7 行；EV-036 6 行；EV-035 6 行，均 `q=1`、`V=0 D=0`、`k` 步长 3、行 ≤96 B、间期无输出） | 支持"默认未启用"在板上的表现 |
+| FW-DIAG-BOOT | 通过（EV-035/036/037/039：端口先开 + pyocd HW reset，同一窗口取得五行与首条 `S k=0`；无需固件测试接口） | 支持上电诊断行可用 |
+| 包身份 | EV-036/EV-039 均核实 zip md5/CRC/三成员与包内 `PACKAGE.txt` 一致、无 harness/mock/测试开关；包内 axf/hex 与独立重建逐字节一致 | 支持"包即交付物" |
+| `SENSOR_DEBUG_UART=0` 宿主变体（RPT-13） | 通过（EV-039：8 个 USER 翻译单元编译 exit 0；`debug_trace.o` 无定义符号、不引用 UART 符号） | 支持"调试通道可关闭且不引入测试符号"；该变体**不入交付包**（交付包为工程默认构建） |
+| FW-LIGHT-DEF2-ENABLE | **未执行：人工 `APPROVED_DEFERRED` / `SKIP_CONFIRMED`（2026-11-11T03:50:42Z，「无法准备，先跳过」）** | **本交付的未执行项**；`T` 保持 0，不写成通过，不作为返工依据 |
+| 真实升温/`>35.0℃` 触发与 433 实发 | 未执行（用户禁止调温；跨链路属后续联调阶段） | 未验证项（外部条件/后续阶段） |
 | 平台 `/upload_data` 真实写入与回读 | 未执行（无写入授权/隔离身份） | 未验证项（不属固件域） |
 | E2E-04 功耗 | 已批准 `DEFERABLE`，**未测**（无电流表/SMU/示波器） | 未测项 |
 
-总体判定（引用 EV-037 原文）：本交付范围内已执行的必需用例 `TEST_PASS`，**无已测固件功能缺陷**；完整目标仍未通过，原因是上述未执行/延期项。本发布**不改变**该判定，也不把未执行项写成通过。
+### 4.1 范围分类（采用已纠正的口径，不沿用原检查者的混同写法）
+
+| 需求 4 的子项 | 当前结论 |
+|---|---|
+| 上报判定公式实现 | **已实现且一致**：`(cur > 35.0℃) || (有前值 && int32(cur-prev) > 0.9℃ && dark)`，严格大于；宿主/静态均验证 |
+| 无光判据启用（`T`） | **NOT EXECUTED**（人工 `APPROVED_DEFERRED`）；需 IC-002 §4.2 接受记录 + 同板同构建双态证据，届时才是新的固件任务 |
+| 真实升温/超温触发 | **NOT EXECUTED**（用户当前不能调温） |
+
+总体判定（引用 EV-039 原文）：本阶段（TD-002 rev 9.0 范围）已执行用例 `TEST_PASS`，**无已测固件功能缺陷**；阶段通过不等于完整产品通过，未执行/延期项（上表）仍保持。本发布不改变该判定，也不把未执行项写成通过。
+
 
 ## 5. 限制与未决项（必须随包披露）
 
 1. **需求 4 的"无光"主路径在本交付固件中不生效**：`LIGHT_DARK_THRESHOLD_CODE = 0`（判据未启用）⇒ `valid=false`、`dark=false`，升温且无光的上报分支不触发；只有**严格 >35.0℃** 分支可用。这是设计 §6.2 的安全默认，不是缺陷，但意味着当前固件**不满足**需求 4 的完整语义。
 2. **判据启用前置未具备**：需要①判据形制/数值的接受记录（`artifacts/interface_contract.md` §4.2 尚未同步）；②同板件/同构建/同摆放的受光与覆盖被动双态证据。用户已明确当前不能改变光强并确认该项跳过。分离度风险（实测受光/覆盖仅约 146 码经验间隔）已在设计 §6.2(4) 记录。
 3. **无 OTA / Bootloader**：本产品以有线 Keil 下载发布，包内不含空中升级路径；"升级"仅指替换镜像重新烧录。
-4. **未验证**：真实升温/超温触发与 433 实发、网关/手机同笔一致性、CR2032 峰值与深睡电流、长期稳定性与失败率（EV-035 观测窗 6 个周期、0 条 `G`）。
+4. **未验证**：真实升温/超温触发与 433 实发、网关/手机同笔一致性、CR2032 峰值与深睡电流、长期稳定性与失败率（EV-036/037/039 观测窗 4–7 个周期、0 条 `G`）。
 5. **标识说明**：`BOOT fw=FD-002r4` 是字节冻结的既有横幅字符串（验证脚本按此解析），不代表版本号；本发布对应 FD-002 **rev 8** 源码，版本以源码提交与产物摘要为准。
-6. **环境入口**：`pyocd 0.36.0` 已在主机安装并被 EV-035 用于 HW reset，但**未登记**在 `runtime/environment.yaml`；登记属配置所有者动作，本能力只提出建议，不自行改配置。
+6. **环境入口**：`pyocd 0.36.0` 已在主机安装并被测试角色用于 HW reset，但**未登记**在 `runtime/environment.yaml`；登记属配置所有者动作，本能力只提出建议，不自行改配置。
 7. **BOM/器件命名差异**：工程 Device `CW32L010F8` 与 BOM `CW32L010Y8M6` 并存，未擅自改工程或网表。
+8. **产品级验收/交付门禁未对齐**：`FR-006` 为 `REPLAN_REQUIRED`，产品整体验收仍为 `TEST_FAIL`（`EXTERNAL_CONDITION_UNEXECUTED`）。本包是**供烧录/板测/联调的候选**，不得被引用为产品验收通过或发货依据；该决定属验收范围所有者。
+9. **交付包构建为工程默认（调试开）**：EV-039 另验证了 `SENSOR_DEBUG_UART=0` 宿主变体可编译且不引入 UART 符号（RPT-13），但该变体**未**入包；若将来需要量产调试关闭版，需在工程配置上另出构建并重新取证（不属本包）。
 
 ## 6. 复现步骤
 
@@ -121,11 +145,13 @@ python evidence/fw_release_20261111/verify_release_package.py
 - 判据启用（`T` 回填）属后续实现动作，前置为判据接受记录与被动双态证据；未具备时保持 `T=0`，本包不得被解释为"无光功能已完成"。
 - 产品整体仍因 Android 侧已报告问题（`evidence/product_acceptance_20261111/PRODUCT-ACCEPTANCE-001.md` 的 D-01–D-04）与上述未执行项而不通过；本发布不对其作任何"通过"表述。
 
-## 8. 整包自查、身份冻结与交接（rev 2）
+## 8. 整包自查、身份冻结与交接（rev 2–3）
 
-1. **自查范围与结果**：按操作员恢复指令，对 18 类事实做"文档—实现—证据"对照（包身份/成员摘要/构建参数与结果/GNU 辅助构建/烧录步骤与 `Verify OK` 语义/五行与 `VDD` 公式/`S` 字段与行长/节拍/`T=0` 语义/无 OTA 与回退/横幅冻结字符串/器件命名差异/pyocd 未登记/未执行披露一致性），**未发现固件或发布侧的事实错误或跨文档矛盾**。逐项表与可复跑命令：`evidence/fw_release_20261111/package_selfcheck.md`。
-2. **身份冻结规则**：本包摘要已被 `docs/02`、`docs/01`、EV-036/EV-037 与产品验收 §1 引用。若将来必须修改包内文字（`PACKAGE.txt`），需同时重发 zip、刷新所有引用方并由独立复验重新确认；不得只改文不改摘要，也不得让引用各自漂移。
-3. **转交文档所有者（本能力未改其文件）**：
-   - F-A：`docs/02 §3` 引用 `artifacts/firmware_implementation.md` §2 判读表；数值正确，但该表的顶部章节号在 FWI-003 rev 8 已变为"本轮实际改动"，建议限定为 FWI-002 轮 §2。
-   - F-B：`docs/README.md §1`、`docs/01 §5/§6` 的证据索引未列 EV-037（同身份、更晚一轮）；EV-036 仍有效，建议补充。
-4. **独立复验建议**：复用 EV-036（`HIL_PASS`）与 EV-037（`TEST_PASS`）的身份证据，只需复核本自查 §2（身份复算，可脚本复跑）与 §3 的对照结论、以及 §4 两项转交的处理；无需整包重烧、五行重采、串口重采或重跑宿主套件（实现侧 222/0、测试侧 609/0 已有记录）。
+1. **自查范围与结果**：rev 2 对 18 类事实做"文档—实现—证据"对照（包身份/成员摘要/构建参数与结果/GNU 辅助构建/烧录步骤与 `Verify OK` 语义/五行与 `VDD` 公式/`S` 字段与行长/节拍/`T=0` 语义/无 OTA 与回退/横幅冻结字符串/器件命名差异/pyocd 未登记/未执行披露一致性），**未发现固件或发布侧的事实错误或跨文档矛盾**；rev 3 重跑了身份复算与包完整性校验（`evidence/fw_release_20261113/`），结论不变。逐项表与可复跑命令：`evidence/fw_release_20261111/package_selfcheck.md`。
+2. **身份冻结规则**：本包摘要已被 `docs/02`、`docs/01`、EV-036/037/039 与产品验收报告引用。若将来必须修改包内文字（`PACKAGE.txt`），需同时重发 zip、刷新所有引用方并由独立复验重新确认；不得只改文不改摘要，也不得让引用各自漂移。rev 3 **未改包字节**，因此所有对 `5df0c6d4…` 的引用继续有效。
+3. **转交（本能力未修改其文件）**：
+   - F-A（文档所有者）：`docs/02 §3` 引用 `artifacts/firmware_implementation.md` §2 判读表；数值正确，但该表顶部章节号在 FWI-003 rev 8 已变为"本轮实际改动"，建议限定为 FWI-002 轮 §2。
+   - F-B（文档所有者）：`docs/README.md §1`、`docs/01 §5/§6` 的证据索引未列 EV-037（同身份、更晚一轮）；EV-036 仍有效，建议补充。
+   - F-C（文档所有者，rev 3 新观察）：DOC-PKG-001 rev 12 仍引用 **FW-REL-001 rev 2** 与 FWI-003 rev 8；包字节未变，引用**不矛盾**，但版本号落后于本记录（rev 3）与 FWI-004 rev 9，建议在下次文档修订时同步。
+   - F-D（验收范围所有者）：产品级验收/交付门禁与人工延期口径未对齐（见 `FR-006` §0 第 4–5 条）；属产品决策，不属本能力。
+4. **独立复验建议**：复用 EV-039（`TEST_PASS`，TD-002 rev 9 范围）与 EV-036/037 的同身份证据，只需复核本轮身份复算（§2）与包完整性校验（`evidence/fw_release_20261113/package_verify_r3.txt`）；无需整包重烧、五行重采、串口重采或重跑宿主套件（实现侧 222/0、测试侧 609/0 已有记录）。

@@ -1,11 +1,13 @@
-# 发布包与升级证据（RELEASE-PKG-001 rev 2）
+# 发布包与升级证据（RELEASE-PKG-001 rev 3）
 
 负责角色：固件工程
-时点：2026-11-11（Asia/Shanghai；工具时间戳 UTC）；rev 2 为整包自查与证据重绑，包字节不变
+时点：2026-11-13（Asia/Shanghai；工具时间戳 UTC）；rev 2 = 整包自查与证据重绑，rev 3 = 按当前人工范围与 EV-039 重发（包字节不变）
 证据类别：**发布包身份 + 可复现构建 + 完整性校验 + 下载/回退说明**。不含烧录执行、不含实板功能结论。
-对应发布记录：`artifacts/firmware_release.md`（FW-REL-001 rev 2）；整包自查：`evidence/fw_release_20261111/package_selfcheck.md`（SELFCHECK-REL-002）。
+对应发布记录：`artifacts/firmware_release.md`（FW-REL-001 **rev 3**）；整包自查：`evidence/fw_release_20261111/package_selfcheck.md`（SELFCHECK-REL-002）；本轮原始证据：`evidence/fw_release_20261113/`。
 
-> rev 2 增量：包字节与成员摘要**未变**（§1 数字与 rev 1 相同）；新增 EV-036（`HIL_PASS`）与 EV-037（`TEST_PASS`）的同身份绑定（§3），并补入对随包手册 18 类事实的对照结果与两项文档引用性转交（见自查文件）。
+> rev 3 增量：包字节与成员摘要**未变**（§1 数字与 rev 1/2 相同）；新增 EV-038（`HIL_PASS`）与 **EV-039（`TEST_PASS`，TD-002 rev 9.0 范围）** 的同身份绑定（§3）；重跑身份复算与包完整性校验（`evidence/fw_release_20261113/package_verify_r3.txt`）；按人工范围决定显式单列 `FW-LIGHT-DEF2-ENABLE` = NOT EXECUTED（不作为返工依据）；补记产品级门禁未对齐（`FR-006`）。
+> rev 2 增量（历史）：新增 EV-036/EV-037 同身份绑定与随包手册 18 类事实对照（自查文件）。
+
 
 ---
 
@@ -49,7 +51,10 @@ RESULT: PASS
 | 嵌入式测试 EV-035 | 2026-11-11T04:38:11–04:38:13 | 0E/1W，`25964/656/116/1676` | `b6a15fed…` / `4d728dec…` | `evidence/ev035/image_identity.txt`、`mdk_rebuild.log` |
 | 嵌入式 HIL EV-036 | 2026-11-11（`firmware_package_check`） | 0E/1W，`25964/656/116/1676` | `b6a15fed…` / `4d728dec…` | `evidence/test.md`（EV-036）、`evidence/ev036/` |
 | 嵌入式复验 EV-037 | 2026-11-11（`firmware_check`） | 0E/1W，`25964/656/116/1676` | `b6a15fed…` / `4d728dec…` | `evidence/test.md`（EV-037）、`evidence/ev037/` |
-| 本轮发布 | 2026-11-11T05:08:38–05:08:40 | 0E/1W，`25964/656/116/1676` | `b6a15fed…` / `4d728dec…` | `evidence/fw_release_20261111/mdk_build_release.out.json` |
+| 嵌入式 HIL EV-038 | 2026-11-12（`firmware_package_check`） | 0E/1W，`25964/656/116/1676` | `b6a15fed…` / `4d728dec…` | `evidence/ev038/EV-038_section.md` |
+| 嵌入式复验 EV-039 | 2026-11-13（`firmware_check`，TD-002 rev 9 范围） | 0E/1W，`25964/656/116/1676` | `b6a15fed…` / `4d728dec…` | `evidence/ev039/EV-039_section.md` |
+| 本轮发布 rev 3 | 2026-11-13T06:58:04–06:58:07 | 0E/1W，`25964/656/116/1676` | `b6a15fed…` / `4d728dec…` | `evidence/fw_release_20261113/mdk_build_release_r3.out.json` |
+| 发布 rev 1 | 2026-11-11T05:08:38–05:08:40 | 0E/1W，`25964/656/116/1676` | `b6a15fed…` / `4d728dec…` | `evidence/fw_release_20261111/mdk_build_release.out.json` |
 
 GNU 交叉构建（辅助验证，不入发布包）：`gcc/build.sh` exit 0、0 error / 27 既有 warning、FLASH 34840 B / RAM 1816 B（`gcc_build_release.log`）。
 
@@ -58,8 +63,8 @@ GNU 交叉构建（辅助验证，不入发布包）：`gcc/build.sh` exit 0、0
 | 项 | 值 |
 |---|---|
 | 传感器产品源提交 | `82a7e74e5d6bae855a573e1f23f83936ba8db049` |
-| 打包时 HEAD | `9f7817f`（rev 1 打包时）；rev 2 自查时 HEAD `13e737e`，产品源相对 `82a7e74` 零差异 |
-| 产品源在 `82a7e74..HEAD` 的差异 | 空（`USER/MDK/EWARM/gcc` 四路径逐项核对；rev 1 与 rev 2 各核一次） |
+| 打包时 HEAD | `9f7817f`（rev 1）；rev 2 自查时 `13e737e`；rev 3 重发时 `9224053`；三次均确认产品源相对 `82a7e74` 零差异 |
+| 产品源在 `82a7e74..HEAD` 的差异 | 空（`USER/MDK/EWARM/UM2005C/COMMON` 五路径逐项核对；rev 1/2/3 各核一次） |
 | 工程/构建配置 | `MDK/Project.uvprojx` 未改（未出现在 `git status`） |
 | 工具链固定 | ARMCLANG V6.24（Keil 保存配置）；`arm-none-eabi-gcc`（GNU 辅助验证，版本见日志） |
 
@@ -77,18 +82,19 @@ GNU 交叉构建（辅助验证，不入发布包）：`gcc/build.sh` exit 0、0
 
 | 项 | 状态 | 依据 |
 |---|---|---|
-| `FW-LIGHT-DEF2-ENABLE`（无光判据启用与被动双态取证） | **人工确认未执行（`SKIP_CONFIRMED`，2026-11-11T03:50:42Z，「无法准备，先跳过」）**；`T` 保持 0，不写成通过 | `evidence/test.md` EV-035/036/037；Runtime 人工确认记录 |
+| `FW-LIGHT-DEF2-ENABLE`（无光判据启用与被动双态取证） | **人工确认未执行：`APPROVED_DEFERRED` / `SKIP_CONFIRMED`（2026-11-11T03:50:42Z，「无法准备，先跳过」）**；`T` 保持 0，不写成通过，**不作为返工依据** | `evidence/test.md` EV-035/036/037/039；Runtime 人工确认记录 |
 | 真实升温 `>0.9℃` 且无光 / 稳定 `>35℃` 触发与 433 实发 | 未执行（用户禁止调温；跨链路属后续联调阶段） | 同上；产品验收 N-2 |
 | 平台 `/upload_data` 真实写入与回读 | 未执行（无写入授权/隔离身份） | 产品验收 N-4（不属固件域） |
-| 固件发布包与构建的独立核验 | 已有 EV-036（`HIL_PASS`，含包身份/重建/下载/五行/6 周期/位级 I²C）与 EV-037（`TEST_PASS`，同身份、7 周期） | `evidence/test.md`、`evidence/ev036`、`evidence/ev037` |
+| 固件发布包与构建的独立核验 | 已有 EV-036/EV-038（`HIL_PASS`）与 EV-037/**EV-039**（`TEST_PASS`，同身份） | `evidence/test.md`、`evidence/ev036`、`evidence/ev037`、`evidence/ev038`、`evidence/ev039` |
 | `E2E-04` CR2032 峰值/深睡电流 | 已批准 `DEFERABLE`，未测（无电流表/SMU/示波器） | 同上 |
-| 长期稳定性/失败率 | 未覆盖（EV-036/EV-037 观测窗 6–7 个周期、0 条 `G`） | 同上 |
+| 长期稳定性/失败率 | 未覆盖（EV-036/037/039 观测窗 4–7 个周期、0 条 `G`） | 同上 |
+| 产品级验收/交付门禁 | **未对齐**（`FR-006`：`REPLAN_REQUIRED`；产品验收仍 `TEST_FAIL`/`EXTERNAL_CONDITION_UNEXECUTED`） | `artifacts/failure_resolution_product_stage_delivery_gate.md`、`evidence/product_acceptance_20261112_scope_recheck/PRODUCT-ACCEPTANCE-RECHECK-002.md` |
 
 因此**交付固件中需求 4 的"升温且无光"分支不生效**（判据未启用），仅严格 `>35.0℃` 分支可用；本包不能被解释为"无光功能已完成"或"产品已通过验收"。
 
 ## 7. 边界
 
-1. 本能力未执行任何烧录/复位/串口采集；包内二进制来自构建，与板上当前镜像是否一致需由烧录方按其流程核对（EV-036/EV-037 已对**同一摘要**做过下载校验，但那属测试角色的证据，不是本能力的行为）。
-2. 本证据不改变 `evidence/test.md`、`evidence/product_acceptance_20261111/` 或文档包的结论与范围，也不把未执行项迁移为通过。
+1. 本能力未执行任何烧录/复位/串口采集；包内二进制来自构建，与板上当前镜像是否一致需由烧录方按其流程核对（EV-036/037/038/039 已对**同一摘要**做过下载校验，但那属测试角色的证据，不是本能力的行为）。
+2. 本证据不改变 `evidence/test.md`、产品验收报告或文档包的结论与范围，也不把未执行项迁移为通过。
 3. 包内不包含密钥、账号、服务器凭据或 Android/iOS 产物。
-4. 整包自查（含 18 类文档事实对照、身份冻结规则与两项文档引用性转交）见 `evidence/fw_release_20261111/package_selfcheck.md`；自查未发现固件/发布侧事实错误，因此未改包字节。
+4. 整包自查（含 18 类文档事实对照、身份冻结规则与文档/验收侧转交）见 `evidence/fw_release_20261111/package_selfcheck.md`；rev 3 重跑身份复算与包完整性校验（`evidence/fw_release_20261113/`）结论不变，因此未改包字节。
