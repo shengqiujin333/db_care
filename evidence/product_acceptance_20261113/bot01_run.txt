@@ -1,0 +1,14 @@
+window_open=2026-11-13T09:16:23.152063Z
+reset_start=2026-11-13T09:16:24.852845Z
+reset_rc=0
+reset_stdout=
+reset_stderr=
+reset_end=2026-11-13T09:16:25.959658Z
+chunks=[('2026-11-13T09:16:26.160974Z', 164), ('2026-11-13T09:16:27.188175Z', 31), ('2026-11-13T09:16:27.388983Z', 76)]
+window_close=2026-11-13T09:16:56.067808Z
+bytes=271
+lines=['BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600', 'VDD ok=1 code=1481 bgrmv=1189 mv=3287', 'IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0', 'IOSIG scl=95555 sda=30300', 'BUS idle=3 scl=1 sda=1 ack=44', 'S k=0 p=0 H=0 V=0 o=8 n=3938 x=3948 a=3943 D=0 t=291 h=346 q=1 r=0 s=0 y=0']
+found=['BOOT', 'VDD', 'IOTEST', 'IOSIG', 'BUS', 'S']
+BOOT_LINES_OK=PASS
+first_S=S k=0 p=0 H=0 V=0 o=8 n=3938 x=3948 a=3943 D=0 t=291 h=346 q=1 r=0 s=0 y=0
+BOT01_RESULT=PASS

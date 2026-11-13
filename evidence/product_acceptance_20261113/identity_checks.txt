@@ -1,0 +1,35 @@
+HEAD=5d3d4bfbbed7da2a57620e2ca7c4be350694c077
+STATUS:
+?? evidence/product_acceptance_20261113/
+---FW PKG---
+-rw-r--r-- 1 kason 197121 134791 Nov 11 13:12 fw_release/fw_sensor_FD-002r8.zip
+5df0c6d45ecddc8aae8bddbbcfc9cfdf *fw_release/fw_sensor_FD-002r8.zip
+    testing: PACKAGE.txt              OK
+No errors detected in compressed data of fw_release/fw_sensor_FD-002r8.zip.
+---FW MEMBERS---
+b6a15fed2ed5e3d0c4adc51ac87a4830 *-
+4d728dec9b0d28a352c46436b7586c72 *-
+a58f67fcf5b760767ff5b65888c73dfb *-
+---FW SOURCE DIFF---
+(end diff)
+---APK---
+-rw-r--r-- 1 kason 197121 10370964 Nov 13 12:49 dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+a97ed9bef658ee89cdf6e2b49447ce69 *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+---ANDROID SRC DIFF---
+ .../GatewayReadStateItem002VerificationTest.kt     | 150 ++++++++++++++++
+ ...tionsPermissionWiringItem001VerificationTest.kt | 190 +++++++++++++++++++++
+ ...ortRegenerateFeedbackItem003VerificationTest.kt | 141 +++++++++++++++
+ ...224\250\350\257\264\346\230\216\344\271\246.md" |  10 +-
+ 4 files changed, 488 insertions(+), 3 deletions(-)
+(end diff)
+---SERIAL01---
+-rw-r--r-- 1 kason 197121 80 Nov 13 17:04 evidence/product_acceptance_20261113/serial_capture_com43_passive_01.bin
+823648c5760ec47da5d6527a7c8440bd *evidence/product_acceptance_20261113/serial_capture_com43_passive_01.bin
+a2b2ef5cfbc33af463f1c841e86dad4fffdced5308621b623d4c1308c66ba703 *evidence/product_acceptance_20261113/serial_capture_com43_passive_01.bin
+0000000   S       k   =   1   0   2       p   =   3   0   9       H   =
+0000020   1       V   =   0       o   =   8       n   =   3   8   6   9
+0000040       x   =   3   8   8   1       a   =   3   8   7   6       D
+0000060   =   0       t   =   2   9   9       h   =   3   3   4       q
+0000100   =   1       r   =   0       s   =   0       y   =   0  \r  \n
+0000120

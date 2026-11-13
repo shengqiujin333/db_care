@@ -1787,6 +1787,35 @@ evidence/product_acceptance_20261112_scope_recheck/ui_sensor_id_list.txt | activ
 evidence/product_acceptance_20261112_scope_recheck/ui_sensor_id_list.xml | active | 点击「打开传感器列表」后的 SensorIdListFragment UI 原始树（已保存的 ID（0））
 evidence/product_acceptance_20261112_scope_recheck/ui_settings_page.txt | active | 上述 UI 文本/bounds 提取
 evidence/product_acceptance_20261112_scope_recheck/ui_settings_page.xml | active | 设定页 UI 原始树（默认参数 2/0.1/35/29/75）
+evidence/product_acceptance_20261113/ | active | 软件测试产品整体功能验收原始证据目录（PRODUCT-ACCEPTANCE-003）：当前固件包/APK/文档身份复算、COM43 实板被动捕获、BOT-01 自动复位上电五行、安卓真机关键路径与守护启停
+evidence/product_acceptance_20261113/PRODUCT-ACCEPTANCE-003.md | active | 产品整体功能验收报告：当前候选逐项结果、人工延期 NOT EXECUTED 披露、未执行真实链路与外部条件、结论 TEST_FAIL（EXTERNAL_CONDITION_UNEXECUTED）
+evidence/product_acceptance_20261113/activity_report.txt | active | 报告页 Activity 栈原始输出
+evidence/product_acceptance_20261113/activity_sensorlist.txt | active | 传感器列表 Activity 栈原始输出
+evidence/product_acceptance_20261113/apk_contents.txt | active | APK zip 条目清单（测试入口排除检查）
+evidence/product_acceptance_20261113/bot01_boot.cap | active | BOT-01 原始串口捕获 271 B（本机留存，.cap 受忽略规则）
+evidence/product_acceptance_20261113/bot01_boot.log | active | BOT-01 原始串口文本（BOOT/VDD/IOTEST/IOSIG/BUS + S k=0）
+evidence/product_acceptance_20261113/bot01_run.txt | active | BOT-01 运行日志：复位 rc、分块时间、上电五行断言与首条 S 行
+evidence/product_acceptance_20261113/capture_bot01.py | active | 测试侧自动编排：先开 COM43 再以 pyocd 通用 cortex_m 请求 HW reset 并采集上电五行（仅复位）
+evidence/product_acceptance_20261113/capture_windows.txt | active | 两个被动窗口与 BOT-01 复位窗口的时间、字节数与摘要
+evidence/product_acceptance_20261113/device_apk_hash.txt | active | 设备侧 base.apk 大小/SHA-256/MD5（与候选逐字节一致）
+evidence/product_acceptance_20261113/device_package_state.txt | active | 设备在装包：包名/版本/SDK/flags/安装时间、安装路径与设备侧 base.apk 摘要
+evidence/product_acceptance_20261113/identity_checks.txt | active | 候选身份复算：HEAD/status、固件包与成员 md5/CRC、产品源零差异、APK 大小/SHA-256/MD5、Android 源码差异
+evidence/product_acceptance_20261113/logcat_report_regen.txt | active | 报告再生成 Worker/Toast 原始日志
+evidence/product_acceptance_20261113/logcat_session.txt | active | 真机会话日志、crash buffer、MyPrefs 存在性
+evidence/product_acceptance_20261113/parse_ui.py | active | 测试侧 UI 树文本提取脚本（bounded，只读）
+evidence/product_acceptance_20261113/serial_capture_com43_passive_01.bin | active | COM43 被动捕获 80 B（本机留存，.bin 受忽略规则）
+evidence/product_acceptance_20261113/serial_capture_com43_passive_02.bin | active | COM43 被动捕获 160 B（本机留存，.bin 受忽略规则）
+evidence/product_acceptance_20261113/serial_capture_meta.txt | active | 第二窗口捕获哈希与两行原始文本
+evidence/product_acceptance_20261113/third_party_packages.txt | active | 设备第三方包列表
+evidence/product_acceptance_20261113/ui_00_home.xml | active | 首页 UI 原始树
+evidence/product_acceptance_20261113/ui_01_my_page.xml | active | 我的页顶部 UI 原始树
+evidence/product_acceptance_20261113/ui_02_my_scrolled.xml | active | 我的页上滑后 UI 原始树（注册传感器/网关与上传设置 bounds）
+evidence/product_acceptance_20261113/ui_03_gateway_dialog.xml | active | 网关与上传设置对话框 UI 原始树
+evidence/product_acceptance_20261113/ui_04_report.xml | active | 今日报告页 UI 原始树
+evidence/product_acceptance_20261113/ui_05_sensor_list.xml | active | 传感器列表空态 UI 原始树
+evidence/product_acceptance_20261113/ui_06_settings.xml | active | 设定页默认参数 UI 原始树
+evidence/product_acceptance_20261113/ui_07_guard_started.xml | active | 守护启动后首页 UI 原始树
+evidence/product_acceptance_20261113/ui_08_guard_stopped.xml | active | 守护停止后首页 UI 原始树
 evidence/product_android_rebuild_20261111/ | active | 产品验收修复后完整交付重建证据目录（commit dacf888）
 evidence/product_android_rebuild_20261111/apk_badging.txt | active | 重建 APK aapt badging（versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34）
 evidence/product_android_rebuild_20261111/apksigner_verify.txt | active | 重建 APK apksigner 验证（v2 通过；Android Debug 证书）
