@@ -80,7 +80,7 @@ artifacts/android_tasks.yaml | active | Android 待实现任务清单（AA-006 3
 artifacts/backend_feasibility.md | history | 后端可行性探索 BE-EXP-002（2026-11-09 只读 SSH 实测：EMQX 5.8.0/端口/unit/6 路由/401/零业务流量；历史记录保留不改写，当前入口见 backend_feasibility_current.md）
 artifacts/backend_feasibility_current.md | active | 后端可行性探索 BE-EXP-004（2026-11-10 15:47 重新只读核验：同一 abr.py 8949B/2026-10-22 未变、21 命令/7.2 s、EMQX 5.8.0 uptime 17d9h/0 连接、6 路由 405、OPTIONS 200、POST 仍 14 条/末次 10-22、本地桩复跑逐项一致；新增网关缓存复读→同值不同秒重复行的数据语义假设；service_context 与 D1–D6；上传受理条件仍未定性）
 artifacts/backend_feasibility_g002.md | active | 后端可行性探索 BE-EXP-003 原文保留（2026-11-10 07:08–07:14：同一 abr.py 未变、OPTIONS 无鉴权头提示、10-22 的 200 已进入 mysql.connect、仍无业务流量；历史记录不改写，当前入口见 backend_feasibility_current.md）
-artifacts/codegraph_android_index.md | active | 代码智能：Android产品布局修复候选索引入口、版本与最小源码查询；明确三个布局XML不在图覆盖内
+artifacts/codegraph_android_index.md | active | 代码智能：Android当前源码索引入口、版本与覆盖限制，四个定向源码查询及后续同步方式。
 artifacts/codegraph_current_index.md | history | 代码智能：此前三个子工程索引交接；当前入口见 artifacts/codegraph_prepare_index.md
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
 artifacts/codegraph_firmware_initial_index.md | active | 代码智能：当前传感器根索引入口、版本/覆盖、增量同步与源码查询；保留人工跳过与原失败范围边界
@@ -427,7 +427,7 @@ evidence/backend_exploration/upload_contract_observations_g003.txt | active | BE
 evidence/backend_exploration/upload_contract_observations_rerun.txt | active | 桩实验复跑输出（13 用例/11×2xx/2×4xx/538 行/61440 B，与 2026-11-09 首跑逐项一致）
 evidence/backend_exploration/upload_contract_stub.py | active | 可复跑本地桩：13 个 /upload_data 请求覆盖负温/35.1℃/50 条批/重试幂等/同键冲突/精度/空集/缺字段/1 日 480 行；明确不可外推 MySQL 与真实服务
 evidence/build.md | active | 构建证据 BUILD-002 rev 6.4（F-1 修复后全量 rebuild 0 Error/1 既有告警、Code=25964、axf md5 a3b08774…；未下载）
-evidence/codegraph_android_validation.json | active | 代码智能：当前增量同步/目标查询、XML未命中限制、限时/退出码与105个索引文件及3个未索引布局摘要
+evidence/codegraph_android_validation.json | active | 代码智能：Android增量同步、110文件摘要、四个当前源码查询与退出状态证据；保留布局未覆盖限制。
 evidence/codegraph_current_validation.json | history | 代码智能：三个子工程本轮 status/sync/explore/files 原始结果、时间、退出码与源码摘要
 evidence/codegraph_dengbei11_validation.json | active | ????????? status?????????? explore ???????????
 evidence/codegraph_firmware_initial_validation.json | active | 代码智能：当前传感器同步状态、4次源码查询、限时/退出码及99个索引文件摘要；旧三根记录见Git历史
