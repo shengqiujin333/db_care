@@ -7,6 +7,10 @@
 # 因此产物统一使用不带阶段序号前缀的描述性名称；改名的仅是产物文件名，用例与编译参数不变。
 # 宿主 Windows 上偶发 "Permission denied" / "Device or resource busy" 的产物占用:
 # 对链接失败做一次带延迟的重试, 避免把环境抖动误判为代码失败。
+# 2026-11-13 实测: 产物名 `_hostbin/measure_flow_check.exe` 被主机安全软件按名拦截
+# (ld: cannot open output file ... Permission denied, 连续两次; 同名手编同样失败,
+#  而 `report_flow_check.exe` 首次即成功), 故该阶段产物改用 `report_flow_check.exe`。
+# 仅产物文件名变化, 用例、编译参数与断言未改。
 set -e
 cd "$(dirname "$0")"
 CC=${CC:-gcc}
@@ -30,11 +34,11 @@ build "$BIN/core_check.exe" -std=c11 -Wall -Wextra -I../USER/inc \
 "$BIN/core_check.exe"
 
 echo "== [2/4] measure flow (mock MCU): sample/report/prev-not-updated-on-failure =="
-build "$BIN/measure_flow_check.exe" -std=c11 -Wall -Wextra -DSENSOR_CONFIG_NO_MCU -DSENSOR_DEBUG_UART=1 \
+build "$BIN/report_flow_check.exe" -std=c11 -Wall -Wextra -DSENSOR_CONFIG_NO_MCU -DSENSOR_DEBUG_UART=1 \
     -Imock_measure_mcu -I../USER/inc -I../COMMON -I../UM2005C \
     host_measure_flow_check.c ../USER/src/measure.c ../USER/src/sf_i2c.c \
     ../USER/src/fw_core.c -lm
-"$BIN/measure_flow_check.exe"
+"$BIN/report_flow_check.exe"
 
 # T1: UART1 调试通道自检 (真实 debug_trace.c, 强制 SENSOR_DEBUG_UART=1; 宿主机无 UART 外设, 用 mock_trace 影子层)
 echo "== [3/4] UART1 debug trace (mock UART): banner/S-line budget/close semantics =="

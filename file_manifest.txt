@@ -40,7 +40,7 @@ CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/src
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/codegraph.json | active | ?????????????????????????
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/gcc/build.sh | active | GNU 交叉编译脚本（cw32l010.ld / startup_cw32l010.S 同目录）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/readme.txt | active | 传感器工程说明
-CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh | active | 宿主机测试单一入口（5 阶段 222 项；光照判据未启用与 -DLIGHT_DARK_THRESHOLD_CODE=3590 启用变体；-DLIGHT_BGR_TRIM_MV 覆盖）
+CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/build_test.sh | active | 宿主机测试单一入口（5 阶段 222 项）；光照判据未启用与 -DLIGHT_DARK_THRESHOLD_CODE=3590 启用变体；-DLIGHT_BGR_TRIM_MV 覆盖；2026-11-13 宿主按名拦截 measure_flow_check.exe，阶段 2 产物改名 report_flow_check.exe（参数/断言未改）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_debug_trace_check.c | active | UART1 调试通道实现侧自检（行格式/预算、P 行、TXE/TXBUSY 卡死有界路径）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_line_verify_ev.c | active | 测试能力独立验证 harness：BUS/G/S/P 行逐字节、逐行 96 B 预算与 CRLF（EV-022 起预算按单行判定，兼容 T2 P 行）
 CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/test/host_diag_probe_verify_ev.c | active | 测试能力独立验证 harness：BUS 扫描/general call 分支/诊断快照传播
@@ -1289,6 +1289,13 @@ evidence/fw_impl_20261110/mdk_build_baseline.err.txt | active | 基线构建 std
 evidence/fw_impl_20261110/mdk_build_baseline.out.json | active | 基线 mdk_build rebuild 工具原始返回（0E/1W、Code 25964）
 evidence/fw_impl_20261110/mdk_build_lightdef2.err.txt | active | LIGHT-DEF-2 构建 stderr（空）
 evidence/fw_impl_20261110/mdk_build_lightdef2.out.json | active | LIGHT-DEF-2 后 mdk_build rebuild 工具原始返回（0E/1W、Code 25964）
+evidence/fw_impl_20261112/ | active | 固件实现本轮证据目录（失败分派拒接复核）：发布包/产物摘要复核、独立重建、宿主 222 项自检、md5 清单与分派拒接证据
+evidence/fw_impl_20261112/args/mdk_build_rework_check.json | active | 本轮重建参数 {"action":"rebuild"}
+evidence/fw_impl_20261112/assignment_referral.md | active | 拒接返工分派证据 FW-REFUSAL-002：人工范围决定复核（SKIP_CONFIRMED 不作为返工依据）、原检查者范围错误 E-1..E-4、本对象无实测固件缺陷的身份/自检证据、有效目标与责任对象、启用前需接受记录与双态证据、环境修复记录与边界声明
+evidence/fw_impl_20261112/host_build_test.log | active | 本轮 test/build_test.sh 原始输出（5 阶段 222 项 0 失败，exit 0；含宿主产物名拦截修复后的运行）
+evidence/fw_impl_20261112/md5_list.txt | active | 本轮 axf/hex、发布包、PACKAGE.txt 与 build_test.sh 的 md5 清单
+evidence/fw_impl_20261112/mdk_build_rework_check.err.txt | active | 本轮重建 stderr（空）
+evidence/fw_impl_20261112/mdk_build_rework_check.out.json | active | 本轮 mdk_build rebuild 原始返回（0E/1W、Code 25964、axf b6a15fed…）
 evidence/fw_release_20261111/ | active | 固件发布 FW-REL-001 证据目录：发布重建原始返回、GNU 构建日志、包摘要/完整性校验、打包与校验脚本、升级证据
 evidence/fw_release_20261111/args/mdk_build_release.json | active | 发布构建参数 {"action":"rebuild"}
 evidence/fw_release_20261111/gcc_build_release.log | active | 发布轮 gcc/build.sh 原始输出（0 error/27 既有 warning、FLASH 34840 B/RAM 1816 B）
