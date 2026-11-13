@@ -103,7 +103,7 @@ artifacts/software_e2e_plan.md | active | 软件端到端测试计划 E2E-SW-004
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-004 rev 4.0（AA-005 G-1..G-7 与 ITEM-001..007 逐条追踪、宿主机/真机/真实服务用例、容量与 MTU/返回长度完整性、环境缺口、证据边界与最终判定规则）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
 artifacts/system_analysis_current.md | active | 系统架构：最新需求与旧1/3判据冲突、禁止调温调光功耗测试的当前边界、可复用候选版本及摘要、历史证据限制和后续集成缺口
-artifacts/test_design.md | active | 嵌入式测试设计 TD-002 rev 8.0（当前 6 项任务：FW-REG-ASBUILT、FW-REG-REPORT、FW-LIGHT-DEF2-MECH、FW-OBS-PASSIVE、FW-LIGHT-DEF2-ENABLE、FW-DIAG-BOOT 的验收追踪矩阵与正常/异常用例；LIGHT-DEF-2 形制/未启用等价性、COM43 ≥3 周期被动观测、判定数值接受后启用门禁、上电五行与 pyocd 编排评估、证据身份绑定与 TEST_FAIL 退出准则；明确不安排调温/改变光强/遮光刺激/功耗测量；只做设计不执行）
+artifacts/test_design.md | active | 嵌入式测试设计 TD-002 rev 9.0（当前 6 项任务的验收追踪矩阵与正常/异常用例；按人工范围决定把 FW-LIGHT-DEF2-ENABLE 单列 APPROVED_DEFERRED/NOT EXECUTED 并移出本阶段退出门槛、保留原目标与真实验证缺口；BOT-01 改为测试侧脚本先开 COM43 + pyocd 通用 cortex_m HW reset 的自动方式并含最小固件接口条件、正式版排除要求；构建身份更新为 82a7e74 / b6a15fed / 4d728dec 并解释旧 a3b08774 基线；重评原检查者 R4 范围错误；LIGHT-DEF-2 形制/未启用等价性、COM43 ≥3 周期被动观测、证据身份绑定与阶段/产品边界；明确不安排调温/改变光强/遮光刺激/功耗测量/跨链路；只做设计不执行）
 dengbei_care/ | active | Android App 工程根（Gradle/Kotlin；本轮按 readme 第 6 点同步修改）
 dengbei_care/_REFACTOR_NOTES.md | active | Android 重构说明
 dengbei_care/app/build.gradle.kts | active | App 模块构建脚本（versionCode 10 / versionName 1.9；宿主机单测 isReturnDefaultValues）
