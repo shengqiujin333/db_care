@@ -1,0 +1,151 @@
+--------- beginning of main
+11-13 12:59:35.993 D/        (  771): readbrightness,out1:9
+11-13 12:59:35.993 D/        (  771): .
+11-13 12:59:35.993 D/        (  771): readbrightness,out2:9.
+11-13 12:59:36.093 D/AndroidRuntime(26918): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 12:59:36.082 W/app_process(26918): type=1400 audit(0.0:100582): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:59:36.092 I/chatty  (26918): uid=2000(shell) app_process identical 1 line
+11-13 12:59:36.092 W/app_process(26918): type=1400 audit(0.0:100584): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:59:36.099 E/libc    (26918): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 12:59:36.099 I/AndroidRuntime(26918): Using default boot image
+11-13 12:59:36.099 E/libc    (26918): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 12:59:36.099 I/AndroidRuntime(26918): Leaving lock profiling enabled
+11-13 12:59:36.099 E/libc    (26918): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 12:59:36.106 W/app_process(26918): Could not reserve sentinel fault page
+11-13 12:59:36.231 D/ICU     (26918): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 12:59:36.284 W/app_process(26918): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 12:59:36.299 D/AndroidRuntime(26918): Calling main entry com.android.commands.input.Input
+11-13 12:59:36.325 D/AndroidRuntime(26918): Shutting down VM
+--------- beginning of system
+11-13 12:59:36.356 I/ActivityTaskManager( 1577): START u0 {act=android.content.pm.action.REQUEST_PERMISSIONS pkg=com.lbe.security.miui cmp=com.lbe.security.miui/com.android.packageinstaller.permission.ui.GrantPermissionsActivity (has extras)} from uid 10169
+11-13 12:59:36.356 D/MiuiMultiWindowAdapter( 1577): MiuiMultiWindowAdapter::getFreeformBlackList::sSmallWindowBlackList = [com.miui.securitycenter, com.miui.weather2, com.miui.miservice, com.android.calendar, com.xiaomi.calendar, com.android.contacts, com.miui.mishare.connectivity, com.android.settings, com.android.printspooler, com.miui.backup, com.miui.huanji, com.miui.calculator, com.android.deskclock, com.android.thememanager, com.mfashiongallery.emag, com.miui.virtualsim, com.miui.smarttravel, com.mi.health, com.android.camera, com.lbe.security.miui, com.miui.cleanmaster, com.miui.newhome, com.miui.voiceassist, com.android.phone, com.miui.yellowpage, com.android.updater, com.miui.tsmclient, com.miui.securitycore, com.xiaomi.account, com.xiaomi.shop, com.mipay.wallet, com.xiaomi.youpin, com.xiaomi.hm.health, com.miui.bugreport, com.xiaomi.mibrain.speech, com.xiaomi.mimoji, com.xiaomi.scanner, com.duokan.phone.remotecontroller, com.miui.hybrid, com.android.incallui, com.miui.video, com.miui.videoplayer, com.miui.player, com.miui.fm, com.miui.packageinstaller, com.mi.android.globallauncher, com.google.android.dialer, com.google.android.apps.magazines, com.miui.compass, com.miui.greenguard, com.kiteguard, com.google.android.apps.prodcasts, com.google.ar.lens, com.xiangkan.android, com.android.bankabc, com.sohu.inputmethod.sogou, com.tencent.mtt, com.shyz.toutiao, com.netease.mc.mi, com.outfit7.talkingtomgoldrun.mi, com.doudz.mi, com.wepie.snake.new.mi, cn.jj, com.standddz002.mi, com.miHoYo.bh3.mi, com.qqgame.hlddz, com.happyelements.AndroidAnimal, com.minitech.miniworld.TMobile.mi, com.mfp.jelly.xiaomi, com.lilithgames.afk.mi, com.tencent.peng, com.teenpatti.hd.gold, blockpuzzle.jewelgames.jewelslegend, com.playgendary.tanks, com.chillingo.robberybobfree.android.row, com.episodeinteractive.android.catalog, com.playrix.township, com.ansangha.drdriving, com.google.android.youtube, com.gbits.atm.mi]
+11-13 12:59:36.359 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 12:59:36.365 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 12:59:36.365 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 12:59:36.365 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 12:59:36.367 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 12:59:36.367 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+11-13 12:59:36.430 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 12:59:36.430 I/ActivityTaskManager( 1577): The Process com.lbe.security.miui:ui Already Exists in BG. So sending its PID: 25857
+11-13 12:59:36.432 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 12:59:36.432 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 12:59:36.432 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 12:59:36.433 D/PerfEngineController(11596): ForegroundInfo{mForegroundPackageName='com.lbe.security.miui', mForegroundUid=10062, mForegroundPid=25857, mLastForegroundPackageName='com.jinyuni.dengbei_care', mLastForegroundUid=10169, mLastForegroundPid=26675, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 12:59:36.433 W/GunSight( 4855): filtered Package: com.lbe.security.miui, return
+11-13 12:59:36.433 I/GST     ( 4855): forePkg: com.lbe.security.miui, preForePkg: com.jinyuni.dengbei_care
+11-13 12:59:36.433 I/ProcessMonitor( 3361): onForegroundInfoChanged: ForegroundInfo{mForegroundPackageName='com.lbe.security.miui', mForegroundUid=10062, mForegroundPid=25857, mLastForegroundPackageName='com.jinyuni.dengbei_care', mLastForegroundUid=10169, mLastForegroundPid=26675, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 12:59:36.433 I/VideoBoxUtils( 3361): isSupportVideoBox: false
+11-13 12:59:36.434 I/^_^MemoryTrim(17058): onAppBackground()
+11-13 12:59:36.434 D/AutoInstallService(26235): onForegroundInfoChanged: com.lbe.security.miui
+11-13 12:59:36.436 W/ActivityThread(25857): handleWindowVisibility: no activity for token android.os.BinderProxy@1b70b7a
+11-13 12:59:36.437 I/Timeline( 1577): Timeline: App_transition_ready time:929405958
+11-13 12:59:36.445 I/MiuiNetworkPolicy( 1577): updateUidState uid = 10062, uidState = 2
+11-13 12:59:36.452 D/ViewContentFactory(25857): initViewContentFetcherClass
+11-13 12:59:36.452 I/ContentCatcher(25857): ViewContentFetcher : ViewContentFetcher
+11-13 12:59:36.452 D/ViewContentFactory(25857): createInterceptor took 0ms
+11-13 12:59:36.476 D/ForceDarkHelper(25857): updateByCheckExcludeList: pkg: com.lbe.security.miui activity: com.android.packageinstaller.permission.ui.GrantPermissionsActivity@acb3f2b
+11-13 12:59:36.523 I/AppOps  ( 1577): setUserRestriction: 24 action: true from uid: 10062 pid: 25857
+11-13 12:59:36.523 I/AppOps  ( 1577): setUserRestriction: 45 action: true from uid: 10062 pid: 25857
+11-13 12:59:36.518 I/chatty  (25857): uid=10062 com.lbe.security.miui:ui identical 68 lines
+11-13 12:59:36.518 D/ForceDarkHelper(25857): updateByCheckExcludeList: pkg: com.lbe.security.miui activity: com.android.packageinstaller.permission.ui.GrantPermissionsActivity@acb3f2b
+11-13 12:59:36.526 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:59:36.526 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 12:59:36.538 D/IdProviderImpl(15673): getOAID
+11-13 12:59:36.549 I/Timeline( 1577): Timeline: App_transition_ready time:929406070
+11-13 12:59:36.551 I/Timeline( 1577): Timeline: App_transition_ready time:929406072
+11-13 12:59:36.567 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:59:36.567 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:59:36.567 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 40 microseconds, avg: 124
+11-13 12:59:36.568 I/Timeline( 1577): Timeline: App_transition_ready time:929406089
+11-13 12:59:36.568 I/Timeline( 1577): Timeline: Activity_windows_visible id: ActivityRecord{694bba5 u0 com.lbe.security.miui/com.android.packageinstaller.permission.ui.GrantPermissionsActivity t98} time:929406089
+11-13 12:59:36.569 I/Timeline( 1577): Timeline: App_transition_stopped time:929406090
+11-13 12:59:36.569 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:59:36.569 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:59:36.569 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 18 microseconds, avg: 124
+11-13 12:59:36.578 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 12:59:36.579 I/ActivityTaskManager( 1577): Displayed com.lbe.security.miui/com.android.packageinstaller.permission.ui.GrantPermissionsActivity: +210ms
+11-13 12:59:36.580 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 12:59:36.993 D/        (  771): readbrightness,out1:9
+11-13 12:59:36.993 D/        (  771): .
+11-13 12:59:36.993 D/        (  771): readbrightness,out2:9.
+11-13 12:59:37.089 D/MiuiFastConnectService(27265): handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-13 12:59:37.089 D/MiuiFastConnectService(27265): stopBleScan: scanning: true
+11-13 12:59:37.091 D/BluetoothAdapter(27265): isLeEnabled(): ON
+11-13 12:59:37.091 D/BtGatt.GattService(26457): stopScan() - queue size =1
+11-13 12:59:37.093 I/BtGatt.ScanManager(26457): msg.what = 1
+11-13 12:59:37.093 D/BtGatt.ScanManager(26457): stop scan
+11-13 12:59:37.094 D/BtGatt.GattService(26457): unregisterScanner() - scannerId=5
+11-13 12:59:37.094 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-13 12:59:37.094 V/bt_stack(26457): [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-13 12:59:37.097 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-13 12:59:37.098 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.109 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-13 12:59:37.110 D/MiuiFastConnectService(27265): handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-13 12:59:37.110 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.111 D/BluetoothAdapter(27265): isLeEnabled(): ON
+11-13 12:59:37.113 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-13 12:59:37.113 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.114 D/BtGatt.GattService(26457): registerScanner() - UUID=ba6f7677-e4b1-4b57-b647-0ead7cbec63a
+11-13 12:59:37.115 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 12:59:37.115 I/bt_stack(26457): [INFO:gatt_api.cc(959)] GATT_Register fab7ceaf-105c-7f80-c673-30714eaea409
+11-13 12:59:37.115 I/bt_stack(26457): [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-13 12:59:37.115 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-13 12:59:37.115 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 12:59:37.116 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 12:59:37.116 D/BtGatt.GattService(26457): onScannerRegistered() - UUID=ba6f7677-e4b1-4b57-b647-0ead7cbec63a, scannerId=5, status=0
+11-13 12:59:37.116 D/BluetoothLeScanner(27265): onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-13 12:59:37.117 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-13 12:59:37.117 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.118 D/BtGatt.GattService(26457): start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-13 12:59:37.122 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-13 12:59:37.122 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.122 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=0
+11-13 12:59:37.122 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-13 12:59:37.122 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue emtpy, scan stopped
+11-13 12:59:37.122 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue emtpy, scan stopped
+11-13 12:59:37.123 E/BtGatt.GattService(26457):  [Landroid.content.pm.ServiceInfo;@d0e211c
+11-13 12:59:37.125 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 12:59:37.126 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:59:37.129 I/BtGatt.ScanManager(26457): msg.what = 0
+11-13 12:59:37.130 D/BtGatt.ScanManager(26457): handling starting scan
+11-13 12:59:37.132 D/BtGatt.ScanManager(26457): isAptXLowLatencyModeEnabled: false
+11-13 12:59:37.138 D/BtGatt.GattService(26457): onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-13 12:59:37.138 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.138 D/BtGatt.ScanManager(26457): Available Filter size: 13
+11-13 12:59:37.139 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:59:37.139 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.139 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:59:37.146 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-13 12:59:37.146 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.147 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:59:37.147 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.147 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:59:37.153 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-13 12:59:37.153 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.154 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:59:37.154 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.155 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:59:37.161 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-13 12:59:37.161 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.162 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:59:37.162 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.162 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:59:37.169 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-13 12:59:37.169 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.170 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:59:37.170 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.170 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:59:37.176 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-13 12:59:37.176 D/BtGatt.ScanManager(26457): callback done for scannerId - 5 status - 0
+11-13 12:59:37.177 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=1
+11-13 12:59:37.177 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-13 12:59:37.180 D/BtGatt.ScanManager(26457): configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-13 12:59:37.180 D/BtGatt.GattService(26457): onScanParamSetupCompleted : 0
+11-13 12:59:37.643 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 12:59:37.644 W/Gralloc3(26958): mapper 3.x is not supported
+11-13 12:59:37.994 D/        (  771): readbrightness,out1:9
+11-13 12:59:37.994 D/        (  771): .
+11-13 12:59:37.994 D/        (  771): readbrightness,out2:9.
+11-13 12:59:38.995 D/        (  771): readbrightness,out1:9
+11-13 12:59:38.995 D/        (  771): .
+11-13 12:59:38.995 D/        (  771): readbrightness,out2:9.

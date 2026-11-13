@@ -1,0 +1,189 @@
+--------- beginning of main
+11-13 13:13:43.809 D/AndroidRuntime(28306): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:43.815 E/libc    (28306): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:43.815 I/AndroidRuntime(28306): Using default boot image
+11-13 13:13:43.815 E/libc    (28306): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:43.802 W/app_process(28306): type=1400 audit(0.0:100838): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:43.815 I/AndroidRuntime(28306): Leaving lock profiling enabled
+11-13 13:13:43.815 E/libc    (28306): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:43.802 W/app_process(28306): type=1400 audit(0.0:100839): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:43.802 W/app_process(28306): type=1400 audit(0.0:100840): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:43.822 W/app_process(28306): Could not reserve sentinel fault page
+11-13 13:13:43.909 D/        (  771): readbrightness,out1:9
+11-13 13:13:43.909 D/        (  771): .
+11-13 13:13:43.909 D/        (  771): readbrightness,out2:9.
+11-13 13:13:43.947 D/ICU     (28306): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:44.000 W/app_process(28306): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:44.014 D/AndroidRuntime(28306): Calling main entry com.android.commands.input.Input
+11-13 13:13:44.040 D/AndroidRuntime(28306): Shutting down VM
+11-13 13:13:44.125 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:13:44.159 I/chatty  (27753): uid=10169(com.jinyuni.dengbei_care) identical 7 lines
+11-13 13:13:44.161 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:13:44.354 D/MqttService(27753): onResume called
+11-13 13:13:44.910 D/        (  771): readbrightness,out1:9
+11-13 13:13:44.910 D/        (  771): .
+11-13 13:13:44.910 D/        (  771): readbrightness,out2:9.
+11-13 13:13:45.665 D/AndroidRuntime(28320): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:45.671 E/libc    (28320): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:45.671 I/AndroidRuntime(28320): Using default boot image
+11-13 13:13:45.662 W/app_process(28320): type=1400 audit(0.0:100841): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:45.671 E/libc    (28320): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:45.671 I/AndroidRuntime(28320): Leaving lock profiling enabled
+11-13 13:13:45.671 E/libc    (28320): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:45.662 W/app_process(28320): type=1400 audit(0.0:100842): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:45.662 W/app_process(28320): type=1400 audit(0.0:100843): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:45.677 W/app_process(28320): Could not reserve sentinel fault page
+11-13 13:13:45.803 D/ICU     (28320): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:45.854 W/app_process(28320): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:45.869 D/AndroidRuntime(28320): Calling main entry com.android.commands.input.Input
+11-13 13:13:45.900 D/AndroidRuntime(28320): Shutting down VM
+11-13 13:13:45.911 D/        (  771): readbrightness,out1:9
+11-13 13:13:45.911 D/        (  771): .
+11-13 13:13:45.912 D/        (  771): readbrightness,out2:9.
+11-13 13:13:46.065 W/Parcel  ( 3361): **** enforceInterface() expected 'com.miui.gamebooster.service.ISecurityCenterNotificationListener' but read 'android.service.notification.INotificationListener'
+11-13 13:13:46.065 W/Binder  ( 3361): Caught a RuntimeException from the binder stub implementation.
+11-13 13:13:46.065 W/Binder  ( 3361): java.lang.SecurityException: Binder invocation to an incorrect interface
+11-13 13:13:46.065 W/Binder  ( 3361): 	at android.os.Parcel.nativeEnforceInterface(Native Method)
+11-13 13:13:46.065 W/Binder  ( 3361): 	at android.os.Parcel.enforceInterface(Parcel.java:626)
+11-13 13:13:46.065 W/Binder  ( 3361): 	at com.miui.gamebooster.service.ISecurityCenterNotificationListener$Stub.onTransact(Unknown Source:22)
+11-13 13:13:46.065 W/Binder  ( 3361): 	at android.os.Binder.execTransactInternal(Binder.java:1021)
+11-13 13:13:46.065 W/Binder  ( 3361): 	at android.os.Binder.execTransact(Binder.java:994)
+11-13 13:13:46.067 D/StatusBar( 1916): onNotificationPosted key=0|com.jinyuni.dengbei_care|1|null|10169 isUpdate=true
+11-13 13:13:46.067 V/onNotificationPostedCallBack( 3361): flags=98
+11-13 13:13:46.068 D/AudioManager( 1577): getStreamVolume isRestricted mode = 0
+11-13 13:13:46.068 D/StatusBar( 1916): updateNotification old=StatusBarNotification(pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null key=0|com.jinyuni.dengbei_care|1|null|10169: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+11-13 13:13:46.068 D/StatusBar( 1916):     pkgName=com.jinyuni.dengbei_care appUid=10169 sdk=34 imp=3 sysApp=F priApp=F hasShown=F float=F keyguard=F peek=F fullscreen=F
+11-13 13:13:46.068 D/StatusBar( 1916):     showMiuiAction=F enableFloat=T enableKeyguard=T floatTime=5000 messageCount=1 persistent=F customHeight=F customHideBorder=F
+11-13 13:13:46.068 V/h       ( 3361): ret=0
+11-13 13:13:46.069 D/APM::AudioPolicyEngine(  653): XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-13 13:13:46.069 D/AudioManager( 1577): getStreamVolume isRestricted mode = 0
+11-13 13:13:46.070 D/APM::AudioPolicyEngine(  653): XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-13 13:13:46.106 D/StatusBar( 1916): No peeking: unimportant notification: 0|com.jinyuni.dengbei_care|1|null|10169
+11-13 13:13:46.106 D/StatusBar( 1916): updateHeadsUp wasHeadsUp=false shouldPeek=false alertAgain=true
+11-13 13:13:46.913 D/        (  771): readbrightness,out1:9
+11-13 13:13:46.913 D/        (  771): .
+11-13 13:13:46.913 D/        (  771): readbrightness,out2:9.
+11-13 13:13:47.914 D/        (  771): readbrightness,out1:9
+11-13 13:13:47.914 D/        (  771): .
+11-13 13:13:47.914 D/        (  771): readbrightness,out2:9.
+11-13 13:13:48.915 D/        (  771): readbrightness,out1:9
+11-13 13:13:48.915 D/        (  771): .
+11-13 13:13:48.916 D/        (  771): readbrightness,out2:9.
+11-13 13:13:49.916 D/        (  771): readbrightness,out1:9
+11-13 13:13:49.916 D/        (  771): .
+11-13 13:13:49.916 D/        (  771): readbrightness,out2:9.
+11-13 13:13:50.917 D/        (  771): readbrightness,out1:9
+11-13 13:13:50.917 D/        (  771): .
+11-13 13:13:50.917 D/        (  771): readbrightness,out2:9.
+11-13 13:13:51.072 W/swapper/4(    0): type=1400 audit(0.0:100844): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:13:51.918 D/        (  771): readbrightness,out1:9
+11-13 13:13:51.918 D/        (  771): .
+11-13 13:13:51.918 D/        (  771): readbrightness,out2:9.
+11-13 13:13:52.920 D/        (  771): readbrightness,out1:9
+11-13 13:13:52.920 D/        (  771): .
+11-13 13:13:52.920 D/        (  771): readbrightness,out2:9.
+11-13 13:13:53.921 D/        (  771): readbrightness,out1:9
+11-13 13:13:53.921 D/        (  771): .
+11-13 13:13:53.921 D/        (  771): readbrightness,out2:9.
+11-13 13:13:54.923 D/        (  771): readbrightness,out1:9
+11-13 13:13:54.923 D/        (  771): .
+11-13 13:13:54.923 D/        (  771): readbrightness,out2:9.
+11-13 13:13:55.923 D/        (  771): readbrightness,out1:9
+11-13 13:13:55.923 D/        (  771): .
+11-13 13:13:55.923 D/        (  771): readbrightness,out2:9.
+11-13 13:13:56.312 D/StatusBar( 1916): updateNotificationRankingDelayed messageReceiveTime=930265631
+11-13 13:13:56.924 D/        (  771): readbrightness,out1:9
+11-13 13:13:56.924 D/        (  771): .
+11-13 13:13:56.924 D/        (  771): readbrightness,out2:9.
+11-13 13:13:57.924 D/        (  771): readbrightness,out1:9
+11-13 13:13:57.924 D/        (  771): .
+11-13 13:13:57.924 D/        (  771): readbrightness,out2:9.
+11-13 13:13:58.925 D/        (  771): readbrightness,out1:9
+11-13 13:13:58.925 D/        (  771): .
+11-13 13:13:58.925 D/        (  771): readbrightness,out2:9.
+11-13 13:13:59.926 D/        (  771): readbrightness,out1:9
+11-13 13:13:59.926 D/        (  771): .
+11-13 13:13:59.926 D/        (  771): readbrightness,out2:9.
+11-13 13:14:00.004 D/KeyguardUpdateMonitor( 1916): handleTimeUpdate
+11-13 13:14:00.928 D/        (  771): readbrightness,out1:9
+11-13 13:14:00.928 D/        (  771): .
+11-13 13:14:00.928 D/        (  771): readbrightness,out2:9.
+11-13 13:14:01.072 W/swapper/5(    0): type=1400 audit(0.0:100845): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:14:01.929 D/        (  771): readbrightness,out1:9
+11-13 13:14:01.929 D/        (  771): .
+11-13 13:14:01.929 D/        (  771): readbrightness,out2:9.
+11-13 13:14:02.930 D/        (  771): readbrightness,out1:9
+11-13 13:14:02.930 D/        (  771): .
+11-13 13:14:02.930 D/        (  771): readbrightness,out2:9.
+11-13 13:14:03.682 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:03.696 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 4 lines
+11-13 13:14:03.703 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:03.761 V/NFC     ( 1916): this device does not have NFC support
+11-13 13:14:03.764 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:03.765 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 13:14:03.767 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:03.800 V/NFC     ( 1916): this device does not have NFC support
+11-13 13:14:03.804 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:03.804 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 13:14:03.811 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:03.866 V/NFC     ( 1916): this device does not have NFC support
+11-13 13:14:03.867 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:03.868 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 13:14:03.869 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:03.931 D/        (  771): readbrightness,out1:9
+11-13 13:14:03.931 D/        (  771): .
+11-13 13:14:03.931 D/        (  771): readbrightness,out2:9.
+11-13 13:14:03.949 V/NFC     ( 1916): this device does not have NFC support
+11-13 13:14:03.951 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:03.964 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 13:14:03.986 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:04.030 V/NFC     ( 1916): this device does not have NFC support
+11-13 13:14:04.031 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:04.031 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 13:14:04.033 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:04.049 V/NFC     ( 1916): this device does not have NFC support
+11-13 13:14:04.153 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:04.188 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 44 lines
+11-13 13:14:04.188 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:04.189 D/QSTile.BluetoothTile( 1916): handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-13 13:14:04.190 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 2 lines
+11-13 13:14:04.190 D/QSTile.BluetoothTile( 1916): handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-13 13:14:04.190 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:04.191 D/QSTile.BluetoothTile( 1916): handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-13 13:14:04.191 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 13:14:04.191 D/QSTile.BluetoothTile( 1916): handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-13 13:14:04.193 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:04.228 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 36 lines
+11-13 13:14:04.229 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:04.229 D/BluetoothController( 1916): fireStateChange
+11-13 13:14:04.229 D/QSTile.BluetoothTile( 1916): onBluetoothStateChange: enabled = true
+11-13 13:14:04.229 I/chatty  ( 1916): uid=1000(system) com.android.systemui identical 5 lines
+11-13 13:14:04.229 D/QSTile.BluetoothTile( 1916): onBluetoothStateChange: enabled = true
+11-13 13:14:04.229 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:04.244 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 46 lines
+11-13 13:14:04.244 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 13:14:04.247 D/QSTile.BluetoothTile( 1916): handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-13 13:14:04.248 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 5 lines
+11-13 13:14:04.249 D/QSTile.BluetoothTile( 1916): handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-13 13:14:04.932 D/        (  771): readbrightness,out1:9
+11-13 13:14:04.932 D/        (  771): .
+11-13 13:14:04.932 D/        (  771): readbrightness,out2:9.
+11-13 13:14:05.934 D/        (  771): readbrightness,out1:9
+11-13 13:14:05.934 D/        (  771): .
+11-13 13:14:05.934 D/        (  771): readbrightness,out2:9.
+11-13 13:14:06.935 D/        (  771): readbrightness,out1:9
+11-13 13:14:06.935 D/        (  771): .
+11-13 13:14:06.935 D/        (  771): readbrightness,out2:9.
+11-13 13:14:07.936 D/        (  771): readbrightness,out1:9
+11-13 13:14:07.936 D/        (  771): .
+11-13 13:14:07.937 D/        (  771): readbrightness,out2:9.
+11-13 13:14:08.938 D/        (  771): readbrightness,out1:9
+11-13 13:14:08.938 D/        (  771): .
+11-13 13:14:08.938 D/        (  771): readbrightness,out2:9.
+11-13 13:14:09.939 D/        (  771): readbrightness,out1:9
+11-13 13:14:09.939 D/        (  771): .
+11-13 13:14:09.939 D/        (  771): readbrightness,out2:9.
+11-13 13:14:10.941 D/        (  771): readbrightness,out1:9
+11-13 13:14:10.941 D/        (  771): .
+11-13 13:14:10.941 D/        (  771): readbrightness,out2:9.
+11-13 13:14:11.062 W/swapper/4(    0): type=1400 audit(0.0:100846): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0

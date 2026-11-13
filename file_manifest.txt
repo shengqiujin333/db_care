@@ -167,6 +167,9 @@ dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/notifications/Notific
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/ui/notifications/ScanPermissionWiringTest.kt | active | AA-006 N-1 扫描权限接线静态回归（fragment launcher/无 Activity 级请求/挂起清理）
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/Aa005SevenItemVerificationTest.kt | active | 软件测试独立验证（AA-005 七项增量）：权限矩阵/网关身份/批次转发/观测占位与 x10/上传四分类与“401 后全局暂停自动重试”门禁/容量与完整性/规则文案，共 20 项
 dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/DetailPresentationItem012VerificationTest.kt | active | 由 android_engineer 新增或修改的项目相关文件
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayReadStateItem002VerificationTest.kt | active | 软件测试独立验证（AA-006 N-2）：读取终态映射矩阵、枚举无 CONNECTING、纯逻辑无 Android 依赖
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/NotificationsPermissionWiringItem001VerificationTest.kt | active | 软件测试独立验证（AA-006 N-1）：权限原因/文案矩阵与 Fragment launcher/挂起清理静态核查
+dengbei_care/app/src/test/java/com/jinyuni/dengbei_care/verification/ReportRegenerateFeedbackItem003VerificationTest.kt | active | 软件测试独立验证（AA-006 N-3）：重新生成反馈矩阵、按钮恢复与文案常量
 dengbei_care/build.gradle.kts | active | 工程级 Gradle 脚本
 dengbei_care/codegraph.json | active | ?????Android ???? iOS ?????????????????
 dengbei_care/gradle/libs.versions.toml | active | 依赖版本目录（gradle.properties、dependencies.txt、gradlew(.bat) 同级）
@@ -250,6 +253,131 @@ evidence/aa005_android_recheck_20261110/recheck_ui_07_home_after_connect.xml | a
 evidence/aa005_android_recheck_20261110/recheck_ui_08_gateway_cleared.xml | active | UI 树：清除后未配置、无回退
 evidence/aa005_android_recheck_20261110/static_check_aa005.log | active | 独立静态核查原始输出（54/54 PASS，E6=PASS）
 evidence/aa005_android_recheck_20261110/test_summary.txt | active | 宿主机复验汇总（构建/APK/20 项/257 项/54 项/12 门禁/设备安装）
+evidence/aa006_software_test_20261113/ | active | AA-006 N-1/N-2/N-3 软件独立验证原始证据目录（真机 UI 树/日志/截图/权限状态/构建与单测）
+evidence/aa006_software_test_20261113/ST-AA006.md | active | AA-006 软件独立验证报告：身份/宿主 300 项/静态 54+12+15/真机 N-1/N-2/N-3 逐用例证据/未执行披露/观察项/结论
+evidence/aa006_software_test_20261113/TEST-com.jinyuni.dengbei_care.verification.GatewayReadStateItem002VerificationTest.xml | active | 本轮新增独立验证用例 JUnit XML 副本
+evidence/aa006_software_test_20261113/TEST-com.jinyuni.dengbei_care.verification.NotificationsPermissionWiringItem001VerificationTest.xml | active | 本轮新增独立验证用例 JUnit XML 副本
+evidence/aa006_software_test_20261113/TEST-com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest.xml | active | 本轮新增独立验证用例 JUnit XML 副本
+evidence/aa006_software_test_20261113/activity_state.txt | active | Activity/休眠状态只读快照
+evidence/aa006_software_test_20261113/apk_badging.txt | active | AA-006 软件验证原始证据
+evidence/aa006_software_test_20261113/apksigner_verify.txt | active | AA-006 软件验证原始证据
+evidence/aa006_software_test_20261113/build.log | active | 本轮命令原始输出（构建/单测/静态/门禁）
+evidence/aa006_software_test_20261113/device_apk_hash.txt | active | 设备身份/状态或已安装 base.apk 摘要
+evidence/aa006_software_test_20261113/device_package_after_grant.txt | active | 设备包状态与运行时权限快照
+evidence/aa006_software_test_20261113/device_package_after_revoke2.txt | active | 设备包状态与运行时权限快照
+evidence/aa006_software_test_20261113/device_package_ask_mode.txt | active | 设备包状态与运行时权限快照
+evidence/aa006_software_test_20261113/device_package_final.txt | active | 设备包状态与运行时权限快照
+evidence/aa006_software_test_20261113/device_package_granted_again.txt | active | 设备包状态与运行时权限快照
+evidence/aa006_software_test_20261113/device_package_location_revoked.txt | active | 设备包状态与运行时权限快照
+evidence/aa006_software_test_20261113/device_package_pre.txt | active | 设备包状态与运行时权限快照
+evidence/aa006_software_test_20261113/device_package_userfixed.txt | active | 设备包状态与运行时权限快照
+evidence/aa006_software_test_20261113/device_state_final.txt | active | 设备身份/状态或已安装 base.apk 摘要
+evidence/aa006_software_test_20261113/device_state_pre.txt | active | 设备身份/状态或已安装 base.apk 摘要
+evidence/aa006_software_test_20261113/extract_ui.py | active | 本轮可复跑测试脚本
+evidence/aa006_software_test_20261113/gates.log | active | 本轮命令原始输出（构建/单测/静态/门禁）
+evidence/aa006_software_test_20261113/identity.txt | active | 本轮提交、构建命令、APK 大小/SHA-256/MD5 与宿主用例计数
+evidence/aa006_software_test_20261113/logcat_dismiss_before.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_expand_search_grant.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_gateway_clear.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_grant_again.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_guard_cycle1.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_guard_cycle1_clean.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_guard_cycle1_scheduled.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_guard_cycle2.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_guard_stopped.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_prompt_dismissed.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_prompt_shown.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_rapid_clicks.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_report_back_destroy.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_report_regenerate.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_report_triple_click.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_scan_after_dont_ask.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_scan_bt_off.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_scan_denied.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_scan_dismiss_dialog.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_scan_dont_ask.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_scan_grant_3s.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_scan_grant_full.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_scan_location_off.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_scan_user_fixed.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/logcat_startup_no_location.txt | active | 真机原始 logcat 切片（扫描权限/读取终态/报告/守护周期/清理）
+evidence/aa006_software_test_20261113/manifest_check.log | active | 清单一致性检查原始输出（0 通配/0 格式错/0 缺失；未跟踪与未入清单为信息项）
+evidence/aa006_software_test_20261113/myprefs_after_guard_stop.xml | active | 应用 MyPrefs 快照（网关/守护/上传状态）
+evidence/aa006_software_test_20261113/myprefs_final.xml | active | 应用 MyPrefs 快照（网关/守护/上传状态）
+evidence/aa006_software_test_20261113/myprefs_guard_cycle1.xml | active | 应用 MyPrefs 快照（网关/守护/上传状态）
+evidence/aa006_software_test_20261113/screen_after_prompt_dismiss.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_after_prompt_dismiss_2.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_after_scan_dismiss.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_expand_search_prompt.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_final_home.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_gateway_cleared.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_guard_cycle1.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_guard_cycle1_clean.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_guard_cycle1_scheduled.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_guard_cycle2.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_guard_stopped.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_prompt_before_dismiss.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_report_click_035s.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_report_click_085s.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_report_click_185s.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_report_click_385s.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_report_triple_click.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_scan_after_dont_ask_toast.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_scan_bt_off_toast.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_scan_dont_ask_toast.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_scan_location_off_toast.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_scan_permission_denied_toast.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_scan_prompt_for_dismiss.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_scan_running_before_dismiss.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_scan_user_fixed_toast.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/screen_startup_no_location.png | active | 真机截图（Toast/状态/页面）
+evidence/aa006_software_test_20261113/services_guard_cycle1.txt | active | 前台服务状态快照
+evidence/aa006_software_test_20261113/static_aa005.log | active | 本轮命令原始输出（构建/单测/静态/门禁）
+evidence/aa006_software_test_20261113/static_layout_check.log | active | 本轮命令原始输出（构建/单测/静态/门禁）
+evidence/aa006_software_test_20261113/summarize_unit_tests.py | active | 本轮可复跑测试脚本
+evidence/aa006_software_test_20261113/test_summary.txt | active | AA-006 用例判定汇总（PASS/NOT EXECUTED 与观察项）
+evidence/aa006_software_test_20261113/ui_01_home_after_launch.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_01_home_after_launch.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_02_after_unlock.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_02_after_unlock.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_03_home.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_03_home.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_04_my_page.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_04_my_page.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_05_my_page.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_05_my_page.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_06_my_page_scrolled.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_06_my_page_scrolled.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_07_gateway_dialog.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_07_gateway_dialog.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_08_scan_permission_prompt.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_08_scan_permission_prompt.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_09_after_scan_timeout.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_09_after_scan_timeout.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_10_gateway_saved.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_10_gateway_saved.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_11_quick_settings.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_11_quick_settings.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_12_after_bt_off_shade_close.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_12_after_bt_off_shade_close.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_13_scan_bt_off.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_13_scan_bt_off.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_14_scan_permission_prompt_deny.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_14_scan_permission_prompt_deny.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_15_app_details.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_15_app_details.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_16_permission_management.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_16_permission_management.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_17_location_permission.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_17_location_permission.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_18_back_to_app.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_18_back_to_app.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/ui_19_report_activity.txt | active | UI 树文本/bounds 提取
+evidence/aa006_software_test_20261113/ui_19_report_activity.xml | active | 真机 UI 原始树
+evidence/aa006_software_test_20261113/unit_test.log | active | 本轮命令原始输出（构建/单测/静态/门禁）
+evidence/aa006_software_test_20261113/unit_test_rerun.log | active | 本轮命令原始输出（构建/单测/静态/门禁）
+evidence/aa006_software_test_20261113/unit_test_summary.txt | active | JUnit XML 汇总（套件/用例/失败/跳过）
+evidence/aa006_software_test_20261113/update_manifest_entries.py | active | 本轮可复跑测试脚本
 evidence/android_aa006_20261113/ | active | AA-006 N-1/N-2/N-3 实现自检证据目录
 evidence/android_aa006_20261113/apk_badging.txt | active | 本增量 APK aapt badging（versionCode 10 / versionName 1.9）
 evidence/android_aa006_20261113/apksigner_verify.txt | active | 本增量 APK apksigner 验证（v2；Android Debug 证书）

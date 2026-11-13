@@ -1,0 +1,41 @@
+ACTIVITY MANAGER ACTIVITIES (dumpsys activity activities)
+Display #0 (activities from top to bottom):
+
+  Stack #32: type=standard mode=fullscreen
+  isSleeping=true
+  mBounds=Rect(0, 0 - 0, 0)
+    Task id #95
+    mBounds=Rect(0, 0 - 0, 0)
+    mMinWidth=-1
+    mMinHeight=-1
+    mLastNonFullscreenBounds=null
+    * TaskRecord{80891ce #95 A=com.jinyuni.dengbei_care U=0 StackId=32 sz=1}
+      userId=0 effectiveUid=u0a169 mCallingUid=2000 mUserSetupComplete=true mCallingPackage=null
+      affinity=com.jinyuni.dengbei_care
+      intent={act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.jinyuni.dengbei_care/.MainActivity}
+      mActivityComponent=com.jinyuni.dengbei_care/.MainActivity
+      autoRemoveRecents=false isPersistable=true numFullscreen=1 activityType=1
+      rootWasReset=true mNeverRelinquishIdentity=true mReuseTask=false mLockTaskAuth=LOCK_TASK_AUTH_PINNABLE
+      Activities=[ActivityRecord{da8ce6a u0 com.jinyuni.dengbei_care/.MainActivity t95}]
+      askedCompatMode=false inRecents=true isAvailable=true
+      mRootProcess=ProcessRecord{b6708ef 25168:com.jinyuni.dengbei_care/u0a169}
+      stackId=32
+      hasBeenVisible=false mResizeMode=RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION mSupportsPictureInPicture=false isResizeable=true supportsSplitScreenWindowingMode=true lastActiveTime=969886223 (inactive for 53s)
+      * Hist #0: ActivityRecord{da8ce6a u0 com.jinyuni.dengbei_care/.MainActivity t95}
+          packageName=com.jinyuni.dengbei_care processName=com.jinyuni.dengbei_care
+          launchedFromUid=2000 launchedFromPackage=null userId=0
+          app=ProcessRecord{b6708ef 25168:com.jinyuni.dengbei_care/u0a169}
+          Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.jinyuni.dengbei_care/.MainActivity }
+          frontOfTask=true task=TaskRecord{80891ce #95 A=com.jinyuni.dengbei_care U=0 StackId=32 sz=1}
+          taskAffinity=com.jinyuni.dengbei_care
+          mActivityComponent=com.jinyuni.dengbei_care/.MainActivity
+          baseDir=/data/app/com.jinyuni.dengbei_care-gdICIDkwTLleG4wOGGrvug==/base.apk
+          dataDir=/data/user/0/com.jinyuni.dengbei_care
+          stateNotNeeded=false componentSpecified=true mActivityType=standard
+          compat={320dpi} labelRes=0x7f12001e icon=0x7f0e0000 theme=0x7f130246
+          mLastReportedConfigurations:
+           mGlobalConfig={1.0 460mcc11mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.207 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+           mOverrideConfig={1.0 460mcc11mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.1 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+          CurrentConfiguration={1.0 460mcc11mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.1 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+          taskDescription: label="null" icon=null iconResource=0 iconFilename=null primaryColor=ff6750a4
+Failed to write while dumping service activity: Broken pipe

@@ -1,0 +1,93 @@
+--------- beginning of main
+11-13 13:00:26.849 D/AndroidRuntime(26998): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:00:26.855 E/libc    (26998): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:00:26.842 W/app_process(26998): type=1400 audit(0.0:100593): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:00:26.855 I/AndroidRuntime(26998): Using default boot image
+11-13 13:00:26.855 E/libc    (26998): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:00:26.855 I/AndroidRuntime(26998): Leaving lock profiling enabled
+11-13 13:00:26.855 E/libc    (26998): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:00:26.842 W/app_process(26998): type=1400 audit(0.0:100594): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:00:26.842 W/app_process(26998): type=1400 audit(0.0:100595): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:00:26.862 W/app_process(26998): Could not reserve sentinel fault page
+11-13 13:00:26.988 D/ICU     (26998): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:00:27.041 W/app_process(26998): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:00:27.049 D/        (  771): readbrightness,out1:9
+11-13 13:00:27.049 D/        (  771): .
+11-13 13:00:27.049 D/        (  771): readbrightness,out2:9.
+11-13 13:00:27.055 D/AndroidRuntime(26998): Calling main entry com.android.commands.input.Input
+11-13 13:00:27.084 D/AndroidRuntime(26998): Shutting down VM
+--------- beginning of system
+11-13 13:00:27.108 I/ActivityTaskManager( 1577): START u0 {act=android.content.pm.action.REQUEST_PERMISSIONS pkg=com.lbe.security.miui cmp=com.lbe.security.miui/com.android.packageinstaller.permission.ui.GrantPermissionsActivity (has extras)} from uid 10169
+11-13 13:00:27.110 D/MiuiMultiWindowAdapter( 1577): MiuiMultiWindowAdapter::getFreeformBlackList::sSmallWindowBlackList = [com.miui.securitycenter, com.miui.weather2, com.miui.miservice, com.android.calendar, com.xiaomi.calendar, com.android.contacts, com.miui.mishare.connectivity, com.android.settings, com.android.printspooler, com.miui.backup, com.miui.huanji, com.miui.calculator, com.android.deskclock, com.android.thememanager, com.mfashiongallery.emag, com.miui.virtualsim, com.miui.smarttravel, com.mi.health, com.android.camera, com.lbe.security.miui, com.miui.cleanmaster, com.miui.newhome, com.miui.voiceassist, com.android.phone, com.miui.yellowpage, com.android.updater, com.miui.tsmclient, com.miui.securitycore, com.xiaomi.account, com.xiaomi.shop, com.mipay.wallet, com.xiaomi.youpin, com.xiaomi.hm.health, com.miui.bugreport, com.xiaomi.mibrain.speech, com.xiaomi.mimoji, com.xiaomi.scanner, com.duokan.phone.remotecontroller, com.miui.hybrid, com.android.incallui, com.miui.video, com.miui.videoplayer, com.miui.player, com.miui.fm, com.miui.packageinstaller, com.mi.android.globallauncher, com.google.android.dialer, com.google.android.apps.magazines, com.miui.compass, com.miui.greenguard, com.kiteguard, com.google.android.apps.prodcasts, com.google.ar.lens, com.xiangkan.android, com.android.bankabc, com.sohu.inputmethod.sogou, com.tencent.mtt, com.shyz.toutiao, com.netease.mc.mi, com.outfit7.talkingtomgoldrun.mi, com.doudz.mi, com.wepie.snake.new.mi, cn.jj, com.standddz002.mi, com.miHoYo.bh3.mi, com.qqgame.hlddz, com.happyelements.AndroidAnimal, com.minitech.miniworld.TMobile.mi, com.mfp.jelly.xiaomi, com.lilithgames.afk.mi, com.tencent.peng, com.teenpatti.hd.gold, blockpuzzle.jewelgames.jewelslegend, com.playgendary.tanks, com.chillingo.robberybobfree.android.row, com.episodeinteractive.android.catalog, com.playrix.township, com.ansangha.drdriving, com.google.android.youtube, com.gbits.atm.mi]
+11-13 13:00:27.113 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:00:27.120 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:00:27.120 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:00:27.120 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:00:27.122 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:00:27.122 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+11-13 13:00:27.138 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:00:27.139 I/ActivityTaskManager( 1577): The Process com.lbe.security.miui:ui Already Exists in BG. So sending its PID: 25857
+11-13 13:00:27.142 W/ActivityThread(25857): handleWindowVisibility: no activity for token android.os.BinderProxy@e156fba
+11-13 13:00:27.142 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:00:27.142 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:00:27.142 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:00:27.143 D/PerfEngineController(11596): ForegroundInfo{mForegroundPackageName='com.lbe.security.miui', mForegroundUid=10062, mForegroundPid=25857, mLastForegroundPackageName='com.jinyuni.dengbei_care', mLastForegroundUid=10169, mLastForegroundPid=26675, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 13:00:27.144 D/AutoInstallService(26235): onForegroundInfoChanged: com.lbe.security.miui
+11-13 13:00:27.144 I/ProcessMonitor( 3361): onForegroundInfoChanged: ForegroundInfo{mForegroundPackageName='com.lbe.security.miui', mForegroundUid=10062, mForegroundPid=25857, mLastForegroundPackageName='com.jinyuni.dengbei_care', mLastForegroundUid=10169, mLastForegroundPid=26675, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 13:00:27.145 I/VideoBoxUtils( 3361): isSupportVideoBox: false
+11-13 13:00:27.145 W/GunSight( 4855): filtered Package: com.lbe.security.miui, return
+11-13 13:00:27.145 I/GST     ( 4855): forePkg: com.lbe.security.miui, preForePkg: com.jinyuni.dengbei_care
+11-13 13:00:27.146 I/^_^MemoryTrim(17058): onAppBackground()
+11-13 13:00:27.148 I/Timeline( 1577): Timeline: App_transition_ready time:929456669
+11-13 13:00:27.160 I/MiuiNetworkPolicy( 1577): updateUidState uid = 10062, uidState = 2
+11-13 13:00:27.162 D/ViewContentFactory(25857): initViewContentFetcherClass
+11-13 13:00:27.162 I/ContentCatcher(25857): ViewContentFetcher : ViewContentFetcher
+11-13 13:00:27.162 D/ViewContentFactory(25857): createInterceptor took 0ms
+11-13 13:00:27.178 V/GrantPermissionsActivity(25857): Permission grant result requestId=8634839016142395513 callingUid=10169 callingPackage=com.jinyuni.dengbei_care permission=android.permission.ACCESS_FINE_LOCATION isImplicit=false result=2
+11-13 13:00:27.178 V/GrantPermissionsActivity(25857): Permission grant result requestId=8634839016142395513 callingUid=10169 callingPackage=com.jinyuni.dengbei_care permission=android.permission.ACCESS_COARSE_LOCATION isImplicit=true result=2
+11-13 13:00:27.179 D/ForceDarkHelper(25857): updateByCheckExcludeList: pkg: com.lbe.security.miui activity: com.android.packageinstaller.permission.ui.GrantPermissionsActivity@b076e6b
+11-13 13:00:27.204 I/chatty  (25857): uid=10062 com.lbe.security.miui:ui identical 34 lines
+11-13 13:00:27.205 D/ForceDarkHelper(25857): updateByCheckExcludeList: pkg: com.lbe.security.miui activity: com.android.packageinstaller.permission.ui.GrantPermissionsActivity@b076e6b
+11-13 13:00:27.207 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+11-13 13:00:27.213 D/ForceDarkHelper(25857): updateByCheckExcludeList: pkg: com.lbe.security.miui activity: com.android.packageinstaller.permission.ui.GrantPermissionsActivity@b076e6b
+11-13 13:00:27.219 I/chatty  (25857): uid=10062 com.lbe.security.miui:ui identical 17 lines
+11-13 13:00:27.219 D/ForceDarkHelper(25857): updateByCheckExcludeList: pkg: com.lbe.security.miui activity: com.android.packageinstaller.permission.ui.GrantPermissionsActivity@b076e6b
+11-13 13:00:27.225 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:00:27.227 I/GST     ( 4855): forePkg: com.jinyuni.dengbei_care, preForePkg: com.lbe.security.miui
+11-13 13:00:27.227 I/ProcessMonitor( 3361): onForegroundInfoChanged: ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=26675, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 13:00:27.227 I/^_^MemoryTrim(17058): onAppBackground()
+11-13 13:00:27.227 I/GameBoosterService( 3361): onForegroundInfoChanged: Cur=com.jinyuni.dengbei_care	 last=com.lbe.security.miui
+11-13 13:00:27.227 D/PerfEngineController(11596): ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=26675, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 13:00:27.227 D/AutoInstallService(26235): onForegroundInfoChanged: com.jinyuni.dengbei_care
+11-13 13:00:27.228 D/GameBoosterService( 3361): onGameStatusChange foreground:ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=26675, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 13:00:27.228 I/GameBoosterService( 3361): onForegroundInfoChanged: Exit
+11-13 13:00:27.228 I/VideoBoxUtils( 3361): isSupportVideoBox: false
+11-13 13:00:27.229 I/Timeline( 1577): Timeline: App_transition_ready time:929456750
+11-13 13:00:27.229 I/VideoToolBoxService( 3361): onForegroundInfoChanged: Exit Vtb
+11-13 13:00:27.229 I/Timeline( 1577): Timeline: App_transition_stopped time:929456750
+11-13 13:00:27.229 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:00:27.229 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:00:27.229 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 22 microseconds, avg: 122
+11-13 13:00:27.230 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:00:27.230 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:00:27.230 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 18 microseconds, avg: 122
+11-13 13:00:27.231 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:00:27.231 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:00:27.231 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 18 microseconds, avg: 122
+11-13 13:00:27.235 D/ForceDarkHelper(26675): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:00:27.287 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:00:27.236 D/ForceDarkHelper(26675): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:00:27.293 I/Toast   (26675): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 13:00:27.330 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:00:27.330 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:00:27.330 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 19 microseconds, avg: 122
+11-13 13:00:27.334 I/MiuiNetworkPolicy( 1577): updateUidState uid = 10062, uidState = 9
+11-13 13:00:28.049 D/        (  771): readbrightness,out1:9
+11-13 13:00:28.049 D/        (  771): .
+11-13 13:00:28.050 D/        (  771): readbrightness,out2:9.
+11-13 13:00:28.380 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 13:00:28.380 W/Gralloc3(27023): mapper 3.x is not supported
+11-13 13:00:29.050 D/        (  771): readbrightness,out1:9
+11-13 13:00:29.050 D/        (  771): .
+11-13 13:00:29.050 D/        (  771): readbrightness,out2:9.
+11-13 13:00:29.274 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@8d58c1d

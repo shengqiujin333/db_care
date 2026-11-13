@@ -1,0 +1,153 @@
+--------- beginning of main
+11-13 13:14:50.987 D/        (  771): readbrightness,out1:9
+11-13 13:14:50.987 D/        (  771): .
+11-13 13:14:50.987 D/        (  771): readbrightness,out2:9.
+11-13 13:14:51.072 W/swapper/4(    0): type=1400 audit(0.0:100853): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:14:51.987 D/        (  771): readbrightness,out1:9
+11-13 13:14:51.987 D/        (  771): .
+11-13 13:14:51.987 D/        (  771): readbrightness,out2:9.
+11-13 13:14:52.551 D/AndroidRuntime(28372): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:14:52.542 W/app_process(28372): type=1400 audit(0.0:100854): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:14:52.557 E/libc    (28372): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:14:52.557 I/AndroidRuntime(28372): Using default boot image
+11-13 13:14:52.557 E/libc    (28372): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:14:52.557 I/AndroidRuntime(28372): Leaving lock profiling enabled
+11-13 13:14:52.542 W/app_process(28372): type=1400 audit(0.0:100855): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:14:52.557 E/libc    (28372): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:14:52.542 W/app_process(28372): type=1400 audit(0.0:100856): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:14:52.564 W/app_process(28372): Could not reserve sentinel fault page
+11-13 13:14:52.688 D/ICU     (28372): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:14:52.740 W/app_process(28372): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:14:52.754 D/AndroidRuntime(28372): Calling main entry com.android.commands.input.Input
+11-13 13:14:52.777 D/AndroidRuntime(28372): Shutting down VM
+11-13 13:14:52.938 W/Parcel  ( 3361): **** enforceInterface() expected 'com.miui.gamebooster.service.ISecurityCenterNotificationListener' but read 'android.service.notification.INotificationListener'
+11-13 13:14:52.938 W/Binder  ( 3361): Caught a RuntimeException from the binder stub implementation.
+11-13 13:14:52.938 W/Binder  ( 3361): java.lang.SecurityException: Binder invocation to an incorrect interface
+11-13 13:14:52.938 W/Binder  ( 3361): 	at android.os.Parcel.nativeEnforceInterface(Native Method)
+11-13 13:14:52.938 W/Binder  ( 3361): 	at android.os.Parcel.enforceInterface(Parcel.java:626)
+11-13 13:14:52.938 W/Binder  ( 3361): 	at com.miui.gamebooster.service.ISecurityCenterNotificationListener$Stub.onTransact(Unknown Source:22)
+11-13 13:14:52.938 W/Binder  ( 3361): 	at android.os.Binder.execTransactInternal(Binder.java:1021)
+11-13 13:14:52.938 W/Binder  ( 3361): 	at android.os.Binder.execTransact(Binder.java:994)
+11-13 13:14:52.941 D/StatusBar( 1916): onNotificationPosted key=0|com.jinyuni.dengbei_care|1|null|10169 isUpdate=true
+11-13 13:14:52.942 D/StatusBar( 1916): updateNotification old=StatusBarNotification(pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null key=0|com.jinyuni.dengbei_care|1|null|10169: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+11-13 13:14:52.942 D/StatusBar( 1916):     pkgName=com.jinyuni.dengbei_care appUid=10169 sdk=34 imp=3 sysApp=F priApp=F hasShown=F float=F keyguard=F peek=F fullscreen=F
+11-13 13:14:52.942 D/StatusBar( 1916):     showMiuiAction=F enableFloat=T enableKeyguard=T floatTime=5000 messageCount=1 persistent=F customHeight=F customHideBorder=F
+11-13 13:14:52.943 V/onNotificationPostedCallBack( 3361): flags=98
+11-13 13:14:52.944 V/h       ( 3361): ret=0
+11-13 13:14:52.945 D/AudioManager( 1577): getStreamVolume isRestricted mode = 0
+11-13 13:14:52.945 D/APM::AudioPolicyEngine(  653): XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-13 13:14:52.946 D/AudioManager( 1577): getStreamVolume isRestricted mode = 0
+11-13 13:14:52.946 D/APM::AudioPolicyEngine(  653): XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-13 13:14:52.973 D/StatusBar( 1916): No peeking: unimportant notification: 0|com.jinyuni.dengbei_care|1|null|10169
+11-13 13:14:52.973 D/StatusBar( 1916): updateHeadsUp wasHeadsUp=false shouldPeek=false alertAgain=true
+11-13 13:14:52.988 D/        (  771): readbrightness,out1:9
+11-13 13:14:52.988 D/        (  771): .
+11-13 13:14:52.988 D/        (  771): readbrightness,out2:9.
+11-13 13:14:53.988 D/        (  771): readbrightness,out1:9
+11-13 13:14:53.988 D/        (  771): .
+11-13 13:14:53.988 D/        (  771): readbrightness,out2:9.
+11-13 13:14:54.990 D/        (  771): readbrightness,out1:9
+11-13 13:14:54.990 D/        (  771): .
+11-13 13:14:54.990 D/        (  771): readbrightness,out2:9.
+11-13 13:14:55.992 D/        (  771): readbrightness,out1:9
+11-13 13:14:55.992 D/        (  771): .
+11-13 13:14:55.992 D/        (  771): readbrightness,out2:9.
+11-13 13:14:56.993 D/        (  771): readbrightness,out1:9
+11-13 13:14:56.993 D/        (  771): .
+11-13 13:14:56.993 D/        (  771): readbrightness,out2:9.
+11-13 13:14:57.538 D/MqttService(27753): Attempting to reconnect to broker
+11-13 13:14:57.567 I/MqttService(27753): Saved MAC address: 000000000000
+11-13 13:14:57.573 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:14:57.574 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:14:57.574 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:14:57.578 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:14:57.584 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:14:57.728 D/AlarmPingSender(27753): Unregister alarmreceiver to MqttServiceandroid_client
+11-13 13:14:57.735 D/AlarmPingSender(27753): Unregister alarmreceiver to MqttServiceandroid_client
+11-13 13:14:57.779 E/MqttService(27753): Failed to connect to broker
+11-13 13:14:57.779 E/MqttService(27753): 无法连接至服务器 (32103) - java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-13 13:14:57.779 E/MqttService(27753): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:80)
+11-13 13:14:57.779 E/MqttService(27753): 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:132)
+11-13 13:14:57.779 E/MqttService(27753): 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-13 13:14:57.779 E/MqttService(27753): 	at java.lang.Thread.run(Thread.java:919)
+11-13 13:14:57.779 E/MqttService(27753): Caused by: java.net.ConnectException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 0) after 30000ms: connect failed: ENETUNREACH (Network is unreachable)
+11-13 13:14:57.779 E/MqttService(27753): 	at libcore.io.IoBridge.connect(IoBridge.java:143)
+11-13 13:14:57.779 E/MqttService(27753): 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-13 13:14:57.779 E/MqttService(27753): 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-13 13:14:57.779 E/MqttService(27753): 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-13 13:14:57.779 E/MqttService(27753): 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-13 13:14:57.779 E/MqttService(27753): 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-13 13:14:57.779 E/MqttService(27753): 	at java.net.Socket.connect(Socket.java:621)
+11-13 13:14:57.779 E/MqttService(27753): 	at com.android.org.conscrypt.AbstractConscryptSocket.connect(AbstractConscryptSocket.java:156)
+11-13 13:14:57.779 E/MqttService(27753): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:74)
+11-13 13:14:57.779 E/MqttService(27753): 	... 3 more
+11-13 13:14:57.779 E/MqttService(27753): Caused by: android.system.ErrnoException: connect failed: ENETUNREACH (Network is unreachable)
+11-13 13:14:57.779 E/MqttService(27753): 	at libcore.io.Linux.connect(Native Method)
+11-13 13:14:57.779 E/MqttService(27753): 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-13 13:14:57.779 E/MqttService(27753): 	at libcore.io.BlockGuardOs.connect(BlockGuardOs.java:136)
+11-13 13:14:57.779 E/MqttService(27753): 	at libcore.io.ForwardingOs.connect(ForwardingOs.java:95)
+11-13 13:14:57.779 E/MqttService(27753): 	at libcore.io.IoBridge.connectErrno(IoBridge.java:174)
+11-13 13:14:57.779 E/MqttService(27753): 	at libcore.io.IoBridge.connect(IoBridge.java:135)
+11-13 13:14:57.779 E/MqttService(27753): 	... 11 more
+11-13 13:14:57.993 D/        (  771): readbrightness,out1:9
+11-13 13:14:57.993 D/        (  771): .
+11-13 13:14:57.993 D/        (  771): readbrightness,out2:9.
+11-13 13:14:58.995 D/        (  771): readbrightness,out1:9
+11-13 13:14:58.995 D/        (  771): .
+11-13 13:14:58.995 D/        (  771): readbrightness,out2:9.
+11-13 13:14:59.996 D/        (  771): readbrightness,out1:9
+11-13 13:14:59.996 D/        (  771): .
+11-13 13:14:59.996 D/        (  771): readbrightness,out2:9.
+11-13 13:15:00.003 D/KeyguardUpdateMonitor( 1916): handleTimeUpdate
+11-13 13:15:00.998 D/        (  771): readbrightness,out1:9
+11-13 13:15:00.998 D/        (  771): .
+11-13 13:15:00.998 D/        (  771): readbrightness,out2:9.
+11-13 13:15:01.082 W/swapper/5(    0): type=1400 audit(0.0:100857): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:15:01.999 D/        (  771): readbrightness,out1:9
+11-13 13:15:01.999 D/        (  771): .
+11-13 13:15:01.999 D/        (  771): readbrightness,out2:9.
+11-13 13:15:02.999 D/        (  771): readbrightness,out1:9
+11-13 13:15:02.999 D/        (  771): .
+11-13 13:15:02.999 D/        (  771): readbrightness,out2:9.
+11-13 13:15:03.171 D/StatusBar( 1916): updateNotificationRankingDelayed messageReceiveTime=930332490
+11-13 13:15:04.000 D/        (  771): readbrightness,out1:9
+11-13 13:15:04.000 D/        (  771): .
+11-13 13:15:04.000 D/        (  771): readbrightness,out2:9.
+11-13 13:15:05.001 D/        (  771): readbrightness,out1:9
+11-13 13:15:05.001 D/        (  771): .
+11-13 13:15:05.001 D/        (  771): readbrightness,out2:9.
+11-13 13:15:06.003 D/        (  771): readbrightness,out1:9
+11-13 13:15:06.003 D/        (  771): .
+11-13 13:15:06.003 D/        (  771): readbrightness,out2:9.
+11-13 13:15:07.005 D/        (  771): readbrightness,out1:9
+11-13 13:15:07.005 D/        (  771): .
+11-13 13:15:07.005 D/        (  771): readbrightness,out2:9.
+11-13 13:15:08.005 D/        (  771): readbrightness,out1:9
+11-13 13:15:08.005 D/        (  771): .
+11-13 13:15:08.005 D/        (  771): readbrightness,out2:9.
+11-13 13:15:09.006 D/        (  771): readbrightness,out1:9
+11-13 13:15:09.006 D/        (  771): .
+11-13 13:15:09.006 D/        (  771): readbrightness,out2:9.
+11-13 13:15:10.007 D/        (  771): readbrightness,out1:9
+11-13 13:15:10.007 D/        (  771): .
+11-13 13:15:10.007 D/        (  771): readbrightness,out2:9.
+11-13 13:15:11.007 D/        (  771): readbrightness,out1:9
+11-13 13:15:11.007 D/        (  771): .
+11-13 13:15:11.007 D/        (  771): readbrightness,out2:9.
+11-13 13:15:11.082 W/swapper/6(    0): type=1400 audit(0.0:100858): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:15:12.009 D/        (  771): readbrightness,out1:9
+11-13 13:15:12.009 D/        (  771): .
+11-13 13:15:12.009 D/        (  771): readbrightness,out2:9.
+11-13 13:15:13.011 D/        (  771): readbrightness,out1:9
+11-13 13:15:13.011 D/        (  771): .
+11-13 13:15:13.011 D/        (  771): readbrightness,out2:9.
+11-13 13:15:14.012 D/        (  771): readbrightness,out1:9
+11-13 13:15:14.012 D/        (  771): .
+11-13 13:15:14.012 D/        (  771): readbrightness,out2:9.
+11-13 13:15:14.463 D/QtiCarrierConfigHelper( 2194): WARNING, no carrier configs on phone Id: 0
+11-13 13:15:14.466 I/BatteryInfoReceiver( 3361): ACTION_BATTERY_CHANGED
+11-13 13:15:14.466 D/KeyguardUpdateMonitor( 1916): received broadcast android.intent.action.BATTERY_CHANGED
+11-13 13:15:14.469 D/PowerCheckerService(11596): onBatteryChanged, mBatteryLevel = 100, status = 5, level = 100, plug = 2, scale = 100
+11-13 13:15:15.014 D/        (  771): readbrightness,out1:9
+11-13 13:15:15.014 D/        (  771): .
+11-13 13:15:15.014 D/        (  771): readbrightness,out2:9.

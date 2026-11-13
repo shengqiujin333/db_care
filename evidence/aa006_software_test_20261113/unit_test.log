@@ -1,0 +1,52 @@
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:dataBindingMergeDependencyArtifactsDebug
+> Task :app:generateDebugResValues
+> Task :app:generateDebugResources
+> Task :app:mergeDebugResources
+> Task :app:packageDebugResources
+> Task :app:mapDebugSourceSetPaths
+> Task :app:checkDebugAarMetadata
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:parseDebugLocalResources
+> Task :app:processDebugMainManifest
+> Task :app:dataBindingGenBaseClassesDebug
+> Task :app:processDebugManifest
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebug
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+
+> Task :app:compileDebugKotlin
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MacIdBox.kt:122:42 Type mismatch: inferred type is Nothing? but String was expected
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:394:21 This declaration needs opt-in. Its usage should be marked with '@kotlinx.coroutines.ExperimentalCoroutinesApi' or '@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)'
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:430:54 Destructured parameter '_name' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:776:17 Variable 'closed' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:777:33 Variable 'negotiatedMtu' initializer is redundant
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt:877:34 This declaration overrides deprecated member but not marked as deprecated itself. Please add @Deprecated annotation or suppress. See https://youtrack.jetbrains.com/issue/KT-47902 for details
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/TemperatureDatabaseHelper.kt:248:21 Variable 'rowId' initializer is redundant
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/VibrationPlayer.kt:63:23 Parameter 'context' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/dashboard/DashboardFragment.kt:63:13 Variable 'dashboardViewModel' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/notifications/NotificationsFragment.kt:73:13 Variable 'notificationsViewModel' is never used
+w: file:///D:/mypro/beiwo2/AIP/dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/ui/zhuce/ZhuCeFragment.kt:351:88 Name shadowed: success
+
+> Task :app:compileDebugJavaWithJavac
+警告: [options] 源值 8 已过时，将在未来发行版中删除
+警告: [options] 目标值 8 已过时，将在未来发行版中删除
+警告: [options] 要隐藏有关已过时选项的警告, 请使用 -Xlint:-options。
+注: 某些输入文件使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+3 个警告
+
+> Task :app:processDebugJavaRes
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:compileDebugUnitTestKotlin
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:testDebugUnitTest
+
+BUILD SUCCESSFUL in 13s
+25 actionable tasks: 25 executed

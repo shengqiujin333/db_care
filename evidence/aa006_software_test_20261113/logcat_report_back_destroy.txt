@@ -1,0 +1,434 @@
+--------- beginning of main
+11-13 13:13:00.864 D/        (  771): readbrightness,out1:9
+11-13 13:13:00.864 D/        (  771): .
+11-13 13:13:00.864 D/        (  771): readbrightness,out2:9.
+11-13 13:13:01.052 W/swapper/4(    0): type=1400 audit(0.0:100806): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:13:01.122 W/app_process(28154): type=1400 audit(0.0:100807): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:01.122 I/chatty  (28154): uid=2000(shell) app_process identical 1 line
+11-13 13:13:01.122 W/app_process(28154): type=1400 audit(0.0:100809): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:01.132 D/AndroidRuntime(28154): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:01.137 E/libc    (28154): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:01.137 I/AndroidRuntime(28154): Using default boot image
+11-13 13:13:01.137 E/libc    (28154): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:01.137 I/AndroidRuntime(28154): Leaving lock profiling enabled
+11-13 13:13:01.138 E/libc    (28154): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:01.144 W/app_process(28154): Could not reserve sentinel fault page
+11-13 13:13:01.269 D/ICU     (28154): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:01.321 W/app_process(28154): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:01.336 D/AndroidRuntime(28154): Calling main entry com.android.commands.input.Input
+11-13 13:13:01.358 D/AndroidRuntime(28154): Shutting down VM
+11-13 13:13:01.508 I/bt_stack(26457): [INFO:btsnoop.cc(380)] clear_l2cap_whitelist: Clearing whitelist from l2cap channel. conn_handle=4 cid=4:4
+11-13 13:13:01.508 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(457)] GATT   ATT protocol channel with BDA: 84:c2:e4:03:02:02 is disconnected
+11-13 13:13:01.508 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(312)] gatt_is_bda_in_the_srv_chg_clt_list: 84:c2:e4:03:02:02
+11-13 13:13:01.509 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1247)] gatt_cleanup_upon_disc
+11-13 13:13:01.509 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(1073)] gatt_set_ch_state: old=4 new=0000
+11-13 13:13:01.509 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(92)] gatt_free_pending_ind
+11-13 13:13:01.509 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=1  conn_id=0x1
+11-13 13:13:01.509 V/bt_stack(26457): [VERBOSE1:gatt_attr.cc(245)] gatt_connect_cback: from 84:c2:e4:03:02:02 connected: 0, conn_id: 0x0001reason: 0x0016
+11-13 13:13:01.509 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=2  conn_id=0x2
+11-13 13:13:01.509 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=3  conn_id=0x3
+11-13 13:13:01.509 W/bt_stack(26457): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=3 connected=0 conn_id=0x0003 reason=0x0016
+11-13 13:13:01.509 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=4  conn_id=0x4
+11-13 13:13:01.509 W/bt_stack(26457): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=4 connected=0 conn_id=0x0004 reason=0x0016
+11-13 13:13:01.509 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=5  conn_id=0x5
+11-13 13:13:01.509 W/bt_stack(26457): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=5 connected=0 conn_id=0x0005 reason=0x0016
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(1287)] gatt_cleanup_upon_disc: exit
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:gatt_main.cc(470)] ATT disconnected
+11-13 13:13:01.510 I/bt_btm_sec(26457): btm_sec_disconnected clearing pending flag handle:4 reason:22
+11-13 13:13:01.510 I/bt_stack(26457): [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:3 not used by BTA
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 3
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:4 not used by BTA
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 4
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:5 not used by BTA
+11-13 13:13:01.510 V/bt_stack(26457): [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 5
+11-13 13:13:01.511 W/bt_l2cap(26457): L2CA_SetDesireRole() new:x1, disallow_switch:0
+11-13 13:13:01.511 D/bt_btif (26457): btif_av_move_idle: Already in IDLE
+11-13 13:13:01.517 W/BluetoothEventManager( 1916): AclStateChangedHandler: activeDevice is null
+11-13 13:13:01.518 W/BluetoothEventManager(27265): AclStateChangedHandler: activeDevice is null
+11-13 13:13:01.519 D/BluetoothMapService(26457): onReceive: android.bluetooth.device.action.ACL_DISCONNECTED
+11-13 13:13:01.519 I/BluetoothMapService(26457): sRemoteDevice :null device:84:C2:E4:03:02:02
+11-13 13:13:01.865 D/        (  771): readbrightness,out1:9
+11-13 13:13:01.865 D/        (  771): .
+11-13 13:13:01.865 D/        (  771): readbrightness,out2:9.
+11-13 13:13:02.866 D/        (  771): readbrightness,out1:9
+11-13 13:13:02.866 D/        (  771): .
+11-13 13:13:02.866 D/        (  771): readbrightness,out2:9.
+11-13 13:13:02.932 D/AndroidRuntime(28169): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:02.922 W/app_process(28169): type=1400 audit(0.0:100810): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:02.938 E/libc    (28169): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:02.938 I/AndroidRuntime(28169): Using default boot image
+11-13 13:13:02.938 E/libc    (28169): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:02.938 I/AndroidRuntime(28169): Leaving lock profiling enabled
+11-13 13:13:02.922 W/app_process(28169): type=1400 audit(0.0:100811): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:02.938 E/libc    (28169): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:02.922 W/app_process(28169): type=1400 audit(0.0:100812): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:02.944 W/app_process(28169): Could not reserve sentinel fault page
+11-13 13:13:03.070 D/ICU     (28169): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:03.124 W/app_process(28169): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:03.139 D/AndroidRuntime(28169): Calling main entry com.android.commands.input.Input
+11-13 13:13:03.168 D/AndroidRuntime(28169): Shutting down VM
+11-13 13:13:03.188 I/ReportScheduler(27753): Enqueued one-shot daily report
+11-13 13:13:03.239 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:03.243 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:13:03.243 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:13:03.243 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:13:03.245 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:03.289 W/DailyReportWorker(27753): No saved devices, skipping report
+11-13 13:13:03.295 I/WM-WorkerWrapper(27753): Worker result SUCCESS for Work [ id=56eeba3b-7597-416a-992d-65d02647e5f5, tags={ com.jinyuni.dengbei_care.report.DailyReportWorker } ]
+11-13 13:13:03.305 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:03.307 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:03.328 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@a80f86a
+--------- beginning of system
+11-13 13:13:03.360 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:13:03.329 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@a80f86a
+11-13 13:13:03.367 I/Toast   (27753): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 13:13:03.722 D/AndroidRuntime(28183): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:03.712 W/app_process(28183): type=1400 audit(0.0:100813): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:03.727 E/libc    (28183): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:03.727 I/AndroidRuntime(28183): Using default boot image
+11-13 13:13:03.728 E/libc    (28183): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:03.728 I/AndroidRuntime(28183): Leaving lock profiling enabled
+11-13 13:13:03.712 W/app_process(28183): type=1400 audit(0.0:100814): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:03.728 E/libc    (28183): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:03.712 W/app_process(28183): type=1400 audit(0.0:100815): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:03.734 W/app_process(28183): Could not reserve sentinel fault page
+11-13 13:13:03.864 D/ICU     (28183): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:03.867 D/        (  771): readbrightness,out1:9
+11-13 13:13:03.867 D/        (  771): .
+11-13 13:13:03.867 D/        (  771): readbrightness,out2:9.
+11-13 13:13:03.918 W/app_process(28183): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:03.933 D/AndroidRuntime(28183): Calling main entry com.android.commands.input.Input
+11-13 13:13:03.940 W/BaseMiuiPhoneWindowManager( 1577): keyCode:4 down:true eventTime:930213459 downTime:930213459 policyFlags:2b000000 flags:0 deviceId:-1 isScreenOn:true keyguardActive:false repeatCount:0
+11-13 13:13:03.942 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15757 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:03.942 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15855 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:03.943 D/ViewRootImpl(27753): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=930213459, downTime=930213459, deviceId=-1, source=0x0, displayId=-1 }
+11-13 13:13:03.951 W/BaseMiuiPhoneWindowManager( 1577): keyCode:4 down:false eventTime:930213459 downTime:930213459 policyFlags:2b000000 flags:0 deviceId:-1 isScreenOn:true keyguardActive:false repeatCount:0
+11-13 13:13:03.954 D/ViewRootImpl(27753): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=930213459, downTime=930213459, deviceId=-1, source=0x0, displayId=-1 }
+11-13 13:13:03.954 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15757 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:03.955 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15855 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:03.959 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+11-13 13:13:03.966 D/AndroidRuntime(28183): Shutting down VM
+11-13 13:13:03.974 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:13:03.980 I/Timeline( 1577): Timeline: App_transition_ready time:930213501
+11-13 13:13:03.984 I/Timeline( 1577): Timeline: App_transition_ready time:930213505
+11-13 13:13:04.007 I/Timeline( 1577): Timeline: App_transition_ready time:930213529
+11-13 13:13:04.065 I/Timeline( 1577): Timeline: App_transition_ready time:930213586
+11-13 13:13:04.556 I/Timeline( 1577): Timeline: Activity_windows_visible id: ActivityRecord{3ce7c0b u0 com.jinyuni.dengbei_care/.MainActivity t101} time:930214077
+11-13 13:13:04.557 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:04.557 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:04.558 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 48 microseconds, avg: 114
+11-13 13:13:04.558 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:04.558 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:04.558 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 26 microseconds, avg: 114
+11-13 13:13:04.561 I/Timeline( 1577): Timeline: App_transition_stopped time:930214082
+11-13 13:13:04.592 W/ni.dengbei_car(27753): Accessing hidden method Lmiui/contentcatcher/sdk/ContentCatcherManager;->unregisterContentInjector(Lmiui/contentcatcher/sdk/Token;)V (greylist, linking, allowed)
+11-13 13:13:04.605 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:04.605 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:04.605 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 25 microseconds, avg: 114
+11-13 13:13:04.867 D/        (  771): readbrightness,out1:9
+11-13 13:13:04.867 D/        (  771): .
+11-13 13:13:04.868 D/        (  771): readbrightness,out2:9.
+11-13 13:13:05.366 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@17a39dd
+11-13 13:13:05.509 D/AndroidRuntime(28198): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:05.515 E/libc    (28198): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:05.502 W/app_process(28198): type=1400 audit(0.0:100816): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:05.515 I/AndroidRuntime(28198): Using default boot image
+11-13 13:13:05.515 E/libc    (28198): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:05.515 I/AndroidRuntime(28198): Leaving lock profiling enabled
+11-13 13:13:05.502 W/app_process(28198): type=1400 audit(0.0:100817): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:05.516 E/libc    (28198): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:05.502 W/app_process(28198): type=1400 audit(0.0:100818): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:05.522 W/app_process(28198): Could not reserve sentinel fault page
+11-13 13:13:05.652 D/ICU     (28198): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:05.705 W/app_process(28198): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:05.719 D/AndroidRuntime(28198): Calling main entry com.android.commands.input.Input
+11-13 13:13:05.755 D/AndroidRuntime(28198): Shutting down VM
+11-13 13:13:05.765 I/ReportScheduler(27753): Enqueued one-shot daily report
+11-13 13:13:05.766 I/Timeline(27753): Timeline: Activity_launch_request time:930215287
+11-13 13:13:05.768 I/ActivityTaskManager( 1577): START u0 {cmp=com.jinyuni.dengbei_care/.report.ReportActivity} from uid 10169
+11-13 13:13:05.769 D/MiuiMultiWindowAdapter( 1577): MiuiMultiWindowAdapter::getFreeformBlackList::sSmallWindowBlackList = [com.miui.securitycenter, com.miui.weather2, com.miui.miservice, com.android.calendar, com.xiaomi.calendar, com.android.contacts, com.miui.mishare.connectivity, com.android.settings, com.android.printspooler, com.miui.backup, com.miui.huanji, com.miui.calculator, com.android.deskclock, com.android.thememanager, com.mfashiongallery.emag, com.miui.virtualsim, com.miui.smarttravel, com.mi.health, com.android.camera, com.lbe.security.miui, com.miui.cleanmaster, com.miui.newhome, com.miui.voiceassist, com.android.phone, com.miui.yellowpage, com.android.updater, com.miui.tsmclient, com.miui.securitycore, com.xiaomi.account, com.xiaomi.shop, com.mipay.wallet, com.xiaomi.youpin, com.xiaomi.hm.health, com.miui.bugreport, com.xiaomi.mibrain.speech, com.xiaomi.mimoji, com.xiaomi.scanner, com.duokan.phone.remotecontroller, com.miui.hybrid, com.android.incallui, com.miui.video, com.miui.videoplayer, com.miui.player, com.miui.fm, com.miui.packageinstaller, com.mi.android.globallauncher, com.google.android.dialer, com.google.android.apps.magazines, com.miui.compass, com.miui.greenguard, com.kiteguard, com.google.android.apps.prodcasts, com.google.ar.lens, com.xiangkan.android, com.android.bankabc, com.sohu.inputmethod.sogou, com.tencent.mtt, com.shyz.toutiao, com.netease.mc.mi, com.outfit7.talkingtomgoldrun.mi, com.doudz.mi, com.wepie.snake.new.mi, cn.jj, com.standddz002.mi, com.miHoYo.bh3.mi, com.qqgame.hlddz, com.happyelements.AndroidAnimal, com.minitech.miniworld.TMobile.mi, com.mfp.jelly.xiaomi, com.lilithgames.afk.mi, com.tencent.peng, com.teenpatti.hd.gold, blockpuzzle.jewelgames.jewelslegend, com.playgendary.tanks, com.chillingo.robberybobfree.android.row, com.episodeinteractive.android.catalog, com.playrix.township, com.ansangha.drdriving, com.google.android.youtube, com.gbits.atm.mi]
+11-13 13:13:05.772 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:13:05.779 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:13:05.779 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:13:05.779 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:13:05.781 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:13:05.782 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+11-13 13:13:05.801 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:13:05.802 I/ActivityTaskManager( 1577): The Process com.jinyuni.dengbei_care Already Exists in BG. So sending its PID: 27753
+11-13 13:13:05.805 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:13:05.805 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:13:05.805 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:13:05.810 I/Timeline( 1577): Timeline: App_transition_ready time:930215331
+11-13 13:13:05.811 W/ActivityThread(27753): handleWindowVisibility: no activity for token android.os.BinderProxy@93358cc
+11-13 13:13:05.819 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:05.822 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:13:05.822 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:13:05.822 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:13:05.823 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:05.833 D/ViewContentFactory(27753): initViewContentFetcherClass
+11-13 13:13:05.833 I/ContentCatcher(27753): ViewContentFetcher : ViewContentFetcher
+11-13 13:13:05.834 D/ViewContentFactory(27753): createInterceptor took 1ms
+11-13 13:13:05.834 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@23fe482
+11-13 13:13:05.858 I/chatty  (27753): uid=10169(com.jinyuni.dengbei_care) identical 4 lines
+11-13 13:13:05.861 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@23fe482
+11-13 13:13:05.868 D/        (  771): readbrightness,out1:9
+11-13 13:13:05.868 D/        (  771): .
+11-13 13:13:05.868 D/        (  771): readbrightness,out2:9.
+11-13 13:13:05.875 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@23fe482
+11-13 13:13:05.921 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:13:05.952 I/Timeline( 1577): Timeline: App_transition_ready time:930215473
+11-13 13:13:05.956 I/Timeline( 1577): Timeline: App_transition_ready time:930215477
+11-13 13:13:06.007 I/Timeline( 1577): Timeline: App_transition_ready time:930215528
+11-13 13:13:05.897 I/chatty  (27753): uid=10169(com.jinyuni.dengbei_care) identical 4 lines
+11-13 13:13:05.898 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@23fe482
+11-13 13:13:06.013 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 13:13:06.013 I/ActivityTaskManager( 1577): Displayed com.jinyuni.dengbei_care/.report.ReportActivity: +238ms
+11-13 13:13:06.014 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 13:13:06.024 W/DailyReportWorker(27753): No saved devices, skipping report
+11-13 13:13:06.032 I/WM-WorkerWrapper(27753): Worker result SUCCESS for Work [ id=05f45033-1560-4bbf-a522-7745beb08bb5, tags={ com.jinyuni.dengbei_care.report.DailyReportWorker } ]
+11-13 13:13:06.041 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:06.511 I/Timeline( 1577): Timeline: Activity_windows_visible id: ActivityRecord{5d65d20 u0 com.jinyuni.dengbei_care/.report.ReportActivity t101} time:930216032
+11-13 13:13:06.042 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:06.511 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:06.512 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:06.512 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 36 microseconds, avg: 114
+11-13 13:13:06.514 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:06.514 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:06.514 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 38 microseconds, avg: 114
+11-13 13:13:06.516 I/Timeline( 1577): Timeline: App_transition_stopped time:930216037
+11-13 13:13:06.523 D/ActivityTrigger( 1577): ActivityTrigger activityStopTrigger 
+11-13 13:13:06.863 W/WindowManager( 1577): Unable to start animation, surface is null or no children.
+11-13 13:13:06.869 D/        (  771): readbrightness,out1:9
+11-13 13:13:06.869 D/        (  771): .
+11-13 13:13:06.869 D/        (  771): readbrightness,out2:9.
+11-13 13:13:07.362 W/app_process(28217): type=1400 audit(0.0:100819): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:07.362 I/chatty  (28217): uid=2000(shell) app_process identical 1 line
+11-13 13:13:07.362 W/app_process(28217): type=1400 audit(0.0:100821): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:07.369 D/AndroidRuntime(28217): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:07.374 E/libc    (28217): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:07.374 I/AndroidRuntime(28217): Using default boot image
+11-13 13:13:07.374 E/libc    (28217): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:07.374 I/AndroidRuntime(28217): Leaving lock profiling enabled
+11-13 13:13:07.375 E/libc    (28217): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:07.381 W/app_process(28217): Could not reserve sentinel fault page
+11-13 13:13:07.508 D/ICU     (28217): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:07.562 W/app_process(28217): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:07.577 D/AndroidRuntime(28217): Calling main entry com.android.commands.input.Input
+11-13 13:13:07.606 D/AndroidRuntime(28217): Shutting down VM
+11-13 13:13:07.628 I/ReportScheduler(27753): Enqueued one-shot daily report
+11-13 13:13:07.672 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:07.675 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:13:07.675 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:13:07.675 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:13:07.677 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:07.749 W/DailyReportWorker(27753): No saved devices, skipping report
+11-13 13:13:07.755 I/WM-WorkerWrapper(27753): Worker result SUCCESS for Work [ id=2e4c6d18-c54a-4787-b063-8242dbdaf71a, tags={ com.jinyuni.dengbei_care.report.DailyReportWorker } ]
+11-13 13:13:07.785 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:07.786 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:07.796 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@23fe482
+11-13 13:13:07.823 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:13:07.797 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@23fe482
+11-13 13:13:07.829 I/Toast   (27753): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 13:13:07.869 D/        (  771): readbrightness,out1:9
+11-13 13:13:07.869 D/        (  771): .
+11-13 13:13:07.869 D/        (  771): readbrightness,out2:9.
+11-13 13:13:08.156 D/AndroidRuntime(28231): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:08.161 E/libc    (28231): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:08.152 W/app_process(28231): type=1400 audit(0.0:100822): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:08.161 I/AndroidRuntime(28231): Using default boot image
+11-13 13:13:08.162 E/libc    (28231): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:08.162 I/AndroidRuntime(28231): Leaving lock profiling enabled
+11-13 13:13:08.162 E/libc    (28231): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:08.152 W/app_process(28231): type=1400 audit(0.0:100823): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:08.152 W/app_process(28231): type=1400 audit(0.0:100824): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:08.169 W/app_process(28231): Could not reserve sentinel fault page
+11-13 13:13:08.298 D/ICU     (28231): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:08.350 W/app_process(28231): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:08.364 D/AndroidRuntime(28231): Calling main entry com.android.commands.input.Input
+11-13 13:13:08.370 W/BaseMiuiPhoneWindowManager( 1577): keyCode:4 down:true eventTime:930217890 downTime:930217890 policyFlags:2b000000 flags:0 deviceId:-1 isScreenOn:true keyguardActive:false repeatCount:0
+11-13 13:13:08.371 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15757 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:08.372 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15855 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:08.375 D/ViewRootImpl(27753): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=930217890, downTime=930217890, deviceId=-1, source=0x0, displayId=-1 }
+11-13 13:13:08.379 W/BaseMiuiPhoneWindowManager( 1577): keyCode:4 down:false eventTime:930217890 downTime:930217890 policyFlags:2b000000 flags:0 deviceId:-1 isScreenOn:true keyguardActive:false repeatCount:0
+11-13 13:13:08.380 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15757 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:08.381 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15855 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:08.382 D/ViewRootImpl(27753): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=930217890, downTime=930217890, deviceId=-1, source=0x0, displayId=-1 }
+11-13 13:13:08.387 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+11-13 13:13:08.396 D/AndroidRuntime(28231): Shutting down VM
+11-13 13:13:08.403 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:13:08.409 I/Timeline( 1577): Timeline: App_transition_ready time:930217930
+11-13 13:13:08.432 I/Timeline( 1577): Timeline: App_transition_ready time:930217953
+11-13 13:13:08.443 I/Timeline( 1577): Timeline: App_transition_ready time:930217964
+11-13 13:13:08.489 I/Timeline( 1577): Timeline: App_transition_ready time:930218010
+11-13 13:13:08.870 D/        (  771): readbrightness,out1:9
+11-13 13:13:08.870 D/        (  771): .
+11-13 13:13:08.870 D/        (  771): readbrightness,out2:9.
+11-13 13:13:08.983 I/Timeline( 1577): Timeline: Activity_windows_visible id: ActivityRecord{3ce7c0b u0 com.jinyuni.dengbei_care/.MainActivity t101} time:930218504
+11-13 13:13:08.984 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:08.985 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:08.985 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 27 microseconds, avg: 114
+11-13 13:13:08.986 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:08.987 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:08.987 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 28 microseconds, avg: 113
+11-13 13:13:08.988 I/Timeline( 1577): Timeline: App_transition_stopped time:930218509
+11-13 13:13:09.027 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:09.027 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:09.027 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 16 microseconds, avg: 113
+11-13 13:13:09.830 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@b3f7a6b
+11-13 13:13:09.870 D/        (  771): readbrightness,out1:9
+11-13 13:13:09.870 D/        (  771): .
+11-13 13:13:09.870 D/        (  771): readbrightness,out2:9.
+11-13 13:13:09.988 D/AndroidRuntime(28246): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:09.982 W/app_process(28246): type=1400 audit(0.0:100825): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:09.994 E/libc    (28246): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:09.994 I/AndroidRuntime(28246): Using default boot image
+11-13 13:13:09.994 E/libc    (28246): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:09.994 I/AndroidRuntime(28246): Leaving lock profiling enabled
+11-13 13:13:09.995 E/libc    (28246): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:09.982 W/app_process(28246): type=1400 audit(0.0:100826): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:09.982 W/app_process(28246): type=1400 audit(0.0:100827): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:10.001 W/app_process(28246): Could not reserve sentinel fault page
+11-13 13:13:10.131 D/ICU     (28246): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:10.189 W/app_process(28246): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:10.204 D/AndroidRuntime(28246): Calling main entry com.android.commands.input.Input
+11-13 13:13:10.239 D/AndroidRuntime(28246): Shutting down VM
+11-13 13:13:10.251 I/ReportScheduler(27753): Enqueued one-shot daily report
+11-13 13:13:10.253 I/Timeline(27753): Timeline: Activity_launch_request time:930219774
+11-13 13:13:10.255 I/ActivityTaskManager( 1577): START u0 {cmp=com.jinyuni.dengbei_care/.report.ReportActivity} from uid 10169
+11-13 13:13:10.256 D/MiuiMultiWindowAdapter( 1577): MiuiMultiWindowAdapter::getFreeformBlackList::sSmallWindowBlackList = [com.miui.securitycenter, com.miui.weather2, com.miui.miservice, com.android.calendar, com.xiaomi.calendar, com.android.contacts, com.miui.mishare.connectivity, com.android.settings, com.android.printspooler, com.miui.backup, com.miui.huanji, com.miui.calculator, com.android.deskclock, com.android.thememanager, com.mfashiongallery.emag, com.miui.virtualsim, com.miui.smarttravel, com.mi.health, com.android.camera, com.lbe.security.miui, com.miui.cleanmaster, com.miui.newhome, com.miui.voiceassist, com.android.phone, com.miui.yellowpage, com.android.updater, com.miui.tsmclient, com.miui.securitycore, com.xiaomi.account, com.xiaomi.shop, com.mipay.wallet, com.xiaomi.youpin, com.xiaomi.hm.health, com.miui.bugreport, com.xiaomi.mibrain.speech, com.xiaomi.mimoji, com.xiaomi.scanner, com.duokan.phone.remotecontroller, com.miui.hybrid, com.android.incallui, com.miui.video, com.miui.videoplayer, com.miui.player, com.miui.fm, com.miui.packageinstaller, com.mi.android.globallauncher, com.google.android.dialer, com.google.android.apps.magazines, com.miui.compass, com.miui.greenguard, com.kiteguard, com.google.android.apps.prodcasts, com.google.ar.lens, com.xiangkan.android, com.android.bankabc, com.sohu.inputmethod.sogou, com.tencent.mtt, com.shyz.toutiao, com.netease.mc.mi, com.outfit7.talkingtomgoldrun.mi, com.doudz.mi, com.wepie.snake.new.mi, cn.jj, com.standddz002.mi, com.miHoYo.bh3.mi, com.qqgame.hlddz, com.happyelements.AndroidAnimal, com.minitech.miniworld.TMobile.mi, com.mfp.jelly.xiaomi, com.lilithgames.afk.mi, com.tencent.peng, com.teenpatti.hd.gold, blockpuzzle.jewelgames.jewelslegend, com.playgendary.tanks, com.chillingo.robberybobfree.android.row, com.episodeinteractive.android.catalog, com.playrix.township, com.ansangha.drdriving, com.google.android.youtube, com.gbits.atm.mi]
+11-13 13:13:10.259 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:13:10.264 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:13:10.264 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:13:10.264 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:13:10.266 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:13:10.266 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+11-13 13:13:10.284 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:13:10.284 I/ActivityTaskManager( 1577): The Process com.jinyuni.dengbei_care Already Exists in BG. So sending its PID: 27753
+11-13 13:13:10.288 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:13:10.288 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:13:10.288 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:13:10.292 I/Timeline( 1577): Timeline: App_transition_ready time:930219813
+11-13 13:13:10.293 W/ActivityThread(27753): handleWindowVisibility: no activity for token android.os.BinderProxy@437a90d
+11-13 13:13:10.299 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:10.304 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:13:10.305 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:13:10.305 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:13:10.308 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:10.308 D/ViewContentFactory(27753): initViewContentFetcherClass
+11-13 13:13:10.308 I/ContentCatcher(27753): ViewContentFetcher : ViewContentFetcher
+11-13 13:13:10.308 D/ViewContentFactory(27753): createInterceptor took 0ms
+11-13 13:13:10.309 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@322b54b
+11-13 13:13:10.380 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:13:10.404 I/Timeline( 1577): Timeline: App_transition_ready time:930219926
+11-13 13:13:10.406 I/Timeline( 1577): Timeline: App_transition_ready time:930219927
+11-13 13:13:10.450 I/Timeline( 1577): Timeline: App_transition_ready time:930219971
+11-13 13:13:10.359 I/chatty  (27753): uid=10169(com.jinyuni.dengbei_care) identical 10 lines
+11-13 13:13:10.360 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@322b54b
+11-13 13:13:10.453 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 13:13:10.454 I/ActivityTaskManager( 1577): Displayed com.jinyuni.dengbei_care/.report.ReportActivity: +194ms
+11-13 13:13:10.454 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 13:13:10.467 W/DailyReportWorker(27753): No saved devices, skipping report
+11-13 13:13:10.474 I/WM-WorkerWrapper(27753): Worker result SUCCESS for Work [ id=3d869b54-8784-47ab-a512-473184cf135e, tags={ com.jinyuni.dengbei_care.report.DailyReportWorker } ]
+11-13 13:13:10.482 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:10.484 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:10.871 D/        (  771): readbrightness,out1:9
+11-13 13:13:10.871 D/        (  771): .
+11-13 13:13:10.871 D/        (  771): readbrightness,out2:9.
+11-13 13:13:10.939 I/Timeline( 1577): Timeline: Activity_windows_visible id: ActivityRecord{f0b4986 u0 com.jinyuni.dengbei_care/.report.ReportActivity t101} time:930220460
+11-13 13:13:10.939 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:10.939 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:10.939 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 38 microseconds, avg: 113
+11-13 13:13:10.940 D/ActivityTrigger( 1577): ActivityTrigger activityStopTrigger 
+11-13 13:13:10.945 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:10.945 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:10.945 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 33 microseconds, avg: 113
+11-13 13:13:10.947 I/Timeline( 1577): Timeline: App_transition_stopped time:930220468
+11-13 13:13:11.062 W/swapper/6(    0): type=1400 audit(0.0:100828): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:13:11.326 W/WindowManager( 1577): Unable to start animation, surface is null or no children.
+11-13 13:13:11.871 D/AndroidRuntime(28266): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:11.872 D/        (  771): readbrightness,out1:9
+11-13 13:13:11.872 D/        (  771): .
+11-13 13:13:11.872 D/        (  771): readbrightness,out2:9.
+11-13 13:13:11.862 W/app_process(28266): type=1400 audit(0.0:100829): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:11.877 E/libc    (28266): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:11.877 I/AndroidRuntime(28266): Using default boot image
+11-13 13:13:11.877 E/libc    (28266): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:11.862 W/app_process(28266): type=1400 audit(0.0:100830): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:11.877 I/AndroidRuntime(28266): Leaving lock profiling enabled
+11-13 13:13:11.877 E/libc    (28266): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:11.862 W/app_process(28266): type=1400 audit(0.0:100831): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:11.884 W/app_process(28266): Could not reserve sentinel fault page
+11-13 13:13:12.009 D/ICU     (28266): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:12.060 W/app_process(28266): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:12.075 D/AndroidRuntime(28266): Calling main entry com.android.commands.input.Input
+11-13 13:13:12.111 D/AndroidRuntime(28266): Shutting down VM
+11-13 13:13:12.126 I/ReportScheduler(27753): Enqueued one-shot daily report
+11-13 13:13:12.169 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:12.172 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:13:12.172 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:13:12.172 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:13:12.173 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:12.244 W/DailyReportWorker(27753): No saved devices, skipping report
+11-13 13:13:12.252 I/WM-WorkerWrapper(27753): Worker result SUCCESS for Work [ id=03c189b0-5d9e-489b-a4bb-a70f2a1dbf49, tags={ com.jinyuni.dengbei_care.report.DailyReportWorker } ]
+11-13 13:13:12.271 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:12.273 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:13:12.306 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@322b54b
+11-13 13:13:12.336 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:13:12.308 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@322b54b
+11-13 13:13:12.343 I/Toast   (27753): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 13:13:12.702 D/AndroidRuntime(28280): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:13:12.708 E/libc    (28280): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:13:12.708 I/AndroidRuntime(28280): Using default boot image
+11-13 13:13:12.708 E/libc    (28280): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:13:12.708 I/AndroidRuntime(28280): Leaving lock profiling enabled
+11-13 13:13:12.692 W/app_process(28280): type=1400 audit(0.0:100832): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:12.708 E/libc    (28280): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:13:12.692 W/app_process(28280): type=1400 audit(0.0:100833): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:12.692 W/app_process(28280): type=1400 audit(0.0:100834): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:13:12.715 W/app_process(28280): Could not reserve sentinel fault page
+11-13 13:13:12.843 D/ICU     (28280): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:13:12.872 D/        (  771): readbrightness,out1:9
+11-13 13:13:12.872 D/        (  771): .
+11-13 13:13:12.872 D/        (  771): readbrightness,out2:9.
+11-13 13:13:12.896 W/app_process(28280): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:13:12.911 D/AndroidRuntime(28280): Calling main entry com.android.commands.input.Input
+11-13 13:13:12.917 W/BaseMiuiPhoneWindowManager( 1577): keyCode:4 down:true eventTime:930222436 downTime:930222436 policyFlags:2b000000 flags:0 deviceId:-1 isScreenOn:true keyguardActive:false repeatCount:0
+11-13 13:13:12.918 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15757 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:12.918 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15855 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:12.920 D/ViewRootImpl(27753): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=930222436, downTime=930222436, deviceId=-1, source=0x0, displayId=-1 }
+11-13 13:13:12.925 W/BaseMiuiPhoneWindowManager( 1577): keyCode:4 down:false eventTime:930222436 downTime:930222436 policyFlags:2b000000 flags:0 deviceId:-1 isScreenOn:true keyguardActive:false repeatCount:0
+11-13 13:13:12.926 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15757 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:12.927 W/ActivityManager( 1577): Sending non-protected broadcast miui.intent.KEYCODE_BACK from system 1577:system/1000 pkg android. Callers=com.android.server.am.ActivityManagerService.broadcastIntentLocked:15855 com.android.server.am.ActivityManagerService.broadcastIntentLocked:15209 com.android.server.am.ActivityManagerService.broadcastIntent:15998 android.app.ContextImpl.sendBroadcastAsUser:1234 com.android.server.policy.BaseMiuiPhoneWindowManager$13.run:2362 
+11-13 13:13:12.927 D/ViewRootImpl(27753): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=930222436, downTime=930222436, deviceId=-1, source=0x0, displayId=-1 }
+11-13 13:13:12.932 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+11-13 13:13:12.938 D/AndroidRuntime(28280): Shutting down VM
+11-13 13:13:12.950 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:13:12.959 I/Timeline( 1577): Timeline: App_transition_ready time:930222479
+11-13 13:13:12.988 I/Timeline( 1577): Timeline: App_transition_ready time:930222509
+11-13 13:13:13.045 I/Timeline( 1577): Timeline: App_transition_ready time:930222566
+11-13 13:13:13.544 I/Timeline( 1577): Timeline: Activity_windows_visible id: ActivityRecord{3ce7c0b u0 com.jinyuni.dengbei_care/.MainActivity t101} time:930223065
+11-13 13:13:13.546 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:13.546 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:13.546 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 40 microseconds, avg: 113
+11-13 13:13:13.548 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:13.548 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:13.549 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 39 microseconds, avg: 113
+11-13 13:13:13.551 I/Timeline( 1577): Timeline: App_transition_stopped time:930223073
+11-13 13:13:13.599 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:13:13.599 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:13:13.599 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 22 microseconds, avg: 113
+11-13 13:13:13.873 D/        (  771): readbrightness,out1:9
+11-13 13:13:13.873 D/        (  771): .
+11-13 13:13:13.873 D/        (  771): readbrightness,out2:9.
+11-13 13:13:14.338 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@fcdbce9
+11-13 13:13:14.873 D/        (  771): readbrightness,out1:9
+11-13 13:13:14.873 D/        (  771): .
+11-13 13:13:14.873 D/        (  771): readbrightness,out2:9.
+11-13 13:13:15.840 W/WindowManager( 1577): Unable to start animation, surface is null or no children.
+11-13 13:13:15.874 D/        (  771): readbrightness,out1:9
+11-13 13:13:15.874 D/        (  771): .
+11-13 13:13:15.874 D/        (  771): readbrightness,out2:9.

@@ -1,0 +1,1384 @@
+--------- beginning of main
+11-13 12:53:41.657 D/        (  771): readbrightness,out1:9
+11-13 12:53:41.657 D/        (  771): .
+11-13 12:53:41.657 D/        (  771): readbrightness,out2:9.
+11-13 12:53:42.658 D/        (  771): readbrightness,out1:9
+11-13 12:53:42.658 D/        (  771): .
+11-13 12:53:42.658 D/        (  771): readbrightness,out2:9.
+11-13 12:53:43.659 D/        (  771): readbrightness,out1:9
+11-13 12:53:43.659 D/        (  771): .
+11-13 12:53:43.659 D/        (  771): readbrightness,out2:9.
+11-13 12:53:44.661 D/        (  771): readbrightness,out1:9
+11-13 12:53:44.661 D/        (  771): .
+11-13 12:53:44.661 D/        (  771): readbrightness,out2:9.
+11-13 12:53:45.491 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:53:45.628 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:53:45.662 D/        (  771): readbrightness,out1:9
+11-13 12:53:45.662 D/        (  771): .
+11-13 12:53:45.662 D/        (  771): readbrightness,out2:9.
+11-13 12:53:45.991 D/AndroidRuntime(25832): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 12:53:45.982 W/app_process(25832): type=1400 audit(0.0:100425): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:53:45.996 E/libc    (25832): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 12:53:45.996 I/AndroidRuntime(25832): Using default boot image
+11-13 12:53:45.996 E/libc    (25832): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 12:53:45.996 I/AndroidRuntime(25832): Leaving lock profiling enabled
+11-13 12:53:45.982 W/app_process(25832): type=1400 audit(0.0:100426): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:53:45.997 E/libc    (25832): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 12:53:45.982 W/app_process(25832): type=1400 audit(0.0:100427): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:53:46.003 W/app_process(25832): Could not reserve sentinel fault page
+11-13 12:53:46.129 D/ICU     (25832): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 12:53:46.186 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:53:46.443 W/app_process(25832): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 12:53:46.458 D/AndroidRuntime(25832): Calling main entry com.wetest.uia2.Main
+11-13 12:53:46.469 I/uidumper(25832): [UiAutomator2Server] Starting Server
+11-13 12:53:46.505 D/ThemeCompatibility(25832): START loading theme compatibility config.
+11-13 12:53:46.505 D/ThemeCompatibility(25832): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 12:53:46.512 D/ThemeCompatibility(25832): getConfigDocumentTree(): 140 vs -1
+11-13 12:53:46.512 D/ThemeCompatibility(25832):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 12:53:46.517 D/ThemeCompatibility(25832): END loading: version=140 size=48
+11-13 12:53:46.518 E/AssetManager(25832): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 12:53:46.518 E/AssetManager(25832): java.lang.RuntimeException
+11-13 12:53:46.518 E/AssetManager(25832): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 12:53:46.518 E/AssetManager(25832): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 12:53:46.518 E/AssetManager(25832): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 12:53:46.518 E/AssetManager(25832): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 12:53:46.518 E/AssetManager(25832): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 12:53:46.518 E/AssetManager(25832): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 12:53:46.518 E/AssetManager(25832): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 12:53:46.518 E/AssetManager(25832): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 12:53:46.518 E/AssetManager(25832): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 12:53:46.518 E/AssetManager(25832): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 12:53:46.518 E/AssetManager(25832): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 12:53:46.518 E/AssetManager(25832): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 12:53:46.518 E/AssetManager(25832): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 12:53:46.518 E/AssetManager(25832): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 12:53:46.518 E/AssetManager(25832): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 12:53:46.518 E/AssetManager(25832): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 12:53:46.518 E/AssetManager(25832): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 12:53:46.518 E/AssetManager(25832): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 12:53:46.518 E/AssetManager(25832): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 12:53:46.512 W/main    (25832): type=1400 audit(0.0:100428): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 12:53:46.522 W/asset   (25832): unable to execute idmap2: Permission denied
+11-13 12:53:46.522 W/AssetManager(25832): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 12:53:46.512 W/main    (25832): type=1400 audit(0.0:100429): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 12:53:46.524 W/asset   (25832): unable to execute idmap2: Permission denied
+11-13 12:53:46.524 W/AssetManagerInjector(25832): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 12:53:46.551 I/FeatureParser(25832): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 12:53:46.594 W/Java7Support(25832): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 12:53:46.662 D/        (  771): readbrightness,out1:9
+11-13 12:53:46.662 D/        (  771): .
+11-13 12:53:46.662 D/        (  771): readbrightness,out2:9.
+11-13 12:53:46.729 I/UiDevice(25832): Creating a new instance, old instance exists: false
+11-13 12:53:46.739 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+--------- beginning of system
+11-13 12:53:46.748 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@6d13802
+11-13 12:53:46.744 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:53:46.748 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+11-13 12:53:46.754 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:53:46.757 D/UiDevice(25832): Setting accessibility service flags: 65618
+11-13 12:53:46.769 I/uidumper(25832): clipboardManager inited
+11-13 12:53:46.772 I/uidumper(25832): tmpdir is /data/local/tmp/u2
+11-13 12:53:46.791 I/uidumper(25832): http server listening on *:9008
+11-13 12:53:47.343 D/UIAutomatorStub(25832): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:53:47.389 D/UIAutomatorStub(25832): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "count", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u641c\u7d22\u9644\u8fd1\u7f51\u5173"}]}}
+11-13 12:53:47.504 D/UiObject(25832): Waiting 0ms for UiSelector[TEXT=搜索附近网关].
+11-13 12:53:47.505 W/QueryController(25832): Could not detect idle state.
+11-13 12:53:47.516 I/QueryController(25832): Matched selector: UiSelector[TEXT=搜索附近网关] <<==>> [android.view.accessibility.AccessibilityNodeInfo@1a8ea; boundsInParent: Rect(0, 0 - 174, 115); boundsInScreen: Rect(98, 632 - 272, 747); packageName: com.jinyuni.dengbei_care; className: android.widget.Button; text: 搜索附近网关; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: true; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_CLICK - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]]
+11-13 12:53:47.517 D/UiObject(25832): Waiting 0ms for UiSelector[TEXT=搜索附近网关, INSTANCE=1].
+11-13 12:53:47.517 W/QueryController(25832): Could not detect idle state.
+11-13 12:53:47.625 D/UIAutomatorStub(25832): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "waitForExists", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u641c\u7d22\u9644\u8fd1\u7f51\u5173"}, 10000]}}
+11-13 12:53:47.643 D/UiDevice(25832): Waiting 10000ms for SearchCondition[hasObject=BySelector [TEXT='\Q搜索附近网关\E']].
+11-13 12:53:47.643 D/UiDevice(25832): Searching for node with selector: BySelector [TEXT='\Q搜索附近网关\E'].
+11-13 12:53:47.645 W/QueryController(25832): Could not detect idle state.
+11-13 12:53:47.663 D/        (  771): readbrightness,out1:9
+11-13 12:53:47.663 D/        (  771): .
+11-13 12:53:47.663 D/        (  771): readbrightness,out2:9.
+11-13 12:53:47.783 D/UIAutomatorStub(25832): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "objInfo", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u641c\u7d22\u9644\u8fd1\u7f51\u5173"}]}}
+11-13 12:53:47.789 D/UiDevice(25832): Retrieving node with selector: BySelector [TEXT='\Q搜索附近网关\E'].
+11-13 12:53:47.790 W/QueryController(25832): Could not detect idle state.
+11-13 12:53:47.932 I/chatty  (25832): uid=2000(shell) app_process identical 17 lines
+11-13 12:53:47.936 W/QueryController(25832): Could not detect idle state.
+11-13 12:53:48.032 D/UIAutomatorStub(25832): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "click", "params": [185.0, 689.5]}}
+11-13 12:53:48.173 W/MiuiPerfServiceClient( 3160): interceptAndQueuing:25592|com.jinyuni.dengbei_care|86|82|unknown|null|com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity|929034957954869|Slow issue draw commands|2
+11-13 12:53:48.188 I/ActivityTaskManager( 1577): START u0 {act=android.content.pm.action.REQUEST_PERMISSIONS pkg=com.lbe.security.miui cmp=com.lbe.security.miui/com.android.packageinstaller.permission.ui.GrantPermissionsActivity (has extras)} from uid 10169
+11-13 12:53:48.189 D/MiuiMultiWindowAdapter( 1577): MiuiMultiWindowAdapter::getFreeformBlackList::sSmallWindowBlackList = [com.miui.securitycenter, com.miui.weather2, com.miui.miservice, com.android.calendar, com.xiaomi.calendar, com.android.contacts, com.miui.mishare.connectivity, com.android.settings, com.android.printspooler, com.miui.backup, com.miui.huanji, com.miui.calculator, com.android.deskclock, com.android.thememanager, com.mfashiongallery.emag, com.miui.virtualsim, com.miui.smarttravel, com.mi.health, com.android.camera, com.lbe.security.miui, com.miui.cleanmaster, com.miui.newhome, com.miui.voiceassist, com.android.phone, com.miui.yellowpage, com.android.updater, com.miui.tsmclient, com.miui.securitycore, com.xiaomi.account, com.xiaomi.shop, com.mipay.wallet, com.xiaomi.youpin, com.xiaomi.hm.health, com.miui.bugreport, com.xiaomi.mibrain.speech, com.xiaomi.mimoji, com.xiaomi.scanner, com.duokan.phone.remotecontroller, com.miui.hybrid, com.android.incallui, com.miui.video, com.miui.videoplayer, com.miui.player, com.miui.fm, com.miui.packageinstaller, com.mi.android.globallauncher, com.google.android.dialer, com.google.android.apps.magazines, com.miui.compass, com.miui.greenguard, com.kiteguard, com.google.android.apps.prodcasts, com.google.ar.lens, com.xiangkan.android, com.android.bankabc, com.sohu.inputmethod.sogou, com.tencent.mtt, com.shyz.toutiao, com.netease.mc.mi, com.outfit7.talkingtomgoldrun.mi, com.doudz.mi, com.wepie.snake.new.mi, cn.jj, com.standddz002.mi, com.miHoYo.bh3.mi, com.qqgame.hlddz, com.happyelements.AndroidAnimal, com.minitech.miniworld.TMobile.mi, com.mfp.jelly.xiaomi, com.lilithgames.afk.mi, com.tencent.peng, com.teenpatti.hd.gold, blockpuzzle.jewelgames.jewelslegend, com.playgendary.tanks, com.chillingo.robberybobfree.android.row, com.episodeinteractive.android.catalog, com.playrix.township, com.ansangha.drdriving, com.google.android.youtube, com.gbits.atm.mi]
+11-13 12:53:48.196 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 12:53:48.202 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 12:53:48.202 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 12:53:48.203 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 12:53:48.204 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+11-13 12:53:48.232 D/UIAutomatorStub(25832): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:53:48.244 D/Zygote  (  510): Forked child process 25857
+11-13 12:53:48.250 D/OemNetd (  509): setPidForPackage: packageName=com.lbe.security.miui, pid=25857, pid=10062
+11-13 12:53:48.251 I/ActivityManager( 1577): Start proc 25857:com.lbe.security.miui:ui/u0a62 for activity {com.lbe.security.miui/com.android.packageinstaller.permission.ui.GrantPermissionsActivity} caller=com.jinyuni.dengbei_care
+11-13 12:53:48.260 E/ecurity.miui:u(25857): Not starting debugger since process cannot load the jdwp agent.
+11-13 12:53:48.276 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 12:53:48.276 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 12:53:48.276 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 12:53:48.282 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 12:53:48.282 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 12:53:48.282 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 12:53:48.282 D/PerfEngineController(11596): ForegroundInfo{mForegroundPackageName='com.lbe.security.miui', mForegroundUid=10062, mForegroundPid=25857, mLastForegroundPackageName='com.jinyuni.dengbei_care', mLastForegroundUid=10169, mLastForegroundPid=25592, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=1}
+11-13 12:53:48.283 I/ProcessMonitor( 3361): onForegroundInfoChanged: ForegroundInfo{mForegroundPackageName='com.lbe.security.miui', mForegroundUid=10062, mForegroundPid=25857, mLastForegroundPackageName='com.jinyuni.dengbei_care', mLastForegroundUid=10169, mLastForegroundPid=25592, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=1}
+11-13 12:53:48.283 I/VideoBoxUtils( 3361): isSupportVideoBox: false
+11-13 12:53:48.283 I/^_^MemoryTrim(17058): onAppBackground()
+11-13 12:53:48.284 W/GunSight( 4855): filtered Package: com.lbe.security.miui, return
+11-13 12:53:48.284 I/GST     ( 4855): forePkg: com.lbe.security.miui, preForePkg: com.jinyuni.dengbei_care
+11-13 12:53:48.285 D/AutoInstallService(26235): onForegroundInfoChanged: com.lbe.security.miui
+11-13 12:53:48.285 I/qspmsvc-client( 1577): inside perf_hint_qspm
+11-13 12:53:48.287 I/Timeline( 1577): Timeline: App_transition_ready time:929057808
+11-13 12:53:48.293 I/MiuiNetworkPolicy( 1577): updateUidState uid = 10062, uidState = 2
+11-13 12:53:48.313 I/Perf    (25857): Connecting to perf service.
+11-13 12:53:48.312 W/ecurity.miui:ui(25857): type=1400 audit(0.0:100430): avc: denied { read } for name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=12647 scontext=u:r:platform_app:s0:c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0
+11-13 12:53:48.324 E/libc    (25857): Access denied finding property "ro.vendor.display.type"
+11-13 12:53:48.327 D/miuisdk (25857): current sdk level is 24
+11-13 12:53:48.328 I/miuisdk (25857): initialize without hook
+11-13 12:53:48.349 I/ecurity.miui:u(25857): Starting a blocking GC Alloc
+11-13 12:53:48.350 I/ecurity.miui:u(25857): Starting a blocking GC Alloc
+11-13 12:53:48.372 W/Linkify.v16(25857): reflect applyLink failed: 
+11-13 12:53:48.372 W/Linkify.v16(25857): miui.reflect.NoSuchMethodException: Couldn't find method android/text/util/Linkify.applyLink(Ljava/lang/String;IILandroid/text/Spannable;)V
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.miui.internal.os.Native.getMethod(Native Method)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at miui.reflect.Method.of(Method.java:35)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.miui.internal.variable.v16.Android_Text_Util_Linkify_class.<clinit>(Android_Text_Util_Linkify_class.java:70)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at java.lang.Class.classForName(Native Method)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at java.lang.Class.forName(Class.java:454)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at java.lang.Class.forName(Class.java:379)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.miui.internal.variable.AbsClassFactory.create(AbsClassFactory.java:24)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.miui.internal.variable.Android_Text_Util_Linkify_class$Factory.<init>(Android_Text_Util_Linkify_class.java:40)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.miui.internal.variable.Android_Text_Util_Linkify_class$Factory.<init>(Android_Text_Util_Linkify_class.java:26)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.miui.internal.variable.Android_Text_Util_Linkify_class$Factory$1.createInstance(Android_Text_Util_Linkify_class.java:32)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.miui.internal.variable.Android_Text_Util_Linkify_class$Factory$1.createInstance(Android_Text_Util_Linkify_class.java:29)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at miui.util.SoftReferenceSingleton.get(SoftReferenceSingleton.java:25)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.miui.internal.variable.Android_Text_Util_Linkify_class$Factory.getInstance(Android_Text_Util_Linkify_class.java:44)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.miui.internal.initialization.OverrideHelper.doInitialize(OverrideHelper.java:37)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at miui.core.SdkManager.initialize(SdkManager.java:99)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at miui.external.Application.initializeSdk(Unknown Source:35)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at miui.external.Application.<init>(Unknown Source:10)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.lbe.security.LBEApplication.<init>(Unknown Source:0)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at java.lang.Class.newInstance(Native Method)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at android.app.AppComponentFactory.instantiateApplication(AppComponentFactory.java:76)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at androidx.core.app.CoreComponentFactory.instantiateApplication(Unknown Source:0)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at android.app.Instrumentation.newApplication(Instrumentation.java:1156)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at android.app.LoadedApk.makeApplication(LoadedApk.java:1224)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at android.app.ActivityThread.handleBindApplication(ActivityThread.java:6553)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at android.app.ActivityThread.access$1400(ActivityThread.java:224)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1887)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at android.os.Handler.dispatchMessage(Handler.java:107)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at android.os.Looper.loop(Looper.java:223)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at android.app.ActivityThread.main(ActivityThread.java:7562)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:539)
+11-13 12:53:48.372 W/Linkify.v16(25857): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:950)
+11-13 12:53:48.410 I/FeatureParser(25857): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 12:53:48.419 D/OneTrackSdk(25857): updateDebugSwitch sEnable: false sDebugMode：false sDebugProperty：false
+11-13 12:53:48.419 D/OneTrackSdk(25857): updateDebugSwitch sEnable: false sDebugMode：false sDebugProperty：false
+11-13 12:53:48.419 D/OneTrackSdk(25857): log on: false, quick upload on: false
+11-13 12:53:48.430 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:53:48.433 W/System.err(25857): java.lang.ClassNotFoundException: xcrash.XCrash$InitParameters
+11-13 12:53:48.434 W/System.err(25857): 	at java.lang.Class.classForName(Native Method)
+11-13 12:53:48.434 W/System.err(25857): 	at java.lang.Class.forName(Class.java:454)
+11-13 12:53:48.434 W/System.err(25857): 	at java.lang.Class.forName(Class.java:379)
+11-13 12:53:48.434 W/System.err(25857): 	at com.xiaomi.onetrack.CrashAnalysis.<init>(Unknown Source:8)
+11-13 12:53:48.434 W/System.err(25857): 	at com.xiaomi.onetrack.CrashAnalysis.<init>(Unknown Source:0)
+11-13 12:53:48.434 W/System.err(25857): 	at com.xiaomi.onetrack.CrashAnalysis$1.run(Unknown Source:9)
+11-13 12:53:48.434 W/System.err(25857): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-13 12:53:48.434 W/System.err(25857): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-13 12:53:48.434 W/System.err(25857): 	at java.lang.Thread.run(Thread.java:919)
+11-13 12:53:48.434 W/System.err(25857): Caused by: java.lang.ClassNotFoundException: xcrash.XCrash$InitParameters
+11-13 12:53:48.434 W/System.err(25857): 	... 9 more
+11-13 12:53:48.435 D/OneTrackImp(25857): OneTrackImp init : Configuration{appId='31*******37', pluginId='null', channel='AuthManager_OneTrack', international=false, region='null', overrideMiuiRegionSetting=false, mode=APP, GAIDEnable=true, IMSIEnable=true, IMEIEnable=true, ExceptionCatcherEnable=true, instanceId=null}
+11-13 12:53:48.437 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 12:53:48.437 E/ANDR-IOP(  788): IIop:: Iop HAL Service is not available.
+11-13 12:53:48.439 E/Perf    (25857): Fail to get file list com.lbe.security.miui
+11-13 12:53:48.440 E/Perf    (25857): getFolderSize() : Exception_1 = java.lang.NullPointerException: Attempt to get length of null array
+11-13 12:53:48.440 E/Perf    (25857): Fail to get file list com.lbe.security.miui
+11-13 12:53:48.440 E/Perf    (25857): getFolderSize() : Exception_1 = java.lang.NullPointerException: Attempt to get length of null array
+11-13 12:53:48.497 D/ViewContentFactory(25857): initViewContentFetcherClass
+11-13 12:53:48.497 D/ViewContentFactory(25857): getInterceptorPackageInfo
+11-13 12:53:48.497 D/ViewContentFactory(25857): getInitialApplication took 0ms
+11-13 12:53:48.497 D/ViewContentFactory(25857): packageInfo.packageName: com.miui.catcherpatch
+11-13 12:53:48.504 D/ViewContentFactory(25857): initViewContentFetcherClass took 7ms
+11-13 12:53:48.504 I/ContentCatcher(25857): ViewContentFetcher : ViewContentFetcher
+11-13 12:53:48.504 D/ViewContentFactory(25857): createInterceptor took 7ms
+11-13 12:53:48.551 W/SystemConfig(25857): No directory /product/etc/sysconfig, skipping
+11-13 12:53:48.564 W/SystemConfig(25857): No directory /product_services/etc/sysconfig, skipping
+11-13 12:53:48.564 W/SystemConfig(25857): No directory /product_services/etc/permissions, skipping
+11-13 12:53:48.570 D/ForceDarkHelper(25857): updateByCheckExcludeList: pkg: com.lbe.security.miui activity: com.android.packageinstaller.permission.ui.GrantPermissionsActivity@9e0f9c
+11-13 12:53:48.655 I/chatty  (25857): uid=10062 com.lbe.security.miui:ui identical 64 lines
+11-13 12:53:48.655 D/ForceDarkHelper(25857): updateByCheckExcludeList: pkg: com.lbe.security.miui activity: com.android.packageinstaller.permission.ui.GrantPermissionsActivity@9e0f9c
+11-13 12:53:48.656 D/miuisdk_anim(25857): logLevel = 
+11-13 12:53:48.656 D/ForceDarkHelper(25857): updateByCheckExcludeList: pkg: com.lbe.security.miui activity: com.android.packageinstaller.permission.ui.GrantPermissionsActivity@9e0f9c
+11-13 12:53:48.658 I/chatty  (25857): uid=10062 com.lbe.security.miui:ui identical 2 lines
+11-13 12:53:48.658 D/ForceDarkHelper(25857): updateByCheckExcludeList: pkg: com.lbe.security.miui activity: com.android.packageinstaller.permission.ui.GrantPermissionsActivity@9e0f9c
+11-13 12:53:48.664 D/        (  771): readbrightness,out1:9
+11-13 12:53:48.664 D/        (  771): .
+11-13 12:53:48.664 D/        (  771): readbrightness,out2:9.
+11-13 12:53:48.670 I/AppOps  ( 1577): setUserRestriction: 24 action: true from uid: 10062 pid: 25857
+11-13 12:53:48.671 I/AppOps  ( 1577): setUserRestriction: 45 action: true from uid: 10062 pid: 25857
+11-13 12:53:48.675 D/IdProviderImpl(25857): getOAID
+11-13 12:53:48.680 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 12:53:48.686 W/Looper  (25857): Slow Looper main: Activity com.lbe.security.miui/com.android.packageinstaller.permission.ui.GrantPermissionsActivity is 399ms late (wall=0ms running=0ms ClientTransaction{ callbacks=[android.app.servertransaction.TopResumedActivityChangeItem] }) because of 3 msg, msg 2 took 151ms (seq=2 late=6ms h=android.app.ActivityThread$H w=110), msg 3 took 248ms (seq=3 late=152ms h=android.app.ActivityThread$H w=159)
+11-13 12:53:48.698 D/IdProviderImpl(15673): getOAID
+11-13 12:53:48.705 I/Timeline( 1577): Timeline: App_transition_ready time:929058226
+11-13 12:53:48.707 I/Timeline( 1577): Timeline: App_transition_ready time:929058228
+11-13 12:53:48.711 I/AdrenoGLES(25857): QUALCOMM build                   : c692a3f, Ie3bb699d95
+11-13 12:53:48.711 I/AdrenoGLES(25857): Build Date                       : 09/29/20
+11-13 12:53:48.711 I/AdrenoGLES(25857): OpenGL ES Shader Compiler Version: EV031.27.05.02
+11-13 12:53:48.711 I/AdrenoGLES(25857): Local Branch                     : 
+11-13 12:53:48.711 I/AdrenoGLES(25857): Remote Branch                    : refs/tags/AU_LINUX_ANDROID_LA.UM.8.6.2.R1.10.00.00.537.053
+11-13 12:53:48.711 I/AdrenoGLES(25857): Remote Branch                    : NONE
+11-13 12:53:48.711 I/AdrenoGLES(25857): Reconstruct Branch               : NOTHING
+11-13 12:53:48.711 I/AdrenoGLES(25857): Build Config                     : S L 8.0.10 AArch32
+11-13 12:53:48.716 I/AdrenoGLES(25857): PFP: 0x005ff112, ME: 0x005ff066
+11-13 12:53:48.722 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.display.config@1.7::IDisplayConfig/default in either framework or device manifest.
+11-13 12:53:48.723 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.display.config@1.7::IDisplayConfig/default in either framework or device manifest.
+11-13 12:53:48.740 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 12:53:48.740 W/Gralloc3(25857): mapper 3.x is not supported
+11-13 12:53:48.756 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:53:48.757 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:53:48.757 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 31 microseconds, avg: 128
+11-13 12:53:48.758 I/Timeline( 1577): Timeline: App_transition_ready time:929058279
+11-13 12:53:48.758 I/Timeline( 1577): Timeline: Activity_windows_visible id: ActivityRecord{55f447c u0 com.lbe.security.miui/com.android.packageinstaller.permission.ui.GrantPermissionsActivity t97} time:929058279
+11-13 12:53:48.758 I/Timeline( 1577): Timeline: App_transition_stopped time:929058279
+11-13 12:53:48.759 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:53:48.759 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:53:48.759 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 24 microseconds, avg: 127
+11-13 12:53:48.768 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 12:53:48.769 I/ActivityTaskManager( 1577): Displayed com.lbe.security.miui/com.android.packageinstaller.permission.ui.GrantPermissionsActivity: +569ms
+11-13 12:53:48.770 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 12:53:48.773 D/IdProviderImpl(15673): getOAID
+11-13 12:53:48.779 D/UIAutomatorStub(25832): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:53:49.185 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 12:53:49.216 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@70c3949
+11-13 12:53:49.220 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:53:49.223 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 12:53:49.223 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 12:53:49.223 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 12:53:49.224 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 12:53:49.225 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:53:49.321 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:53:49.664 D/        (  771): readbrightness,out1:9
+11-13 12:53:49.664 D/        (  771): .
+11-13 12:53:49.664 D/        (  771): readbrightness,out2:9.
+11-13 12:53:50.665 D/        (  771): readbrightness,out1:9
+11-13 12:53:50.665 D/        (  771): .
+11-13 12:53:50.665 D/        (  771): readbrightness,out2:9.
+11-13 12:53:50.912 W/swapper/4(    0): type=1400 audit(0.0:100431): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 12:53:51.666 D/        (  771): readbrightness,out1:9
+11-13 12:53:51.666 D/        (  771): .
+11-13 12:53:51.667 D/        (  771): readbrightness,out2:9.
+11-13 12:53:52.667 D/        (  771): readbrightness,out1:9
+11-13 12:53:52.667 D/        (  771): .
+11-13 12:53:52.667 D/        (  771): readbrightness,out2:9.
+11-13 12:53:52.814 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:53:52.817 D/KeyguardUpdateMonitor( 1916): received broadcast android.intent.action.BATTERY_CHANGED
+11-13 12:53:52.818 D/QtiCarrierConfigHelper( 2194): WARNING, no carrier configs on phone Id: 0
+11-13 12:53:52.822 I/BatteryInfoReceiver( 3361): ACTION_BATTERY_CHANGED
+11-13 12:53:52.825 D/PowerCheckerService(11596): onBatteryChanged, mBatteryLevel = 100, status = 5, level = 100, plug = 2, scale = 100
+11-13 12:53:52.932 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:53:53.279 D/AndroidRuntime(25900): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 12:53:53.272 W/app_process(25900): type=1400 audit(0.0:100432): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:53:53.272 W/app_process(25900): type=1400 audit(0.0:100433): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:53:53.284 E/libc    (25900): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 12:53:53.284 I/AndroidRuntime(25900): Using default boot image
+11-13 12:53:53.285 E/libc    (25900): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 12:53:53.285 I/AndroidRuntime(25900): Leaving lock profiling enabled
+11-13 12:53:53.285 E/libc    (25900): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 12:53:53.272 W/app_process(25900): type=1400 audit(0.0:100434): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:53:53.291 W/app_process(25900): Could not reserve sentinel fault page
+11-13 12:53:53.323 I/^_^c    (17058): trimMemory on background
+11-13 12:53:53.418 D/ICU     (25900): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 12:53:53.512 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:53:53.668 D/        (  771): readbrightness,out1:9
+11-13 12:53:53.668 D/        (  771): .
+11-13 12:53:53.668 D/        (  771): readbrightness,out2:9.
+11-13 12:53:53.737 W/app_process(25900): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 12:53:53.753 D/AndroidRuntime(25900): Calling main entry com.wetest.uia2.Main
+11-13 12:53:53.763 I/uidumper(25900): [UiAutomator2Server] Starting Server
+11-13 12:53:53.798 D/ThemeCompatibility(25900): START loading theme compatibility config.
+11-13 12:53:53.799 D/ThemeCompatibility(25900): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 12:53:53.805 D/ThemeCompatibility(25900): getConfigDocumentTree(): 140 vs -1
+11-13 12:53:53.805 D/ThemeCompatibility(25900):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 12:53:53.802 W/main    (25900): type=1400 audit(0.0:100435): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 12:53:53.810 D/ThemeCompatibility(25900): END loading: version=140 size=48
+11-13 12:53:53.812 E/AssetManager(25900): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 12:53:53.812 E/AssetManager(25900): java.lang.RuntimeException
+11-13 12:53:53.812 E/AssetManager(25900): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 12:53:53.812 E/AssetManager(25900): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 12:53:53.812 E/AssetManager(25900): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 12:53:53.812 E/AssetManager(25900): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 12:53:53.812 E/AssetManager(25900): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 12:53:53.812 E/AssetManager(25900): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 12:53:53.812 E/AssetManager(25900): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 12:53:53.812 E/AssetManager(25900): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 12:53:53.812 E/AssetManager(25900): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 12:53:53.812 E/AssetManager(25900): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 12:53:53.812 E/AssetManager(25900): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 12:53:53.812 E/AssetManager(25900): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 12:53:53.812 E/AssetManager(25900): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 12:53:53.812 E/AssetManager(25900): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 12:53:53.812 E/AssetManager(25900): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 12:53:53.812 E/AssetManager(25900): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 12:53:53.812 E/AssetManager(25900): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 12:53:53.812 E/AssetManager(25900): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 12:53:53.812 E/AssetManager(25900): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 12:53:53.814 W/asset   (25900): unable to execute idmap2: Permission denied
+11-13 12:53:53.814 W/AssetManager(25900): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 12:53:53.802 W/main    (25900): type=1400 audit(0.0:100436): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 12:53:53.817 W/asset   (25900): unable to execute idmap2: Permission denied
+11-13 12:53:53.817 W/AssetManagerInjector(25900): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 12:53:53.844 I/FeatureParser(25900): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 12:53:53.888 W/Java7Support(25900): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 12:53:54.021 I/UiDevice(25900): Creating a new instance, old instance exists: false
+11-13 12:53:54.031 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:53:54.035 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:53:54.037 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+11-13 12:53:54.042 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@703fec8
+11-13 12:53:54.050 D/UiDevice(25900): Setting accessibility service flags: 65618
+11-13 12:53:54.064 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:53:54.064 I/uidumper(25900): clipboardManager inited
+11-13 12:53:54.067 I/uidumper(25900): tmpdir is /data/local/tmp/u2
+11-13 12:53:54.086 I/uidumper(25900): http server listening on *:9008
+11-13 12:53:54.642 D/UIAutomatorStub(25900): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:53:54.666 W/e.security.miu( 4289): Reducing the number of considered missed Gc histogram windows from 14298 to 100
+11-13 12:53:54.669 D/        (  771): readbrightness,out1:9
+11-13 12:53:54.669 D/        (  771): .
+11-13 12:53:54.669 D/        (  771): readbrightness,out2:9.
+11-13 12:53:54.674 D/UIAutomatorStub(25900): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "dumpWindowHierarchy", "params": [false, 50]}}
+11-13 12:53:54.744 W/QueryController(25900): Could not detect idle state.
+11-13 12:53:54.745 W/QueryController(25900): Could not detect idle state.
+11-13 12:53:54.807 I/AccessibilityNodeInfoDumper(25900): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@1384d; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(0, 747 - 0, 747); packageName: com.lbe.security.miui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: miui:id/action_bar_container; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:53:54.821 I/AccessibilityNodeInfoDumper(25900): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@16484; boundsInParent: Rect(0, 0 - 720, 500); boundsInScreen: Rect(0, 0 - 720, 55); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/heads_up_scrim; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:53:54.850 I/AccessibilityNodeInfoDumper(25900): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8f949; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(35, 34 - 35, 34); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_prompt_content_container; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:53:54.853 I/AccessibilityNodeInfoDumper(25900): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@9da85; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(584, 35 - 584, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_1; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:53:54.853 I/AccessibilityNodeInfoDumper(25900): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@9d303; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(584, 35 - 584, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_0; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:53:54.853 I/AccessibilityNodeInfoDumper(25900): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@a6cec; boundsInParent: Rect(0, 0 - 0, 38); boundsInScreen: Rect(618, 16 - 618, 54); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:53:54.944 D/UIAutomatorStub(25900): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:53:55.505 D/UIAutomatorStub(25900): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:53:55.670 D/        (  771): readbrightness,out1:9
+11-13 12:53:55.670 D/        (  771): .
+11-13 12:53:55.670 D/        (  771): readbrightness,out2:9.
+11-13 12:53:55.907 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 12:53:55.940 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@653e686
+11-13 12:53:55.944 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:53:55.952 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 12:53:55.952 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 12:53:55.952 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 12:53:55.954 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:53:55.955 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 12:53:56.031 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:53:56.319 I/ecurity.miui:u(25857): ProcessProfilingInfo new_methods=0 is saved saved_to_disk=1 resolve_classes_delay=8000
+11-13 12:53:56.671 D/        (  771): readbrightness,out1:9
+11-13 12:53:56.671 D/        (  771): .
+11-13 12:53:56.671 D/        (  771): readbrightness,out2:9.
+11-13 12:53:57.671 D/        (  771): readbrightness,out1:9
+11-13 12:53:57.671 D/        (  771): .
+11-13 12:53:57.672 D/        (  771): readbrightness,out2:9.
+11-13 12:53:58.672 D/        (  771): readbrightness,out1:9
+11-13 12:53:58.672 D/        (  771): .
+11-13 12:53:58.672 D/        (  771): readbrightness,out2:9.
+11-13 12:53:59.673 D/        (  771): readbrightness,out1:9
+11-13 12:53:59.673 D/        (  771): .
+11-13 12:53:59.673 D/        (  771): readbrightness,out2:9.
+11-13 12:54:00.002 D/KeyguardUpdateMonitor( 1916): handleTimeUpdate
+11-13 12:54:00.674 D/        (  771): readbrightness,out1:9
+11-13 12:54:00.674 D/        (  771): .
+11-13 12:54:00.674 D/        (  771): readbrightness,out2:9.
+11-13 12:54:00.912 W/swapper/6(    0): type=1400 audit(0.0:100437): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 12:54:01.674 D/        (  771): readbrightness,out1:9
+11-13 12:54:01.674 D/        (  771): .
+11-13 12:54:01.674 D/        (  771): readbrightness,out2:9.
+11-13 12:54:02.676 D/        (  771): readbrightness,out1:9
+11-13 12:54:02.676 D/        (  771): .
+11-13 12:54:02.676 D/        (  771): readbrightness,out2:9.
+11-13 12:54:03.489 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.557 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 4 lines
+11-13 12:54:03.566 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.609 V/NFC     ( 1916): this device does not have NFC support
+11-13 12:54:03.626 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.626 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 12:54:03.628 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.651 V/NFC     ( 1916): this device does not have NFC support
+11-13 12:54:03.652 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.653 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 12:54:03.656 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.677 D/        (  771): readbrightness,out1:9
+11-13 12:54:03.677 D/        (  771): .
+11-13 12:54:03.677 D/        (  771): readbrightness,out2:9.
+11-13 12:54:03.783 V/NFC     ( 1916): this device does not have NFC support
+11-13 12:54:03.784 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.785 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 12:54:03.786 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.791 V/NFC     ( 1916): this device does not have NFC support
+11-13 12:54:03.792 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.792 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 12:54:03.793 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.800 V/NFC     ( 1916): this device does not have NFC support
+11-13 12:54:03.801 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.801 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 1 line
+11-13 12:54:03.803 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.808 V/NFC     ( 1916): this device does not have NFC support
+11-13 12:54:03.940 D/BluetoothController( 1916): fireStateChange
+11-13 12:54:03.940 D/QSTile.BluetoothTile( 1916): onBluetoothStateChange: enabled = true
+11-13 12:54:03.940 I/chatty  ( 1916): uid=1000(system) com.android.systemui identical 5 lines
+11-13 12:54:03.941 D/QSTile.BluetoothTile( 1916): onBluetoothStateChange: enabled = true
+11-13 12:54:03.988 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.994 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 31 lines
+11-13 12:54:03.994 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:03.994 D/QSTile.BluetoothTile( 1916): handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-13 12:54:03.996 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 5 lines
+11-13 12:54:03.996 D/QSTile.BluetoothTile( 1916): handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-13 12:54:03.996 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:04.017 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 98 lines
+11-13 12:54:04.017 D/QSTile.CellularTile( 1916): handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-13 12:54:04.024 D/QSTile.BluetoothTile( 1916): handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-13 12:54:04.025 I/chatty  ( 1916): uid=1000(system) SysUiBg identical 5 lines
+11-13 12:54:04.025 D/QSTile.BluetoothTile( 1916): handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-13 12:54:04.678 D/        (  771): readbrightness,out1:9
+11-13 12:54:04.678 D/        (  771): .
+11-13 12:54:04.679 D/        (  771): readbrightness,out2:9.
+11-13 12:54:05.679 D/        (  771): readbrightness,out1:9
+11-13 12:54:05.679 D/        (  771): .
+11-13 12:54:05.679 D/        (  771): readbrightness,out2:9.
+11-13 12:54:06.086 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:54:06.210 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:54:06.570 D/AndroidRuntime(25927): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 12:54:06.562 W/app_process(25927): type=1400 audit(0.0:100438): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:54:06.562 I/chatty  (25927): uid=2000(shell) app_process identical 1 line
+11-13 12:54:06.562 W/app_process(25927): type=1400 audit(0.0:100440): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:54:06.575 E/libc    (25927): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 12:54:06.576 I/AndroidRuntime(25927): Using default boot image
+11-13 12:54:06.576 E/libc    (25927): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 12:54:06.576 I/AndroidRuntime(25927): Leaving lock profiling enabled
+11-13 12:54:06.576 E/libc    (25927): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 12:54:06.582 W/app_process(25927): Could not reserve sentinel fault page
+11-13 12:54:06.680 D/        (  771): readbrightness,out1:9
+11-13 12:54:06.680 D/        (  771): .
+11-13 12:54:06.680 D/        (  771): readbrightness,out2:9.
+11-13 12:54:06.708 D/ICU     (25927): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 12:54:06.753 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:54:07.024 W/app_process(25927): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 12:54:07.039 D/AndroidRuntime(25927): Calling main entry com.wetest.uia2.Main
+11-13 12:54:07.050 I/uidumper(25927): [UiAutomator2Server] Starting Server
+11-13 12:54:07.085 D/ThemeCompatibility(25927): START loading theme compatibility config.
+11-13 12:54:07.086 D/ThemeCompatibility(25927): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 12:54:07.092 D/ThemeCompatibility(25927): getConfigDocumentTree(): 140 vs -1
+11-13 12:54:07.092 D/ThemeCompatibility(25927):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 12:54:07.097 D/ThemeCompatibility(25927): END loading: version=140 size=48
+11-13 12:54:07.099 E/AssetManager(25927): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 12:54:07.099 E/AssetManager(25927): java.lang.RuntimeException
+11-13 12:54:07.099 E/AssetManager(25927): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 12:54:07.099 E/AssetManager(25927): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 12:54:07.099 E/AssetManager(25927): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 12:54:07.099 E/AssetManager(25927): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 12:54:07.099 E/AssetManager(25927): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 12:54:07.099 E/AssetManager(25927): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 12:54:07.099 E/AssetManager(25927): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 12:54:07.099 E/AssetManager(25927): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 12:54:07.099 E/AssetManager(25927): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 12:54:07.099 E/AssetManager(25927): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 12:54:07.099 E/AssetManager(25927): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 12:54:07.099 E/AssetManager(25927): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 12:54:07.099 E/AssetManager(25927): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 12:54:07.099 E/AssetManager(25927): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 12:54:07.099 E/AssetManager(25927): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 12:54:07.099 E/AssetManager(25927): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 12:54:07.099 E/AssetManager(25927): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 12:54:07.099 E/AssetManager(25927): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 12:54:07.099 E/AssetManager(25927): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 12:54:07.092 W/main    (25927): type=1400 audit(0.0:100441): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 12:54:07.101 W/asset   (25927): unable to execute idmap2: Permission denied
+11-13 12:54:07.101 W/AssetManager(25927): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 12:54:07.092 W/main    (25927): type=1400 audit(0.0:100442): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 12:54:07.104 W/asset   (25927): unable to execute idmap2: Permission denied
+11-13 12:54:07.104 W/AssetManagerInjector(25927): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 12:54:07.130 I/FeatureParser(25927): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 12:54:07.173 W/Java7Support(25927): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 12:54:07.307 I/UiDevice(25927): Creating a new instance, old instance exists: false
+11-13 12:54:07.316 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:54:07.317 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:54:07.319 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:54:07.321 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+11-13 12:54:07.326 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@f6b405e
+11-13 12:54:07.337 D/UiDevice(25927): Setting accessibility service flags: 65618
+11-13 12:54:07.351 I/uidumper(25927): clipboardManager inited
+11-13 12:54:07.354 I/uidumper(25927): tmpdir is /data/local/tmp/u2
+11-13 12:54:07.373 I/uidumper(25927): http server listening on *:9008
+11-13 12:54:07.681 D/        (  771): readbrightness,out1:9
+11-13 12:54:07.681 D/        (  771): .
+11-13 12:54:07.681 D/        (  771): readbrightness,out2:9.
+11-13 12:54:07.909 D/UIAutomatorStub(25927): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:54:07.975 D/UIAutomatorStub(25927): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "count", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u4ec5\u5728\u4f7f\u7528\u4e2d\u5141\u8bb8"}]}}
+11-13 12:54:08.086 D/UiObject(25927): Waiting 0ms for UiSelector[TEXT=仅在使用中允许].
+11-13 12:54:08.086 W/QueryController(25927): Could not detect idle state.
+11-13 12:54:08.095 I/QueryController(25927): Matched selector: UiSelector[TEXT=仅在使用中允许] <<==>> [android.view.accessibility.AccessibilityNodeInfo@121c7; boundsInParent: Rect(523981, 0 - 524595, 93); boundsInScreen: Rect(53, 1278 - 667, 1371); packageName: com.lbe.security.miui; className: android.widget.Button; text: 仅在使用中允许; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.lbe.security.miui:id/permission_allow_foreground_only_button; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: true; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_CLICK - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]]
+11-13 12:54:08.095 D/UiObject(25927): Waiting 0ms for UiSelector[TEXT=仅在使用中允许, INSTANCE=1].
+11-13 12:54:08.096 W/QueryController(25927): Could not detect idle state.
+11-13 12:54:08.177 D/UIAutomatorStub(25927): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "waitForExists", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u4ec5\u5728\u4f7f\u7528\u4e2d\u5141\u8bb8"}, 10000]}}
+11-13 12:54:08.195 D/UiDevice(25927): Waiting 10000ms for SearchCondition[hasObject=BySelector [TEXT='\Q仅在使用中允许\E']].
+11-13 12:54:08.195 D/UiDevice(25927): Searching for node with selector: BySelector [TEXT='\Q仅在使用中允许\E'].
+11-13 12:54:08.197 W/QueryController(25927): Could not detect idle state.
+11-13 12:54:08.290 D/UIAutomatorStub(25927): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "objInfo", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u4ec5\u5728\u4f7f\u7528\u4e2d\u5141\u8bb8"}]}}
+11-13 12:54:08.296 D/UiDevice(25927): Retrieving node with selector: BySelector [TEXT='\Q仅在使用中允许\E'].
+11-13 12:54:08.297 W/QueryController(25927): Could not detect idle state.
+11-13 12:54:08.418 I/chatty  (25927): uid=2000(shell) app_process identical 17 lines
+11-13 12:54:08.422 W/QueryController(25927): Could not detect idle state.
+11-13 12:54:08.521 D/UIAutomatorStub(25927): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "click", "params": [360.0, 1324.5]}}
+11-13 12:54:08.664 I/FusedLocationProvider( 3600): onSetRequest
+11-13 12:54:08.666 I/MetokLocationProvider( 3478): onSetRequest
+11-13 12:54:08.666 I/AbsoluteLocationDispatcher( 3600): request type:0
+11-13 12:54:08.667 I/MetokLocationProvider( 3478): setRequest: request =ProviderRequest[OFF] ; client =WorkSource{}
+11-13 12:54:08.667 I/NLPWrapper( 3478): request exit
+11-13 12:54:08.671 V/GrantPermissionsActivity(25857): Permission grant result requestId=-2699375053826372081 callingUid=10169 callingPackage=com.jinyuni.dengbei_care permission=android.permission.ACCESS_FINE_LOCATION isImplicit=false result=4
+11-13 12:54:08.671 V/GrantPermissionsActivity(25857): Permission grant result requestId=-2699375053826372081 callingUid=10169 callingPackage=com.jinyuni.dengbei_care permission=android.permission.ACCESS_COARSE_LOCATION isImplicit=true result=4
+11-13 12:54:08.672 I/MetokLocationProvider( 3478): onSetRequest
+11-13 12:54:08.672 I/FusedLocationProvider( 3600): onSetRequest
+11-13 12:54:08.673 I/AbsoluteLocationDispatcher( 3600): request type:0
+11-13 12:54:08.674 I/MetokLocationProvider( 3478): setRequest: request =ProviderRequest[OFF] ; client =WorkSource{}
+11-13 12:54:08.674 I/NLPWrapper( 3478): request exit
+11-13 12:54:08.678 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+11-13 12:54:08.681 I/MetokLocationProvider( 3478): onSetRequest
+11-13 12:54:08.681 D/        (  771): readbrightness,out1:9
+11-13 12:54:08.681 D/        (  771): .
+11-13 12:54:08.681 D/        (  771): readbrightness,out2:9.
+11-13 12:54:08.681 I/FusedLocationProvider( 3600): onSetRequest
+11-13 12:54:08.682 I/MetokLocationProvider( 3478): setRequest: request =ProviderRequest[OFF] ; client =WorkSource{}
+11-13 12:54:08.682 I/NLPWrapper( 3478): request exit
+11-13 12:54:08.682 I/AbsoluteLocationDispatcher( 3600): request type:0
+11-13 12:54:08.688 I/AppOps  ( 1577): setUserRestriction: 24 action: false from uid: 10062 pid: 25857
+11-13 12:54:08.689 I/AppOps  ( 1577): setUserRestriction: 45 action: false from uid: 10062 pid: 25857
+11-13 12:54:08.692 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 12:54:08.697 D/PerfEngineController(11596): ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=25592, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 12:54:08.697 I/GST     ( 4855): forePkg: com.jinyuni.dengbei_care, preForePkg: com.lbe.security.miui
+11-13 12:54:08.698 I/ProcessMonitor( 3361): onForegroundInfoChanged: ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=25592, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 12:54:08.698 I/GameBoosterService( 3361): onForegroundInfoChanged: Cur=com.jinyuni.dengbei_care	 last=com.lbe.security.miui
+11-13 12:54:08.699 I/^_^MemoryTrim(17058): onAppBackground()
+11-13 12:54:08.700 D/AutoInstallService(26235): onForegroundInfoChanged: com.jinyuni.dengbei_care
+11-13 12:54:08.701 D/GameBoosterService( 3361): onGameStatusChange foreground:ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=25592, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 12:54:08.701 I/GameBoosterService( 3361): onForegroundInfoChanged: Exit
+11-13 12:54:08.702 I/VideoBoxUtils( 3361): isSupportVideoBox: false
+11-13 12:54:08.702 I/VideoToolBoxService( 3361): onForegroundInfoChanged: Exit Vtb
+11-13 12:54:08.704 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:54:08.704 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:54:08.704 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 18 microseconds, avg: 127
+11-13 12:54:08.704 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:54:08.704 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:54:08.704 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 16 microseconds, avg: 127
+11-13 12:54:08.705 I/Timeline( 1577): Timeline: App_transition_ready time:929078226
+11-13 12:54:08.705 I/Timeline( 1577): Timeline: App_transition_stopped time:929078226
+11-13 12:54:08.705 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:54:08.705 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:54:08.705 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 17 microseconds, avg: 127
+11-13 12:54:08.719 D/BluetoothAdapter(25592): isLeEnabled(): ON
+11-13 12:54:08.722 D/BtGatt.GattService(27198): registerScanner() - UUID=57283f11-5353-4212-a5fe-8f66faf9b1f3
+11-13 12:54:08.722 V/bt_stack(27198): [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 12:54:08.722 I/bt_stack(27198): [INFO:gatt_api.cc(959)] GATT_Register fc2b857a-3a7b-ac35-db63-d8285eaae37d
+11-13 12:54:08.722 I/bt_stack(27198): [INFO:gatt_api.cc(979)] allocated gatt_if=6
+11-13 12:54:08.722 V/bt_stack(27198): [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=6
+11-13 12:54:08.722 D/BtGatt.GattService(27198): onScannerRegistered() - UUID=57283f11-5353-4212-a5fe-8f66faf9b1f3, scannerId=6, status=0
+11-13 12:54:08.722 V/bt_stack(27198): [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 12:54:08.723 V/bt_stack(27198): [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 12:54:08.723 D/BluetoothLeScanner(25592): onScannerRegistered() - status=0 scannerId=6 mScannerId=0
+11-13 12:54:08.725 D/BtGatt.GattService(27198): start scan with filters. callingPackage: com.jinyuni.dengbei_care
+11-13 12:54:08.728 D/BluetoothUtils(27198): blockedByLocationOff callingUid=10169
+11-13 12:54:08.728 I/BluetoothUtils(27198): packagename is com.jinyuni.dengbei_care ,and its permission is false
+11-13 12:54:08.729 I/BtGatt.ScanManager(27198): msg.what = 0
+11-13 12:54:08.729 D/BtGatt.ScanManager(27198): handling starting scan
+11-13 12:54:08.730 D/BtGatt.ScanManager(27198): isAptXLowLatencyModeEnabled: false
+11-13 12:54:08.734 I/GatewayDiscovery(25592): scan started filterByFfe0=true timeoutMs=10000
+11-13 12:54:08.734 D/BtGatt.GattService(27198): onScanFilterEnableDisabled() - clientIf=6, status=0, action=1
+11-13 12:54:08.734 D/BtGatt.ScanManager(27198): callback done for scannerId - 6 status - 0
+11-13 12:54:08.734 D/BtGatt.ScanManager(27198): Available Filter size: 8
+11-13 12:54:08.735 I/bt_stack(27198): [INFO:btm_ble_adv_filter.cc(684)] BTM_LE_PF_set UUID MASK is empty 
+11-13 12:54:08.735 D/BtGatt.GattService(27198): onScanFilterConfig() - clientIf=6, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:54:08.735 D/BtGatt.ScanManager(27198): callback done for scannerId - 6 status - 0
+11-13 12:54:08.735 D/BtGatt.ScanManager(27198): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:54:08.739 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=6, status=0, action=0, availableSpace=10
+11-13 12:54:08.739 D/BtGatt.ScanManager(27198): callback done for scannerId - 6 status - 0
+11-13 12:54:08.739 D/BtGatt.ScanManager(27198): configureRegularScanParams() - queue=2
+11-13 12:54:08.739 D/BtGatt.ScanManager(27198): configureRegularScanParams() - ScanSetting LE 1M Scan mode=2ScanSetting LE Coded Scan mode=2 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=255
+11-13 12:54:08.740 D/BtGatt.ScanManager(27198): configureRegularScanParams - scanInterval LE 1M = 4096configureRegularScanParams - scanWindow LE 1M= 4096configureRegularScanParams - scanInterval LE Coded= 4096configureRegularScanParams - scanWindow LE Coded= 4096
+11-13 12:54:08.740 D/BtGatt.GattService(27198): onScanParamSetupCompleted : 0
+11-13 12:54:08.751 D/UIAutomatorStub(25927): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:54:08.803 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:08.803 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:08.803 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:08.803 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:08.805 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:08.805 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:08.805 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:08.806 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:08.833 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:08.901 I/MiuiNetworkPolicy( 1577): updateUidState uid = 10062, uidState = 9
+11-13 12:54:08.911 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:54:08.911 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:54:08.911 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 26 microseconds, avg: 127
+11-13 12:54:08.912 D/IdProviderImpl(15673): getOAID
+11-13 12:54:09.180 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.180 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:09.180 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.180 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:09.183 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.184 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.184 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.186 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.196 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:09.232 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.232 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:09.232 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.232 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:09.234 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.235 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.235 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.235 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.243 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:09.286 D/UIAutomatorStub(25927): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:54:09.339 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.339 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:09.340 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.340 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:09.341 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.341 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.341 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.342 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.346 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:09.392 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.392 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:09.392 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.392 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:09.394 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.394 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.394 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.395 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.404 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:09.673 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.674 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:09.676 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 12:54:09.682 D/        (  771): readbrightness,out1:9
+11-13 12:54:09.682 D/        (  771): .
+11-13 12:54:09.682 D/        (  771): readbrightness,out2:9.
+11-13 12:54:09.707 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@277b302
+11-13 12:54:09.710 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:54:09.715 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.715 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:09.716 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.716 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:09.716 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 12:54:09.717 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 12:54:09.717 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 12:54:09.717 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.719 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:54:09.719 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.719 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.720 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 12:54:09.720 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.734 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:09.813 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:54:09.889 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.889 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:09.889 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:09.889 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:09.891 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.892 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.893 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:09.893 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:09.904 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:10.006 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.006 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:10.247 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.247 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:10.323 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.323 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:10.323 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.323 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:10.325 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.326 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.326 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.327 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.338 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:10.542 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.542 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:10.542 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.542 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:10.543 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.544 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.545 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.545 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.557 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:10.682 D/        (  771): readbrightness,out1:9
+11-13 12:54:10.682 D/        (  771): .
+11-13 12:54:10.682 D/        (  771): readbrightness,out2:9.
+11-13 12:54:10.721 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.721 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:10.762 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.762 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:10.762 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.762 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:10.764 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.765 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.765 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.766 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.776 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:10.815 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.815 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:10.815 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.816 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:10.817 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.818 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.818 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.820 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.831 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:10.869 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.869 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:10.869 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.869 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:10.870 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.871 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.871 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.872 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.878 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:10.920 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.920 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:10.912 W/swapper/4(    0): type=1400 audit(0.0:100443): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 12:54:10.920 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.920 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:10.922 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.923 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.923 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.924 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.933 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:10.974 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.974 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:10.974 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:10.974 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:10.976 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.977 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.977 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:10.978 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:10.987 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:11.209 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:11.209 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:11.268 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:11.268 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:11.472 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:11.472 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:11.472 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:11.472 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:11.473 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:11.473 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:11.474 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:11.475 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:11.475 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:11.476 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:11.485 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:11.528 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:11.528 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:11.528 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:11.528 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:11.529 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:11.531 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:11.531 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:11.532 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:11.543 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:11.683 D/        (  771): readbrightness,out1:9
+11-13 12:54:11.683 D/        (  771): .
+11-13 12:54:11.683 D/        (  771): readbrightness,out2:9.
+11-13 12:54:11.758 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:11.758 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:11.865 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:11.865 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:11.865 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:11.865 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:11.867 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:11.868 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:11.869 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:11.870 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:11.879 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:12.056 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.057 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:12.075 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.075 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:12.075 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.076 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:12.077 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.078 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.079 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.080 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.089 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:12.333 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.333 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:12.361 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.361 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:12.361 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.361 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:12.363 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.364 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.364 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.365 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.373 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:12.416 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.416 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:12.416 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.417 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:12.418 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.420 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.420 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.421 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.431 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:12.473 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.473 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:12.473 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.473 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:12.475 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.476 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.476 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.477 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.485 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:12.645 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.645 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:12.683 D/        (  771): readbrightness,out1:9
+11-13 12:54:12.683 D/        (  771): .
+11-13 12:54:12.683 D/        (  771): readbrightness,out2:9.
+11-13 12:54:12.914 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.914 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:12.914 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.914 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:12.915 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.917 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.917 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.918 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.927 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:12.964 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.964 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:12.964 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:12.964 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:12.965 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.966 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.966 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:12.967 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:12.974 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:13.131 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.131 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.178 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.178 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.244 D/MiuiFastConnectService(27265): handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-13 12:54:13.244 D/MiuiFastConnectService(27265): stopBleScan: scanning: true
+11-13 12:54:13.246 D/BluetoothAdapter(27265): isLeEnabled(): ON
+11-13 12:54:13.246 D/BtGatt.GattService(27198): stopScan() - queue size =2
+11-13 12:54:13.248 I/BtGatt.ScanManager(27198): msg.what = 1
+11-13 12:54:13.249 D/BtGatt.GattService(27198): unregisterScanner() - scannerId=5
+11-13 12:54:13.250 V/bt_stack(27198): [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-13 12:54:13.250 V/bt_stack(27198): [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-13 12:54:13.252 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=11
+11-13 12:54:13.253 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.257 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-13 12:54:13.257 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.261 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-13 12:54:13.261 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.265 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-13 12:54:13.266 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.270 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-13 12:54:13.270 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.270 D/BtGatt.ScanManager(27198): configureRegularScanParams() - queue=1
+11-13 12:54:13.270 D/BtGatt.ScanManager(27198): configureRegularScanParams() - ScanSetting LE 1M Scan mode=2ScanSetting LE Coded Scan mode=2 mLastConfiguredScanSettingLE1M=2 mLastConfiguredScanSettingLECoded=2scanPhy=255
+11-13 12:54:13.296 D/MiuiFastConnectService(27265): handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-13 12:54:13.298 D/BluetoothAdapter(27265): isLeEnabled(): ON
+11-13 12:54:13.300 D/BtGatt.GattService(27198): registerScanner() - UUID=d804a2a7-5d17-4fb3-bf01-48e90881dc3c
+11-13 12:54:13.301 V/bt_stack(27198): [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 12:54:13.301 I/bt_stack(27198): [INFO:gatt_api.cc(959)] GATT_Register a6b5320d-0fe8-b908-f7e7-95b58ca2468e
+11-13 12:54:13.301 I/bt_stack(27198): [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-13 12:54:13.301 V/bt_stack(27198): [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-13 12:54:13.302 V/bt_stack(27198): [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 12:54:13.302 V/bt_stack(27198): [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 12:54:13.302 D/BtGatt.GattService(27198): onScannerRegistered() - UUID=d804a2a7-5d17-4fb3-bf01-48e90881dc3c, scannerId=5, status=0
+11-13 12:54:13.302 D/BluetoothLeScanner(27265): onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-13 12:54:13.304 D/BtGatt.GattService(27198): start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-13 12:54:13.308 E/BtGatt.GattService(27198):  [Landroid.content.pm.ServiceInfo;@9833fe9
+11-13 12:54:13.311 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:13.312 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:13.315 I/BtGatt.ScanManager(27198): msg.what = 0
+11-13 12:54:13.316 D/BtGatt.ScanManager(27198): handling starting scan
+11-13 12:54:13.318 D/BtGatt.ScanManager(27198): isAptXLowLatencyModeEnabled: false
+11-13 12:54:13.322 D/BtGatt.GattService(27198): onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-13 12:54:13.322 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.322 D/BtGatt.ScanManager(27198): Available Filter size: 12
+11-13 12:54:13.323 D/BtGatt.GattService(27198): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:54:13.323 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.323 D/BtGatt.ScanManager(27198): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:54:13.326 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-13 12:54:13.326 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.327 D/BtGatt.GattService(27198): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:54:13.327 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.327 D/BtGatt.ScanManager(27198): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:54:13.329 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-13 12:54:13.329 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.330 D/BtGatt.GattService(27198): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:54:13.330 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.331 D/BtGatt.ScanManager(27198): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:54:13.333 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-13 12:54:13.333 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.334 D/BtGatt.GattService(27198): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:54:13.334 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.334 D/BtGatt.ScanManager(27198): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:54:13.337 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-13 12:54:13.337 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.338 D/BtGatt.GattService(27198): onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 12:54:13.338 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.338 D/BtGatt.ScanManager(27198): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 12:54:13.341 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=10
+11-13 12:54:13.341 D/BtGatt.ScanManager(27198): callback done for scannerId - 5 status - 0
+11-13 12:54:13.341 D/BtGatt.ScanManager(27198): configureRegularScanParams() - queue=2
+11-13 12:54:13.341 D/BtGatt.ScanManager(27198): configureRegularScanParams() - ScanSetting LE 1M Scan mode=2ScanSetting LE Coded Scan mode=2 mLastConfiguredScanSettingLE1M=2 mLastConfiguredScanSettingLECoded=2scanPhy=255
+11-13 12:54:13.460 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.460 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.461 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.461 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:13.462 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:13.463 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:13.463 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:13.464 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:13.472 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:13.538 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.538 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.565 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.565 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.565 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.565 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:13.566 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:13.568 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:13.568 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:13.569 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:13.577 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:13.631 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.632 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.671 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.671 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.671 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.672 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:13.673 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:13.674 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:13.674 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:13.675 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:13.682 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:13.684 D/        (  771): readbrightness,out1:9
+11-13 12:54:13.684 D/        (  771): .
+11-13 12:54:13.684 D/        (  771): readbrightness,out2:9.
+11-13 12:54:13.741 I/^_^c    (17058): trimMemory on background
+11-13 12:54:13.744 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.744 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.800 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.801 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.924 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:54:13.943 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.943 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.943 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.943 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:13.944 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:13.944 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:13.945 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:13.946 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:13.946 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:13.947 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:13.952 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:14.008 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.008 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:14.222 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.222 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:14.223 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.223 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:14.224 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:14.226 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:14.226 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:14.227 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:14.233 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:14.444 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.444 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:14.444 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.444 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:14.445 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:14.447 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:14.447 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:14.448 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:14.456 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:14.498 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.498 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:14.498 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.498 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:14.500 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:14.501 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:14.501 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:14.502 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:14.509 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:14.630 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.631 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:14.670 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.670 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:14.670 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.670 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:14.672 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:14.673 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:14.673 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:14.674 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:14.681 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:14.685 D/        (  771): readbrightness,out1:9
+11-13 12:54:14.685 D/        (  771): .
+11-13 12:54:14.685 D/        (  771): readbrightness,out2:9.
+11-13 12:54:14.738 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.738 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:14.835 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.835 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:14.851 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.851 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:14.943 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.943 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:14.944 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:14.944 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:14.945 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:14.946 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:14.947 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:14.947 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:14.954 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:15.135 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.135 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:15.162 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.162 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:15.163 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.163 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:15.164 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:15.165 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:15.166 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:15.167 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:15.174 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:15.218 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.218 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:15.218 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.218 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:15.220 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:15.221 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:15.221 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:15.222 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:15.228 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:15.343 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.343 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:15.427 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.427 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:15.536 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.536 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:15.536 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.537 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:15.538 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:15.540 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:15.540 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:15.541 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:15.547 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:15.659 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.660 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:15.685 D/        (  771): readbrightness,out1:9
+11-13 12:54:15.685 D/        (  771): .
+11-13 12:54:15.685 D/        (  771): readbrightness,out2:9.
+11-13 12:54:15.914 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.914 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:15.914 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.914 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:15.916 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:15.917 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:15.917 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:15.918 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:15.925 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:15.969 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.970 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:15.970 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:15.970 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:15.972 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:15.973 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:15.973 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:15.974 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:15.981 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:16.024 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.024 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:16.024 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.024 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:16.025 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:16.026 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:16.026 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:16.027 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:16.031 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:16.131 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.131 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:16.131 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.131 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:16.133 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:16.134 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:16.134 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:16.135 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:16.143 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:16.237 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.237 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:16.237 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.237 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:16.239 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:16.240 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:16.240 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:16.241 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:16.247 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:16.402 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.402 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:16.403 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.403 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:16.404 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:16.405 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:16.406 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:16.406 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:16.413 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:16.674 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.674 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:16.686 D/        (  771): readbrightness,out1:9
+11-13 12:54:16.686 D/        (  771): .
+11-13 12:54:16.686 D/        (  771): readbrightness,out2:9.
+11-13 12:54:16.740 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.740 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:16.832 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.833 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:16.833 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:16.833 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:16.834 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:16.835 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:16.836 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:16.836 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:16.843 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:17.323 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.323 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:17.358 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.359 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:17.443 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.443 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:17.443 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.443 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:17.445 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.446 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.446 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.447 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.454 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:17.552 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.552 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:17.552 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.552 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:17.554 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.555 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.555 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.556 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.563 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:17.662 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.662 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:17.662 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.662 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:17.663 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.663 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:17.664 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.666 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.666 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.667 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.673 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:17.687 D/        (  771): readbrightness,out1:9
+11-13 12:54:17.687 D/        (  771): .
+11-13 12:54:17.687 D/        (  771): readbrightness,out2:9.
+11-13 12:54:17.773 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.773 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:17.773 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.773 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:17.775 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.776 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.776 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.777 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.784 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:17.824 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.824 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:17.824 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.824 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:17.825 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.826 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.827 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.827 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.833 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:17.878 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.879 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:17.879 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:17.879 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:17.880 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.882 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.882 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:17.883 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:17.890 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:18.102 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:18.103 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:18.160 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:18.160 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:18.207 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:18.207 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:18.207 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:18.207 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:18.208 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:18.210 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:18.210 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:18.211 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:18.217 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:18.369 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:18.369 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:18.424 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:18.424 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 12:54:18.424 V/bt_stack(27198): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 12:54:18.424 V/bt_stack(27198): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 12:54:18.426 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:18.427 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:18.428 D/BluetoothUtils(27198): blockedByLocationOff callingUid=1002
+11-13 12:54:18.429 I/BluetoothUtils(27198): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 12:54:18.435 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:18.687 D/        (  771): readbrightness,out1:9
+11-13 12:54:18.687 D/        (  771): .
+11-13 12:54:18.687 D/        (  771): readbrightness,out2:9.
+11-13 12:54:18.741 D/BluetoothAdapter(25592): isLeEnabled(): ON
+11-13 12:54:18.742 D/BtGatt.GattService(27198): stopScan() - queue size =2
+11-13 12:54:18.744 I/BtGatt.ScanManager(27198): msg.what = 1
+11-13 12:54:18.745 D/BtGatt.GattService(27198): unregisterScanner() - scannerId=6
+11-13 12:54:18.746 V/bt_stack(27198): [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=6
+11-13 12:54:18.746 V/bt_stack(27198): [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x06
+11-13 12:54:18.747 D/BtGatt.GattService(27198): onScanFilterParamsConfigured() - clientIf=6, status=0, action=1, availableSpace=11
+11-13 12:54:18.747 D/BtGatt.ScanManager(27198): callback done for scannerId - 6 status - 0
+11-13 12:54:18.748 D/BtGatt.ScanManager(27198): configureRegularScanParams() - queue=1
+11-13 12:54:18.748 D/BtGatt.ScanManager(27198): configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=2 mLastConfiguredScanSettingLECoded=2scanPhy=255
+11-13 12:54:18.749 I/GatewayDiscovery(25592): scan stopped
+11-13 12:54:18.750 D/BtGatt.ScanManager(27198): configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-13 12:54:18.750 D/BtGatt.GattService(27198): onScanParamSetupCompleted : 0
+11-13 12:54:18.751 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:54:19.688 D/        (  771): readbrightness,out1:9
+11-13 12:54:19.688 D/        (  771): .
+11-13 12:54:19.688 D/        (  771): readbrightness,out2:9.
+11-13 12:54:20.689 D/        (  771): readbrightness,out1:9
+11-13 12:54:20.689 D/        (  771): .
+11-13 12:54:20.689 D/        (  771): readbrightness,out2:9.
+11-13 12:54:20.912 W/swapper/7(    0): type=1400 audit(0.0:100444): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 12:54:21.691 D/        (  771): readbrightness,out1:9
+11-13 12:54:21.691 D/        (  771): .
+11-13 12:54:21.691 D/        (  771): readbrightness,out2:9.
+11-13 12:54:22.692 D/        (  771): readbrightness,out1:9
+11-13 12:54:22.692 D/        (  771): .
+11-13 12:54:22.692 D/        (  771): readbrightness,out2:9.
+11-13 12:54:23.150 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:54:23.259 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:54:23.643 D/AndroidRuntime(25969): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 12:54:23.648 E/libc    (25969): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 12:54:23.648 I/AndroidRuntime(25969): Using default boot image
+11-13 12:54:23.649 E/libc    (25969): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 12:54:23.632 W/app_process(25969): type=1400 audit(0.0:100445): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:54:23.649 I/AndroidRuntime(25969): Leaving lock profiling enabled
+11-13 12:54:23.649 E/libc    (25969): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 12:54:23.642 W/app_process(25969): type=1400 audit(0.0:100446): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:54:23.642 W/app_process(25969): type=1400 audit(0.0:100447): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:54:23.655 W/app_process(25969): Could not reserve sentinel fault page
+11-13 12:54:23.693 D/        (  771): readbrightness,out1:9
+11-13 12:54:23.693 D/        (  771): .
+11-13 12:54:23.693 D/        (  771): readbrightness,out2:9.
+11-13 12:54:23.783 D/ICU     (25969): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 12:54:23.805 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:54:24.099 W/app_process(25969): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 12:54:24.114 D/AndroidRuntime(25969): Calling main entry com.wetest.uia2.Main
+11-13 12:54:24.125 I/uidumper(25969): [UiAutomator2Server] Starting Server
+11-13 12:54:24.161 D/ThemeCompatibility(25969): START loading theme compatibility config.
+11-13 12:54:24.161 D/ThemeCompatibility(25969): getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-13 12:54:24.167 D/ThemeCompatibility(25969): getConfigDocumentTree(): 140 vs -1
+11-13 12:54:24.167 D/ThemeCompatibility(25969):     parse file: /system/media/theme/theme_compatibility.xml
+11-13 12:54:24.162 W/main    (25969): type=1400 audit(0.0:100448): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 12:54:24.172 D/ThemeCompatibility(25969): END loading: version=140 size=48
+11-13 12:54:24.174 E/AssetManager(25969): WTF--create system assets with illegal uid: 2000, gid:2000
+11-13 12:54:24.174 E/AssetManager(25969): java.lang.RuntimeException
+11-13 12:54:24.174 E/AssetManager(25969): 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-13 12:54:24.174 E/AssetManager(25969): 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-13 12:54:24.174 E/AssetManager(25969): 	at android.content.res.Resources.<init>(Resources.java:285)
+11-13 12:54:24.174 E/AssetManager(25969): 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-13 12:54:24.174 E/AssetManager(25969): 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-13 12:54:24.174 E/AssetManager(25969): 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-13 12:54:24.174 E/AssetManager(25969): 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-13 12:54:24.174 E/AssetManager(25969): 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-13 12:54:24.174 E/AssetManager(25969): 	at java.lang.reflect.Method.invoke(Native Method)
+11-13 12:54:24.174 E/AssetManager(25969): 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-13 12:54:24.174 E/AssetManager(25969): 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-13 12:54:24.174 E/AssetManager(25969): 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-13 12:54:24.174 E/AssetManager(25969): 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-13 12:54:24.174 E/AssetManager(25969): 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-13 12:54:24.174 E/AssetManager(25969): 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-13 12:54:24.174 E/AssetManager(25969): 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-13 12:54:24.174 E/AssetManager(25969): 	at com.wetest.uia2.Main.main(Main.java:74)
+11-13 12:54:24.174 E/AssetManager(25969): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-13 12:54:24.174 E/AssetManager(25969): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-13 12:54:24.176 W/asset   (25969): unable to execute idmap2: Permission denied
+11-13 12:54:24.176 W/AssetManager(25969): 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-13 12:54:24.172 W/main    (25969): type=1400 audit(0.0:100449): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-13 12:54:24.179 W/asset   (25969): unable to execute idmap2: Permission denied
+11-13 12:54:24.179 W/AssetManagerInjector(25969): 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-13 12:54:24.206 I/FeatureParser(25969): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-13 12:54:24.249 W/Java7Support(25969): Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-13 12:54:24.368 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:54:24.383 I/UiDevice(25969): Creating a new instance, old instance exists: false
+11-13 12:54:24.393 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:54:24.396 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:54:24.401 I/LuckyMoneyAccessibilityService( 3361): onDestroy
+11-13 12:54:24.403 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@51aed57
+11-13 12:54:24.412 D/UiDevice(25969): Setting accessibility service flags: 65618
+11-13 12:54:24.425 I/uidumper(25969): clipboardManager inited
+11-13 12:54:24.428 I/uidumper(25969): tmpdir is /data/local/tmp/u2
+11-13 12:54:24.447 I/uidumper(25969): http server listening on *:9008
+11-13 12:54:24.694 D/        (  771): readbrightness,out1:9
+11-13 12:54:24.694 D/        (  771): .
+11-13 12:54:24.694 D/        (  771): readbrightness,out2:9.
+11-13 12:54:24.947 D/UIAutomatorStub(25969): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:54:25.013 D/UIAutomatorStub(25969): URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "dumpWindowHierarchy", "params": [false, 50]}}
+11-13 12:54:25.085 W/QueryController(25969): Could not detect idle state.
+11-13 12:54:25.086 W/QueryController(25969): Could not detect idle state.
+11-13 12:54:25.164 I/AccessibilityNodeInfoDumper(25969): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@16484; boundsInParent: Rect(0, 0 - 720, 500); boundsInScreen: Rect(0, 0 - 720, 55); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/heads_up_scrim; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:54:25.195 I/AccessibilityNodeInfoDumper(25969): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@8f949; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(35, 34 - 35, 34); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_prompt_content_container; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:54:25.197 I/AccessibilityNodeInfoDumper(25969): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@9da85; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(584, 35 - 584, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_1; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:54:25.197 I/AccessibilityNodeInfoDumper(25969): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@9d303; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(584, 35 - 584, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_0; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:54:25.197 I/AccessibilityNodeInfoDumper(25969): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@a6cec; boundsInParent: Rect(0, 0 - 0, 38); boundsInScreen: Rect(618, 16 - 618, 54); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-13 12:54:25.305 D/UIAutomatorStub(25969): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:54:25.694 D/        (  771): readbrightness,out1:9
+11-13 12:54:25.694 D/        (  771): .
+11-13 12:54:25.694 D/        (  771): readbrightness,out2:9.
+11-13 12:54:25.870 D/UIAutomatorStub(25969): URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-13 12:54:26.244 W/adbd    (11824): timeout expired while flushing socket, closing
+11-13 12:54:26.277 W/WindowManager( 1577): removeWindowToken: Attempted to remove non-existing token: android.os.Binder@596d3dc
+11-13 12:54:26.281 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:54:26.285 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 12:54:26.285 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 12:54:26.285 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 12:54:26.288 I/LuckyMoneyAccessibilityService( 3361): onCreate
+11-13 12:54:26.288 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 12:54:26.426 E/adbd    (11824): failed to connect to socket 'tcp:9008': Connection refused
+11-13 12:54:26.695 D/        (  771): readbrightness,out1:9
+11-13 12:54:26.695 D/        (  771): .
+11-13 12:54:26.695 D/        (  771): readbrightness,out2:9.
+11-13 12:54:27.696 D/        (  771): readbrightness,out1:9
+11-13 12:54:27.696 D/        (  771): .
+11-13 12:54:27.696 D/        (  771): readbrightness,out2:9.
+11-13 12:54:28.697 D/        (  771): readbrightness,out1:9
+11-13 12:54:28.697 D/        (  771): .
+11-13 12:54:28.697 D/        (  771): readbrightness,out2:9.
+11-13 12:54:29.698 D/        (  771): readbrightness,out1:9
+11-13 12:54:29.698 D/        (  771): .
+11-13 12:54:29.698 D/        (  771): readbrightness,out2:9.
+11-13 12:54:30.698 D/        (  771): readbrightness,out1:9
+11-13 12:54:30.698 D/        (  771): .
+11-13 12:54:30.698 D/        (  771): readbrightness,out2:9.
+11-13 12:54:30.922 W/swapper/4(    0): type=1400 audit(0.0:100450): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 12:54:31.699 D/        (  771): readbrightness,out1:9
+11-13 12:54:31.699 D/        (  771): .
+11-13 12:54:31.699 D/        (  771): readbrightness,out2:9.
+11-13 12:54:32.701 D/        (  771): readbrightness,out1:9
+11-13 12:54:32.701 D/        (  771): .
+11-13 12:54:32.701 D/        (  771): readbrightness,out2:9.
+11-13 12:54:33.702 D/        (  771): readbrightness,out1:9
+11-13 12:54:33.702 D/        (  771): .
+11-13 12:54:33.702 D/        (  771): readbrightness,out2:9.
+11-13 12:54:34.704 D/        (  771): readbrightness,out1:9
+11-13 12:54:34.704 D/        (  771): .
+11-13 12:54:34.704 D/        (  771): readbrightness,out2:9.

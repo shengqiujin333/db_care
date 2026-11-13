@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-13T05:24:53" hostname="KASON" time="0.001">
+  <properties/>
+  <testcase name="noYesterdaySamples_isNoData" classname="com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest" time="0.0"/>
+  <testcase name="unknownSampleCount_usesDeviceAndContentOnly" classname="com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest" time="0.0"/>
+  <testcase name="messageConstants_areStable" classname="com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest" time="0.0"/>
+  <testcase name="successWithContent_hasNoMessage_andRestoresButton" classname="com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest" time="0.0"/>
+  <testcase name="feedback_hasNoAndroidImports" classname="com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest" time="0.001"/>
+  <testcase name="emptyContent_isNoData_notFailure" classname="com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest" time="0.0"/>
+  <testcase name="allTerminalStates_restoreButton_andMessagesAreStable" classname="com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest" time="0.0"/>
+  <testcase name="zeroDevices_isNoData_andRestoresButton" classname="com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest" time="0.0"/>
+  <testcase name="failure_hasFailureMessage_andRestoresButton" classname="com.jinyuni.dengbei_care.verification.ReportRegenerateFeedbackItem003VerificationTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

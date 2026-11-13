@@ -1,0 +1,85 @@
+--------- beginning of main
+11-13 12:59:05.968 D/        (  771): readbrightness,out1:9
+11-13 12:59:05.968 D/        (  771): .
+11-13 12:59:05.968 D/        (  771): readbrightness,out2:9.
+11-13 12:59:06.028 D/AndroidRuntime(26882): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 12:59:06.022 W/app_process(26882): type=1400 audit(0.0:100576): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:59:06.022 I/chatty  (26882): uid=2000(shell) app_process identical 1 line
+11-13 12:59:06.022 W/app_process(26882): type=1400 audit(0.0:100578): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:59:06.033 E/libc    (26882): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 12:59:06.033 I/AndroidRuntime(26882): Using default boot image
+11-13 12:59:06.034 E/libc    (26882): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 12:59:06.034 I/AndroidRuntime(26882): Leaving lock profiling enabled
+11-13 12:59:06.034 E/libc    (26882): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 12:59:06.040 W/app_process(26882): Could not reserve sentinel fault page
+11-13 12:59:06.166 D/ICU     (26882): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 12:59:06.221 W/app_process(26882): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 12:59:06.235 D/AndroidRuntime(26882): Calling main entry com.android.commands.input.Input
+11-13 12:59:06.254 D/AndroidRuntime(26882): Shutting down VM
+11-13 12:59:06.334 I/MetokLocationProvider( 3478): onSetRequest
+11-13 12:59:06.334 I/MetokLocationProvider( 3478): setRequest: request =ProviderRequest[OFF] ; client =WorkSource{}
+11-13 12:59:06.334 I/FusedLocationProvider( 3600): onSetRequest
+11-13 12:59:06.334 I/NLPWrapper( 3478): request exit
+11-13 12:59:06.334 I/AbsoluteLocationDispatcher( 3600): request type:0
+11-13 12:59:06.338 V/GrantPermissionsActivity(25857): Permission grant result requestId=165582934103883984 callingUid=10169 callingPackage=com.jinyuni.dengbei_care permission=android.permission.ACCESS_FINE_LOCATION isImplicit=false result=6
+11-13 12:59:06.338 V/GrantPermissionsActivity(25857): Permission grant result requestId=165582934103883984 callingUid=10169 callingPackage=com.jinyuni.dengbei_care permission=android.permission.ACCESS_COARSE_LOCATION isImplicit=true result=6
+11-13 12:59:06.340 I/MetokLocationProvider( 3478): onSetRequest
+11-13 12:59:06.341 I/FusedLocationProvider( 3600): onSetRequest
+11-13 12:59:06.341 I/MetokLocationProvider( 3478): onSetRequest
+11-13 12:59:06.341 I/AbsoluteLocationDispatcher( 3600): request type:0
+11-13 12:59:06.341 I/FusedLocationProvider( 3600): onSetRequest
+11-13 12:59:06.341 I/AbsoluteLocationDispatcher( 3600): request type:0
+11-13 12:59:06.341 I/MetokLocationProvider( 3478): setRequest: request =ProviderRequest[OFF] ; client =WorkSource{}
+11-13 12:59:06.341 I/NLPWrapper( 3478): request exit
+11-13 12:59:06.341 I/MetokLocationProvider( 3478): setRequest: request =ProviderRequest[OFF] ; client =WorkSource{}
+11-13 12:59:06.342 I/NLPWrapper( 3478): request exit
+11-13 12:59:06.343 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+--------- beginning of system
+11-13 12:59:06.351 I/AppOps  ( 1577): setUserRestriction: 24 action: false from uid: 10062 pid: 25857
+11-13 12:59:06.352 I/AppOps  ( 1577): setUserRestriction: 45 action: false from uid: 10062 pid: 25857
+11-13 12:59:06.355 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 12:59:06.360 D/PerfEngineController(11596): ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=26675, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 12:59:06.360 I/^_^MemoryTrim(17058): onAppBackground()
+11-13 12:59:06.360 D/AutoInstallService(26235): onForegroundInfoChanged: com.jinyuni.dengbei_care
+11-13 12:59:06.361 I/ProcessMonitor( 3361): onForegroundInfoChanged: ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=26675, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 12:59:06.361 I/GameBoosterService( 3361): onForegroundInfoChanged: Cur=com.jinyuni.dengbei_care	 last=com.lbe.security.miui
+11-13 12:59:06.361 I/GST     ( 4855): forePkg: com.jinyuni.dengbei_care, preForePkg: com.lbe.security.miui
+11-13 12:59:06.363 D/GameBoosterService( 3361): onGameStatusChange foreground:ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=26675, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 12:59:06.363 I/GameBoosterService( 3361): onForegroundInfoChanged: Exit
+11-13 12:59:06.363 I/VideoBoxUtils( 3361): isSupportVideoBox: false
+11-13 12:59:06.364 I/VideoToolBoxService( 3361): onForegroundInfoChanged: Exit Vtb
+11-13 12:59:06.367 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:59:06.367 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:59:06.367 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 22 microseconds, avg: 125
+11-13 12:59:06.368 I/Timeline( 1577): Timeline: App_transition_ready time:929375889
+11-13 12:59:06.368 I/Timeline( 1577): Timeline: App_transition_stopped time:929375889
+11-13 12:59:06.370 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:59:06.370 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:59:06.370 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 19 microseconds, avg: 125
+11-13 12:59:06.373 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:59:06.373 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:59:06.374 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 23 microseconds, avg: 124
+11-13 12:59:06.381 D/ForceDarkHelper(26675): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:59:06.437 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 12:59:06.385 D/ForceDarkHelper(26675): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:59:06.443 I/Toast   (26675): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 12:59:06.495 I/MiuiNetworkPolicy( 1577): updateUidState uid = 10062, uidState = 9
+11-13 12:59:06.505 D/IdProviderImpl(15673): getOAID
+11-13 12:59:06.506 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:59:06.507 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:59:06.507 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 33 microseconds, avg: 124
+11-13 12:59:06.537 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 12:59:06.537 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 12:59:06.537 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 17 microseconds, avg: 124
+11-13 12:59:06.969 D/        (  771): readbrightness,out1:9
+11-13 12:59:06.969 D/        (  771): .
+11-13 12:59:06.969 D/        (  771): readbrightness,out2:9.
+11-13 12:59:07.557 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 12:59:07.558 W/Gralloc3(26900): mapper 3.x is not supported
+11-13 12:59:07.970 D/        (  771): readbrightness,out1:9
+11-13 12:59:07.970 D/        (  771): .
+11-13 12:59:07.970 D/        (  771): readbrightness,out2:9.
+11-13 12:59:08.434 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@3c77079
+11-13 12:59:08.970 D/        (  771): readbrightness,out1:9
+11-13 12:59:08.970 D/        (  771): .
+11-13 12:59:08.970 D/        (  771): readbrightness,out2:9.

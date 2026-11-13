@@ -1,0 +1,67 @@
+--------- beginning of main
+11-13 13:20:39.988 D/AndroidRuntime(28542): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:20:39.982 W/app_process(28542): type=1400 audit(0.0:100903): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:20:39.982 I/chatty  (28542): uid=2000(shell) app_process identical 1 line
+11-13 13:20:39.982 W/app_process(28542): type=1400 audit(0.0:100905): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:20:39.994 E/libc    (28542): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:20:39.994 I/AndroidRuntime(28542): Using default boot image
+11-13 13:20:39.994 E/libc    (28542): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:20:39.994 I/AndroidRuntime(28542): Leaving lock profiling enabled
+11-13 13:20:39.995 E/libc    (28542): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:20:40.001 W/app_process(28542): Could not reserve sentinel fault page
+11-13 13:20:40.127 D/ICU     (28542): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:20:40.181 W/app_process(28542): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:20:40.195 D/AndroidRuntime(28542): Calling main entry com.android.commands.input.Input
+11-13 13:20:40.216 D/AndroidRuntime(28542): Shutting down VM
+11-13 13:20:40.238 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+--------- beginning of system
+11-13 13:20:40.251 I/ActivityManager( 1577): Killing 24834:com.miui.guardprovider/u0a93 (adj 965): empty for 1823s
+11-13 13:20:40.240 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:20:40.253 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 13:20:40.255 I/ActivityManager( 1577): Killing 20884:com.android.thememanager/9801 (adj 965): empty for 1825s
+11-13 13:20:40.263 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 13:20:40.287 I/MqttService(27753): BLE connect blocked: gateway address cleared/unset
+11-13 13:20:40.287 I/MqttService(27753): link_state=GATEWAY_UNSET msg=未配置网关地址（搜索附近网关）
+11-13 13:20:40.351 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 13:20:40.352 I/Zygote  (  510): Process 20884 exited due to signal 9 (Killed)
+11-13 13:20:40.355 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:20:40.356 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:20:40.363 I/Toast   (27753): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 13:20:40.365 I/MiuiNetworkPolicy( 1577): removeUidState uid = 9801
+11-13 13:20:40.370 I/Zygote  (  510): Process 24834 exited due to signal 9 (Killed)
+11-13 13:20:40.371 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-13 13:20:40.371 I/libprocessgroup( 1577): Successfully killed process cgroup uid 10093 pid 24834 in 119ms
+11-13 13:20:40.372 I/libprocessgroup( 1577): Successfully killed process cgroup uid 9801 pid 20884 in 0ms
+11-13 13:20:40.385 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:20:40.391 W/Parcel  ( 3361): **** enforceInterface() expected 'com.miui.gamebooster.service.ISecurityCenterNotificationListener' but read 'android.service.notification.INotificationListener'
+11-13 13:20:40.391 W/Binder  ( 3361): Caught a RuntimeException from the binder stub implementation.
+11-13 13:20:40.391 W/Binder  ( 3361): java.lang.SecurityException: Binder invocation to an incorrect interface
+11-13 13:20:40.391 W/Binder  ( 3361): 	at android.os.Parcel.nativeEnforceInterface(Native Method)
+11-13 13:20:40.391 W/Binder  ( 3361): 	at android.os.Parcel.enforceInterface(Parcel.java:626)
+11-13 13:20:40.391 W/Binder  ( 3361): 	at com.miui.gamebooster.service.ISecurityCenterNotificationListener$Stub.onTransact(Unknown Source:22)
+11-13 13:20:40.391 W/Binder  ( 3361): 	at android.os.Binder.execTransactInternal(Binder.java:1021)
+11-13 13:20:40.391 W/Binder  ( 3361): 	at android.os.Binder.execTransact(Binder.java:994)
+11-13 13:20:40.392 D/StatusBar( 1916): onNotificationPosted key=0|com.jinyuni.dengbei_care|1|null|10169 isUpdate=true
+11-13 13:20:40.392 D/StatusBar( 1916): updateNotification old=StatusBarNotification(pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null key=0|com.jinyuni.dengbei_care|1|null|10169: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+11-13 13:20:40.392 D/StatusBar( 1916):     pkgName=com.jinyuni.dengbei_care appUid=10169 sdk=34 imp=3 sysApp=F priApp=F hasShown=F float=F keyguard=F peek=F fullscreen=F
+11-13 13:20:40.392 D/StatusBar( 1916):     showMiuiAction=F enableFloat=T enableKeyguard=T floatTime=5000 messageCount=1 persistent=F customHeight=F customHideBorder=F
+11-13 13:20:40.395 I/MiuiNetworkPolicy( 1577): removeUidState uid = 10093
+11-13 13:20:40.398 V/onNotificationPostedCallBack( 3361): flags=98
+11-13 13:20:40.399 V/h       ( 3361): ret=0
+11-13 13:20:40.400 D/AudioManager( 1577): getStreamVolume isRestricted mode = 0
+11-13 13:20:40.400 D/APM::AudioPolicyEngine(  653): XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-13 13:20:40.401 D/AudioManager( 1577): getStreamVolume isRestricted mode = 0
+11-13 13:20:40.401 D/APM::AudioPolicyEngine(  653): XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-13 13:20:40.409 D/        (  771): readbrightness,out1:9
+11-13 13:20:40.409 D/        (  771): .
+11-13 13:20:40.409 D/        (  771): readbrightness,out2:9.
+11-13 13:20:40.435 D/StatusBar( 1916): No peeking: unimportant notification: 0|com.jinyuni.dengbei_care|1|null|10169
+11-13 13:20:40.435 D/StatusBar( 1916): updateHeadsUp wasHeadsUp=false shouldPeek=false alertAgain=true
+11-13 13:20:41.122 W/swapper/4(    0): type=1400 audit(0.0:100906): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:20:41.409 D/        (  771): readbrightness,out1:9
+11-13 13:20:41.409 D/        (  771): .
+11-13 13:20:41.409 D/        (  771): readbrightness,out2:9.
+11-13 13:20:42.292 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@5cebfdf
+11-13 13:20:42.410 D/        (  771): readbrightness,out1:9
+11-13 13:20:42.410 D/        (  771): .
+11-13 13:20:42.410 D/        (  771): readbrightness,out2:9.

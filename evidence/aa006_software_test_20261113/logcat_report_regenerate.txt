@@ -1,0 +1,69 @@
+--------- beginning of main
+11-13 13:12:07.808 D/        (  771): readbrightness,out1:9
+11-13 13:12:07.808 D/        (  771): .
+11-13 13:12:07.809 D/        (  771): readbrightness,out2:9.
+11-13 13:12:08.208 D/AndroidRuntime(28048): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:12:08.202 W/app_process(28048): type=1400 audit(0.0:100790): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:12:08.202 I/chatty  (28048): uid=2000(shell) app_process identical 1 line
+11-13 13:12:08.202 W/app_process(28048): type=1400 audit(0.0:100792): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:12:08.214 E/libc    (28048): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:12:08.214 I/AndroidRuntime(28048): Using default boot image
+11-13 13:12:08.214 E/libc    (28048): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:12:08.214 I/AndroidRuntime(28048): Leaving lock profiling enabled
+11-13 13:12:08.214 E/libc    (28048): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:12:08.221 W/app_process(28048): Could not reserve sentinel fault page
+11-13 13:12:08.346 D/ICU     (28048): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:12:08.401 W/app_process(28048): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:12:08.416 D/AndroidRuntime(28048): Calling main entry com.android.commands.input.Input
+11-13 13:12:08.450 D/AndroidRuntime(28048): Shutting down VM
+11-13 13:12:08.466 I/ReportScheduler(27753): Enqueued one-shot daily report
+11-13 13:12:08.527 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:12:08.530 D/CompatibilityInfo( 1577): mCompatibilityFlags - 0
+11-13 13:12:08.530 D/CompatibilityInfo( 1577): applicationDensity - 320
+11-13 13:12:08.530 D/CompatibilityInfo( 1577): applicationScale - 1.0
+11-13 13:12:08.532 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:12:08.583 W/DailyReportWorker(27753): No saved devices, skipping report
+11-13 13:12:08.589 I/WM-WorkerWrapper(27753): Worker result SUCCESS for Work [ id=b14b1229-e74b-462d-a4bd-e4a843f4fb54, tags={ com.jinyuni.dengbei_care.report.DailyReportWorker } ]
+11-13 13:12:08.598 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:12:08.600 I/hwservicemanager(  430): getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-13 13:12:08.629 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@a80f86a
+--------- beginning of system
+11-13 13:12:08.664 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:12:08.635 D/ForceDarkHelper(27753): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.report.ReportActivity@a80f86a
+11-13 13:12:08.670 I/Toast   (27753): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 13:12:08.809 D/        (  771): readbrightness,out1:9
+11-13 13:12:08.809 D/        (  771): .
+11-13 13:12:08.809 D/        (  771): readbrightness,out2:9.
+11-13 13:12:09.316 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 13:12:09.316 W/Gralloc3(28064): mapper 3.x is not supported
+11-13 13:12:09.811 D/        (  771): readbrightness,out1:9
+11-13 13:12:09.811 D/        (  771): .
+11-13 13:12:09.811 D/        (  771): readbrightness,out2:9.
+11-13 13:12:10.559 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 13:12:10.560 W/Gralloc3(28068): mapper 3.x is not supported
+11-13 13:12:10.675 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@e928c85
+11-13 13:12:10.812 D/        (  771): readbrightness,out1:9
+11-13 13:12:10.812 D/        (  771): .
+11-13 13:12:10.812 D/        (  771): readbrightness,out2:9.
+11-13 13:12:11.052 W/swapper/4(    0): type=1400 audit(0.0:100793): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:12:11.812 D/        (  771): readbrightness,out1:9
+11-13 13:12:11.812 D/        (  771): .
+11-13 13:12:11.812 D/        (  771): readbrightness,out2:9.
+11-13 13:12:12.167 W/WindowManager( 1577): Unable to start animation, surface is null or no children.
+11-13 13:12:12.312 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 13:12:12.313 W/Gralloc3(28073): mapper 3.x is not supported
+11-13 13:12:12.814 D/        (  771): readbrightness,out1:9
+11-13 13:12:12.814 D/        (  771): .
+11-13 13:12:12.814 D/        (  771): readbrightness,out2:9.
+11-13 13:12:13.815 D/        (  771): readbrightness,out1:9
+11-13 13:12:13.815 D/        (  771): .
+11-13 13:12:13.815 D/        (  771): readbrightness,out2:9.
+11-13 13:12:14.463 D/QtiCarrierConfigHelper( 2194): WARNING, no carrier configs on phone Id: 0
+11-13 13:12:14.464 D/KeyguardUpdateMonitor( 1916): received broadcast android.intent.action.BATTERY_CHANGED
+11-13 13:12:14.469 I/BatteryInfoReceiver( 3361): ACTION_BATTERY_CHANGED
+11-13 13:12:14.471 D/PowerCheckerService(11596): onBatteryChanged, mBatteryLevel = 100, status = 5, level = 100, plug = 2, scale = 100
+11-13 13:12:14.816 D/        (  771): readbrightness,out1:9
+11-13 13:12:14.816 D/        (  771): .
+11-13 13:12:14.816 D/        (  771): readbrightness,out2:9.
+11-13 13:12:15.038 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 13:12:15.039 W/Gralloc3(28077): mapper 3.x is not supported

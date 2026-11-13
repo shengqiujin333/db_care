@@ -1,0 +1,84 @@
+--------- beginning of main
+11-13 12:57:47.897 D/        (  771): readbrightness,out1:9
+11-13 12:57:47.897 D/        (  771): .
+11-13 12:57:47.897 D/        (  771): readbrightness,out2:9.
+11-13 12:57:48.525 D/AndroidRuntime(26612): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 12:57:48.522 W/app_process(26612): type=1400 audit(0.0:100526): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:57:48.530 E/libc    (26612): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 12:57:48.522 W/app_process(26612): type=1400 audit(0.0:100527): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:57:48.530 I/AndroidRuntime(26612): Using default boot image
+11-13 12:57:48.530 E/libc    (26612): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 12:57:48.530 I/AndroidRuntime(26612): Leaving lock profiling enabled
+11-13 12:57:48.522 W/app_process(26612): type=1400 audit(0.0:100528): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 12:57:48.531 E/libc    (26612): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 12:57:48.537 W/app_process(26612): Could not reserve sentinel fault page
+11-13 12:57:48.662 D/ICU     (26612): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 12:57:48.717 W/app_process(26612): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 12:57:48.732 D/AndroidRuntime(26612): Calling main entry com.android.commands.input.Input
+11-13 12:57:48.750 D/AndroidRuntime(26612): Shutting down VM
+11-13 12:57:48.773 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+--------- beginning of system
+11-13 12:57:45.654 I/chatty  ( 1577): uid=1000(system) LocationService expire 2 lines
+11-13 12:57:45.654 W/ActivityManager( 1577): Unable to start service Intent { act=com.qti.izat.xt.srv cmp=com.qualcomm.location.XT/.XTSrv (has extras) } U=0: not found
+11-13 12:57:48.804 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 12:57:48.780 D/ForceDarkHelper(25592): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 12:57:48.812 I/Toast   (25592): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 12:57:48.897 D/        (  771): readbrightness,out1:9
+11-13 12:57:48.897 D/        (  771): .
+11-13 12:57:48.898 D/        (  771): readbrightness,out2:9.
+11-13 12:57:49.804 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 12:57:49.805 W/Gralloc3(26629): mapper 3.x is not supported
+11-13 12:57:49.898 D/        (  771): readbrightness,out1:9
+11-13 12:57:49.898 D/        (  771): .
+11-13 12:57:49.898 D/        (  771): readbrightness,out2:9.
+11-13 12:57:50.825 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@1936859
+11-13 12:57:50.899 D/        (  771): readbrightness,out1:9
+11-13 12:57:50.899 D/        (  771): .
+11-13 12:57:50.899 D/        (  771): readbrightness,out2:9.
+11-13 12:57:50.932 W/swapper/7(    0): type=1400 audit(0.0:100529): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 12:57:51.899 D/        (  771): readbrightness,out1:9
+11-13 12:57:51.899 D/        (  771): .
+11-13 12:57:51.899 D/        (  771): readbrightness,out2:9.
+11-13 12:57:51.914 I/ActivityManager( 1577): Waited long enough for: ServiceRecord{387a67 u0 com.xiaomi.bluetooth/com.android.bluetooth.ble.app.MiuiFastConnectService}
+11-13 12:57:51.918 I/ActivityManager( 1577): Waited long enough for: ServiceRecord{553b980 u0 com.xiaomi.bluetooth/com.android.bluetooth.ble.app.MiuiBleAppService}
+11-13 12:57:52.307 W/WindowManager( 1577): Unable to start animation, surface is null or no children.
+11-13 12:57:52.900 D/        (  771): readbrightness,out1:9
+11-13 12:57:52.900 D/        (  771): .
+11-13 12:57:52.900 D/        (  771): readbrightness,out2:9.
+11-13 12:57:53.902 D/        (  771): readbrightness,out1:9
+11-13 12:57:53.902 D/        (  771): .
+11-13 12:57:53.902 D/        (  771): readbrightness,out2:9.
+11-13 12:57:54.904 D/        (  771): readbrightness,out1:9
+11-13 12:57:54.904 D/        (  771): .
+11-13 12:57:54.904 D/        (  771): readbrightness,out2:9.
+11-13 12:57:55.904 D/        (  771): readbrightness,out1:9
+11-13 12:57:55.904 D/        (  771): .
+11-13 12:57:55.904 D/        (  771): readbrightness,out2:9.
+11-13 12:57:56.906 D/        (  771): readbrightness,out1:9
+11-13 12:57:56.906 D/        (  771): .
+11-13 12:57:56.906 D/        (  771): readbrightness,out2:9.
+11-13 12:57:57.908 D/        (  771): readbrightness,out1:9
+11-13 12:57:57.908 D/        (  771): .
+11-13 12:57:57.908 D/        (  771): readbrightness,out2:9.
+11-13 12:57:58.886 D/GnssLocationProvider( 1577): gnssNameCb: name=qcom;MPSS.JO.3.2-00196-SDM439_GENNS_PACK-2.416587.2.432967.5;
+11-13 12:57:58.887 D/GnssLocationProvider( 1577): gnssSetCapabilitesCb: 99u
+11-13 12:57:58.887 D/PerMgrLib(  596): GPS voting for modem
+11-13 12:57:58.887 D/PerMgrSrv(  639): GPS voting for modem
+11-13 12:57:58.887 D/PerMgrSrv(  639): modem num voters is 4
+11-13 12:57:58.887 D/GnssLocationProvider( 1577): gnssSetSystemInfoCb: yearOfHw=2017
+11-13 12:57:58.888 I/GnssLocationProvider( 1577): Unable to initialize IGnssXtra interface.
+11-13 12:57:58.888 I/GnssLocationProvider( 1577): Unable to initialize IGnssNi interface.
+11-13 12:57:58.889 E/LocSvc_LocationAPI(  596): destroy:246] removeFromGnssInf: 0, removeFromBatchingInf: 1, removeFromGeofenceInf: 0,need 1
+11-13 12:57:58.889 I/GnssVisibilityControl( 1577): Updating non-framework location access proxy apps in the GNSS HAL to: []
+11-13 12:57:58.890 W/LocSvc_GnssAdapter(  596): nfwControlCommand:5055] NFW control is not supported, do not use this for NFW
+11-13 12:57:58.899 I/FusedLocationProvider( 3600): onSetRequest
+11-13 12:57:58.899 I/GnssLocationProvider( 1577): restartRequests
+11-13 12:57:58.900 I/AbsoluteLocationDispatcher( 3600): request type:0
+11-13 12:57:58.905 W/ActivityManager( 1577): Unable to start service Intent { act=com.qti.izat.xt.srv cmp=com.qualcomm.location.XT/.XTSrv (has extras) } U=0: not found
+11-13 12:57:58.906 I/MetokLocationProvider( 3478): onSetRequest
+11-13 12:57:58.910 D/        (  771): readbrightness,out1:9
+11-13 12:57:58.910 D/        (  771): .
+11-13 12:57:58.910 D/        (  771): readbrightness,out2:9.
+11-13 12:57:58.911 I/BtGatt.ScanManager(26457): msg.what = 5
+11-13 12:57:58.911 I/MetokLocationProvider( 3478): setRequest: request =ProviderRequest[OFF] ; client =WorkSource{}
+11-13 12:57:58.911 I/NLPWrapper( 3478): request exit

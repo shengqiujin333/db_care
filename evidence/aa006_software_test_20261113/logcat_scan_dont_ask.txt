@@ -1,0 +1,94 @@
+--------- beginning of main
+11-13 13:00:10.770 D/AndroidRuntime(26969): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:00:10.776 E/libc    (26969): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:00:10.762 W/app_process(26969): type=1400 audit(0.0:100588): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:00:10.776 I/AndroidRuntime(26969): Using default boot image
+11-13 13:00:10.762 W/app_process(26969): type=1400 audit(0.0:100589): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:00:10.776 E/libc    (26969): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:00:10.776 I/AndroidRuntime(26969): Leaving lock profiling enabled
+11-13 13:00:10.776 E/libc    (26969): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:00:10.762 W/app_process(26969): type=1400 audit(0.0:100590): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:00:10.784 W/app_process(26969): Could not reserve sentinel fault page
+11-13 13:00:10.911 D/ICU     (26969): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:00:10.964 W/app_process(26969): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:00:10.952 W/swapper/5(    0): type=1400 audit(0.0:100591): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:00:10.978 D/AndroidRuntime(26969): Calling main entry com.android.commands.input.Input
+11-13 13:00:10.997 D/AndroidRuntime(26969): Shutting down VM
+11-13 13:00:11.006 V/GrantPermissionsActivity(25857): Permission grant result requestId=5034027723316845663 callingUid=10169 callingPackage=com.jinyuni.dengbei_care permission=android.permission.ACCESS_FINE_LOCATION isImplicit=false result=7
+11-13 13:00:11.007 V/GrantPermissionsActivity(25857): Permission grant result requestId=5034027723316845663 callingUid=10169 callingPackage=com.jinyuni.dengbei_care permission=android.permission.ACCESS_COARSE_LOCATION isImplicit=true result=7
+11-13 13:00:11.011 D/ActivityTrigger( 1577): ActivityTrigger activityPauseTrigger 
+--------- beginning of system
+11-13 13:00:11.025 I/AppOps  ( 1577): setUserRestriction: 24 action: false from uid: 10062 pid: 25857
+11-13 13:00:11.025 I/AppOps  ( 1577): setUserRestriction: 45 action: false from uid: 10062 pid: 25857
+11-13 13:00:11.031 D/        (  771): readbrightness,out1:9
+11-13 13:00:11.031 D/        (  771): .
+11-13 13:00:11.031 D/        (  771): readbrightness,out2:9.
+11-13 13:00:11.031 E/ANDR-PERF-RESOURCEQS(  613): Resource with major=3, minor=0 not supported
+11-13 13:00:11.035 D/PerfEngineController(11596): ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=26675, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 13:00:11.035 I/ProcessMonitor( 3361): onForegroundInfoChanged: ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=26675, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 13:00:11.036 I/GST     ( 4855): forePkg: com.jinyuni.dengbei_care, preForePkg: com.lbe.security.miui
+11-13 13:00:11.036 I/^_^MemoryTrim(17058): onAppBackground()
+11-13 13:00:11.037 D/AutoInstallService(26235): onForegroundInfoChanged: com.jinyuni.dengbei_care
+11-13 13:00:11.038 I/GameBoosterService( 3361): onForegroundInfoChanged: Cur=com.jinyuni.dengbei_care	 last=com.lbe.security.miui
+11-13 13:00:11.039 D/GameBoosterService( 3361): onGameStatusChange foreground:ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=26675, mLastForegroundPackageName='com.lbe.security.miui', mLastForegroundUid=10062, mLastForegroundPid=25857, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-13 13:00:11.039 I/GameBoosterService( 3361): onForegroundInfoChanged: Exit
+11-13 13:00:11.039 I/VideoBoxUtils( 3361): isSupportVideoBox: false
+11-13 13:00:11.040 I/VideoToolBoxService( 3361): onForegroundInfoChanged: Exit Vtb
+11-13 13:00:11.042 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:00:11.042 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:00:11.042 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 19 microseconds, avg: 123
+11-13 13:00:11.043 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:00:11.043 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:00:11.043 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 16 microseconds, avg: 123
+11-13 13:00:11.043 I/Timeline( 1577): Timeline: App_transition_ready time:929440564
+11-13 13:00:11.043 I/Timeline( 1577): Timeline: App_transition_stopped time:929440564
+11-13 13:00:11.044 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:00:11.044 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:00:11.044 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 20 microseconds, avg: 123
+11-13 13:00:11.057 D/ForceDarkHelper(26675): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:00:11.113 E/WindowManager( 1577): App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-13 13:00:11.059 D/ForceDarkHelper(26675): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:00:11.119 I/Toast   (26675): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-13 13:00:11.172 I/MiuiNetworkPolicy( 1577): updateUidState uid = 10062, uidState = 9
+11-13 13:00:11.177 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:00:11.177 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:00:11.178 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 53 microseconds, avg: 123
+11-13 13:00:11.182 D/IdProviderImpl(15673): getOAID
+11-13 13:00:11.199 D/EventBus( 1916): [1916, u0] send(AppTransitionFinishedEvent)
+11-13 13:00:11.199 D/EventBus( 1916): [1916, u0]  -> ForcedResizableInfoActivityController [0xd82fe33, P1] onBusEvent(AppTransitionFinishedEvent)
+11-13 13:00:11.199 D/EventBus( 1916): [1916, u0] onBusEvent(AppTransitionFinishedEvent) duration: 18 microseconds, avg: 123
+11-13 13:00:11.746 W/BatteryHistoryManager( 3361): save history : 2026.11.13  13:0
+11-13 13:00:11.795 E/KernelCpuSpeedReader( 1577): Failed to read cpu-freq: /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state: open failed: ENOENT (No such file or directory)
+11-13 13:00:11.839 I/netd    (  509): trafficSwapActiveStatsMap() <34.95ms>
+11-13 13:00:11.844 I/netd    (  509): tetherGetStats() <2.80ms>
+11-13 13:00:11.905 I/PowerRankHelperHolder( 3361): refreshStats begin
+11-13 13:00:11.980 I/netd    (  509): trafficSwapActiveStatsMap() <27.19ms>
+11-13 13:00:11.984 I/netd    (  509): tetherGetStats() <2.79ms>
+11-13 13:00:12.031 D/        (  771): readbrightness,out1:9
+11-13 13:00:12.031 D/        (  771): .
+11-13 13:00:12.031 D/        (  771): readbrightness,out2:9.
+11-13 13:00:12.039 W/CpuPowerCalculator( 3361): UID 0 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.039 W/CpuPowerCalculator( 3361): UID 1000 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.040 W/CpuPowerCalculator( 3361): UID 1001 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.040 W/CpuPowerCalculator( 3361): UID 1002 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.040 W/CpuPowerCalculator( 3361): UID 1013 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.040 W/CpuPowerCalculator( 3361): UID 1036 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.040 W/CpuPowerCalculator( 3361): UID 1040 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.040 W/CpuPowerCalculator( 3361): UID 1041 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.040 W/CpuPowerCalculator( 3361): UID 1066 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.040 W/CpuPowerCalculator( 3361): UID 1069 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.040 W/CpuPowerCalculator( 3361): UID 10087 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.040 W/CpuPowerCalculator( 3361): UID 10091 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-13 13:00:12.072 I/PowerRankHelperHolder( 3361): refreshStats end
+11-13 13:00:12.100 W/BatteryHistoryManager( 3361): save history curHistoryTime : 929862381
+11-13 13:00:12.101 W/BatteryHistoryManager( 3361): save history next record history time(min) : 60
+11-13 13:00:12.511 I/hwservicemanager(  430): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-13 13:00:12.512 W/Gralloc3(26988): mapper 3.x is not supported
+11-13 13:00:13.033 D/        (  771): readbrightness,out1:9
+11-13 13:00:13.033 D/        (  771): .
+11-13 13:00:13.033 D/        (  771): readbrightness,out2:9.
+11-13 13:00:11.937 E/KernelCpuSpeedReader( 1577): Failed to read cpu-freq: /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state: open failed: ENOENT (No such file or directory)
+11-13 13:00:13.109 W/NotificationService( 1577): Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@4228c7e
+11-13 13:00:14.034 D/        (  771): readbrightness,out1:9
+11-13 13:00:14.034 D/        (  771): .
+11-13 13:00:14.034 D/        (  771): readbrightness,out2:9.

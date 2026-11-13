@@ -1,0 +1,847 @@
+--------- beginning of main
+11-13 13:09:21.032 W/swapper/4(    0): type=1400 audit(0.0:100717): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:09:21.450 D/AndroidRuntime(27667): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:09:21.442 W/app_process(27667): type=1400 audit(0.0:100718): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:09:21.456 E/libc    (27667): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:09:21.456 I/AndroidRuntime(27667): Using default boot image
+11-13 13:09:21.456 E/libc    (27667): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:09:21.456 I/AndroidRuntime(27667): Leaving lock profiling enabled
+11-13 13:09:21.442 W/app_process(27667): type=1400 audit(0.0:100719): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:09:21.456 E/libc    (27667): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:09:21.442 W/app_process(27667): type=1400 audit(0.0:100720): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:09:21.463 W/app_process(27667): Could not reserve sentinel fault page
+11-13 13:09:21.588 D/ICU     (27667): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:09:21.640 W/app_process(27667): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:09:21.649 D/        (  771): readbrightness,out1:9
+11-13 13:09:21.649 D/        (  771): .
+11-13 13:09:21.649 D/        (  771): readbrightness,out2:9.
+11-13 13:09:21.654 D/AndroidRuntime(27667): Calling main entry com.android.commands.input.Input
+11-13 13:09:21.681 D/AndroidRuntime(27667): Shutting down VM
+11-13 13:09:21.701 D/BluetoothAdapter(27076): isLeEnabled(): ON
+11-13 13:09:21.706 D/BtGatt.GattService(26457): registerScanner() - UUID=9b948c89-bf94-4978-943e-ba18e54be0a6
+11-13 13:09:21.707 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 13:09:21.707 I/bt_stack(26457): [INFO:gatt_api.cc(959)] GATT_Register 21791c4a-6abf-6a93-1012-9151a410e548
+11-13 13:09:21.707 I/bt_stack(26457): [INFO:gatt_api.cc(979)] allocated gatt_if=6
+11-13 13:09:21.707 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=6
+11-13 13:09:21.707 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 13:09:21.707 D/BtGatt.GattService(26457): onScannerRegistered() - UUID=9b948c89-bf94-4978-943e-ba18e54be0a6, scannerId=6, status=0
+11-13 13:09:21.707 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 13:09:21.708 D/BluetoothLeScanner(27076): onScannerRegistered() - status=0 scannerId=6 mScannerId=0
+11-13 13:09:21.711 D/BtGatt.GattService(26457): start scan with filters. callingPackage: com.jinyuni.dengbei_care
+11-13 13:09:21.717 D/BluetoothUtils(26457): blockedByLocationOff callingUid=10169
+11-13 13:09:21.718 I/BluetoothUtils(26457): packagename is com.jinyuni.dengbei_care ,and its permission is false
+11-13 13:09:21.725 I/BtGatt.ScanManager(26457): msg.what = 0
+11-13 13:09:21.726 D/BtGatt.ScanManager(26457): handling starting scan
+11-13 13:09:21.729 D/BtGatt.ScanManager(26457): isAptXLowLatencyModeEnabled: false
+11-13 13:09:21.731 I/GatewayDiscovery(27076): scan started filterByFfe0=true timeoutMs=10000
+11-13 13:09:21.736 D/BtGatt.GattService(26457): onScanFilterEnableDisabled() - clientIf=6, status=0, action=1
+11-13 13:09:21.736 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:21.737 D/BtGatt.ScanManager(26457): Available Filter size: 8
+11-13 13:09:21.737 I/bt_stack(26457): [INFO:btm_ble_adv_filter.cc(684)] BTM_LE_PF_set UUID MASK is empty 
+11-13 13:09:21.738 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=6, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:09:21.738 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:21.738 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:09:21.745 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=6, status=0, action=0, availableSpace=10
+11-13 13:09:21.745 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:21.745 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=2
+11-13 13:09:21.745 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=2ScanSetting LE Coded Scan mode=2 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=255
+11-13 13:09:21.745 D/BtGatt.ScanManager(26457): configureRegularScanParams - scanInterval LE 1M = 4096configureRegularScanParams - scanWindow LE 1M= 4096configureRegularScanParams - scanInterval LE Coded= 4096configureRegularScanParams - scanWindow LE Coded= 4096
+11-13 13:09:21.746 D/BtGatt.GattService(26457): onScanParamSetupCompleted : 0
+11-13 13:09:21.788 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:21.788 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:21.947 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:21.947 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:21.947 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:21.947 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:21.952 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:21.953 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:21.953 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:21.954 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:21.961 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:22.107 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.107 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:22.107 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.107 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:22.109 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.110 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.111 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.111 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.118 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:22.238 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.238 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:22.271 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.271 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:22.272 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.272 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:22.273 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.275 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.275 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.276 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.283 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:22.425 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.425 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:22.434 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.434 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:22.435 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.435 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:22.436 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.437 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.437 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.439 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.445 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:22.537 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.537 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:22.537 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.538 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:22.539 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.540 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.540 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.541 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.547 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:22.649 D/        (  771): readbrightness,out1:9
+11-13 13:09:22.649 D/        (  771): .
+11-13 13:09:22.649 D/        (  771): readbrightness,out2:9.
+11-13 13:09:22.749 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.749 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:22.749 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.750 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:22.751 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.752 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.752 D/AndroidRuntime(27682): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:09:22.752 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.753 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.758 E/libc    (27682): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:09:22.758 I/AndroidRuntime(27682): Using default boot image
+11-13 13:09:22.758 E/libc    (27682): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:09:22.758 I/AndroidRuntime(27682): Leaving lock profiling enabled
+11-13 13:09:22.758 E/libc    (27682): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:09:22.742 W/app_process(27682): type=1400 audit(0.0:100721): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:09:22.742 I/chatty  (27682): uid=2000(shell) app_process identical 1 line
+11-13 13:09:22.742 W/app_process(27682): type=1400 audit(0.0:100723): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:09:22.759 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:22.770 W/app_process(27682): Could not reserve sentinel fault page
+11-13 13:09:22.898 D/ICU     (27682): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:09:22.937 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.937 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:22.952 W/app_process(27682): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:09:22.966 D/AndroidRuntime(27682): Calling main entry com.android.commands.input.Input
+11-13 13:09:22.968 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.969 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:22.969 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:22.969 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:22.971 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.972 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.972 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:22.973 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:22.984 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:22.996 D/AndroidRuntime(27682): Shutting down VM
+11-13 13:09:23.022 D/BluetoothAdapter(27076): isLeEnabled(): ON
+11-13 13:09:23.023 D/BtGatt.GattService(26457): stopScan() - queue size =2
+11-13 13:09:23.025 I/BtGatt.ScanManager(26457): msg.what = 1
+11-13 13:09:23.026 D/BtGatt.GattService(26457): unregisterScanner() - scannerId=6
+11-13 13:09:23.027 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=6
+11-13 13:09:23.027 V/bt_stack(26457): [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x06
+11-13 13:09:23.028 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=6, status=0, action=1, availableSpace=11
+11-13 13:09:23.028 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:23.028 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=1
+11-13 13:09:23.028 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=2 mLastConfiguredScanSettingLECoded=2scanPhy=255
+11-13 13:09:23.029 I/GatewayDiscovery(27076): scan stopped
+11-13 13:09:23.030 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:23.031 D/BtGatt.ScanManager(26457): configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-13 13:09:23.031 D/BtGatt.GattService(26457): onScanParamSetupCompleted : 0
+11-13 13:09:23.038 D/BluetoothAdapter(27076): isLeEnabled(): ON
+11-13 13:09:23.042 D/BtGatt.GattService(26457): registerScanner() - UUID=1e94752e-ab02-4b16-8366-fb4be280e1a2
+11-13 13:09:23.042 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 13:09:23.043 I/bt_stack(26457): [INFO:gatt_api.cc(959)] GATT_Register 9ea28222-3f28-9f26-8234-dd65df05b9f3
+11-13 13:09:23.043 I/bt_stack(26457): [INFO:gatt_api.cc(979)] allocated gatt_if=6
+11-13 13:09:23.043 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=6
+11-13 13:09:23.043 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 13:09:23.043 D/BtGatt.GattService(26457): onScannerRegistered() - UUID=1e94752e-ab02-4b16-8366-fb4be280e1a2, scannerId=6, status=0
+11-13 13:09:23.043 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 13:09:23.044 D/BluetoothLeScanner(27076): onScannerRegistered() - status=0 scannerId=6 mScannerId=0
+11-13 13:09:23.045 D/BtGatt.GattService(26457): start scan with filters. callingPackage: com.jinyuni.dengbei_care
+11-13 13:09:23.048 D/BluetoothUtils(26457): blockedByLocationOff callingUid=10169
+11-13 13:09:23.049 I/BluetoothUtils(26457): packagename is com.jinyuni.dengbei_care ,and its permission is false
+11-13 13:09:23.051 I/BtGatt.ScanManager(26457): msg.what = 0
+11-13 13:09:23.052 D/BtGatt.ScanManager(26457): handling starting scan
+11-13 13:09:23.055 I/GatewayDiscovery(27076): scan started filterByFfe0=true timeoutMs=10000
+11-13 13:09:23.056 D/BtGatt.ScanManager(26457): isAptXLowLatencyModeEnabled: false
+11-13 13:09:23.061 D/BtGatt.GattService(26457): onScanFilterEnableDisabled() - clientIf=6, status=0, action=1
+11-13 13:09:23.061 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:23.062 D/BtGatt.ScanManager(26457): Available Filter size: 8
+11-13 13:09:23.062 I/bt_stack(26457): [INFO:btm_ble_adv_filter.cc(684)] BTM_LE_PF_set UUID MASK is empty 
+11-13 13:09:23.062 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=6, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:09:23.062 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:23.063 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:09:23.068 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=6, status=0, action=0, availableSpace=10
+11-13 13:09:23.068 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:23.068 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=2
+11-13 13:09:23.068 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=2ScanSetting LE Coded Scan mode=2 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=255
+11-13 13:09:23.068 D/BtGatt.ScanManager(26457): configureRegularScanParams - scanInterval LE 1M = 4096configureRegularScanParams - scanWindow LE 1M= 4096configureRegularScanParams - scanInterval LE Coded= 4096configureRegularScanParams - scanWindow LE Coded= 4096
+11-13 13:09:23.068 D/BtGatt.GattService(26457): onScanParamSetupCompleted : 0
+11-13 13:09:23.397 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.397 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:23.397 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.397 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:23.398 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.398 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:23.401 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:23.402 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:23.402 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:23.403 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:23.410 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:23.580 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.580 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:23.619 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.619 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:23.620 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.620 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:23.621 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:23.622 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:23.623 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:23.623 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:23.630 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:23.650 D/        (  771): readbrightness,out1:9
+11-13 13:09:23.650 D/        (  771): .
+11-13 13:09:23.650 D/        (  771): readbrightness,out2:9.
+11-13 13:09:23.730 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.731 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:23.731 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.731 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:23.732 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:23.733 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:23.734 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:23.734 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:23.741 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:23.857 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.857 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:23.980 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.980 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:23.998 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.998 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:23.999 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:23.999 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:24.000 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:24.001 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:24.002 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:24.002 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:24.008 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:24.052 D/AndroidRuntime(27696): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-13 13:09:24.042 W/app_process(27696): type=1400 audit(0.0:100724): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:09:24.042 W/app_process(27696): type=1400 audit(0.0:100725): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:09:24.058 E/libc    (27696): Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-13 13:09:24.058 I/AndroidRuntime(27696): Using default boot image
+11-13 13:09:24.058 E/libc    (27696): Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-13 13:09:24.058 I/AndroidRuntime(27696): Leaving lock profiling enabled
+11-13 13:09:24.058 E/libc    (27696): Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-13 13:09:24.042 W/app_process(27696): type=1400 audit(0.0:100726): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=12531 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-13 13:09:24.065 W/app_process(27696): Could not reserve sentinel fault page
+11-13 13:09:24.192 D/ICU     (27696): Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-13 13:09:24.236 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:24.237 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:24.243 W/app_process(27696): JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-13 13:09:24.257 D/AndroidRuntime(27696): Calling main entry com.android.commands.input.Input
+11-13 13:09:24.282 D/AndroidRuntime(27696): Shutting down VM
+11-13 13:09:24.283 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:24.283 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:24.283 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:24.284 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:24.285 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:24.286 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:24.287 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:24.287 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:24.308 D/BluetoothAdapter(27076): isLeEnabled(): ON
+11-13 13:09:24.310 D/BtGatt.GattService(26457): stopScan() - queue size =2
+11-13 13:09:24.314 D/BtGatt.GattService(26457): unregisterScanner() - scannerId=6
+11-13 13:09:24.314 I/BtGatt.ScanManager(26457): msg.what = 1
+11-13 13:09:24.314 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=6
+11-13 13:09:24.314 V/bt_stack(26457): [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x06
+11-13 13:09:24.318 I/GatewayDiscovery(27076): scan stopped
+11-13 13:09:24.318 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=6, status=0, action=1, availableSpace=11
+11-13 13:09:24.318 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:24.318 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:24.319 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=1
+11-13 13:09:24.319 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=2 mLastConfiguredScanSettingLECoded=2scanPhy=255
+11-13 13:09:24.322 D/BtGatt.ScanManager(26457): configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-13 13:09:24.323 D/BtGatt.GattService(26457): onScanParamSetupCompleted : 0
+11-13 13:09:24.328 D/BluetoothAdapter(27076): isLeEnabled(): ON
+11-13 13:09:24.332 D/BtGatt.GattService(26457): registerScanner() - UUID=7e2b81e7-fcd7-410a-ab69-95ec5b903323
+11-13 13:09:24.332 V/bt_stack(26457): [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-13 13:09:24.332 I/bt_stack(26457): [INFO:gatt_api.cc(959)] GATT_Register 68d20f2a-ee7c-e867-3355-44359d27d977
+11-13 13:09:24.332 I/bt_stack(26457): [INFO:gatt_api.cc(979)] allocated gatt_if=6
+11-13 13:09:24.332 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=6
+11-13 13:09:24.333 D/BtGatt.GattService(26457): onScannerRegistered() - UUID=7e2b81e7-fcd7-410a-ab69-95ec5b903323, scannerId=6, status=0
+11-13 13:09:24.333 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-13 13:09:24.333 V/bt_stack(26457): [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-13 13:09:24.333 D/BluetoothLeScanner(27076): onScannerRegistered() - status=0 scannerId=6 mScannerId=0
+11-13 13:09:24.335 D/BtGatt.GattService(26457): start scan with filters. callingPackage: com.jinyuni.dengbei_care
+11-13 13:09:24.339 D/BluetoothUtils(26457): blockedByLocationOff callingUid=10169
+11-13 13:09:24.340 I/BluetoothUtils(26457): packagename is com.jinyuni.dengbei_care ,and its permission is false
+11-13 13:09:24.344 I/BtGatt.ScanManager(26457): msg.what = 0
+11-13 13:09:24.345 D/BtGatt.ScanManager(26457): handling starting scan
+11-13 13:09:24.347 D/BtGatt.ScanManager(26457): isAptXLowLatencyModeEnabled: false
+11-13 13:09:24.348 I/GatewayDiscovery(27076): scan started filterByFfe0=true timeoutMs=10000
+11-13 13:09:24.352 D/BtGatt.GattService(26457): onScanFilterEnableDisabled() - clientIf=6, status=0, action=1
+11-13 13:09:24.352 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:24.352 D/BtGatt.ScanManager(26457): Available Filter size: 8
+11-13 13:09:24.352 I/bt_stack(26457): [INFO:btm_ble_adv_filter.cc(684)] BTM_LE_PF_set UUID MASK is empty 
+11-13 13:09:24.353 D/BtGatt.GattService(26457): onScanFilterConfig() - clientIf=6, action = 0 status = 0, filterType=0, availableSpace=0
+11-13 13:09:24.353 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:24.353 D/BtGatt.ScanManager(26457): configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-13 13:09:24.361 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=6, status=0, action=0, availableSpace=10
+11-13 13:09:24.361 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:24.361 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=2
+11-13 13:09:24.361 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=2ScanSetting LE Coded Scan mode=2 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=255
+11-13 13:09:24.361 D/BtGatt.ScanManager(26457): configureRegularScanParams - scanInterval LE 1M = 4096configureRegularScanParams - scanWindow LE 1M= 4096configureRegularScanParams - scanInterval LE Coded= 4096configureRegularScanParams - scanWindow LE Coded= 4096
+11-13 13:09:24.362 D/BtGatt.GattService(26457): onScanParamSetupCompleted : 0
+11-13 13:09:24.419 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:24.419 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:24.507 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:24.507 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:24.533 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:24.533 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:24.650 D/        (  771): readbrightness,out1:9
+11-13 13:09:24.650 D/        (  771): .
+11-13 13:09:24.650 D/        (  771): readbrightness,out2:9.
+11-13 13:09:24.709 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:24.710 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:24.794 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:24.794 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:25.021 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.021 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:25.116 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.116 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:25.388 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.388 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:25.389 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.389 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:25.392 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:25.393 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:25.393 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:25.394 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:25.400 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:25.436 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.436 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:25.436 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.437 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:25.438 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:25.439 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:25.440 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:25.441 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:25.448 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:25.543 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.544 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:25.544 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.544 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:25.545 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:25.546 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:25.547 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:25.547 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:25.554 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:25.597 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.597 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:25.597 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.597 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:25.599 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:25.600 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:25.600 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:25.601 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:25.608 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:25.651 D/        (  771): readbrightness,out1:9
+11-13 13:09:25.651 D/        (  771): .
+11-13 13:09:25.651 D/        (  771): readbrightness,out2:9.
+11-13 13:09:25.652 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.652 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:25.652 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:25.653 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:25.654 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:25.655 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:25.655 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:25.656 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:25.663 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:26.019 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.019 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:26.234 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.234 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:26.234 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.234 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:26.235 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.236 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.237 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.237 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.244 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:26.301 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.301 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:26.402 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.402 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:26.402 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.402 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:26.403 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.404 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.405 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.405 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.412 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:26.566 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.566 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:26.566 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.566 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:26.568 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.569 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.570 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.570 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.576 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:26.618 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.618 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:26.619 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.619 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:26.620 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.621 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.622 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.622 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.628 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:26.652 D/        (  771): readbrightness,out1:9
+11-13 13:09:26.652 D/        (  771): .
+11-13 13:09:26.652 D/        (  771): readbrightness,out2:9.
+11-13 13:09:26.712 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.712 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:26.722 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.722 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:26.722 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.722 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:26.724 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.725 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.725 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.726 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.732 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:26.773 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.773 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:26.773 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:26.774 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:26.775 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.776 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.776 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:26.777 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:26.786 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:27.171 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.171 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:27.298 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.298 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:27.328 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.328 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:27.328 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.328 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:27.330 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:27.331 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:27.331 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:27.332 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:27.338 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:27.435 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.435 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:27.435 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.436 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:27.437 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:27.438 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:27.438 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:27.439 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:27.446 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:27.597 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.598 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:27.598 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.598 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:27.600 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:27.601 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:27.601 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:27.602 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:27.608 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:27.653 D/        (  771): readbrightness,out1:9
+11-13 13:09:27.653 D/        (  771): .
+11-13 13:09:27.653 D/        (  771): readbrightness,out2:9.
+11-13 13:09:27.659 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.659 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:27.879 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.880 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:27.880 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:27.880 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:27.881 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:27.882 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:27.883 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:27.883 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:27.889 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:28.042 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.042 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:28.043 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.043 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:28.044 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:28.045 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:28.046 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:28.046 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:28.053 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:28.147 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.147 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:28.148 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.148 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:28.149 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:28.150 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:28.151 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:28.151 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:28.157 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:28.219 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.219 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:28.260 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.260 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:28.600 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.601 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:28.601 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.601 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:28.602 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:28.603 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:28.604 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:28.605 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:28.611 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:28.653 D/        (  771): readbrightness,out1:9
+11-13 13:09:28.653 D/        (  771): .
+11-13 13:09:28.653 D/        (  771): readbrightness,out2:9.
+11-13 13:09:28.664 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.664 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:28.712 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.712 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:28.712 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.712 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:28.714 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:28.715 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:28.715 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:28.716 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:28.726 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:28.770 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.770 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:28.770 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.770 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:28.772 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:28.773 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:28.773 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:28.774 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:28.780 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:28.937 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:28.937 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:29.107 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:29.107 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:29.331 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:29.331 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:29.385 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:29.385 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:29.439 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:29.439 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:29.489 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:29.490 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:29.543 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:29.543 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:29.655 D/        (  771): readbrightness,out1:9
+11-13 13:09:29.655 D/        (  771): .
+11-13 13:09:29.655 D/        (  771): readbrightness,out2:9.
+11-13 13:09:29.693 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:29.693 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:29.758 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:29.758 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:29.758 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:29.759 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:29.760 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:29.761 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:29.761 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:29.762 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:29.768 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:29.973 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:29.973 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:30.033 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.033 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:30.134 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.134 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:30.183 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.183 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:30.183 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.183 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:30.184 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:30.186 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:30.186 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:30.187 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:30.193 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:30.385 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.385 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:30.397 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.397 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:30.397 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.397 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:30.398 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:30.400 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:30.400 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:30.401 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:30.407 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:30.519 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.519 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:30.656 D/        (  771): readbrightness,out1:9
+11-13 13:09:30.656 D/        (  771): .
+11-13 13:09:30.656 D/        (  771): readbrightness,out2:9.
+11-13 13:09:30.723 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.723 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:30.723 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.723 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:30.725 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:30.726 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:30.726 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:30.727 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:30.733 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:30.817 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.817 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:30.996 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.996 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:30.996 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:30.996 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:30.998 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:30.999 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:30.999 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.000 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.006 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:31.032 W/swapper/6(    0): type=1400 audit(0.0:100727): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-13 13:09:31.098 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.098 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.098 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.098 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:31.100 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.101 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.101 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.102 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.108 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:31.206 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.206 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.219 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.219 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.279 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.279 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.322 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.322 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.322 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.322 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:31.324 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.325 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.325 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.326 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.332 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:31.372 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.373 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.373 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.373 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:31.374 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.375 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.376 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.377 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.384 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:31.531 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.531 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.538 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.538 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.539 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.539 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:31.541 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.542 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.542 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.543 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.549 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:31.656 D/        (  771): readbrightness,out1:9
+11-13 13:09:31.656 D/        (  771): .
+11-13 13:09:31.656 D/        (  771): readbrightness,out2:9.
+11-13 13:09:31.706 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.706 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.706 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.707 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:31.708 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.710 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.710 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.711 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.716 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:31.764 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.764 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.819 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.819 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.875 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.875 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.926 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.926 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.980 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.980 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:31.980 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:31.980 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:31.982 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.983 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.983 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:31.984 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:31.990 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:32.030 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.030 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.030 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.030 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:32.032 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.033 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.034 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.034 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.041 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:32.086 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.087 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.087 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.087 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:32.088 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.089 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.090 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.091 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.097 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:32.352 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.352 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.352 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.352 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:32.354 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.355 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.355 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.356 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.362 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:32.403 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.403 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.404 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.404 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:32.405 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.407 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.407 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.408 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.416 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:32.457 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.457 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.457 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.457 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:32.459 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.460 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.461 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.462 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.470 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:32.513 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.514 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.514 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.514 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:32.515 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.517 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.517 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.518 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.524 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:32.598 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.598 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.657 D/        (  771): readbrightness,out1:9
+11-13 13:09:32.657 D/        (  771): .
+11-13 13:09:32.657 D/        (  771): readbrightness,out2:9.
+11-13 13:09:32.779 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.779 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.797 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.797 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.841 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.841 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.842 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.842 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:32.843 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.844 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.845 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.845 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.853 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:32.899 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.899 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:32.901 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:32.901 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:32.903 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.904 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.904 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:32.905 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:32.911 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:33.117 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:33.117 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:33.118 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:33.118 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:33.119 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:33.121 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:33.121 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:33.122 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:33.128 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:33.271 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:33.271 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:33.271 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:33.272 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:33.273 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:33.274 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:33.275 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:33.275 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:33.282 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:33.466 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:33.466 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:33.601 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:33.601 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:33.601 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:33.601 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:33.602 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:33.604 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:33.604 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:33.605 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:33.611 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:33.657 D/        (  771): readbrightness,out1:9
+11-13 13:09:33.657 D/        (  771): .
+11-13 13:09:33.657 D/        (  771): readbrightness,out2:9.
+11-13 13:09:33.803 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:33.803 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:33.829 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:33.830 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:33.830 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:33.830 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:33.831 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:33.832 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:33.833 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:33.833 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:33.839 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:34.098 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:34.098 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:34.098 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:34.098 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:34.100 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:34.101 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:34.101 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:34.102 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:34.109 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:34.207 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:34.207 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:34.207 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:34.207 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:34.209 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:34.210 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:34.210 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:34.211 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:34.217 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:34.259 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:34.260 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(2052)]  Waiting for scan response 84:c2:e4:03:02:02
+11-13 13:09:34.260 V/bt_stack(26457): [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=84:c2:e4:03:02:02
+11-13 13:09:34.260 V/bt_stack(26457): [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-13 13:09:34.261 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:34.262 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:34.263 D/BluetoothUtils(26457): blockedByLocationOff callingUid=1002
+11-13 13:09:34.263 I/BluetoothUtils(26457): packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-13 13:09:34.272 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:34.353 D/BluetoothAdapter(27076): isLeEnabled(): ON
+11-13 13:09:34.354 D/BtGatt.GattService(26457): stopScan() - queue size =2
+11-13 13:09:34.356 I/BtGatt.ScanManager(26457): msg.what = 1
+11-13 13:09:34.357 D/BtGatt.GattService(26457): unregisterScanner() - scannerId=6
+11-13 13:09:34.358 V/bt_stack(26457): [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=6
+11-13 13:09:34.358 V/bt_stack(26457): [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x06
+11-13 13:09:34.359 D/BtGatt.GattService(26457): onScanFilterParamsConfigured() - clientIf=6, status=0, action=1, availableSpace=11
+11-13 13:09:34.359 D/BtGatt.ScanManager(26457): callback done for scannerId - 6 status - 0
+11-13 13:09:34.359 D/BtGatt.ScanManager(26457): configureRegularScanParams() - queue=1
+11-13 13:09:34.359 D/BtGatt.ScanManager(26457): configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=2 mLastConfiguredScanSettingLECoded=2scanPhy=255
+11-13 13:09:34.361 I/GatewayDiscovery(27076): scan stopped
+11-13 13:09:34.361 D/BtGatt.ScanManager(26457): configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-13 13:09:34.362 D/ForceDarkHelper(27076): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@a1e011e
+11-13 13:09:34.362 D/BtGatt.GattService(26457): onScanParamSetupCompleted : 0
+11-13 13:09:34.658 D/        (  771): readbrightness,out1:9
+11-13 13:09:34.658 D/        (  771): .
+11-13 13:09:34.658 D/        (  771): readbrightness,out2:9.
+11-13 13:09:35.660 D/        (  771): readbrightness,out1:9
+11-13 13:09:35.660 D/        (  771): .
+11-13 13:09:35.660 D/        (  771): readbrightness,out2:9.

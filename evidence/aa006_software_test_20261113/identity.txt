@@ -1,0 +1,31 @@
+AA-006 Android independent software verification identity
+=======================================================
+run: 2026-11-13 (Asia/Shanghai)
+repo: D:\mypro\beiwo2\AIP
+branch/commit: main / e11b72ab456b68bc7c5827bf882b91b44890e55b
+worktree: clean (git status --porcelain empty)
+
+Product source under test: dengbei_care Android app
+Android source baseline commit (implementation): a12d12b570d541a9d348a1b6d6846275d871c7d4
+Test-side additions in this run (independent verification tests only):
+  app/src/test/java/com/jinyuni/dengbei_care/verification/NotificationsPermissionWiringItem001VerificationTest.kt
+  app/src/test/java/com/jinyuni/dengbei_care/verification/GatewayReadStateItem002VerificationTest.kt
+  app/src/test/java/com/jinyuni/dengbei_care/verification/ReportRegenerateFeedbackItem003VerificationTest.kt
+
+Build command: ./gradlew --offline clean :app:assembleDebug --console=plain
+Build result: BUILD SUCCESSFUL (exit 0), evidence/aa006_software_test_20261113/build.log
+APK: app/build/outputs/apk/debug/app-debug.apk
+APK size: 10,370,964 bytes
+APK SHA-256: 80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b
+APK MD5: a97ed9bef658ee89cdf6e2b49447ce69
+versionCode 10 / versionName 1.9 / minSdk 26 / targetSdk 34 / compileSdk 34
+Signing: APK Signature Scheme v2, Android Debug certificate
+  cert SHA-256 773e4ef63f06b85b2a1d20fd65a8df6b8dfafce1a41fcb2adddfd513b08d9255
+
+Note: the implementation-side self-check built the same source at 12:26 into a
+same-size APK with SHA-256 5e5465d8...; a clean rebuild is not byte-identical
+(debug packaging/signature variance). This run installs and verifies the APK
+identified by 80232c50... above, and device base.apk is compared to this value.
+
+Host tests: 39 suites / 300 tests / 0 failures / 0 errors / 0 skipped
+  (including the three new independent verification suites: 6 + 6 + 9 = 21)

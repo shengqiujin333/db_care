@@ -1,0 +1,62 @@
+ST-AA006 test summary
+=====================
+date: 2026-11-13 (Asia/Shanghai)
+repo/commit: D:\mypro\beiwo2\AIP main e11b72ab456b68bc7c5827bf882b91b44890e55b
+android source baseline: a12d12b570d541a9d348a1b6d6846275d871c7d4
+APK: 10,370,964 B sha256 80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b
+device: Redmi 8A / Android 10 / API 29 / 12f046690506
+device base.apk sha256: 80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b
+
+HOST
+- unit tests: 39 suites / 300 tests / 0 failures / 0 errors / 0 skipped
+- independent verification (new): N-1 6/6, N-2 6/6, N-3 9/9
+- existing static: 54/54 PASS (0 observations)
+- existing gates: 12/12 EXIT=0
+- layout structure: OK (15 checks)
+
+DEVICE (real gateway 84:C2:E4:03:02:02, devCount=0, MTU 240)
+
+ITEM-001 N-1
+N1-D-01 PASS  grant -> auto scan in 63 ms, no second click; candidate found
+N1-D-02 PASS  scan started 12:54:08.734 -> stopped 12:54:18.749 (10.015 s)
+N1-D-03 PASS  bluetooth off -> "蓝牙未开启（去开启）", no scan
+N1-D-04 PASS  location off -> "搜索网关需要开启定位（去开启）", no scan
+N1-D-05 PASS  deny -> "搜索网关需要定位权限（去授权）：缺少 ACCESS_FINE_LOCATION", no scan
+N1-D-06 PASS  don't-ask-again -> no visible dialog on retry, specific reason, no scan, no auto-repeat
+N1-D-07 PASS  (variant 2) close dialog during scan -> scan stopped, no late scan, no crash
+              variant 1 (BACK during permission prompt) NOT EXECUTED: MIUI dialog ignores BACK
+N1-D-08 PASS  3 rapid clicks -> sequential start/stop, max one active, final 10 s stop
+N1-D-09 PASS  startup/save/clear do not request location
+N1-D-10 PASS  expand search -> auto scan filterByFfe0=false in 57 ms, 10 s stop
+
+ITEM-002 N-2
+N2-D-01 PASS  real read -> GATEWAY_NO_DEVICE, UI "网关已连接，暂无设备（N=0）" within 3 s
+N2-D-02 PASS  second cycle 182.9 s later -> GATEWAY_NO_DEVICE again
+N2-D-05 PASS  GATEWAY_NO_DEVICE adds no reading/DB/upload/alarm; pending 0
+N2-D-06 PASS  CONNECTING -> terminal 2.9 s / 3.5 s; no residual CONNECTING
+N2-D-03 NOT EXECUTED  valid batch: no real sensor
+N2-D-04 NOT EXECUTED  all-placeholder: no real source
+
+ITEM-003 N-3
+N3-D-01 PASS  zero devices -> worker SUCCESS, Toast "暂无可生成的数据（尚无设备读数）", button restored
+N3-D-02 PASS  3 rapid clicks -> sequential workers, no overlap (completion <10 ms, guard not exercised)
+N3-D-03 PASS  click+back x3 -> same PID, 0 FATAL/ANR, workers SUCCESS
+N3-D-04 NOT EXECUTED  non-destructive failure induction unavailable (host matrix covers FAILED)
+N3-D-05 NOT EXECUTED  no saved devices / no daily samples
+
+NOT EXECUTED / DISCLOSED
+- API 31+ permission branch (no device)
+- 9-device real snapshot, multi-device BLE/MTU boundary
+- 433 -> gateway -> BLE -> phone same-reading consistency (later integration stage)
+- platform /upload_data write/idempotency/readback/401/403 (no authorization)
+- register/login, bound-device list, real alarm delivery (no account/data)
+- real temperature rise / light two-state / power (user cannot provide)
+- FW-LIGHT-DEF2-ENABLE: human APPROVED_DEFERRED / NOT EXECUTED (HR-8A11935AD0A7), not retested
+
+OBSERVATIONS
+O-AA006-1 GATT non-success read branch does not call GatewayReadState; outer loop ends in CONNECT_FAILED (static only, not triggered on device)
+O-AA006-2 link status text stale after clearing gateway while guard stopped (config itself cleared correctly)
+O-AA006-3 N-3 progress/disabled state shorter than capture interval (worker <50 ms); terminal Toast observed, no silent completion
+O-AA006-4 after don't-ask-again, MIUI still starts permission activity and auto-returns denied; no visible dialog, no auto-repeat
+
+RESULT: TEST_PASS limited to the AA-006 Android increment and executed scope; stage pass != product pass.
