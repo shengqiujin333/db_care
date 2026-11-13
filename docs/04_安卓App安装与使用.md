@@ -1,7 +1,7 @@
 # 04 安卓 App 安装与使用（交付/运维视角）
 
 适用版本：`com.jinyuni.dengbei_care` **versionCode 10 / versionName 1.9**（应用名"爱守护"，debug 候选）
-文档包：DOC-PKG-001 rev 13（2026-11-13；按 AB-003 与 AA-006 N-1～N-3 重建）
+文档包：DOC-PKG-001 rev 14（2026-11-13；按 AB-003 与 AA-006 N-1～N-3 重建）
 依据：`artifacts/android_build.md`（AB-003）、`artifacts/android_implementation.md`、`evidence/aa006_software_test_20261113/ST-AA006.md`、`evidence/android_package_check_20261113/`、`dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/`、`dengbei_care/用户使用说明书.md`
 
 > 面向**安装、升级、配置、排障**；面向最终用户的完整操作说明见 `dengbei_care/用户使用说明书.md`。两者覆盖同一版本，若出现冲突以当前源码与本文档的构建身份为准。
@@ -20,7 +20,7 @@
 | SHA-256 | `80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b` |
 | MD5 | `a97ed9bef658ee89cdf6e2b49447ce69` |
 | 签名 | APK Signature Scheme v2；证书 `CN=Android Debug`（项目既有 debug keystore，摘要 `773e4ef6…`） |
-| 源码 | 交付提交 `548cc33`；产品源码基线 `a12d12b`（`git diff a12d12b..HEAD -- dengbei_care` 仅新增测试侧独立验证用例） |
+| 源码 | 交付提交 `548cc33`；`git diff a12d12b..HEAD -- dengbei_care` 含 3 个测试侧独立验证用例与随包用户说明书更新；`dengbei_care/app/src/main` 无产品源码差异 |
 | 构建 | `cd dengbei_care && ./gradlew :app:assembleDebug --offline`（Gradle 8.4 / AGP 8.3.2 / JDK 21.0.2）；**39 套件 / 300 项**宿主机用例 0 失败 |
 
 **范围限制**
