@@ -1,546 +1,481 @@
-# 嵌入式测试设计（TD-002 rev 9.0）
+# 嵌入式联合测试设计（TD-002 rev 10.0 / 传感器→网关→安卓→平台 E2E）
 
-状态：嵌入式测试设计产物（embedded_tester.embedded_test_design）；**只做设计，不执行编译、烧录、串口收发、逻辑采集或任何目标操作**（§0.2 的被动枚举除外）。
-版本：9.0（替代 rev 8.0；与 FD-002 **rev 8.0**、FWR-002 **rev 8.0**、RTA-002 **rev 8.0**、IC-002 **v4.0**、`readme.txt`、当前 6 项任务清单、当前人工范围决定 `FW-LIGHT-DEF2-ENABLE=APPROVED_DEFERRED` 与 `BOT-01=REASSESS` 对齐）
-对象：蹬被报警器**传感器固件（Keil Device 字段实测为 CW32L010F8，本次改动主体）**；网关固件（CH592 beiwov2）只读核对、不改；Android/iOS/服务器与跨链路联调不在本阶段。
-输出性质：`DESIGN_READY` 只表示**方案可执行**，不表示任何功能通过。本文件所有 `[实板]` 条目均为**方案与判据**，不是本能力新执行的结果；§3.4 的既有证据状态只是引用，任何后续验证仍须在当时的构建上重新执行并留存原始证据。
+状态：嵌入式测试设计产物（`embedded_tester.embedded_test_design`，输出端口 `test_design`）。**只做设计，不执行**编译、烧录、复位、串口收发、逻辑采集、手机操作或平台访问；§1.4 的只读枚举除外。
+版本：10.0（本轮替代 TD-002 rev 9.0 的“仅固件阶段”范围；rev 9.0 的固件级用例保留为历史/回归依据，见 §4.3）。
+对象：**当前端到端联合测试的嵌入式侧**——CW32L010 传感器板（GXHT40 温湿度 + 光照分压 + UM2005C 433 发射 + UART1 调试）及其到既有 CH592 网关、安卓 App、既有平台的真实链路。
+上游依据：`readme.txt`；当前 Project Goal（逐用例按嵌入式→手机→平台验证；测试手机先自动连接 `ZTE_607157`，密码变量 `RESTLESSDREAM_ANDROID_SECRET_WIFI`）；`artifacts/software_e2e_plan.md`（E2E-SW-004）、`artifacts/software_test_design.md`（TD-SW-005）；`artifacts/interface_contract.md`（IC-002）；`artifacts/firmware_design.md`/`firmware_requirements.md`（FD-002/FWR-002）；当前传感器/网关/Android 源码；`artifacts/codegraph_e2e_index.md`。
 
-基线（本轮设计时实际核对，2026-11-13）：
-- 仓库 HEAD `d4c23e5`（2026-11-12 18:49 +0800），接手时 `git status` 干净。
-- 传感器产品源自发布提交 `82a7e74` 起无差异：`git diff --stat 82a7e74..HEAD -- <sensor>/{USER,MDK,EWARM,UM2005C,COMMON}` 为空。
-- 当前交付构建身份 = `fw_release/fw_sensor_FD-002r8.zip`（134,791 B，md5 `5df0c6d4…`）：axf `b6a15fed…`、hex `4d728dec…`、`PACKAGE.txt` `a58f67fc…`；Keil rebuild 0 Error / 1 既有 warning，Code=25964 RO=656 RW=116 ZI=1676（EV-032/EV-038 独立复算）。
-- 代码定位：传感器子工程存在 `.codegraph/` 索引（基线 `82a7e74`）；本轮未调用 `codegraph_explore` MCP 入口，未新建或升级索引；关键常量/行格式以直接源码核对为准。
-
-上游依据（本轮实际读取）：
-- `readme.txt`（权威需求；修改点 1–8、补充条件 2–4、“不能调温/改变光强/测功耗”约束）
-- `artifacts/firmware_design.md`（FD-002 rev 8.0，LIGHT-DEF-2 与启用门禁 §6.2）
-- `artifacts/firmware_requirements.md`（FWR-002 rev 8.0，FWR-101..123；FWR-120 启用门禁、FWR-123 本阶段测试边界）
-- `artifacts/firmware_rtos_architecture.md`（RTA-002 rev 8.0）
-- `artifacts/interface_contract.md`（IC-002 v4.0）
-- `artifacts/firmware_tasks.yaml` 与 Runtime tasks（FW-REG-ASBUILT、FW-REG-REPORT、FW-LIGHT-DEF2-MECH、FW-OBS-PASSIVE、FW-LIGHT-DEF2-ENABLE、FW-DIAG-BOOT）
-- `gxht40.pdf`、`sensor_hardware/{pstxnet.dat,MAIN_BOARD.BOM}`、`gateway_board.xml`
-- 当前源码：`USER/src/{fw_core.c,light.c,measure.c,debug_trace.c,main.c}`、`USER/inc/{sensor_config.h,fw_core.h,light.h,debug_trace.h}`、`test/build_test.sh` 与 `test/host_*_check.c`
-- 既有原始证据与报告：`evidence/ev032..ev038/`、`evidence/test.md`（EV-038 置顶）、`evidence/programmed_prototype.md`、`evidence/product_acceptance_20261112_scope_recheck/PRODUCT-ACCEPTANCE-RECHECK-002.md`、`evidence/product_acceptance_20261112/FIRMWARE-TRIAGE-003.md`、`artifacts/failure_resolution_product_acceptance_scope_recheck.md`（FR-005）、`evidence/firmware_design_lightdef/lightdef_analysis.txt`
-
-> **rev 9.0 相对 rev 8.0 的实质变化（本轮范围复核）**
-> 1. **按当前人工范围决定调整退出准则**：`FW-LIGHT-DEF2-ENABLE` 已由人工确认 `APPROVED_DEFERRED` / `SKIP_CONFIRMED`（「无法准备，先跳过」，2026-11-11T03:50:42Z）。本设计把它**单列为 NOT EXECUTED 并排除出本轮退出门槛**，不再像 rev 8.0 §8-6 那样以该项未执行阻止本阶段退出；其原目标与真实验证缺口仍完整保留（§5.5、§8、§10）。这修正了 rev 8.0 内部“说明可延期、又用它阻止退出”的矛盾。未执行始终不等于通过；阶段通过不等于完整产品通过。
-> 2. **BOT-01 按人工 `REASSESS` 更新为自动测试方式**：测试侧自编脚本先开 COM43，再以 pyocd 通用 `cortex_m` 的 `-M attach -m hw` 经 CW-DAPLink 请求外部 HW reset（仅复位，不烧录/不写内存/不改固件），在有界窗口内取得五行并校验顺序。当前证据表明**不需要固件新增测试接口**；若未来确需，按 §5.6 的“最小接口 + 构建开关 + 正式版可验证排除”条款提出，不得要求人工代写测试脚本。
-> 3. **构建身份更新为新交付基线**：rev 8.0 的 `a3b08774…`/`546ce20…` 只对应 LIGHT-DEF-2 落地前的 as-built 树；当前交付源 `82a7e74` 的构建身份是 axf `b6a15fed…` / hex `4d728dec…`，差异由 ITEM-003 的源码改动解释（FWI-003 rev 8 / EV-032/EV-038），不是“只改期望值”。任何新一轮构建仍须重新取得摘要并绑定证据。
-> 4. **范围错误重评写进设计**：原检查者把人工已确认延期的启用项写成 R4「未满足」并作为整体失败/返工依据，属范围错误；正确分类是“上报公式实现一致、无光判据启用 NOT EXECUTED（人工延期）、真实升温/超温 NOT EXECUTED（外部条件）”。本设计按此重评，不据此把固件退回返工（§3.2）。
-> 5. **测试资产状态更新**：验证侧 `test/*_verify_ev.c` 已同步到 LIGHT-DEF-2 语义（EV-032/EV-038：测试侧 13 组 609/0）；rev 8.0 所列“陈旧不可编译”状态不再作为当前事实，但执行前仍须核对期望来源，旧 pass 不作新证据。
-> 6. **既有证据只作状态引用**：EV-038 与 `PRODUCT-ACCEPTANCE-RECHECK-002` 已覆盖 ITEM-001/002/003/004/006 的实板/宿主范围。本设计引用它们说明“当前未闭合项是什么”，不把它们当作本能力的新执行结果，也不把跨链路/平台/功耗/升温等阶段外项加进本阶段退出门槛。
+**结论先行**：`DESIGN_READY` 只表示本方案在指定条件下可执行，**不表示任何功能已执行或通过**。本方案同时明确一个关键可执行性缺口：按用户当前条件（不调温、不改光强）且当前量产固件 `LIGHT_DARK_THRESHOLD_CODE=0`，传感器**不会自然产生任何 433 上报**，因此“传感器→网关→手机→平台”的正向链路无法只靠等待自然事件完成。方案采用**测试专用构建的受控注入**把刺激送入原采样后的业务判定入口（§3），并给出正式构建排除与复测判据；若执行阶段拿不到该测试构建，正向用例必须记 `NOT EXECUTED` 并交已审批的失败分析→固件实现闭环，**不得写成通过**。
 
 ---
 
-## 0. 执行环境、工具边界与设计时事实
+## 0. 当前基线与环境事实（2026-11-23 设计时只读核对）
 
-### 0.1 本能力的工具与访问边界
+### 0.1 仓库与源码身份
 
-本能力（嵌入式测试设计）可用：`Read`、`Glob`、`Grep`、有界 `Bash`（只读诊断）、`Write`、`Edit`，以及只读设备工具 `serial_list_ports`、`usb_list_devices`、`sigrok_info`。**本能力不编译、不烧录、不复位、不打开串口采集、不执行逻辑采集、不操作手机**。
-
-当前有效访问入口（来自统一环境说明）：
-
-| 入口 | 对本能力的状态 | 缺项 | 本设计的处理 |
-|---|---|---|---|
-| `sensor_serial_observation`（COM43/9600 8N1） | `unavailable_for_current_capability` | 设备工具 `serial_capture` | 只设计 OBS 用例；EN 已人工延期，仅保留方案；由后续执行能力按其实际工具执行 |
-| `sensor_programming`（Keil/CW-DAPLink） | `unavailable_for_current_capability` | 设备工具 `mdk_flash`、外部动作 `flash_device` | 只设计构建/下载/复位编排与判据；不执行 |
-| `i2c_passive_capture`（fx2lafw:2.32） | `unavailable_for_current_capability` | 设备工具 `sigrok_capture`、外部动作 `operate_test_equipment` | 仅作可选补充判别；不是任何必需用例的替代 |
-| `android_app_testing` | `unavailable_for_current_capability` | 设备工具 `android_test` | 本阶段不涉及 Android；跨链路属后续联调 |
-| `existing_service_ssh_inspection` | `unavailable_for_current_capability` | 外部动作 `inspect_existing_service_readonly` | 不在嵌入式测试设计范围 |
-
-**关键含义**：上述状态只说明**本设计能力**不能执行这些动作，不证明设备不在线、也不证明后续执行能力没有授权。后续执行能力必须按**其自身**工具列表和授权执行；若缺少 `serial_capture`、`mdk_flash`、`sigrok_capture` 或相应外部动作，则依赖该入口的必需用例记 `NOT EXECUTED`，并按 §8 返回 `TEST_FAIL`，不得用宿主结果替代。
-
-环境修复授权：`environment_repair.scope=test`、`allow_target_changes=false`、`allow_system_packages=false`。本能力不安装 pyocd/DFP/驱动或系统包，不修改 `runtime/permissions.yaml`/`environment.yaml`；pyocd 入口登记属于配置所有者事项。
-
-### 0.2 设计时被动枚举（2026-11-13T02:26Z；原始返回已核对）
-
-| 工具 | 原始结果（要点） | 能说明/不能说明 |
+| 项 | 事实 | 来源 |
 |---|---|---|
-| `serial_list_ports` | `COM43` = Prolific USB-to-Serial Comm Port，`VID:PID=067B:2303`，`LOCATION=1-9.4.2`；`COM26` = “USB 串行设备”，`VID:PID=C251:F001`，SN `87094109484987710672FF50` | COM43 登记入口**本次枚举在位**；**不证明**传感器板已上电、UART1 正在输出、波特率/接线正确。COM26 是调试器 CDC，**不是**传感器调试口 |
-| `usb_list_devices` | 在位：Prolific `067B:2303`（COM43）、`C251:F001` 复合设备（CW-DAPLink，SN `87094109484987710672FF50`）、`18D1:4EE7` 实例含 `12F046690506`（目标手机）、`04B4:8613`（Cypress FX2，`usb_list_devices` 显示为 Unknown Device #1）；另有摄像头、蓝牙、根集线器；**未枚举到示波器/电流表/SMU/VDS1022** | 探针、手机、FX2 的 USB 身份在位；**不证明**协议功能、目标在线或采集可用。未枚举到某仪器不能证明它不存在 |
-| `sigrok_info` | `enabled=true`；`driver=fx2lafw`；`connection=2.32`；`channels=[D0,D1]`；`signal_labels={D0:scl,D1:sda}`；`triggers={D1:f}`；`samplerate_hz=4000000`；`max_samplerate_hz=8000000`；`max_samples=20000000`；`timeout_sec=240`；`online=not_checked` | 配置存在且与历史接线一致；**未探测、未采集**。实际连接、通道电平、共地、输入范围须执行时确认；probe 可能加载 RAM 固件并改变 USB 地址 |
-| `pyocd`（主机只读/历史记录） | `pyocd --version` = `0.36.0`；`pyocd list` 可见 `P&S CW-DAPLINK(CMSIS-DAP)` UID `87094109484987710672FF50`，`Target=n/a`；`pyocd list --targets --name CW32` 为空；2026-11-12 的复核轮已用内置通用 target 执行 `reset -t cortex_m -M attach -m hw`（rc=0，仅复位）成功取得上电五行 | 工具已安装、探针在位、通用 Cortex-M 复位可行；**不等于** pyocd 已登记为统一环境入口，也不证明 CW32 专用 flash 算法可用。本设计不访问探针、不安装 DFP、不改配置；pyocd 入口补登记由配置所有者处理 |
+| 仓库/分支 | `D:\mypro\beiwo2\AIP`，`main`，HEAD `a11eadb32a51bf868ffac6297717337b0790cfa5`，接手时 `git status` 干净 | `git status --porcelain`、`git rev-parse HEAD` |
+| 传感器产品源 | `<sensor>/USER` 自 `82a7e74` 起零差异；最近传感器 USER 提交 `82a7e74` | `git log -- <sensor>/USER`、`git diff --stat 82a7e74..HEAD` |
+| 传感器交付包 | `fw_release/fw_sensor_FD-002r8.zip`，134,791 B，md5 `5df0c6d45ecddc8aae8bddbbcfc9cfdf`；axf `b6a15fed2ed5e3d0c4adc51ac87a4830`、hex `4d728dec9b0d28a352c46436b7586c72`、`PACKAGE.txt` `a58f67fc…` | 历史 EV-040/PRODUCT-ACCEPTANCE-003；执行时必须重新复算 |
+| 板件 | 同板历史 `BOOT fw=FD-002r4 uid=6A002C00 rst=… uart=9600`；**本运行未上电核验**，`uid4` 以执行时 `BOOT` 为准 | 历史 EV-040；本轮未采集 |
+| 网关源 | `CH592EVT/EVT/EXAM/BLE/beiwov2`；APP/Profile 源与既有运行一致；没有已确认的网关固件版本/哈希回读或管理入口 | `artifacts/codegraph_e2e_index.md` |
+| Android 候选 | AB-003：`app-debug.apk` 10,370,964 B、SHA-256 `80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b`、versionCode 10 / versionName 1.9、debug；`app/src/main` 与 `build.gradle.kts` 自 `a12d12b` 零差异 | `evidence/product_acceptance_20261113/`、`artifacts/software_test_design.md`；执行时必须重新核验 |
+| 平台 | 既有部署：`8.140.23.253`，EMQX 5.8.0（8883）、Flask `5000`、MySQL `sensor_data`（`UNIQUE(dev_id,time)`）；本轮未访问 | `服务器迁移记录.md`、`artifacts/software_e2e_plan.md`；平台执行阶段核验 |
+| 代码图 | 传感器/网关/Android 三个本地根均已有索引，`complete`、`reindexRecommended=false`；索引源 HEAD `6e98b72`，其后仅新增索引/证据，产品源未改 | `artifacts/codegraph_e2e_index.md`、`evidence/codegraph_refresh_20261123.json` |
 
-**不要使用**：旧记录中的 `COM42`、逻辑分析仪旧地址 `2.19/2.27/2.31`；`COM26` 不得当作传感器 UART。
+### 0.2 本能力工具与访问边界
 
-### 0.3 事实分层与禁止项
+本能力可用：`Read`、`Glob`、`Grep`、有界只读 `Bash`、`Write`、`Edit`，以及只读设备枚举 `serial_list_ports`、`usb_list_devices`、`sigrok_info`。**本能力不编译、不烧录、不复位、不打开串口采集、不执行逻辑采集、不操作手机、不访问平台写接口/数据库。**
 
-- 设备名称、接线、权限、在线状态是不同事实：串口枚举不证明目标在线；USB 枚举不证明协议功能；`sigrok_info` 不访问 USB；`configured_unverified` 不等于已测通过。
-- 本阶段**禁止**：调节温度、改变光强、以遮光/照射作为测试手段、功耗/电流测量、对网关/手机做未授权的写入或配对变更。设计中没有此类用例；相关终验保留为未执行项，不写成通过。
-- `a3b08774…`/`546ce20…` 只代表 LIGHT-DEF-2 落地前的 as-built 构建（2026-11-09）；当前交付构建是 `b6a15fed…`/`4d728dec…`。任何新一轮验证必须重新绑定当次摘要，不得沿用任一历史摘要。
-- 当前 readme 写“当前的情况是有光的”，但这是用户陈述，不是测量证据；近期被动窗口的光敏原始均值在 `a=3917..3985` 区间（EV-035..EV-038、复核轮），与“有光”的极性解释仍需受控双态证据才能确认。本设计**不据此判定光敏器件/光路好坏**，只把它列为 ITEM-004 的现场记录与 ITEM-005 的后续待复核项。
+统一环境与本能力的有效状态：
+
+| 入口 | 对本能力 | 本设计的处理 |
+|---|---|---|
+| `sensor_serial_observation`（COM43/9600 8N1） | `unavailable_for_current_capability`（缺 `serial_capture`） | 只设计 COM43 采集用例，由后续执行能力按其授权执行 |
+| `sensor_programming`（Keil/CW-DAPLink） | `unavailable_for_current_capability`（缺 `mdk_flash`、`flash_device`） | 只设计测试构建/下载/复位编排与判据；不执行 |
+| `i2c_passive_capture`（fx2lafw） | `unavailable_for_current_capability`（缺 `sigrok_capture`、`operate_test_equipment`） | 仅作可选补充，不替代任何必需用例 |
+| `android_app_testing` | `unavailable_for_current_capability`（缺 `android_test`） | 手机段由后续软件验证能力执行 |
+| `existing_service_ssh_inspection` | `unavailable_for_current_capability` | 平台段由后续平台测试能力执行 |
+
+### 0.3 设计时只读枚举（原始返回已核对）
+
+| 工具 | 结果要点 | 能说明 / 不能说明 |
+|---|---|---|
+| `serial_list_ports`（2026-11-23T07:31:50Z） | `COM43` = Prolific USB-to-Serial（`VID:PID=067B:2303`，`LOCATION=1-9.4.2`）；`COM26` = `C251:F001`、SN `87094109484987710672FF50` | COM43 登记入口在位；**不证明**传感器板上电、UART1 正在输出、波特率/接线正确。COM26 是调试器 CDC，**不是**传感器调试口 |
+| `usb_list_devices`（07:31:51Z） | 在位：Prolific `067B:2303`、CW-DAPLink `C251:F001`（SN `87094109484987710672FF50`）、目标手机 `18D1:4EE7` 实例含 `12F046690506`、Cypress FX2 `04B4:8613`（Unknown Device #1）；未枚举到示波器/电流表/SMU | 探针、手机、FX2 的 USB 身份在位；**不证明**协议功能、目标在线或采集可用；未枚举到某仪器不能证明它不存在 |
+| `sigrok_info`（07:31:53Z） | `enabled=true`；`driver=fx2lafw`；`connection=2.32`；`channels=[D0,D1]`；`signal_labels={D0:scl,D1:sda}`；`triggers={D1:f}`；`samplerate_hz=4000000`；`max_samples=20000000`；`online=not_checked` | 配置与历史接线一致；**未探测、未采集**。实际连接/电平/共地/输入范围须执行时确认 |
+| ADB（本机 `adb devices -l`，约 07:32Z） | `12f046690506 unauthorized` | 手机 USB 在位，但 **ADB 未授权**；手机段 `android_test` 当前不可直接执行。不得把“USB 在位”写成“手机可操作/已联网” |
+
+### 0.4 用户明确条件与当前阶段边界
+
+- 用户明确：**当前不能调节温度、不能改变光强、不能测功耗**。本设计不安排调温、遮光/照射、功耗/电流测量；也不把“现场有光”的文字陈述当作测量证据。
+- 当前测试手机**未连接 Wi-Fi**。手机段在验证前必须通过已授权的 Android 测试工具连接 `ZTE_607157`，密码输入使用 `android_test` 的 `ui_set_text` 与 `text_env` 变量 `RESTLESSDREAM_ANDROID_SECRET_WIFI`，并确认已连接该 SSID。该动作由**手机段执行能力**完成，不属本设计能力；本设计只把它列为正向链路的手机/平台前置。
+- `FW-LIGHT-DEF2-ENABLE` 仍为人工确认的 `APPROVED_DEFERRED` / NOT EXECUTED；`T=0`。本设计不重排、不重测、不自行回填阈值，也不把该项未执行当作返工依据。
+- 本阶段不修改产品源码（测试专用构建的注入由固件实现能力按其授权提供，本设计只给最小接口与原项复测判据）。
 
 ---
 
-## 1. 测试对象、构建身份与观测接口
+## 1. 系统链路、接口与关联键（设计依据）
 
-### 1.1 被测对象与构建/部署通道
-
-| 对象 | 工程/路径 | 构建方式 | 部署 | 观测口 |
-|---|---|---|---|---|
-| 传感器固件 | `CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/`（Keil `MDK/Project.uvprojx`、IAR `EWARM/project.ewp`、GNU `gcc/build.sh`） | ① 宿主机 `test/build_test.sh`；② GNU `gcc/build.sh`（`arm-none-eabi-gcc 10.3.1` 在位）；③ Keil MDK（量产/交付主通道） | `[实板]` 经 CW-DAPLink 用 `mdk_flash {}`（工程保存的调试器/Flash 算法）；日志须含 **Verify OK / Application running**；必须是**受测提交**编出的镜像 | UART1：PA06=TXD/J3.1、PA05=RXD/J3.2，9600 8N1（COM43）；PB05 光照供电；PB04/AIN11 光照 ADC；PA03/PA04 软 I²C；PA07/PA08 SWD |
-| 网关固件（只读） | `CH592EVT/EVT/EXAM/BLE/beiwov2/` | 本轮不重编 | 既有运行 | 不在本阶段直接观测；跨链路留后续联调 |
-| 传感器宿主逻辑/流程 | `USER/src/*.c`（真实实现） | 本机 `gcc 12.2.0` / `x86_64-w64-mingw32-gcc` | — | stdout（PASS/FAIL 计数 + 退出码） |
-| 手机 App | `dengbei_care/` | 本轮不构建 | 不在本阶段 | 不涉及 |
-
-### 1.2 构建身份与受测版本（按任务绑定，禁止跨任务沿用）
-
-| 任务 | 受测源码/构建 | 期望身份 | 执行时必须重新取得 |
-|---|---|---|---|
-| FW-REG-ASBUILT | 当前交付源码（产品源基线 `82a7e74`，已含 LIGHT-DEF-2） | `mdk_build rebuild` 0 Error / ≤1 既有 warning（`main.c` 空循环体）；`Code=25964 RO=656 RW=116 ZI=1676`；axf `b6a15fed2ed5e3d0c4adc51ac87a4830`；hex `4d728dec9b0d28a352c46436b7586c72`；发布包 md5 `5df0c6d4…`。**若受测树在 `82a7e74` 之前（LIGHT-DEF-2 未落地），才使用 `a3b08774…`/`546ce20…`** | 构建日志原文、编译器版本、map/Program Size、axf/hex md5、时间、源码基线 |
-| FW-REG-REPORT | 同上 | 同上（该任务不改源码） | 同上 + 各宿主 harness 退出码 |
-| FW-LIGHT-DEF2-MECH | LIGHT-DEF-2 落地后的源码（当前交付即此状态） | 与 `b6a15fed…`/`4d728dec…` 一致；0 Error；相对 `a3b08774…` 的差异必须由 ITEM-003 的源码 diff 解释 | 构建日志、axf/hex md5、源码 diff、配置常量值 |
-| FW-OBS-PASSIVE | 执行时实际下载运行的构建 | 构建摘要 + 下载校验（若下载）+ `BOOT uid`（若取得）；**不得用历史 COM42/旧镜像证据** | 捕获窗口起止、原始字节、构建/下载身份 |
-| FW-LIGHT-DEF2-ENABLE | 回填 `T≠0` 后的新构建（**当前人工延期，不执行**） | 新摘要；`mdk_flash` 日志须见 **Verify OK** | 仅在未来重新获批时：配置 diff、构建/下载身份、原始 COM43 字节 |
-| FW-DIAG-BOOT | 执行时受测构建 | 构建/下载身份 + `BOOT fw/uid/rst/uart=9600` | 同一端口窗口原始字节、复位方式/时间、pyocd 原始输出（若使用） |
-
-**纪律**：摘要比对必须绑定当次受测源码基线。当前交付树（`82a7e74`）的确定性重建应得 `b6a15fed…`/`4d728dec…`；与 `a3b08774…` 的差异由 LIGHT-DEF-2 源码变更解释（FWI-003 rev 8、EV-032/EV-038），**不得只改期望值**。若当前树上重建得到第三种摘要，必须给出源码/工具链差异说明并重新绑定证据。ITEM-005 在人工解除延期前不构建、不回填。
-
-### 1.3 观测行与字段（格式冻结）
+### 1.1 链路
 
 ```text
-BOOT fw=<固件标识> uid=<8 位大写 HEX> rst=<4 位大写 HEX> uart=9600
-VDD ok=<0|1> code=<n> bgrmv=<n> mv=<n>
-IOTEST sda_lo=<0|1> scl_lo=<0|1> idle=<0..3> swap=<addr7[,addr7]|none> gc=<n>
-IOSIG scl=<5 位 HEX> sda=<5 位 HEX>
-BUS idle=<0..3> scl=<0|1> sda=<0|1> ack=<addr7[,addr7...]|none[+]>
-S k=<tick> p=<prev> H=<have> V=<lvalid> o=<ok> n=<min> x=<max> a=<mean>
-  D=<dark> t=<temp> h=<hum> q=<sample_ok> r=<report> s=<send> y=<retry>
-G s=<1..5> a44=<0|1> a45=<0|1> rd=<0..5> at=<1..3> raw=<12 位大写 HEX | ------------>
-P rq=<0|1> s=<0|1|2> y=<0..3> t=<冻结温度 x10> h=<冻结湿度 x10>
+GXHT40 温湿度 + 光照分压
+  → CW32L010 采样/判定（每 3 min；升温>0.9℃且无光，或 >35.0℃）
+  → UM2005C 433 10 B 加密帧  ──────────────┐
+                                            ▼
+                             既有 CH592 网关（433 接收 → 按绑定 ID 组 16 B 块
+                             → AES-ECB → FFE2 160 B 属性；无数据占位/超时）
+                                            │ BLE 0xFFE0/0xFFE2 读取
+                                            ▼
+                             安卓 App（解密/长度守卫/逐 ID 消费/本地库/
+                             MQTT 发布/待发箱/HTTP 上传）
+                                            │ ssl://8.140.23.253:8883
+                                            │ http://8.140.23.253:5000/upload_data
+                                            ▼
+                             既有平台（MySQL `sensor_data`，UNIQUE(dev_id,time)）
 ```
 
-字段语义（按当前源码核对）：
-- `S` 15 字段，键名/顺序/单位冻结；最坏 92 B（含 CRLF）≤ `SENSOR_DEBUG_UART_MAXLINE=96`。`k`=RTC 累计 1 分钟节拍（`main.c` 用 `rtc_tick_total` 填入）；`p/t`=温度 x10（有符号）；`H/V/D/q/r`∈{0,1}；`o`=成功 ADC 样本数（0..8）；`n/x/a`=ADC 原始码（0..4095，`o=0` 时均为 0）；`h`=湿度 x10（0..1000）；`s`=最近一次 433 发送结果（0 未发送/1 成功/2 失败）；`y`=待上报重试计数。
-- **as-built 语义**：`V = adc_ok && LIGHT_DARK_CALIBRATED(0)` → 恒 0；`D = valid && 3*mean >= LIGHT_DARK_REF_CODE(0)` → false。
-- **LIGHT-DEF-2 语义（ITEM-003 后）**：`V = adc_ok && (T != 0)`；`D = valid && mean >= T`；`T=0` 时 `V=0 D=0`。行格式与字段集合不变。
-- `G` 仅在温湿度失败周期紧跟 `S`；`P` 仅在 `r=1` 或发生过发送尝试时紧跟 `S`（有 `G` 时在其后）；`P` 的 `t/h` 必须是组帧实际使用的冻结快照。
-- 所有行按**线上原始字节**计长（含 CRLF），每行 ≤96 B；`SENSOR_DEBUG_UART=0` 时全部为空实现，不引入 UART 符号。
+### 1.2 传感器侧关键事实（当前源码，代码图为索引源 HEAD 的当前源码；产品源未变）
 
-### 1.4 实板用例共同前置
-
-1. 执行前重新枚举端口/USB，确认 COM43 身份（067B:2303）、9600 8N1；不得用 COM42/COM26 代替。
-2. 记录受测构建的 commit、axf/hex md5、构建时间、下载校验（若下载）、`BOOT uid`（若取得）。
-3. 捕获前确认没有其他程序占用 COM43；不使用 PulseView/USBee 等占用同一设备。
-4. 捕获窗口有界；单次 `serial_capture` 不足以覆盖 ≥3 个 3 分钟周期时，允许多窗口，但必须记录每窗起止、字节数、间隙与观测 `k`。
-5. 不施加温度/光照刺激；不为取数改变设备正常使用状态。
-6. 无法取得实板证据时记 `NOT EXECUTED` 及原因；不得用宿主/mock/历史日志替代。
-
----
-
-## 2. 观测方法与能力边界
-
-| 方法 | 能证明 | **不能**证明 |
+| 事实 | 源码位置 | 设计含义 |
 |---|---|---|
-| UART1 `BOOT/VDD/IOTEST/IOSIG/BUS/S/G/P`（COM43，9600 8N1） | 固件确实初始化 UART1 并输出；复位/唤醒行为；每周期软件可见状态；软件回读的总线空闲电平；哪些 7bit 地址收到 ACK；失败结果码/重读重测/原始 6 字节；冻结快照；RTC 节拍；行格式与预算 | I²C 位级电气与真实波形（`idle` 是事务前软件读引脚，不等于上升沿/上拉质量；`ack` 只证明地址有应答，不证明命令时序/位采样点）；模拟幅度、绝对照度、功耗 |
-| 宿主机 harness（本机 gcc，链接真实 `.c`） | 纯逻辑与流程的确定性与精确边界：判定真值表、int32 极值、CRC/换算、LIGHT-DEF-2 向量、冻结/重试/不覆盖、TXE/TXBUSY 卡死、行格式/预算、地址扫描/恢复原语 | 真实目标行为；不得以 mock/构建结果冒充实板结论 |
-| `mdk_build` / `mdk_flash` | 当前提交可编译、可下载、回读校验通过、镜像可区分（提交 + md5 + 横幅） | **任何业务功能**；编译/下载成功 ≠ 功能通过 |
-| 逻辑分析仪被动 I²C（`fx2lafw:2.32`，D0=SCL/D1=SDA，共地） | 数字电平与**采样分辨率内**的时序：START/STOP、地址字节、ACK 时隙、SCL 频率/半位间隔 | 模拟幅度、上升沿形状、电平兼容、上拉质量、跨设备同步；空/短采集可能只是触发/接线/参数问题，不证明器件坏 |
-| 静态核对/`git diff`/反汇编 | 源码事实、常量单点、退役通路、布局/引脚所有权、是否修改验证资产 | 运行时行为；不得用静态结论替代实板观测 |
+| 采样节拍 3 min | `USER/src/main.c` RTC 回调；`sensor_config.h` `SENSOR_SAMPLE_TICKS=3` | 采样/注入/采集窗口按 180 s 规划 |
+| 判定公式 | `USER/src/fw_core.c:112` `sensor_decide_report` | `cur>350`（35.0℃）**不受光照/前值限制**；否则需 `have_prev && dark && (cur-prev)>9` |
+| 采样→判定→冻结→发送 | `USER/src/measure.c:489` `temperature_process`、`:460` `measure_sample`、`:590` `send_data_to_gateway` | 注入点选在 `measure_sample()` 成功之后、`sensor_decide_report()` 之前 |
+| 433 帧 | `USER/src/encrytogate.c:119` `encode_frame10` | 明文 10 B = `uid_pick(4) | temp_le(2) | hum_le(2) | crc16_le(2)`，随后 Feistel 加密 |
+| 调试行 | `USER/src/debug_trace.c`；`USER/inc/debug_trace.h` | `S` 15 字段、`P` 行、上电五行；`t/h` 为 x10 整数；UART1 9600 8N1；每行 ≤96 B |
+| 调试串口 | PA06=TXD / PA05=RXD，COM43，9600 8N1 | 只观测；当前固件无 UART RX 命令解析，不能靠串口注入 |
+| 当前无光判据 | `sensor_config.h` `LIGHT_DARK_THRESHOLD_CODE=0` | `valid=false`、`dark=false`；**升温+无光分支当前不可能自然触发** |
+| 当前无条件上报 | `measure.c` 只在 `report_req!=0` 时发送；`report_req` 只由判定置位 | 稳定室温、有光、`T=0` 时不会产生 433 帧 |
 
-纪律：
-1. 任何 mock/宿主结论必须标 `[L0]`，不得写成实板结论。
-2. 一次观测不足以定罪；失败结论至少由两类独立证据交叉（如 `BUS ack=none` + `G a44=a45=0` + `IOTEST/IOSIG/VDD` 正常）。
-3. 抓不到包/串口无输出，先核对端口、波特率、接线、捕获窗口、触发条件；不得直接判器件/功能失败。
-4. 数字行不证明模拟电气；历史证据不替代当前构建证据。
-5. 不用“未执行”掩盖功能失败；也不用功能失败改写为“条件缺失”。
+### 1.3 网关与 App 侧关键事实
+
+| 事实 | 源码位置 | 设计含义 |
+|---|---|---|
+| 网关 GATT 服务/特征 | `Profile/include/gattprofile.h:36-53`：服务 `0xFFE0`；CHAR1 `0xFFE1`(1 B)、CHAR2 `0xFFE2`(160 B)、CHAR3 `0xFFE3`(240 B)、CHAR4 `0xFFE4`(160 B)、CHAR5 `0xFFE5`(5 B) | App 读 `0xFFE2`；绑定列表写 `0xFFE3`（`0xA1 + count + id4×N`） |
+| 网关 433 接收/组帧 | `APP/app_um2006A.c:98` `app_um2006A_run`；`APP/bleencrypt.c:66` `build_padded_frame_blocks` | 仅当收到的 `id4` 在绑定列表中才写入该设备块；块 = `[id4 | hum_be2 | temp_be2 | pad8]`；头 = `[gwid6 | devCount1 | pad9]`；16 B 对齐、AES-ECB |
+| 网关无数据 | `app_um2006A.c` `timeoutcnt` 分支 | 超时后可能全零占位；准确超时窗口以执行时观测为准，不把“占位”写成“传感器上报” |
+| App 解码 | `protocol/GatewayFrameCodec.kt:16` | `devCount=frame[6]`；期望 `16*(1+N)`；`u16be@4` 湿度、`s16be@6` 温度；尾部多余 16 B 块按 `devCount` 忽略 |
+| App 读取守卫 | `protocol/GatewayReadGuard.kt:15` | 读取前 MTU ≥ `16*(1+N)+3`；返回长度须 16 B 对齐且 ≥期望；N=1 时期望 32 B、最小 MTU 35 |
+| App 终态 | `protocol/GatewayReadState.kt:10` | `DATA_OK / GATEWAY_NO_DATA / GATEWAY_NO_DEVICE / READ_INCOMPLETE / READ_INVALID` |
+| App 读取周期 | `MqtttService.kt:260`、`telemetry/SensorCadence.kt:11` | `SAMPLE_PERIOD_MS=180000`；守护开启时每 180 s 读一次 |
+| App 绑定 | `MqtttService.kt:419/426/444` `buildWritePayload`/`buildAllSavedIdsA1SinglePacket` | 0xA1 包长度 `2+4*N`；N=1 为 6 B；`MacIdBook` 的 ID 必须等于传感器 `uid4` |
+| App 批次转发 | `telemetry/BleBatchForwarding.kt:15` | 数量/ID/顺序必须与绑定集合一致；占位批次拒绝；载荷 `<epoch>:<temps csv>:<humis csv>` |
+| App 上传 | `cloud/CloudUploadRepository.kt:28` | 门控 `guardActive && phone非空`；`POST /upload_data`；瞬时失败退避、401/403/4xx 停止自动重试（详见 TD-SW-005） |
+| 平台 | `服务器迁移记录.md` §八 | `sensor_data(phone, dev_id, time, temperature, humidity)`；`UNIQUE(dev_id,time)` + `INSERT IGNORE`；以实际部署为准 |
+
+### 1.4 关联键与时间语义（联合用例必须逐项写清）
+
+1. **设备关联键**：传感器 `BOOT uid` 前 4 字节（记作 `uid4`，8 位大写 HEX）＝ 433 帧 `uid_pick(4)` ＝ 网关设备块 `id4` ＝ App `MacIdBook` 的 8 位 ID ＝ 平台 `dev_id`。历史 `uid=6A002C00` 仅是同板历史，执行时必须用当次 `BOOT` 复核。
+2. **数值关联键**：注入温度 `367`（36.7℃，0.1℃ 单位）为唯一可区分载荷；真实湿度 `h`（0.1 %RH）由当次真实采样决定。传感器 `P` 行的冻结 `t/h`、网关/App 的 `T/H`、平台行必须逐项一致（0.1 单位）。
+3. **时间语义**：传感器不发送 RTC 时间；`S/P` 的 `k` 是 RTC 累计分钟节拍。App 的 `receiveTime` 是手机系统时间；平台 `time` 是 App 上传的 epoch 秒。因此同一事件以 **`uid4 + 367 + 真实湿度 + 采集窗口`** 关联，`k` 与 App/平台时间仅作辅助窗口，不靠“时间接近”猜同一笔。
+4. **网关身份**：App 日志的 `GwID`（6 B）与网关 `acaddr` 对应；网关固件版本不可回读，不以推断代替版本。
 
 ---
 
-## 3. 任务依赖、覆盖顺序与判定边界
+## 2. 测试层次与可证明边界
 
-### 3.1 依赖与顺序
+| 层 | 环境 | 能证明 | 不能证明 |
+|---|---|---|---|
+| L0 | 本机 gcc 宿主机 harness（真实 `fw_core.c`/`measure.c` + mock） | 判定真值表、冻结/重试、帧布局、注入只在测试构建生效 | 实板行为、真实射频、真实对阵 |
+| L1 | Keil 构建 + `git diff`/map/符号/字符串 | 0 Error、构建身份、测试入口默认关闭/正式版排除 | 运行时功能 |
+| L2 | COM43 9600 8N1（传感器板 + CW-DAPLink） | 上电五行/`uid`、每周期 `S`/`G`/`P`、`q/r/s/y`、行格式/预算、注入专用行 | 433 射频电气、网关内部、App 消费 |
+| L3 | FX2 被动 I²C（可选） | GXHT40 地址/命令/6 B/双 CRC 的数字时序补充 | 模拟幅度、433、功耗；空抓包不判器件坏 |
+| L4 | 网关/App（既有真实设备） | 网关真实接收/组帧、App 真实 BLE 读取/解码/本地消费/MQTT/上传 | 传感器物理温度响应、平台持久化（由平台段） |
+| L5 | 平台真实服务 | `upload_data` 2xx + 持久化 + 回读 | 仅 2xx 不证明持久化；由平台段判定 |
+| L6 | 联合用例（同一 `uid4+367+h`） | 跨端同一事件的可追溯链路 | 传感器物理量、电气、功耗、现场条件 |
 
-| 顺序 | 任务 | 前置 | 是否可独立局部通过 |
-|---:|---|---|---|
-| 1 | FW-REG-ASBUILT（as-built 回归与不变量） | 当前 HEAD；无设备前置 | 是（构建 + 宿主自检证据类别） |
-| 2 | FW-REG-REPORT（T1/T2/T3 向量与格式化） | FW-REG-ASBUILT | 是（宿主 + 构建证据类别） |
-| 3 | FW-LIGHT-DEF2-MECH（判据形制落地，`T=0`） | FW-REG-REPORT | 是（源码差异 + 构建 + 宿主向量） |
-| 4 | FW-OBS-PASSIVE（COM43 被动观测） | FW-REG-ASBUILT；COM43 采集入口；下载授权（若需换镜像） | 否（必须实板原始字节） |
-| 5 | FW-LIGHT-DEF2-ENABLE（数值接受后启用） | FW-LIGHT-DEF2-MECH + FW-OBS-PASSIVE + 判据接受记录 + 双态被动证据 | 否（必须实板 + 接受记录） |
-| 6 | FW-DIAG-BOOT（上电五行/uid 与 pyocd 编排） | FW-REG-ASBUILT；先开 COM43 再复位的编排；pyocd/等效入口 | 否（必须实板原始字节） |
+**纪律**：L0/L1 通过不替代 L2/L4/L5；L2 有串口行不替代“App 收到”；App 2xx 不替代平台回读；L3 可选且不替代任何必需用例；历史 PASS 不替代当前构建。
 
-靠前项不依赖靠后项；ITEM-001/002/003 不因 ITEM-004/005/006 未完成而失败；ITEM-004 可在 ITEM-003 之前（绑定 as-built）或之后（绑定 `T=0` 新构建）执行，**以当次实际镜像身份为准**。ITEM-005 当前为人工 `APPROVED_DEFERRED`，其依赖关系保留但本轮不执行、不计入退出。
+---
 
-### 3.2 ITEM-005 的当前状态（人工 APPROVED_DEFERRED，不计入本阶段退出）
+## 3. 关键可执行性缺口与测试专用构建（必须由实现补齐）
 
-当前人工范围决定：`FW-LIGHT-DEF2-ENABLE` = **`APPROVED_DEFERRED` / `SKIP_CONFIRMED`**（「无法准备，先跳过」，2026-11-11T03:50:42Z，`deferral_allowed=true`）。因此：
+### 3.1 为什么当前量产固件无法完成正向链路
 
-- 该测项本轮 **NOT EXECUTED**，不重复排队同一 `test_item_id`、不重测、不自行选择或回填阈值；
-- 它**不计入本阶段退出门槛**（§8）；不得再以“该项未执行”阻止本阶段退出，也不得把人工延期改写成固件缺陷；
-- 其原目标、上游判据接受门禁与真实验证缺口**完整保留**（§5.5、§10），交付报告必须显式披露；
-- 未执行不等于通过；`T` 保持 0；`V=0 D=0` 只是判据未启用的等价性证据，**不是“已识别有光”**；
-- 若后续由有权限方解除延期并提供形制/数值接受记录与同板同构建双态被动证据，按 §5.5 重新开启，回填后重建并重新取证。
+按当前源码与用户条件：
 
-#### 3.2.1 原检查者需要重评的范围错误（operator 复核）
+- `LIGHT_DARK_THRESHOLD_CODE=0` ⇒ `valid=false`、`dark=false`，升温+无光分支**恒不成立**；
+- 室温稳定，3 min 内温度变化不可能 >0.9℃；用户不允许调温/改变光强；
+- 没有任何自然路径使 `cur>350`（35.0℃）；
+- 当前 UART1 只有 TX（`debug_trace.c`），无命令解析；没有测试注入/强制上报接口。
 
-| # | 原报告位置 | 原文/事实 | 范围错误 | 本设计重评 |
-|---|---|---|---|---|
-| E-1 | `PRODUCT-ACCEPTANCE-002` §5 R4 | 上传规则标为“未满足/未执行” | 把人工已确认延期的启用项与“实现未满足”混同 | 上报公式实现 = 与需求逐项一致；**无光判据启用 = NOT EXECUTED（人工延期）**；真实升温/超温 = NOT EXECUTED（外部条件） |
-| E-2 | 同报告最终判定 | 以“需求 4 的无光分支仍禁用”作为整体 `TEST_FAIL` 依据之一 | 以人工跳过项作为整体失败/返工依据 | 失败依据只保留其余外部条件/后续阶段项；人工延期项不作返工依据 |
-| E-3 | 同报告 §7 | “R4 无光分支 `T=0`，待接受记录与双态证据后回填” | 后续入口正确，但未与“本轮不返工”区分 | 保留为需求/接受侧未决事项；固件本轮不因该未决项返工 |
-| E-4 | 同报告 §6 N-1 | 已正确记录 `SKIP_CONFIRMED`、不重测、不写成通过 | 与 R4 标签及最终判定不一致 | 以 N-1 的披露为准，修正 R4 标签与失败依据 |
+因此：稳定室温、有光、`T=0` 时，`sensor_decide_report` 恒为 false，`report_req` 恒为 0，`send_data_to_gateway` 恒不发送；网关无新数据，App 无有效读数，平台无新行。**这是当前固件的预期行为，不是缺陷；但也意味着正向 E2E 不可能靠等待自然事件完成。**
 
-本设计的退出准则按上述重评执行：**不把人工延期项纳入本阶段必需用例，也不因此把其他有效项判为通过**。
+### 3.2 最小测试专用改动（交固件实现；测试员不改产品源码）
 
-### 3.3 明确不在本设计内
+目标：把软件刺激送入**原采样后的业务判定入口**，让真实 `sensor_decide_report`、冻结、组帧、CRC、Feistel、433 发送、网关接收、App 消费、上传、持久化路径继续运行。
 
-| 排除项 | 归属/依据 |
+建议的最小形制（实现可用等价机制，但必须满足同一可观测判据）：
+
+| 项 | 要求 |
 |---|---|
-| 调温、改变光强、遮光/照射刺激、>35℃ 实板刺激 | readme“另外”段与 FWR-123；本轮不设计、不执行 |
-| 功耗/电流/CR2032 寿命、示波器位级电气 | 未提供仪器；不属本轮任务；不写成通过 |
-| 手机 App UI/业务/报表/通知 | Android 能力 |
-| 网关功能改动与网关侧验证 | 网关归属能力；本轮只读核对 |
-| 服务器/MQTT/云侧上传、幂等、持久化回读、iOS | 对应软件/后端能力 |
-| 跨链路（传感器→网关→手机）同笔一致性 | 用户补充条件 4：后续联调阶段；本阶段不安排 |
-| 产品源码/测试资产修改 | 实现/验证角色；本设计只给方法与判据 |
+| 开关 | 单一编译期宏，例如 `SENSOR_TEST_INJECT_ENABLE`，**默认 0**；仅测试构建启用 |
+| 样本序号 | 例如 `SENSOR_TEST_INJECT_SAMPLE_INDEX=2`：上电后第 2 次**成功**采样注入（第 1 次保留真实采样，供真实值/基线证据） |
+| 注入值 | 例如 `SENSOR_TEST_INJECT_TEMP_X10=367`（36.7℃；高于 `SENSOR_REPORT_HIGH_X10=350`，走真实 >35℃ 分支） |
+| 注入点 | `measure.c` 的 `temperature_process()` 中，`measure_sample()` 成功之后、`sensor_decide_report()` 之前；只覆盖 `tempvalue`，**不改** `huminityvalue`、光照、`prev/have`、`report_req`、组帧/CRC/Feistel/发送逻辑 |
+| 触发次数 | 每次上电最多 1 次；下一次复位/上电可重复；注入后可自然回到真实采样 |
+| 观测行 | 测试构建额外打印一行稳定格式（例如 `TINJ k=<tick> real=<real_x10> inj=<inj_x10>`，≤96 B、CRLF），使“真实采样值”和“注入值”可区分；正式构建不得含该字符串/符号 |
+| 禁用行为 | 宏为 0 时与当前量产行为逐字节一致（无注入、无 `TINJ`、无额外符号/字符串） |
+| 构建方式 | 实现提供**测试构建目标/配置**（例如独立 Keil target 或文档化 `-D` 构建脚本）；默认/发布目标保持宏 0。执行者不得自行改产品源码来启用 |
+| 复测判据 | 同一联合用例在新测试构建上重做刺激、采集和证据；原量产构建的旧结论不沿用 |
 
-### 3.4 既有证据状态快照（仅引用，不是本能力复验，也不构成通过）
+**可选替代**：测试构建也可实现一个受控 UART1 RX 命令（仅测试构建）触发同一注入；但必须满足：默认 0/正式版排除、命令有界、只注入判定输入、不绕过真实发送、可被 `TINJ`/`S`/`P` 观测。若实现选择该方式，本节表格的“注入值/注入点/观测行/排除”仍然适用。
 
-| 任务 | 既有状态与来源 | 对本设计的意义 |
+**正式版排除与可验证方法**（每次新构建必须复核）：
+
+1. 默认/发布构建 `SENSOR_TEST_INJECT_ENABLE=0`，构建 0 Error；记录编译器版本、Code/RO/RW/ZI、axf/hex md5。
+2. 对发布 axf/hex 做字符串/符号检查：不得出现 `TINJ`、`SENSOR_TEST_INJECT` 测试符号；map/`nm` 无注入函数；发布包成员仅标准构建。
+3. 源码差异审计：只允许 `measure.c`（及必要的 `sensor_config.h`/测试构建配置）出现默认关闭的注入代码；不得改 `sensor_decide_report`、`encode_frame10`、发送/CRC/Feistel、`S/P` 格式或光判据。
+4. 宿主机双构建 harness：宏 0 时行为与基线一致；宏 1 时只注入、判定/冻结/帧字节符合预期；释放后无测试符号。
+5. E2E 结束后恢复发布镜像（`mdk_flash` 下载标准构建，Verify OK），重新取得 `BOOT fw/uid`、确认无 `TINJ`，再交产品验收。**测试构建不得留在交付板件上。**
+
+> 这是“固件可提供的测试构建配置/观测埋点”，按当前能力契约由实现补齐；**不得把它转成人工条件**。若执行阶段拿不到该测试构建，正向用例必须记 `NOT EXECUTED`，交已审批的失败分析→固件实现闭环，修复后在同一联合用例/同一构建上复测。
+
+---
+
+## 4. 测试资产
+
+### 4.1 本设计侧（测试员可写/修）
+
+| 资产 | 覆盖 | 说明 |
 |---|---|---|
-| FW-REG-ASBUILT | 已在当前交付构建执行：独立 rebuild 0 Error/1 既有 warning、Code=25964 RO=656 RW=116 ZI=1676、axf `b6a15fed…`/hex `4d728dec…` 与发布包成员一致、产品源 `82a7e74` 零差异（EV-038 §1） | 本设计保留 ASB-01..10 判据；**任何新一轮验证仍须重新构建并重新取证，旧 pass 不沿用** |
-| FW-REG-REPORT | 已执行：实现侧 `build_test.sh` 222/0；测试侧 13 组独立 harness 609/0；实板 `p/H/q` 语义与预期一致（EV-038 §3/§5） | 保留 RPT-01..15；新构建须重跑 |
-| FW-LIGHT-DEF2-MECH | 已执行：静态 21/21；`T=0` 下实板 7 周期 `V=0 D=0`，无旧宏/旧通路活动引用（EV-032/EV-038 §3/§5） | 保留 MCH-01..10；不把 `V=0 D=0` 解释为有光 |
-| FW-OBS-PASSIVE | 已执行：EV-038 同一启动会话 7 条 `S`（k=0/3/6/9/12/15/21）全部 `q=1`、`o=8`、行长 76–79 B、无杂散、无 `G/P`；复核轮 k=1338/1341 与 triage 轮 k=1035/1038 亦 `q=1` | 保留 OBS-01..09；后续新构建/新会话须重新采集 |
-| FW-LIGHT-DEF2-ENABLE | **NOT EXECUTED（人工 APPROVED_DEFERRED）**：`T=0`，无接受记录、无双态被动证据 | **不计入本阶段退出**；保留 §5.5 供未来解锁；不重排、不重测 |
-| FW-DIAG-BOOT | 已执行：EV-038 及 2026-11-12 复核轮均以“端口先开 + pyocd 通用 `cortex_m` HW reset”取得 `BOOT→VDD→IOTEST→IOSIG→BUS` 各一次且有序，`uid=6A002C00`，`VDD` 复算 MATCH，随后 `S k=0` | 保留 BOT-01..06 与自动方式；新构建须重新采集，不得复用旧五行 |
-| 真实升温/超温、光强双态、功耗、跨链路、平台写入 | 未执行（用户条件限制/后续联调阶段/无授权） | 不在本阶段任务集与退出门槛；保留为产品级未闭合项（§3.3、§10） |
+| COM43 采集/解析脚本 | 上电五行、`S/G/P/TINJ` 逐行解析、`k/q/r/s/y/t/h`、行长、窗口拼接 | 测试侧自有；保存原始字节、窗口起止、字节数、间隙 |
+| 测试构建宿主机 harness | 宏 0/1 的判定/冻结/帧字节/无测试符号 | 测试侧独立验证；不修改实现侧断言 |
+| 构建/排除检查脚本 | 源码 diff 范围、axf/hex 字符串、map/符号、包成员 | 测试侧静态检查 |
+| 联合证据索引模板 | 每用例的版本、刺激、各端观察点、原始路径、时间窗、结论 | 与 §6/§8 对齐 |
 
-> 上表只用于说明“当前还剩什么没闭合”，不改变任何判据；本能力本轮**未**执行构建、烧录、串口采集、复位或逻辑采集。
+### 4.2 其他专业提供
+
+| 资产/证据 | 归属 |
+|---|---|
+| 测试构建的注入代码/宏/构建目标 | 固件实现（本设计提最小接口，不代写） |
+| App 安装/启动/绑定/UI/日志/DB/上传 | 手机段（software_verification） |
+| Wi-Fi `ZTE_607157` 自动连接（`ui_set_text` + `text_env`） | 手机段 |
+| 平台 `upload_data`/持久化/回读 | 平台段 |
+| 网关供电/身份/绑定状态的可观测证据 | 联合执行能力（按授权） |
+
+### 4.3 与 TD-002 rev 9.0 的关系
+
+rev 9.0 的固件级用例（ASB-01..10、RPT-01..15、MCH-01..10、OBS-01..09、BOT-01..07、EN-01..07）仍是固件回归依据。本 rev 10.0 **不重复**这些用例的原文，只规定：新增测试构建必须重跑受影响的宿主/静态检查（特别是 `fw_core`/`measure`/`debug_trace`/`rf` 的宿主 harness 与正式版排除），并重新取得实板证据；`EN-*` 仍为人工延期，不重排、不重测。
 
 ---
 
-## 4. 测试层次与测试资产
+## 5. 嵌入式用例（EM）
 
-### 4.1 层次
+共同前置：执行前重新枚举端口/USB；记录当次 HEAD、测试构建/发布构建身份、`mdk_flash` **Verify OK**、`BOOT fw/uid/rst/uart=9600`；COM43 9600 8N1；单窗口 ≤300 s 时允许分区窗口并记录起止/字节数/间隙；不得用历史 COM42/旧镜像/旧 uid 代替当次证据。
 
-| 层 | 名称 | 环境 | 用途 |
+### 5.1 EM-01 身份、构建与上电
+
+| 项 | 内容 |
+|---|---|
+| 目标 | 证明本轮测试对象是当前测试构建、真实板件、真实调试口 |
+| 前置/刺激 | 测试构建已由实现提供；端口先开后复位/下载复位；无温度/光照刺激 |
+| 方法与观测 | 重新枚举 COM43（067B:2303）；`mdk_flash` 下载测试构建；记录 axf/hex md5、构建日志、Verify OK；同一 COM43 窗口取得 `BOOT → VDD → IOTEST → IOSIG → BUS` 各一次且有序；读取 `fw/uid/rst/uart=9600` |
+| 判据 | 构建/下载身份与测试构建记录一致；五行齐全有序；`uid4` 可读；`VDD ok=1` 时 `mv=4096*bgrmv/code`（按源码公式）复算一致；只复位/只下载测试构建，不烧网关 |
+| 原始证据 | 枚举返回、下载/构建日志、原始 `.cap`、五行原文/字节数、时间 |
+| 失败处理 | 五行缺失→按 BOT-05 记未执行及实际时序；不得用后续 `S` 代替；身份不符→不使用该镜像 |
+
+### 5.2 EM-02 真实采样与被动节拍（无刺激）
+
+| 项 | 内容 |
+|---|---|
+| 目标 | 证明真实 GXHT40/光照采样仍在运行，节拍与字段正常 |
+| 前置/刺激 | 测试构建运行；不施加温度/光照刺激 |
+| 方法与观测 | COM43 连续/分区采集 ≥3 个采样周期；解析 `S`：`k/q/o/n/x/a/t/h/V/D/r/s/y`；记录相邻 `k` 差、行长、采样间期字节 |
+| 判据 | 全部周期 `q=1`、`o=8`、`t∈-400..1250`、`h∈0..1000`、`a∈n..x`、每行 ≤96 B+CRLF、无杂散；相邻 `k` 差恒 3；采样间期无输出；`V=0 D=0`（`T=0`） |
+| 原始证据 | 原始字节/窗口、逐行原文、解析输出 |
+| 边界 | 不把 `V=0 D=0` 解释为“已识别有光”；不据此判光路好坏 |
+
+### 5.3 EM-03 未上报门控（负向，当前量产/测试构建均可）
+
+| 项 | 内容 |
+|---|---|
+| 目标 | 证明当前条件下传感器不伪造上报、不推进/不发送 |
+| 前置/刺激 | 稳定室温、有光、`T=0`；不注入；网关已上电；如可行先使网关缓存为无数据状态（授权内 power cycle 或等待其无数据超时；不可用则记录实际状态） |
+| 方法与观测 | 采集 ≥3 周期 `S`；检查 `r=0 s=0 y=0`、无 `P`、无 `G`（除非真实采样失败）；同一窗口记录网关/App 侧观察（由手机段提供） |
+| 判据 | 传感器：`r=0`、`s=0`、无 `P`、无发送；`S` 的 `t/h` 为真实采样；App 不产生新的有效读数/不新增上传（手机段证据）；网关不得把历史值冒充为本轮上报 |
+| 原始证据 | `S` 原文、窗口、网关/App 状态原文 |
+| 边界 | 若网关有历史缓存导致 App 显示旧数据，记录其值与时间，不得算作本轮新上报；不得为清缓存而修改网关固件 |
+
+### 5.4 EM-04 受控上报刺激（测试构建核心）
+
+| 项 | 内容 |
+|---|---|
+| 目标 | 在真实目标上产生一次可识别的真实 433 上报，供后续 App/平台链路消费 |
+| 前置/刺激 | §3 测试构建已下载（Verify OK）；网关上电且可接收；App/绑定准备由手机段完成（建议前置用例 J-00）；测试构建在第 2 次成功采样注入 `367` |
+| 方法与观测 | 端口先开后复位/上电；采集覆盖第 1 次真实采样、第 2 次注入采样、第 3 次恢复采样；解析 `TINJ`、`S`、`P` |
+| 判据 | 第 2 次成功采样出现 `TINJ … real=<真实值> inj=367`；紧接 `S k=<k> p=<第1次真实值> H=1 … t=367 … q=1 r=1 s=1 y=0`（若首次发送失败则按实际 `s/y` 记录，最多 3 次重试后失败）；`P rq=0 s=1 y=0 t=367 h=<真实湿度>`；第 3 次采样恢复真实值 `t≈real`、`p=367`、`r=0 s=0`；`uid4` 在 BOOT 可读 |
+| 原始证据 | `TINJ/S/P/BOOT` 原文、原始字节/窗口、构建/下载身份、时间 |
+| 失败处理 | 无 `TINJ`/无注入→测试构建未生效，按 §3 要求实现补齐/修构建；`r=1` 但 `s=2`/无 `P`→记录发送失败与重试，交实现/联调调查；不得改判据或跳过 |
+
+### 5.5 EM-05 上报语义与帧一致性（测试构建）
+
+| 项 | 内容 |
+|---|---|
+| 目标 | 证明冻结快照、发送值与真实判定路径一致，且未改变帧/格式 |
+| 前置/刺激 | 同 EM-04 |
+| 方法与观测 | 比较 `P` 的 `t/h` 与 `S` 的判定值；用宿主 harness 按 `encode_frame10` 复算 10 B 明文/CRC（`uid4|temp_le|hum_le|crc_le`）；检查 `TINJ real` 与 `S` 注入值的区别；检查 433/网关/App 帧的字段序（由后续对端证据交叉） |
+| 判据 | `P t/h` = 组帧实际使用的冻结值；`S` 的 `p` 为注入前真实值；`TINJ real` 为第 2 次真实采样值；`S/P` 行长 ≤96 B；无新增字段/格式变化；帧布局/字节序/CRC 与源码/宿主一致 |
+| 原始证据 | 宿主复算输出、`S/P/TINJ` 原文、帧 hex（宿主） |
+| 边界 | 宿主帧复算不证明真实射频/网关接收；真实对端证据见 §6 |
+
+### 5.6 EM-06 正式版排除与回归（测试构建后、交付前）
+
+| 项 | 内容 |
+|---|---|
+| 目标 | 证明测试入口不进入正式构建、不影响产品行为 |
+| 前置/刺激 | 同一源码，默认/发布构建（宏 0） |
+| 方法与观测 | 构建 0 Error；axf/hex md5；字符串/符号/map 检查；发布包成员；源码 diff 范围；宿主宏 0/1 对照 |
+| 判据 | 发布构建无 `TINJ`/`SENSOR_TEST_INJECT` 符号/字符串；宏 0 行为与基线一致；发布包仅标准成员；diff 仅允许的注入文件且默认关闭；不改判据/帧/发送 |
+| 原始证据 | 构建日志、md5、字符串/符号输出、diff、包成员清单 |
+| 失败处理 | 任一不合规→测试构建/发布构建无效，交实现修正；不得以“只用于测试”为由留入口 |
+
+### 5.7 EM-07 重复、复位与恢复（按时间与授权）
+
+| 项 | 内容 |
+|---|---|
+| 目标 | 证明注入是单次/可重复、复位后身份与行为可恢复 |
+| 前置/刺激 | 同 EM-04；完成后复位/上电再注入一次（可选；时间允许时） |
+| 方法与观测 | 记录每次 `BOOT uid`、`TINJ`、`S/P`、`s/y`；检查下一次采样恢复真实值；如复位后 `uid` 不变、注入仅 1 次/上电 |
+| 判据 | `uid` 稳定；每次上电最多一次注入；未注入周期不产生意外上报；重复注入产生可区分的新事件；失败按实际记录 |
+| 原始证据 | 每轮窗口/原文/时间 |
+| 边界 | 不为了重复而反复无界烧录；每次烧录/复位有界并记录；不修改产品逻辑 |
+
+### 5.8 EM-08 证据与交接（不单独判定功能）
+
+| 项 | 内容 |
+|---|---|
+| 目标 | 为手机/平台段提供可关联的板端原始证据与版本信息 |
+| 内容 | `BOOT uid`、`S/P/TINJ` 原文、构建/下载身份、窗口时间、注入值/真实湿度、失败/重试记录 |
+| 判据 | 每项可回引 §1.4 的关联键；不把串口有数据写成 App 已收到 |
+| 证据 | 原始文件路径 + 摘要 + 时间 |
+
+---
+
+## 6. 联合用例与跨端分工（与软件 E2E 方案对齐）
+
+> 本设计的联合用例是**建议编排**；具体 case 列表由后续 `end_to_end_case_design` 生成。无论 case 如何编号，必须满足本节的目标、关联键、证据与退出条件；不得出现两套不同的通过标准。
+
+### 6.1 J-00 准备：身份、绑定、接收就绪（正向链路前置）
+
+| 端 | 动作/观察 | 判据 | 证据 |
 |---|---|---|---|
-| L0 | 宿主机纯逻辑/流程 | 本机 gcc（真实 `.c` + 影子 MCU/mock 总线/发送桩/UART mock） | 判定、CRC/换算、LIGHT-DEF-2 向量、冻结/重试、有界等待、行格式 |
-| L1 | 构建/静态/部署一致性 | Keil MDK + GNU 工具链 + `git diff`/反汇编 | 0 Error、资源/摘要、常量单点、退役/引脚所有权、验证资产边界 |
-| L2 | UART1 调试通道（实板） | 传感器板 + DAPLink + USB-TTL/COM43 | `BOOT/VDD/IOTEST/IOSIG/BUS/S/G/P`、行格式/预算、节拍、失败语义 |
-| L3 | 逻辑分析仪被动 I²C（可选补充） | FX2 `fx2lafw:2.32`、D0/D1、共地（须确认可用/授权） | 位级地址/命令/ACK/时序补充判别；非必需、非替代 |
-| L4 | 被动长窗口观测（实板） | COM43 分区捕获 ≥3 个周期 | 正常路径 `q=1`、字段/节拍/无杂散、判据未启用状态 |
-| L5 | 上电段编排（实板/调试） | 先开 COM43，窗口内复位/上电 | 上电五行/`uid`；测试侧脚本 + pyocd 通用 `cortex_m` HW reset（仅复位），备选同镜像下载复位 |
+| 嵌入式 | `BOOT uid`、真实采样 `S` | `uid4` 可读；真实采样 `q=1`；不注入 | COM43 原文、构建身份 |
+| 手机 | App 启动/守护开；把 `uid4` 加入 `MacIdBook`；确认 0xA1 写网关（N=1 时 6 B）；确认 BLE 已连接/可读；记录 `GwID`、MTU、`valueSize`、App 版本/包摘要、手机 SN/API | 绑定 ID=`uid4`；0xA1 写成功；读取链路可达；N=1 | logcat 原文、UI/DB 导出、`writeCharacteristic` 日志 |
+| 平台 | 记录基线（不写） | 无本轮新行 | 平台段基线 |
+| 关联 | `uid4`、`GwID`、N=1、时间窗 | 三端一致 | 联合证据索引 |
 
-### 4.2 测试资产（执行能力可选取；不是已执行结果）
+**为什么必须先做 J-00**：网关只把 `id4` 在绑定列表中的读数写入设备块；若传感器先上报而 App 尚未绑定，网关会丢弃该笔，随后 App 再绑定也读不到。因此正向用例的**物理准备顺序**是“网关上电 → App 绑定/读就绪 → 传感器刺激”，而 SOP 的“嵌入式→手机→平台”是**验证顺序**；J-00 用于把物理准备放在同一用例内完成，不违反验证顺序。
 
-| 资产 | 覆盖 | 类型 | 本轮状态/要求 |
+### 6.2 J-01 正向链路：同一笔上报贯穿传感器→网关→App→平台
+
+| 端 | 观察点 | 通过判据 | 原始证据 |
 |---|---|---|---|
-| `test/build_test.sh` | 5 个阶段：`host_sensor_core_test`、`host_measure_flow_check`、`host_debug_trace_check`、`host_light_check`（T=0 与启用变体）等，当前实现侧 222 项 | 实现侧自检 | 执行时实际运行；退出码 0、失败 0；保留 stdout/退出码/命令/编译器版本；已含 LIGHT-DEF-2 向量 |
-| `test/host_fw_core_pure_check.c` | fw_core 纯逻辑 | 实现侧自检 | as-built 覆盖升温/严格边界/int32；ITEM-003 更新为 LIGHT-DEF-2 形制向量 |
-| `test/host_sensor_core_test.c` | CRC/换算/有效域/判据/上报 | 实现侧自检 | 同上 |
-| `test/host_measure_flow_check.c` + `test/mock_measure_mcu/` | 采样顺序、失败不推进、冻结快照、发送路径 | 实现侧自检 | 执行时复跑；确认 T2 冻结/不覆盖/用尽与 `P` 取数 |
-| `test/host_debug_trace_check.c` + `test/mock_trace/` | 行格式/预算、P 行、TXE/TXBUSY 有界路径 | 实现侧自检 | 卡死组必须有限返回并完成关闭 |
-| `test/host_gxht40_check.c`、`host_sf_i2c_bus_check.c` | 驱动/软 I²C/mock 从机 | 实现侧自检 | T4/F-1 回归；确认诊断快照/重探/恢复 |
-| `test/host_rf_frame_check.c` | 空口往返与网关映射 | 实现侧自检 | 10 B 布局/字节序/Feistel 不变 |
-| `test/host_*_verify_ev.c`、`test/mock_*_ev/` | 测试方独立验证 harness（当前测试侧 13 组 609 项） | **验证角色资产** | 实现侧**不得修改**；执行前核对语义。当前已同步到 LIGHT-DEF-2（`host_fw_core_verify_ev.c`、`host_vdd_verify_ev.c`、`host_light_verify_ev.c` 已更新），旧 pass 仍不作为新构建证据 |
-| `evidence/product_acceptance_20261112_scope_recheck/capture_bot01.py` | BOT-01 自动编排：先开 COM43 → pyocd 通用 `cortex_m` HW reset → 有界采集 → 五行顺序校验 | 测试侧自有脚本 | 仅作复位源，不烧录/不写内存；位于 evidence，不进入发布包；执行时按当前入口重跑并记录版本/参数 |
-| 待新增（验证角色，按需） | 新构建的独立向量/字节级解析；`SENSOR_DEBUG_UART=0` 符号检查 | 独立验证 | 不得删除/弱化既有覆盖；不得用实现侧自检替代独立验证 |
+| 嵌入式 | EM-04/05：`BOOT uid`、`TINJ real/inj=367`、`S t=367 r=1 s=1`、`P t=367 h=<h>`、`uid4` | 注入生效；真实判定/冻结/发送路径运行；`P` 冻结值与 `S` 一致；`s=1`（或按实际重试记录） | COM43 原始字节/窗口、构建/下载身份 |
+| 网关/App | logcat：`MTU negotiated`、`GwID`、`dev=1 valid=1`、`valueSize≥32`、`id=<uid4> H=<h>% T=36.7°C`、`link_state=DATA_OK`；本地库行；MQTT 载荷 `<epoch>:36.7:<h>`；HTTP `/upload_data` 响应 | 设备 ID、T=36.7、H=<h> 与传感器 `P` 逐项一致；读取完整（N=1 期望 32 B）；本地消费完成；上传发出 | logcat 原文、DB/待发箱导出、MQTT 原文、HTTP 请求/响应（脱敏） |
+| 平台 | `sensor_data` 回读 `(phone, dev_id=<uid4>, time, 36.7, <h>)` | 2xx **且**存在对应行 **且**字段逐项一致；同键重复 `inserted=0`/行数不变 | 回读行、服务日志、请求/响应 |
+| 关联 | `uid4 + 367 + <h>`；传感器 `k`/App `epoch`/平台 `time` 窗口 | 同一事件可追溯；不靠时间接近猜 | 联合证据索引 |
 
-> 执行前必须逐项核对 harness 期望来源；若仍为旧语义（1/3、降温方向、`cur==350` 整体排除、发送读前值、无 `BUS/G/P`、无有界等待），其 pass **不作为本轮结论**，先更新再执行。验证资产更新由验证角色负责，实现侧不得代改。
+**判定**：以上四段**全部**成立才判该联合用例通过；任一段缺失/不一致 → 该段 `NOT EXECUTED` 或失败，不得以其余段通过冒充整链路。仅串口 `s=1` 不证明网关收到；仅 App `2xx` 不证明平台持久化。
 
----
+**已知不证明**：注入的 36.7℃ 不是 GXHT40 的物理测量；真实 >35℃ 物理响应、真实升温+无光分支、光照双态、功耗、433 电气/天线/距离均未证明（见 §9）。
 
-## 5. 测试设计明细
+### 6.3 J-02 负向链路：当前条件下不上报、不伪造、不上传
 
-**共同前置**：每个用例执行时的当前交付提交 `HEAD` 与由该提交构建的镜像/源码；记录 commit、axf/hex md5、构建时间、下载校验（若涉及）；实板用例还必须记录 `BOOT` 的 `fw/uid`（若取得）。标注：`[L0]` 宿主逻辑、`[L1]` 构建/静态、`[实板]` 真实传感器板 + COM43、`[可选]` FX2、`[未执行]` 条件/仪器未具备。
+| 端 | 观察点 | 通过判据 | 证据 |
+|---|---|---|---|
+| 嵌入式 | EM-03：`S r=0 s=0 y=0`、无 `P` | 不发送；真实采样正常 | `S` 原文/窗口 |
+| 网关/App | App 终态（`GATEWAY_NO_DATA`/`READ_INVALID`/`READ_INCOMPLETE` 中实际值）、无新有效读数、无新本地行/待发箱/上传 | 不合成数据、不上传；实际终态如实记录 | logcat、DB/待发箱 |
+| 平台 | 无本轮新行 | 无新增 | 回读/行数 |
+| 边界 | 若网关有历史缓存，记录旧值与时间，不算本轮上报 | 不把旧值冒充新上报 | 时间窗/原文 |
 
-### 5.1 FW-REG-ASBUILT：as-built 候选回归与不变量核对
+### 6.4 J-03 重复与恢复（可选，时间/授权允许）
 
-| 编号 | 路径 | 前置与刺激 | 方法与观测 | 判据 | 原始证据 |
-|---|---|---|---|---|---|
-| ASB-01 `[L0]` | 正常 | 当前提交；本机 gcc | 运行 `test/build_test.sh`，记录实际阶段数与各阶段输出、退出码、命令、编译器版本 | 退出码 0；全部阶段通过；失败数 0；无编译错误 | 原始 stdout/stderr、退出码、命令、版本、时间 |
-| ASB-02 `[L1]` | 正常 | 当前交付提交（源码基线 `82a7e74`）；`MDK/Project.uvprojx` | Keil rebuild；读取构建日志/Program Size；计算 axf/hex md5 | 0 Error；≤1 既有 warning（`main.c` 空循环体）；`Code=25964 RO=656 RW=116 ZI=1676`；axf md5 `b6a15fed…`、hex md5 `4d728dec…`（仅当受测树早于 LIGHT-DEF-2 时才比对 `a3b08774…`/`546ce20…`） | 构建日志、map/摘要、md5、工具版本、时间 |
-| ASB-03 `[L0]` | 正常 | 当前提交 | 复跑实现侧自检：`host_sensor_core_test`、`host_fw_core_pure_check`、`host_measure_flow_check`、`host_debug_trace_check`、`host_gxht40_check`、`host_sf_i2c_bus_check`、`host_light_check`、`host_rf_frame_check` 及 `build_test.sh` | 退出码 0、失败 0；T1/T2/T3/T4/F-1 相关断言全部通过 | 各 harness stdout/退出码 + 命令 + commit |
-| ASB-04 `[L0]` | 正常 | 真实 `fw_core.c` | 执行 RPT-01..RPT-03 的 T1 向量（可作为 ITEM-002 的前置复跑） | 九组规范向量 + 边界全部一致；int32 无溢出；无降温/`cur==350` 排除语义 | 逐条 stdout + 参考公式 |
-| ASB-05 `[L0]` | 正常 | 真实 `measure.c` + 发送桩 | 执行 RPT-05..RPT-11 的 T2 冻结/重试/不覆盖/P 行回归 | 快照/帧字节/状态/P 行全部符合 | 帧 hex、状态 dump、P 行原文/字节数 |
-| ASB-06 `[L0]` | 正常 | 真实 `debug_trace.c` + mock UART | 执行 RPT-12 的正常/卡死/关闭回归 | 正常字节不变；卡死有限返回；关闭语义正确 | mock 轨迹 + 行原文 + stdout |
-| ASB-07 `[L0/L1]` | 正常 | 当前源码/驱动 | 核对 T4/F-1：0x44/0x45 探测、0xFD、6 B、双字 CRC、x10 换算/有效域、失败重探/有界恢复；核对 `measure.c` 在推进前缓存 `prev/have` 供 `S` 行（首样本 H=0 p=0；后续 `p(k)=t(k-3)`，若采集覆盖连续周期） | 全部保持；不因旧 EV-017 `q=0` 重写已工作驱动；`S` 的 `p/H` 是判定前快照 | 宿主 harness stdout + 源码快照；实板首样本证据仅在捕获覆盖 k=0 时取得，未取得不得声称 |
-| ASB-08 `[L1]` | 正常 | 当前源码/工程 | 静态核对：433 明文 10 B、BLE 8 B 布局；`S/G/P/BOOT` 行格式；采样节拍；前值推进；失败不推进；未启用门禁；无 `hall/optcfg/params/history` 活动引用；PB04=AIN11、PB05=光照供电、PB06 未使用；PA03/PA04 仅软 I²C；PA05/PA06 仅 UART1；PA07/PA08 不改；读保护两行仍注释 | 全部保持；无新增字段/格式变化；无旧通路活动引用；引脚所有权唯一 | grep/codegraph/diff 原文 + 源码快照 + 工程文件列表 |
-| ASB-09 `[L0/L1]` | 异常/边界 | 当前构建（判据未启用） | 构造/读取 `V/D`；检查 `S` 行与判定 | `LIGHT_DARK_THRESHOLD_CODE=0`（判据未启用）时 `valid=false`、`dark=false`、`S V=0 D=0`；升温分支不触发；**不得把该状态解释为“已识别有光”** | `S` 原文 + 宿主向量 + 源码常量 |
-| ASB-10 `[L1]` | 异常/边界 | 当前提交与产品基线 | `git diff` 产品源码与 `test/` 资产；核对只允许文档/证据变化；确认实现侧未修改 `test/*_verify_ev.c`、`test/mock_*_ev/` | 无未声明的功能修改；当前交付树重建摘要与 `b6a15fed…`/`4d728dec…` 一致；任何差异必须给出源码/工具链差异说明；验证资产零修改 | `git diff --stat`/`git diff` 原文 + 文件清单 |
+| 端 | 观察点 | 判据 |
+|---|---|---|
+| 嵌入式 | EM-07 第二次注入/复位 | `uid` 不变；每次上电最多一次注入；恢复真实采样 |
+| App/平台 | 第二笔 `uid4+367+h` 的新事件 | 与第一笔可区分（不同 `epoch`/time）；不覆盖/不丢失；平台按 `(dev_id,time)` 幂等 |
+| 证据 | 每轮独立窗口/原文 | 不把第一笔证据复用到第二笔 |
 
-**局部通过边界**：ITEM-001 的 acceptance 证据类别是构建日志 + 产物摘要 + 实现侧宿主自检；可在自身范围内通过，但**不代表**实板/跨链路通过。
+### 6.5 J-04 读取完整性/容量（App 主责；嵌入式只提供 N=1）
 
-### 5.2 FW-REG-REPORT：T1/T2/T3 规范向量与格式化回归
+| 端 | 观察点 | 判据 |
+|---|---|---|
+| 嵌入式 | 网关绑定 N=1（仅 `uid4`） | 帧 `devCount=1`、期望 32 B |
+| App | `MTU negotiated`、`valueSize`、`GatewayReadGuard` 判定 | MTU≥35、`valueSize≥32` 且 16 B 对齐；否则 `READ_INCOMPLETE`，不补零/不拼接 |
+| 平台 | 无（读取不完整时不得产生新行） | 整帧拒绝时无读数/无上传 |
+| 边界 | ≥9 台/第 10 台拒绝 | 本轮无 ≥9 台设备，不纳入本阶段必需；由软件设计另行说明 |
 
-#### 5.2.1 T1 条件上报判定
+### 6.6 J-05 上传拒绝/重试（App/平台主责）
 
-| 编号 | 路径 | 前置与刺激 | 方法与观测 | 判据 | 原始证据 |
-|---|---|---|---|---|---|
-| RPT-01 `[L0]` | 正常 | 真实 `fw_core.c`；逐条输入 `sensor_decide_report(prev, have_prev, cur, dark)` | 九组规范向量：30.0→30.8 暗；30.0→30.9 暗；30.0→31.0 暗；30.0→31.0 明/未启用；30.0→29.0 暗；34.0→35.0 暗；34.0→35.0 明；无前值 35.0 暗；无前值 35.1 明/暗/无效 | +0.8/+0.9 不报；+1.0 且暗报；+1.0 明/未启用不报；降温不报；34.0→35.0 暗报、明不报；无前值 35.0 不报、35.1 任意光照报 | 逐条 stdout（prev/cur/dark/have_prev/实际/期望）+ 退出码 |
-| RPT-02 `[L0]` | 异常/边界 | 同上 | int16 极值：`prev=32767,cur=-32768`；`prev=-32768,cur=32767`；`prev=1250,cur=-400`；`prev=-400,cur=1250`；`cur=351/350/349`；`dark`/`have_prev` 组合 | 差值按 int32 计算无溢出；`dark=false` 只关升温分支；`cur>350` 超温独立；恰好 350 不超温但仍可经升温分支上报 | 逐条 stdout + 参考公式对照 |
-| RPT-03 `[L0]` | 补充 | 真实实现 + 独立参考 | 边界集合 + 随机/穷举 `(prev,cur,dark,have_prev)` 与独立 Python/C 参考逐条比对 | 完全一致；无平台相关行为 | stdout 哈希/计数 + 参考脚本输出 |
-| RPT-04 `[L1]` | 异常/边界 | 源码 | `sensor_config.h` 只保留 `SENSOR_REPORT_RISE_X10=9`、`SENSOR_REPORT_HIGH_X10=350`；全 `USER/src|inc` 无 `SENSOR_REPORT_DROP_X10`、无降温判定、无 `cur == 350` 整体排除；`S` 行/433/BLE/节拍/前值推进/冻结发送语义未改 | 常量单点；旧语义清零；接口/布局逐字节不变 | grep/codegraph 输出 + 源码快照 + `git diff` |
+参考 TD-SW-005 与 E2E-SW-004：401/403/4xx 停止自动重试、保留待发、手动重试；真实 401 与回读授权不足时记 NOT EXECUTED。嵌入式不参与该用例的判定，只提供“已产生的读数”作为输入。
 
-#### 5.2.2 T2 待上报冻结快照与 P 观测行
+### 6.7 J-06 真实物理触发（本阶段明确不做）
 
-| 编号 | 路径 | 前置与刺激 | 方法与观测 | 判据 | 原始证据 |
-|---|---|---|---|---|---|
-| RPT-05 `[L0]` | 正常 | 真实 `measure.c` + 脚本化发送桩；构造有效温湿度、触发判定、首次发送成功 | 发送桩逐次记录 `encode_frame10` 入参与帧字节；检查 `report_req/retry`、`P` 字段 | 触发时冻结当次 `t/h`；组帧入参 = 该周期采样值；首次成功 → `report_req=0`、`retry=0`、`P rq=0 s=1 t/h=冻结样本` | 逐次入参/帧 hex/状态 dump/P 行原文 |
-| RPT-06 `[L0]` | 异常/边界 | 同上；强制首次及后续发送失败；期间推进新采样、前值、光照 | 逐次导出待发送帧并逐字节比较；检查 `P` 中间态 | 重试期间 `t/h`/帧字节/CRC **逐字节一致**；不因新采样/前值推进改变；首次失败 `P rq=1 s=2 y>=1` 仅是中间态；后续成功/耗尽必须验证最终状态；不得伪造成功 | 每次帧 hex + 触发样本 + 新采样值 + `P` 序列 |
-| RPT-07 `[L0]` | 异常/边界 | 待上报未清除时发生新触发（不同 `t/h`） | 检查原冻结样本与帧 | 原冻结样本不被覆盖；仅发送成功或用尽放弃后，下一次触发才写新快照 | 帧 hex 序列 + 状态 dump |
-| RPT-08 `[L0]` | 异常/边界 | 发送失败次数超过 `SENSOR_RF_TX_RETRY` | 检查待上报状态与后续触发 | 用尽 → `report_req=0`、`retry=0`、不返回成功；下周期可重新判定/新建快照；无无限重试 | stdout + 状态 dump |
-| RPT-09 `[L0]` | 正常/边界 | `report_req=0` | 调用发送路径 | 不组装、不发送（发送桩调用 0 次）；无 `P`（无判定且无发送尝试） | 调用计数 + stdout |
-| RPT-10 `[L0]` | 异常/边界 | 温湿度失败周期；分别构造“无既有待上报”与“已有冻结待上报” | 检查快照/发送/`P`/状态 | 无既有：不新建/不覆盖快照、不发送、无 `P`；已有：快照不变、不得用失败样本或 0 值组帧；`report_req`/前值/发送结果不被失败周期改变 | 状态 dump + 帧 hex + `P` 行 |
-| RPT-11 `[L0/L1]` | 异常/边界 | 真实 encoder + 影子 UART | 检查 433 明文 10 B `uid4 / T s16LE / RH u16LE / CRC16LE`；无新增字段；`S` 行与既有诊断行逐字节不变；`P` 最坏值按线上字节计长；仅整数/十进制 | 10 B 布局/字节序/Feistel 不变；无光照/原因/时间字段；`P` ≤96 B（按源码核算最坏约 31 B，仍以实测为准）；无 `%f`/动态内存 | 帧 hex dump + 行原文/字节数 + 源码审计 |
-| RPT-12 `[L0]` | 正常 + 异常 | 真实 `debug_trace.c` + mock UART（正常翻转；TXE 永不置位；TXBUSY 永不清零） | ① 正常逐行比较 `BOOT/VDD/IOTEST/IOSIG/BUS/S/G/P` 字节；② TXE 卡死；③ TXBUSY 卡死；④ 检查关闭动作与业务状态 | 正常字节逐字节一致；卡死场景均在有限循环内返回并完成 UART1 关闭；不复位 GPIOA、不改 PA03/PA04/PA07/PA08；超时不改 `report_req`/前值/冻结快照/发送结果 | 行原文/字节数 + mock 调用轨迹 + 状态快照 + stdout |
-| RPT-13 `[L1]` | 边界 | 以 `-DSENSOR_DEBUG_UART=0` 构建 | 链接/符号检查；运行采样流程 | `S/G/P` 空实现；不引入 UART 符号；采样/判定/发送不变 | 构建日志 + 符号表 + stdout |
-| RPT-14 `[L1]` | 证据类别 | 当前提交 | `test/build_test.sh` + T1/T2/T3 专用 harness + `mdk_build` | 全部通过；0 Error；记录产物摘要 | 原始 stdout/退出码 + 构建日志 |
-
-**实板 `P` 行**：本阶段不构造升温/无光触发，真实目标不得伪造发送失败/成功；若自然未出现 `P`，不得声称已覆盖跨周期重试（宿主 RPT-06/07/08 为主证据）。
-
-#### 5.2.3 T3 调试发送等待有界化（与 RPT-12 共用）
-
-| 编号 | 路径 | 前置与刺激 | 方法与观测 | 判据 | 原始证据 |
-|---|---|---|---|---|---|
-| RPT-15 `[L1]` | 异常/边界 | 源码 | 确认等待上限只来自 `sensor_config.h` 的 `SENSOR_DEBUG_TX_GUARD=200000`；按 9600 8N1（约 1.04 ms/字符、单行 ≤96 B≈100 ms）推算并留余量；无散落魔法数/无 `while(TXE)`/`while(TXBUSY)` 无计数形式 | 单一常量；取值合理；无无界等待 | grep/codegraph + 源码快照 + 常量值 |
-
-### 5.3 FW-LIGHT-DEF2-MECH：判据形制落地（`T=0`，门禁关闭）
-
-| 编号 | 路径 | 前置与刺激 | 方法与观测 | 判据 | 原始证据 |
-|---|---|---|---|---|---|
-| MCH-01 `[L0]` | 正常/边界 | 真实 `fw_core.c`（LIGHT-DEF-2） | `light_is_dark(mean, valid, threshold)`：`T=0, valid=true`；`T=1, mean=0/1`；`T=4095, mean=4094/4095`；`mean=T-1/T`；`valid=false` 任意 `T/mean` | `T=0` 且 `valid=true` → false；`T=1` 时 0 false、1 true；`T=4095` 仅 4095 true；`mean=T-1` false、`mean=T` true（相等为暗）；`valid=false` 恒 false；`T=0` 与 `valid=false` 任一成立均不得判暗 | 逐条 stdout + 计数 + 退出码 |
-| MCH-02 `[L0]` | 正常 | 真实 `light.c` + 影子 MCU/ADC | 构造 `adc_ok=true, T=0`；`adc_ok=true, T=3000`；检查 `valid` 与 `dark` 的接线 | `valid = adc_ok && (T != 0)`；`dark = light_is_dark(mean, valid, T)`；`T=0` 时 `valid=false/dark=false`（即使 `mean>=T`） | 状态 dump + stdout |
-| MCH-03 `[L0]` | 异常/边界 | 影子 ADC 全部转换超时（EOC 永不置位） | 调用 `light_sample()` | `adc_ok=false`、`samples_ok=0`、`mean/min/max=0`、`valid=false`、`dark=false`；**不合成满量程 4095**；光照失败不影响后续温湿度路径 | `light_result_t` dump + stdout |
-| MCH-04 `[L0]` | 异常/边界 | 部分转换成功（如 8 次中 5 次成功） | 检查均值/极值/成功数 | `mean` 取成功样本算术平均、`o=成功数`、`n/x` 来自成功样本；仍按同一判据；不冒充 `o=8` | 状态 dump + stdout |
-| MCH-05 `[L0/L2]` | 正常/等价 | `T=0` 新构建 | 与 as-built 行为逐项比对：`S V=0 D=0 r=0 s=0 y=0`；采样时序、行长度（≤96 B）、字段集合/顺序、`G/P` 行条件、433/BLE 布局、资源占用不变；宿主可用相同输入对比字节；实板可在 OBS 中复核 `V/D` | 未启用等价性成立；不得出现 `V=1` 或 `D=1`；不得改变行格式/时序/布局 | 源码 diff + 构建摘要 + 宿主字节对比 + （若有）实板 `S` 原文 |
-| MCH-06 `[L1]` | 异常/边界 | 源码与实现侧测试 | 检查 `USER/` 与实现侧测试（`host_fw_core_pure_check.c`、`host_sensor_core_test.c`、`host_light_check.c`、`build_test.sh`、实现侧 mock）中不再出现 `LIGHT_DARK_REF_CODE`/`LIGHT_DARK_CALIBRATED`；无静默同义别名 | 旧宏清除；无同义残留；`T` 仍为 0 | grep 原文 + 源码快照 |
-| MCH-07 `[L1]` | 正常 | 新源码 | Keil rebuild + `gcc/build.sh` + `test/build_test.sh` | 三者均 0 Error；记录新 Code/RO/RW/ZI、axf/hex md5；变化有说明 | 三份构建日志 + 摘要 + 工具版本 |
-| MCH-08 `[L1]` | 异常/边界 | Git | 确认实现侧未修改 `test/*_verify_ev.c`、`test/mock_*_ev/`；实现记录须列出需验证角色同步的资产（`host_fw_core_verify_ev.c`、`host_vdd_verify_ev.c`） | 验证资产零修改；同步清单齐全（当前已由验证角色同步，仍须核对）；不得以修改验证资产/绕过断言让本任务通过 | `git diff --stat` + 文件清单 + 实现记录 |
-| MCH-09 `[L1]` | 异常/边界 | 新源码 | 核对 diff 仅在允许文件：`sensor_config.h`、`fw_core.c/h`、`light.c/h`、实现侧自检与 `build_test.sh`；确认无滞回/温补/自适应/跨周期状态；无格式/时序/空口/BLE 改变；`T` 保持 0 | 范围受限；判据无状态；`T=0`；无功能外溢 | `git diff` 全文 + 配置快照 |
-| MCH-10 `[L1]` | 异常/边界 | 构建/链接 | 检查无浮点库/动态内存新增；Flash/RAM 增量可由常量/比较解释 | 无新增动态内存/浮点；资源变化有说明 | map/`nm`/反汇编 + 构建日志 |
-
-**负向判据**：若在 ITEM-003 中把 `T` 设为非 0、引入滞回/温补/自适应、改 `S` 行/433/BLE 布局、或修改验证资产来通过，一律判失败，不得以“为了让用例通过”辩解。
-
-### 5.4 FW-OBS-PASSIVE：当前构建 COM43 被动观测（无刺激）
-
-| 编号 | 路径 | 前置与刺激 | 方法与观测 | 判据 | 原始证据 |
-|---|---|---|---|---|---|
-| OBS-01 `[实板]` | 正常 | 执行前重新枚举；确认 COM43=067B:2303；记录受测构建 commit/md5；若下载则记录 **Verify OK**；不施加刺激 | 记录端口身份、构建/下载身份、板件 UID（若可取得）、开始时间、设备正常使用状态 | 身份闭合；不用 COM42/旧镜像；不改变光强/温度/摆放作为测试手段 | 枚举原始返回、构建/下载日志、时间、环境记录 |
-| OBS-02 `[实板]` | 正常 | 打开 COM43 9600 8N1 捕获；单窗不足时多窗口 | 连续采集 ≥3 个 3 分钟采样周期（约 ≥6 分钟）；记录每窗起止、字节数、间隙、观测 `k` | 至少 3 个连续周期；窗口/字节数/间隙完整记录；不得用截断窗口冒充连续 | 每窗原始 `.cap`/`.bin` + md5 + `capture_windows` 记录 |
-| OBS-03 `[实板]` | 正常 | 同一捕获 | 逐行解析 `S`：`q/t/h/o/n/x/a/k/V/D/r/s/y` | **全部周期 `q=1`**；`t∈-400..1250`、`h∈0..1000`；`o=8`；`a` 落在 `n..x`；每行 ≤96 B 且以 CRLF 结束；窗口内无杂散字节/NUL | 逐行原文/字节数 + 独立解析脚本输出 |
-| OBS-04 `[实板]` | 正常 | 同一捕获 | 检查相邻 `k` 与同周期行数 | 相邻观测周期 `k` 差值恒为 3；同一 `k` 不出现两行 `S`；采样间期无输出 | `k` 序列 + 原始字节时间窗 |
-| OBS-05 `[实板]` | 正常 | 同一捕获 | 记录每周期 `V/D` 与 `a`；与 FD-002 §6.2 的现场基线对照 | 判据未启用时应为 `V=0 D=0`；**记录 `a` 供判据复核**；不得把 `V=0 D=0` 解释为“已识别有光” | `S` 原文 + 统计表（`a/n/x/o` 范围） |
-| OBS-06 `[实板]` | 异常/边界 | 出现 `q=0` 周期 | 取同周期 `G` 行；核对 `s/a44/a45/rd/at/raw`；检查失败周期是否上报/推进/构造 0 | `S(q=0)` 后紧跟一条 `G`；失败周期不报/不推进前值/不构造 0；`G raw` 可独立复算；下一周期重探/恢复（若可观测） | `S/G` 原文 + CRC 复算 + 序列说明 |
-| OBS-07 `[实板]` | 异常/边界 | 无输出/乱码/端口打不开 | 先核对端口身份、波特率、接线、捕获窗口、占用；必要时重新枚举 | 无输出本身是现象；不得直接判器件/功能失败；无法恢复时记 `NOT EXECUTED` 及原因 | 工具原始返回/错误 + 检查记录 |
-| OBS-08 `[实板]` | 证据类别 | 当前构建 | 汇总原始字节、解析输出、窗口起止、构建/下载身份 | 全部来自当前构建实板；未以调温/调光/遮光/照射/功耗测量取数；历史证据不替代 | 原始 `.cap` + 解析 + 身份表 |
-| OBS-09 `[实板]` | 异常/边界 | `q=0` 持续或字段越界 | 记录失败签名、原始行、窗口、环境；交实现调查 | 不得改判据/降低断言/删除失败证据；未知根因交回实现，不宣告外部阻塞 | 失败证据包 + 缺陷记录 |
-
-**通过边界**：OBS 的 acceptance 明确要求 `q=1`、`k` 步长 3、`o=8`、行 ≤96 B、无杂散字节、采样间期无输出；任一周期不满足即不能以“已诊断”代替通过。若 `q=0` 只是偶发且已按 OBS-06 取证，仍需重新采集满足“全部周期 q=1”的证据包；不得把含 `q=0` 的窗口裁掉后冒充连续通过。
-
-### 5.5 FW-LIGHT-DEF2-ENABLE：判据数值接受后启用与被动双态取证
-
-| 编号 | 路径 | 前置与刺激 | 方法与观测 | 判据 | 原始证据 |
-|---|---|---|---|---|---|
-| EN-01 `[L1/文档]` | 前置 | 检查是否存在对 LIGHT-DEF-2 形制与数值的接受记录（含 IC-002 §4.2 同步） | 读取当前需求/架构接受记录；核对候选 `T=3590`、可用带 `(3514,3660]` 或接受后的新值 | **缺少接受记录时不得执行后续 EN 用例**；只记录 `NOT EXECUTED` 与缺项；不得自行选择/回填阈值 | 接受记录引用 + 缺项清单 |
-| EN-02 `[实板]` | 前置/证据 | 同板件、同构建、同摆放；正常使用状态下的被动观测；**不得以遮光/照射作为测试手段** | 取得至少 1 条受光被动 `S`（`mean<T`）与 1 条覆盖/无光被动 `S`（`mean>=T`）；来自不同周期；`o=8`、`n/x` 未饱和；记录时间与状态 | 双态证据齐备且方向正确；观测不是人为改变光强/遮光；否则不得回填 | 原始 `S` 行 + 时间 + 状态说明 + 统计 |
-| EN-03 `[L1/实板]` | 正常 | EN-01/EN-02 满足；实现回填 `T`（候选 3590 或接受值） | 检查 `sensor_config.h` 唯一常量 diff；Keil rebuild；`mdk_flash` 下载 | 仅唯一配置点变化；rebuild 0 Error；下载日志见 **Verify OK**；绑定新构建摘要（不得沿用历史 axf md5） | 配置 diff + 构建日志 + 下载日志 + 新 md5 |
-| EN-04 `[实板]` | 正常 | 启用后新构建 | 采集受光周期、覆盖/无光周期；另做 ADC 全超时路径（宿主角或实际超时） | 受光：`V=1 D=0`（记录 `a` 与阈值余量）；覆盖/无光：`V=1 D=1`；ADC 全超时：`V=0 D=0`；恰好 `mean==T` 判暗 | 原始 `S`/`G` 行 + 配置/构建/下载身份 + 超时 harness 输出 |
-| EN-05 `[L0]` | 边界传播 | 启用后的宿主向量 | 30.0→30.9℃ 覆盖态不报；30.0→31.0℃ 覆盖态可报；受光态升温不报；>35.1℃ 任意光照报；边界/极值向量 | 与 `sensor_decide_report` 冻结公式一致；实板只在可观测范围内说明，不安排升温刺激 | 逐条 stdout + 参考公式 + 实板可观测性说明 |
-| EN-06 `[实板]` | 异常/回退 | 受光均值 ≥ `T`、或覆盖均值 < `T`、或双态证据缺失 | 计算并记录原始数值；检查配置 | 保持/恢复 `T=0` 并登记“分离不足/带位移”及所需决策；**不得改阈值、加滞回/温补、放宽判据** | 原始数值 + 计算过程 + 配置快照 + 问题登记 |
-| EN-07 `[纪律]` | 异常/负向 | 任一上述步骤 | 检查是否出现调温、改变光强、遮光/照射取数、阈值拟合、宿主冒充实板、无 Verify OK 就宣称启用 | 任一出现即判失败/证据无效；不得写入通过 | 操作记录 + 证据审查 |
-
-**当前状态**：`FW-LIGHT-DEF2-ENABLE` 已由人工确认 **`APPROVED_DEFERRED` / NOT EXECUTED**（「无法准备，先跳过」，2026-11-11T03:50:42Z）。因此 EN-01..07 **本轮不执行、不重复排队、不计入本阶段退出门槛**；`T` 保持 0。上述用例完整保留，供下列条件同时满足时重新开启：①有权限方解除延期；②存在 LIGHT-DEF-2 形制/数值接受记录（含 IC-002 §4.2 同步）；③取得同板同构建、正常使用状态下的被动受光/覆盖双态证据；④不以遮光/照射作为测试手段。未执行不等于通过；其原目标与真实验证缺口不得删除。
-
-### 5.6 FW-DIAG-BOOT：上电五行/uid 捕获编排（含 pyocd 复位候选评估）
-
-| 编号 | 路径 | 前置与刺激 | 方法与观测 | 判据 | 原始证据 |
-|---|---|---|---|---|---|
-| BOT-01 `[实板/编排]` | 正常 | 受测构建；**先打开 COM43 9600 8N1 捕获**，在窗口内复位/上电；复位入口须在授权内 | 记录端口打开时间、复位方式/时间、捕获原始字节。**首选自动方式**：测试侧自编脚本（如 `capture_bot01.py`）先开串口，再以 `pyocd reset -t cortex_m -M attach -m hw` 经 CW-DAPLink 请求外部 HW reset（仅复位，不写 Flash/内存），随后有界采集并校验五行顺序。备选：同镜像 `mdk_flash {}`（工程保存配置，下载后复位；不得改源码/换镜像/反复重试） | 端口先开、复位后输出被同一窗口捕获；不修改固件；不复位/烧录网关；复位命令只允许 reset | 原始字节流 + 窗口/复位时间 + 工具原始输出 |
-| BOT-02 `[实板]` | 正常 | 同 BOT-01 | 解析上电段 `BOOT → VDD → IOTEST → IOSIG → BUS` | 五行各出现一次且相邻有序；`BOOT` 的 `fw/uid/rst/uart=9600` 可读；不能只取得 `BUS` 或后续 `S`；每行 ≤96 B | 原始捕获 + 逐行原文/字节数 + 复位时间 |
-| BOT-03 `[实板/L1]` | 正常 | 同 BOT-01；构建/下载记录 | 比对 `BOOT fw/uid` 与当前构建摘要/下载校验；核对 `BUS ack` 与 `0x44/0x45` 实际应答；`VDD ok=1` 时复算 `mv=4095*bgrmv/code` | 上电五行与当前构建/下载记录对应；`BUS ack` 与 `G a44/a45` 不矛盾；`VDD` 超时保留 `ok=0`，不得伪造 | 原始捕获 + 构建/下载身份表 + 复算 |
-| BOT-04 `[L1/编排]` | 前置评估 | CW-DAPLink 在位；执行能力实际工具/授权 | 只读确认 pyocd 版本与探针识别；核对 CW32 专用 target 是否可用；评估能否在 COM43 会话期间执行 reset；**优先使用内置 `cortex_m` 通用 target 的 attach + HW reset（仅复位）** | 记录安装/版本、目标识别结果、实际 reset 命令与返回码；**pyocd 未在 environment.yaml 登记时只提出补登记需求，不猜测入口、不安装包/不改配置**；CW32 flash 算法未验证不影响仅复位用途，但不得据此声称可烧录 | pyocd 原始输出/命令/版本/时间；失败原因 |
-| BOT-05 `[实板/编排]` | 异常/条件分支 | 执行能力缺少 `serial_capture`、pyocd 入口/授权，或无法在端口打开前复位 | 记录实际时序（如端口在 `Application running` 后建立）、工具状态、所需编排与具体缺项 | 记 `NOT EXECUTED` 及原因；不得用后续 `S` 行替代；不得修改固件换取日志；不反复重试；可先完成其他有条件的实板用例 | 未执行记录 + 实际捕获片段 + 所缺条件 |
-| BOT-06 `[纪律]` | 异常/负向 | 任一上述步骤 | 检查是否使用历史 `BOOT/uid`、是否改固件、是否反复重刷、是否把 `BUS`/`S` 当五行、是否用 pyocd 写 Flash/内存 | 任一出现即证据无效/判失败 | 证据审查记录 |
-| BOT-07 `[接口/条件]` | 条件分支（当前无需） | 仅当既有只读诊断行无法取得某项验收所需上电证据 | 需要固件补充时，提出**最小只读诊断接口/观测埋点**：只新增不改变业务行为的只读行/计数；由现有配置宏在测试构建启用；正式版默认关闭，并提供可验证排除方法（发布包无该字符串/符号/输出，正式构建仍 0 Error） | 当前证据已表明 BOT-01 无需固件测试接口；不得为取日志改变产品行为；不得要求人工代写测试脚本；正式发布包不得含测试代码 | 最小接口请求、构建开关、正式版排除验证；当前应记“无此需求” |
-
-**pyocd 已知事实（设计时）**：CLI `0.36.0` 已安装；`pyocd list` 可见 CW-DAPLINK（UID `87094109484987710672FF50`，`Target=n/a`），`pyocd list --targets --name CW32` 为空；2026-11-12 复核轮已用内置通用 `cortex_m` target 的 `-M attach -m hw` 成功执行外部复位并取得五行（仅复位、未写 Flash/内存）。pyocd 仍未在 `runtime/environment.yaml` 登记为统一入口，建议配置所有者补登记。测试脚本位于 `evidence/`，发布包仅含 axf/hex/PACKAGE.txt 三成员，未包含任何测试代码；该纯净性需在每次新发布时复核。
+| 项 | 原因 | 处理 |
+|---|---|---|
+| 真实 >35℃ 物理加热 | 用户明确不能调节温度 | `NOT EXECUTED`；不写 PASS；不以注入冒充实测 |
+| 真实升温 >0.9℃ 且无光 | 不能调温/改变光强；`T=0` 且无光判据人工延期 | `NOT EXECUTED`；不重排、不自行回填阈值 |
+| 光照受光/覆盖双态 | 不能改变光强；人工延期 | `NOT EXECUTED`；保留原目标 |
+| 功耗/CR2032 寿命 | 无仪器；用户明确不能测 | `NOT EXECUTED`；不估算冒充 |
+| 433 射频电气/天线/距离 | 无 433 仪器/授权 | 只证明功能接收；电气未证明 |
 
 ---
 
-## 6. 验收目标 → 本轮必需用例 → 证据 → 通过/失败汇总
+## 7. 验收目标 → 用例 → 证据 → 判定
 
-> 每条 acceptance 必须有对应用例与原始证据；正常路径与异常/边界路径分开。适用任务可按其声明证据类别独立通过；实板任务必须取得要求的实板证据。ITEM-005 已人工延期，单列 NOT EXECUTED，不计入本阶段退出。
-
-### 6.1 FW-REG-ASBUILT
-
-| 验收目标来源（task acceptance） | 正常路径用例 | 异常/边界用例 | 必需证据 | 通过/失败汇总 |
+| 验收目标（本阶段嵌入式侧） | 正常用例 | 异常/边界 | 必需证据 | 通过/失败 |
 |---|---|---|---|---|
-| 构建：Keil rebuild 0 Error / ≤1 既有 warning；Code=25964 RO=656 RW=116 ZI=1676；axf/hex md5 与历史一致；摘要不同须说明 | ASB-02、ASB-03 | ASB-10（差异审计） | 构建日志、Program Size、md5、工具版本 | 全部一致 → 通过；Error/摘要不符且无解释 → 失败，交实现 |
-| T1：`sensor_decide_report` 升温/严格 35.0℃ 向量；+0.9 不报、+1.0 报、降温不报、35.0 可经升温分支、无前值仅超温；int16 不溢出 | ASB-04 | RPT-02、RPT-03 | 逐条 stdout + 退出码 | 全部一致 → 通过；任一不等 → 失败 |
-| T2：触发且无待上报时冻结；组帧只读冻结；重试/跨采样帧不变；新触发不覆盖；仅成功清除；`P` 行 `rq/s/y/t/h` 为组帧实际值且 ≤96 B | ASB-05 | RPT-06/07/08/10 | 帧 hex、状态 dump、`P` 行原文/字节数 | 全部满足 → 通过；帧变化/覆盖/伪造成功 → 失败 |
-| T3：TXE/TXBUSY 卡死有限返回；超时不改 `report_req`/前值/冻结/发送结果；不复位 GPIOA/不改 PA03/PA04/PA07/PA08 | ASB-06 | RPT-12、RPT-15 | mock 轨迹、状态快照、stdout | 有限返回/关闭且状态不变 → 通过；挂死/状态被改 → 失败 |
-| T4/F-1：0x44/0x45 探测、0xFD、6 B、双 CRC、x10 换算/有效域、失败重探/有界恢复仍在；`S` 行 `p/H` 为判定前快照（首样本 H=0 p=0） | ASB-07 | 实板首样本仅在捕获覆盖 k=0 时核对 | 宿主 harness stdout + 源码；实板证据按 OBS/BOOT | 回归通过 → 通过；放宽 CRC/量程/语义改变 → 失败；无实板首样本时不得声称已取得 |
-| 接口/退役：433 明文 10 B、BLE 8 B；无 `hall/optcfg/params/history` 活动引用；PB04=AIN11、PB05=光照供电、PB06 未使用；`S/G/P/BOOT` 行格式不变；读保护两行仍注释 | ASB-08 | ASB-08（静态核对） | grep/codegraph/diff、源码快照、工程文件 | 全部保持 → 通过；残留旧通路/改布局 → 失败 |
-| 判据未启用方向：`LIGHT_DARK_*` 未启用时 `valid=false`、`dark=false`，`S V=0 D=0`，升温分支不触发；不得解释为“已识别有光” | ASB-09 | OBS-05 | `S` 原文 + 宿主向量 + 常量 | 方向正确 → 通过；把 `V=0 D=0` 当“有光” → 失败 |
-| 证据类别：当前构建日志、产物摘要、实现侧宿主自检；不把宿主结果冒充实板/跨链路通过 | ASB-01/02/03 | — | 原始 stdout/退出码 + 构建日志/md5 | 满足 → 局部通过；冒充 → 失败 |
-
-### 6.2 FW-REG-REPORT
-
-| 验收目标来源（task acceptance） | 正常路径用例 | 异常/边界用例 | 必需证据 | 通过/失败汇总 |
-|---|---|---|---|---|
-| T1 九组向量（30.0→30.8/30.9/31.0；31.0 明/未启用不报；30.0→29.0 不报；34.0→35.0 暗报/明不报；无前值 35.0 不报、35.1 任意光照报） | RPT-01 | RPT-02 int32 极值；RPT-03 随机/穷举对照 | 逐条 stdout + 退出码 | 逐条一致 → 通过；任一不等 → 失败 |
-| T2：首次成功 `P rq=0/s=1/t/h=冻结样本`；失败重试期入参逐次相同、帧字节不变；新触发不覆盖；用尽放弃不伪造成功；`P` ≤96 B 且仅整数 | RPT-05/06/07/11 | RPT-08/09/10 | 帧 hex + `P` 行原文 + 状态 dump | 全部满足 → 通过；帧变化/覆盖/假成功 → 失败 |
-| T3：正常 mock 下 `BOOT/VDD/IOTEST/IOSIG/BUS/S/G/P` 字节不变；TXE 卡死/TXBUSY 卡死均有限返回并完成关闭 | RPT-12 | RPT-15 | 行原文/字节数 + mock 轨迹 + stdout | 字节不变且卡死有限返回 → 通过；挂死/字节变化 → 失败 |
-| 失败语义：温湿度失败周期不新建/不覆盖快照、不发送、不推进前值；`SENSOR_DEBUG_UART=0` 时不引入 UART 符号 | RPT-10、RPT-13 | RPT-14 构建 | 状态 dump + 构建/符号表 | 失败周期零副作用、关闭态空实现 → 通过；失败样本组帧/0 值 → 失败 |
-| 证据类别：宿主自检输出与构建 0 Error；真实目标 `P`/节拍证据由实板任务取得，不以宿替代 | RPT-14、ASB-02 | — | stdout/退出码 + 构建日志/md5 | 满足 → 局部通过；以宿主冒充实板 → 失败 |
-
-### 6.3 FW-LIGHT-DEF2-MECH
-
-| 验收目标来源（task acceptance） | 正常路径用例 | 异常/边界用例 | 必需证据 | 通过/失败汇总 |
-|---|---|---|---|---|
-| 形制向量：`T=0 valid=true → false`；`T=1 mean=0/1 → false/true`；`T=4095` 仅 4095 true；`mean=T-1/T → false/true`；`valid=false` 任意均 false；`T=0` 与 `valid=false` 任一成立不得判暗 | MCH-01 | MCH-02 | 逐条 stdout + 计数 + 退出码 | 全部一致 → 通过；任一不等 → 失败 |
-| 接线：`valid = adc_ok && (T!=0)`；`dark = light_is_dark(mean, valid, T)`；ADC 全超时 `adc_ok=false → valid=false → dark=false`，不合成满量程 | MCH-02/03 | MCH-04 部分成功 | 状态 dump + stdout | 接线正确 → 通过；超时合成暗态 → 失败 |
-| 未启用等价性：`T=0` 时 `S V=0 D=0 r=0 s=0 y=0` 与 as-built 一致；时序、行长 ≤96 B、字段集合/顺序、`G/P` 条件、433/BLE 布局、资源不变 | MCH-05 | MCH-09 | 源码 diff + 构建摘要 + 宿主字节对比 +（若有）实板 `S` | 等价 → 通过；出现 `V=1/D=1` 或格式/时序变化 → 失败 |
-| 旧宏清除：源码与实现侧测试中不再出现 `LIGHT_DARK_REF_CODE`/`LIGHT_DARK_CALIBRATED`；无静默同义别名 | MCH-06 | — | grep 原文 + 源码快照 | 清除 → 通过；残留/别名 → 失败 |
-| 构建：Keil rebuild + `gcc/build.sh` + `test/build_test.sh` 全部 0 Error；摘要变化有说明并重新绑定证据 | MCH-07 | MCH-10 资源审计 | 三份构建日志 + 新摘要 + 工具版本 | 全部 0 Error → 通过；任一失败 → 失败 |
-| 跨角色影响登记：不改 `test/*_verify_ev.c` 与 `test/mock_*_ev/`；列出需验证角色同步的资产（`host_fw_core_verify_ev.c`、`host_vdd_verify_ev.c`） | MCH-08 | — | `git diff --stat` + 文件清单 + 实现记录 | 零修改且清单齐全 → 通过；改验证资产/绕过断言 → 失败 |
-| 证据类别：源码差异、构建日志、宿主向量输出；不声称无光判定已可用 | MCH-01..10 | — | 上述证据包 | 满足 → 局部通过；声称已可用 → 失败 |
-
-### 6.4 FW-OBS-PASSIVE
-
-| 验收目标来源（task acceptance） | 正常路径用例 | 异常/边界用例 | 必需证据 | 通过/失败汇总 |
-|---|---|---|---|---|
-| 采集：COM43/9600 8N1 有界采集 ≥3 个连续周期（单窗不足允许多窗，记录起止/字节数） | OBS-01/02 | OBS-07 无输出 | 每窗原始字节 + 窗口记录 | 达到 ≥3 连续周期 → 通过；不足/未记录 → 失败或未执行 |
-| 字段：全部周期 `q=1`；`t∈-400..1250`、`h∈0..1000`；`o=8`；`a∈n..x`；每行 ≤96 B 且 CRLF；无杂散/NUL；采样间期无输出 | OBS-03/04 | OBS-06/09 | 逐行原文/字节数 + 解析输出 | 全部满足 → 通过；任一越界/杂散/超长 → 失败 |
-| 节拍：相邻观测周期 `k` 差值恒为 3；同一周期不出现两行 `S` | OBS-04 | OBS-06 | `k` 序列 + 原始字节 | 满足 → 通过；步长异常/重复 → 失败 |
-| 判据状态：记录 `V/D`（未启用应为 `V=0 D=0`）与 `a`；不得把 `V=0 D=0` 解释为“已识别有光” | OBS-05 | — | `S` 原文 + 统计表 | 如实记录 → 通过；错误解释 → 失败 |
-| 失败路径：若 `q=0`，取得同周期 `G` 并核对结果码/ACK/重读/重测/raw；确认不报/不推进/不构造 0；不得为消除失败改判据/降断言 | OBS-06 | OBS-09 持续失败 | `S/G` 原文 + CRC 复算 | 语义成立且如实记录 → 记录；有副作用/改判据 → 失败 |
-| 身份：记录构建摘要、下载校验（若涉及）与板件标识（若可取得）；不得用历史 COM42/旧镜像 | OBS-01/08 | — | 构建/下载日志 + 原始字节 | 身份闭合 → 通过；引用历史 → 失败 |
-| 禁止：不以调温、改变光强、遮光/照射、拆装外壳作为取数手段；不做功耗测量 | OBS-01/08 | EN-07 纪律 | 操作记录 | 无禁止动作 → 通过；出现 → 证据无效/失败 |
-
-### 6.5 FW-LIGHT-DEF2-ENABLE
-
-> 本任务已由人工确认 `APPROVED_DEFERRED` / `NOT EXECUTED`，**不计入本阶段退出**；下表仅保留其原验收追踪，供解除延期后使用。未执行不写成通过，T 保持 0。
-
-| 验收目标来源（task acceptance） | 正常路径用例 | 异常/边界用例 | 必需证据 | 通过/失败汇总 |
-|---|---|---|---|---|
-| 前置：存在判据形制与数值的接受记录（含 IC-002 §4.2 同步）；缺少时不得执行，只记未执行及缺项 | EN-01 | — | 接受记录引用 + 缺项 | 有接受记录 → 可继续；无 → `NOT EXECUTED`，不得通过 |
-| 证据：`T` 非 0 前须有同板/同构建/同摆放的受光 `mean<T` 与覆盖 `mean>=T` 被动样本，来自不同周期、`o=8`、未饱和；未以改变光强/遮光为测试手段 | EN-02 | EN-06 分离不足 | 原始 `S` + 时间 + 状态说明 | 双态齐备且方向正确 → 可回填；不足 → 保持 `T=0` |
-| 启用后：受光 `V=1 D=0`（记录 `a` 与阈值余量）；覆盖/无光 `V=1 D=1`；ADC 全超时 `V=0 D=0`；`mean==T` 判暗 | EN-04 | EN-06 | 原始 `S/G` + 超时 harness | 全部满足 → 通过；任一不满足 → 失败 |
-| 边界传播：30.0→30.9 覆盖不报；30.0→31.0 覆盖可报；受光升温不报；>35.1 任意光照报（宿主向量 + 实板可观测性说明；本阶段不做升温刺激） | EN-05 | — | 逐条 stdout + 参考公式 | 与冻结公式一致 → 通过；不一致 → 失败 |
-| 回退规则：受光均值 ≥ `T` 或覆盖均值 < `T` 或双态缺失 → 保持/恢复 `T=0` 并登记分离不足；不得改阈值/加滞回/温补/放宽判据 | EN-06 | EN-07 | 原始数值 + 配置快照 + 问题登记 | 正确回退 → 记录；为凑通过调阈值 → 失败 |
-| 重建与证据：回填后 rebuild 0 Error；下载校验须见 **Verify OK**；证据绑定新构建摘要 + COM43 原始字节；不得沿用历史 axf 摘要 | EN-03/04 | EN-07 | 配置 diff + 构建/下载日志 + 原始字节 | 全部满足 → 通过；无 Verify OK/沿用旧摘要 → 失败 |
-| 禁止：不以调温、改变光强、遮光/照射、功耗测量取得证据；不以宿主结果冒充实板 | EN-07 | — | 操作记录 + 证据审查 | 无禁止动作 → 通过；出现 → 失败 |
-
-### 6.6 FW-DIAG-BOOT
-
-| 验收目标来源（task acceptance） | 正常路径用例 | 异常/边界用例 | 必需证据 | 通过/失败汇总 |
-|---|---|---|---|---|
-| 同一端口窗口内取得 `BOOT/VDD/IOTEST/IOSIG/BUS` 五行（各一次）；`BOOT` 的 `uid/rst/uart=9600` 可读；不能只取得 `BUS` 或后续 `S` | BOT-01/02 | BOT-05 无法复位 | COM43 原始字节 + 逐行原文/字节数 + 复位时间 | 五行齐全有序 → 通过；缺项 → 失败或未执行 |
-| 上电五行与当前构建摘要/下载校验对应；`BUS ack` 与 `0x44/0x45` 实际应答不矛盾；`VDD` 超时不得伪造 | BOT-03 | BOT-03 VDD 超时 | 构建/下载身份 + 原始捕获 + 复算 | 身份闭合、字段自洽 → 通过；矛盾/伪造 → 失败 |
-| pyocd 复位候选：记录是否已安装/版本、是否识别 CW32L010、能否在 COM43 会话期间 reset；不可用时记录具体缺项（含 `environment.yaml` 未登记），只提配置补全建议 | BOT-04 | BOT-05 工具/权限不足 | pyocd 原始输出/命令/版本/时间 | 可行且授权 → 可执行；不可用 → 记录缺项，不算通过 |
-| 若无法在端口打开前复位：记录未执行、实际时序与所需编排；不修改固件、不反复重试、不用后续行替代 | BOT-05 | — | 未执行记录 + 捕获片段 + 所缺条件 | 如实记录 → 条件未满足；伪造五行/用 S 替代 → 失败 |
-| 证据类别：COM43 原始字节、构建/下载身份；数字行不证明模拟电气 | BOT-01/02/03 | BOT-06 纪律 | 原始捕获 + 身份记录 | 全部来自当前构建 → 通过；替代/历史 → 失败 |
-
-### 6.7 局部/整体判定规则
-
-1. **逐项判定**：每个 acceptance 条目对应至少一个用例；通过、失败、未执行、条件未满足分别记录，不得合并成“基本通过”。
-2. **局部任务通过**：ITEM-001/002/003 在其声明证据类别（构建 + 宿主自检 + 源码差异）内全部通过，可判其局部完成；不因 ITEM-004/005/006 或完整产品未完成而失败。
-3. **实板任务**：ITEM-004 的“全部周期 `q=1`”与 ITEM-006 的五行必须来自当前构建实板原始字节；宿主/mock 不可替代。ITEM-005 本轮不适用（人工延期）。
-4. **条件/延期任务**：ITEM-005 = 人工 `APPROVED_DEFERRED` / `NOT EXECUTED`，**不计入本阶段退出**；ITEM-006 在编排入口不可用时记 `NOT EXECUTED` 及具体缺项。**这不是豁免或通过**。
-5. **本阶段通过**：适用任务（ITEM-001、002、003、004、006）的当前适用 acceptance 全部满足、实板证据身份闭合，即可判**本阶段/本固件增量通过**；ITEM-005 的人工延期不阻止该判定，但必须在交付中显式披露。
-6. **阶段通过 ≠ 完整产品通过**：完整产品仍需阶段外的真实升温/超温与光强双态、网关→手机→平台跨链路、平台写入/回读、功耗等证据；这些项不得加进本阶段退出门槛，也不得用其未执行反向否定本阶段已执行结果。
-7. **失败回流**：任一适用必需用例失败 → 记录缺陷（期望/实际/最小复现/原始证据/时间点）交实现能力；修复后重新构建并重新取证，旧 pass 不沿用。**不得把人工延期项或阶段外项当作本阶段缺陷退回实现。**
-8. **未知根因**：不得凭失败宣告外部阻塞或不可修复；记录已完成诊断、缺失条件、关键问题与最小下一步，交实现继续调查。
+| 当前测试对象身份、构建/下载、上电五行与 `uid` | EM-01 | 五行缺失/身份不符 | 枚举、构建/下载日志、原始捕获 | 全部一致且五行有序→通过；否则未执行/失败 |
+| 真实采样与节拍（无刺激） | EM-02 | `q=0`/字段越界/杂散 | 原始字节、逐行原文 | `q=1/o=8/k步长3/行长≤96`→通过；否则失败/记录 |
+| 当前条件下不上报、不伪造 | EM-03 | 网关历史缓存 | `S` 原文、App 终态 | 无 `r=1`/`s=1`/`P`、无新上传→通过；伪造→失败 |
+| 受控上报刺激（测试构建） | EM-04 | 注入未生效/发送失败 | `TINJ/S/P` 原文、构建身份 | `t=367 r=1 s=1 P 367`→通过；否则未执行/失败 |
+| 冻结/帧/格式语义 | EM-05 | 冻结不一致/帧变化 | 宿主复算、`S/P` 原文 | 一致→通过；否则失败 |
+| 正式版排除与回归 | EM-06 | 残留入口/行为变化 | 构建日志、字符串/符号、diff、包 | 无测试入口/行为不变→通过；否则无效 |
+| 重复/恢复（可选） | EM-07 | 多次注入/复位 | 每轮原文 | 符合→通过；否则记录 |
+| 同一事件跨端一致 | J-01（含 EM-04/05） | 任一段缺失 | 联合证据索引 | 四段全一致→通过；否则未执行/失败 |
+| 负向不上传 | J-02（含 EM-03） | 历史缓存 | 三端证据 | 无新数据/上传→通过；否则失败 |
+| 读取完整性 N=1 | J-04 | MTU/长度不足 | App logcat/守卫 | 完整→通过；否则未执行/失败（App/网关责任） |
 
 ---
 
-## 7. 数据采集与证据规范
+## 8. 证据规范与保存
 
 | 数据 | 采集方式 | 保存要求 |
 |---|---|---|
-| 宿主机测试输出 | `build_test.sh` / 各 harness stdout | 原始文本 + 退出码 + 命令 + 编译器版本 + 执行时间 + 被测 commit |
-| GNU 交叉构建（若执行） | `gcc/build.sh`、`arm-none-eabi-size`、`nm` | 原始文本；记录 commit 与工具链版本（本机 `arm-none-eabi-gcc 10.3.1` 在位） |
-| 构建/下载 | `mdk_build` / `mdk_flash` 原始日志 | 受测 commit、axf/hex md5、Code/RO/RW/ZI、**Verify OK / Application running** |
-| UART1 轨迹与诊断 | `serial_capture`（COM43，9600 8N1）分区窗口 | **原始字节流文件** + 每窗起止 + `BOOT/VDD/IOTEST/IOSIG/BUS/S/G/P` 逐行原文 + 每行字节数（含 CRLF）+ 采样间期字节数 |
-| 判定一致性重算 | 由 `S` 重算 `V/D/r`；由 `P` 核对冻结样本；由 `G raw` 复算 CRC-8；由 `VDD` 复算 `mv` | 独立脚本或等价记录 + 逐行比对结果；不得只记“通过” |
-| LIGHT-DEF-2 向量 | 宿主 harness / 独立验证 harness | 逐条 `(mean,valid,T) → dark` 输出；边界 `T=0/1/4095`、`mean=T-1/T`；退出码 |
-| 上电编排 | COM43 先开后复位/上电；pyocd/同镜像下载原始输出 | 原始捕获 + 工具版本/命令/时间 + 五行 + 未执行时的实际时序与原因 |
-| 逻辑分析仪（可选） | `sigrok_capture` + 离线 `sigrok_decode` | 原始 `.sr` + 完整日志 + 实际采样率/样点数/通道/触发/连接 + 解码输出 + 接线/共地/输入范围记录；空/短采集也保留 |
-| 失败反馈 | 每用例：期望、实测、结论、证据路径、最小复现、时间点 | 原始失败证据不得删除/覆盖；注明功能失败、条件未满足或工具失败 |
+| COM43 原始轨迹 | `serial_capture`（执行能力）分区窗口 | 原始字节文件 + 每窗起止/字节数/间隙 + 逐行原文/字节数 + `BOOT/S/G/P/TINJ` |
+| 构建/下载 | `mdk_build`/`mdk_flash` | 受测 commit、测试构建宏值、axf/hex md5、Code/RO/RW/ZI、**Verify OK/Application running** |
+| 正式版排除 | 构建 + 字符串/符号/map + 包成员 | 发布构建 0 Error、无 `TINJ`/测试符号、包仅标准成员、源码 diff 范围 |
+| 宿主复算 | 测试侧 harness | 宏 0/1 输出、帧 hex、CRC 复算、退出码 |
+| 网关/App | 手机段：`adb logcat`、DB/待发箱、UI dump、`MacIdBook`、MTU/`valueSize`、0xA1 写日志 | 原始行 + 时间 + App/包/设备身份 |
+| MQTT/HTTP | 手机段/平台段 | 载荷原文（脱敏）、HTTP 请求/响应、时间 |
+| 平台回读 | 平台段 | 行内容/行数、幂等结果、服务只读日志 |
+| 失败反馈 | 每用例 | 期望/实际/最小复现/原始路径/时间/责任边界；不删除失败证据 |
 
-**证据纪律**：
-- 每结论必须能由保存的原始证据复现；原始字节/`.sr` 优先于截图/摘要。
-- 任何 mock/宿主结论必须标 `[L0]`，不得写成实板结论。
-- 下载/编译成功不作为功能通过证据；历史证据不作为当前构建证据。
-- 空抓包/无响应先核对端口、波特率、接线、捕获窗口、触发、工具错误；不得直接判器件/功能失败。
-- 原始证据需与构建/下载身份绑定；无法绑定的数据只作辅助，不作通过依据。
-- 不得为通过而放宽 CRC/量程/判据/阈值、修改期望、删除失败证据或用历史/估算值代替实板数据。
+**纪律**：原始字节/`.cap`/`.sr` 优先于截图/摘要；L0/L1 结论标注；下载/构建成功不等于功能通过；空抓包/无响应先查端口/接线/窗口/占用；历史证据不绑定当前构建。
 
 ---
 
-## 8. 退出准则（下游验证能力必须执行）
+## 9. 未执行、延期与真实缺口（必须原样披露）
 
-**本阶段适用范围**：ITEM-001、002、003、004、006。ITEM-005 由人工 `APPROVED_DEFERRED`，单列为 NOT EXECUTED，**不属于本阶段退出门槛**（其原目标与真实验证缺口保留，见 §5.5、§10）。真实升温/超温、改变光强/遮光、功耗、网关→手机→平台跨链路、平台写入/回读均为阶段外项，不纳入本阶段退出。
+| 项 | 当前状态/原因 | 本设计处理 |
+|---|---|---|
+| 真实 >35℃ 物理加热 | 用户明确不能调节温度 | `NOT EXECUTED`；注入只证明逻辑/链路，不证明 GXHT40 物理响应 |
+| 真实升温 >0.9℃ 且无光 | 不能调温/改光强；`T=0`；无光判据人工延期 | `NOT EXECUTED`；不重排、不自行回填 |
+| 受光/覆盖双态 | 不能改变光强 | `NOT EXECUTED`；保留原目标 |
+| 功耗/CR2032 | 无仪器；用户明确不能测 | `NOT EXECUTED`；不估算 |
+| 433 射频电气/天线/距离 | 无 433 仪器/授权 | 只证明网关功能接收；电气未证明 |
+| 平台数据清理 | 写/删授权未提供 | 合成 36.7 数据会留在平台；由平台段按其授权处理并披露 |
+| 手机 ADB 未授权 | 本轮 `adb devices` 显示 `unauthorized` | 手机段前置；未解决则手机/平台段 `NOT EXECUTED`，不写成通过 |
+| 手机 Wi-Fi 未连接 | 用户明确 | 手机段用 `android_test` 连 `ZTE_607157`（`ui_set_text`+`text_env`）；未连则平台段 `NOT EXECUTED` |
+| 测试构建尚未提供 | 当前量产固件无注入接口（§3） | 由实现按 §3 补齐；未提供则 EM-04/05、J-01 `NOT EXECUTED`，不得通过 |
 
-1. **本阶段通过**：上述 5 项的当前适用用例全部执行，期望与实际一致，且原始证据满足 §7、身份绑定当次构建 → 判**本阶段/本固件增量通过**。该判定必须在报告中显式披露 ITEM-005 未执行及阶段外未执行项。
-2. **失败**：任一适用必需用例期望与实际不一致 → 记录缺陷（最小复现、原始证据、时间点）交实现能力修复；修复后重新构建并重新取得实板证据，旧 pass 不沿用。
-3. **未执行/条件未满足**：适用任务因缺设备/未授权/无观测手段/无法构造必要激励而未执行 → 记录 `NOT EXECUTED` 及最小所需条件；**这不是豁免或通过**，本阶段不得据此判通过。
-4. **实板证据缺失**：ITEM-004 的连续 `q=1` 周期、ITEM-006 的五行等 acceptance 明确要求实板原始证据；未取得（即使宿主/mock 通过）→ 本阶段 `TEST_FAIL` 并说明具体缺口。ITEM-006 的自动编排已可用（端口先开 + pyocd 通用 `cortex_m` HW reset）；若某执行能力缺少入口/授权，按第 3 条记录缺项，不得用后续 `S` 替代、不得改固件、不得反复重试。
-5. **ITEM-005（人工延期）**：`NOT EXECUTED`，不重复排队、不重测、不自行回填阈值、**不阻止本阶段退出**；不得写成通过。若未来解除延期，按 §5.5 重新开启并重新构建取证。
-6. **阶段通过 ≠ 完整产品通过**：完整产品的判定仍需阶段外的真实触发/双态、跨链路、平台写入/回读、功耗等证据；这些项不由本阶段退出门槛承载，也不得用其未执行反向否定本阶段已执行项。
-7. **不得以测试前置缺失排除被测功能**：适用功能确实失败时，不得把失败改写成“测试条件缺失”而排除该功能；条件缺失与功能失败分别记录。
-8. **未知根因**：不得凭失败宣告外部阻塞或不可修复；保留已完成方案、缺失条件、关键问题与最小下一步，交回实现继续调查。
-9. **不伪造**：不得为通过而放宽判据/CRC/量程、修改期望、删除失败证据或用历史/估算值代替实板数据。
-10. **范围纪律**：不得把人工延期项（ITEM-005）或阶段外项（调温/改变光强/遮光/功耗/跨链路/平台写入）重新加入本阶段全通过条件；也不得因这些项未执行而把本阶段已通过的适用用例改判为失败。
+> 这些项**不作为本阶段正向链路的通过前提**，也不因此把已执行用例改判失败；但它们也**不是通过**。阶段通过 ≠ 完整产品通过。
 
 ---
 
-## 9. 风险与限制
+## 10. 退出准则（执行能力必须逐项回引本方案）
+
+1. **身份闭合**：当次测试构建/发布构建、下载 Verify OK、`BOOT uid`、COM43 身份、App/包/设备/GwID 身份齐全；不得用历史 COM42/旧镜像/旧 uid。
+2. **嵌入式适用用例**：EM-01/02/03/06（以及时间允许的 EM-07）按 §7 判定；**EM-04/05 需要 §3 测试构建**。任一期望/实际不一致 → `TEST_FAIL`，交实现。
+3. **正向联合用例**：J-00 + J-01 四段（传感器 `TINJ/S/P`、网关/App `dev/ID/T/H/valueSize`、平台回读）全部成立才判通过；任一段缺失 → 该段 `NOT EXECUTED`/失败，**不得以部分段通过冒充整链路**。
+4. **负向联合用例**：J-02 三端均无新有效读数/上传；历史缓存如实记录。
+5. **读取完整性**：N=1 的 MTU/`valueSize` 满足 §1.3，否则 `READ_INCOMPLETE`，不得补零/拼接/部分解码。
+6. **测试入口排除**：EM-06 全部成立；未排除→测试构建无效，不得据此判通过。
+7. **测试构建缺失**：EM-04/05、J-01 记 `NOT EXECUTED`，交付 `TEST_FAIL` 并附 §3 的最小实现请求、当前版本、已尝试方法、原项复测判据；走已审批的失败分析→固件实现闭环。**不得把可由实现补齐的条件转成人工，也不得降低判据。**
+8. **外部条件项**：§9 的真实温度/光强/功耗/433 电气/平台清理/ADB/Wi-Fi 按各自状态单列 `NOT EXECUTED` 及原因；不作为本阶段正向链路的通过门槛，也不写成通过。手机 Wi-Fi 由手机段按用户指定方式连接后复测平台段。
+9. **不伪造**：不得为通过而改判据/阈值/CRC/量程、删除失败证据、用历史/估算值代替实板数据、用注入冒充物理测量、用串口日志代替 App 收到、用 HTTP 2xx 代替平台持久化。
+10. **阶段边界**：本阶段通过只表示当前适用用例（含指定测试构建的注入链路）成立，不表示真实物理触发、完整产品、功耗或正式发布合格。
+
+---
+
+## 11. 风险与限制
 
 | 风险 | 影响 | 缓解 |
 |---|---|---|
-| 现场只声明“有光”，无受光/覆盖双态被动证据 | ITEM-005 无法启用 | 已由人工 `APPROVED_DEFERRED`；EN-01/02 保留为未来解锁条件；`T` 保持 0；不得以遮光/照射制造证据；不得挪阈值；不纳入本阶段退出 |
-| 近期被动均值 `a≈3917..3985` 与“有光”陈述的极性解释 | 现场基线解释不确定 | OBS 如实记录 `a/n/x/o` 与用户声明状态；不据此判器件好坏；升级为需求/硬件决策 |
-| 无温度调节、无光照改变、无功耗仪器 | 真实升温/无光触发、功耗终验不可执行 | 本阶段不安排；宿主向量只作边界；相关项记未执行，不写成通过 |
-| 单次捕获 ≤300 s、无逐字节时间戳 | 3 分钟节拍的连续性/精度受限 | 分区窗口并记录起止/间隙；用 `k` 增量作内部证据；不造容差 |
-| LSI 节拍容差未在 readme 给出 | “每 180 s”精度无验收阈值 | 以 `k` 差值 3 与相邻样本实际间隔在合理容差内记录；不把“每 180 s 必有云端数据”当判据 |
-| 实板无法自然构造发送失败/跨周期重试 | T2 冻结/用尽无法实板验证 | 宿主 RPT-06/07/08 为主；实板只核对自然出现的 `P`；不得伪造失败/成功 |
-| 实板无法构造 ADC 全超时 | ITEM-003/005 的超时路径 | 宿主机影子 ADC 覆盖；实板仅在自然异常时记录 |
-| 测试资产与判据语义不一致（旧 1/3、旧宏、T2 旧语义） | 旧 pass 冒充新证据 | 执行前核对期望来源；当前验证资产已同步（13 组 609/0），但每次新构建仍须复跑；旧 pass 不作新证据 |
-| pyocd 未登记/专用 CW32 target 未识别 | ITEM-006 入口受执行能力限制 | 已证明内置 `cortex_m` + attach + HW reset 可行（仅复位）；BOT-04 只读评估；建议配置所有者补登记；缺少入口时按 BOT-05 记 NOT EXECUTED，不据此判固件失败 |
-| 把人工延期项或阶段外项当作本阶段返工/失败依据 | 重复返工、错误判定 | §3.2.1 范围重评 + §8-10；人工延期与外部条件分别记录，不作为缺陷 |
-| 逻辑分析仪地址变化/空抓包 | 位级时序/电气无法证明 | 重新枚举实际连接；先存原始 `.sr`；执行能力具备工具时被动采集；空抓包不判器件坏 |
-| `fx2lafw` probe 加载 RAM 固件并改变 USB 地址 | 后续采集入口失效 | 探测后重新枚举；记录实际地址/参数；不在旧地址重试；不写 EEPROM/不做全局扫描 |
-| 旧镜像/旧包冒充当前交付件 | 验证错误对象 | ITEM-001/002 强制 md5；ITEM-003 强制新摘要；ITEM-005 解除延期后才适用；实板绑定 `BOOT uid` + 下载日志 |
-| 目视/时间对应误差 | 跨链路结论错误（本阶段不涉及） | 后续联调要求同一时间窗唯一一笔 + `P` 冻结样本双重匹配 |
+| 当前量产固件无注入接口 | 正向链路无法自然触发 | §3 测试构建；执行阶段先取证再走失败分析→实现闭环；不得免测通过 |
+| 测试构建的注入改变行为 | 结果不可外推到量产 | 默认 0、正式版排除、宿主双构建、恢复发布镜像；注入只覆盖判定输入 |
+| 网关先收到、App 后绑定 | 网关丢弃该笔 | J-00 先绑定/读就绪，再刺激；或重复注入/复位重试；不靠时间猜 |
+| 网关缓存/占位超时不确定 | 负向/正向窗口判断错误 | 记录实际状态与时间；必要时授权内 power cycle；不把旧值当新上报 |
+| App/网关 MTU 不足 | 读取不完整 | N=1 期望 32 B/MTU≥35；记录 `valueSize`；不足即 `READ_INCOMPLETE`，归 App/网关调查 |
+| 手机 ADB 未授权/Wi-Fi 未连 | 手机/平台段不可执行 | 手机段先处理；未解决记 `NOT EXECUTED`，不写成通过 |
+| 平台写/回读授权不足 | 持久化不可判定 | 平台段按其授权；无回读即 `NOT EXECUTED`，不以 2xx 代替 |
+| 注入 36.7℃ 触发 App 高温告警/通知 | 现场副作用 | 事先记录预期；作为 App 消费的正面证据；不当作缺陷 |
+| 合成数据留在平台 | 数据污染 | 使用可识别的 `uid4+367+时间`；清理需授权；未清理如实披露 |
+| 逻辑分析仪地址/空抓包 | 位级补充不可用 | 可选层；重新枚举；空抓包不判器件坏 |
+| 历史证据/旧镜像 | 错误对象 | 强制当次构建摘要、`BOOT uid`、下载 Verify OK；旧 PASS 不沿用 |
 
 ---
 
-## 10. 交接、未决项与最小下一步
+## 12. 交接与最小下一步
 
 | 项 | 内容 | 归属 |
 |---|---|---|
-| as-built 回归 | ITEM-001/002：重建/宿主回归；T1–T4/F-1 不重写 | firmware_engineer |
-| LIGHT-DEF-2 形制落地 | ITEM-003：`T=0`、旧宏删除、接线/向量/构建；不改验证资产 | firmware_engineer |
-| 判据接受与启用 | ITEM-005：人工 `APPROVED_DEFERRED`；解除延期需形制/数值接受记录（含 IC-002 §4.2 同步）+ 同板同构建双态被动证据；不足保持 `T=0`；不重排、不返工 | 需求/架构接受 + firmware_engineer |
-| 被动观测 | ITEM-004：COM43 ≥3 连续周期、字段/节拍/等长/无杂散；失败 `G` 取证 | embedded_tester/执行能力 + firmware_engineer |
-| 上电五行/uid | ITEM-006：已有自动方式（先开 COM43 + pyocd 通用 `cortex_m` HW reset）；任何新构建须重新采集，不复用旧五行 | embedded_tester + 调试编排 + 配置所有者 |
-| 验证资产 | `test/*_verify_ev.c`、`test/mock_*_ev/` 当前已同步到 LIGHT-DEF-2；实现侧不得修改；执行前核对期望来源 | 验证角色 |
-| pyocd 入口 | 仅复位用途已验证；若作为正式入口需在 `runtime/environment.yaml` 补登记（工具/外部动作/时限）；本能力不改配置 | 配置所有者 |
-| 跨链路/上传/功耗 | 后续联调/硬件测试阶段；本阶段不安排、不写通过 | 对应能力 |
-| 未决项 | 判据数值与分离度（FWR-OPEN-1/5/8，属 ITEM-005 人工延期，未来解锁条件见 §5.5）；上电五行（OPEN-9，已由自动编排方式取得，后续新构建仍须重采）；真实触发/跨链路（OPEN-10，后续联调）；功耗（OPEN-11，无仪器/用户限制）；LSI 节拍容差（readme 未给） | 见上 |
+| 测试构建注入接口 | 按 §3 增加默认关闭的注入宏/构建目标、`TINJ` 观测行、正式版排除；提供构建步骤与 md5 | 固件实现 |
+| 正式版排除复核 | 构建/字符串/符号/包成员/源码 diff；E2E 后恢复发布镜像 | 固件实现 + 嵌入式执行 |
+| 嵌入式执行 | EM-01..07；COM43 分区窗口；`S/P/TINJ` 解析；失败证据 | 嵌入式验证能力 |
+| 手机准备与 Wi-Fi | 启动 App/守护、绑定 `uid4`、0xA1 写、读取就绪；`android_test` 连 `ZTE_607157`（`ui_set_text`+`text_env`） | 手机段 |
+| 平台 | `upload_data` 实际写/幂等/回读；测试数据清理授权 | 平台段 |
+| 联合判定 | J-00/J-01/J-02 同一 `uid4+367+h`；四段证据；任一段缺失不通过 | 联合执行能力 |
+| 未决 | 真实物理 >35℃/升温+无光/双态/功耗/433 电气/平台清理/手机 ADB 授权 | 由用户条件/后续阶段/对应能力处理 |
 
-**最小下一步（按条件优先）**：
-1. 需要重新验证时，先在当前交付构建执行 ASB-01..10：宿主回归 + Keil rebuild + 接口/退役不变量；确认 `b6a15fed…`/`4d728dec…` 与发布包成员一致；与 `a3b08774…` 的差异须由 LIGHT-DEF-2 源码变更解释。
-2. 执行 RPT-01..15：T1/T2/T3 宿主向量与卡死路径；失败才做最小修复并复跑。
-3. 执行 MCH-01..10：LIGHT-DEF-2 形制（`T=0`）、三通道构建、验证资产边界；记录新摘要。
-4. 执行 OBS-01..09：COM43 被动采集 ≥3 连续周期；记录 `q/k/o/n/x/a/V/D` 与构建身份；出现 `q=0` 按 OBS-06 取证。
-5. 执行 BOT-01..07：测试侧脚本先开 COM43，再以 pyocd 通用 `cortex_m` 执行 HW reset（仅复位），有界采集并校验五行；执行能力缺少入口/授权时按 BOT-05 记未执行及具体缺项。
-6. ITEM-005：按人工 `APPROVED_DEFERRED` 记 `NOT EXECUTED`，不重排、不重测、不自行回填；保持 `T=0`。
-7. 适用项的失败/证据不足按 §8 返回 `TEST_FAIL` 并交失败报告；人工延期与阶段外未执行项单列披露，不以 `CONDITIONAL` 冒充通过，也不据此判本阶段失败。
+**最小下一步（按顺序）**：
+
+1. 固件实现按 §3 提供测试构建；测试侧核对宏/构建目标/`TINJ`/默认 0/正式版排除。
+2. 嵌入式执行 EM-01/02/03（当前量产或测试构建均可）→ 确认身份、真实采样、负向门控。
+3. 手机段完成 J-00 准备（App/守护/绑定 `uid4`/0xA1/读取/GwID/MTU）与 `ZTE_607157` 连接。
+4. 嵌入式执行 EM-04/05（测试构建注入 367）→ 板端 `TINJ/S/P`。
+5. 手机段在 180 s 读取窗口内取证 App 的 `dev/ID/T/H/valueSize`、本地消费、MQTT/HTTP；平台段回读 `(uid4,36.7,h)`。
+6. 执行 EM-06 排除 + 恢复发布镜像；如时间允许执行 EM-07/J-03 重复。
+7. 任一段失败按 §10 交对应实现（固件/App/网关/平台）；不得改判据、删证据或把未执行写成通过。
 
 ---
 
-## 11. 停止条件
+## 13. 停止条件
 
-本能力在 `artifacts/test_design.md`（本文件，rev 9.0）产出、同步 `file_manifest.txt` 后结束，返回 `DESIGN_READY`（若方案仍存在不可消除的内部矛盾则按既有失败结果报告）。测试执行、实板采集、构建/下载、判据回填、缺陷修复、网关/Android/服务器改动均不属本能力；发现需要改动时按 §10 登记交接后停止在能力边界。
+本能力在 `artifacts/test_design.md`（本文件，rev 10.0）产出、同步 `file_manifest.txt` 后结束，返回 `DESIGN_READY`；若执行阶段发现方案内部矛盾，先修方案，不能消除时按既有失败结果报告。测试执行、实板采集、构建/下载/复位、注入代码实现、手机 Wi-Fi/绑定、平台写/回读、缺陷修复均不属本能力；本能力只给方法与判据。
 
-`DESIGN_READY` 表示方案可执行，不表示功能通过。本版特别说明：
-- ITEM-005 的人工 `APPROVED_DEFERRED` 是**当前有效范围决定**，单列 NOT EXECUTED，不写成通过，也不作为本阶段退出门槛；
-- ITEM-006 已有可用的自动编排（端口先开 + pyocd 通用 `cortex_m` HW reset），任何新构建仍须重新采集；
-- 真实升温/光强/功耗与跨链路等阶段外项不纳入本阶段退出，也不据此把固件退回返工。
+`DESIGN_READY` 表示**方案在指定条件下可执行**，不表示任何功能通过，也不表示测试构建已存在、手机已联网、平台已回读。当前最关键的未闭合条件是 §3 的测试构建注入接口；执行阶段必须先取得它，否则正向链路只能记 `NOT EXECUTED` 并走已审批的失败分析→固件实现闭环。
