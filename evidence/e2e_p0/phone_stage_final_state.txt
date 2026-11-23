@@ -1,0 +1,42 @@
+# final state 2026-11-23T13:43:50Z
+--- pidof ---
+4677
+--- databases ---
+total 40
+-rw-rw---- 1 u0_a169 u0_a169 20480 2026-11-23 21:33 mqttAndroidService.db
+-rw------- 1 u0_a169 u0_a169  8720 2026-11-23 21:33 mqttAndroidService.db-journal
+--- services (foreground) ---
+ACTIVITY MANAGER SERVICES (dumpsys activity services)
+  User 0 active services:
+  * ServiceRecord{ccc70a6 u0 com.jinyuni.dengbei_care/.MqtttService}
+    intent={cmp=com.jinyuni.dengbei_care/.MqtttService}
+    packageName=com.jinyuni.dengbei_care
+    processName=com.jinyuni.dengbei_care
+    baseDir=/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk
+    dataDir=/data/user/0/com.jinyuni.dengbei_care
+    app=ProcessRecord{65dc1ba 4677:com.jinyuni.dengbei_care/u0a169}
+    isForeground=true foregroundId=1 foregroundNoti=Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE)
+    createTime=-15m38s499ms startingBgTimeout=--
+    lastActivity=-9m53s205ms restartTime=-15m38s498ms createdFromFg=true
+    startRequested=true delayedStop=false stopIfKilled=false callStart=true lastStartId=3
+    callerPackage=com.jinyuni.dengbei_care
+
+  * ServiceRecord{ebf8912 u0 com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService}
+    intent={cmp=com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService}
+    packageName=com.jinyuni.dengbei_care
+    processName=com.jinyuni.dengbei_care
+    baseDir=/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk
+    dataDir=/data/user/0/com.jinyuni.dengbei_care
+    app=ProcessRecord{65dc1ba 4677:com.jinyuni.dengbei_care/u0a169}
+    createTime=-10m37s360ms startingBgTimeout=--
+    lastActivity=-10m37s335ms restartTime=-10m37s360ms createdFromFg=true
+    startRequested=true delayedStop=false stopIfKilled=false callStart=true lastStartId=1
+--- wifi summary ---
+NetworkFactories for: TelephonyNetworkFactory[0] WifiNetworkFactory UntrustedWifiNetworkFactory Ethernet TelephonyNetworkFactory[1] PhoneSwitcherNetworkRequstListener
+
+Active default network: 100
+
+Current Networks:
+  NetworkAgentInfo{ ni{[type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]}  network{100}  nethandle{432902426637}  lp{{InterfaceName: wlan0 LinkAddresses: [ ] DnsAddresses: [ /192.168.0.1 ] Domains: null MTU: 0 TcpBufferSizes: 524288,1048576,5505024,262144,524288,4194304 Routes: [ fe80::/64 -> :: wlan0,::/0 -> fe80::878:a4ff:fe18:54af wlan0,240e:440:300:7be::/64 -> :: wlan0,192.168.0.0/24 -> 0.0.0.0 wlan0,0.0.0.0/0 -> 192.168.0.1 wlan0 ]}}  nc{[ Transports: WIFI Capabilities: NOT_METERED&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED LinkUpBandwidth>=1048576Kbps LinkDnBandwidth>=1048576Kbps Specifier: <WifiNetworkAgentSpecifier [WifiConfiguration=, SSID="ZTE_607157", BSSID=7c:21:d8:60:71:57, mOriginalRequestorUid=-1, mOriginalRequestorPackageName=]> SignalStrength: -47 SSID: xxxx]}  Score{60}  everValidated{true}  lastValidated{true}  created{true} lingering{false} explicitlySelected{true} acceptUnvalidated{false} everCaptivePortalDetected{false} lastCaptivePortalDetected{false} captivePortalValidationPending{false} partialConnectivity{false} acceptPartialConnectivity{false} clat{mBaseIface: null, mIface: null, mState: IDLE} }
+    Requests: REQUEST:2 LISTEN:13 BACKGROUND_REQUEST:0 total:15
+      NetworkRequest [ REQUEST id=1, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN] ]

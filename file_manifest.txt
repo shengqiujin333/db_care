@@ -816,6 +816,63 @@ evidence/doc_verification_20261113_rev14/ui_05_home_after_reinstall.xml | active
 evidence/doc_verification_20261113_rev14/ui_06_sensor_list_empty.xml | active | 「打开传感器列表」空态 UI 原始树（已保存的 ID（0）、删除选中 disabled）
 evidence/doc_verification_20261113_rev14/usb_devices.txt | active | USB 枚举身份记录（COM43 Prolific 067B:2303、COM26 C251:F001 CDC、CW-DAPLink 序列号）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
+evidence/e2e_p0/ | active | E2E-JOINT-P0 执行证据目录（手机段复验通过、上一轮 ADB 未授权对照、平台只读基线、关联索引）
+evidence/e2e_p0/P0_phone_stage_report.md | active | E2E-JOINT-P0 手机段复验报告（APK/设备摘要一致、ZTE_607157 默认网络、守护运行、网关发现/GwID、MacIdBook 含 6A002C00、0xA1 N=1 6B、dev=0/1 占位终态；测试身份缺口与平台未执行项披露）
+evidence/e2e_p0/p0_correlation_index.md | active | E2E-JOINT-P0 单一证据索引（uid4、gateway_ble_addr、GwID、APK SHA-256、平台服务身份、时间窗）
+evidence/e2e_p0/phone_stage_adb_state.txt | active | 上一轮 adb 版本、devices -l 与 get-state 原始输出（12f046690506 unauthorized，阻塞对照）
+evidence/e2e_p0/phone_stage_apk_digest.txt | active | 设备侧 base.apk 路径与 SHA-256（与候选 app-debug.apk 一致）
+evidence/e2e_p0/phone_stage_app_files_after_register.txt | active | App prefs/files/databases 目录清单（无温度数据库）
+evidence/e2e_p0/phone_stage_app_saved_ids_empty.png | active | 已保存 ID 列表为空截图（首轮注册前）
+evidence/e2e_p0/phone_stage_app_state_1.txt | active | 守护启动后 PID、prefs 列表、前台服务原始输出
+evidence/e2e_p0/phone_stage_app_ui_1.xml | active | App 首启隐私政策弹窗 UI 树
+evidence/e2e_p0/phone_stage_app_ui_10_mine2.xml | active | 我的页（输入传感器 ID/别称）UI 树
+evidence/e2e_p0/phone_stage_app_ui_11_keyboard.xml | active | 软键盘弹出时的 UI 树（ID 已填 6A002C00）
+evidence/e2e_p0/phone_stage_app_ui_12_mine3.xml | active | 键盘收起后的我的页 UI 树（ID/别称字段）
+evidence/e2e_p0/phone_stage_app_ui_13_after_register.xml | active | 注册点击后我的页 UI 树（首轮非法别称被拒）
+evidence/e2e_p0/phone_stage_app_ui_14_list.xml | active | 已保存 ID 列表（首轮仍为 0）UI 树
+evidence/e2e_p0/phone_stage_app_ui_15_mine4.xml | active | 返回后我的页 UI 树
+evidence/e2e_p0/phone_stage_app_ui_16_after_back.xml | active | 系统返回后的我的页 UI 树（字段保留）
+evidence/e2e_p0/phone_stage_app_ui_2.xml | active | 首页 UI 树（“启动”按钮、“还没有添加设备”）
+evidence/e2e_p0/phone_stage_app_ui_3_after_start.xml | active | 守护启动后首页 UI 树（按钮变“停止”）
+evidence/e2e_p0/phone_stage_app_ui_4_add.xml | active | 已保存 ID 列表（空）UI 树
+evidence/e2e_p0/phone_stage_app_ui_5_settings.xml | active | 设定页参数 UI 树
+evidence/e2e_p0/phone_stage_app_ui_6_mine.xml | active | 我的页 UI 树（用户未登录、网关编码、注册传感器、网关与上传设置）
+evidence/e2e_p0/phone_stage_app_ui_7_gateway.xml | active | 网关与上传设置对话框 UI 树（默认地址未确认、搜索/保存按钮）
+evidence/e2e_p0/phone_stage_app_ui_8_scan.xml | active | 定位权限弹窗 UI 树（MIUI permissioncontroller）
+evidence/e2e_p0/phone_stage_app_ui_9_after_grant.xml | active | 授权后扫描结果 UI 树（找到 1 个候选 84:C2:E4:03:02:02）
+evidence/e2e_p0/phone_stage_connectivity_dump.txt | active | dumpsys connectivity 原始输出（Active default network: 100 WIFI）
+evidence/e2e_p0/phone_stage_device_identity.txt | active | 本轮设备型号/API/serial 与包版本原始输出（Redmi 8A/API29/versionCode 10）
+evidence/e2e_p0/phone_stage_final_state.txt | active | 结束时默认网络、前台服务、数据库列表（无温度库）原始输出
+evidence/e2e_p0/phone_stage_home_after_bind.png | active | 绑定成功截图（已保存的 ID（1）e2ep0 6A002C00）
+evidence/e2e_p0/phone_stage_logcat_a1_cycle.txt | active | 21:39:30 起读取周期（cipher 160、devCount=0、writeCharacteristic bytes=6）
+evidence/e2e_p0/phone_stage_logcat_app_1.txt | active | 首启/守护启动阶段 App logcat 切片（PID 4677）
+evidence/e2e_p0/phone_stage_logcat_cycles.txt | active | 21:33:30 起 App logcat 切片（网关地址保存、读取、MQTT 超时）
+evidence/e2e_p0/phone_stage_logcat_post_bind_cycle.txt | active | 21:42:50 起绑定后读取周期（GwID、dev=1、ALL_PLACEHOLDER、bytes=6）
+evidence/e2e_p0/phone_stage_logcat_register.txt | active | 21:35:45 起注册点击与 Toast 的 App logcat 切片
+evidence/e2e_p0/phone_stage_logcat_scan_1.txt | active | 网关发现与首次读取阶段 App logcat 切片
+evidence/e2e_p0/phone_stage_myprefs_after_gw.xml | active | 保存网关地址后的 MyPrefs（gateway_ble_addr=84:C2:E4:03:02:02）
+evidence/e2e_p0/phone_stage_myprefs_after_register.xml | active | 首轮注册失败后的 MyPrefs（无 macid_name_map）
+evidence/e2e_p0/phone_stage_myprefs_after_register2.xml | active | 注册成功后的 MyPrefs（macid_name_map={6A002C00:e2ep0}）
+evidence/e2e_p0/phone_stage_myprefs_raw.xml | active | 首启后 MyPrefs 原始内容（measure_state 未启动、无测试身份）
+evidence/e2e_p0/phone_stage_network_reachability.txt | active | 手机到平台 ICMP/TCP 有界探测原始结果（ping 可达、nc 超时）
+evidence/e2e_p0/phone_stage_package_dump.txt | active | App 包信息与权限初始状态（定位权限未授予）dumpsys 原始输出
+evidence/e2e_p0/phone_stage_package_dump_after_grant.txt | active | 授予定位权限后的包信息（fine/coarse granted=true）
+evidence/e2e_p0/phone_stage_radio_wifi_before.txt | active | 蓝牙开关=1、定位模式=3、连接前 wlan0 状态
+evidence/e2e_p0/phone_stage_sensor_list_after_register.png | active | 首轮注册失败后的传感器列表截图（0）
+evidence/e2e_p0/phone_stage_wifi_after_connect.txt | active | 连接后 wlan0 地址/路由原始输出（192.168.0.103/24）
+evidence/e2e_p0/phone_stage_wifi_connected.png | active | Wi-Fi 连接成功截图（ZTE_607157 高亮已连接）
+evidence/e2e_p0/phone_stage_wifi_dialog_1.xml | active | ZTE_607157 密码对话框 UI 树（密码控件标记 password=true，无明文）
+evidence/e2e_p0/phone_stage_wifi_dump.txt | active | dumpsys wifi 原始输出（mWifiInfo SSID=ZTE_607157、COMPLETED、CONNECTED）
+evidence/e2e_p0/phone_stage_wifi_ui_1.xml | active | Wi-Fi 设置页 UI 树（WLAN 开、ZTE_607157 候选）
+evidence/e2e_p0/phone_stage_window_focus.txt | active | Wi-Fi 设置页窗口焦点原始输出
+evidence/e2e_p0/phone_stage_window_focus2.txt | active | App MainActivity 窗口焦点原始输出
+evidence/e2e_p0/phone_stage_window_focus3.txt | active | 已保存 ID 页窗口焦点原始输出
+evidence/e2e_p0/platform_baseline.mjs | active | 平台只读基线脚本（Playwright GET + TCP 连接探测；可复跑，无 POST/写入）
+evidence/e2e_p0/platform_baseline_result.json | active | 平台只读基线原始结果（本轮复跑输出，GET/TCP 状态、时间戳）
+evidence/e2e_p0/platform_baseline_result_first.json | active | 上一轮平台只读基线结果（对照，08:35Z 窗口）
+evidence/e2e_p0/platform_baseline_result_phone_stage.json | active | 本轮手机段执行期间平台只读基线结果副本（13:40:55Z–13:41:20Z）
+evidence/e2e_p0/platform_head_options.txt | active | 平台 HEAD/OPTIONS 只读探测原始输出（empty reply）
+evidence/e2e_p0/platform_root_get.txt | active | 平台 GET / 只读探测原始输出（empty reply）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检
 evidence/embedded_verify_uart_trace_item001.py | active | 实板 UART1 调试串口独立复核脚本（ITEM-001：S 行字段/时序）

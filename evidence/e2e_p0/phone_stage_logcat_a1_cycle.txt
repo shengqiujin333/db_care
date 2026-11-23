@@ -1,0 +1,29 @@
+--------- beginning of main
+11-23 21:40:05.028 I/MqttService( 4677): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-23 21:40:05.029 I/MqttService( 4677): link_state=CONNECTING msg=正在连接网关…
+11-23 21:40:05.029 I/MqttService( 4677): Attempt 1 to connect to Bluetooth device...
+11-23 21:40:05.032 D/BluetoothGatt( 4677): connect() - device: 84:C2:E4:03:02:02, auto: false
+11-23 21:40:05.032 D/BluetoothGatt( 4677): registerApp()
+11-23 21:40:05.032 D/BluetoothGatt( 4677): registerApp() - UUID=60552987-512b-49e3-b785-6e2bfc42ddc3
+11-23 21:40:05.036 D/BluetoothGatt( 4677): onClientRegistered() - status=0 clientIf=6
+11-23 21:40:05.537 D/BluetoothGatt( 4677): onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-23 21:40:05.537 I/MqttService( 4677): Connected to device, discovering services...
+11-23 21:40:05.544 D/BluetoothGatt( 4677): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-23 21:40:05.668 D/BluetoothGatt( 4677): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=32
+11-23 21:40:07.376 D/BluetoothGatt( 4677): onConfigureMTU() - Device=84:C2:E4:03:02:02 mtu=240 status=0
+11-23 21:40:07.377 I/MqttService( 4677): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-23 21:40:07.377 D/BluetoothGatt( 4677): discoverServices() - device: 84:C2:E4:03:02:02
+11-23 21:40:07.384 D/BluetoothGatt( 4677): onSearchComplete() = Device=84:C2:E4:03:02:02 Status=0
+11-23 21:40:07.716 D/BluetoothGatt( 4677): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=0
+11-23 21:40:08.155 I/MqttService( 4677): cipher length = 160
+11-23 21:40:08.157 W/MqttService( 4677): BLE frame rejected: NO_DEVICE (devCount=0) link_state=GATEWAY_NO_DEVICE
+11-23 21:40:08.157 I/MqttService( 4677): link_state=GATEWAY_NO_DEVICE msg=网关已连接，暂无设备（N=0）
+11-23 21:40:08.161 I/MqttService( 4677): writeCharacteristic(legacy) ok=true, bytes=6
+11-23 21:40:08.449 I/MqttService( 4677): Chunk written OK, left=0
+11-23 21:40:08.449 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:40:08.450 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:40:08.451 D/BluetoothGatt( 4677): close()
+11-23 21:40:08.451 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=6
+11-23 21:40:08.452 D/BluetoothGatt( 4677): close()
+11-23 21:40:08.452 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=6
+11-23 21:40:08.454 I/MqttService( 4677): Successfully connected and read data on attempt 1

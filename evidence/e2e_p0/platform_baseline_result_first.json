@@ -1,0 +1,88 @@
+{
+  "started_at": "2026-11-23T08:35:07.682Z",
+  "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+  "base_url": "http://8.140.23.253:5000",
+  "http_probes": [
+    {
+      "path": "/",
+      "method": "GET",
+      "started_at": "2026-11-23T08:35:08.086Z",
+      "error": "apiRequestContext.get: socket hang up\nCall log:\n\u001b[2m  - → GET http://8.140.23.253:5000/\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+      "finished_at": "2026-11-23T08:35:13.108Z"
+    },
+    {
+      "path": "/upload_data",
+      "method": "GET",
+      "started_at": "2026-11-23T08:35:13.108Z",
+      "error": "apiRequestContext.get: socket hang up\nCall log:\n\u001b[2m  - → GET http://8.140.23.253:5000/upload_data\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+      "finished_at": "2026-11-23T08:35:18.117Z"
+    },
+    {
+      "path": "/login",
+      "method": "GET",
+      "started_at": "2026-11-23T08:35:18.117Z",
+      "error": "apiRequestContext.get: socket hang up\nCall log:\n\u001b[2m  - → GET http://8.140.23.253:5000/login\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+      "finished_at": "2026-11-23T08:35:23.126Z"
+    },
+    {
+      "path": "/setmac",
+      "method": "GET",
+      "started_at": "2026-11-23T08:35:23.126Z",
+      "error": "apiRequestContext.get: socket hang up\nCall log:\n\u001b[2m  - → GET http://8.140.23.253:5000/setmac\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+      "finished_at": "2026-11-23T08:35:28.134Z"
+    },
+    {
+      "path": "/nonexistent-probe-e2e",
+      "method": "GET",
+      "started_at": "2026-11-23T08:35:28.134Z",
+      "error": "apiRequestContext.get: socket hang up\nCall log:\n\u001b[2m  - → GET http://8.140.23.253:5000/nonexistent-probe-e2e\u001b[22m\n\u001b[2m    - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36 Edg/154.0.0.0\u001b[22m\n\u001b[2m    - accept: */*\u001b[22m\n\u001b[2m    - accept-encoding: gzip,deflate,br\u001b[22m\n",
+      "finished_at": "2026-11-23T08:35:33.138Z"
+    }
+  ],
+  "tcp_probes": [
+    {
+      "port": 5000,
+      "started_at": "2026-11-23T08:35:33.139Z",
+      "result": "open",
+      "finished_at": "2026-11-23T08:35:33.140Z"
+    },
+    {
+      "port": 1883,
+      "started_at": "2026-11-23T08:35:33.140Z",
+      "result": "open",
+      "finished_at": "2026-11-23T08:35:33.140Z"
+    },
+    {
+      "port": 8883,
+      "started_at": "2026-11-23T08:35:33.140Z",
+      "result": "open",
+      "finished_at": "2026-11-23T08:35:33.141Z"
+    },
+    {
+      "port": 3306,
+      "started_at": "2026-11-23T08:35:33.141Z",
+      "result": "open",
+      "finished_at": "2026-11-23T08:35:33.142Z"
+    },
+    {
+      "port": 18083,
+      "started_at": "2026-11-23T08:35:33.142Z",
+      "result": "open",
+      "finished_at": "2026-11-23T08:35:33.142Z"
+    },
+    {
+      "port": 8083,
+      "started_at": "2026-11-23T08:35:33.142Z",
+      "result": "open",
+      "finished_at": "2026-11-23T08:35:33.143Z"
+    },
+    {
+      "port": 8084,
+      "started_at": "2026-11-23T08:35:33.143Z",
+      "result": "open",
+      "finished_at": "2026-11-23T08:35:33.143Z"
+    }
+  ],
+  "note": "Only GET requests and TCP connect. No POST, no write, no login attempt, no database access.",
+  "finished_at": "2026-11-23T08:35:33.144Z"
+}

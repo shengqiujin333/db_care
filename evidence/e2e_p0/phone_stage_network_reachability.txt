@@ -1,0 +1,16 @@
+# phone network reachability 2026-11-23T13:27:39Z
+--- ping 8.140.23.253 (2x, 2s) ---
+PING 8.140.23.253 (8.140.23.253) 56(84) bytes of data.
+64 bytes from 8.140.23.253: icmp_seq=1 ttl=64 time=148 ms
+64 bytes from 8.140.23.253: icmp_seq=2 ttl=64 time=268 ms
+
+--- 8.140.23.253 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 148.395/208.678/268.962/60.285 ms
+--- nc probe to 8.140.23.253:5000 (3s) ---
+nc: Timeout
+--- nc probe to 8.140.23.253:8883 (3s) ---
+nc: Timeout
+--- nc exit codes ---
+nc5000_rc=1
+nc8883_rc=1

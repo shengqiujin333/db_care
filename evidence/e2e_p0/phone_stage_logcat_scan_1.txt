@@ -1,0 +1,141 @@
+--------- beginning of main
+11-23 21:28:07.797 I/ni.dengbei_car( 4677): Late-enabling -Xcheck:jni
+11-23 21:28:07.844 E/ni.dengbei_car( 4677): Unknown bits set in runtime_flags: 0x8000
+11-23 21:28:09.238 I/Perf    ( 4677): Connecting to perf service.
+11-23 21:28:09.312 D/WM-WrkMgrInitializer( 4677): Initializing WorkManager with default configuration.
+11-23 21:28:09.407 I/FeatureParser( 4677): can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-23 21:28:09.440 E/Perf    ( 4677): Fail to get file list com.jinyuni.dengbei_care
+11-23 21:28:09.440 E/Perf    ( 4677): getFolderSize() : Exception_1 = java.lang.NullPointerException: Attempt to get length of null array
+11-23 21:28:09.441 E/Perf    ( 4677): Fail to get file list com.jinyuni.dengbei_care
+11-23 21:28:09.441 E/Perf    ( 4677): getFolderSize() : Exception_1 = java.lang.NullPointerException: Attempt to get length of null array
+--------- beginning of system
+11-23 21:28:09.462 W/Looper  ( 4677): Slow Looper main: Long Msg: seq=2 plan=21:28:07.955  late=3ms wall=1480ms running=0ms h=android.app.ActivityThread$H w=110
+11-23 21:28:09.577 D/AppCompatDelegate( 4677): Checking for metadata for AppLocalesMetadataHolderService : Service not found
+11-23 21:28:09.658 W/Binder:intercep( 4677): type=1400 audit(0.0:19278): avc: denied { getattr } for path="/data/data/com.miui.contentcatcher" dev="mmcblk0p62" ino=2236455 scontext=u:r:untrusted_app:s0:c169,c256,c512,c768 tcontext=u:object_r:system_app_data_file:s0 tclass=dir permissive=0
+11-23 21:28:09.668 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 2 lines
+11-23 21:28:09.668 W/Binder:intercep( 4677): type=1400 audit(0.0:19281): avc: denied { getattr } for path="/data/data/com.miui.contentcatcher" dev="mmcblk0p62" ino=2236455 scontext=u:r:untrusted_app:s0:c169,c256,c512,c768 tcontext=u:object_r:system_app_data_file:s0 tclass=dir permissive=0
+11-23 21:28:09.684 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:09.706 W/ni.dengbei_car( 4677): Accessing hidden method Lmiui/contentcatcher/sdk/Token;-><init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V (greylist, linking, allowed)
+11-23 21:28:09.707 W/ni.dengbei_car( 4677): Accessing hidden method Lmiui/contentcatcher/InterceptorProxy;->getWorkThread()Landroid/os/HandlerThread; (greylist, linking, allowed)
+11-23 21:28:09.707 D/ViewContentFactory( 4677): initViewContentFetcherClass
+11-23 21:28:09.707 D/ViewContentFactory( 4677): getInterceptorPackageInfo
+11-23 21:28:09.707 W/ni.dengbei_car( 4677): Accessing hidden method Landroid/app/AppGlobals;->getInitialApplication()Landroid/app/Application; (greylist, linking, allowed)
+11-23 21:28:09.708 D/ViewContentFactory( 4677): getInitialApplication took 1ms
+11-23 21:28:09.708 D/ViewContentFactory( 4677): packageInfo.packageName: com.miui.catcherpatch
+11-23 21:28:09.708 W/Binder:intercep( 4677): type=1400 audit(0.0:19286): avc: denied { getattr } for path="/data/data/com.miui.catcherpatch" dev="mmcblk0p62" ino=2236808 scontext=u:r:untrusted_app:s0:c169,c256,c512,c768 tcontext=u:object_r:system_app_data_file:s0 tclass=dir permissive=0
+11-23 21:28:09.708 W/Binder:intercep( 4677): type=1400 audit(0.0:19287): avc: denied { getattr } for path="/data/data/com.miui.catcherpatch" dev="mmcblk0p62" ino=2236808 scontext=u:r:untrusted_app:s0:c169,c256,c512,c768 tcontext=u:object_r:system_app_data_file:s0 tclass=dir permissive=0
+11-23 21:28:09.720 D/ViewContentFactory( 4677): initViewContentFetcherClass took 13ms
+11-23 21:28:09.720 I/ContentCatcher( 4677): ViewContentFetcher : ViewContentFetcher
+11-23 21:28:09.720 D/ViewContentFactory( 4677): createInterceptor took 13ms
+11-23 21:28:09.721 W/ni.dengbei_car( 4677): Accessing hidden method Lmiui/contentcatcher/sdk/ContentCatcherManager;->getInstance()Lmiui/contentcatcher/sdk/ContentCatcherManager; (greylist, linking, allowed)
+11-23 21:28:09.721 W/ni.dengbei_car( 4677): Accessing hidden method Lmiui/contentcatcher/sdk/ContentCatcherManager;->registerContentInjector(Lmiui/contentcatcher/sdk/Token;Lmiui/contentcatcher/sdk/injector/IContentDecorateCallback;)V (greylist, linking, allowed)
+11-23 21:28:09.723 W/ni.dengbei_car( 4677): Accessing hidden method Lmiui/contentcatcher/sdk/ContentCatcherManager;->getPageConfig(Lmiui/contentcatcher/sdk/Token;)Lmiui/contentcatcher/sdk/data/PageConfig; (greylist, linking, allowed)
+11-23 21:28:09.724 W/ni.dengbei_car( 4677): Accessing hidden method Lmiui/contentcatcher/sdk/data/PageConfig;->getFeatures()Ljava/util/ArrayList; (greylist, linking, allowed)
+11-23 21:28:09.724 W/ni.dengbei_car( 4677): Accessing hidden method Lmiui/contentcatcher/sdk/data/PageConfig;->getCatchers()Ljava/util/ArrayList; (greylist, linking, allowed)
+11-23 21:28:09.793 I/ni.dengbei_car( 4677): Starting a blocking GC Alloc
+11-23 21:28:09.793 I/ni.dengbei_car( 4677): Starting a blocking GC Alloc
+11-23 21:28:09.897 W/ni.dengbei_car( 4677): Accessing hidden method Landroid/view/View;->computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (greylist, reflection, allowed)
+11-23 21:28:10.250 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.401 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 8 lines
+11-23 21:28:10.408 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.451 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.454 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 1 line
+11-23 21:28:10.463 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.466 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.469 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.472 W/ni.dengbei_car( 4677): Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (greylist, reflection, allowed)
+11-23 21:28:10.477 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.484 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 2 lines
+11-23 21:28:10.489 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.493 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.497 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.503 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.508 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:10.752 I/ReportScheduler( 4677): Scheduled daily report at 07:00 (initial delay 34309s)
+11-23 21:28:10.754 W/Activity( 4677): Slow Operation: Activity com.jinyuni.dengbei_care/.MainActivity onCreate took 1157ms
+11-23 21:28:10.785 D/MqttService( 4677): onResume called
+11-23 21:28:10.812 W/Looper  ( 4677): Slow Looper main: Long Msg: seq=3 plan=21:28:07.979  late=1484ms wall=1347ms running=0ms h=android.app.ActivityThread$H w=159
+11-23 21:28:10.813 W/Looper  ( 4677): Slow Looper main: Activity com.jinyuni.dengbei_care/.MainActivity is 1484ms late (wall=1347ms running=0ms ClientTransaction{ callbacks=[android.app.servertransaction.LaunchActivityItem] lifecycleRequest=android.app.servertransaction.ResumeActivityItem }) because of 1 msg, msg 1 took 1480ms (seq=2 late=3ms h=android.app.ActivityThread$H w=110)
+11-23 21:28:10.814 W/Looper  ( 4677): Slow Looper main: Activity com.jinyuni.dengbei_care/.MainActivity is 2833ms late (wall=1ms running=0ms ClientTransaction{ callbacks=[android.app.servertransaction.TopResumedActivityChangeItem] }) because of 2 msg, msg 1 took 1480ms (seq=2 late=3ms h=android.app.ActivityThread$H w=110), msg 2 took 1347ms (seq=3 late=1484ms h=android.app.ActivityThread$H w=159)
+11-23 21:28:10.815 I/Choreographer( 4677): Skipped 83 frames!  The application may be doing too much work on its main thread.
+11-23 21:28:11.067 I/AdrenoGLES( 4677): QUALCOMM build                   : c692a3f, Ie3bb699d95
+11-23 21:28:11.067 I/AdrenoGLES( 4677): Build Date                       : 09/29/20
+11-23 21:28:11.067 I/AdrenoGLES( 4677): OpenGL ES Shader Compiler Version: EV031.27.05.02
+11-23 21:28:11.067 I/AdrenoGLES( 4677): Local Branch                     : 
+11-23 21:28:11.067 I/AdrenoGLES( 4677): Remote Branch                    : refs/tags/AU_LINUX_ANDROID_LA.UM.8.6.2.R1.10.00.00.537.053
+11-23 21:28:11.067 I/AdrenoGLES( 4677): Remote Branch                    : NONE
+11-23 21:28:11.067 I/AdrenoGLES( 4677): Reconstruct Branch               : NOTHING
+11-23 21:28:11.067 I/AdrenoGLES( 4677): Build Config                     : S L 8.0.10 AArch32
+11-23 21:28:11.076 I/AdrenoGLES( 4677): PFP: 0x005ff112, ME: 0x005ff066
+11-23 21:28:11.143 W/Gralloc3( 4677): mapper 3.x is not supported
+11-23 21:28:11.278 I/OpenGLRenderer( 4677): Davey! duration=1858ms; Flags=1, IntendedVsync=180259376648180, Vsync=180260759981458, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=180260774886130, AnimationStart=180260775030296, PerformTraversalsStart=180260775336390, DrawStart=180261064529723, SyncQueued=180261098102432, SyncStart=180261098647484, IssueDrawCommandsStart=180261098780921, SwapBuffers=180261234080817, FrameCompleted=180261235918838, DequeueBufferDuration=160000, QueueBufferDuration=919000, 
+11-23 21:28:11.544 I/OpenGLRenderer( 4677): Davey! duration=2125ms; Flags=1, IntendedVsync=180259376648180, Vsync=180260759981458, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=180260774886130, AnimationStart=180260775030296, PerformTraversalsStart=180260775336390, DrawStart=180261407340036, SyncQueued=180261463728005, SyncStart=180261464208525, IssueDrawCommandsStart=180261464427119, SwapBuffers=180261500746598, FrameCompleted=180261502209932, DequeueBufferDuration=105000, QueueBufferDuration=809000, 
+11-23 21:28:11.545 W/Looper  ( 4677): Slow Looper main: doFrame is 1397ms late because of 5 msg, msg 1 took 1480ms (seq=2 late=3ms h=android.app.ActivityThread$H w=110), msg 2 took 1347ms (seq=3 late=1484ms h=android.app.ActivityThread$H w=159)
+11-23 21:28:11.641 I/MqttService( 4677): delayalarm=10.0
+11-23 21:28:11.670 W/ni.dengbei_car( 4677): Accessing hidden method Ljava/lang/invoke/MethodHandles$Lookup;-><init>(Ljava/lang/Class;I)V (greylist, reflection, allowed)
+11-23 21:28:11.748 D/NetworkSecurityConfig( 4677): Using Network Security Config from resource network_security_config debugBuild: true
+11-23 21:28:11.825 I/Choreographer( 4677): Skipped 59 frames!  The application may be doing too much work on its main thread.
+11-23 21:28:11.843 I/OpenGLRenderer( 4677): Davey! duration=1005ms; Flags=0, IntendedVsync=180260795979380, Vsync=180261779312674, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=180261785707744, AnimationStart=180261785802067, PerformTraversalsStart=180261787534619, DrawStart=180261787911702, SyncQueued=180261797804150, SyncStart=180261798339202, IssueDrawCommandsStart=180261799068213, SwapBuffers=180261800867692, FrameCompleted=180261802037744, DequeueBufferDuration=222000, QueueBufferDuration=601000, 
+11-23 21:28:11.845 W/Looper  ( 4677): Slow Looper main: doFrame is 988ms late because of 41 msg, msg 1 took 730ms (seq=7 late=1397ms h=android.view.Choreographer$FrameHandler c=android.view.Choreographer$FrameDisplayEventReceiver), msg 38 took 239ms (seq=44 late=832ms h=android.app.ActivityThread$H w=114)
+11-23 21:28:11.848 I/OpenGLRenderer( 4677): Davey! duration=1006ms; Flags=0, IntendedVsync=180260795979380, Vsync=180261779312674, OldestInputEvent=9223372036854775807, NewestInputEvent=0, HandleInputStart=180261785707744, AnimationStart=180261785802067, PerformTraversalsStart=180261787534619, DrawStart=180261799520452, SyncQueued=180261799570504, SyncStart=180261802742692, IssueDrawCommandsStart=180261802865452, SwapBuffers=180261804331077, FrameCompleted=180261806099463, DequeueBufferDuration=127000, QueueBufferDuration=914000, 
+11-23 21:28:16.081 D/ProfileInstaller( 4677): Installing profile for com.jinyuni.dengbei_care
+11-23 21:28:17.267 I/ni.dengbei_car( 4677): ProcessProfilingInfo new_methods=4618 is saved saved_to_disk=1 resolve_classes_delay=8000
+11-23 21:28:40.251 D/OpenGLRenderer( 4677): endAllActiveAnimators on 0x7efa2800 (RippleDrawable) with handle 0x7f1c5c20
+11-23 21:28:40.263 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:40.268 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:28:40.349 I/Toast   ( 4677): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-23 21:29:47.436 D/MqttService( 4677): onPause called
+11-23 21:29:47.453 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:29:47.456 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:29:47.481 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:29:47.486 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 1 line
+11-23 21:29:47.491 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:30:45.993 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:30:46.279 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 10 lines
+11-23 21:30:46.290 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:30:46.301 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:30:46.356 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 5 lines
+11-23 21:30:46.365 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:30:46.458 I/Choreographer( 4677): Skipped 30 frames!  The application may be doing too much work on its main thread.
+11-23 21:30:46.474 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:30:46.580 W/Looper  ( 4677): Slow Looper main: doFrame is 512ms late because of 2 msg, msg 2 took 481ms (seq=290 late=126ms h=android.os.Handler c=androidx.fragment.app.FragmentManager$5)
+11-23 21:30:46.722 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:31:09.353 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:31:09.455 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 9 lines
+11-23 21:31:09.481 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:31:11.705 I/MqttService( 4677): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-23 21:31:11.705 I/MqttService( 4677): link_state=CONNECTING msg=正在连接网关…
+11-23 21:31:11.706 I/MqttService( 4677): Attempt 1 to connect to Bluetooth device...
+11-23 21:31:11.718 D/BluetoothGatt( 4677): connect() - device: 84:C2:E4:03:02:02, auto: false
+11-23 21:31:11.718 D/BluetoothGatt( 4677): registerApp()
+11-23 21:31:11.718 D/BluetoothGatt( 4677): registerApp() - UUID=c00ed12e-0721-4ec2-9a39-4d37d13f1961
+11-23 21:31:11.744 D/BluetoothGatt( 4677): onClientRegistered() - status=0 clientIf=6
+11-23 21:31:12.257 D/BluetoothGatt( 4677): onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-23 21:31:12.257 I/MqttService( 4677): Connected to device, discovering services...
+11-23 21:31:12.262 D/BluetoothGatt( 4677): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-23 21:31:12.442 D/BluetoothGatt( 4677): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=32
+11-23 21:31:13.905 D/BluetoothGatt( 4677): onConfigureMTU() - Device=84:C2:E4:03:02:02 mtu=240 status=0
+11-23 21:31:13.906 I/MqttService( 4677): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-23 21:31:13.907 D/BluetoothGatt( 4677): discoverServices() - device: 84:C2:E4:03:02:02
+11-23 21:31:13.917 D/BluetoothGatt( 4677): onSearchComplete() = Device=84:C2:E4:03:02:02 Status=0
+11-23 21:31:14.343 D/BluetoothGatt( 4677): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=0
+11-23 21:31:14.491 I/MqttService( 4677): cipher length = 160
+11-23 21:31:14.519 W/MqttService( 4677): BLE frame rejected: NO_DEVICE (devCount=0) link_state=GATEWAY_NO_DEVICE
+11-23 21:31:14.520 I/MqttService( 4677): link_state=GATEWAY_NO_DEVICE msg=网关已连接，暂无设备（N=0）
+11-23 21:31:14.521 I/MqttService( 4677): No ids to write (or capacity exceeded)
+11-23 21:31:14.522 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:31:14.524 D/BluetoothGatt( 4677): close()
+11-23 21:31:14.524 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=6
+11-23 21:31:14.524 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:31:14.526 D/BluetoothGatt( 4677): close()
+11-23 21:31:14.526 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=0
+11-23 21:31:14.527 I/MqttService( 4677): Successfully connected and read data on attempt 1
+11-23 21:31:36.699 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:31:36.700 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 1 line
+11-23 21:31:36.704 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:31:36.716 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:31:36.716 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 1 line
+11-23 21:31:36.726 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:31:36.729 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:31:36.736 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 4 lines
+11-23 21:31:36.737 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98

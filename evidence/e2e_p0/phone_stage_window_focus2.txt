@@ -1,0 +1,690 @@
+
+WINDOW MANAGER LAST ANR (dumpsys window lastanr)
+  <no ANR has occurred since boot>
+
+WINDOW MANAGER POLICY STATE (dumpsys window policy)
+    mSafeMode=false mSystemReady=true mSystemBooted=true
+    mCameraLensCoverState=CAMERA_LENS_COVER_ABSENT
+    mWakeGestureEnabledSetting=false
+    mUiMode=UI_MODE_TYPE_NORMALmEnableCarDockHomeCapture=true
+    mLidKeyboardAccessibility=0 mLidNavigationAccessibility=0 getLidBehavior=LID_BEHAVIOR_SLEEP
+    mLongPressOnBackBehavior=LONG_PRESS_BACK_NOTHING
+    mLongPressOnHomeBehavior=LONG_PRESS_HOME_NOTHING
+    mDoubleTapOnHomeBehavior=DOUBLE_TAP_HOME_NOTHING
+    mShortPressOnPowerBehavior=SHORT_PRESS_POWER_GO_TO_SLEEP
+    mLongPressOnPowerBehavior=LONG_PRESS_POWER_GLOBAL_ACTIONS
+    mVeryLongPressOnPowerBehavior=VERY_LONG_PRESS_POWER_NOTHING
+    mDoublePressOnPowerBehavior=MULTI_PRESS_POWER_NOTHING
+    mTriplePressOnPowerBehavior=MULTI_PRESS_POWER_NOTHING
+    mShortPressOnSleepBehavior=SHORT_PRESS_SLEEP_GO_TO_SLEEP
+    mShortPressOnWindowBehavior=SHORT_PRESS_WINDOW_PICTURE_IN_PICTURE
+    mAllowStartActivityForLongPressOnPowerDuringSetup=false
+    mHasSoftInput=true mHapticTextHandleEnabled=false
+    mDismissImeOnBackKeyPressed=true mIncallPowerBehavior=sleep
+    mIncallBackBehavior=<nothing> mEndcallBehavior=sleep
+    mDisplayHomeButtonHandlers=    mKeyguardOccluded=false mKeyguardOccludedChanged=false mPendingKeyguardOccluded=false
+    mAllowLockscreenWhenOnDisplays=false mLockScreenTimeout=60000 mLockScreenTimerActive=false
+    mKeyMapping.size=0
+    WakeGestureListener
+      mTriggerRequested=false
+      mSensor=null
+    KeyguardServiceDelegate
+      showing=false
+      showingAndNotOccluded=true
+      inputRestricted=false
+      occluded=false
+      secure=true
+      dreaming=false
+      systemIsReady=true
+      deviceHasKeyguard=true
+      enabled=true
+      offReason=0
+      currentUser=-10000
+      bootCompleted=true
+      screenState=SCREEN_STATE_ON
+      interactiveState=INTERACTIVE_STATE_AWAKE
+      KeyguardStateMonitor
+        mIsShowing=false
+        mSimSecure=false
+        mInputRestricted=false
+        mTrusted=false
+        mCurrentUserId=0
+    Looper state:
+      Looper (android.ui, tid 19) {2f3ae1c}
+        (Total messages: 0, polling=true, quitting=false)
+        Dump time: 2026-11-23 21:28:17.930 GMT+08:00
+        Package: system_server
+        Current looper: Looper (android.ui, tid=1640)
+        History of long time messages on Looper (android.ui, tid=1640):
+
+    BaseMiuiPhoneWindowManager
+      mInputMethodWindowVisibleHeight=0
+      mFrontFingerprintSensor=false
+      mSupportTapFingerprintSensorToHome=false
+      mScreenOffReason=0
+      mIsStatusBarVisibleInFullscreen=false
+      mHasCameraFlash=true
+      mTorchEnabled=false
+      mScreenRecorderEnabled=false
+      mVoiceAssistEnabled=false
+      mWifiOnly=false
+    KeyPress
+      mKeyPressed=0 mKeyPressing=0 mShortcutPressing=0
+      KEYCODE_MENU KeyBitmask=10
+      KEYCODE_APP_SWITCH KeyBitmask=100
+      KEYCODE_HOME KeyBitmask=1000
+      KEYCODE_BACK KeyBitmask=10000
+      KEYCODE_POWER KeyBitmask=100000
+      KEYCODE_VOLUME_DOWN KeyBitmask=1000000
+      KEYCODE_VOLUME_UP KeyBitmask=10000000
+      ElSE KEYCODE KeyBitmask=1
+      SHORTCUT_HOME_POWER=101000
+      SHORTCUT_BACK_POWER=110000
+      SHORTCUT_MENU_POWER=100100
+      SHORTCUT_SCREENSHOT_ANDROID=1100000
+      SHORTCUT_SCREENSHOT_MIUI=1000100
+      SHORTCUT_UNLOCK=10010000
+      mShortcutTriggered=false
+      mDpadCenterDown=false
+      mHomeDownAfterDpCenter=false
+    KeyResponseSetting
+      mCurrentUserId=0
+      mPressToAppSwitch=true
+      mMikeymodeEnabled=false
+      mCameraKeyWakeScreen=false
+      mTrackballWakeScreen=false
+      mVolumeKeyLaunchCamera=false
+      mTestModeEnabled=false
+      mDoubleClickPowerKey=null
+      mThreeGestureDown=screen_shot
+      mLongPressHomeKey=none
+      mLongPressMenuKey=show_menu
+      mLongPressMenuKeyWhenLock=null
+      mLongPressBackKey=null
+      mLongPressPowerKey=launch_voice_assistant
+      mKeyCombinationPowerHome=null
+      mKeyCombinationPowerMenu=null
+      mKeyCombinationPowerBack=null
+      mScreenButtonsDisabled=false
+      mVolumeButtonPrePressedTime=0
+      mVolumeButtonPressedCount=0
+      mHaveBankCard=false
+      mHaveTranksCard=false
+      mLongPressVolumeDownBehavior=0
+      mIsVRMode=false
+      mTalkBackIsOpened=false
+      mShortcutServiceIsTalkBack=true
+      Smart Cover Mode:  mSmartCoverLidOpen=true
+  mSmartCoverMode=0
+
+WINDOW MANAGER ANIMATOR STATE (dumpsys window animator)
+    DisplayContentsAnimator #0:
+      Window #0: WindowStateAnimator{5a1a322 com.android.systemui.ImageWallpaper}
+      Window #1: WindowStateAnimator{58f38ed com.android.keyguard.wallpaper.service.MiuiKeyguardPictorialWallpaper}
+      Window #2: WindowStateAnimator{eb6cb17 com.miui.home/com.miui.home.launcher.Launcher}
+      Window #3: WindowStateAnimator{ca2e396 LauncherOverlayWindow:com.miui.personalassistant}
+      Window #4: WindowStateAnimator{675da25 com.android.settings/com.android.settings.Settings$WifiSettingsActivity}
+      Window #5: WindowStateAnimator{fd0c8cb com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}
+      Window #6: WindowStateAnimator{11588a8 com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}
+      Window #7: WindowStateAnimator{b0c22b1 DockedStackDivider}
+      Window #8: WindowStateAnimator{c02d158 AssistPreviewPanel}
+      Window #9: WindowStateAnimator{858063b Aspect}
+      Window #10: WindowStateAnimator{f8d44ca RoundCorner}
+      Window #11: WindowStateAnimator{f533835 StatusBar}
+      Window #12: WindowStateAnimator{bcf171f GestureStub}
+      Window #13: WindowStateAnimator{6cc3abe GestureStubLeft}
+      Window #14: WindowStateAnimator{c453d79 GestureStubRight}
+      Window #15: WindowStateAnimator{da7fa40 RoundCorner}
+
+
+    mBulkUpdateParams=0x4 ORIENTATION_CHANGE_COMPLETE
+
+WINDOW MANAGER SESSIONS (dumpsys window sessions)
+  Session Session{202d940 1580:1000}:
+    mNumWindow=0 mCanAddInternalSystemWindow=true mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@64357fa
+    mPackageName=com.jinyuni.dengbei_care
+  Session Session{2390e96 1904:1000}:
+    mNumWindow=11 mCanAddInternalSystemWindow=true mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@4d6d1ab
+    mPackageName=com.android.systemui
+  Session Session{5cb75ce 4677:u0a10169}:
+    mNumWindow=2 mCanAddInternalSystemWindow=false mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@fbe8fc1
+    mPackageName=com.jinyuni.dengbei_care
+  Session Session{5debe0e 2211:u0a10081}:
+    mNumWindow=1 mCanAddInternalSystemWindow=true mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@e4ef3a1
+    mPackageName=com.miui.home
+  Session Session{78491cb 1869:1000}:
+    mNumWindow=1 mCanAddInternalSystemWindow=true mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@55ef9c6
+    mPackageName=com.android.settings
+  Session Session{affa36c 2072:u0a10134}:
+    mNumWindow=0 mCanAddInternalSystemWindow=false mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@4363366
+    mPackageName=com.miui.securityinputmethod
+  Session Session{b92c79b 5487:u0a10124}:
+    mNumWindow=0 mCanAddInternalSystemWindow=false mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@eaedd87
+    mPackageName=com.miui.core
+  Session Session{d0fe02d 3390:u0a10067}:
+    mNumWindow=1 mCanAddInternalSystemWindow=false mAppOverlaySurfaces=[] mAlertWindowSurfaces=[] mClientDead=false mSurfaceSession=android.view.SurfaceSession@55da4b4
+    mPackageName=com.miui.home
+
+WINDOW MANAGER DISPLAY CONTENTS (dumpsys window displays)
+  Display: mDisplayId=0
+    init=720x1520 320dpi cur=720x1520 app=720x1369 rng=720x665-1465x1369
+    deferred=false mLayoutNeeded=true mTouchExcludeRegion=SkRegion((0,0,720,1520))
+ mFreeFormWindowShowed=false
+
+  mLayoutSeq=224
+  mDeferredRotationPauseCount=0
+  mCurrentFocus=Window{8d5990b u0 com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}
+  mFocusedApp=AppWindowToken{6bd1dae token=Token{6111629 ActivityRecord{22e07b0 u0 com.jinyuni.dengbei_care/.MainActivity t65}}}
+  mLastStatusBarVisibility=0xa008
+
+  displayId=0
+  mWallpaperTarget=null
+  mLastWallpaperX=1.0 mLastWallpaperY=0.0
+
+mSystemGestureExclusion=<no lstnrs>
+
+  Application tokens in top down Z order:
+    mStackId=5
+    mDeferRemoval=false
+    mBounds=[0,0][720,1520]
+      taskId=65
+        mBounds=[0,0][720,1520]
+        mdr=false
+        appTokens=[AppWindowToken{6bd1dae token=Token{6111629 ActivityRecord{22e07b0 u0 com.jinyuni.dengbei_care/.MainActivity t65}}}]
+        mDisplayedBounds=[0,0][0,0]
+          Activity #0 AppWindowToken{6bd1dae token=Token{6111629 ActivityRecord{22e07b0 u0 com.jinyuni.dengbei_care/.MainActivity t65}}}
+            windows=[Window{4862694 u0 com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}, Window{8d5990b u0 com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}]
+            windowType=2 hidden=false hasVisible=true
+            app=true mVoiceInteraction=false
+            component=com.jinyuni.dengbei_care/.MainActivity
+            task={taskId=65 appTokens=[AppWindowToken{6bd1dae token=Token{6111629 ActivityRecord{22e07b0 u0 com.jinyuni.dengbei_care/.MainActivity t65}}}] mdr=false}
+             mFillsParent=true mOrientation=-1
+            hiddenRequested=false mClientHidden=false reportedDrawn=true reportedVisible=true
+            mNumInterestingWindows=2 mNumDrawnWindows=2 inPendingTransaction=false allDrawn=true lastAllDrawn=true mIsCastMode=false)
+            startingData=null removed=false firstWindowDrawn=true mIsExiting=false
+            mMiuiConfigFlag=1
+    mMiuiConfigFlag=1
+    mStackId=4
+    mDeferRemoval=false
+    mBounds=[0,0][720,1520]
+      taskId=64
+        mBounds=[0,0][720,1520]
+        mdr=false
+        appTokens=[AppWindowToken{7c3262a token=Token{d84315 ActivityRecord{78b64cc u0 com.android.settings/.Settings$WifiSettingsActivity t64}}}]
+        mDisplayedBounds=[0,0][0,0]
+          Activity #0 AppWindowToken{7c3262a token=Token{d84315 ActivityRecord{78b64cc u0 com.android.settings/.Settings$WifiSettingsActivity t64}}}
+            windows=[Window{aed6c54 u0 com.android.settings/com.android.settings.Settings$WifiSettingsActivity}]
+            windowType=2 hidden=true hasVisible=true
+            app=true mVoiceInteraction=false
+            component=com.android.settings/.Settings$WifiSettingsActivity
+            task={taskId=64 appTokens=[AppWindowToken{7c3262a token=Token{d84315 ActivityRecord{78b64cc u0 com.android.settings/.Settings$WifiSettingsActivity t64}}}] mdr=false}
+             mFillsParent=true mOrientation=1
+            hiddenRequested=true mClientHidden=true reportedDrawn=false reportedVisible=false
+            mAppStopped=true
+            mNumInterestingWindows=2 mNumDrawnWindows=2 inPendingTransaction=false allDrawn=true lastAllDrawn=true mIsCastMode=false)
+            startingData=null removed=false firstWindowDrawn=true mIsExiting=false
+            mMiuiConfigFlag=1
+    mMiuiConfigFlag=1
+    mStackId=0
+    mDeferRemoval=false
+    mBounds=[0,0][720,1520]
+      taskId=1
+        mBounds=[0,0][720,1520]
+        mdr=false
+        appTokens=[AppWindowToken{79d167d token=Token{76b44d4 ActivityRecord{e9e54e6 u0 com.miui.home/.launcher.Launcher t1}}}]
+        mDisplayedBounds=[0,0][0,0]
+          Activity #0 AppWindowToken{79d167d token=Token{76b44d4 ActivityRecord{e9e54e6 u0 com.miui.home/.launcher.Launcher t1}}}
+            windows=[Window{2ccad1a u0 com.miui.home/com.miui.home.launcher.Launcher}, Window{e6248c8 u0 LauncherOverlayWindow:com.miui.personalassistant}]
+            windowType=2 hidden=false hasVisible=true
+            app=true mVoiceInteraction=false
+            component=com.miui.home/.launcher.Launcher
+            task={taskId=1 appTokens=[AppWindowToken{79d167d token=Token{76b44d4 ActivityRecord{e9e54e6 u0 com.miui.home/.launcher.Launcher t1}}}] mdr=false}
+             mFillsParent=true mOrientation=1
+            hiddenRequested=false mClientHidden=false reportedDrawn=true reportedVisible=true
+            mNumInterestingWindows=1 mNumDrawnWindows=1 inPendingTransaction=false allDrawn=true lastAllDrawn=true mIsCastMode=false)
+            startingData=null removed=false firstWindowDrawn=true mIsExiting=false
+            mMiuiConfigFlag=1
+    mMiuiConfigFlag=1
+
+
+  homeStack=Stack=0
+
+  DockedStackDividerController
+    mLastVisibility=false
+    mMinimizedDock=false
+    mAdjustedForIme=false
+    mAdjustedForDivider=false
+
+  PinnedStackController
+    defaultBounds=[304,1176][688,1392]
+    mDefaultMinSize=216
+    mDefaultStackGravity=85
+    mDefaultAspectRatio=1.777778
+    movementBounds=[32,87][688,1392]
+    mIsImeShowing=false
+    mImeHeight=0
+    mIsShelfShowing=false
+    mShelfHeight=0
+    mReentrySnapFraction=-1.0
+    mIsMinimized=false
+    mAspectRatio=1.777778
+    mMinAspectRatio=0.41841003
+    mMaxAspectRatio=2.39
+    mActions=[]
+    mDisplayInfo=DisplayInfo{"内置屏幕, displayId 0", uniqueId "local:0", app 720 x 1369, real 720 x 1520, largest app 1465 x 1369, smallest app 720 x 665, mode 1, defaultMode 1, modes [{id=1, width=720, height=1520, fps=60.000004}], colorMode 0, supportedColorModes [0], hdrCapabilities android.view.Display$HdrCapabilities@40f16308, rotation 0, density 320 (268.941 x 269.986) dpi, layerStack 0, appVsyncOff 1000000, presDeadline 16666666, type BUILT_IN, address {port=0}, state ON, FLAG_SECURE, FLAG_SUPPORTS_PROTECTED_BUFFERS, removeMode 0}
+
+  DisplayFrames w=720 h=1520 r=0
+    mStable=[0,55][720,1520]
+    mStableFullscreen=[0,0][720,1520]
+    mDock=[0,55][720,1520]
+    mCurrent=[0,55][720,1520]
+    mSystem=[0,0][720,1520]
+    mContent=[0,55][720,1520]
+    mVoiceContent=[0,55][720,1520]
+    mOverscan=[0,0][720,1520]
+    mRestrictedOverscan=[0,0][720,1520]
+    mRestricted=[0,0][720,1520]
+    mUnrestricted=[0,0][720,1520]
+    mDisplayInfoOverscan=[0,0][0,0]
+    mRotatedDisplayInfoOverscan=[0,0][0,0]
+    mDisplayCutout=WmDisplayCutout{DisplayCutout{insets=Rect(0, 55 - 0, 0) boundingRect={Bounds=[Rect(0, 0 - 0, 0), Rect(301, 0 - 419, 55), Rect(0, 0 - 0, 0), Rect(0, 0 - 0, 0)]}}, mFrameSize=720x1520}
+
+  DisplayPolicy    mCarDockEnablesAccelerometer=true mDeskDockEnablesAccelerometer=true
+    mDockMode=EXTRA_DOCK_STATE_UNDOCKED mLidState=LID_ABSENT
+    mAwake=true mScreenOnEarly=true mScreenOnFully=true
+    mKeyguardDrawComplete=true mWindowManagerDrawComplete=true
+    mHdmiPlugged=false
+    mLastSystemUiFlags=0xa008 mResettingSystemUiFlags=0x0 mForceClearedSystemUiFlags=0x0
+    mShowingDream=false mDreamingLockscreen=false mDreamingSleepToken=null
+    mStatusBar=Window{dfc079e u0 StatusBar} isStatusBarKeyguard=false
+    mFocusedWindow=Window{8d5990b u0 com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}
+    mFocusedApp=Token{6111629 ActivityRecord{22e07b0 u0 com.jinyuni.dengbei_care/.MainActivity t65}}
+    mTopFullscreenOpaqueWindowState=Window{4862694 u0 com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}
+    mTopFullscreenOpaqueOrDimmingWindowState=Window{8d5990b u0 com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}
+    mTopIsFullscreen=false    mForceStatusBar=false mForceStatusBarFromKeyguard=false
+ mForceShowSystemBarsFromExternal=false
+    mAllowLockscreenWhenOn=false
+    BarController.StatusBar
+      mState=WINDOW_STATE_SHOWING
+      mTransientBar=TRANSIENT_BAR_NONE
+      mContentFrame=Rect(0, 0 - 720, 55)
+    Looper state:
+      Looper (android.ui, tid 19) {2f3ae1c}
+        (Total messages: 0, polling=true, quitting=false)
+        Dump time: 2026-11-23 21:28:17.932 GMT+08:00
+        Package: system_server
+        Current looper: Looper (android.ui, tid=1640)
+        History of long time messages on Looper (android.ui, tid=1640):
+
+
+  DisplayRotation
+    mCurrentAppOrientation=SCREEN_ORIENTATION_UNSPECIFIED
+    mLandscapeRotation=ROTATION_90 mSeascapeRotation=ROTATION_270
+    mPortraitRotation=ROTATION_0 mUpsideDownRotation=ROTATION_180
+    mSupportAutoRotation=true
+    WindowOrientationListener
+      mEnabled=true
+      mCurrentRotation=ROTATION_0
+      mSensorType=null
+      mSensor={Sensor name="BMA4 Accelerometer", vendor="BOSCH", version=10415, type=1, maxRange=39.2, resolution=0.0011901855, power=0.15, minDelay=5000}
+      mRate=2
+      AccelSensorJudge
+        mProposedRotation=-1
+        mPredictedRotation=-1
+        mLastFilteredX=-0.27421412
+        mLastFilteredY=-0.1372017
+        mLastFilteredZ=9.862469
+        mLastFilteredTimestampNanos=180267830751494 (60.898746ms ago)
+        mTiltHistory={last: 88.0}
+        mFlat=true
+        mSwinging=false
+        mAccelerating=false
+        mOverhead=false
+        mTouched=false
+        mTiltToleranceConfig=[[-25, 70], [-25, 65], [-25, 60], [-25, 65]]
+
+    mCarDockRotation=-1 mDeskDockRotation=-1
+    mUserRotationMode=USER_ROTATION_FREE mUserRotation=ROTATION_0 mAllowAllRotations=false
+    mDemoHdmiRotation=ROTATION_90 mDemoHdmiRotationLock=false mUndockedHdmiRotation=-1
+    mLidOpenRotation=-1
+    mFixedToUserRotation=false
+
+  InputConsumers:
+    name=pip_input_consumer pid=1904 user=UserHandle{0}
+
+  WindowInsetsStateController
+    InsetsState
+      InsetsSource type=TYPE_UNKNOWN_10 frame=[0,0][0,0] visible=false
+      InsetsSource type=TYPE_TOP_TAPPABLE_ELEMENT frame=[0,0][720,55] visible=true
+      InsetsSource type=TYPE_TOP_GESTURES frame=[0,0][720,55] visible=true
+      InsetsSource type=TYPE_SIDE_BAR_1 frame=[0,0][0,0] visible=false
+      InsetsSource type=TYPE_TOP_BAR frame=[0,0][720,55] visible=true
+    Control map:
+
+WINDOW MANAGER TOKENS (dumpsys window tokens)
+  All tokens:
+  Display #0
+  WallpaperWindowToken{5a5e848 token=android.os.Binder@f2e62eb}
+  WindowToken{8d1a08c android.os.Binder@2b881bf}
+  WindowToken{1dee550 android.os.BinderProxy@cb88f13}
+  WindowToken{a7b4670 android.os.BinderProxy@5ef7e22}
+  AppWindowToken{7c3262a token=Token{d84315 ActivityRecord{78b64cc u0 com.android.settings/.Settings$WifiSettingsActivity t64}}}
+  WindowToken{3c716d3 android.os.BinderProxy@47258c2}
+  WindowToken{ba5cd59 android.os.BinderProxy@bb35da0}
+  WindowToken{213096f android.os.BinderProxy@ada444e}
+  WindowToken{6c8ceb8 android.os.BinderProxy@26c1d1b}
+  AppWindowToken{6bd1dae token=Token{6111629 ActivityRecord{22e07b0 u0 com.jinyuni.dengbei_care/.MainActivity t65}}}
+  WindowToken{112b1d9 android.os.BinderProxy@a19a723}
+  WindowToken{89fbfa4 android.os.BinderProxy@dedce37}
+  WindowToken{d37a150 android.os.Binder@74ebb13}
+  WindowToken{1b42b60 android.os.BinderProxy@4bde363}
+  AppWindowToken{79d167d token=Token{76b44d4 ActivityRecord{e9e54e6 u0 com.miui.home/.launcher.Launcher t1}}}
+  WallpaperWindowToken{7630fe3 token=android.os.BinderProxy@b2d4c12}
+
+WINDOW MANAGER WINDOWS (dumpsys window windows)
+  Window #0 Window{eeb3210 u0 RoundCorner}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@47258c2
+    mOwnerUid=1000 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(fillxwrap) gr=TOP CENTER_VERTICAL sim={adjust=pan} layoutInDisplayCutoutMode=always blurRatio=1.0 blurMode=0 ty=SECURE_SYSTEM_OVERLAY fmt=TRANSLUCENT
+      fl=NOT_FOCUSABLE NOT_TOUCHABLE LAYOUT_IN_SCREEN FULLSCREEN HARDWARE_ACCELERATED
+      pfl=SHOW_FOR_ALL_USERS NO_MOVE_ANIMATION IS_ROUNDED_CORNERS_OVERLAY}
+    Requested w=0 h=0 mLayoutSeq=15
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{da7fa40 RoundCorner}:
+      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=true seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=false
+    isVisible=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #1 Window{9d5067c u0 GestureStubRight}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@ada444e
+    mOwnerUid=1000 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(54x912) vm=0.017105263 gr=BOTTOM RIGHT CENTER sim={adjust=pan} layoutInDisplayCutoutMode=always blurRatio=1.0 blurMode=0 ty=MAGNIFICATION_OVERLAY fmt=RGBA_8888
+      fl=NOT_FOCUSABLE NOT_TOUCH_MODAL LAYOUT_IN_SCREEN HARDWARE_ACCELERATED}
+    Requested w=54 h=912 mLayoutSeq=224
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    WindowStateAnimator{c453d79 GestureStubRight}:
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0) 54 x 912 transform=(1.0, 0.0, 1.0, 0.0)
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=true
+    isVisible=true
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #2 Window{1a63349 u0 GestureStubLeft}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@cb88f13
+    mOwnerUid=1000 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(54x912) vm=0.017105263 gr=BOTTOM LEFT CENTER sim={adjust=pan} layoutInDisplayCutoutMode=always blurRatio=1.0 blurMode=0 ty=MAGNIFICATION_OVERLAY fmt=RGBA_8888
+      fl=NOT_FOCUSABLE NOT_TOUCH_MODAL LAYOUT_IN_SCREEN HARDWARE_ACCELERATED}
+    Requested w=54 h=912 mLayoutSeq=224
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    WindowStateAnimator{6cc3abe GestureStubLeft}:
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0) 54 x 912 transform=(1.0, 0.0, 1.0, 0.0)
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=true
+    isVisible=true
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #3 Window{ccc4491 u0 GestureStub}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@26c1d1b
+    mOwnerUid=1000 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(fillx26) gr=BOTTOM CENTER_VERTICAL sim={adjust=pan} blurRatio=1.0 blurMode=0 ty=MAGNIFICATION_OVERLAY fmt=TRANSLUCENT
+      fl=NOT_FOCUSABLE NOT_TOUCH_MODAL LAYOUT_IN_SCREEN HARDWARE_ACCELERATED
+      pfl=NO_MOVE_ANIMATION}
+    Requested w=720 h=26 mLayoutSeq=224
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    WindowStateAnimator{bcf171f GestureStub}:
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0) 720 x 26 transform=(1.0, 0.0, 1.0, 0.0)
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=true
+    isVisible=true
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #4 Window{dfc079e u0 StatusBar}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@5eb0420
+    mOwnerUid=1000 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(fillx55) gr=TOP CENTER_VERTICAL sim={adjust=resize} layoutInDisplayCutoutMode=always blurRatio=1.0 blurMode=0 ty=STATUS_BAR fmt=TRANSLUCENT
+      fl=NOT_FOCUSABLE TOUCHABLE_WHEN_WAKING WATCH_OUTSIDE_TOUCH SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS}
+    Requested w=720 h=55 mLayoutSeq=224
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    WindowStateAnimator{f533835 StatusBar}:
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0) 720 x 55 transform=(1.0, 0.0, 1.0, 0.0)
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=true
+    isVisible=true
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #5 Window{540c10d u0 RoundCorner}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@dedce37
+    mOwnerUid=1000 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(fillxwrap) gr=TOP CENTER_VERTICAL sim={adjust=pan} layoutInDisplayCutoutMode=always blurRatio=1.0 blurMode=0 ty=STATUS_BAR_SUB_PANEL fmt=TRANSLUCENT
+      fl=NOT_FOCUSABLE NOT_TOUCHABLE LAYOUT_IN_SCREEN FULLSCREEN HARDWARE_ACCELERATED
+      pfl=SHOW_FOR_ALL_USERS NO_MOVE_ANIMATION}
+    Requested w=0 h=0 mLayoutSeq=14
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{f8d44ca RoundCorner}:
+      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=false
+    isVisible=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #6 Window{5ffbd1e u0 Aspect}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@bb35da0
+    mOwnerUid=1000 mShowToOwnerOnly=false package=com.android.systemui appop=SYSTEM_ALERT_WINDOW
+    mAttrs={(0,0)(wrapx126) gr=BOTTOM CENTER_VERTICAL sim={adjust=pan} layoutInDisplayCutoutMode=always blurRatio=1.0 blurMode=0 ty=SYSTEM_ALERT fmt=TRANSPARENT
+      fl=NOT_FOCUSABLE NOT_TOUCH_MODAL LAYOUT_IN_SCREEN HARDWARE_ACCELERATED
+      pfl=SHOW_FOR_ALL_USERS}
+    Requested w=0 h=0 mLayoutSeq=18
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{858063b Aspect}:
+      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=false
+    isVisible=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #7 Window{934de9 u0 AssistPreviewPanel}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@fb340b3
+    mOwnerUid=1000 mShowToOwnerOnly=true package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(fillx500) gr=BOTTOM START CENTER sim={state=unchanged adjust=nothing} blurRatio=1.0 blurMode=0 ty=VOICE_INTERACTION_STARTING fmt=TRANSLUCENT
+      fl=NOT_FOCUSABLE NOT_TOUCHABLE LAYOUT_IN_SCREEN HARDWARE_ACCELERATED
+      vsysui=LAYOUT_STABLE LAYOUT_HIDE_NAVIGATION LAYOUT_FULLSCREEN}
+    Requested w=0 h=0 mLayoutSeq=5
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{c02d158 AssistPreviewPanel}:
+      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=false
+    isVisible=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #8 Window{92152bf u0 DockedStackDivider}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@4bde363
+    mOwnerUid=1000 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(fillx96) sim={adjust=pan} blurRatio=1.0 blurMode=0 ty=DOCK_DIVIDER fmt=TRANSLUCENT
+      fl=NOT_FOCUSABLE NOT_TOUCH_MODAL WATCH_OUTSIDE_TOUCH SPLIT_TOUCH HARDWARE_ACCELERATED FLAG_SLIPPERY
+      pfl=NO_MOVE_ANIMATION
+      vsysui=LAYOUT_STABLE LAYOUT_HIDE_NAVIGATION LAYOUT_FULLSCREEN}
+    Requested w=720 h=96 mLayoutSeq=224
+    mPolicyVisibility=false mLegacyPolicyVisibilityAfterAnim=false mAppOpVisibility=true parentHidden=false mPermanentlyHidden=false mHiddenWhileSuspended=false mForceHideNonSystemOverlayWindow=false
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{b0c22b1 DockedStackDivider}:
+      mShownAlpha=0.0 mAlpha=1.0 mLastAlpha=0.0
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=false
+    isVisible=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #9 Window{8d5990b u0 com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}:
+    mDisplayId=0 stackId=5 mSession=Session{5cb75ce 4677:u0a10169} mClient=android.os.BinderProxy@f2d20da
+    mOwnerUid=10169 mShowToOwnerOnly=true package=com.jinyuni.dengbei_care appop=NONE
+    mAttrs={(0,0)(wrapxwrap) gr=CENTER sim={adjust=pan forwardNavigation} blurRatio=1.0 blurMode=0 ty=APPLICATION fmt=TRANSLUCENT wanim=0x10302ff surfaceInsets=Rect(64, 64 - 64, 64)
+      fl=DIM_BEHIND ALT_FOCUSABLE_IM SPLIT_TOUCH HARDWARE_ACCELERATED
+      vsysui=LIGHT_STATUS_BAR}
+    Requested w=684 h=888 mLayoutSeq=224
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    WindowStateAnimator{11588a8 com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}:
+       mAnimationIsEntrance=true      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0) 812 x 1016 transform=(1.0, 0.0, 1.0, 0.0)
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=true
+    isVisible=true
+    mIgnoreInput=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #10 Window{4862694 u0 com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}:
+    mDisplayId=0 stackId=5 mSession=Session{5cb75ce 4677:u0a10169} mClient=android.os.BinderProxy@3c2bae7
+    mOwnerUid=10169 mShowToOwnerOnly=true package=com.jinyuni.dengbei_care appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan forwardNavigation} blurRatio=1.0 blurMode=0 ty=BASE_APPLICATION wanim=0x10302fe
+      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=FORCE_DRAW_STATUS_BAR_BACKGROUND
+      vsysui=LIGHT_STATUS_BAR}
+    Requested w=720 h=1520 mLayoutSeq=224
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    WindowStateAnimator{fd0c8cb com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}:
+      Surface: shown=true layer=0 alpha=1.0 rect=(0.0,0.0) 720 x 1520 transform=(1.0, 0.0, 1.0, 0.0)
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=true
+    isVisible=true
+    mIgnoreInput=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #11 Window{aed6c54 u0 com.android.settings/com.android.settings.Settings$WifiSettingsActivity}:
+    mDisplayId=0 stackId=4 mSession=Session{78491cb 1869:1000} mClient=android.os.BinderProxy@2ef5066
+    mOwnerUid=1000 mShowToOwnerOnly=true package=com.android.settings appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={adjust=pan} blurRatio=1.0 blurMode=0 ty=BASE_APPLICATION wanim=0x10302f8
+      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SPLIT_TOUCH HARDWARE_ACCELERATED TRANSLUCENT_STATUS DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=FORCE_DRAW_STATUS_BAR_BACKGROUND
+      vsysui=LAYOUT_STABLE LAYOUT_FULLSCREEN LIGHT_STATUS_BAR}
+    Requested w=720 h=1520 mLayoutSeq=208
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{675da25 com.android.settings/com.android.settings.Settings$WifiSettingsActivity}:
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=false
+    isVisible=false
+    mIgnoreInput=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #12 Window{e6248c8 u0 LauncherOverlayWindow:com.miui.personalassistant}:
+    mDisplayId=0 stackId=0 mSession=Session{d0fe02d 3390:u0a10067} mClient=android.os.BinderProxy@dfc5adc
+    mOwnerUid=10067 mShowToOwnerOnly=true package=com.miui.home appop=NONE
+    mAttrs={(0,0)(fillxfill) gr=START CENTER_HORIZONTAL sim={adjust=pan} layoutInDisplayCutoutMode=always blurRatio=1.0 blurMode=0 ty=DRAWN_APPLICATION fmt=TRANSPARENT wanim=0x10302fe alpha=0.0
+      fl=NOT_FOCUSABLE NOT_TOUCHABLE LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR WATCH_OUTSIDE_TOUCH SPLIT_TOUCH HARDWARE_ACCELERATED DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=FORCE_DRAW_STATUS_BAR_BACKGROUND
+      vsysui=LAYOUT_STABLE LAYOUT_HIDE_NAVIGATION LAYOUT_FULLSCREEN}
+    Requested w=720 h=1520 mLayoutSeq=224
+    mHasSurface=false isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{ca2e396 LauncherOverlayWindow:com.miui.personalassistant}:
+      mShownAlpha=0.0 mAlpha=0.0 mLastAlpha=0.0
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    isOnScreen=false
+    isVisible=false
+    mIgnoreInput=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #13 Window{2ccad1a u0 com.miui.home/com.miui.home.launcher.Launcher}:
+    mDisplayId=0 stackId=0 mSession=Session{5debe0e 2211:u0a10081} mClient=android.os.BinderProxy@de8cfc5
+    mOwnerUid=10081 mShowToOwnerOnly=true package=com.miui.home appop=NONE
+    mAttrs={(0,0)(fillxfill) sim={state=always_hidden adjust=pan} layoutInDisplayCutoutMode=always blurRatio=1.0 blurMode=0 ty=BASE_APPLICATION fmt=RGBA_8888 wanim=0x10302fe
+      fl=LAYOUT_IN_SCREEN LAYOUT_INSET_DECOR SHOW_WALLPAPER SPLIT_TOUCH HARDWARE_ACCELERATED TRANSLUCENT_STATUS DRAWS_SYSTEM_BAR_BACKGROUNDS
+      pfl=FORCE_DRAW_STATUS_BAR_BACKGROUND
+      vsysui=LAYOUT_STABLE LAYOUT_HIDE_NAVIGATION LAYOUT_FULLSCREEN}
+    Requested w=720 h=1520 mLayoutSeq=224
+    mHasSurface=true isReadyForDisplay()=true mWindowRemovalAllowed=false
+    WindowStateAnimator{eb6cb17 com.miui.home/com.miui.home.launcher.Launcher}:
+      Surface: shown=false layer=0 alpha=1.0 rect=(0.0,0.0) 720 x 1520 transform=(1.0, 0.0, 1.0, 0.0)
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    mWallpaperX=1.0 mWallpaperY=0.0
+    mWallpaperXStep=1.0 mWallpaperYStep=0.0
+    isOnScreen=true
+    isVisible=true
+    mIgnoreInput=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #14 Window{82e6347 u0 com.android.keyguard.wallpaper.service.MiuiKeyguardPictorialWallpaper}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@c35fe86
+    mOwnerUid=1000 mShowToOwnerOnly=false package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(720x1520) gr=TOP START CENTER layoutInDisplayCutoutMode=always blurRatio=0.0 blurMode=0 ty=WALLPAPER fmt=TRANSLUCENT alpha=0.0
+      fl=NOT_FOCUSABLE NOT_TOUCHABLE LAYOUT_IN_SCREEN LAYOUT_NO_LIMITS SCALED LAYOUT_INSET_DECOR
+      pfl=SHOW_FOR_ALL_USERS}
+    Requested w=720 h=1520 mLayoutSeq=161
+    mIsImWindow=false mIsWallpaper=true mIsFloatingLayer=true mWallpaperVisible=false
+    mHasSurface=true isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{58f38ed com.android.keyguard.wallpaper.service.MiuiKeyguardPictorialWallpaper}:
+       mAnimationIsEntrance=true      Surface: shown=false layer=0 alpha=0.0 rect=(0.0,0.0) 720 x 1520 transform=(1.0, 0.0, 1.0, 0.0)
+      mShownAlpha=0.0 mAlpha=0.0 mLastAlpha=0.0
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    mWallpaperX=1.0 mWallpaperY=0.0
+    mWallpaperXStep=1.0 mWallpaperYStep=0.0
+    isOnScreen=true
+    isVisible=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+  Window #15 Window{8305369 u0 com.android.systemui.ImageWallpaper}:
+    mDisplayId=0 stackId=0 mSession=Session{2390e96 1904:1000} mClient=android.os.BinderProxy@8faf1f0
+    mOwnerUid=1000 mShowToOwnerOnly=true package=com.android.systemui appop=NONE
+    mAttrs={(0,0)(720x1520) gr=TOP START CENTER layoutInDisplayCutoutMode=always blurRatio=0.0 blurMode=0 ty=WALLPAPER fmt=RGBX_8888 wanim=0x103030e
+      fl=NOT_FOCUSABLE NOT_TOUCHABLE LAYOUT_IN_SCREEN LAYOUT_NO_LIMITS SCALED LAYOUT_INSET_DECOR
+      pfl=WANTS_OFFSET_NOTIFICATIONS}
+    Requested w=720 h=1520 mLayoutSeq=161
+    mIsImWindow=false mIsWallpaper=true mIsFloatingLayer=true mWallpaperVisible=false
+    mHasSurface=true isReadyForDisplay()=false mWindowRemovalAllowed=false
+    WindowStateAnimator{5a1a322 com.android.systemui.ImageWallpaper}:
+       mAnimationIsEntrance=true      Surface: shown=false layer=0 alpha=1.0 rect=(0.0,0.0) 720 x 1520 transform=(1.0, 0.0, 1.0, 0.0)
+      mHandleByGesture=false
+    mForceSeamlesslyRotate=false seamlesslyRotate: pending=null finishedFrameNumber=0
+    mWallpaperX=1.0 mWallpaperY=0.0
+    mWallpaperXStep=1.0 mWallpaperYStep=0.0
+    isOnScreen=true
+    isVisible=false
+    mMiuiNotFocusable=false
+    mMiuiNotTouchModal=false
+    mHasSurfaceView=false
+
+  mGlobalConfiguration={1.0 ?mcc?mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.8 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+  mHasPermanentDpad=false
+  mTopFocusedDisplayId=0
+  mInTouchMode=true
+  mLastDisplayFreezeDuration=0 due to new-config
+  mLastWakeLockHoldingWindow=null mLastWakeLockObscuringWindow=null
+  mFullSnapshotScale=1.0
+  SnapshotCache
+    Entry taskId=64
+      topApp=AppWindowToken{7c3262a token=Token{d84315 ActivityRecord{78b64cc u0 com.android.settings/.Settings$WifiSettingsActivity t64}}}
+      snapshot=TaskSnapshot{ mTopActivityComponent=com.android.settings/.Settings$WifiSettingsActivity mSnapshot=android.graphics.GraphicBuffer@5a126a7 (720x1520) mColorSpace=sRGB IEC61966-2.1 (id=0, model=RGB) mOrientation=1 mContentInsets=[0,55][0,0] mReducedResolution=false mScale=1.0 mIsRealSnapshot=true mWindowingMode=1 mSystemUiVisibility=9472 mIsTranslucent=false
+WINDOW MANAGER TRACE (dumpsys window trace)
+Status: Disabled
+Log level: 1
+Buffer size: 2097152 bytes
+Buffer usage: 0 bytes
+Elements in the buffer: 0

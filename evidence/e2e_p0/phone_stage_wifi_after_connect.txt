@@ -1,0 +1,15 @@
+# wifi-after-connect 2026-11-23T13:27:16Z
+--- ip route ---
+192.168.0.0/24 dev wlan0 proto kernel scope link src 192.168.0.103 
+--- ip addr wlan0 ---
+27: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether d8:ce:3a:ea:30:de brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.103/24 brd 192.168.0.255 scope global wlan0
+       valid_lft forever preferred_lft forever
+    inet6 240e:440:300:7be:5ce0:4a51:31b0:97e5/64 scope global temporary dynamic 
+       valid_lft 2274964713sec preferred_lft 2274964713sec
+    inet6 240e:440:300:7be:fb89:6cb1:e739:c1b7/64 scope global dynamic mngtmpaddr stable-privacy 
+       valid_lft 2274964713sec preferred_lft 2274964713sec
+    inet6 fe80::14f:4db3:167a:6de3/64 scope link stable-privacy 
+       valid_lft forever preferred_lft forever
+--- dumpsys connectivity (saved separately) ---

@@ -1,0 +1,36 @@
+--------- beginning of main
+11-23 21:43:08.473 I/MqttService( 4677): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-23 21:43:08.474 I/MqttService( 4677): link_state=CONNECTING msg=正在连接网关…
+11-23 21:43:08.474 I/MqttService( 4677): Attempt 1 to connect to Bluetooth device...
+11-23 21:43:08.476 D/BluetoothGatt( 4677): connect() - device: 84:C2:E4:03:02:02, auto: false
+11-23 21:43:08.476 D/BluetoothGatt( 4677): registerApp()
+11-23 21:43:08.477 D/BluetoothGatt( 4677): registerApp() - UUID=cc904142-b063-4cb9-bcac-ff7af053a13f
+11-23 21:43:08.480 D/BluetoothGatt( 4677): onClientRegistered() - status=0 clientIf=6
+11-23 21:43:08.980 D/BluetoothGatt( 4677): onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-23 21:43:08.981 I/MqttService( 4677): Connected to device, discovering services...
+11-23 21:43:08.992 D/BluetoothGatt( 4677): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-23 21:43:09.114 D/BluetoothGatt( 4677): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=32
+11-23 21:43:11.017 D/BluetoothGatt( 4677): onConfigureMTU() - Device=84:C2:E4:03:02:02 mtu=240 status=0
+11-23 21:43:11.018 I/MqttService( 4677): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-23 21:43:11.018 D/BluetoothGatt( 4677): discoverServices() - device: 84:C2:E4:03:02:02
+11-23 21:43:11.025 D/BluetoothGatt( 4677): onSearchComplete() = Device=84:C2:E4:03:02:02 Status=0
+11-23 21:43:11.922 D/MqttService( 4677): Attempting to reconnect to broker
+11-23 21:43:11.932 I/MqttService( 4677): Saved MAC address: 000000000000
+11-23 21:43:12.042 D/BluetoothGatt( 4677): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=0
+11-23 21:43:12.234 I/MqttService( 4677): cipher length = 160
+11-23 21:43:12.251 I/MqttService( 4677): GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-23 21:43:12.253 I/MqttService( 4677): gateway placeholder block skipped (dev=00:00:00:00)
+11-23 21:43:12.253 I/MqttService( 4677): link_state=GATEWAY_NO_DATA reason=ALL_PLACEHOLDER
+11-23 21:43:12.257 I/MqttService( 4677): link_state=GATEWAY_NO_DATA msg=网关暂无传感器数据（等待传感器上报）
+11-23 21:43:12.258 I/MqttService( 4677): BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=0 placeholder=1 valueSize=160 mtu=240
+11-23 21:43:12.263 W/MqttService( 4677): BLE batch forwarding refused: ALL_PLACEHOLDER (local processing unaffected)
+11-23 21:43:12.266 I/MqttService( 4677): writeCharacteristic(legacy) ok=true, bytes=6
+11-23 21:43:12.529 I/MqttService( 4677): Chunk written OK, left=0
+11-23 21:43:12.529 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:43:12.530 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:43:12.531 D/BluetoothGatt( 4677): close()
+11-23 21:43:12.531 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=6
+11-23 21:43:12.532 D/BluetoothGatt( 4677): close()
+11-23 21:43:12.533 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=6
+11-23 21:43:12.534 D/BluetoothGatt( 4677): onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-23 21:43:12.536 I/MqttService( 4677): Successfully connected and read data on attempt 1

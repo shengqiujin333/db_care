@@ -1,0 +1,129 @@
+--------- beginning of main
+11-23 21:33:42.117 D/AlarmPingSender( 4677): Unregister alarmreceiver to MqttServiceandroid_client
+11-23 21:33:56.016 I/GatewayBleSettings( 4677): gateway_ble_addr saved=84:C2:E4:03:02:02 (platform mac_addr untouched)
+11-23 21:33:56.030 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:33:56.036 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:33:56.126 I/MqttService( 4677): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-23 21:33:56.126 I/MqttService( 4677): link_state=CONNECTING msg=正在连接网关…
+11-23 21:33:56.126 I/MqttService( 4677): Attempt 1 to connect to Bluetooth device...
+11-23 21:33:56.127 D/BluetoothGatt( 4677): connect() - device: 84:C2:E4:03:02:02, auto: false
+11-23 21:33:56.128 D/BluetoothGatt( 4677): registerApp()
+11-23 21:33:56.128 D/BluetoothGatt( 4677): registerApp() - UUID=6937d0d3-94a2-4a1c-b0e4-4cbbbcdcd912
+11-23 21:33:56.130 D/BluetoothGatt( 4677): onClientRegistered() - status=0 clientIf=6
+11-23 21:33:56.152 I/Toast   ( 4677): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-23 21:33:56.570 D/BluetoothGatt( 4677): onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-23 21:33:56.570 I/MqttService( 4677): Connected to device, discovering services...
+11-23 21:33:56.581 D/BluetoothGatt( 4677): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-23 21:33:56.678 D/BluetoothGatt( 4677): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=32
+11-23 21:33:58.337 D/BluetoothGatt( 4677): onConfigureMTU() - Device=84:C2:E4:03:02:02 mtu=240 status=0
+11-23 21:33:58.338 I/MqttService( 4677): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-23 21:33:58.338 D/BluetoothGatt( 4677): discoverServices() - device: 84:C2:E4:03:02:02
+11-23 21:33:58.345 D/BluetoothGatt( 4677): onSearchComplete() = Device=84:C2:E4:03:02:02 Status=0
+11-23 21:33:58.824 D/BluetoothGatt( 4677): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=0
+11-23 21:33:59.409 I/MqttService( 4677): cipher length = 160
+11-23 21:33:59.413 W/MqttService( 4677): BLE frame rejected: NO_DEVICE (devCount=0) link_state=GATEWAY_NO_DEVICE
+11-23 21:33:59.414 I/MqttService( 4677): link_state=GATEWAY_NO_DEVICE msg=网关已连接，暂无设备（N=0）
+11-23 21:33:59.415 I/MqttService( 4677): No ids to write (or capacity exceeded)
+11-23 21:33:59.416 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:33:59.417 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:33:59.418 D/BluetoothGatt( 4677): close()
+11-23 21:33:59.418 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=6
+11-23 21:33:59.419 D/BluetoothGatt( 4677): close()
+11-23 21:33:59.420 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=0
+11-23 21:33:59.420 I/MqttService( 4677): Successfully connected and read data on attempt 1
+11-23 21:34:04.605 D/MqttService( 4677): Attempting to reconnect to broker
+11-23 21:34:04.630 I/MqttService( 4677): Saved MAC address: 000000000000
+11-23 21:34:12.154 D/AlarmPingSender( 4677): Unregister alarmreceiver to MqttServiceandroid_client
+11-23 21:34:12.209 E/MqttService( 4677): Failed to connect to broker
+11-23 21:34:12.209 E/MqttService( 4677): MqttException (0) - java.net.SocketTimeoutException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 44854) after 30000ms
+11-23 21:34:12.209 E/MqttService( 4677): 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:38)
+11-23 21:34:12.209 E/MqttService( 4677): 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:738)
+11-23 21:34:12.209 E/MqttService( 4677): 	at java.lang.Thread.run(Thread.java:919)
+11-23 21:34:12.209 E/MqttService( 4677): Caused by: java.net.SocketTimeoutException: failed to connect to XXXX/8.140.23.253 (port 8883) from localAddress.getAddress() (port 44854) after 30000ms
+11-23 21:34:12.209 E/MqttService( 4677): 	at libcore.io.IoBridge.connectErrno(IoBridge.java:191)
+11-23 21:34:12.209 E/MqttService( 4677): 	at libcore.io.IoBridge.connect(IoBridge.java:135)
+11-23 21:34:12.209 E/MqttService( 4677): 	at java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:142)
+11-23 21:34:12.209 E/MqttService( 4677): 	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:390)
+11-23 21:34:12.209 E/MqttService( 4677): 	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:230)
+11-23 21:34:12.209 E/MqttService( 4677): 	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:212)
+11-23 21:34:12.209 E/MqttService( 4677): 	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:436)
+11-23 21:34:12.209 E/MqttService( 4677): 	at java.net.Socket.connect(Socket.java:621)
+11-23 21:34:12.209 E/MqttService( 4677): 	at com.android.org.conscrypt.AbstractConscryptSocket.connect(AbstractConscryptSocket.java:156)
+11-23 21:34:12.209 E/MqttService( 4677): 	at org.eclipse.paho.client.mqttv3.internal.TCPNetworkModule.start(TCPNetworkModule.java:74)
+11-23 21:34:12.209 E/MqttService( 4677): 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:132)
+11-23 21:34:12.209 E/MqttService( 4677): 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-23 21:34:12.209 E/MqttService( 4677): 	... 1 more
+11-23 21:34:15.274 D/OpenGLRenderer( 4677): endAllActiveAnimators on 0x7e550d80 (RippleDrawable) with handle 0x7f28a4d0
+11-23 21:34:37.210 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:35:15.474 D/ViewRootImpl( 4677): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=180685421, downTime=180685421, deviceId=-1, source=0x101, displayId=-1 }
+11-23 21:35:15.517 D/ViewRootImpl( 4677): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=180685421, downTime=180685421, deviceId=-1, source=0x101, displayId=-1 }
+11-23 21:35:39.651 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:35:46.896 D/ViewRootImpl( 4677): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=180716839, downTime=180716839, deviceId=-1, source=0x101, displayId=-1 }
+11-23 21:35:46.980 D/ViewRootImpl( 4677): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=180716839, downTime=180716839, deviceId=-1, source=0x101, displayId=-1 }
+11-23 21:35:56.005 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:35:56.008 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:35:56.045 I/Toast   ( 4677): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-23 21:36:32.274 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:36:32.276 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:36:32.298 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:36:32.302 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 1 line
+11-23 21:36:32.306 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:36:59.442 I/MqttService( 4677): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-23 21:36:59.443 I/MqttService( 4677): link_state=CONNECTING msg=正在连接网关…
+11-23 21:36:59.443 I/MqttService( 4677): Attempt 1 to connect to Bluetooth device...
+11-23 21:36:59.446 D/BluetoothGatt( 4677): connect() - device: 84:C2:E4:03:02:02, auto: false
+11-23 21:36:59.446 D/BluetoothGatt( 4677): registerApp()
+11-23 21:36:59.446 D/BluetoothGatt( 4677): registerApp() - UUID=eef0c695-9a20-49de-96ea-32c98a031a7e
+11-23 21:36:59.449 D/BluetoothGatt( 4677): onClientRegistered() - status=0 clientIf=6
+11-23 21:36:59.900 D/BluetoothGatt( 4677): onClientConnectionState() - status=133 clientIf=6 device=84:C2:E4:03:02:02
+11-23 21:36:59.900 I/MqttService( 4677): Connect error status=133
+11-23 21:36:59.904 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:36:59.906 D/BluetoothGatt( 4677): close()
+11-23 21:36:59.906 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=6
+11-23 21:36:59.909 I/MqttService( 4677): Retrying connection after delay...
+11-23 21:37:01.912 I/MqttService( 4677): Attempt 2 to connect to Bluetooth device...
+11-23 21:37:01.915 D/BluetoothGatt( 4677): connect() - device: 84:C2:E4:03:02:02, auto: false
+11-23 21:37:01.915 D/BluetoothGatt( 4677): registerApp()
+11-23 21:37:01.915 D/BluetoothGatt( 4677): registerApp() - UUID=34705817-211b-4109-a5bb-f91b7761af04
+11-23 21:37:01.919 D/BluetoothGatt( 4677): onClientRegistered() - status=0 clientIf=6
+11-23 21:37:02.379 D/BluetoothGatt( 4677): onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-23 21:37:02.379 I/MqttService( 4677): Connected to device, discovering services...
+11-23 21:37:02.384 D/BluetoothGatt( 4677): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-23 21:37:02.465 D/BluetoothGatt( 4677): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=32
+11-23 21:37:04.172 D/BluetoothGatt( 4677): onConfigureMTU() - Device=84:C2:E4:03:02:02 mtu=240 status=0
+11-23 21:37:04.172 I/MqttService( 4677): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-23 21:37:04.172 D/BluetoothGatt( 4677): discoverServices() - device: 84:C2:E4:03:02:02
+11-23 21:37:04.179 D/BluetoothGatt( 4677): onSearchComplete() = Device=84:C2:E4:03:02:02 Status=0
+11-23 21:37:04.512 D/BluetoothGatt( 4677): onConnectionUpdated() - Device=84:C2:E4:03:02:02 interval=39 latency=0 timeout=500 status=0
+11-23 21:37:05.002 I/MqttService( 4677): cipher length = 160
+11-23 21:37:05.004 W/MqttService( 4677): BLE frame rejected: NO_DEVICE (devCount=0) link_state=GATEWAY_NO_DEVICE
+11-23 21:37:05.005 I/MqttService( 4677): link_state=GATEWAY_NO_DEVICE msg=网关已连接，暂无设备（N=0）
+11-23 21:37:05.005 I/MqttService( 4677): No ids to write (or capacity exceeded)
+11-23 21:37:05.006 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:37:05.007 D/BluetoothGatt( 4677): cancelOpen() - device: 84:C2:E4:03:02:02
+11-23 21:37:05.009 D/BluetoothGatt( 4677): close()
+11-23 21:37:05.009 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=6
+11-23 21:37:05.009 D/BluetoothGatt( 4677): close()
+11-23 21:37:05.009 D/BluetoothGatt( 4677): unregisterApp() - mClientIf=6
+11-23 21:37:05.011 I/MqttService( 4677): Successfully connected and read data on attempt 2
+11-23 21:37:55.429 D/ViewRootImpl( 4677): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=180845378, downTime=180845378, deviceId=-1, source=0x101, displayId=-1 }
+11-23 21:37:55.436 D/ViewRootImpl( 4677): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=180845378, downTime=180845378, deviceId=-1, source=0x101, displayId=-1 }
+11-23 21:37:55.456 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+--------- beginning of system
+11-23 21:37:55.660 W/InputEventReceiver( 4677): App Input: Dispatching InputEvent took 225ms in main thread! (KeyEvent: event_seq=37, seq=709, code=KEYCODE_BACK, action=ACTION_UP)
+11-23 21:37:55.564 I/chatty  ( 4677): uid=10169(com.jinyuni.dengbei_care) identical 9 lines
+11-23 21:37:55.582 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:38:11.902 D/MqttService( 4677): Attempting to reconnect to broker
+11-23 21:38:11.918 I/MqttService( 4677): Saved MAC address: 000000000000
+11-23 21:38:17.777 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:38:17.791 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:38:29.631 D/ViewRootImpl( 4677): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_DOWN, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=180879578, downTime=180879578, deviceId=-1, source=0x101, displayId=-1 }
+11-23 21:38:29.640 D/ViewRootImpl( 4677): [TouchInput][ViewRootImpl] KeyEvent { action=ACTION_UP, keyCode=KEYCODE_BACK, scanCode=0, metaState=0, flags=0x0, repeatCount=0, eventTime=180879578, downTime=180879578, deviceId=-1, source=0x101, displayId=-1 }
+11-23 21:38:38.205 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:38:38.207 D/ForceDarkHelper( 4677): updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@147fb98
+11-23 21:38:38.236 I/Toast   ( 4677): Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-23 21:38:41.968 D/AlarmPingSender( 4677): Unregister alarmreceiver to MqttServiceandroid_client
+11-23 21:38:56.118 D/MqttService( 4677): Attempting to reconnect to broker
+11-23 21:38:56.127 I/MqttService( 4677): Saved MAC address: 000000000000
+11-23 21:39:04.633 D/MqttService( 4677): Attempting to reconnect to broker
+11-23 21:39:04.641 I/MqttService( 4677): Saved MAC address: 000000000000
