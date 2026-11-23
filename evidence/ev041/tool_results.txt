@@ -1,0 +1,102 @@
+EV-041 raw tool results (E2E-JOINT-P0 embedded segment)
+Captured 2026-11-23 (UTC). Only observed values are recorded; no data was sent to the target.
+
+=== 1. Repository state at start ===
+HEAD 808107d; `git status --porcelain` -> only `?? evidence/ev041/`
+`git diff --stat 82a7e74..HEAD -- <sensor>/{USER,MDK,COMMON,UM2005C}` -> empty (no output, exit 0)
+
+=== 2. Port / USB identity ===
+serial_list_ports (2026-11-23T08:10:14.015Z):
+  COM43 description="Prolific USB-to-Serial Comm Port (COM43)" hwid="USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2"
+  COM26 description="USB 串行设备 (COM26)" hwid="USB VID:PID=C251:F001 SER=87094109484987710672FF50"
+usb_list_devices (2026-11-23T08:10:14.115Z) relevant entries:
+  Ports: Prolific USB-to-Serial Comm Port (COM43)  VID_067B&PID_2303
+  USB Composite Device: USB\VID_C251&PID_F001\87094109484987710672FF50  (CW-DAPLink)
+  USBDevice: SDM439-QRD _SN:3AE89DF1  USB\VID_18D1&PID_4EE7\12F046690506 (phone present; not used by this capability)
+
+=== 3. Build ===
+mdk_build {"action":"build"} 2026-11-23T08:11:58.044Z-08:12:06.113Z (incremental):
+  *** Using Compiler 'V6.24', folder: 'C:\Keil_v5\ARM\ARMCLANG\Bin'
+  Build target 'Project'
+  ".\output\exe\Project.axf" - 0 Error(s), 0 Warning(s).
+  Build Time Elapsed: 00:00:03
+
+mdk_build {"action":"rebuild"} 2026-11-23T08:18:56.018Z-08:18:58.937Z:
+  Rebuild target 'Project'
+  ... compiling all units ...
+  ../USER/src/main.c(254): warning: while loop has empty body [-Wempty-body]
+    254 |         while(k--);
+  1 warning generated.
+  linking...
+  Program Size: Code=25964 RO-data=656 RW-data=116 ZI-data=1676
+  FromELF: creating hex file...
+  ".\output\exe\Project.axf" - 0 Error(s), 1 Warning(s).
+
+Output hashes after rebuild (identical to pre-download build and to the release package):
+  b6a15fed2ed5e3d0c4adc51ac87a4830  Project.axf (297380 B)
+  4d728dec9b0d28a352c46436b7586c72  Project.hex (75275 B)
+Release package fw_release/fw_sensor_FD-002r8.zip:
+  md5 5df0c6d45ecddc8aae8bddbbcfc9cfdf (134791 B)
+  members: fw_sensor_FD-002r8_b6a15fed.axf 297380 b6a15fed2ed5e3d0c4adc51ac87a4830
+           fw_sensor_FD-002r8_4d728dec.hex 75275 4d728dec9b0d28a352c46436b7586c72
+           PACKAGE.txt 3202 a58f67fcf5b760767ff5b65888c73dfb
+
+=== 4. Flash ===
+mdk_flash {} attempt 1 (2026-11-23T08:12:16.728Z-08:12:18.952Z) -> success=false, exit_code=2:
+  flash_log:
+  Load "...\Project.axf"
+  Cannot load driver 'C:\Keil_v5\ARM\BIN\CMSIS_AGDI.dll'.
+  Possible Reasons:
+   - Driver DLL could not be found in the specified path
+   - Driver DLL requires additional DLL's which are not installed
+   - Required Hardware Drivers are not installed
+  Error: Flash Download failed  -  C:\Keil_v5\ARM\BIN\CMSIS_AGDI.dll
+  Flash Load finished at 16:12:18
+  (Diagnostic: CMSIS_AGDI.dll exists, 2410776 B, readable; no UV4.exe running. No config changed.)
+
+mdk_flash {} attempt 2 (2026-11-23T08:13:11.758Z-08:13:24.274Z) -> success=true, exit_code=0:
+  flash_log:
+  Load "...\Project.axf"
+  Erase Done.Programming Done.Verify OK.Application running ...
+  Flash Load finished at 16:13:24
+
+=== 5. Passive capture fixture across the download reset ===
+Script: evidence/ev041/ev041_boot_capture.py (opens COM43 first, receives only, never writes)
+OPEN 2026-11-23T08:12:13.553478Z, duration 120 s, 9600 8N1
+Raw capture: evidence/ev041/ev041_boot_capture.cap  451 B  md5 6ea1307a62609aa3bc224e1d5e04d8da
+
+[ 45.906s 08:12:59.651Z]  46B: S k=14367 p=322 H=1 V=0 o=8 n=3743 x=3750 a=37
+[ 46.094s 08:12:59.853Z]  36B: 47 D=0 t=315 h=266 q=1 r=0 s=0 y=0\r\n
+[ 60.312s 08:13:14.059Z]  89B: BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600\r\nVDD ok=1 code=1480 bgrmv=1189 mv=3289\r\n
+[ 60.516s 08:13:14.263Z]   9B: IOTEST sd            <-- programmer halt cuts the line mid-way
+[ 70.500s 08:13:24.247Z]  79B: BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600\r\nVDD ok=1 code=1480 bgrmv=1189
+[ 70.703s 08:13:24.452Z]  85B:  mv=3289\r\nIOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0\r\nIOSIG scl=95555 sda=30300\r\n
+[ 71.734s 08:13:25.481Z]  31B: BUS idle=3 scl=1 sda=1 ack=44\r\n
+[ 71.937s 08:13:25.686Z]  40B: S k=0 p=0 H=0 V=0 o=8 n=3748 x=3754 a=37
+[ 72.141s 08:13:25.890Z]  36B: 50 D=0 t=315 h=267 q=1 r=0 s=0 y=0\r\n
+CLOSE total=451B chunks=9 elapsed=120.062s ended=2026-11-23T08:14:13.619Z
+
+Reassembled final boot group (post-programming reset):
+  BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600
+  VDD ok=1 code=1480 bgrmv=1189 mv=3289
+  IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+  IOSIG scl=95555 sda=30300
+  BUS idle=3 scl=1 sda=1 ack=44
+  S k=0 p=0 H=0 V=0 o=8 n=3748 x=3754 a=3750 D=0 t=315 h=267 q=1 r=0 s=0 y=0
+
+VDD recompute: 4095*1189//1480 = 3289 == mv=3289 (source debug_trace.c:357)
+
+=== 6. Registered serial_capture (next sample) ===
+mcp serial_capture COM43 9600, 180 s, 2026-11-23T08:14:52.736Z-08:17:52.958Z:
+  bytes_received=78
+  preview: S k=3 p=315 H=1 V=0 o=8 n=3756 x=3763 a=3759 D=0 t=312 h=269 q=1 r=0 s=0 y=0
+  artifact copied to evidence/ev041/ev041_serial_capture_k3.cap (78 B, md5 bcd41f957f25c82607bcfa2fb2952665)
+  Note: p=315 equals t=315 from the previous S k=0 sample (sample chain consistent).
+
+=== 7. Independent analysis ===
+`python evidence/ev041/analyze_ev041.py evidence/ev041/ev041_boot_capture.cap` -> exit 0, RESULT failures=0
+(full output in evidence/ev041/capture_analysis.txt; 25 PASS assertions, 0 FAIL)
+
+=== 8. Not executed by this capability ===
+Phone segment, platform segment, N1, P1, real temperature/light stimulus, power, 433 electrical: NOT EXECUTED.
+This capability reports only the embedded segment of E2E-JOINT-P0.

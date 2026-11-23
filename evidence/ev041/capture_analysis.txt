@@ -1,0 +1,45 @@
+CAP evidence/ev041/ev041_boot_capture.cap size=451 md5=6ea1307a62609aa3bc224e1d5e04d8da
+lines=9
+  [0] (80B) S k=14367 p=322 H=1 V=0 o=8 n=3743 x=3750 a=3747 D=0 t=315 h=266 q=1 r=0 s=0 y=0
+  [1] (48B) BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600
+  [2] (37B) VDD ok=1 code=1480 bgrmv=1189 mv=3289
+  [3] (57B) IOTEST sdBOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600
+  [4] (37B) VDD ok=1 code=1480 bgrmv=1189 mv=3289
+  [5] (46B) IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0
+  [6] (25B) IOSIG scl=95555 sda=30300
+  [7] (29B) BUS idle=3 scl=1 sda=1 ack=44
+  [8] (74B) S k=0 p=0 H=0 V=0 o=8 n=3748 x=3754 a=3750 D=0 t=315 h=267 q=1 r=0 s=0 y=0
+boot_groups=2
+  group[0] head='BOOT fw=FD-002r4 uid=6A002C00 rst=0040 uart=9600' terminated=True
+  group[1] head='BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600' terminated=True
+last_boot_group= ['BOOT fw=FD-002r4 uid=6A002C00 rst=0240 uart=9600', 'VDD ok=1 code=1480 bgrmv=1189 mv=3289', 'IOTEST sda_lo=0 scl_lo=0 idle=3 swap=none gc=0', 'IOSIG scl=95555 sda=30300', 'BUS idle=3 scl=1 sda=1 ack=44']
+PASS ordered five boot lines BOOT<VDD<IOTEST<IOSIG<BUS (got ['BOOT', 'VDD', 'IOTEST', 'IOSIG', 'BUS'])
+PASS exactly one BOOT in final group
+PASS exactly one VDD line in final group
+PASS exactly one IOTEST line in final group
+PASS exactly one IOSIG line in final group
+PASS exactly one BUS line in final group
+PASS BOOT field format
+PASS fw id FD-002r4 == FD-002r4
+PASS uid4 6A002C00 == 6A002C00
+PASS boot uart 9600 == 9600
+PASS VDD field format
+PASS VDD ok=1
+PASS VDD mv==4095*bgrmv//code (3289==3289)
+PASS BUS ack=44 (GXHT40 address present)
+S_lines=2
+PASS at least one S sample line
+  S k=14367 t=315 h=266 q=1 r=0 s=0 y=0
+PASS S q=1 (k=14367)
+PASS S r=0 (k=14367)
+PASS S s=0 (k=14367)
+  S k=0 t=315 h=267 q=1 r=0 s=0 y=0
+PASS S q=1 (k=0)
+PASS S r=0 (k=0)
+PASS S s=0 (k=0)
+P_lines=0 G_lines=0
+PASS no P (report/freeze) lines
+PASS no G (failure) lines
+PASS longest line 80B <= 96B
+
+RESULT failures=0
