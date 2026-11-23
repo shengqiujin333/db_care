@@ -1,0 +1,69 @@
+items:
+  - objective: "P0：在不触发传感器上报的前提下，确认传感器/网关/手机 App/平台当前版本与身份可追溯，手机已连接指定 Wi-Fi ZTE_607157 并具备默认网络，App 已绑定传感器 uid4、0xA1 写入与网关读取就绪，平台获得只读基线；对应设计 TD-E2E-SW-006 §4.1。"
+    input_refs:
+      - "artifacts/e2e_joint_test_design.md §4.1/§8"
+      - "artifacts/test_design.md TD-002 rev 10.0 §5.1/§6.1"
+      - "dengbei_care/app/build/outputs/apk/debug/app-debug.apk（AB-003；SHA-256 80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b；versionCode 10/versionName 1.9）"
+      - "fw_release/fw_sensor_FD-002r8.zip（执行轮复核当前板上/测试构建身份）"
+      - "runtime/environment.yaml（android_phone serial 12f046690506；gateway；existing_service）"
+    acceptance:
+      - "嵌入式：COM43 9600 8N1 取得有序 BOOT/VDD/IOTEST/IOSIG/BUS；uid4 可读；至少一条 S q=1、r=0、s=0 且无 P；记录当次构建与下载身份。"
+      - "手机：设备 serial/型号/API、App 版本与 APK SHA-256 与候选一致；设备侧 base.apk 摘要一致；蓝牙开、定位开、定位权限已授予。"
+      - "手机：已连接 ZTE_607157 且为当前默认网络（保留系统原始 SSID/默认网络证据）；密码仅经 android_test 的 ui_set_text + text_env=RESTLESSDREAM_ANDROID_SECRET_WIFI 注入，证据不出现明文。"
+      - "手机：启动守护（首页“启动”；as-built measure_state=stopping）并保持运行；gateway_ble_addr 来自 App 正常发现/用户确认（非猜测）；MacIdBook 含 uid4；App 日志出现 0xA1 写入且 N=1 为 6 B；随后读取有可判定终态（devCount=0 或 1 占位/无数据，按实际记录），无伪造读数。"
+      - "手机：如要进入上传链路，registerphone 非空且 mac_addr（已确认来源的网关平台 MAC）已按既有注册/setMacAddress 路径设置；无测试身份时记录缺口并使 P1 上传/持久化段 NOT EXECUTED，不得伪造或改 prefs/DB。"
+      - "平台：通过获准只读入口记录服务/端口/日志/连接数基线，未修改、未重启、未写入；无 DB 回读授权时记录缺口。"
+      - "三端身份、网关 GwID/地址、时间窗、关联键（uid4、APK 摘要、平台服务身份）写入同一证据索引。"
+    metadata:
+      stable_item_id: "E2E-JOINT-P0"
+      stage_order: ["embedded", "phone", "platform"]
+      case_kind: "preparation_and_identity"
+      required_conditions: ["gateway_power_and_ble_discovery", "phone_wifi_ZTE_607157", "android_test", "app_test_identity_or_explicit_gap", "platform_readonly_baseline"]
+      correlation_keys: ["uid4", "gateway_ble_addr", "gateway_GwID", "apk_sha256", "platform_service_identity"]
+      design_ref: "artifacts/e2e_joint_test_design.md §4.1"
+
+  - objective: "N1：在当前稳定室温、现场有光、交付默认 LIGHT_DARK_THRESHOLD_CODE=0 且不调温/不改光强的条件下，证明传感器不产生 433 上报、App 不伪造读数、网关历史缓存复读与真实新采样可区分、平台无本轮新采样事件；对应设计 TD-E2E-SW-006 §4.2。"
+    input_refs:
+      - "artifacts/e2e_joint_test_design.md §4.2/§8"
+      - "artifacts/test_design.md TD-002 rev 10.0 §5.3/§6.3"
+      - "CW32L010_StandardPeripheralLib_V1.0.5/Examples/sensor/gpio_input_output/USER/inc/sensor_config.h（LIGHT_DARK_THRESHOLD_CODE=0；SENSOR_REPORT_HIGH_X10=350；SENSOR_REPORT_RISE_X10=9）"
+      - "当前量产构建 fw_release/fw_sensor_FD-002r8.zip 或测试构建但不启用注入"
+    acceptance:
+      - "嵌入式：≥3 个采样机会（约 9 min）或分窗拼接，所有 S q=1；r=0、s=0；无 P；相邻 k 步长 3；V=0 D=0 仅记 UNKNOWN，不得解释为已识别有光。"
+      - "手机：守护运行且同一窗口至少完成 1 个 180 s 读取周期；无本轮新采样值导致的读数/入库/入队/上传；占位时 link_state=GATEWAY_NO_DATA 且无行；历史缓存有效值时记录其值与 receiveTime 并标注缓存复读，不当作本轮新上报。"
+      - "平台：网关无有效缓存时，同一时间窗无本轮新行；若存在缓存复读，如实记录，不归因于新采样；无回读授权时该子项 NOT EXECUTED。"
+      - "关联：uid4、窗口起止、无 367；缓存复读与真实新采样分开；不用时间接近猜事件。"
+      - "顺序：N1 在 P1 之前执行；若现场已有历史缓存，记录实际状态并按上述区分，不得为清缓存而改网关固件。"
+    metadata:
+      stable_item_id: "E2E-JOINT-N1"
+      stage_order: ["embedded", "phone", "platform"]
+      case_kind: "negative_no_report"
+      required_conditions: ["current_production_or_non_injecting_build", "gateway_no_valid_cached_value_for_clean_baseline"]
+      correlation_keys: ["uid4", "window_start_end", "no_367"]
+      design_ref: "artifacts/e2e_joint_test_design.md §4.2"
+
+  - objective: "P1：在同一可识别事件 uid4+367+真实湿度 h 上，用固件测试构建受控注入 36.7℃，证明真实判定/冻结/433 发送→网关接收/组帧→App 真实 BLE 读取/解码/本地消费/MQTT/HTTP→平台受理并持久化回读四段逐项一致；任一段缺失不得以其余段通过冒充。"
+    input_refs:
+      - "artifacts/e2e_joint_test_design.md §3.1/§4.3/§8"
+      - "artifacts/test_design.md TD-002 rev 10.0 §3/§6.2"
+      - "artifacts/interface_contract.md IC-002 v4.0 §5-§8"
+      - "当前测试构建（由固件实现提供；含 SENSOR_TEST_INJECT_ENABLE/TINJ 或等价可区分观测；构建/摘要记录）"
+      - "AB-003 或修复后新 APK（执行轮记录 SHA-256 与设备侧摘要）"
+      - "既有网关（经 App 发现/确认；FFE0/FFE2/FFE3；不烧录）"
+      - "既有平台 8.140.23.253（EMQX 8883 / Flask 5000 / MySQL sensor_data）"
+    acceptance:
+      - "嵌入式：测试构建身份明确且 Verify OK；第 1 次真实 S t≈real r=0；第 2 次出现 TINJ（或等价）real=<real> inj=367，S t=367 q=1 r=1 s=1（或按实际重试记录）；P rq=0 s=1 y=0 t=367 h=<h>；第 3 次 t≈real p=367 r=0 s=0；uid4 可读；帧/CRC/Feistel/发送逻辑未改。"
+      - "手机：真实读取 MTU≥35（期望 240）、valueSize≥32 且 16 B 对齐、devCount=1、id=uid4、T=36.7、H=h、link_state=DATA_OK；本地 temperature 行 (uid4, receiveTime, 36.7, h)；上传发出，待发箱按成功/失败实际记录；读取不完整时整帧拒绝、不产生读数/不上传。"
+      - "MQTT：/<mac>/a/r0 载荷为 <epoch>:36.7:<h>（N=1、按绑定顺序），epoch 与本地接收时间一致；若 mac_addr 以 1010 开头，App 按既有 shouldPublishBle() 分支不发布，记录该实际分支为 N/A，不据此判缺陷；若应发布而连接/凭据失败，记录实际原因，不得用 HTTP 成功替代。"
+      - "平台：HTTP 2xx 且存在 sensor_data 行 (phone, dev_id=uid4, time=epoch, temperature 数值=36.7, humidity 数值=h) 且字段逐项一致；同一 (dev_id,time) 重试不新增行；仅 2xx 或无回读入口不判通过。"
+      - "关联：uid4+367+h 四段一致；k/epoch 只作辅助窗口；网关缓存同值不同秒的复读记录并披露，不当作新物理采样。"
+      - "测试构建排除与恢复：发布构建无 TINJ/测试符号/字符串；默认 0 行为一致；P1 后恢复标准构建并 Verify OK、确认无 TINJ。"
+      - "任一段缺失/不一致：该段 FAIL/NOT EXECUTED；P1 不通过、不得部分通过；按责任交对应实现并用当前组合版本复测。"
+    metadata:
+      stable_item_id: "E2E-JOINT-P1"
+      stage_order: ["embedded", "phone", "platform"]
+      case_kind: "positive_joint_event"
+      depends_on: ["E2E-JOINT-P0", "E2E-JOINT-N1"]
+      required_conditions: ["firmware_test_build_injection", "phone_wifi_ZTE_607157", "app_test_identity", "gateway_binding_N1", "platform_persistence_readback_authorization"]
+      correlation_keys: ["uid4", "367", "real_humidity_h", "gateway_GwID", "app_receive_epoch", "platform_time"]
+      design_ref: "artifacts/e2e_joint_test_design.md §4.3"
