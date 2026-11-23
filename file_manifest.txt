@@ -83,6 +83,7 @@ artifacts/backend_feasibility_g002.md | active | 后端可行性探索 BE-EXP-00
 artifacts/codegraph_android_index.md | active | 代码智能：Android当前源码索引入口、版本与覆盖限制，四个定向源码查询及后续同步方式。
 artifacts/codegraph_current_index.md | history | 代码智能：此前三个子工程索引交接；当前入口见 artifacts/codegraph_prepare_index.md
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
+artifacts/codegraph_e2e_index.md | active | 代码智能：当前三根索引入口、来源版本、覆盖限制、查询证据和同步方式；平台源码缺口。
 artifacts/codegraph_firmware_initial_index.md | active | 代码智能：当前传感器根索引入口、版本/覆盖、增量同步与源码查询；保留人工跳过与原失败范围边界
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
 artifacts/codegraph_prepare_index.md | history | 代码智能：先前基线三根索引交接；固件更新记录见codegraph_firmware_initial_index.md
@@ -625,6 +626,8 @@ evidence/codegraph_current_validation.json | history | 代码智能：三个子�
 evidence/codegraph_dengbei11_validation.json | active | ????????? status?????????? explore ???????????
 evidence/codegraph_firmware_initial_validation.json | active | 代码智能：当前传感器同步状态、4次源码查询、限时/退出码及99个索引文件摘要；旧三根记录见Git历史
 evidence/codegraph_prepare_validation.json | active | 代码智能：本轮三个子工程同步前后状态、实际查询摘要与源码节选、UTC 时间、退出码及源码摘要
+evidence/codegraph_refresh_20261123.json | active | 代码智能：三个现有索引同步、状态、源码查询节选、退出码及逐文件摘要证据。
+evidence/codegraph_refresh_20261123.py | active | 代码智能：有界索引同步与查询采集脚本，含精确路径补查。
 evidence/codegraph_validation.md | history | CodeGraph 历史可用性验证证据（索引 complete、无 pending/drift）
 evidence/codegraph_validation_20261109.json | history | ?????????????????????????????????????????????
 evidence/codegraph_validation_20261110.json | active | ???????????????????????????????UTC ???????????
