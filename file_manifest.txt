@@ -816,8 +816,9 @@ evidence/doc_verification_20261113_rev14/ui_05_home_after_reinstall.xml | active
 evidence/doc_verification_20261113_rev14/ui_06_sensor_list_empty.xml | active | 「打开传感器列表」空态 UI 原始树（已保存的 ID（0）、删除选中 disabled）
 evidence/doc_verification_20261113_rev14/usb_devices.txt | active | USB 枚举身份记录（COM43 Prolific 067B:2303、COM26 C251:F001 CDC、CW-DAPLink 序列号）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
-evidence/e2e_p0/ | active | E2E-JOINT-P0 执行证据目录（手机段复验通过、上一轮 ADB 未授权对照、平台只读基线、关联索引）
+evidence/e2e_p0/ | active | E2E-JOINT-P0 执行证据目录（手机段复验通过、上一轮 ADB 未授权对照、平台只读基线、平台段 NOT EXECUTED 与路径勘误、关联索引）
 evidence/e2e_p0/P0_phone_stage_report.md | active | E2E-JOINT-P0 手机段复验报告（APK/设备摘要一致、ZTE_607157 默认网络、守护运行、网关发现/GwID、MacIdBook 含 6A002C00、0xA1 N=1 6B、dev=0/1 占位终态；测试身份缺口与平台未执行项披露）
+evidence/e2e_p0/P0_platform_stage_report.md | active | E2E-JOINT-P0 平台段执行记录（8883 放行后复测：服务/端口已实测，EMQX 证书 SAN 仅 117.72.84.210 导致 App TLS 失败，TEST_FAIL/MEASURED_DEFECT；日志/连接数/DB 回读 NOT EXECUTED）
 evidence/e2e_p0/p0_correlation_index.md | active | E2E-JOINT-P0 单一证据索引（uid4、gateway_ble_addr、GwID、APK SHA-256、平台服务身份、时间窗）
 evidence/e2e_p0/phone_stage_adb_state.txt | active | 上一轮 adb 版本、devices -l 与 get-state 原始输出（12f046690506 unauthorized，阻塞对照）
 evidence/e2e_p0/phone_stage_apk_digest.txt | active | 设备侧 base.apk 路径与 SHA-256（与候选 app-debug.apk 一致）
@@ -873,6 +874,25 @@ evidence/e2e_p0/platform_baseline_result_first.json | active | 上一轮平台�
 evidence/e2e_p0/platform_baseline_result_phone_stage.json | active | 本轮手机段执行期间平台只读基线结果副本（13:40:55Z–13:41:20Z）
 evidence/e2e_p0/platform_head_options.txt | active | 平台 HEAD/OPTIONS 只读探测原始输出（empty reply）
 evidence/e2e_p0/platform_root_get.txt | active | 平台 GET / 只读探测原始输出（empty reply）
+evidence/e2e_p0/platform_stage_baseline.mjs | active | 平台段获准浏览器入口只读探测脚本（Playwright GET/导航 + TCP connect；含非项目控制端口，无 POST/写入）
+evidence/e2e_p0/platform_stage_baseline_result.json | active | 平台段浏览器入口与 TCP 探测原始结果（GET socket hang up；服务端口与控制端口同为 <1ms open 无首字节）
+evidence/e2e_p0/platform_stage_control_port_probe.txt | active | 非项目控制端口 65000/59999/54321 curl 原始输出（均 Empty reply）
+evidence/e2e_p0/platform_stage_curl_18083_status.txt | active | 主机 curl 18083/status 原始交互（connected → Empty reply）
+evidence/e2e_p0/platform_stage_curl_5000_upload_data.txt | active | 主机 curl 5000/upload_data GET 原始交互（connected → Empty reply，无写入）
+evidence/e2e_p0/platform_stage_host_network.txt | active | 主机路由/接口（Meta Tunnel、198.18.0.2 默认路由）、WinHTTP 代理与 ping 原始输出
+evidence/e2e_p0/platform_stage_phone_vantage.txt | active | 手机真实路径只读探测（ICMP 可达、百度控制 200、平台 5000/8883/1883/18083 TCP 8s 超时）
+evidence/e2e_p0/platform_stage_ping.txt | active | 主机到平台 ICMP 原始结果（4/4 可达，RTT 34–44 ms）
+evidence/e2e_p0/platform_stage_retest_8883_phone.txt | active | 手机 8883 复测原始输出（WAN 对照 200、TCP 可连、TLSv1.2 握手成功、对照端口）
+evidence/e2e_p0/platform_stage_retest_app_state.txt | active | App PID 4677、前台 MqtttService/MqttService、logcat 缓冲信息
+evidence/e2e_p0/platform_stage_retest_cert.txt | active | EMQX 8883 证书 subject/issuer/有效期/SAN（仅 117.72.84.210）与自签链校验原始输出
+evidence/e2e_p0/platform_stage_retest_env.txt | active | 平台段复测前置：设备在线、ZTE_607157/默认路由、手机 curl/nc/ping 可用、openssl 缺失
+evidence/e2e_p0/platform_stage_retest_host.txt | active | 主机复测：路由、ping、18083 /status 200、8883 TLS 握手原始输出
+evidence/e2e_p0/platform_stage_retest_http_phone.txt | active | 手机只读 GET：EMQX 18083 /status 与首页、Flask 5000 /、/login、/upload_data、1883 nc
+evidence/e2e_p0/platform_stage_retest_identity.txt | active | EMQX API 401（需认证）、MySQL 9.0.1 握手、8083/8084 超时
+evidence/e2e_p0/platform_stage_retest_logcat_mqtt.txt | active | App MQTT 日志切片（含 TLS SAN 失败栈与 BLE 正常读取）
+evidence/e2e_p0/platform_stage_retest_logcat_tls_fail.txt | active | 14:43:12Z 最新 TLS 失败复现与 BLE 正常读取对照
+evidence/e2e_p0/platform_stage_retest_network.txt | active | 平台段复测：dumpsys wifi（ZTE_607157）、ip rule/ip route 默认网络 1027
+evidence/e2e_p0/platform_stage_tcp_rtt_probe.txt | active | 主机 TCP connect 延迟原始结果（服务端口与控制端口对比，均亚毫秒接受）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检
 evidence/embedded_verify_uart_trace_item001.py | active | 实板 UART1 调试串口独立复核脚本（ITEM-001：S 行字段/时序）

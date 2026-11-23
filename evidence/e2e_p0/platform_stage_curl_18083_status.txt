@@ -1,0 +1,11 @@
+* processing: http://8.140.23.253:18083/status
+*   Trying 8.140.23.253:18083...
+* Connected to 8.140.23.253 (8.140.23.253) port 18083
+> GET /status HTTP/1.1
+> Host: 8.140.23.253:18083
+> User-Agent: curl/8.2.1
+> Accept: */*
+> 
+* Empty reply from server
+* Closing connection
+curl: (52) Empty reply from server

@@ -1,0 +1,67 @@
+# Phone-vantage retest after operator opened TCP 8883
+# UTC start: 2026-11-23T14:40:14Z
+== WAN control: https://www.baidu.com ==
+http=200 connect=0.141838 tls=0.247746 total=0.297378
+== TCP/TLS 8883: curl verbose (https scheme to force TLS handshake) ==
+*   Trying 8.140.23.253...
+* TCP_NODELAY set
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Connected to 8.140.23.253 (8.140.23.253) port 8883 (#0)
+* ALPN, offering http/1.1
+* successfully set certificate verify locations:
+*   CAfile: none
+  CApath: /system/etc/security/cacerts
+} [5 bytes data]
+* TLSv1.2 (OUT), TLS handshake, Client hello (1):
+} [145 bytes data]
+* TLSv1.2 (IN), TLS handshake, Server hello (2):
+{ [87 bytes data]
+* TLSv1.2 (IN), TLS handshake, Certificate (11):
+{ [2092 bytes data]
+* TLSv1.2 (IN), TLS handshake, Server key exchange (12):
+{ [300 bytes data]
+* TLSv1.2 (IN), TLS handshake, Server finished (14):
+{ [4 bytes data]
+* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
+} [37 bytes data]
+* TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):
+} [1 bytes data]
+* TLSv1.2 (OUT), TLS handshake, Finished (20):
+} [16 bytes data]
+* TLSv1.2 (IN), TLS change cipher, Change cipher spec (1):
+{ [1 bytes data]
+* TLSv1.2 (IN), TLS handshake, Finished (20):
+{ [16 bytes data]
+* SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384
+* ALPN, server did not agree to a protocol
+* Server certificate:
+*  subject: C=US; ST=State; L=City; O=Organization; OU=Organizational Unit; CN=117.72.84.210
+*  start date: Oct 12 16:07:40 2024 GMT
+*  expire date: Dec 21 16:07:40 2026 GMT
+*  issuer: C=US; ST=California; L=San Francisco; O=LinkValue; OU=Engineering; CN=Tiktok Root CA; emailAddress=snack_yx@126.com
+*  SSL certificate verify result: self signed certificate in certificate chain (19), continuing anyway.
+} [5 bytes data]
+> GET / HTTP/1.1
+> Host: 8.140.23.253:8883
+> User-Agent: curl/7.64.1
+> Accept: */*
+> 
+{ [5 bytes data]
+* TLSv1.2 (IN), TLS alert, close notify (256):
+{ [2 bytes data]
+* Empty reply from server
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+* Connection #0 to host 8.140.23.253 left intact
+curl: (52) Empty reply from server
+* Closing connection 0
+== TCP 8883: nc -w 6 ==
+rc=0
+== control ports (1883/5000/18083): curl connect timing ==
+-- port 1883 --
+http=000 connect=0.039243 tls=0.000000 total=0.082558
+-- port 5000 --
+http=404 connect=0.040669 tls=0.000000 total=0.090085
+-- port 18083 --
+http=200 connect=0.037429 tls=0.000000 total=0.095051
+# UTC end: 2026-11-23T14:40:15Z

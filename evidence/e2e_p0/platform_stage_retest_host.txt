@@ -1,0 +1,68 @@
+# Host vantage recheck (UTC 2026-11-23T14:41:58Z)
+== route default ==
+===========================================================================
+接口列表
+  6...........................Meta Tunnel
+ 11...28 6b 35 27 44 a9 ......Microsoft Wi-Fi Direct Virtual Adapter
+ 14...2a 6b 35 27 44 a8 ......Microsoft Wi-Fi Direct Virtual Adapter #2
+ 16...28 6b 35 27 44 a8 ......Intel(R) Wi-Fi 6E AX211 160MHz
+  1...........................Software Loopback Interface 1
+ 48...00 15 5d ec 24 c0 ......Hyper-V Virtual Ethernet Adapter
+===========================================================================
+
+IPv4 路由表
+===========================================================================
+活动路由:
+网络目标        网络掩码          网关       接口   跃点数
+          0.0.0.0          0.0.0.0      192.168.0.1    192.168.0.100     45
+          0.0.0.0          0.0.0.0       198.18.0.2       198.18.0.1      0
+        127.0.0.0        255.0.0.0            在链路上         127.0.0.1    331
+        127.0.0.1  255.255.255.255            在链路上         127.0.0.1    331
+  127.255.255.255  255.255.255.255            在链路上         127.0.0.1    331
+      172.28.96.0    255.255.240.0            在链路上       172.28.96.1   5256
+      172.28.96.1  255.255.255.255            在链路上       172.28.96.1   5256
+   172.28.111.255  255.255.255.255            在链路上       172.28.96.1   5256
+      192.168.0.0    255.255.255.0            在链路上     192.168.0.100    301
+    192.168.0.100  255.255.255.255            在链路上     192.168.0.100    301
+    192.168.0.255  255.255.255.255            在链路上     192.168.0.100    301
+== ping ==
+
+正在 Ping 8.140.23.253 具有 32 字节的数据:
+来自 8.140.23.253 的回复: 字节=32 时间=44ms TTL=64
+来自 8.140.23.253 的回复: 字节=32 时间=35ms TTL=64
+来自 8.140.23.253 的回复: 字节=32 时间=35ms TTL=64
+
+8.140.23.253 的 Ping 统计信息:
+    数据包: 已发送 = 3，已接收 = 3，丢失 = 0 (0% 丢失)，
+往返行程的估计时间(以毫秒为单位):
+    最短 = 35ms，最长 = 44ms，平均 = 38ms
+== curl 18083/status ==
+HTTP/1.1 200 OK
+content-length: 46
+content-type: text/plain
+date: Mon, 23 Nov 2026 14:42:01 GMT
+retry-after: 15
+server: Cowboy
+
+Node emqx@127.0.0.1 is started
+emqx is running
+== curl 8883 TLS (host) ==
+* processing: https://8.140.23.253:8883/
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 8.140.23.253:8883...
+* Connected to 8.140.23.253 (8.140.23.253) port 8883
+* schannel: disabled automatic use of client certificate
+* schannel: using IP address, SNI is not supported by OS.
+* using HTTP/1.x
+> GET / HTTP/1.1
+> Host: 8.140.23.253:8883
+> User-Agent: curl/8.2.1
+> Accept: */*
+> 
+* schannel: server closed the connection
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Empty reply from server
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+* Closing connection
+* schannel: shutting down SSL/TLS connection with 8.140.23.253 port 8883
+curl: (52) Empty reply from server

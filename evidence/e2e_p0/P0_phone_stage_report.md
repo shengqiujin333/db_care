@@ -192,3 +192,12 @@
 ## 9. 脱敏声明
 
 Wi-Fi 密码仅经 `android_test ui_set_text` + `text_env=RESTLESSDREAM_ANDROID_SECRET_WIFI` 注入；本证据目录不含密码明文。SSH/DB 凭据未读取、未复制。手机号未涉及（未登录）。网关地址/GwID/`uid4` 为设备标识，非凭据，按用例要求记录。
+
+---
+
+## 10. 勘误（2026-11-23T14:10Z，平台段追加）
+
+- §6 及 §5 表中“TCP 5000/1883/8883/3306/18083/8083/8084 全部 `open`”**不能作为平台服务监听/可达证据**。平台段用非项目控制端口 1/54321/65000 复测，表现完全相同（connect <1 ms、无首字节），且主机默认路由经 `Meta Tunnel`（198.18.0.2，metric 0）；ICMP 物理 RTT 为 34–44 ms。判定为本机 TUN/代理路径伪造 TCP 接受。
+- 该误判不影响手机段其余 PASS 项（设备/APK 摘要、Wi-Fi 默认网络、守护运行、网关发现/绑定、0xA1、读取终态）；手机段 TEST_PASS 仅证明这些手机项。
+- 平台服务身份/端口/日志/连接数/DB 回读在平台段仍为 **NOT EXECUTED**；详见 `P0_platform_stage_report.md`。
+

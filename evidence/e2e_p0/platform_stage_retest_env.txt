@@ -1,0 +1,28 @@
+== UTC ==
+2026-11-23T14:39:44Z
+== adb devices ==
+List of devices attached
+12f046690506           device product:olivelite model:Redmi_8A device:olivelite transport_id:2
+
+== default network / wifi ==
+== route ==
+192.168.0.0/24 dev wlan0 proto kernel scope link src 192.168.0.103 
+== wifi state ==
+Security exception: Uid 2000 does not have access to wifi commands
+
+java.lang.SecurityException: Uid 2000 does not have access to wifi commands
+	at com.android.server.wifi.WifiShellCommand.checkRootPermission(WifiShellCommand.java:223)
+	at com.android.server.wifi.WifiShellCommand.onCommand(WifiShellCommand.java:61)
+	at android.os.ShellCommand.exec(ShellCommand.java:111)
+	at com.android.server.wifi.WifiServiceImpl.onShellCommand(WifiServiceImpl.java:2894)
+	at android.os.Binder.shellCommand(Binder.java:881)
+	at android.os.Binder.onTransact(Binder.java:765)
+	at android.net.wifi.IWifiManager$Stub.onTransact(IWifiManager.java:1889)
+	at android.os.Binder.execTransactInternal(Binder.java:1021)
+	at android.os.Binder.execTransact(Binder.java:994)
+== tool availability ==
+curl: /system/bin/curl
+openssl: MISSING
+nc: /system/bin/nc
+toybox: /system/bin/toybox
+ping: /system/bin/ping

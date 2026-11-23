@@ -1,0 +1,71 @@
+# Platform read-only HTTP identity from phone (UTC 2026-11-23T14:41:55Z)
+== GET http://8.140.23.253:18083/status ==
+HTTP/1.1 200 OK
+content-length: 46
+content-type: text/plain
+date: Mon, 23 Nov 2026 14:41:56 GMT
+retry-after: 15
+server: Cowboy
+
+Node emqx@127.0.0.1 is started
+emqx is running
+== GET http://8.140.23.253:18083/ ==
+HTTP/1.1 200 OK
+accept-ranges: bytes
+content-length: 9795
+content-type: text/html
+date: Mon, 23 Nov 2026 14:41:56 GMT
+etag: "3388189970"
+last-modified: Wed, 28 Aug 2024 13:50:36 GMT
+server: Cowboy
+
+<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="static/favicon.ico"><title>EMQX Dashboard</title><link href="static/css/chunk-01494b13.1fbab6e0.css" rel="prefetch"><link href="static/css/chunk-03711f65.3e96fc67.css" rel="prefetch"><link href="static/css/chunk-03f9c879.bfe13d3d.css" rel="prefetch"><link href="static/css/chunk-05bd1209.aa6246ba.css" rel="prefetch"><link href="static/css/chunk-05d5d78c.9acf6d4f.css" rel="prefetch"><link href="static/css/chunk-0ad617f0.9c97cf2d.css" rel="prefetch"><link href="static/css/chunk-0ed3ecf5.44b769e3.css" rel="prefetch"><link href="static/css/chunk-175d8402.22631e27.css" rel="prefetch"><link href="static/css/chunk-211dea26.5a28fe74.css" rel="prefetch"><link href="static/css/chunk-250f187d.acca7c6a.css" rel="prefetch"><link href="static/css/chunk-25987bb0.e43b51c3.css" rel="prefetch
+== GET http://8.140.23.253:5000/ ==
+HTTP/1.1 404 NOT FOUND
+Server: Werkzeug/3.1.8 Python/3.12.3
+Date: Mon, 23 Nov 2026 14:41:56 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 207
+Access-Control-Allow-Origin: *
+Connection: close
+
+<!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+== GET http://8.140.23.253:5000/login ==
+HTTP/1.1 405 METHOD NOT ALLOWED
+Server: Werkzeug/3.1.8 Python/3.12.3
+Date: Mon, 23 Nov 2026 14:41:57 GMT
+Content-Type: text/html; charset=utf-8
+Allow: POST, OPTIONS
+Content-Length: 153
+Access-Control-Allow-Origin: *
+Connection: close
+
+<!doctype html>
+<html lang=en>
+<title>405 Method Not Allowed</title>
+<h1>Method Not Allowed</h1>
+<p>The method is not allowed for the requested URL.</p>
+
+== GET http://8.140.23.253:5000/upload_data ==
+HTTP/1.1 405 METHOD NOT ALLOWED
+Server: Werkzeug/3.1.8 Python/3.12.3
+Date: Mon, 23 Nov 2026 14:41:57 GMT
+Content-Type: text/html; charset=utf-8
+Allow: POST, OPTIONS
+Content-Length: 153
+Access-Control-Allow-Origin: *
+Connection: close
+
+<!doctype html>
+<html lang=en>
+<title>405 Method Not Allowed</title>
+<h1>Method Not Allowed</h1>
+<p>The method is not allowed for the requested URL.</p>
+
+== 1883 MQTT port raw connect (nc) ==
+rc=0

@@ -1,0 +1,105 @@
+# Fresh app MQTT/TLS cycle after 8883 reopen (UTC 2026-11-23T14:43:44Z)
+s=0), expectedDevices=1, requiredMtu=35
+11-23 22:38:18.363  4677  6326 I MqttService: cipher length = 160
+11-23 22:38:18.375  4677  6326 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-23 22:38:18.376  4677  6326 I MqttService: gateway placeholder block skipped (dev=00:00:00:00)
+11-23 22:38:18.376  4677  6326 I MqttService: link_state=GATEWAY_NO_DATA reason=ALL_PLACEHOLDER
+11-23 22:38:18.379  4677  6326 I MqttService: link_state=GATEWAY_NO_DATA msg=网关暂无传感器数据（等待传感器上报）
+11-23 22:38:18.379  4677  6326 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=0 placeholder=1 valueSize=160 mtu=240
+11-23 22:38:18.380  4677  6326 W MqttService: BLE batch forwarding refused: ALL_PLACEHOLDER (local processing unaffected)
+11-23 22:38:18.383  4677  6326 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-23 22:38:18.463  4677  6326 I MqttService: Chunk written OK, left=0
+11-23 22:38:18.467  4677  4758 I MqttService: Successfully connected and read data on attempt 1
+11-23 22:38:56.266  4677  4758 D MqttService: Attempting to reconnect to broker
+11-23 22:38:56.274  4677  4758 I MqttService: Saved MAC address: 000000000000
+11-23 22:38:56.884  4677  4677 E MqttService: Failed to connect to broker
+11-23 22:38:56.884  4677  4677 E MqttService: MqttException (0) - javax.net.ssl.SSLHandshakeException: No subjectAltNames on the certificate match
+11-23 22:38:56.884  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:38)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:738)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-23 22:38:56.884  4677  4677 E MqttService: Caused by: javax.net.ssl.SSLHandshakeException: No subjectAltNames on the certificate match
+11-23 22:38:56.884  4677  4677 E MqttService: 	at com.android.org.conscrypt.ConscryptFileDescriptorSocket.startHandshake(ConscryptFileDescriptorSocket.java:231)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:159)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-23 22:38:56.884  4677  4677 E MqttService: 	... 1 more
+11-23 22:38:56.884  4677  4677 E MqttService: Caused by: java.security.cert.CertificateException: No subjectAltNames on the certificate match
+11-23 22:38:56.884  4677  4677 E MqttService: 	at com.android.org.conscrypt.TrustManagerImpl.checkTrusted(TrustManagerImpl.java:422)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at com.android.org.conscrypt.TrustManagerImpl.getTrustedChainForServer(TrustManagerImpl.java:354)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at android.security.net.config.NetworkSecurityTrustManager.checkServerTrusted(NetworkSecurityTrustManager.java:94)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at android.security.net.config.RootTrustManager.checkServerTrusted(RootTrustManager.java:89)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at com.android.org.conscrypt.Platform.checkServerTrusted(Platform.java:224)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at com.android.org.conscrypt.ConscryptFileDescriptorSocket.verifyCertificateChain(ConscryptFileDescriptorSocket.java:407)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at com.android.org.conscrypt.NativeCrypto.SSL_do_handshake(Native Method)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at com.android.org.conscrypt.NativeSsl.doHandshake(NativeSsl.java:387)
+11-23 22:38:56.884  4677  4677 E MqttService: 	at com.android.org.conscrypt.ConscryptFileDescriptorSocket.startHandshake(ConscryptFileDescriptorSocket.java:226)
+11-23 22:38:56.884  4677  4677 E MqttService: 	... 3 more
+11-23 22:39:04.777  4677  4758 D MqttService: Attempting to reconnect to broker
+11-23 22:39:04.785  4677  4758 I MqttService: Saved MAC address: 000000000000
+11-23 22:39:05.407  4677  4677 E MqttService: Failed to connect to broker
+11-23 22:39:05.407  4677  4677 E MqttService: MqttException (0) - javax.net.ssl.SSLHandshakeException: No subjectAltNames on the certificate match
+11-23 22:39:05.407  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:38)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:738)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-23 22:39:05.407  4677  4677 E MqttService: Caused by: javax.net.ssl.SSLHandshakeException: No subjectAltNames on the certificate match
+11-23 22:39:05.407  4677  4677 E MqttService: 	at com.android.org.conscrypt.ConscryptFileDescriptorSocket.startHandshake(ConscryptFileDescriptorSocket.java:231)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:159)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-23 22:39:05.407  4677  4677 E MqttService: 	... 1 more
+11-23 22:39:05.407  4677  4677 E MqttService: Caused by: java.security.cert.CertificateException: No subjectAltNames on the certificate match
+11-23 22:39:05.407  4677  4677 E MqttService: 	at com.android.org.conscrypt.TrustManagerImpl.checkTrusted(TrustManagerImpl.java:422)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at com.android.org.conscrypt.TrustManagerImpl.getTrustedChainForServer(TrustManagerImpl.java:354)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at android.security.net.config.NetworkSecurityTrustManager.checkServerTrusted(NetworkSecurityTrustManager.java:94)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at android.security.net.config.RootTrustManager.checkServerTrusted(RootTrustManager.java:89)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at com.android.org.conscrypt.Platform.checkServerTrusted(Platform.java:224)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at com.android.org.conscrypt.ConscryptFileDescriptorSocket.verifyCertificateChain(ConscryptFileDescriptorSocket.java:407)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at com.android.org.conscrypt.NativeCrypto.SSL_do_handshake(Native Method)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at com.android.org.conscrypt.NativeSsl.doHandshake(NativeSsl.java:387)
+11-23 22:39:05.407  4677  4677 E MqttService: 	at com.android.org.conscrypt.ConscryptFileDescriptorSocket.startHandshake(ConscryptFileDescriptorSocket.java:226)
+11-23 22:39:05.407  4677  4677 E MqttService: 	... 3 more
+11-23 22:41:18.484  4677  4758 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-23 22:41:18.485  4677  4758 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-23 22:41:18.485  4677  4758 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-23 22:41:19.439  4677  6326 I MqttService: Connect error status=133
+11-23 22:41:19.446  4677  4758 I MqttService: Retrying connection after delay...
+11-23 22:41:21.449  4677  4758 I MqttService: Attempt 2 to connect to Bluetooth device...
+11-23 22:41:22.072  4677  6326 I MqttService: Connect error status=133
+11-23 22:41:22.078  4677  4758 I MqttService: Retrying connection after delay...
+11-23 22:41:24.081  4677  4758 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-23 22:41:24.509  4677  6326 I MqttService: Connect error status=133
+11-23 22:41:24.515  4677  4758 I MqttService: Retrying connection after delay...
+11-23 22:41:26.517  4677  4758 I MqttService: Attempt 4 to connect to Bluetooth device...
+11-23 22:41:27.095  4677  6326 I MqttService: Connected to device, discovering services...
+11-23 22:41:29.172  4677  6326 I MqttService: MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-23 22:41:30.439  4677  6326 I MqttService: cipher length = 160
+11-23 22:41:30.459  4677  6326 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-23 22:41:30.460  4677  6326 I MqttService: gateway placeholder block skipped (dev=00:00:00:00)
+11-23 22:41:30.460  4677  6326 I MqttService: link_state=GATEWAY_NO_DATA reason=ALL_PLACEHOLDER
+11-23 22:41:30.464  4677  6326 I MqttService: link_state=GATEWAY_NO_DATA msg=网关暂无传感器数据（等待传感器上报）
+11-23 22:41:30.464  4677  6326 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=0 placeholder=1 valueSize=160 mtu=240
+11-23 22:41:30.465  4677  6326 W MqttService: BLE batch forwarding refused: ALL_PLACEHOLDER (local processing unaffected)
+11-23 22:41:30.467  4677  6326 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-23 22:41:30.586  4677  6326 I MqttService: Chunk written OK, left=0
+11-23 22:41:30.596  4677  4758 I MqttService: Successfully connected and read data on attempt 4
+11-23 22:43:12.084  4677  4758 D MqttService: Attempting to reconnect to broker
+11-23 22:43:12.093  4677  4758 I MqttService: Saved MAC address: 000000000000
+11-23 22:43:12.365  4677  4677 E MqttService: Failed to connect to broker
+11-23 22:43:12.365  4677  4677 E MqttService: MqttException (0) - javax.net.ssl.SSLHandshakeException: No subjectAltNames on the certificate match
+11-23 22:43:12.365  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:38)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:738)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-23 22:43:12.365  4677  4677 E MqttService: Caused by: javax.net.ssl.SSLHandshakeException: No subjectAltNames on the certificate match
+11-23 22:43:12.365  4677  4677 E MqttService: 	at com.android.org.conscrypt.ConscryptFileDescriptorSocket.startHandshake(ConscryptFileDescriptorSocket.java:231)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.SSLNetworkModule.start(SSLNetworkModule.java:159)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientComms$ConnectBG.run(ClientComms.java:724)
+11-23 22:43:12.365  4677  4677 E MqttService: 	... 1 more
+11-23 22:43:12.365  4677  4677 E MqttService: Caused by: java.security.cert.CertificateException: No subjectAltNames on the certificate match
+11-23 22:43:12.365  4677  4677 E MqttService: 	at com.android.org.conscrypt.TrustManagerImpl.checkTrusted(TrustManagerImpl.java:422)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at com.android.org.conscrypt.TrustManagerImpl.getTrustedChainForServer(TrustManagerImpl.java:354)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at android.security.net.config.NetworkSecurityTrustManager.checkServerTrusted(NetworkSecurityTrustManager.java:94)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at android.security.net.config.RootTrustManager.checkServerTrusted(RootTrustManager.java:89)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at com.android.org.conscrypt.Platform.checkServerTrusted(Platform.java:224)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at com.android.org.conscrypt.ConscryptFileDescriptorSocket.verifyCertificateChain(ConscryptFileDescriptorSocket.java:407)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at com.android.org.conscrypt.NativeCrypto.SSL_do_handshake(Native Method)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at com.android.org.conscrypt.NativeSsl.doHandshake(NativeSsl.java:387)
+11-23 22:43:12.365  4677  4677 E MqttService: 	at com.android.org.conscrypt.ConscryptFileDescriptorSocket.startHandshake(ConscryptFileDescriptorSocket.java:226)
+11-23 22:43:12.365  4677  4677 E MqttService: 	... 3 more

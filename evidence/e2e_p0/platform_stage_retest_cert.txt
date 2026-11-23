@@ -1,0 +1,39 @@
+# EMQX 8883 certificate inspection (UTC 2026-11-23T14:42:28Z)
+== subject/issuer/dates/SAN ==
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+notBefore=Oct 12 16:07:40 2024 GMT
+notAfter=Dec 21 16:07:40 2026 GMT
+X509v3 Subject Alternative Name: 
+    IP Address:117.72.84.210
+== full chain verify (default store) ==
+CONNECTED(0000015C)
+depth=1 C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+verify error:num=19:self-signed certificate in certificate chain
+CC9B0000:error:0A000086:SSL routines:tls_post_process_server_certificate:certificate verify failed:../openssl-3.1.2/ssl/statem/statem_clnt.c:1889:
+---
+Certificate chain
+ 0 s:C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+   i:C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Oct 12 16:07:40 2024 GMT; NotAfter: Dec 21 16:07:40 2026 GMT
+ 1 s:C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+   i:C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+   a:PKEY: rsaEncryption, 2048 (bit); sigalg: RSA-SHA256
+   v:NotBefore: Oct 12 16:05:01 2024 GMT; NotAfter: Oct 10 16:05:01 2034 GMT
+---
+no peer certificate available
+---
+No client certificate CA names sent
+Server Temp Key: X25519, 253 bits
+---
+SSL handshake has read 2280 bytes and written 321 bytes
+Verification error: self-signed certificate in certificate chain
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+This TLS version forbids renegotiation.
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 19 (self-signed certificate in certificate chain)

@@ -1,0 +1,29 @@
+# Phone vantage point (Redmi 8A 12f046690506, Wi-Fi ZTE_607157, default network per phone-stage)
+# UTC 2026-11-23T14:05:17Z
+== ICMP ==
+PING 8.140.23.253 (8.140.23.253) 56(84) bytes of data.
+64 bytes from 8.140.23.253: icmp_seq=1 ttl=64 time=127 ms
+64 bytes from 8.140.23.253: icmp_seq=2 ttl=64 time=134 ms
+
+--- 8.140.23.253 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 127.823/131.159/134.495/3.336 ms
+== WAN TCP control: https://www.baidu.com ==
+http=200 connect=0.293339 total=0.452508
+== platform TCP 5000 (curl connect-timeout 8s) ==
+http=000 connect=0.000000 total=8.000660
+curl: (28) Connection timed out after 8000 milliseconds
+== platform TCP 8883 (curl connect-timeout 8s) ==
+http=000 connect=0.000000 total=8.001418
+curl: (28) Connection timed out after 8001 milliseconds
+== platform TCP 1883 (curl connect-timeout 8s) ==
+http=000 connect=0.000000 total=8.002394
+curl: (28) Connection timed out after 8002 milliseconds
+== platform TCP 18083 (curl connect-timeout 8s) ==
+http=000 connect=0.000000 total=8.001441
+curl: (28) Connection timed out after 8001 milliseconds
+== platform TCP 5000/18083 netcat 6s ==
+nc: Timeout
+port=5000 rc=1 elapsed=6
+nc: Timeout
+port=18083 rc=1 elapsed=6

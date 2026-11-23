@@ -1,0 +1,140 @@
+{
+  "stage": "platform",
+  "case": "E2E-JOINT-P0",
+  "started_at": "2026-11-23T14:09:22.579Z",
+  "entry": "existing_service_browser_test (Playwright + Edge, host)",
+  "http_probes": [
+    {
+      "url": "http://8.140.23.253:18083/",
+      "method": "GET",
+      "started_at": "2026-11-23T14:09:23.021Z",
+      "error": "apiRequestContext.get: socket hang up",
+      "elapsed_ms": 5009,
+      "finished_at": "2026-11-23T14:09:28.030Z"
+    },
+    {
+      "url": "http://8.140.23.253:18083/status",
+      "method": "GET",
+      "started_at": "2026-11-23T14:09:28.030Z",
+      "error": "apiRequestContext.get: socket hang up",
+      "elapsed_ms": 5003,
+      "finished_at": "2026-11-23T14:09:33.033Z"
+    },
+    {
+      "url": "http://8.140.23.253:5000/",
+      "method": "GET",
+      "started_at": "2026-11-23T14:09:33.033Z",
+      "error": "apiRequestContext.get: socket hang up",
+      "elapsed_ms": 5004,
+      "finished_at": "2026-11-23T14:09:38.037Z"
+    },
+    {
+      "url": "http://8.140.23.253:5000/upload_data",
+      "method": "GET",
+      "started_at": "2026-11-23T14:09:38.038Z",
+      "error": "apiRequestContext.get: socket hang up",
+      "elapsed_ms": 5002,
+      "finished_at": "2026-11-23T14:09:43.040Z"
+    },
+    {
+      "url": "http://8.140.23.253:5000/login",
+      "method": "GET",
+      "started_at": "2026-11-23T14:09:43.040Z",
+      "error": "apiRequestContext.get: socket hang up",
+      "elapsed_ms": 5002,
+      "finished_at": "2026-11-23T14:09:48.042Z"
+    }
+  ],
+  "tcp_probes": [
+    {
+      "port": 5000,
+      "started_at": "2026-11-23T14:09:59.516Z",
+      "connect_ms": 0.92,
+      "first_bytes": null,
+      "result": "open",
+      "finished_at": "2026-11-23T14:10:00.731Z"
+    },
+    {
+      "port": 1883,
+      "started_at": "2026-11-23T14:10:00.732Z",
+      "connect_ms": 0.54,
+      "first_bytes": null,
+      "result": "open",
+      "finished_at": "2026-11-23T14:10:01.935Z"
+    },
+    {
+      "port": 8883,
+      "started_at": "2026-11-23T14:10:01.935Z",
+      "connect_ms": 0.48,
+      "first_bytes": null,
+      "result": "open",
+      "finished_at": "2026-11-23T14:10:03.147Z"
+    },
+    {
+      "port": 3306,
+      "started_at": "2026-11-23T14:10:03.148Z",
+      "connect_ms": 0.45,
+      "first_bytes": null,
+      "result": "open",
+      "finished_at": "2026-11-23T14:10:04.357Z"
+    },
+    {
+      "port": 18083,
+      "started_at": "2026-11-23T14:10:04.357Z",
+      "connect_ms": 0.57,
+      "first_bytes": null,
+      "result": "open",
+      "finished_at": "2026-11-23T14:10:05.568Z"
+    },
+    {
+      "port": 8083,
+      "started_at": "2026-11-23T14:10:05.568Z",
+      "connect_ms": 0.62,
+      "first_bytes": null,
+      "result": "open",
+      "finished_at": "2026-11-23T14:10:06.775Z"
+    },
+    {
+      "port": 8084,
+      "started_at": "2026-11-23T14:10:06.775Z",
+      "connect_ms": 0.76,
+      "first_bytes": null,
+      "result": "open",
+      "finished_at": "2026-11-23T14:10:07.982Z"
+    }
+  ],
+  "control_ports": [
+    {
+      "port": 65000,
+      "started_at": "2026-11-23T14:10:07.982Z",
+      "connect_ms": 0.59,
+      "first_bytes": null,
+      "result": "open",
+      "finished_at": "2026-11-23T14:10:09.194Z"
+    },
+    {
+      "port": 54321,
+      "started_at": "2026-11-23T14:10:09.194Z",
+      "connect_ms": 0.55,
+      "first_bytes": null,
+      "result": "open",
+      "finished_at": "2026-11-23T14:10:10.400Z"
+    },
+    {
+      "port": 1,
+      "started_at": "2026-11-23T14:10:10.400Z",
+      "connect_ms": 0.88,
+      "first_bytes": null,
+      "result": "open",
+      "finished_at": "2026-11-23T14:10:11.608Z"
+    }
+  ],
+  "browser_navigation": {
+    "url": "http://8.140.23.253:18083/",
+    "error": "page.goto: net::ERR_HTTP_RESPONSE_CODE_FAILURE at http://8.140.23.253:18083/",
+    "finished_at": "2026-11-23T14:09:53.057Z"
+  },
+  "note": "Only GET/HEAD requests, browser navigation and TCP connect. No POST, no write, no login, no database access.",
+  "host": "8.140.23.253",
+  "finished_at": "2026-11-23T14:10:11.608Z"
+}

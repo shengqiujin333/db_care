@@ -1,0 +1,38 @@
+# UTC 2026-11-23T14:41:00Z
+== pid ==
+4677
+== services ==
+ACTIVITY MANAGER SERVICES (dumpsys activity services)
+  User 0 active services:
+  * ServiceRecord{ccc70a6 u0 com.jinyuni.dengbei_care/.MqtttService}
+    intent={cmp=com.jinyuni.dengbei_care/.MqtttService}
+    packageName=com.jinyuni.dengbei_care
+    processName=com.jinyuni.dengbei_care
+    baseDir=/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk
+    dataDir=/data/user/0/com.jinyuni.dengbei_care
+    app=ProcessRecord{65dc1ba 4677:com.jinyuni.dengbei_care/u0a169}
+    isForeground=true foregroundId=1 foregroundNoti=Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE)
+    createTime=-1h12m47s506ms startingBgTimeout=--
+    lastActivity=-1h7m2s212ms restartTime=-1h12m47s505ms createdFromFg=true
+    startRequested=true delayedStop=false stopIfKilled=false callStart=true lastStartId=3
+    callerPackage=com.jinyuni.dengbei_care
+
+  * ServiceRecord{ebf8912 u0 com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService}
+    intent={cmp=com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService}
+    packageName=com.jinyuni.dengbei_care
+    processName=com.jinyuni.dengbei_care
+    baseDir=/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk
+    dataDir=/data/user/0/com.jinyuni.dengbei_care
+    app=ProcessRecord{65dc1ba 4677:com.jinyuni.dengbei_care/u0a169}
+    createTime=-1h7m46s367ms startingBgTimeout=--
+    lastActivity=-1h7m46s342ms restartTime=-1h7m46s367ms createdFromFg=true
+    startRequested=true delayedStop=false stopIfKilled=false callStart=true lastStartId=1
+    callerPackage=com.jinyuni.dengbei_care
+    Bindings:
+    * IntentBindRecord{5c0158 CREATE}:
+      intent={cmp=com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService}
+      binder=android.os.BinderProxy@1a592b1
+== logcat buffer size ==
+main: ring buffer is 4 MiB (3 MiB consumed), max entry is 5120 B, max payload is 4068 B
+system: ring buffer is 4 MiB (2 MiB consumed), max entry is 5120 B, max payload is 4068 B
+crash: ring buffer is 1 MiB (1 KiB consumed), max entry is 5120 B, max payload is 4068 B

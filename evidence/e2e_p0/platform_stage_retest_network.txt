@@ -1,0 +1,107 @@
+== UTC ==
+2026-11-23T14:39:53Z
+== wifi info (dumpsys wifi, selected) ==
+Wi-Fi is enabled
+Verbose logging is off
+Stay-awake conditions: 7
+mInIdleMode false
+mScanPending false
+WifiController:
+ total records=4
+ rec[0]: time=11-21 19:24:13.441 processed=StaDisabledWithScanState org=StaDisabledWithScanState dest=<null> what=155656(0x26008)
+ rec[1]: time=11-21 19:24:13.946 processed=StaDisabledWithScanState org=StaDisabledWithScanState dest=<null> what=155659(0x2600b)
+ rec[2]: time=11-21 19:24:13.946 processed=StaDisabledWithScanState org=StaDisabledWithScanState dest=StaEnabledState what=155656(0x26008)
+ rec[3]: time=11-21 19:24:16.852 processed=DefaultState org=StaEnabledState dest=<null> what=155655(0x26007)
+curState=StaEnabledState
+mPersistWifiState 1
+mAirplaneModeOn false
+mTxPkts 5314
+mRxPkts 11270
+mDataActivity 1
+mRegisteredCallbacks 1
+
+Locks held:
+Locks acquired: 0 full high perf, 0 full low latency
+Locks released: 0 full high perf, 0 full low latency
+
+Locks held:
+
+mMulticastEnabled 0
+mMulticastDisabled 0
+Multicast Locks held:
+
+Dump of WifiActiveModeWarden
+Current wifi mode: ClientModeActiveState
+NumActiveModeManagers: 1
+--Dump of ClientModeManager--
+current StateMachine mode: StartedState
+mClientInterfaceName: wlan0
+mIfaceIsUp: true
+
+WifiClientModeImpl:
+ total records=3597
+ rec[0]: time=11-23 21:50:48.889 processed=L2ConnectedState org=ConnectedState dest=<null> what=CMD_RSSI_POLL screen=on 1 0 "ZTE_607157" 7c:21:d8:60:71:57 rssi=-45 f=2462 sc=60 link=72 tx=0.6, 0.0, 0.0  rx=1.2 bcn=13181 [on:2466 tx:0 rx:0 period:3036] from screen [on:9282233 period:145519160] score=60
+ rec[1]: time=11-23 21:50:51.921 processed=L2ConnectedState org=ConnectedState dest=<null> what=CMD_RSSI_POLL screen=on 1 0 "ZTE_607157" 7c:21:d8:60:71:57 rssi=-44 f=2462 sc=60 link=72 tx=0.4, 0.0, 0.0  rx=1.1 bcn=13209 [on:2324 tx:0 rx:0 period:3033] from screen [on:9284557 period:145522193] score=60
+ rec[2]: time=11-23 21:50:54.986 processed=L2ConnectedState org=ConnectedState dest=<null> what=CMD_RSSI_POLL screen=on 1 0 "ZTE_607157" 7c:21:d8:60:71:57 rssi=-44 f=2462 sc=60 link=72 tx=0.2, 0.0, 0.0  rx=1.0 bcn=13235 [on:2216 tx:0 rx:0 period:3064] from screen [on:9286773 period:145525257] score=60
+ rec[3]: time=11-23 21:50:58.015 processed=L2ConnectedState org=ConnectedState dest=<null> what=CMD_RSSI_POLL screen=on 1 0 "ZTE_607157" 7c:21:d8:60:71:57 rssi=-44 f=2462 sc=60 link=72 tx=0.3, 0.0, 0.0  rx=1.0 bcn=13263 [on:2148 tx:0 rx:0 period:3029] from screen [on:9288921 period:145528286] score=60
+ rec[4]: time=11-23 21:51:01.053 processed=L2ConnectedState org=ConnectedState dest=<null> what=CMD_RSSI_POLL screen=on 1 0 "ZTE_607157" 7c:21:d8:60:71:57 rssi=-45 f=2462 sc=60 link=72 tx=0.1, 0.0, 0.0  rx=0.8 bcn=13291 [on:2501 tx:0 rx:0 period:3039] from screen [on:9291422 period:145531325] score=60
+ rec[5]: time=11-23 21:51:04.085 processed=L2ConnectedState org=ConnectedState dest=<null> what=CMD_RSSI_POLL screen=on 1 0 "ZTE_607157" 7c:21:d8:60:71:57 rssi=-45 f=2462 sc=60 link=72 tx=0.0, 0.0, 0.0  rx=0.9 bcn=13318 [on:2339 tx:0 rx:0 period:3032] from screen [on:9293761 period:145534357] score=60
+ rec[6]: time=11-23 21:51:07.123 processed=L2ConnectedState org=ConnectedState dest=<null> what=CMD_RSSI_POLL screen=on 1 0 "ZTE_607157" 7c:21:d8:60:71:57 rssi=-44 f=2462 sc=60 link=72 tx=0.0, 0.0, 0.0  rx=1.0 bcn=13345 [on:2184 tx:0 rx:0 period:3038] from screen [on:9295945 period:145537395] score=60
+ rec[7]: time=11-23 21:51:10.161 processed=L2ConnectedState org=ConnectedState dest=<null> what=CMD_RSSI_POLL screen=on 1 0 "ZTE_607157" 7c:21:d8:60:71:57 rssi=-45 f=2462 sc=60 link=72 tx=0.0, 0.0, 0.0  rx=0.8 bcn=13374 [on:2108 tx:0 rx:0 period:3038] from screen [on:9298053 period:145540433] score=60
+ rec[8]: time=11-23 21:51:13.208 processed=L2ConnectedState org=ConnectedState dest=<null> what=CMD_RSSI_POLL screen=on 1 0 "ZTE_607157" 7c:21:d8:60:71:57 rssi=-44 f=2462 sc=60 link=72 tx=0.0, 0.0, 0.0  rx=0.7 bcn=13402 [on:2352 tx:0 rx:0 period:3046] from screen [on:9300405 period:145543479] score=60
+ 
+== ip rule ==
+0:	from all lookup local 
+10000:	from all fwmark 0xc0000/0xd0000 lookup 99 
+10500:	from all iif lo oif dummy0 uidrange 0-0 lookup 1002 
+10500:	from all iif lo oif rmnet_data0 uidrange 0-0 lookup 1008 
+10500:	from all iif lo oif wlan0 uidrange 0-0 lookup 1027 
+13000:	from all fwmark 0x10063/0x1ffff iif lo lookup 97 
+13000:	from all fwmark 0xd0001/0xdffff iif lo lookup 1008 
+13000:	from all fwmark 0x10064/0x1ffff iif lo lookup 1027 
+14000:	from all iif lo oif dummy0 lookup 1002 
+14000:	from all fwmark 0xc0000/0xc0000 iif lo oif rmnet_data0 lookup 1008 
+14000:	from all iif lo oif wlan0 lookup 1027 
+15000:	from all fwmark 0x0/0x10000 lookup 99 
+16000:	from all fwmark 0x0/0x10000 lookup 98 
+17000:	from all fwmark 0x0/0x10000 lookup 97 
+19000:	from all fwmark 0x64/0x1ffff iif lo lookup 1027 
+22000:	from all fwmark 0x0/0xffff iif lo lookup 1027 
+32000:	from all unreachable
+== ip route all tables ==
+default via 192.168.0.1 dev wlan0 table 1027 proto static 
+192.168.0.0/24 dev wlan0 table 1027 proto static scope link 
+default dev dummy0 table 1002 proto static scope link 
+192.168.0.0/24 dev wlan0 proto kernel scope link src 192.168.0.103 
+broadcast 127.0.0.0 dev lo table local proto kernel scope link src 127.0.0.1 
+local 127.0.0.0/8 dev lo table local proto kernel scope host src 127.0.0.1 
+local 127.0.0.1 dev lo table local proto kernel scope host src 127.0.0.1 
+broadcast 127.255.255.255 dev lo table local proto kernel scope link src 127.0.0.1 
+broadcast 192.168.0.0 dev wlan0 table local proto kernel scope link src 192.168.0.103 
+local 192.168.0.103 dev wlan0 table local proto kernel scope host src 192.168.0.103 
+broadcast 192.168.0.255 dev wlan0 table local proto kernel scope link src 192.168.0.103 
+240e:440:300:7be::/64 dev wlan0 table 1027 proto kernel metric 256 expires 258sec pref medium
+240e:440:300:7be::/64 dev wlan0 table 1027 proto static metric 1024 pref medium
+fe80::/64 dev wlan0 table 1027 proto kernel metric 256 pref medium
+fe80::/64 dev wlan0 table 1027 proto static metric 1024 pref medium
+default via fe80::878:a4ff:fe18:54af dev wlan0 table 1027 proto ra metric 1024 expires 258sec hoplimit 64 pref medium
+unreachable default dev lo proto kernel metric 4294967295 error -101 pref medium
+unreachable default dev lo proto kernel metric 4294967295 error -101 pref medium
+unreachable default dev lo proto kernel metric 4294967295 error -101 pref medium
+unreachable default dev lo proto kernel metric 4294967295 error -101 pref medium
+fe80::/64 dev dummy0 table 1002 proto kernel metric 256 pref medium
+default dev dummy0 table 1002 proto static metric 1024 pref medium
+unreachable default dev lo proto kernel metric 4294967295 error -101 pref medium
+fe80::/64 dev rmnet_data0 table 1008 proto kernel metric 256 pref medium
+unreachable default dev lo proto kernel metric 4294967295 error -101 pref medium
+unreachable default dev lo proto kernel metric 4294967295 error -101 pref medium
+local ::1 dev lo table local proto unspec metric 0 pref medium
+local 240e:440:300:7be:5ce0:4a51:31b0:97e5 dev lo table local proto unspec metric 0 pref medium
+local 240e:440:300:7be:fb89:6cb1:e739:c1b7 dev lo table local proto unspec metric 0 pref medium
+local fe80::14f:4db3:167a:6de3 dev lo table local proto unspec metric 0 pref medium
+local fe80::2c5f:97ff:fe0d:6ec0 dev lo table local proto unspec metric 0 pref medium
+local fe80::c4be:8011:fd99:568e dev lo table local proto unspec metric 0 pref medium
+ff00::/8 dev dummy0 table local metric 256 pref medium
+ff00::/8 dev rmnet_data0 table local metric 256 pref medium
+ff00::/8 dev wlan0 table local metric 256 pref medium
+unreachable default dev lo proto kernel metric 4294967295 error -101 pref medium

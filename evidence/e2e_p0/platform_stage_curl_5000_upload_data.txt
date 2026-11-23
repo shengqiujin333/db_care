@@ -1,0 +1,11 @@
+* processing: http://8.140.23.253:5000/upload_data
+*   Trying 8.140.23.253:5000...
+* Connected to 8.140.23.253 (8.140.23.253) port 5000
+> GET /upload_data HTTP/1.1
+> Host: 8.140.23.253:5000
+> User-Agent: curl/8.2.1
+> Accept: */*
+> 
+* Empty reply from server
+* Closing connection
+curl: (52) Empty reply from server
