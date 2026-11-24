@@ -87,6 +87,7 @@ artifacts/codegraph_e2e_index.md | active | 代码智能：当前三根索引入
 artifacts/codegraph_firmware_initial_index.md | active | 代码智能：当前传感器根索引入口、版本/覆盖、增量同步与源码查询；保留人工跳过与原失败范围边界
 artifacts/codegraph_index.md | history | CodeGraph 1.6.0 历史索引交接（基线 1dd8e4b）；仓库根当前无 .codegraph/ 索引目录
 artifacts/codegraph_prepare_index.md | history | 代码智能：先前基线三根索引交接；固件更新记录见codegraph_firmware_initial_index.md
+artifacts/codegraph_tls_index.md | active | Code intelligence: current 8883 index handoff, three verified roots and certificate script coverage failure.
 artifacts/e2e_cases.yaml | active | 软件测试：端到端联合测试机器用例清单（P0 身份/手机 ZTE_607157/绑定接收就绪；N1 当前默认判据负向不上报；P1 受控注入 uid4+367+h 四段一致；稳定 stable_item_id、阶段顺序、依赖与条件；与 TD-E2E-SW-006 判据一致）
 artifacts/e2e_joint_test_design.md | active | 软件测试：端到端联合测试设计 TD-E2E-SW-006 v1.0（传感器→网关→安卓→平台；逐用例嵌入式→手机→平台；测试构建 367 注入、手机 Wi-Fi ZTE_607157、测试身份与平台回读缺口、P0/N1/P1 判据、证据规范、未执行边界与退出准则；只做设计不执行）
 artifacts/failure_resolution.md | active | 项目协调失败责任与人工交接报告 FR-003（EV-030 完整交付失败/固件再次拒接）：保留 EV-030/EV-031 原失败与版本引用、D2/E1/F-1 已修与两次拒接依据，区分上电段采集编排（串口晚开 0.208 s、pyocd 未登记/无 CW32 目标）、T5 双态现场条件、跨链路联测阶段、功耗仪器等缺项及责任/完成条件；指出验收阶段冲突与测试资产缺口；结果 REPLAN_REQUIRED，未改产品源码/配置/验收文档，未烧录或重测；FR-001 原文保留在后
@@ -630,6 +631,8 @@ evidence/codegraph_firmware_initial_validation.json | active | 代码智能：�
 evidence/codegraph_prepare_validation.json | active | 代码智能：本轮三个子工程同步前后状态、实际查询摘要与源码节选、UTC 时间、退出码及源码摘要
 evidence/codegraph_refresh_20261123.json | active | 代码智能：三个现有索引同步、状态、源码查询节选、退出码及逐文件摘要证据。
 evidence/codegraph_refresh_20261123.py | active | 代码智能：有界索引同步与查询采集脚本，含精确路径补查。
+evidence/codegraph_tls_20261124.json | active | Code intelligence: sync status, source query excerpts, source hashes and missing script query evidence.
+evidence/codegraph_tls_20261124.py | active | Code intelligence: bounded per-root synchronization and targeted query collector.
 evidence/codegraph_validation.md | history | CodeGraph 历史可用性验证证据（索引 complete、无 pending/drift）
 evidence/codegraph_validation_20261109.json | history | ?????????????????????????????????????????????
 evidence/codegraph_validation_20261110.json | active | ???????????????????????????????UTC ???????????
