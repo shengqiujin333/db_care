@@ -818,6 +818,7 @@ evidence/doc_verification_20261113_rev14/usb_devices.txt | active | USB 枚举�
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
 evidence/e2e_p0/ | active | E2E-JOINT-P0 执行证据目录（手机段复验通过、上一轮 ADB 未授权对照、平台只读基线、平台段 NOT EXECUTED 与路径勘误、关联索引）
 evidence/e2e_p0/P0_phone_stage_report.md | active | E2E-JOINT-P0 手机段复验报告（APK/设备摘要一致、ZTE_607157 默认网络、守护运行、网关发现/GwID、MacIdBook 含 6A002C00、0xA1 N=1 6B、dev=0/1 占位终态；测试身份缺口与平台未执行项披露）
+evidence/e2e_p0/P0_platform_failure_triage.md | active | E2E-JOINT-P0 平台段软件失败归因（REPAIR_REQUIRED：EMQX 8883 证书 SAN 仅 117.72.84.210，与 App 目标 8.140.23.253 不匹配；含竞争假设、责任边界、未执行项与复验判据）
 evidence/e2e_p0/P0_platform_stage_report.md | active | E2E-JOINT-P0 平台段执行记录（8883 放行后复测：服务/端口已实测，EMQX 证书 SAN 仅 117.72.84.210 导致 App TLS 失败，TEST_FAIL/MEASURED_DEFECT；日志/连接数/DB 回读 NOT EXECUTED）
 evidence/e2e_p0/p0_correlation_index.md | active | E2E-JOINT-P0 单一证据索引（uid4、gateway_ble_addr、GwID、APK SHA-256、平台服务身份、时间窗）
 evidence/e2e_p0/phone_stage_adb_state.txt | active | 上一轮 adb 版本、devices -l 与 get-state 原始输出（12f046690506 unauthorized，阻塞对照）
