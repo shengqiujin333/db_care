@@ -92,6 +92,7 @@ artifacts/e2e_cases.yaml | active | 软件测试：端到端联合测试机器�
 artifacts/e2e_joint_test_design.md | active | 软件测试：端到端联合测试设计 TD-E2E-SW-006 v1.0（传感器→网关→安卓→平台；逐用例嵌入式→手机→平台；测试构建 367 注入、手机 Wi-Fi ZTE_607157、测试身份与平台回读缺口、P0/N1/P1 判据、证据规范、未执行边界与退出准则；只做设计不执行）
 artifacts/failure_resolution.md | active | 项目协调失败责任与人工交接报告 FR-003（EV-030 完整交付失败/固件再次拒接）：保留 EV-030/EV-031 原失败与版本引用、D2/E1/F-1 已修与两次拒接依据，区分上电段采集编排（串口晚开 0.208 s、pyocd 未登记/无 CW32 目标）、T5 双态现场条件、跨链路联测阶段、功耗仪器等缺项及责任/完成条件；指出验收阶段冲突与测试资产缺口；结果 REPLAN_REQUIRED，未改产品源码/配置/验收文档，未烧录或重测；FR-001 原文保留在后
 artifacts/failure_resolution_backend_service.md | active | 项目协调失败责任与人工交接报告 FR-002（既有服务运行期核验）：保留 g002 WORK_FAILED 原失败与版本引用，区分契约层“无需改服务端”与运行期未证，列明服务访问连接未登记、网络动作未授权、测试身份未准备、回读/清理未授权、验收分界未定等缺项及责任/完成条件；本次结果 REPLAN_REQUIRED，未联网、未写库、未改配置或产品源码
+artifacts/failure_resolution_codegraph_tls_index.md | active | 项目协调失败责任与人工交接报告 FR-008（index_prepare CodeGraph 索引准备 WORK_FAILED）：保留原失败调用/产物/证据与源码版本引用，记录三根已可查、scripts 根 0 文件的事实与"工具 1.6.0 无 shell 语言、codegraph.json 无法补齐"的核对结论，区分缺能力/覆盖要求未定界/条件性安装授权，给出最小下一步、责任与完成条件及恢复后独立验证；结果 REPLAN_REQUIRED，未重跑失败能力、未安装工具、未改产品源码或验收文档
 artifacts/failure_resolution_product_acceptance_002.md | active | 失败责任与人工交接（FR-004，项目协调）：产品整体验收 TEST_FAIL 未解决；保留原失败与已尝试责任路径、拒接依据、缺项分类、最小下一步及恢复后独立验证
 artifacts/failure_resolution_product_acceptance_003.md | active | 失败责任与人工交接（FR-007，项目协调）：完整 SOP 复跑后组件链全绿但产品级验收仍 TEST_FAIL；阶段交付/完整产品门禁未决，release 产物与联调/平台授权缺失；记录缺项、最小下一步与恢复后独立验证
 artifacts/failure_resolution_product_acceptance_scope_recheck.md | active | 失败责任与人工交接（FR-005，项目协调）：产品整体验收复核仍 TEST_FAIL；记录本轮已闭合的 BOT-01/范围重评、未改变的外部条件与验收门禁缺口、最小下一步及恢复后独立验证
