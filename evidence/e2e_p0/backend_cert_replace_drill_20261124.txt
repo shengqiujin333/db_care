@@ -1,0 +1,133 @@
+# 本地演练原始输出：scripts/emqx_8883_cert_replace.sh（2026-11-24T09:41Z，Windows/Git-Bash + OpenSSL 3.1.2，脚本最终版本）
+# 说明：演练只用本地临时自建测试 CA 与临时目录，模拟”线上当前证书”作为回退基线；演练结束已删除全部测试密钥。
+# 这不是线上修复执行，也不使用任何产品私钥/CA 私钥。
+
+=== S0 生成演练用测试 CA 与“线上当前证书” ===
+.......+.+..+.......+.....+......+....+...+..+.+...+.....+....+.....+...............+.+++++++++++++++++++++++++++++++++++++++*.....+..+.+.....+.+..............+......+.............+..+.+...+.........+......+..+++++++++++++++++++++++++++++++++++++++*.++++++
+-----
+CA_RC=0 ca_sha256=74:E0:B5:62:30:0A:30:8C:5B:90:9C:29:E1:61:6A:13:1E:2D:14:98:0D:7B:AF:91:5D:30:D8:61:AE:50:80:66
+-----
+subject=C = US, O = Organization, CN = 117.72.84.210
+OLD_SERIAL=2B191B0AEBF53ED4C2666DEF234B08E702778889
+baseline verify_ip 8.140.23.253 (expected FAIL):
+error 64 at 0 depth lookup: IP address mismatch
+error old.pem: verification failed
+
+=== T1 缺 CA 私钥必须拒绝（不写、不部署） ===
+# ca=/tmp/emqxcertsbx/test-ca.crt
+FIELD ca_sha256=74:E0:B5:62:30:0A:30:8C:5B:90:9C:29:E1:61:6A:13:1E:2D:14:98:0D:7B:AF:91:5D:30:D8:61:AE:50:80:66
+WARN: 信任锚指纹与已知基线不同，若确为产品变更需重新评估；本脚本继续但记录该差异
+STOP: issue/apply 需要 --ca-key（Tiktok Root CA 私钥）；不得自签替代
+T1_EXIT=2
+
+=== T2 CA 私钥与 jd-ca.crt 不匹配必须拒绝 ===
+-----
+WARN: 信任锚指纹与已知基线不同，若确为产品变更需重新评估；本脚本继续但记录该差异
+FIELD ca_pub_sha256=2ad6ad4207b780fe704a3d98196a7591ebbe27ae1003d94acfef6d4abc530215
+FIELD cakey_pub_sha256=069f66ebd11eae2074d20204ceb35c666d20d95c2c39402560a3b6dcbc6a1949
+STOP: CA 私钥与 jd-ca.crt 不匹配：不得用错误 CA 签发
+T2_EXIT=2
+
+=== T3 issue 模式：签发+自检（不安装） ===
+## new leaf
+# subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+# issuer=C = US, O = LinkValue, CN = Tiktok Root CA
+# serial=2B191B0AEBF53ED4C2666DEF234B08E70277888A
+# notBefore=Nov 24 09:41:37 2026 GMT
+# notAfter=Nov 23 09:41:37 2028 GMT
+# sha256 Fingerprint=E2:19:A7:28:5C:DF:55:EC:05:32:45:7A:2D:B2:1B:4D:1E:69:72:EB:09:7E:C7:39:BC:C7:CB:7B:F9:F9:7A:E9
+# X509v3 Extended Key Usage: 
+#     TLS Web Server Authentication
+# X509v3 Subject Alternative Name: 
+#     IP Address:8.140.23.253, IP Address:117.72.84.210
+FIELD new_serial=2B191B0AEBF53ED4C2666DEF234B08E70277888A
+RESULT issue_chain_verify=OK
+RESULT issue_ip_san_match=OK
+RESULT issue_negative_control=OK
+RESULT issue_key_matches_cert=OK
+RESULT overall=ISSUED (未安装、未重载)
+T3_EXIT=0
+
+=== T4 apply：安装+重载+复核通过（--no-live-check，本地无 8883 监听） ===
+## new leaf
+# subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+# issuer=C = US, O = LinkValue, CN = Tiktok Root CA
+# serial=2B191B0AEBF53ED4C2666DEF234B08E70277888B
+# notBefore=Nov 24 09:41:40 2026 GMT
+# notAfter=Nov 23 09:41:40 2028 GMT
+# sha256 Fingerprint=8A:28:C7:9F:C4:BA:B1:95:6D:C3:AE:B4:6F:F0:7B:BE:89:80:42:E6:67:8F:0E:22:14:ED:B8:76:86:CE:44:C2
+# X509v3 Extended Key Usage: 
+#     TLS Web Server Authentication
+# X509v3 Subject Alternative Name: 
+#     IP Address:8.140.23.253, IP Address:117.72.84.210
+FIELD new_serial=2B191B0AEBF53ED4C2666DEF234B08E70277888B
+RESULT issue_chain_verify=OK
+RESULT issue_ip_san_match=OK
+RESULT issue_negative_control=OK
+RESULT issue_key_matches_cert=OK
+FIELD backup_dir=/tmp/emqxcertsbx/emqx-8883-work-3h5BDO/backup
+# 20898759630034dd4c033dd3637f83b93e777621a54a01dc3446933b1bd5b7b0 *leaf.crt.bak
+# 03824aaaded66d5f40f863b4b38413d67c14fe8db6a574c6de0dbfca6f52f07b *leaf.key.bak
+FIELD owner_cert=197609:197121 owner_key=197609:197121
+# reload: true
+FIELD reload_rc=0
+FIELD port_8883=CLOSED
+FIELD port_1883=CLOSED
+FIELD port_8083=CLOSED
+FIELD port_8084=CLOSED
+FIELD port_18083=CLOSED
+FIELD port_5000=CLOSED
+FIELD installed_serial=2B191B0AEBF53ED4C2666DEF234B08E70277888B
+RESULT live_verify=OK
+RESULT overall=APPLIED
+# 下一步（不由本脚本代判）：交回软件测试在同一用例/同一 App/同一手机复验 App→EMQX TLS/CONNACK
+T4_EXIT=0
+installed: 2B191B0AEBF53ED4C2666DEF234B08E70277888B
+installed verify_ip 8.140.23.253 (expected OK):
+<local-temp>/emqxcertsbx/certfile.pem: OK
+
+=== T5 apply：复核失败必须自动回退到已知失败基线 ===
+## 复核失败，执行回退
+# reload: true
+FIELD reload_rc=0
+FIELD port_8883=CLOSED
+FIELD port_1883=CLOSED
+FIELD port_8083=CLOSED
+FIELD port_8084=CLOSED
+FIELD port_18083=CLOSED
+FIELD port_5000=CLOSED
+FIELD installed_serial=2B191B0AEBF53ED4C2666DEF234B08E702778889
+RESULT baseline_restored=YES
+RESULT live_verify=RECORDED (baseline remains a known failure)
+RESULT overall=ROLLED_BACK (变更未生效，回到已知失败基线)
+T5_EXIT=3
+after rollback serial=2B191B0AEBF53ED4C2666DEF234B08E702778889 (expect 2B191B0AEBF53ED4C2666DEF234B08E702778889)
+
+=== T6 rollback 模式单独可用 ===
+backup_dir=/tmp/emqxcertsbx/emqx-8883-work-qILZsl/backup
+FIELD port_18083=CLOSED
+FIELD port_5000=CLOSED
+FIELD installed_serial=2B191B0AEBF53ED4C2666DEF234B08E702778889
+RESULT baseline_restored=YES
+RESULT live_verify=RECORDED (baseline remains a known failure)
+RESULT overall=ROLLED_BACK
+T6_EXIT=0
+
+=== T7 recon 模式（只读，无 emqx CLI 时应给出 ABSENT 与停止条件） ===
+# notAfter=Feb  1 09:41:34 2029 GMT
+# sha256 Fingerprint=62:21:B8:D3:76:49:85:5A:33:5B:4D:84:15:06:E4:01:16:4D:8F:AA:AE:E9:AB:67:5A:47:69:10:59:43:2D:F8
+# X509v3 Subject Alternative Name: 
+#     IP Address:117.72.84.210
+FIELD deployed_serial=2B191B0AEBF53ED4C2666DEF234B08E702778889
+RESULT deployed_ip_san_match=FAIL
+FIELD ca_key_candidates=none
+## other listeners / flask baseline (connectivity only)
+FIELD port_1883=CLOSED
+FIELD port_8083=CLOSED
+FIELD port_8084=CLOSED
+FIELD port_18083=CLOSED
+FIELD port_5000=CLOSED
+RESULT overall=RECORDED
+
+=== 清理演练产物（测试 CA/私钥不保留） ===
+CLEANED=YES

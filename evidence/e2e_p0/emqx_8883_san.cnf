@@ -1,0 +1,57 @@
+# EMQX 8883 服务器证书签发模板 —— E2E-JOINT-P0 平台段证书修复包（后端工程）
+#
+# 目的：为既有平台 8.140.23.253 的 EMQX 8883 TLS listener 签发一张
+#       主机名标识与客户端连接地址一致的叶子证书，签发者为 App 信任锚
+#       CN=Tiktok Root CA, O=LinkValue（dengbei_care/app/src/main/assets/jd-ca.crt）。
+#
+# 边界：
+#   * 只影响叶子证书与 8883 listener 使用的 certfile/keyfile；
+#     不改 App 地址/端口/认证格式、不关闭客户端主机名校验、不放宽鉴权、不新增诊断接口。
+#   * 本文件是签发输入模板，不含任何私钥或 CA 材料。
+#   * 服务器上的实际证书/私钥路径、EMQX 配置路径与重载方式必须执行前只读确认，不得猜测。
+#
+# 使用（在持有 CN=Tiktok Root CA 私钥的受控环境，见
+# evidence/e2e_p0/P0_backend_cert_issuance_and_rollback.md §4）：
+#   openssl req -new -newkey rsa:2048 -nodes -keyout emqx_8883.key \
+#     -out emqx_8883.csr -config emqx_8883_san.cnf
+#   openssl x509 -req -in emqx_8883.csr -CA jd-ca.crt -CAkey tiktok_root_ca.key \
+#     -CAcreateserial -days 730 -sha256 -extfile emqx_8883_san.cnf -extensions v3_server \
+#     -out emqx_8883.pem
+
+[req]
+default_bits       = 2048
+prompt             = no
+distinguished_name = dn
+req_extensions     = v3_req
+x509_extensions    = v3_server
+
+[dn]
+C  = US
+ST = State
+L  = City
+O  = Organization
+OU = Organizational Unit
+CN = 8.140.23.253
+
+# CSR 阶段可用的扩展（Authority Key Identifier 需要签发者证书，故只在签发段加入）
+[v3_req]
+basicConstraints     = CA:FALSE
+keyUsage             = critical, digitalSignature, keyEncipherment
+extendedKeyUsage     = serverAuth
+subjectAltName       = @san
+subjectKeyIdentifier = hash
+
+# 签发阶段（openssl x509 -req -extensions v3_server）使用
+[v3_server]
+basicConstraints       = CA:FALSE
+keyUsage               = critical, digitalSignature, keyEncipherment
+extendedKeyUsage       = serverAuth
+subjectAltName         = @san
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid:always
+
+# 当前连接地址必须存在（IP.1）；旧地址保留仅为兼容既有资料引用与回退比较，
+# 不作为任何客户端连接目标。
+[san]
+IP.1 = 8.140.23.253
+IP.2 = 117.72.84.210

@@ -1,0 +1,29 @@
+# EMQX 8883 证书复检（只读 TLS 握手；无登录/无写入/无重启）
+# 生成时间(UTC): 2026-11-24T05:46:11Z  本地: 2026-11-24T13:46:11+0800
+# HEAD: bee64c8
+# 目标: 8.140.23.253:8883 ; 信任锚: dengbei_care/app/src/main/assets/jd-ca.crt
+
+## 1) 服务端返回叶子证书字段
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB82
+sha256 Fingerprint=48:76:E7:30:CC:AB:3E:35:4C:5B:38:19:B9:D7:0D:F1:10:63:51:91:6E:06:EE:EF:22:6A:37:7C:E3:54:AD:75
+notBefore=Oct 12 16:07:40 2024 GMT
+notAfter=Dec 21 16:07:40 2026 GMT
+X509v3 Subject Alternative Name: 
+    IP Address:117.72.84.210
+
+## 2) 链+主机名校验（App 信任锚 + -verify_hostname 8.140.23.253）
+4:verify error:num=62:hostname mismatch
+23:Verification error: hostname mismatch
+31:Verify return code: 62 (hostname mismatch)
+
+## 3) jd-ca.crt 字段（信任锚）
+subject=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+sha256 Fingerprint=75:33:09:B3:9F:1B:8F:85:B4:D7:57:76:BF:D3:8A:42:52:0D:C1:A0:5E:A2:0B:A3:11:7E:B3:9C:BA:B2:15:2B
+notBefore=Oct 12 16:05:01 2024 GMT
+notAfter=Oct 10 16:05:01 2034 GMT
+
+## 4) 期望与实际
+期望: SAN 含 IP:8.140.23.253 且 Verify return code 0 (ok)

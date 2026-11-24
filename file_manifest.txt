@@ -817,9 +817,21 @@ evidence/doc_verification_20261113_rev14/ui_06_sensor_list_empty.xml | active | 
 evidence/doc_verification_20261113_rev14/usb_devices.txt | active | USB 枚举身份记录（COM43 Prolific 067B:2303、COM26 C251:F001 CDC、CW-DAPLink 序列号）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
 evidence/e2e_p0/ | active | E2E-JOINT-P0 执行证据目录（手机段复验通过、上一轮 ADB 未授权对照、平台只读基线、平台段 NOT EXECUTED 与路径勘误、关联索引）
+evidence/e2e_p0/P0_backend_cert_issuance_and_rollback.md | active | E2E-JOINT-P0 平台段 8883 证书核发与回退条件（后端工程）：操作者“允许维护证书、先定核发与回退条件”要求下的 C1–C6 前置、SAN/扩展规范、签发与部署命令、R1–R4 回退触发与回退后判据、服务器/客户端/正式面判据、风险与未执行项
+evidence/e2e_p0/P0_backend_cert_ops_runbook.md | active | E2E-JOINT-P0 平台段 8883 证书变更运维执行手册：只读侦察/备份/签发/部署重载/变更后判据/回退步骤与回传要求；明确禁止自签替代、关闭客户端校验、改认证库或新增诊断端口
+evidence/e2e_p0/P0_backend_repair_scope.md | active | E2E-JOINT-P0 平台段后端修复评估（§1–§7 只读复检确认 8883 证书 serial/指纹/SAN 未变、-verify_hostname 返回 62 主机名不匹配、责任边界复核、本地无匹配/CA 私钥；§8–§9 操作者答复与复检、判据修订、执行材料；§10 操作者答复与复检、判据修订、执行材料；§11 本轮：10:19:59Z 复查证书仍未变（serial/指纹/SAN 与原始失败一致）、已完成材料清单、B1–B4 具体阻塞与两种范围方案，交回规划/审批决定）
 evidence/e2e_p0/P0_phone_stage_report.md | active | E2E-JOINT-P0 手机段复验报告（APK/设备摘要一致、ZTE_607157 默认网络、守护运行、网关发现/GwID、MacIdBook 含 6A002C00、0xA1 N=1 6B、dev=0/1 占位终态；测试身份缺口与平台未执行项披露）
 evidence/e2e_p0/P0_platform_failure_triage.md | active | E2E-JOINT-P0 平台段软件失败归因（REPAIR_REQUIRED：EMQX 8883 证书 SAN 仅 117.72.84.210，与 App 目标 8.140.23.253 不匹配；含竞争假设、责任边界、未执行项与复验判据）
 evidence/e2e_p0/P0_platform_stage_report.md | active | E2E-JOINT-P0 平台段执行记录（8883 放行后复测：服务/端口已实测，EMQX 证书 SAN 仅 117.72.84.210 导致 App TLS 失败，TEST_FAIL/MEASURED_DEFECT；日志/连接数/DB 回读 NOT EXECUTED）
+evidence/e2e_p0/backend_cert_csr_dryrun.txt | active | 8883 叶子证书签发模板本地演练原始输出（CSR 含 IP:8.140.23.253；临时测试 CA 走完整签发链；-verify_ip 命中/不命中；-verify_hostname 回退 CN 的判别力核对；临时私钥与测试 CA 已删除，不构成修复）
+evidence/e2e_p0/backend_cert_recheck_20261124_0546Z.txt | active | 2026-11-24T05:46Z 只读 8883 复检原始输出（serial 77ADCFD9…、指纹 48:76:E7:30…、SAN 仅 IP:117.72.84.210、verify_hostname 返回 62；证明缺陷未被覆盖）
+evidence/e2e_p0/backend_cert_recheck_20261124_0705Z.txt | active | 2026-11-24T07:06:23Z 只读 8883 复检原始输出（叶子证书 serial/指纹/SAN 与基线一致、链校验 OK、verify_ip 8.140.23.253 error 64 IP address mismatch；证明运维未执行变更时缺陷仍在）
+evidence/e2e_p0/backend_cert_recheck_20261124_0931Z.txt | active | 2026-11-24T09:31Z 只读 8883 复检原始输出：serial 77ADCFD9…、指纹 48:76:E7:30…、SAN 仅 IP:117.72.84.210、链校验 OK、-verify_ip 8.140.23.253 失败（error 64）、负例 8.140.23.254 不通过；证明操作者答复“证书没有替换”时线上证书仍未变更
+evidence/e2e_p0/backend_cert_recheck_20261124_1015Z.txt | active | 2026-11-24T10:19:59Z 只读 8883 复检原始输出（--expect-baseline）：serial 77ADCFD9…、指纹 48:76:E7:30…、SAN 仅 IP:117.72.84.210、链校验 OK、-verify_ip 8.140.23.253 error 64、负例 8.140.23.254 不通过、overall=RECORDED/known_failure；证明权限审查答复后线上证书仍未变更
+evidence/e2e_p0/backend_cert_replace_drill_20261124.txt | active | 8883 证书替换执行器本地演练原始输出（T1 缺 CA 私钥拒签、T2 CA 与信任锚不匹配拒签、T3 issue 自检链+IP SAN+负例、T4 apply 安装重载复核 APPLIED、T5 复核失败自动回退 ROLLED_BACK、T6 rollback 独立回退、T7 recon 只读记录；仅本地临时测试 CA，演练后已删除，不构成线上修复）
+evidence/e2e_p0/backend_repair_cert_recheck.txt | active | 2026-11-24T04:54:46Z 首次后端修复调用的只读 TLS 复检原始输出（服务器证书 subject/issuer/有效期/serial/指纹/SAN、jd-ca.crt 字段、-verify_hostname 返回码 62、本地候选私钥与部署证书公钥比对不一致）
+evidence/e2e_p0/emqx_8883_execution_record_template.md | active | 8883 证书变更运维回传模板：基本事实/变更前基线/备份/签发/部署重载/8 项变更后判据/回退/缺口字段；不含任何私钥或口令
+evidence/e2e_p0/emqx_8883_san.cnf | active | 8883 服务器叶子证书 CSR/签发模板（SAN=IP:8.140.23.253 + 保留旧 IP、CA:FALSE、serverAuth、AKID 仅在签发段；不含任何私钥）
 evidence/e2e_p0/p0_correlation_index.md | active | E2E-JOINT-P0 单一证据索引（uid4、gateway_ble_addr、GwID、APK SHA-256、平台服务身份、时间窗）
 evidence/e2e_p0/phone_stage_adb_state.txt | active | 上一轮 adb 版本、devices -l 与 get-state 原始输出（12f046690506 unauthorized，阻塞对照）
 evidence/e2e_p0/phone_stage_apk_digest.txt | active | 设备侧 base.apk 路径与 SHA-256（与候选 app-debug.apk 一致）
@@ -1959,6 +1971,8 @@ fw_release/fw_sensor_FD-002r8.zip | active | 确定性发布包（134791 B，md5
 gateway_board.xml | active | 网关（中继器）原理图 XML（OrCAD 导出；本轮需求明确不改网关）
 gxht40.pdf | active | GXHT40 数据手册 V2.6（地址仅 0x44/0x45、命令 0xFD/0x94、CRC-8 poly 0x31/init 0xFF、换算 §7.5、t_MEAS/t_PU、VDD 1.6..5.5 V）
 readme.txt | active | 用户当前需求：GXHT40、光敏、180s采样、升温>0.9℃且无光或>35℃、Android与UART1；已删除旧1/3要求，当前有光且禁止安排调温调光功耗硬件测试
+scripts/emqx_8883_cert_replace.sh | active | E2E-JOINT-P0 平台段 8883 证书替换单入口执行器（recon/issue/apply/rollback）：只读侦察、无 CA 私钥或 CA 与 App 信任锚不匹配即拒签、签发链+IP SAN+负例硬门禁、备份后安装重载、TLS/verify_ip/其他端口复核、复核失败自动回退；不打印或回传私钥，不得用于跳过硬名校验或自签替代
+scripts/emqx_8883_cert_verify.sh | active | 8883 listener 叶子证书只读核验脚本（--expect-new 判 SAN/链/IP 命中且 serial 已变，--expect-baseline 记录已知失败；负例对照防判据放宽；只做握手与本地 openssl 校验）
 sensor_hardware/ | active | 传感器硬件资料根（BOM + OrCAD 网表/器件）
 sensor_hardware/MAIN_BOARD.BOM | active | 传感器 BOM（含本次新增光敏电阻与分压电路元件）
 sensor_hardware/pstchip.dat | active | 器件引脚定义

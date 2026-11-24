@@ -1,0 +1,44 @@
+# EMQX 8883 证书只读复检（无登录/无写入/无重启）
+# 生成时间(UTC): 2026-11-24T07:06:23Z  本地: 2026-11-24T15:06:23+0800
+# HEAD: bee64c8  工作区: 8 个未提交条目
+# 目标: 8.140.23.253:8883 ; 信任锚: dengbei_care/app/src/main/assets/jd-ca.crt
+# openssl: OpenSSL 3.1.2 1 Aug 2023 (Library: OpenSSL 3.1.2 1 Aug 2023)
+
+## 1) 服务端返回叶子证书
+s_client rc=0
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB82
+notBefore=Oct 12 16:07:40 2024 GMT
+notAfter=Dec 21 16:07:40 2026 GMT
+sha256 Fingerprint=48:76:E7:30:CC:AB:3E:35:4C:5B:38:19:B9:D7:0D:F1:10:63:51:91:6E:06:EE:EF:22:6A:37:7C:E3:54:AD:75
+X509v3 Subject Alternative Name: 
+    IP Address:117.72.84.210
+
+## 2) 链校验（App 信任锚）与 IP 主机名判据
+C:/Users/kason/AppData/Local/Temp/tmp.sXsRHjzEk9/leaf.pem: OK
+verify(chain) rc=0
+C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+error 64 at 0 depth lookup: IP address mismatch
+error C:/Users/kason/AppData/Local/Temp/tmp.sXsRHjzEk9/leaf.pem: verification failed
+verify_ip(8.140.23.253) rc=2
+C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+error 64 at 0 depth lookup: IP address mismatch
+error C:/Users/kason/AppData/Local/Temp/tmp.sXsRHjzEk9/leaf.pem: verification failed
+verify_ip(8.140.23.254 反例) rc=2
+
+## 3) -verify_hostname 参考（会回退比较 CN，不作 IP SAN 判据）
+C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+error 62 at 0 depth lookup: hostname mismatch
+error C:/Users/kason/AppData/Local/Temp/tmp.sXsRHjzEk9/leaf.pem: verification failed
+verify_hostname rc=2
+
+## 4) 信任锚字段
+subject=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+notBefore=Oct 12 16:05:01 2024 GMT
+notAfter=Oct 10 16:05:01 2034 GMT
+sha256 Fingerprint=75:33:09:B3:9F:1B:8F:85:B4:D7:57:76:BF:D3:8A:42:52:0D:C1:A0:5E:A2:0B:A3:11:7E:B3:9C:BA:B2:15:2B
+
+## 5) 期望
+SAN 含 IP Address:8.140.23.253 且 verify_ip rc=0

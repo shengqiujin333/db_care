@@ -1,0 +1,28 @@
+# EMQX TLS leaf certificate check
+# time_utc=2026-11-24T10:19:59Z host=8.140.23.253 port=8883 mode=--expect-baseline
+# ca=dengbei_care/app/src/main/assets/jd-ca.crt
+RESULT tls_handshake=OK
+# --- leaf certificate ---
+# subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+# issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+# serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB82
+# notBefore=Oct 12 16:07:40 2024 GMT
+# notAfter=Dec 21 16:07:40 2026 GMT
+# sha256 Fingerprint=48:76:E7:30:CC:AB:3E:35:4C:5B:38:19:B9:D7:0D:F1:10:63:51:91:6E:06:EE:EF:22:6A:37:7C:E3:54:AD:75
+# X509v3 Subject Alternative Name: 
+#     IP Address:117.72.84.210
+FIELD serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB82
+FIELD sha256=48:76:E7:30:CC:AB:3E:35:4C:5B:38:19:B9:D7:0D:F1:10:63:51:91:6E:06:EE:EF:22:6A:37:7C:E3:54:AD:75
+RESULT san_contains_target=NO
+# --- verify with App trust anchor ---
+# C:/Users/kason/AppData/Local/Temp/tmp.7LcKmKCKDH/leaf.pem: OK
+RESULT chain_verify=OK
+# --- verify_ip 8.140.23.253 (authoritative for IP endpoints) ---
+# C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+# error 64 at 0 depth lookup: IP address mismatch
+# error C:/Users/kason/AppData/Local/Temp/tmp.7LcKmKCKDH/leaf.pem: verification failed
+RESULT ip_san_match=FAIL
+RESULT negative_control=OK
+RESULT mode=baseline serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB82
+RESULT baseline_state=known_failure (SAN does not identify 8.140.23.253)
+RESULT overall=RECORDED

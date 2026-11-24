@@ -1,0 +1,88 @@
+# 8883 叶子证书签发模板本地演练（仅由模板生成 CSR；不接触生产服务、无 CA 私钥、未签发可用证书）
+# 时间(UTC): 2026-11-24T05:46:51Z
+# OPENSSL: OpenSSL 3.1.2 1 Aug 2023 (Library: OpenSSL 3.1.2 1 Aug 2023)
+# 模板: evidence/e2e_p0/emqx_8883_san.cnf
+
+## 1) 由模板生成新私钥与 CSR（临时目录）
+openssl_req_exit=0
+........+...............+........+.+.....+......+....+............+...+.....+.......+..+++++++++++++++++++++++++++++++++++++++*.....+......+...+....+...+.........+++++++++++++++++++++++++++++++++++++++*......+..+...+......+.+..+.+..+.......+......+......+...+........+.........+.+..+.+......+.....+.+...+..+...............+...+.+......+..............+.+..+...+.......+...........+.+...+...+..+.+...............+.....+.+........+.+..+.......+...............+......+..+...+.......+...+..+.......++++++
+...+..........................+....+.....+...............+.............+........+++++++++++++++++++++++++++++++++++++++*........+......+...+............+....+..+...+....+......+..+++++++++++++++++++++++++++++++++++++++*.+....+...+.....+.........+....+...........+....+...........+...+.......+...+...+.................+.+..+.......+.....+..........+.....................+.....+.+........+.++++++
+-----
+
+## 2) CSR 自签名校验与主题
+Certificate request self-signature verify OK
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+verify_exit=0
+
+## 3) CSR 中的 SAN（客户端实际校验的字段）
+                X509v3 Subject Alternative Name: 
+                    IP Address:8.140.23.253, IP Address:117.72.84.210
+                X509v3 Subject Key Identifier: 
+
+## 4) CSR 中的密钥用途扩展
+            Requested Extensions:
+                X509v3 Basic Constraints: 
+                    CA:FALSE
+                X509v3 Key Usage: critical
+                    Digital Signature, Key Encipherment
+                X509v3 Extended Key Usage: 
+
+## 5) 演练产物清理
+temp_dir_removed
+
+## 6) 结论边界
+本演练只证明模板能生成包含 IP:8.140.23.253 的 CSR（openssl 语法与 SAN 编码正确）。
+未由 Tiktok Root CA 签发、未部署、未替换任何服务器证书、未重载 EMQX，因此不构成修复，也不改变当前失败结论。
+
+
+
+## 7) 签发命令链演练（用临时自建测试 CA 代替 Tiktok Root CA；只验证命令与判据，不产生可用证书）
+时间(UTC): 2026-11-24T05:47:31Z
+test_ca_exit=0
+leaf_csr_exit=0
+sign_exit=0
+Certificate request self-signature ok
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+
+--- 签发结果的 SAN / AKID ---
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+issuer=C = US, O = LocalDryRun, CN = DryRunTestCA
+serial=4D5F6AD894C91EB8357877F9AC50D156B36A7C31
+notBefore=Nov 24 05:47:32 2026 GMT
+notAfter=Nov 26 05:47:32 2026 GMT
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+X509v3 Authority Key Identifier: 
+    EA:EB:CD:97:0C:EC:38:DA:FC:43:02:B5:5D:D8:67:5F:2A:E3:37:CF
+
+--- 用测试 CA 做链 + 主机名校验（判据与服务器侧复验命令一致） ---
+hostname=8.140.23.253 -> .tmp_cert_dryrun/leaf.pem: OK 
+hostname=117.72.84.210 -> C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253 error 62 at 0 depth lookup: hostname mismatch error .tmp_cert_dryrun/leaf.pem: verification failed 
+hostname=8.140.23.254 -> C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253 error 62 at 0 depth lookup: hostname mismatch error .tmp_cert_dryrun/leaf.pem: verification failed 
+temp_dir_removed
+
+结论边界：签发命令链与验签判据在本地可复现（含 SAN 命中/不命中两种结果）。
+真实签发必须使用服务器侧 CN=Tiktok Root CA 私钥；本演练的自建测试 CA 与临时私钥已在演练后删除，不进入生产，不构成修复。
+
+## 8) 复验命令判别力核对：-verify_hostname 会回退 CN，必须用 -verify_ip 判 IP SAN
+时间(UTC): 2026-11-24T05:48:08Z
+ca_exit=0
+csr_exit=0
+sign_exit=0
+
+构造：CN=other.example，SAN=IP:8.140.23.253（故意让 CN 与目标地址不一致）
+subject=CN = other.example
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253
+
+a) openssl verify -verify_hostname 8.140.23.253（只比对 DNS/CN，不判 IP SAN）
+CN = other.example error 62 at 0 depth lookup: hostname mismatch error .tmp_cert_dryrun3/l.pem: verification failed 
+b) openssl verify -verify_ip 8.140.23.253（严格比对 IP SAN）
+.tmp_cert_dryrun3/l.pem: OK 
+c) openssl verify -verify_ip 8.140.23.254（反例，应失败）
+CN = other.example error 64 at 0 depth lookup: IP address mismatch error .tmp_cert_dryrun3/l.pem: verification failed 
+
+对照上一步 §7：新证书 CN=8.140.23.253 时 -verify_hostname 8.140.23.253 返回 OK，但该 OK 可由 CN 命中产生，不能证明 IP SAN 正确。
+因此服务器侧与复验判据必须同时满足：SAN 含 IP:8.140.23.253（文本核对）+ openssl verify -verify_ip 8.140.23.253 返回 OK。
+说明：Android/Conscrypt 对 IP 形式主机按 IP SAN 校验（CN 不参与该分支），故 SAN 是本缺陷的实质修复点。
+temp_dir_removed
