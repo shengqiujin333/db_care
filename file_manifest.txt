@@ -113,6 +113,7 @@ artifacts/monitoring_reliability_8883.yaml | active | MonitoringArtifact 指针�
 artifacts/software_e2e_plan.md | history | 历史软件端到端测试计划 E2E-SW-004 rev 4.0（AA-005 七项增量；当前 AA-006 阶段不适用，跨链路联调属后续阶段）
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-005 rev 5.0（AA-006 ITEM-001..003 扫描权限自动续跑/BLE 读取终态/报告再生成反馈逐条追踪；宿主机映射矩阵、静态核查、真机 API29 与真实网关 devCount=0 用例、证据边界、人工延期与阶段外项、最终判定规则）
 artifacts/software_test_design_cert8883.md | active | 软件测试：8883 证书与客户端地址不匹配修复测试设计 TD-CERT8883-001 v1.0（原 CA 签发/链/IP SAN/负例、App TLS/CONNACK 真实复验、不受影响路径回归、安卓上传与 P1 四段一致条件、信任锚变更分支、证据/退出准则/NOT EXECUTED；只做设计不执行）
+artifacts/software_test_report_cert8883.md | active | 软件测试：8883 证书修复后独立验证报告（两轮；SRV-01 PASS、CLI-02 TLS 维度 PASS/CONNACK rc=5 认证层另记、REG-03 PASS；UPLOAD-04 第 2 轮用模拟账号真实上传实测平台 401 FAIL、无受理行故持久化回读 NOT EXECUTED；P0 证书维度 PASS、P1 NOT EXECUTED；含竞争假设、证据索引与残留状态披露）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
 artifacts/system_analysis_current.md | active | 系统架构：最新需求与旧1/3判据冲突、禁止调温调光功耗测试的当前边界、可复用候选版本及摘要、历史证据限制和后续集成缺口
 artifacts/test_design.md | active | 嵌入式联合测试设计 TD-002 rev 10.0（传感器→网关→安卓→平台 E2E）：用户不调温/不改光强且 T=0 时当前量产固件不会自然上报，方案规定测试专用构建在采样后判定前注入 367（36.7℃）走真实 >35 分支，默认关闭、正式版排除、E2E 后恢复发布镜像；含 J-00 先绑定/读就绪、J-01 同一 uid4+367+真实湿度跨端四段证据、J-02 负向不上传、EM-01..08 与退出准则；真实物理 >35℃/升温+无光/双态/功耗/433 电气/平台清理/手机 ADB 未授权/Wi-Fi 未连列 NOT EXECUTED；只做设计不执行）
@@ -2010,6 +2011,70 @@ evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-00
 evidence/software_triage.md | active | 负责角色：软件测试。Android 软件失败归因（AA-005 G-6 / D-AA005-1）：401/403 后仅 park 本批、未读取全局阻塞，自动触发仍上传其余到期行；含对象版本、源码机制、独立复现、影响范围、竞争假设与复验目标；结论为需 Android 实现修复
 evidence/software_verify_aa005_android_check.py | active | AA-005 七项增量独立静态核查（54 项：权限/MAC 单一来源/旧状态清零/容量与完整性接线/上传分类与阻塞/规则文案/版本/清单；退出码 0/1；含 FINDING E6）
 evidence/software_verify_card_status_item011.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/software_verify_cert8883_20261125/01_srv_cert_verify.txt | active | 8883 叶子证书独立核验原始输出（tls_handshake/issuer/serial/SAN/chain/verify_ip/负例/serial_changed/overall=PASS）
+evidence/software_verify_cert8883_20261125/02_logcat_raw.txt | active | 修复后同版本 App 早段窗口 logcat（0 次 SAN/链错误；CONNACK rc=5；BLE DATA_OK）
+evidence/software_verify_cert8883_20261125/03_myprefs.xml | active | 设备端 MyPrefs 实测（无 registerphone/mac_addr；measure_state=stopping；网关 BLE 地址）
+evidence/software_verify_cert8883_20261125/04_regression_probe.txt | active | 主机侧只读回归探测原始输出（1883/8883/8083/8084/18083/5000/3306、TLS 链、Flask 路由、Dashboard）
+evidence/software_verify_cert8883_20261125/05_logcat_clean_window.txt | active | App 重启后干净 logcat 窗口
+evidence/software_verify_cert8883_20261125/06_logcat_after_relaunch.txt | active | App 重启后服务启动尝试与前台状态 logcat
+evidence/software_verify_cert8883_20261125/07_logcat_current_full.txt | active | App 守护启动前完整 logcat
+evidence/software_verify_cert8883_20261125/08_app_ui.png | active | App 首页截图（守护停止态、e2ep0 卡片）
+evidence/software_verify_cert8883_20261125/09_logcat_guard_started.txt | active | 通过首页实际按钮启动守护后的 logcat
+evidence/software_verify_cert8883_20261125/10_app_ui_guard_started.png | active | App 首页截图（守护运行“停止”、读数与报警）
+evidence/software_verify_cert8883_20261125/11_logcat_mqttservice.txt | active | 守护启动后 MqttService 日志切片
+evidence/software_verify_cert8883_20261125/12_logcat_mqttservice_1500.txt | active | BLE 读取重试至 DATA_OK 的 MqttService 日志切片
+evidence/software_verify_cert8883_20261125/13_logcat_after_ble.txt | active | 关键窗口：BLE DATA_OK、upload gated off、MQTT CONNACK rc=5、0 次 TLS 错误
+evidence/software_verify_cert8883_20261125/14_ui_dump_now.xml | active | 当前 App UI 控件树（停止按钮、18.2°C、35%、最近读取）
+evidence/software_verify_cert8883_20261125/15_notification_state.txt | active | App 前台服务通知与通知渠道状态（dumpsys notification）
+evidence/software_verify_cert8883_20261125/16_logcat_final.txt | active | 本轮最终完整 logcat（0 次 SAN/链错误、0 崩溃/ANR、CONNACK rc=5、gated off 原文）
+evidence/software_verify_cert8883_20261125/17_platform_baseline_ssh.txt | active | 平台只读 SSH 独立基线（服务状态/NRestarts/listener/连接数/Flask 日志/本地 verify_ip；已脱敏）
+evidence/software_verify_cert8883_20261125/18_sim_state.txt | active | 测试手机 SIM/电话状态实测（ABSENT,ABSENT、OUT_OF_SERVICE）：说明无法在机上接收注册短信验证码
+evidence/software_verify_cert8883_20261125/extract_ui_text.py | active | UI XML 文本提取辅助脚本（只读）
+evidence/software_verify_cert8883_20261125/platform_baseline_ssh.py | active | 平台只读基线探针（从项目资料读取连接信息、脱敏、无写/无 DB/无 sudo）
+evidence/software_verify_cert8883_20261125/regression_probe.py | active | 平台端口/TLS/HTTP/MySQL 只读回归探针（无 POST/登录/DB 认证）
+evidence/software_verify_cert8883_r2_20261125/01_pkg_dump.txt | active | 第 2 轮设备包信息（vC10/1.9、codePath、lastUpdateTime）
+evidence/software_verify_cert8883_r2_20261125/02_prefs.xml | active | 第 2 轮起始 MyPrefs（无 registerphone/mac_addr，守护运行，网关 BLE 地址与绑定设备）
+evidence/software_verify_cert8883_r2_20261125/03_connectivity.txt | active | 第 2 轮连接状态原始 dump
+evidence/software_verify_cert8883_r2_20261125/04_android_version.txt | active | 测试手机 Android 版本（10）
+evidence/software_verify_cert8883_r2_20261125/05_root_get.body | active | GET / 404 响应体（平台 HTTP 可达性）
+evidence/software_verify_cert8883_r2_20261125/06_register_options.hdr | active | OPTIONS /register 200 响应头（路由存在）
+evidence/software_verify_cert8883_r2_20261125/07_register.body | active | 模拟测试账号创建响应体（User registered successfully）
+evidence/software_verify_cert8883_r2_20261125/07_register.hdr | active | 模拟测试账号 POST /register 响应头（200）
+evidence/software_verify_cert8883_r2_20261125/08_login.body | active | 模拟账号登录响应体（Login successful/token）
+evidence/software_verify_cert8883_r2_20261125/08_login.hdr | active | 模拟账号 POST /login 响应头（200）
+evidence/software_verify_cert8883_r2_20261125/09_power_state.txt | active | 测试手机电源/屏幕状态 dump
+evidence/software_verify_cert8883_r2_20261125/10_window_state.txt | active | 测试手机窗口状态 dump
+evidence/software_verify_cert8883_r2_20261125/11_ui_home.xml | active | App 首页实际控件树（守护运行、e2ep0 未收到）
+evidence/software_verify_cert8883_r2_20261125/12_ui_mine.xml | active | App“我的”页控件树（未登录、网关编码入口）
+evidence/software_verify_cert8883_r2_20261125/13_ui_login.xml | active | App 登录页控件树（登录 tab、手机号/密码/登录按钮）
+evidence/software_verify_cert8883_r2_20261125/14_ui_after_back.xml | active | 输入手机号/密码后的登录页控件树（含输入值）
+evidence/software_verify_cert8883_r2_20261125/20_logcat_capture.txt | active | 第 2 轮完整 logcat 原始采集（16:07–16:53，含 BLE 读数、上传 401、无崩溃/ANR）
+evidence/software_verify_cert8883_r2_20261125/21_prefs_after_login.xml | active | App 登录后 prefs（registerphone=14000000001）
+evidence/software_verify_cert8883_r2_20261125/22_ui_mine_logged_in.xml | active | 登录后“我的”页控件树（用户：已登录、网关编码）
+evidence/software_verify_cert8883_r2_20261125/23_prefs_after_mac.xml | active | 保存网关编码后 prefs（mac_addr=0200000000A1、upload_last_status=401、待发 1）
+evidence/software_verify_cert8883_r2_20261125/24_db_list.txt | active | App 数据库文件列表
+evidence/software_verify_cert8883_r2_20261125/25_bwtemperature_database1.db | active | App 本地 SQLite 数据库副本（用于只读核对读数与待发箱）
+evidence/software_verify_cert8883_r2_20261125/26_db_content.txt | active | 本地库/待发箱内容（真实读数 6A002C00/1795594889/18.0/35.8；attempts=20）
+evidence/software_verify_cert8883_r2_20261125/27_platform_http_log_slice.txt | active | 平台 HTTP 服务只读日志切片（登录 200、setmac 200、upload_data 401）
+evidence/software_verify_cert8883_r2_20261125/28_upload_direct.body | active | 同身份直连上传响应体（unauthorized）
+evidence/software_verify_cert8883_r2_20261125/28_upload_direct.hdr | active | 同身份直连 POST /upload_data 响应头（401）
+evidence/software_verify_cert8883_r2_20261125/29_upload_empty.body | active | 空 JSON 上传响应体（No json data）
+evidence/software_verify_cert8883_r2_20261125/29_upload_empty.hdr | active | 空 JSON 上传探针响应头（400）
+evidence/software_verify_cert8883_r2_20261125/30_upload_unregistered.body | active | 未注册手机号上传响应体（unauthorized）
+evidence/software_verify_cert8883_r2_20261125/30_upload_unregistered.hdr | active | 未注册手机号上传探针响应头（401）
+evidence/software_verify_cert8883_r2_20261125/31_ui_gateway_dialog.xml | active | 网关与上传设置对话框控件树（平台身份、上传 401、待发 1、重试上传）
+evidence/software_verify_cert8883_r2_20261125/32_prefs_after_retry.xml | active | “重试上传”后 prefs（upload_last_status=401、待发 5）
+evidence/software_verify_cert8883_r2_20261125/33_platform_http_log_upload_window.txt | active | 上传窗口平台只读日志（5 次 upload_data：401/401/400/401/401，无 200）
+evidence/software_verify_cert8883_r2_20261125/34_ui_upload_401.png | active | App 上传 401 状态界面截图
+evidence/software_verify_cert8883_r2_20261125/35_ui_upload_401_status.xml | active | App 上传 401 状态控件树（拒绝文案、待发 5、重试上传）
+evidence/software_verify_cert8883_r2_20261125/36_app_upload_window.txt | active | App 上传窗口 MqttService/CloudUpload 日志切片（BLE 读数→401 拒绝）
+evidence/software_verify_cert8883_r2_20261125/38_apk_sha256.txt | active | 设备侧 base.apk SHA-256（=主机 app-debug.apk）
+evidence/software_verify_cert8883_r2_20261125/39_wifi_dump.txt | active | Wi-Fi 状态 dump（SSID ZTE_607157、BSSID、RSSI）
+evidence/software_verify_cert8883_r2_20261125/40_wlan0.txt | active | wlan0 地址（192.168.0.103/24）
+evidence/software_verify_cert8883_r2_20261125/41_test_run_notes.txt | active | 第 2 轮运行记录（测试账号创建方式、合成 MAC、读数、上传结果、残留状态与未执行项）
+evidence/software_verify_cert8883_r2_20261125/extract_upload_window.py | active | 本地 logcat 上传窗口切片脚本
+evidence/software_verify_cert8883_r2_20261125/platform_log_slice2_ssh.py | active | 平台上传窗口日志只读切片脚本（无写/无 DB/无 sudo、凭据脱敏）
+evidence/software_verify_cert8883_r2_20261125/platform_log_slice_ssh.py | active | 平台 HTTP 日志只读切片脚本（无写/无 DB/无 sudo、凭据脱敏）
 evidence/software_verify_cloud_upload_item009.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_db_migration_item006.py | active | Android ITEM-006 独立验证脚本（SQLite v1→v3 迁移与数据保留）
 evidence/software_verify_detail_presentation_item012.py | active | 由 software_tester 新增或修改的项目相关文件

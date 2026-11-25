@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <string name="delayalarm">10</string>
+    <string name="gateway_ble_addr">84:C2:E4:03:02:02</string>
+    <boolean name="gateway_ble_addr_cleared" value="false" />
+    <string name="last_report_text">爱守护 - 早起报告&#10;&#10;昨日(2026-11-24)共上报 110 条数据（按条件上报，条数非等间隔），触发 153 次报警。&#10;&#10;【e2ep0】&#10;  - 采样 110 条&#10;  - 温度:最低 16.1°C,最高 18.6°C,平均 18.3°C&#10;  - 湿度:最低 35.1%,最高 36.2%,平均 35.3%&#10;  - 报警 153 次&#10;&#10;建议:&#10;  - [e2ep0] 温湿度超限报警 153 次,建议检查是否需要调整报警阈值或环境&#10;    </string>
+    <long name="last_report_time" value="1795561155602" />
+    <string name="hummin">40</string>
+    <string name="zhendongalarm">1</string>
+    <string name="tempmax">35</string>
+    <string name="dengbeialarm">1</string>
+    <string name="humdrop">0.1</string>
+    <string name="tempdrop">2</string>
+    <string name="report_time">07:00</string>
+    <boolean name="isFirstRun" value="true" />
+    <string name="yuzhialarm">1</string>
+    <string name="macid_name_map">{&quot;6A002C00&quot;:&quot;e2ep0&quot;}</string>
+    <string name="xianglingalarm">1</string>
+    <string name="finish_guard_time">2026-11-25 22:56:54</string>
+    <string name="guardtime">8</string>
+    <string name="tempmin">29</string>
+    <string name="measure_state">stopping</string>
+    <string name="hummax">75</string>
+    <boolean name="privacy_policy_accepted" value="true" />
+</map>

@@ -1,0 +1,84 @@
+# independent read-only platform baseline (software verification)
+started_utc=2026-11-25T07:07:12Z
+forbidden=mutation,sudo,restart,deploy,database,write-endpoint,private-key-output
+
+connect_result=OK
+--- [identity]
+exit=0
+2026-11-25T07:07:12Z
+iZ2zeih0gmrk47og5r4z7sZ
+Linux 6.8.0-136-generic x86_64
+
+--- [units]
+exit=0
+emqx active=active enabled=enabled
+user_script active=active enabled=enabled
+NRestarts=0
+ActiveEnterTimestamp=Wed 2026-11-25 10:58:15 CST
+
+--- [emqx_status]
+exit=0
+Node 'emqx@127.0.0.1' 5.8.0 is started
+
+--- [emqx_broker]
+exit=0
+sysdescr  : EMQX
+version   : 5.8.0
+datetime  : 2026-11-25T15:07:14.082493778+08:00
+uptime    : 4 hours, 8 minutes, 56 seconds
+
+--- [emqx_listeners]
+exit=0
+tcp:default
+  listen_on       : 0.0.0.0:1883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : [{tcp_closed,6}]
+ssl:default
+  listen_on       : 0.0.0.0:8883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : [{not_authorized,288},{ssl_closed,34},{ssl_upgrade_timeout,1},{einval,22},{ssl_error,11},{bad_username_or_password,2}]
+ws:default
+  listen_on       : 0.0.0.0:8083
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+wss:default
+  listen_on       : 0.0.0.0:8084
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+
+--- [emqx_recent_log]
+exit=0
+-- No entries --
+
+--- [flask_recent_log]
+exit=0
+Nov 25 14:54:05 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 14:54:05] "GET / HTTP/1.1" 404 -
+Nov 25 14:54:05 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 14:54:05] "GET /login HTTP/1.1" 405 -
+Nov 25 14:54:05 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 14:54:05] "GET /upload_data HTTP/1.1" 405 -
+
+--- [local_8883_check]
+exit=0
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+Verify return code: 0 (ok)
+

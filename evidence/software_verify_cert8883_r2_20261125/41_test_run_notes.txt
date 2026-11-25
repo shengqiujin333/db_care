@@ -1,0 +1,59 @@
+CERT8883-UPLOAD-04 round 2 — test run notes (software verification)
+Window: 2026-11-25 16:07–16:53 CST (08:07–08:53Z)
+
+Device / client
+- Redmi 8A olivelite, Android 10 / API 29, serial 12f046690506
+- App com.jinyuni.dengbei_care versionCode=10 versionName=1.9
+- On-device base.apk SHA-256 = 80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b
+  (equals host dengbei_care/app/build/outputs/apk/debug/app-debug.apk, 10,370,964 B)
+- Default Wi-Fi ZTE_607157, wlan0 192.168.0.103 (network 101)
+- Guard running (MyPrefs measure_state=stopping), gateway_ble_addr=84:C2:E4:03:02:02,
+  bound device 6A002C00 (name e2ep0)
+
+Test identity (explicitly directed by the human as "模拟账号"; no SMS was sent)
+- Method: product HTTP route POST http://8.140.23.253:5000/register with
+  {"phoneNumber":"14000000001","password":"Test8888"} -> 200 {"message":"User registered successfully"}
+  The 140 prefix is an unassigned Chinese mobile range; this is a test-only identity,
+  not real user data and not an existing user's number.
+- POST /login same credentials -> 200 {"message":"Login successful","token":"some-jwt-token"}
+- App UI login (登录 tab) -> MyPrefs.registerphone=14000000001 ("用户：已登录"), no prefs edited directly
+- Platform gateway MAC: no confirmed gateway platform MAC was provided.
+  A clearly synthetic test MAC 0200000000A1 was saved through the App's existing
+  "网关编码 / 保存" path; POST /setmac -> 200 (platform log 16:21:22, abr.py:169 mysql.connect).
+  It is not derived from the BLE address or the gateway GwID.
+
+Real reading used by the App upload
+- BLE DATA_OK 16:21:29: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240,
+  id=6A002C00, T=18.0 C, H=35.8 %
+- App local row: (time=1795594889, dev_id=6A002C00, temperature=18.0, humidity=35.8)
+- Outbox row: (6A002C00, 1795594889, 18.0, 35.8, attempts=20, next_attempt_at=0)
+
+Upload results (real App path)
+- 16:21:31 POST /upload_data -> HTTP 401 (App log: upload rejected for 1 reading(s);
+  upload_last_status=401, upload_blocked_reason=AUTH_REJECTED; row retained)
+- 16:38:31 POST /upload_data -> HTTP 401 after user tapped "重试上传"
+  (App log: upload rejected for 5 reading(s); pending count=5)
+- App visible status: "云端上传被拒绝（HTTP 401），数据已保留（待发 5 条）"
+- No sensor_data readback possible: no request was accepted (401 reached before the
+  abr.py:222 mysql.connect insert path); no row to read.
+
+Direct diagnostic probes (same test identity, bounded)
+- 16:27:17 same payload -> 401 {"error":"unauthorized"}
+- 16:28:57 empty JSON body -> 400 {"error":"No json data"}
+- 16:28:57 unregistered phone 14000000002 / mac 0200000000A2 -> 401 {"error":"unauthorized"}
+
+Platform log window 16:20–16:45 (read-only journalctl; 5 POST /upload_data total)
+- 401 (App), 401 (direct same key), 400 (empty body), 401 (unregistered), 401 (App retry)
+- zero 200; no abr.py:222 deprecation/`mysql.connect()` line for any /upload_data call
+
+Side effects / state after test (disclosed, not cleaned)
+- App remains logged in as the test account 14000000001; mac_addr=0200000000A1;
+  guard running; 5 readings retained in pending_uploads because of the 401.
+- Simulated account remains in platform user_table (no delete/DB access authorized).
+- No SMS sent; no dashboard/DB login; no direct DB connection; no service change;
+  SSH used only for journalctl read of recent service logs.
+
+Not executed / not available
+- True row-level readback of bwusernamebase.sensor_data (no authorized read path)
+- Idempotency/duplicate-key observation on an accepted row (no accepted request)
+- Confirmed real gateway platform MAC / real verified user account

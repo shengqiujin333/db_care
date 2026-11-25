@@ -1,0 +1,13 @@
+# CERT8883-REG-03 read-only probe  time_utc=2026-11-25T06:54:06Z host=8.140.23.253
+PORT 1883 tcp=OPEN detail=OPEN (2 ms)
+PORT 8883 tcp=OPEN detail=OPEN (14 ms)
+PORT 8083 tcp=OPEN detail=OPEN (0 ms)
+PORT 8084 tcp=OPEN detail=OPEN (0 ms)
+PORT 18083 tcp=OPEN detail=OPEN (0 ms)
+PORT 5000 tcp=OPEN detail=OPEN (14 ms)
+TLS 8883 chain(trust_anchor)=OK detail=TLS TLSv1.3 peer_cn=8.140.23.253
+HTTP 5000 GET / status=404 allow='' body='<!doctype html> <html lang=en> <title>404 Not Found</title> <h1>Not Found</h1> <p>The requested URL was not found on the server. If you entered the URL manually'
+HTTP 5000 GET /login status=405 allow='POST, OPTIONS' body='<!doctype html> <html lang=en> <title>405 Method Not Allowed</title> <h1>Method Not Allowed</h1> <p>The method is not allowed for the requested URL.</p> '
+HTTP 5000 GET /upload_data status=405 allow='POST, OPTIONS' body='<!doctype html> <html lang=en> <title>405 Method Not Allowed</title> <h1>Method Not Allowed</h1> <p>The method is not allowed for the requested URL.</p> '
+HTTP 18083 GET /status status=200 body='Node emqx@127.0.0.1 is started\nemqx is running'
+PORT 3306 mysql_handshake=OK detail=handshake len=77 version=9.0.1

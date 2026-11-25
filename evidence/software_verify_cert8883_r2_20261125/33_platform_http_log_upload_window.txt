@@ -1,0 +1,25 @@
+# bounded read-only platform HTTP log slice over upload window (round 2)
+started_utc=2026-11-25T08:46:51Z
+forbidden=mutation,sudo,restart,deploy,database,private-key-output
+
+connect_result=OK
+--- [identity]
+exit=0
+2026-11-25T08:46:50Z
+2026-11-25 16:46:50 CST
+
+--- [http_log_1620_1645]
+exit=0
+2026-11-25T16:21:22+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: /root/abr.py:169: DeprecationWarning: 'db' is deprecated, use 'database'
+2026-11-25T16:21:22+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]:   conn = mysql.connect()
+2026-11-25T16:21:22+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:21:22] "POST /setmac HTTP/1.1" 200 -
+2026-11-25T16:21:31+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:21:31] "POST /upload_data HTTP/1.1" 401 -
+2026-11-25T16:27:17+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:27:17] "POST /upload_data HTTP/1.1" 401 -
+2026-11-25T16:28:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:28:57] "POST /upload_data HTTP/1.1" 400 -
+2026-11-25T16:28:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:28:57] "POST /upload_data HTTP/1.1" 401 -
+2026-11-25T16:38:31+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:38:31] "POST /upload_data HTTP/1.1" 401 -
+
+--- [upload_status_counts]
+exit=0
+5
+

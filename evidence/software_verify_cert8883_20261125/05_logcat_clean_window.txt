@@ -1,0 +1,1091 @@
+--------- beginning of main
+11-25 14:53:43.175   783  1848 D         : readbrightness,out1:0
+11-25 14:53:43.175   783  1848 D         : .
+11-25 14:53:43.175   783  1848 D         : readbrightness,out2:0.
+--------- beginning of system
+11-25 14:53:43.191  1580  7049 I ActivityManager: Force stopping com.jinyuni.dengbei_care appid=10169 user=0: from process:20235
+11-25 14:53:43.192  1580  7049 I AutoStartManagerService: MIUILOG- Reject RestartService packageName :com.jinyuni.dengbei_care uid : 10169
+11-25 14:53:43.192  1580  7049 I Process : Sending signal. PID: 32200 SIG: 19
+11-25 14:53:43.195  1580  7049 I ActivityManager: Killing 32200:com.jinyuni.dengbei_care/u0a169 (adj 200): stop com.jinyuni.dengbei_care: from process:20235
+11-25 14:53:43.198  1580  1835 I ProcessManager: remove no clear notification:StatusBarNotification(pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null key=0|com.jinyuni.dengbei_care|1|null|10169: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+11-25 14:53:43.199   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.201  1580  7049 I AutoStartManagerService: MIUILOG- Reject RestartService packageName :com.jinyuni.dengbei_care uid : 10169
+11-25 14:53:43.203   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.204  1904  1904 D StatusBar: onNotificationRemoved key=0|com.jinyuni.dengbei_care|1|null|10169 reason=8
+11-25 14:53:43.207   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.205  1580  7049 I AutoStartManagerService: MIUILOG- Reject RestartService packageName :com.jinyuni.dengbei_care uid : 10169
+11-25 14:53:43.208  1580  7049 W ActivityTaskManager: Force removing ActivityRecord{174ac7f u0 com.jinyuni.dengbei_care/.MainActivity t79 f}: app died, no saved state
+11-25 14:53:43.208  1904  1904 D StatusBar: removeNotification StatusBarNotification(pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null key=0|com.jinyuni.dengbei_care|1|null|10169: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+11-25 14:53:43.208  1904  1904 D StatusBar:     pkgName=com.jinyuni.dengbei_care appUid=10169 sdk=34 imp=3 sysApp=F priApp=F hasShown=F float=F keyguard=F peek=F fullscreen=F
+11-25 14:53:43.208  1904  1904 D StatusBar:     showMiuiAction=F enableFloat=T enableKeyguard=T floatTime=5000 messageCount=1 persistent=F customHeight=F customHideBorder=F
+11-25 14:53:43.209  1904  1904 D StatusBar: update app badge num: com.jinyuni.dengbei_care/,num=0,isAllowed=false,userId=0
+11-25 14:53:43.243  1882  2332 I BtGatt.ScanManager: msg.what = 6
+11-25 14:53:43.243  1580  1802 I MiuiNetworkPolicy: removeUidState uid = 10169
+11-25 14:53:43.244   514  1941 D OemNetd : whiteListUid: uid=10169, wmm=del
+11-25 14:53:43.251 29637 29637 D AggregateListener: notifyAction action:android.intent.action.PACKAGE_RESTARTED
+11-25 14:53:43.252 29637 29637 D AggregateListener: onPackageRestarted packageName:com.jinyuni.dengbei_care
+11-25 14:53:43.253  2194  2194 E PhoneInterfaceManager: [PhoneIntfMgr] getCarrierPackageNamesForIntent: No UICC
+11-25 14:53:43.253  2194  2194 D CarrierSvcBindHelper: No carrier app for: 0
+11-25 14:53:43.254  2194  2194 E PhoneInterfaceManager: [PhoneIntfMgr] getCarrierPackageNamesForIntent: No UICC
+11-25 14:53:43.254  2194  2194 D CarrierSvcBindHelper: No carrier app for: 1
+11-25 14:53:43.254  1580  3889 W ActivityManager: Sending non-protected broadcast android.intent.action.APPLICATION_MESSAGE_UPDATE from system 1904:com.android.systemui/1000 pkg com.android.systemui. Callers=
+11-25 14:53:43.256  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:53:43.257  1904  1904 D EventBus: [1904, u0] send(AppTransitionFinishedEvent)
+11-25 14:53:43.257  1904  1904 D EventBus: [1904, u0]  -> ForcedResizableInfoActivityController [0x545c07, P1] onBusEvent(AppTransitionFinishedEvent)
+11-25 14:53:43.257  2211  2356 I Launcher.ApplicationsMessage: onReceive false
+11-25 14:53:43.258  2211  2356 I Launcher.ApplicationsMessage: update com.jinyuni.dengbei_care/ to null
+11-25 14:53:43.265   514  1941 I netd    : firewallSetUidRule(2, 10109, 1) <0.06ms>
+11-25 14:53:43.269   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.273  1580  1826 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.273  1580  1826 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.273  1580  1826 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.274   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.276  1904  1904 D EventBus: [1904, u0] onBusEvent(AppTransitionFinishedEvent) duration: 18425 microseconds, avg: 1613
+11-25 14:53:43.276  1904  1904 D StatusBar: onNotificationRemoved key=0|com.miui.notification|2012875145|UNIMPORTANT|1000 reason=8
+11-25 14:53:43.277  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10120, uidState = 9
+11-25 14:53:43.278  1904  1904 D StatusBar: removeNotification StatusBarNotification(pkg=com.miui.notification user=UserHandle{0} id=2012875145 tag=UNIMPORTANT key=0|com.miui.notification|2012875145|UNIMPORTANT|1000: Notification(channel=id_aggregate pri=0 contentView=com.miui.notification/0x7f0d0024 vibrate=null sound=null defaults=0x0 flags=0x0 color=0x00000000 vis=PRIVATE))
+11-25 14:53:43.278  1904  1904 D StatusBar:     pkgName=com.miui.notification appUid=1000 sdk=29 imp=3 sysApp=T priApp=F hasShown=F float=F keyguard=F peek=F fullscreen=F
+11-25 14:53:43.278  1904  1904 D StatusBar:     showMiuiAction=F enableFloat=T enableKeyguard=F floatTime=5000 messageCount=1 persistent=T customHeight=T customHideBorder=F
+11-25 14:53:43.278   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.278  1904  1904 D StatusBar: update app badge num: com.miui.notification/,num=0,isAllowed=true,userId=0
+11-25 14:53:43.281  1580  1826 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.281  1580  1826 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.281  1580  1826 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.283   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.286  1580  7049 W ActivityManager: Sending non-protected broadcast android.intent.action.APPLICATION_MESSAGE_UPDATE from system 1904:com.android.systemui/1000 pkg com.android.systemui. Callers=
+11-25 14:53:43.288   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.291  1580  1826 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.291  1580  1826 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.291  1580  1826 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.293   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.295  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:53:43.297   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.299  1580  1826 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.300  1580  1826 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.300  1580  1826 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.301   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.305   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.307  1580  1826 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.307  1580  1826 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.307  1580  1826 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.308   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.313   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.315  1580  1826 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.315  1580  1826 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.315  1580  1826 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.317   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.320   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.322  1580  1826 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.322  1580  1826 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.322  1580  1826 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.323   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.326  3060  3060 D CloudSyncJobService: onStartJob: android.app.job.JobParameters@1aac27f
+11-25 14:53:43.341  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-25 14:53:43.341  1580  1639 I MiuiNetworkPolicy: label wlan0, uid 1051, active true, tsNanos 329393298808033
+11-25 14:53:43.342   514  1941 D OemNetd : setLimit: enable, rate=100000
+11-25 14:53:43.345  1580  1642 W ActivityManager: setHasOverlayUi called on unknown pid: 32200
+11-25 14:53:43.345   517   517 I Zygote  : Process 32200 exited due to signal 9 (Killed)
+11-25 14:53:43.350  1580  1656 I libprocessgroup: Successfully killed process cgroup uid 10169 pid 32200 in 152ms
+11-25 14:53:43.372  3039  3039 I UploadVoiceJobService: onStartJob: 201
+11-25 14:53:43.374  3039 20250 D UploadVoiceJobService: uploadVoiceDatas start
+11-25 14:53:43.386  2211  2356 I Launcher.ApplicationsMessage: onReceive true
+11-25 14:53:43.386  2211  2356 I Launcher.ApplicationsMessage: update com.miui.notification/ to null
+11-25 14:53:43.386  3039 20250 D VoiceTrigger:Uploader: isPrivacySwitchOpen name:key_voice_wakeup status:true
+11-25 14:53:43.386  3039 20250 D VoiceTrigger:Uploader: permissionAllow = true hasFloatWindowPermission = true
+11-25 14:53:43.399  3039 20250 D UploadVoiceJobService: uploadVoiceDatas end
+11-25 14:53:43.400  3039 20250 D UploadVoiceJobService: jobFinished
+11-25 14:53:43.402   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.402   514 20245 E ResolverController: No valid NAT64 prefix (101, <unspecified>/0)
+11-25 14:53:43.405   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.436  3060  4005 I FileSyncHelper: viewConfig: ViewConfig{target='', jobTag='view', configVersion=4, packages=[Package{packageName='com.tencent.mm', configs=[Config{version='1340', catchers=[Catcher{activity='com.tencent.mm.ui.chatting.gallery.ImageGalleryUI', views=[View{type='com.davemorrissey.labs.subscaleview.view.SubsamplingScaleImageView', name='conversionBitmap'}]}, Catcher{activity='com.tencent.mm.plugin.sns.ui.SnsTimeLineUI', views=[View{type='com.tencent.mm.plugin.sns.ui.widget.SnsPostDescPreloadTextView', name='dFf/TextView/text/Object/rAp/CharSequence,miuiCE_dFf/TextView/text/Object/rAp/CharSequence'}, View{type='com.tencent.mm.plugin.sns.ui.widget.SnsCommentPreloadTextView', name='dFf/TextView/text/Object/rAp/CharSequence,miuiCE_dFf/TextView/text/Object/rAp/CharSequence'}]}]}, Config{version='1320', catchers=[Catcher{activity='com.tencent.mm.ui.chatting.gallery.ImageGalleryUI', views=[View{type='com.davemorrissey.labs.subscaleview.view.SubsamplingScaleImageView', name='conversionBitmap'}]}, Catcher{activity='com.tencent.mm.plugin.sns.ui.SnsTimeLineUI', views=[View{type='com.tencent.mm.plugin.sns.ui.widget.SnsPostDescPreloadTextView', name='dui/TextView/text/Object/qQb/CharSequence,miuiCE_dui/TextView/text/Object/qQb/CharSequence'}, View{type='com.tencent.mm.plugin.sns.ui.widget.SnsCommentPreloadTextView', name='dui/TextView/text/Object/qQb/CharSequence,miuiCE_dui/TextView/text/Object/qQb/CharSequence'}]}]}]}]}
+11-25 14:53:43.436  3060  4005 D FileSyncHelper: buildConfigVersions : cost time 85 ms
+11-25 14:53:43.447   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.450   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.453 13400 13400 I Market-ManualUpdateScheduler: [Update] job 170 manualUpdateTimerV2 onStart
+11-25 14:53:43.453 13400 13400 I Market-ClientConfig: not support manualUpdateTimer
+11-25 14:53:43.453 13400 13400 I chatty  : uid=10120(com.xiaomi.market) identical 1 line
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: not support manualUpdateTimer
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: not support charge
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: not support lockScreenWhenCharge
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: not support timer
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: support manualOutStandingUpdateTimer
+11-25 14:53:43.454 13400 13400 I chatty  : uid=10120(com.xiaomi.market) identical 1 line
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: support manualOutStandingUpdateTimer
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: support manualUpdateTimerV2
+11-25 14:53:43.454 13400 13400 I chatty  : uid=10120(com.xiaomi.market) identical 2 lines
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: support manualUpdateTimerV2
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: support manualRarelyUpdateTimer
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: not support timer
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: not support idle
+11-25 14:53:43.454 13400 13400 I Market-ClientConfig: not support lockScreen
+11-25 14:53:43.454 13400 13400 I Market-ManualUpdateScheduler: init manualUpdateTimerV2: estimateTime -> 2026-11-26 11:20:15
+11-25 14:53:43.455 13400 13400 I Market-ManualUpdateScheduler: init manualUpdateTimerV2: estimateTime -> 2026-11-26 14:20:15
+11-25 14:53:43.455  3060  4005 I ContentCatcher: ConfigHelper : loadAllConfigFromInternal = config_favorite.json
+11-25 14:53:43.455 13400 13400 I Market-ManualUpdateScheduler: init manualUpdateTimerV2: estimateTime -> 2026-11-25 17:36:15
+11-25 14:53:43.455  3060  4005 I ContentCatcher: ConfigHelper : load files
+11-25 14:53:43.455 13400 13400 I Market-ManualUpdateScheduler: init manualUpdateTimerV2: estimateTime -> 2026-11-25 20:36:15
+11-25 14:53:43.455 13400 13400 I Market-SafeJobScheduler: schedule: 170
+11-25 14:53:43.462  3060 20247 D IdProviderImpl: getOAID
+11-25 14:53:43.463   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.478   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.482   517   517 D Zygote  : Forked child process 20264
+11-25 14:53:43.484  1580  3129 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.484  1580  3129 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.484  1580  3129 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.487   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.492  3060  4005 I ContentCatcher: ConfigHelper : loadAllConfigFromInternal = config_hotwords.txt
+11-25 14:53:43.492  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10109, uidState = 20
+11-25 14:53:43.493  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10102, uidState = 9
+11-25 14:53:43.493   514  1941 D OemNetd : setPidForPackage: packageName=com.miui.hybrid, pid=20264, pid=10109
+11-25 14:53:43.493  1580  1655 I ActivityManager: Start proc 20264:com.miui.hybrid/u0a109 for service {com.miui.hybrid/com.miui.hybrid.job.JobService} caller=android
+11-25 14:53:43.499  3060  4005 I ContentCatcher: ConfigHelper : loadAllConfigFromInternal = config_imagepickmode.json
+11-25 14:53:43.500  3060  4005 I ContentCatcher: ConfigHelper : loadAllConfigFromInternal = config_mini_program_stats_hybrid.json
+11-25 14:53:43.501   514 20256 E ResolverController: No valid NAT64 prefix (101, <unspecified>/0)
+11-25 14:53:43.504 10271 18131 I ##XLogger##: com.miui.cloudservice.securitypush.SecurityContextManager$@IPV6@SourceFile:6, thread:2258--pdid: PseudoDeviceId{account='14387*****', id='V2_e7b***************************f51ce0', timestamp=1795542345234}, current account: 14387*****, valid time: 345600000, now: 1795589623502
+11-25 14:53:43.508 20264 20264 E com.miui.hybri: Not starting debugger since process cannot load the jdwp agent.
+11-25 14:53:43.508  1580  6496 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.508  1580  6496 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.508  1580  6496 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.509 10271 18131 I ##XLogger##: com.miui.cloudservice.securitypush.SecurityContextManager$@IPV6@SourceFile:5, thread:2258--no need to renew
+11-25 14:53:43.509  3060  4005 I ContentCatcher: ConfigHelper : loadAllConfigFromInternal = config_mini_programe_stats.json
+11-25 14:53:43.510   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.511  3060  4005 I ContentCatcher: ConfigHelper : loadAllConfigFromInternal = config_payment.json
+11-25 14:53:43.512   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.514  3060  4005 I ContentCatcher: ConfigHelper : loadAllConfigFromInternal = config_personalassistant.json
+11-25 14:53:43.515   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.517  3060  4005 I ContentCatcher: ConfigHelper : loadAllConfigFromInternal = config_pickmode.json
+11-25 14:53:43.518  3060  4005 I ContentCatcher: ConfigHelper : loadAllConfigFromInternal = config_recomment.json
+11-25 14:53:43.519  3060  4005 I ContentCatcher: ConfigHelper : loadAllConfigFromInternal = config_shopping.json
+11-25 14:53:43.519  3060  4005 I ContentCatcher: ConfigHelper : load files
+11-25 14:53:43.520   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.522   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.526 13400 13400 I Market-ServiceUtils: stop foreground service: GuideCommentNotifyJobService
+11-25 14:53:43.527  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10102, uidState = 11
+11-25 14:53:43.527  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10120, uidState = 11
+11-25 14:53:43.527 30737 31530 I ContentCatcher: Interceptor : updateContent set mShouldUpdate
+11-25 14:53:43.527 30737  5214 I ContentCatcher: Interceptor : updateContent set mShouldUpdate
+11-25 14:53:43.528 30737 32454 I ContentCatcher: Interceptor : updateContent set mShouldUpdate
+11-25 14:53:43.528 13400 13400 I Market-ServiceUtils: startForeground: CheckUpdateService
+11-25 14:53:43.528  1904  6673 I ContentCatcher: Interceptor : updateContent set mShouldUpdate
+11-25 14:53:43.529 30737 30754 I ContentCatcher: Interceptor : updateContent set mShouldUpdate
+11-25 14:53:43.529   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.532   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.532 29637 29781 D AggregateListener: sbn enq 0|com.xiaomi.market|0|com.aitutor.hippo|10120
+11-25 14:53:43.533 29637 29781 W Bundle  : Key pageRef expected IBinder but value was a java.lang.String.  The default value <null> was returned.
+11-25 14:53:43.534 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:53:43.534 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.String cannot be cast to android.os.IBinder
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:19)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:53:43.534 29637 29781 W Bundle  : Key appId expected IBinder but value was a java.lang.String.  The default value <null> was returned.
+11-25 14:53:43.534 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:53:43.534 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.String cannot be cast to android.os.IBinder
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:19)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:53:43.534 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:53:43.535 29637 29781 W Bundle  : Key packageName expected IBinder but value was a java.lang.String.  The default value <null> was returned.
+11-25 14:53:43.535 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:53:43.535 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.String cannot be cast to android.os.IBinder
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:19)
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:53:43.535 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:53:43.535  1580 26343 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.535  1580 26343 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.536  1580 26343 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.545  1580 26343 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.545  1580 26343 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.545  1580 26343 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.546   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.547  1580 26343 I qspmsvc-client: inside perf_hint_qspm
+11-25 14:53:43.555  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10109, uidState = 9
+11-25 14:53:43.555  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10120, uidState = 5
+11-25 14:53:43.556   514  1941 D OemNetd : whiteListUid: uid=10120, wmm=add
+11-25 14:53:43.564 13400 20291 I Market-WakeLockManager: acquire wakeLock: CheckUpdateService for 30000
+11-25 14:53:43.566 13400 20291 I Market-CheckUpdateService: force check Update Apps
+11-25 14:53:43.566 13400 20291 I Market-LocalAppManager: query update apps from server : begin
+11-25 14:53:43.566 13400 20291 I Market-LocalAppManager: checkUpdateFromServer : start
+11-25 14:53:43.566 13400 20291 I Market-LocalAppManager: getUpdateInfoFromServer : start,isBackground=true
+11-25 14:53:43.573   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.575   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.596 20264 20264 I Perf    : Connecting to perf service.
+11-25 14:53:43.612   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.614   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.637 20264 20264 I MultiDex: VM with version 2.1.0 has multidex support
+11-25 14:53:43.637 20264 20264 I MultiDex: Installing application
+11-25 14:53:43.637 20264 20264 I MultiDex: VM has multidex support, MultiDex support library is disabled.
+11-25 14:53:43.638 20264 20264 I com.miui.hybri: Starting a blocking GC Alloc
+11-25 14:53:43.638 20264 20264 I com.miui.hybri: Starting a blocking GC Alloc
+11-25 14:53:43.643  1904  1904 D StatusBar: onNotificationPosted key=0|com.xiaomi.market|0|com.aitutor.hippo|10120 isUpdate=false
+11-25 14:53:43.644  3355  3420 W Parcel  : **** enforceInterface() expected 'com.miui.gamebooster.service.ISecurityCenterNotificationListener' but read 'android.service.notification.INotificationListener'
+11-25 14:53:43.644  3355  3420 W Binder  : Caught a RuntimeException from the binder stub implementation.
+11-25 14:53:43.644  3355  3420 W Binder  : java.lang.SecurityException: Binder invocation to an incorrect interface
+11-25 14:53:43.644  3355  3420 W Binder  : 	at android.os.Parcel.nativeEnforceInterface(Native Method)
+11-25 14:53:43.644  3355  3420 W Binder  : 	at android.os.Parcel.enforceInterface(Parcel.java:626)
+11-25 14:53:43.644  3355  3420 W Binder  : 	at com.miui.gamebooster.service.ISecurityCenterNotificationListener$Stub.onTransact(Unknown Source:22)
+11-25 14:53:43.644  3355  3420 W Binder  : 	at android.os.Binder.execTransactInternal(Binder.java:1021)
+11-25 14:53:43.644  3355  3420 W Binder  : 	at android.os.Binder.execTransact(Binder.java:994)
+11-25 14:53:43.647  1904  1904 D StatusBar: No peeking: not in use: 0|com.xiaomi.market|0|com.aitutor.hippo|10120
+11-25 14:53:43.666 20264 20264 I Runtime : onPreCreate last for: 0
+11-25 14:53:43.667 20264 20264 I LoadedApk: No resource references to update in package com.miui.hybrid
+11-25 14:53:43.668 20264 20264 D Runtime : already pre created! 
+11-25 14:53:43.668 20264 20264 I PlatformRuntime: Hybrid Application onCreate
+11-25 14:53:43.671 13400 20291 W Market-DownloadManagerCompat: download manager service not support update, versionCode: 211014001
+11-25 14:53:43.676  3355  3420 W Parcel  : **** enforceInterface() expected 'com.miui.gamebooster.service.ISecurityCenterNotificationListener' but read 'android.service.notification.INotificationListener'
+11-25 14:53:43.677  3355  3420 W Binder  : Caught a RuntimeException from the binder stub implementation.
+11-25 14:53:43.677  3355  3420 W Binder  : java.lang.SecurityException: Binder invocation to an incorrect interface
+11-25 14:53:43.677  3355  3420 W Binder  : 	at android.os.Parcel.nativeEnforceInterface(Native Method)
+11-25 14:53:43.677  3355  3420 W Binder  : 	at android.os.Parcel.enforceInterface(Parcel.java:626)
+11-25 14:53:43.677  3355  3420 W Binder  : 	at com.miui.gamebooster.service.ISecurityCenterNotificationListener$Stub.onTransact(Unknown Source:22)
+11-25 14:53:43.677  3355  3420 W Binder  : 	at android.os.Binder.execTransactInternal(Binder.java:1021)
+11-25 14:53:43.677  3355  3420 W Binder  : 	at android.os.Binder.execTransact(Binder.java:994)
+11-25 14:53:43.680 20264 20296 D AnonymousUtils: HybridAnonymousID=fbf504a8-0f24-4800-afec-72fce0529f30
+11-25 14:53:43.682 20264 20264 D NetworkBlacklistConfig: no need to init config: CN
+11-25 14:53:43.703   517   517 D Zygote  : Forked child process 20302
+11-25 14:53:43.715  3060  3060 D FileSyncHelper: updateConfigFiles: business config_hotwords, cost time 0 ms
+11-25 14:53:43.716  3060  3060 D FileSyncHelper: updateConfigVersions: business config_hotwords, cost time 0 ms
+11-25 14:53:43.716  3060  3060 D FileSyncHelper: updateConfigFiles: business config_pickmode, cost time 0 ms
+11-25 14:53:43.716  3060  3060 D FileSyncHelper: updateConfigVersions: business config_pickmode, cost time 0 ms
+11-25 14:53:43.718  1904  1904 D StatusBar: No peeking: not in use: 0|com.xiaomi.market|0|com.aitutor.hippo|10120
+11-25 14:53:43.718   514  1941 D OemNetd : setPidForPackage: packageName=com.miui.hybrid, pid=20302, pid=10109
+11-25 14:53:43.719  1580  1655 I ActivityManager: Start proc 20302:com.miui.hybrid:entrance/u0a109 for content provider {com.miui.hybrid/org.hapjs.bridge.provider.SettingsProvider} caller=com.miui.hybrid
+11-25 14:53:43.723  3060  3060 D FileSyncHelper: updateConfigFiles: business config_favorite, cost time 7 ms
+11-25 14:53:43.723  1904  1904 D StatusBar: update app badge num: com.xiaomi.market/com.xiaomi.market.business_ui.main.MarketTabActivity,num=1,isAllowed=true,userId=0
+11-25 14:53:43.725 20302 20302 E hybrid:entranc: Not starting debugger since process cannot load the jdwp agent.
+11-25 14:53:43.725  1580 26343 W ActivityManager: Sending non-protected broadcast android.intent.action.APPLICATION_MESSAGE_UPDATE from system 1904:com.android.systemui/1000 pkg com.android.systemui. Callers=
+11-25 14:53:43.726  1580  2036 D AudioManager: getStreamVolume isRestricted mode = 0
+11-25 14:53:43.726  2211  2356 I Launcher.ApplicationsMessage: onReceive true
+11-25 14:53:43.726  2211  2356 I Launcher.ApplicationsMessage: update com.xiaomi.market/com.xiaomi.market.business_ui.main.MarketTabActivity to 1
+11-25 14:53:43.732 26348 26384 D APM::AudioPolicyEngine: XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-25 14:53:43.733  1580  2036 D AudioManager: getStreamVolume isRestricted mode = 0
+11-25 14:53:43.733 26348 26384 D APM::AudioPolicyEngine: XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-25 14:53:43.734  3060  3060 D FileSyncHelper: updateConfigVersions: business config_favorite, cost time 9 ms
+11-25 14:53:43.734  3060  3060 D FileSyncHelper: updateConfigFiles: business config_mini_program_stats_hybrid, cost time 0 ms
+11-25 14:53:43.734  3060  3060 D FileSyncHelper: updateConfigVersions: business config_mini_program_stats_hybrid, cost time 0 ms
+11-25 14:53:43.734  3060  3060 D FileSyncHelper: updateConfigFiles: business config_payment, cost time 0 ms
+11-25 14:53:43.734  3060  3060 D FileSyncHelper: updateConfigVersions: business config_payment, cost time 0 ms
+11-25 14:53:43.736  3060  3060 D FileSyncHelper: updateConfigFiles: business config_shopping, cost time 2 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigVersions: business config_shopping, cost time 1 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigFiles: business config_imagepickmode, cost time 0 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigVersions: business config_imagepickmode, cost time 0 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigFiles: business config_personalassistant, cost time 0 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigVersions: business config_personalassistant, cost time 0 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigFiles: business config_mini_programe_stats, cost time 0 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigVersions: business config_mini_programe_stats, cost time 0 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigFiles: business config_recomment, cost time 0 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigVersions: business config_recomment, cost time 0 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigFiles: business config_view, cost time 0 ms
+11-25 14:53:43.738  3060  3060 D FileSyncHelper: updateConfigVersions: business config_view, cost time 0 ms
+11-25 14:53:43.760 13400 20291 I Market-LocalAppManager: getUpdateInfoFromServer : middle
+11-25 14:53:43.765 13400 20291 I Market-RetrofitRequest: callStart : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2
+11-25 14:53:43.769  3060  3078 W .contentcatche: Reducing the number of considered missed Gc histogram windows from 8631 to 100
+11-25 14:53:43.772 13400 20291 I Market-RetrofitRequest: HeaderInterceptor : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2
+11-25 14:53:43.775  1580  2036 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:43.775  1580  2036 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:43.775  1580  2036 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:43.780  1580  2036 I qspmsvc-client: inside perf_hint_qspm
+11-25 14:53:43.783 13400 20291 I Market-Client: isSupportIsland: false
+11-25 14:53:43.784 13400 20291 I Market-Client: getNotificationFocusProtocol: OS
+11-25 14:53:43.798 13400 20291 I Market-RetrofitRequest: dnsStart : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2
+11-25 14:53:43.836 20302 20302 I Perf    : Connecting to perf service.
+11-25 14:53:43.847   514 20327 E ResolverController: No valid NAT64 prefix (101, <unspecified>/0)
+11-25 14:53:43.849 20302 20302 I MultiDex: VM with version 2.1.0 has multidex support
+11-25 14:53:43.849 20302 20302 I MultiDex: Installing application
+11-25 14:53:43.849 20302 20302 I MultiDex: VM has multidex support, MultiDex support library is disabled.
+11-25 14:53:43.849 13400 13412 W m.xiaomi.marke: Reducing the number of considered missed Gc histogram windows from 715 to 100
+11-25 14:53:43.850 20302 20302 I hybrid:entranc: Starting a blocking GC Alloc
+11-25 14:53:43.850 20302 20302 I hybrid:entranc: Starting a blocking GC Alloc
+11-25 14:53:43.860  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:53:43.861  1904  1904 D StatusBar: onNotificationPosted key=0|com.xiaomi.market|188197581|null|10120 isUpdate=false
+11-25 14:53:43.862  1904  1904 D StatusBar: filter Notification key=0|com.xiaomi.market|188197581|null|10120
+11-25 14:53:43.877 20302 20302 I Runtime : onPreCreate last for: 1
+11-25 14:53:43.879 20302 20302 I LoadedApk: No resource references to update in package com.miui.hybrid
+11-25 14:53:43.879 20302 20302 D Runtime : already pre created! 
+11-25 14:53:43.879 20302 20302 I PlatformRuntime: Hybrid Application onCreate
+11-25 14:53:43.881 20302 20331 D AnonymousUtils: HybridAnonymousID=fbf504a8-0f24-4800-afec-72fce0529f30
+11-25 14:53:43.889 20302 20302 I InspectorApp: App count: 0, hasAppData: true
+11-25 14:53:43.889 20302 20302 I Runtime : onCreate last for: 10
+11-25 14:53:43.889 20302 20302 D Runtime : already pre created! 
+11-25 14:53:43.889 20302 20302 D Runtime : already created! 
+11-25 14:53:43.891 20264 20264 W BpBinder: Slow Binder: BpBinder transact took 205ms, interface=android.app.IActivityManager, code=20 oneway=false
+11-25 14:53:43.894 20302 20302 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-25 14:53:43.896 20302 20302 D Runtime : already created! 
+11-25 14:53:43.899   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:53:43.900   808  8583 E ANDR-IOP: IIop:: Iop HAL Service is not available.
+11-25 14:53:43.909 20302 20333 E Perf    : Fail to get file list com.miui.hybrid
+11-25 14:53:43.909 20302 20333 E Perf    : getFolderSize() : Exception_1 = java.lang.NullPointerException: Attempt to get length of null array
+11-25 14:53:43.924 20264 20264 D OneTrackSdk: log on: false, quick upload on: false
+11-25 14:53:43.924 20264 20335 D miuisdk : current sdk level is 24
+11-25 14:53:43.930   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.933 20264 20264 D OneTrackImp: OneTrackImp init : Configuration{appId='31*******96', pluginId='null', channel='OneTrackStats', international=false, region='null', overrideMiuiRegionSetting=false, mode=APP, GAIDEnable=true, IMSIEnable=true, IMEIEnable=true, ExceptionCatcherEnable=false}
+11-25 14:53:43.935   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.937   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:43.964 20264 20346 V xiaomi  : [Thread:2319] sdk_version = 3_7_2
+11-25 14:53:43.974  1580  3118 W ActivityManager: Background start not allowed: service Intent { cmp=com.miui.hybrid/com.xiaomi.mipush.sdk.PushMessageHandler } to com.miui.hybrid/com.xiaomi.mipush.sdk.PushMessageHandler from pid=20264 uid=10109 pkg=com.miui.hybrid startFg?=false
+11-25 14:53:43.975 20264 20346 V xiaomi  : [Thread:2319] Not allowed to start service Intent { cmp=com.miui.hybrid/com.xiaomi.mipush.sdk.PushMessageHandler }: app is in background uid UidRecord{9607a5e u0a109 TRNB idle change:uncached procs:2 seq(0,0,0)}
+11-25 14:53:43.977 20264 20264 I Runtime : onCreate last for: 309
+11-25 14:53:43.977 20264 20264 D Runtime : already pre created! 
+11-25 14:53:43.977 20264 20264 D Runtime : already created! 
+11-25 14:53:43.977 20264 20264 D Runtime : already pre created! 
+11-25 14:53:43.977 20264 20264 D Runtime : already created! 
+11-25 14:53:43.977 20264 20264 D Runtime : already pre created! 
+11-25 14:53:43.977 20264 20264 D Runtime : already created! 
+11-25 14:53:43.977 20264 20264 D Runtime : already pre created! 
+11-25 14:53:43.978 20264 20264 D Runtime : already created! 
+11-25 14:53:43.978 20264 20264 D Runtime : already pre created! 
+11-25 14:53:43.978 20264 20264 D Runtime : already created! 
+11-25 14:53:43.978 20264 20264 D Runtime : already pre created! 
+11-25 14:53:43.978 20264 20264 D Runtime : already created! 
+11-25 14:53:43.983  3421  3421 W PushService: [Tid:2] onStart() with intent.Action = null, chid = null, pkg = null|com.miui.hybrid
+11-25 14:53:43.986  3421  3421 W PushService: [Tid:2] onStart() with intent.Action = null, chid = null, pkg = null|com.miui.hybrid
+11-25 14:53:43.988   514 20344 E ResolverController: No valid NAT64 prefix (101, <unspecified>/0)
+11-25 14:53:43.996 20264 20264 D Runtime : already pre created! 
+11-25 14:53:43.996 20264 20264 D Runtime : already created! 
+11-25 14:53:43.999 20264 20350 V xiaomi  : [Thread:2323] (Local) begin execute onCommandResult, command=register, resultCode=0, reason=null
+11-25 14:53:43.999 20264 20350 V xiaomi  : [Thread:2323] ASSEMBLE_PUSH : assemble push register
+11-25 14:53:44.005 20264 20264 D Runtime : already pre created! 
+11-25 14:53:44.006 20264 20264 D Runtime : already created! 
+11-25 14:53:44.008  3421  3421 W PushService: [Tid:2] onStart() with intent.Action = com.xiaomi.mipush.SEND_MESSAGE, chid = null, pkg = null|com.miui.hybrid
+11-25 14:53:44.008  3421  3799 W PushService: [Tid:238] [Job] Handle intent action = com.xiaomi.mipush.SEND_MESSAGE
+11-25 14:53:44.009  3421  3799 W PushService: [Tid:238] try send mi push message. packagename:com.miui.hybrid action:Notification
+11-25 14:53:44.019 20264 20264 D Runtime : already pre created! 
+11-25 14:53:44.019 20264 20264 D Runtime : already created! 
+11-25 14:53:44.019  3421  3421 W PushService: [Tid:2] onStart() with intent.Action = action_cr_config, chid = null, pkg = null|com.miui.hybrid
+11-25 14:53:44.020  3421  3799 W PushService: [Tid:238] [Job] Handle intent action = action_cr_config
+11-25 14:53:44.021  1580  2036 W ActivityManager: Background start not allowed: service Intent { cmp=com.miui.hybrid/com.xiaomi.mipush.sdk.MessageHandleService } to com.miui.hybrid/com.xiaomi.mipush.sdk.MessageHandleService from pid=20264 uid=10109 pkg=com.miui.hybrid startFg?=false
+11-25 14:53:44.022 20264 20346 V xiaomi  : [Thread:2319] Not allowed to start service Intent { cmp=com.miui.hybrid/com.xiaomi.mipush.sdk.MessageHandleService }: app is in background uid UidRecord{9607a5e u0a109 TRNB idle change:uncached procs:2 seq(0,0,0)}
+11-25 14:53:44.031 20264 20264 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-25 14:53:44.034 20264 20264 D Runtime : already created! 
+11-25 14:53:44.036   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:53:44.036   808  8583 E ANDR-IOP: IIop:: Iop HAL Service is not available.
+11-25 14:53:44.041 20264 20264 D VendorJobService: onStartJob
+11-25 14:53:44.043 20264 20264 D VendorJobService: start update job at 1795589624043
+11-25 14:53:44.044 20264 20355 E Perf    : Fail to get file list com.miui.hybrid
+11-25 14:53:44.044 20264 20355 E Perf    : getFolderSize() : Exception_1 = java.lang.NullPointerException: Attempt to get length of null array
+11-25 14:53:44.101 20264 20359 D Job     : waitComplete: job=StatMiscAppsJob needWait=false
+11-25 14:53:44.101 20264 20359 D Job     : waitComplete: job=AppUpdateJob needWait=false
+11-25 14:53:44.101 20264 20359 D Job     : waitComplete: job=PreinstallJob needWait=false
+11-25 14:53:44.101 20264 20359 D VendorJobService: end update job at 1795589624101
+11-25 14:53:44.101 20264 20359 D VendorJobService: update job duration: 58
+11-25 14:53:44.104   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:44.107   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:44.114  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10109, uidState = 11
+11-25 14:53:44.116   514  1941 I netd    : firewallSetUidRule(2, 10109, 2) <0.07ms>
+11-25 14:53:44.149  1580  2036 I ActivityManager: Killing 17930:com.miui.cloudbackup/u0a71 (adj 999): empty for 7167s
+11-25 14:53:44.153   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:53:44.156  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10109, uidState = 20
+11-25 14:53:44.175  1580  1802 I MiuiNetworkPolicy: bandwidth: 12 KB/s, Max bandwidth: 200 KB/s
+11-25 14:53:44.176   783  1848 D         : readbrightness,out1:0
+11-25 14:53:44.176   783  1848 D         : .
+11-25 14:53:44.176   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:44.243  1580  1656 I libprocessgroup: Successfully killed process cgroup uid 10071 pid 17930 in 90ms
+11-25 14:53:44.243   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:53:44.244   517   517 I Zygote  : Process 17930 exited due to signal 9 (Killed)
+11-25 14:53:44.248   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:44.255  1580  1802 I MiuiNetworkPolicy: removeUidState uid = 10071
+11-25 14:53:44.947 13400 20291 I Market-RetrofitRequest: dnsEnd : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2
+11-25 14:53:44.948 13400 20291 I Market-RetrofitRequest: connectStart : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2
+11-25 14:53:45.070 13400 20291 I Market-RetrofitRequest: connectEnd : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2, IP = 220.181.106.32
+11-25 14:53:45.072 13400 20291 I Market-RetrofitRequest: connectionAcquired : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2
+11-25 14:53:45.073 13400 20291 I Market-RetrofitRequest: HeaderInterceptor : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2
+11-25 14:53:45.074 13400 20291 W Market-CredentialCookieInterceptor: strip credential cookie for untrusted url: https://updateinfo.market.xiaomi.com/apm/updateinfo/v2?lo=CN&signature=1EFg1S7K0l00geln0sxiQl1mNvU%
+11-25 14:53:45.075 13400 20291 I Market-RetrofitRequest: requestHeadersStart : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2
+11-25 14:53:45.152 13400 13412 I m.xiaomi.marke: Background concurrent copying GC freed 15988(725KB) AllocSpace objects, 0(0B) LOS objects, 59% free, 12MB/30MB, paused 134us total 204.577ms
+11-25 14:53:45.177   783  1848 D         : readbrightness,out1:0
+11-25 14:53:45.177   783  1848 D         : .
+11-25 14:53:45.177   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:45.294 13400 20291 I Market-RetrofitRequest: connectionReleased : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2
+11-25 14:53:45.294 13400 20291 I Market-RetrofitRequest: callEnd : https://updateinfo.market.xiaomi.com/apm/updateinfo/v2
+11-25 14:53:45.304 13400 20291 W Market-Connection: Connection result is cut off as too long
+11-25 14:53:45.348 13400 20291 I Market-LocalAppManager: getUpdateInfoFromServer : end  , responseCode : OK
+11-25 14:53:45.349 13400 20291 I Market-LocalAppManager: checkUpdateFromServer : end
+11-25 14:53:45.349 13400 20291 I Market-AppInfo: cacheOrUpdate pkg=com.miui.player origVC=4481001 newVC=4481001 baseChanged=true origStatus=STATUS_INSTAILLED newStatus=STATUS_NONE
+11-25 14:53:45.350 13400 20291 I Market-AppInfo: cacheOrUpdate pkg=com.miui.systemAdSolution origVC=2026082508 newVC=2026082508 baseChanged=true origStatus=STATUS_INSTAILLED newStatus=STATUS_NONE
+11-25 14:53:45.351 13400 20291 I Market-AppInfo: cacheOrUpdate pkg=com.miui.video origVC=2026111190 newVC=2026111190 baseChanged=true origStatus=STATUS_INSTAILLED newStatus=STATUS_NONE
+11-25 14:53:45.352 13400 20291 I Market-AppInfo: cacheOrUpdate pkg=com.iflytek.inputmethod.miui origVC=8136 newVC=8136 baseChanged=true origStatus=STATUS_INSTAILLED newStatus=STATUS_NONE
+11-25 14:53:45.352 13400 20291 I Market-AppInfo: cacheOrUpdate pkg=com.sohu.inputmethod.sogou.xiaomi origVC=1889 newVC=1889 baseChanged=true origStatus=STATUS_INSTAILLED newStatus=STATUS_NONE
+11-25 14:53:45.353 13400 20291 I Market-AppInfo: cacheOrUpdate pkg=com.xiaomi.gamecenter.sdk.service origVC=8802700 newVC=8802700 baseChanged=true origStatus=STATUS_INSTAILLED newStatus=STATUS_NONE
+11-25 14:53:45.353 13400 20291 I Market-AppInfo: cacheOrUpdate pkg=cn.wps.moffice_eng.xiaomi.lite origVC=243 newVC=243 baseChanged=true origStatus=STATUS_INSTAILLED newStatus=STATUS_NONE
+11-25 14:53:45.354 13400 20291 I Market-AppInfo: cacheOrUpdate pkg=com.miui.bugreport origVC=15000602 newVC=15000602 baseChanged=true origStatus=STATUS_INSTAILLED newStatus=STATUS_NONE
+11-25 14:53:45.354 13400 20291 I Market-AppInfo: cacheOrUpdate pkg=com.xiaomi.mibrain.speech origVC=33 newVC=33 baseChanged=true origStatus=STATUS_INSTAILLED newStatus=STATUS_NONE
+11-25 14:53:45.366 13400 20291 I Market-LocalAppManager: checkUpdateFromServer  data parser : end
+11-25 14:53:45.367 13400 20291 I Market-HuanjiManager: condition not satisfied, ignore
+11-25 14:53:45.368 13400 20291 I Market-DataParser: [InvalidPackageList] JSON : invalidSystemPackageList list is null
+11-25 14:53:45.368 13400 20291 I Market-LocalAppManager: checkUpdateFromServer  filter package : end
+11-25 14:53:45.369 13400 20291 I Market-LocalAppManager: checkUpdateFromServer  support64BitPackagesJsonArray : end
+11-25 14:53:45.370 13400 20291 I Market-OneTrackParams: useExpId=2551831,2369654,2431425,2539122,1978999,2555258,2384073,2557401,expId=2557401,2472808,2547705,2427603,2505856,2555258,2384073,1978999,2582727,2508315,2472872,2431425,2449668,2507093,2539122,2414984,2551831,2369654
+11-25 14:53:45.370 13400 20291 I Market-LocalAppManager: checkUpdateFromServer  addUseExpId : 2551831,2369654,2431425,2539122,1978999,2555258,2384073,2557401
+11-25 14:53:45.370 13400 20291 I Market-LocalAppManager: query update apps from server : finish, 46 / 268 to update
+11-25 14:53:45.381 13400 20291 I Market-RetrofitRequest: callStart : https://updateinfo.market.xiaomi.com/apm/updateinfo/priority
+11-25 14:53:45.382 13400 20291 I Market-RetrofitRequest: HeaderInterceptor : https://updateinfo.market.xiaomi.com/apm/updateinfo/priority
+11-25 14:53:45.385 13400 20291 I Market-Client: isSupportIsland: false
+11-25 14:53:45.385 13400 20291 I Market-Client: getNotificationFocusProtocol: OS
+11-25 14:53:45.394 13400 20291 I Market-RetrofitRequest: connectionAcquired : https://updateinfo.market.xiaomi.com/apm/updateinfo/priority
+11-25 14:53:45.394 13400 20291 I Market-RetrofitRequest: HeaderInterceptor : https://updateinfo.market.xiaomi.com/apm/updateinfo/priority
+11-25 14:53:45.395 13400 20291 W Market-CredentialCookieInterceptor: strip credential cookie for untrusted url: https://updateinfo.market.xiaomi.com/apm/updateinfo/priority?lo=CN&signature=wjROAHt1%252FhFjTbA60E
+11-25 14:53:45.395 13400 20291 I Market-RetrofitRequest: requestHeadersStart : https://updateinfo.market.xiaomi.com/apm/updateinfo/priority
+11-25 14:53:45.452 13400 20291 I Market-RetrofitRequest: connectionReleased : https://updateinfo.market.xiaomi.com/apm/updateinfo/priority
+11-25 14:53:45.452 13400 20291 I Market-RetrofitRequest: callEnd : https://updateinfo.market.xiaomi.com/apm/updateinfo/priority
+11-25 14:53:45.454 13400 20291 I Market-OneTrackParams: useExpId=2582727,2551831,2369654,2431425,1978999,2555258,2384073,2557401,expId=2557401,2472808,2547705,2427603,2505856,2555258,2384073,1978999,2582727,2508315,2472872,2431425,2449668,2507093,2539122,2414984,2551831,2369654
+11-25 14:53:45.468 13400 20291 I Market-SystemSettingsManager: extraSettingsSecureGetInt key: com.xiaomi.market.need_update_game_count, value: 0
+11-25 14:53:45.469 13400 20291 I Market-UpdateAppList: update app list do not change, don't notify: pkg (44) = com.milink.service,com.miui.hybrid,com.mipay.wallet,com.xiaomi.mibrain.speech,com.miui.player,com.xiaomi.misettings,com.sohu.inputmethod.sogou.xiaomi,cn.wps.moffice_eng.xiaomi.lite,com.xiaomi.payment,com.miui.newmidrive,com.miui.miservice,com.miui.home,com.miui.packageinstaller,com.android.fileexplorer,com.mi.health,com.xiaomi.aiasst.vision,com.miui.newhome,com.android.contacts,com.xiaomi.account,com.android.deskclock,com.miui.voiceassist,com.miui.securitycenter,com.miui.video,com.miui.vpnsdkmanager,com.miui.smsextra,com.miui.cloudbackup,com.xiaomi.mi_connect_service,com.miui.personalassistant,com.miui.securityadd,com.android.mms,com.xiaomi.gamecenter.sdk.service,com.android.providers.downloads.ui,com.android.thememanager,com.android.updater,com.miui.touchassistant,com.iflytek.inputmethod.miui,com.xiaomi.simactivate.service,com.miui.bugreport,com.miui.gallery,com.android.calendar,com.xiaomi.xmsf,com.miui.cloudservice,com.miui.yellowpage,com.android.soundrecorder
+11-25 14:53:45.474 13400 20372 I Market-SubScriptManager: tryUpdateSubScriptWithMessage: messageCount=0, forceShow=false
+11-25 14:53:45.481 13400 20373 I Market-SubScriptManager: updateMarketSubScript forceShow : false
+11-25 14:53:45.482 13400 20373 I Market-SubScriptManager: get count 44
+11-25 14:53:45.482 13400 20373 I Market-SubScriptManager: get count 44
+11-25 14:53:45.496 13400 20291 D MarketSdk-MarketManager: currVersionValue: 12050300
+11-25 14:53:45.496 13400 20291 D MarketSdk-MarketManager: targetVersionValue: 8030000
+11-25 14:53:45.496 13400 20291 I Market-LocalAppManager: queryDiffSizeFromServer start
+11-25 14:53:45.501 13400 20291 I Market-RetrofitRequest: callStart : https://updateinfo.market.xiaomi.com/apm/updateinfo/diffsize
+11-25 14:53:45.503 13400 20291 I Market-RetrofitRequest: HeaderInterceptor : https://updateinfo.market.xiaomi.com/apm/updateinfo/diffsize
+11-25 14:53:45.509 13400 20291 I Market-Client: isSupportIsland: false
+11-25 14:53:45.510 13400 20291 I Market-Client: getNotificationFocusProtocol: OS
+11-25 14:53:45.519 13400 20291 I Market-RetrofitRequest: connectionAcquired : https://updateinfo.market.xiaomi.com/apm/updateinfo/diffsize
+11-25 14:53:45.520 13400 20291 I Market-RetrofitRequest: HeaderInterceptor : https://updateinfo.market.xiaomi.com/apm/updateinfo/diffsize
+11-25 14:53:45.521 13400 20291 W Market-CredentialCookieInterceptor: strip credential cookie for untrusted url: https://updateinfo.market.xiaomi.com/apm/updateinfo/diffsize?lo=CN&signature=mlAYa%252FAKVrQ84rb1za
+11-25 14:53:45.521 13400 20291 I Market-RetrofitRequest: requestHeadersStart : https://updateinfo.market.xiaomi.com/apm/updateinfo/diffsize
+11-25 14:53:45.557  1580  3193 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.jinyuni.dengbei_care/.MainActivity} from uid 2000
+11-25 14:53:45.558  1580  3193 D MiuiMultiWindowAdapter: MiuiMultiWindowAdapter::getFreeformBlackList::sSmallWindowBlackList = [com.miui.securitycenter, com.miui.weather2, com.miui.miservice, com.android.calendar, com.xiaomi.calendar, com.android.contacts, com.miui.mishare.connectivity, com.android.settings, com.android.printspooler, com.miui.backup, com.miui.huanji, com.miui.calculator, com.android.deskclock, com.android.thememanager, com.mfashiongallery.emag, com.miui.virtualsim, com.miui.smarttravel, com.mi.health, com.android.camera, com.lbe.security.miui, com.miui.cleanmaster, com.miui.newhome, com.miui.voiceassist, com.android.phone, com.miui.yellowpage, com.android.updater, com.miui.tsmclient, com.miui.securitycore, com.xiaomi.account, com.xiaomi.shop, com.mipay.wallet, com.xiaomi.youpin, com.xiaomi.hm.health, com.miui.bugreport, com.xiaomi.mibrain.speech, com.xiaomi.mimoji, com.xiaomi.scanner, com.duokan.phone.remotecontroller, com.miui.hybrid, com.android.incallui, com.miui.video, com.miui.videoplayer, com.miui.player, com.miui.fm, com.miui.packageinstaller, com.mi.android.globallauncher, com.google.android.dialer, com.google.android.apps.magazines, com.miui.compass, com.miui.greenguard, com.kiteguard, com.google.android.apps.prodcasts, com.google.ar.lens, com.xiangkan.android, com.android.bankabc, com.sohu.inputmethod.sogou, com.tencent.mtt, com.shyz.toutiao, com.netease.mc.mi, com.outfit7.talkingtomgoldrun.mi, com.doudz.mi, com.wepie.snake.new.mi, cn.jj, com.standddz002.mi, com.miHoYo.bh3.mi, com.qqgame.hlddz, com.happyelements.AndroidAnimal, com.minitech.miniworld.TMobile.mi, com.mfp.jelly.xiaomi, com.lilithgames.afk.mi, com.tencent.peng, com.teenpatti.hd.gold, blockpuzzle.jewelgames.jewelslegend, com.playgendary.tanks, com.chillingo.robberybobfree.android.row, com.episodeinteractive.android.catalog, com.playrix.township, com.ansangha.drdriving, com.google.android.youtube, com.gbits.atm.mi]
+11-25 14:53:45.561   620   674 E ANDR-PERF-RESOURCEQS: Resource with major=3, minor=0 not supported
+11-25 14:53:45.564   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:53:45.565   620   674 E ANDR-PERF-RESOURCEQS: Resource with major=3, minor=0 not supported
+11-25 14:53:45.578  1580  3193 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:45.578  1580  3193 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:45.578  1580  3193 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:45.607   517   517 D Zygote  : Forked child process 20381
+11-25 14:53:45.611   514  1941 D OemNetd : setPidForPackage: packageName=com.jinyuni.dengbei_care, pid=20381, pid=10169
+11-25 14:53:45.612  1580  1655 I ActivityManager: Start proc 20381:com.jinyuni.dengbei_care/u0a169 for activity {com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity} caller=com.android.shell
+11-25 14:53:45.617 20381 20381 I ni.dengbei_car: Late-enabling -Xcheck:jni
+11-25 14:53:45.626 13400 13412 I m.xiaomi.marke: Background young concurrent copying GC freed 152918(5837KB) AllocSpace objects, 15(6320KB) LOS objects, 40% free, 17MB/30MB, paused 334us total 105.232ms
+11-25 14:53:45.629 13400 20291 I Market-RetrofitRequest: connectionReleased : https://updateinfo.market.xiaomi.com/apm/updateinfo/diffsize
+11-25 14:53:45.630 13400 20291 I Market-RetrofitRequest: callEnd : https://updateinfo.market.xiaomi.com/apm/updateinfo/diffsize
+11-25 14:53:45.630 13400 20291 I Market-LocalAppManager: queryDiffSizeFromServer end
+11-25 14:53:45.631 13400 20291 I Market-WakeLockManager: release wakeLock: CheckUpdateService
+11-25 14:53:45.643 13400 20291 I Market-PendingUpdateNotification: Pending update notification not shown because of time limit
+11-25 14:53:45.644   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:45.647 13400 13400 I Market-ServiceUtils: stop foreground service: CheckUpdateService
+11-25 14:53:45.653  1904  1904 D StatusBar: onNotificationRemoved key=0|com.xiaomi.market|188197581|null|10120 reason=8
+11-25 14:53:45.654  1904  1904 W StatusBar: removeNotification for unknown key: 0|com.xiaomi.market|188197581|null|10120
+11-25 14:53:45.654  1904  1904 D StatusBar: removeNotification null
+11-25 14:53:45.657  1580  3889 I ActivityManager: Killing 18034:com.miui.gallery/u0a86 (adj 999): empty for 7168s
+11-25 14:53:45.660   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:53:45.664  1882  2332 I BtGatt.ScanManager: msg.what = 6
+11-25 14:53:45.665  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10169, uidState = 20
+11-25 14:53:45.665  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10120, uidState = 20
+11-25 14:53:45.665   514  1941 D OemNetd : whiteListUid: uid=10120, wmm=del
+11-25 14:53:45.665  3039  3533 D ActivityUtils: packageName:ComponentInfo{com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}
+11-25 14:53:45.665  3039  3533 D AppChangedListener: get package name by top component:com.jinyuni.dengbei_care
+11-25 14:53:45.665  3039  3533 D AppChangedListener: packageName:com.jinyuni.dengbei_care,current:com.android.settings
+11-25 14:53:45.666  3039  3039 D AppChangedListener: onAppChanged...com.jinyuni.dengbei_care
+11-25 14:53:45.666  3039  3039 D AppChangedListener: onAppChanged notify listener:m
+11-25 14:53:45.666  3039  3039 I HybridLifecycleListener: onTopAppChanged: newApp=com.jinyuni.dengbei_care from=com.android.settings fromPkg=com.jinyuni.dengbei_care
+11-25 14:53:45.666  3039  3039 D AppChangedListener: onAppChanged notify listener:h
+11-25 14:53:45.666  3039  3039 E AppBackListener: onTopAppChanged newApp=com.jinyuni.dengbei_care,oldApp=com.android.settings,mPersistentApp=null,innerApp=false
+11-25 14:53:45.667  3039  3039 W LingXiViewManager: hide failed for LingXiView is null
+11-25 14:53:45.667  3039  3039 D AppChangedListener: onAppChanged notify listener:
+11-25 14:53:45.672 20381 20381 E ni.dengbei_car: Unknown bits set in runtime_flags: 0x8000
+11-25 14:53:45.727  1580 11134 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:45.727  1580 11134 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:45.727  1580 11134 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:45.732  1882  2332 I BtGatt.ScanManager: msg.what = 8
+11-25 14:53:45.733  1882  2332 I BtGatt.ScanManager: msg.what = 4
+11-25 14:53:45.733  2211  2211 W Launcher: onDisplayChanged: newRotation=0, mCurrentRotation=0
+11-25 14:53:45.738  1580 11134 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:53:45.738  1580 11134 D CompatibilityInfo: applicationDensity - 320
+11-25 14:53:45.738  1580 11134 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:53:45.739 30961 31023 D PerfEngineController: ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=20381, mLastForegroundPackageName='com.android.settings', mLastForegroundUid=1000, mLastForegroundPid=30737, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=1}
+11-25 14:53:45.739  1580 11134 W ActivityTaskManager: Request to remove task ignored for non-existent task 83
+11-25 14:53:45.741  4239  6584 I GST     : forePkg: com.jinyuni.dengbei_care, preForePkg: com.android.settings
+11-25 14:53:45.741  1580 11134 D ActivityTrigger: ActivityTrigger activityPauseTrigger 
+11-25 14:53:45.741  2783  2825 I octvm_power: power mode [normal] start 1795589625
+11-25 14:53:45.742  2783  2825 I octvm_drv: common drv: get_current_battery_uAh will return 0
+11-25 14:53:45.742  2783  2825 I octvm_power: Action: set_lcd_mode(default) for [foreground_change]
+11-25 14:53:45.742 32232 32248 D AutoInstallService: onForegroundInfoChanged: com.jinyuni.dengbei_care
+11-25 14:53:45.742  3355  3420 I ProcessMonitor: onForegroundInfoChanged: ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=20381, mLastForegroundPackageName='com.android.settings', mLastForegroundUid=1000, mLastForegroundPid=30737, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=1}
+11-25 14:53:45.742  3355  3420 I GameBoosterService: onForegroundInfoChanged: Cur=com.jinyuni.dengbei_care	 last=com.android.settings
+11-25 14:53:45.743  3355  3420 D GameBoosterService: onGameStatusChange foreground:ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=20381, mLastForegroundPackageName='com.android.settings', mLastForegroundUid=1000, mLastForegroundPid=30737, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=1}
+11-25 14:53:45.743  3355  3420 I GameBoosterService: onForegroundInfoChanged: Exit
+11-25 14:53:45.743  3355  3420 I VideoBoxUtils: isSupportVideoBox: false
+11-25 14:53:45.743  1580 11134 I Timeline: Timeline: App_transition_ready time:319467553
+11-25 14:53:45.724 30961 30961 W ThermalInfoColl: type=1400 audit(0.0:36423): avc: denied { search } for name="battery" dev="sysfs" ino=34176 scontext=u:r:system_app:s0 tcontext=u:object_r:sysfs_battery_supply:s0 tclass=dir permissive=0
+11-25 14:53:45.748  1580 11134 I qspmsvc-client: inside perf_hint_qspm
+11-25 14:53:45.749  1904  1904 D EventBus: [1904, u0] send(AppTransitionFinishedEvent)
+11-25 14:53:45.749  1904  1904 D EventBus: [1904, u0]  -> ForcedResizableInfoActivityController [0x545c07, P1] onBusEvent(AppTransitionFinishedEvent)
+11-25 14:53:45.749  1904  1904 D EventBus: [1904, u0] onBusEvent(AppTransitionFinishedEvent) duration: 20 microseconds, avg: 1612
+11-25 14:53:45.749  1904  1904 D EventBus: [1904, u0] send(AppTransitionFinishedEvent)
+11-25 14:53:45.749  1904  1904 D EventBus: [1904, u0]  -> ForcedResizableInfoActivityController [0x545c07, P1] onBusEvent(AppTransitionFinishedEvent)
+11-25 14:53:45.749  1904  1904 D EventBus: [1904, u0] onBusEvent(AppTransitionFinishedEvent) duration: 11 microseconds, avg: 1611
+11-25 14:53:45.751  1580  1643 I Timeline: Timeline: App_transition_ready time:319467560
+11-25 14:53:45.754   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:53:45.754   517   517 I Zygote  : Process 18034 exited due to signal 9 (Killed)
+11-25 14:53:45.755  1580  1656 I libprocessgroup: Successfully killed process cgroup uid 10086 pid 18034 in 95ms
+11-25 14:53:45.759   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:53:45.765  1580  1802 I MiuiNetworkPolicy: removeUidState uid = 10086
+11-25 14:53:45.765  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10169, uidState = 13
+11-25 14:53:45.768  3039  3533 D AppChangedListener: get package name by pid:com.jinyuni.dengbei_care
+11-25 14:53:45.768  3039  3533 D AppChangedListener: packageName:com.jinyuni.dengbei_care,current:com.jinyuni.dengbei_care
+11-25 14:53:45.768   594   594 D         : excute transact!
+11-25 14:53:45.769   783  1096 D         : onTransact received request.
+11-25 14:53:45.769   783  1096 D         : SET_FEATURE
+11-25 14:53:45.769   783  1096 D         : setFeatureC3E, called caseid:7 mode:1.
+11-25 14:53:45.769   783  1096 D         : setFeatureC3E begin,lastmode = 0, mode = 7,value = 1.
+11-25 14:53:45.799  3355  3420 I VideoToolBoxService: onForegroundInfoChanged: Exit Vtb
+11-25 14:53:45.804   620   620 W /vendor/bin/hw/vendor.qti.hardware.perf@2.0-service: type=1400 audit(0.0:36424): avc: denied { search } for comm=41646170744C61756E636820566D name="31895" dev="proc" ino=733995 scontext=u:r:hal_perf_default:s0 tcontext=u:r:system_server:s0 tclass=dir permissive=0
+11-25 14:53:45.804   620   620 W /vendor/bin/hw/vendor.qti.hardware.perf@2.0-service: type=1400 audit(0.0:36425): avc: denied { search } for comm=41646170744C61756E636820566D name="26343" dev="proc" ino=652023 scontext=u:r:hal_perf_default:s0 tcontext=u:r:system_server:s0 tclass=dir permissive=0
+11-25 14:53:45.804   620   620 W /vendor/bin/hw/vendor.qti.hardware.perf@2.0-service: type=1400 audit(0.0:36426): avc: denied { search } for comm=41646170744C61756E636820566D name="21306" dev="proc" ino=748133 scontext=u:r:hal_perf_default:s0 tcontext=u:r:system_server:s0 tclass=dir permissive=0
+11-25 14:53:45.804   620   620 W /vendor/bin/hw/vendor.qti.hardware.perf@2.0-service: type=1400 audit(0.0:36427): avc: denied { search } for comm=41646170744C61756E636820566D name="21275" dev="proc" ino=748134 scontext=u:r:hal_perf_default:s0 tcontext=u:r:system_server:s0 tclass=dir permissive=0
+11-25 14:53:45.804   620   620 W /vendor/bin/hw/vendor.qti.hardware.perf@2.0-service: type=1400 audit(0.0:36428): avc: denied { search } for comm=41646170744C61756E636820566D name="20328" dev="proc" ino=748135 scontext=u:r:hal_perf_default:s0 tcontext=u:r:system_server:s0 tclass=dir permissive=0
+11-25 14:53:45.804   620   620 W /vendor/bin/hw/vendor.qti.hardware.perf@2.0-service: type=1400 audit(0.0:36429): avc: denied { search } for comm=41646170744C61756E636820566D name="20263" dev="proc" ino=748136 scontext=u:r:hal_perf_default:s0 tcontext=u:r:system_server:s0 tclass=dir permissive=0
+11-25 14:53:45.804   620   620 W /vendor/bin/hw/vendor.qti.hardware.perf@2.0-service: type=1400 audit(0.0:36430): avc: denied { search } for comm=41646170744C61756E636820566D name="20262" dev="proc" ino=748137 scontext=u:r:hal_perf_default:s0 tcontext=u:r:system_server:s0 tclass=dir permissive=0
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: Failed to notify process 18034 that displays changed, assuming it died.
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: android.os.DeadObjectException
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at android.os.BinderProxy.transactNative(Native Method)
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at android.os.BinderProxy.transact(BinderProxy.java:511)
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at android.hardware.display.IDisplayManagerCallback$Stub$Proxy.onDisplayEvent(IDisplayManagerCallback.java:115)
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at com.android.server.display.DisplayManagerService$CallbackRecord.notifyDisplayEventAsync(DisplayManagerService.java:1752)
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at com.android.server.display.DisplayManagerService.deliverDisplayEvent(DisplayManagerService.java:1529)
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at com.android.server.display.DisplayManagerService.access$400(DisplayManagerService.java:155)
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at com.android.server.display.DisplayManagerService$DisplayManagerHandler.handleMessage(DisplayManagerService.java:1674)
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at android.os.Handler.dispatchMessage(Handler.java:107)
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:53:45.840  1580  1642 W DisplayManagerService: 	at com.android.server.ServiceThread.run(ServiceThread.java:45)
+11-25 14:53:45.844  1580  1643 I Timeline: Timeline: App_transition_ready time:319467654
+11-25 14:53:45.848  1904  1904 D EventBus: [1904, u0] send(AppTransitionFinishedEvent)
+11-25 14:53:45.848  1904  1904 D EventBus: [1904, u0]  -> ForcedResizableInfoActivityController [0x545c07, P1] onBusEvent(AppTransitionFinishedEvent)
+11-25 14:53:45.848  1904  1904 D EventBus: [1904, u0] onBusEvent(AppTransitionFinishedEvent) duration: 18 microseconds, avg: 1610
+11-25 14:53:45.851  1580  1642 I Timeline: Timeline: App_transition_ready time:319467661
+11-25 14:53:45.861  1580  1643 I Timeline: Timeline: App_transition_ready time:319467671
+11-25 14:53:45.865  1580  2969 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-25 14:53:45.867 20381 20381 I Perf    : Connecting to perf service.
+11-25 14:53:45.891 20381 20381 I ni.dengbei_car: Starting a blocking GC Alloc
+11-25 14:53:45.891 20381 20381 I ni.dengbei_car: Starting a blocking GC Alloc
+11-25 14:53:45.951 20381 20381 D WM-WrkMgrInitializer: Initializing WorkManager with default configuration.
+11-25 14:53:45.969   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:45.993 20381 20381 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-25 14:53:46.020   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.031   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:53:46.031   808  8583 E ANDR-IOP: IIop:: Iop HAL Service is not available.
+11-25 14:53:46.060 20381 20405 E Perf    : Fail to get file list com.jinyuni.dengbei_care
+11-25 14:53:46.061 20381 20405 E Perf    : getFolderSize() : Exception_1 = java.lang.NullPointerException: Attempt to get length of null array
+11-25 14:53:46.062 20381 20405 E Perf    : Fail to get file list oat
+11-25 14:53:46.062 20381 20405 E Perf    : getFolderSize() : Exception_1 = java.lang.NullPointerException: Attempt to get length of null array
+11-25 14:53:46.070   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.079 20381 20381 D AppCompatDelegate: Checking for metadata for AppLocalesMetadataHolderService : Service not found
+11-25 14:53:46.082  1580  1799 D NtpTrustedTime: currentTimeMillis() cache hit
+11-25 14:53:46.121   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.160 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:53:46.160   514  1941 I netd    : trafficSwapActiveStatsMap() <77.74ms>
+11-25 14:53:46.165   514  1941 I netd    : tetherGetStats() <2.44ms>
+11-25 14:53:46.171   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.178   783  1848 D         : readbrightness,out1:0
+11-25 14:53:46.178   783  1848 D         : .
+11-25 14:53:46.178   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:46.185  1580  1799 D NtpTrustedTime: currentTimeMillis() cache hit
+11-25 14:53:46.189   514  1941 I netd    : bandwidthSetGlobalAlert(131072) <0.55ms>
+11-25 14:53:46.189  3355  4144 I TrafficManageService: mina mTrafficStatsReceiver onReceive
+11-25 14:53:46.221   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.233 20381 20381 W ni.dengbei_car: Accessing hidden method Landroid/view/View;->computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (greylist, reflection, allowed)
+11-25 14:53:46.239 20381 20409 W ni.dengbei_car: Accessing hidden method Lmiui/contentcatcher/sdk/Token;-><init>(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V (greylist, linking, allowed)
+11-25 14:53:46.239 20381 20409 W ni.dengbei_car: Accessing hidden method Lmiui/contentcatcher/InterceptorProxy;->getWorkThread()Landroid/os/HandlerThread; (greylist, linking, allowed)
+11-25 14:53:46.239 20381 20409 D ViewContentFactory: initViewContentFetcherClass
+11-25 14:53:46.239 20381 20409 D ViewContentFactory: getInterceptorPackageInfo
+11-25 14:53:46.239 20381 20409 W ni.dengbei_car: Accessing hidden method Landroid/app/AppGlobals;->getInitialApplication()Landroid/app/Application; (greylist, linking, allowed)
+11-25 14:53:46.241 20381 20409 D ViewContentFactory: getInitialApplication took 2ms
+11-25 14:53:46.241 20381 20409 D ViewContentFactory: packageInfo.packageName: com.miui.catcherpatch
+11-25 14:53:46.242  1580  1642 W ActivityTaskManager: Activity top resumed state loss timeout for ActivityRecord{e97a54b u0 com.jinyuni.dengbei_care/.MainActivity t84}
+11-25 14:53:46.242  1580  1642 W ActivityTaskManager: Activity pause timeout for ActivityRecord{e97a54b u0 com.jinyuni.dengbei_care/.MainActivity t84}
+11-25 14:53:46.244  1580  1642 I Timeline: Timeline: App_transition_ready time:319468054
+11-25 14:53:46.247  1580  1642 D ActivityTrigger: ActivityTrigger activityStopTrigger 
+11-25 14:53:46.263 20381 20409 D ViewContentFactory: initViewContentFetcherClass took 23ms
+11-25 14:53:46.263 20381 20409 I ContentCatcher: ViewContentFetcher : ViewContentFetcher
+11-25 14:53:46.263 20381 20409 D ViewContentFactory: createInterceptor took 24ms
+11-25 14:53:46.265 20381 20409 W ni.dengbei_car: Accessing hidden method Lmiui/contentcatcher/sdk/ContentCatcherManager;->getInstance()Lmiui/contentcatcher/sdk/ContentCatcherManager; (greylist, linking, allowed)
+11-25 14:53:46.265 20381 20409 W ni.dengbei_car: Accessing hidden method Lmiui/contentcatcher/sdk/ContentCatcherManager;->registerContentInjector(Lmiui/contentcatcher/sdk/Token;Lmiui/contentcatcher/sdk/injector/IContentDecorateCallback;)V (greylist, linking, allowed)
+11-25 14:53:46.267 20381 20409 W ni.dengbei_car: Accessing hidden method Lmiui/contentcatcher/sdk/ContentCatcherManager;->getPageConfig(Lmiui/contentcatcher/sdk/Token;)Lmiui/contentcatcher/sdk/data/PageConfig; (greylist, linking, allowed)
+11-25 14:53:46.269 20381 20409 W ni.dengbei_car: Accessing hidden method Lmiui/contentcatcher/sdk/data/PageConfig;->getFeatures()Ljava/util/ArrayList; (greylist, linking, allowed)
+11-25 14:53:46.269 20381 20409 W ni.dengbei_car: Accessing hidden method Lmiui/contentcatcher/sdk/data/PageConfig;->getCatchers()Ljava/util/ArrayList; (greylist, linking, allowed)
+11-25 14:53:46.272   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.322   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.371 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:53:46.372   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.375 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:53:46.387 20381 20381 I chatty  : uid=10169(com.jinyuni.dengbei_care) identical 2 lines
+11-25 14:53:46.392 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:53:46.423   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.428 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:53:46.446 20381 20381 I chatty  : uid=10169(com.jinyuni.dengbei_care) identical 3 lines
+11-25 14:53:46.451 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:53:46.473   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.513 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:53:46.517 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:53:46.524   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.525 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:53:46.528 20381 20381 I chatty  : uid=10169(com.jinyuni.dengbei_care) identical 1 line
+11-25 14:53:46.531 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:53:46.534 20381 20381 W ni.dengbei_car: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (greylist, reflection, allowed)
+11-25 14:53:46.542  1580  7005 W ActivityManager: Background start not allowed: service Intent { cmp=com.jinyuni.dengbei_care/.MqtttService } to com.jinyuni.dengbei_care/.MqtttService from pid=20381 uid=10169 pkg=com.jinyuni.dengbei_care startFg?=true
+11-25 14:53:46.548 20381 20381 I ReportScheduler: Scheduled daily report at 07:00 (initial delay 57973s)
+11-25 14:53:46.575   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.577 20381 20381 D MqttService: onResume called
+11-25 14:53:46.605  1580  7005 E WindowManager: App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-25 14:53:46.613 20381 20381 W Looper  : Slow Looper main: Activity com.jinyuni.dengbei_care/.MainActivity is 800ms late (wall=0ms running=0ms ClientTransaction{ callbacks=[android.app.servertransaction.TopResumedActivityChangeItem] }) because of 2 msg, msg 1 took 276ms (seq=2 late=2ms h=android.app.ActivityThread$H w=110), msg 2 took 579ms (seq=3 late=222ms h=android.app.ActivityThread$H w=159)
+11-25 14:53:46.614 20381 20381 W Looper  : Slow Looper main: Activity com.jinyuni.dengbei_care/.MainActivity is 800ms late (wall=1ms running=0ms ClientTransaction{ callbacks=[android.app.servertransaction.TopResumedActivityChangeItem] }) because of 3 msg, msg 1 took 276ms (seq=2 late=2ms h=android.app.ActivityThread$H w=110), msg 2 took 579ms (seq=3 late=222ms h=android.app.ActivityThread$H w=159)
+11-25 14:53:46.616 20381 20381 D MqttService: onPause called
+11-25 14:53:46.619 20381 20381 W Looper  : Slow Looper main: Activity com.jinyuni.dengbei_care/.MainActivity is 801ms late (wall=5ms running=0ms ClientTransaction{ lifecycleRequest=android.app.servertransaction.PauseActivityItem }) because of 4 msg, msg 1 took 276ms (seq=2 late=2ms h=android.app.ActivityThread$H w=110), msg 2 took 579ms (seq=3 late=222ms h=android.app.ActivityThread$H w=159)
+11-25 14:53:46.621 20381 20381 I Choreographer: Skipped 37 frames!  The application may be doing too much work on its main thread.
+11-25 14:53:46.625   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.675   783  1096 I chatty  : uid=0(root) Binder:783_2 identical 1 line
+11-25 14:53:46.725   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.730   620  2963 E ANDR-PERF-LM: VmRssMeter:: start() 298: Could not find pid, can not collect vmrss data
+11-25 14:53:46.730   620  2963 E ANDR-PERF-LM: AdaptiveLaunch: writeToDataBase() 63: Meter aborted or could not get meter data for this run
+11-25 14:53:46.750  1580  3193 I Timeline: Timeline: App_transition_ready time:319468560
+11-25 14:53:46.752  1580  3193 I Timeline: Timeline: App_transition_ready time:319468562
+11-25 14:53:46.752  1580  3193 I Timeline: Timeline: App_transition_stopped time:319468562
+11-25 14:53:46.765 20381 20381 W Looper  : Slow Looper main: doFrame is 617ms late because of 7 msg, msg 1 took 276ms (seq=2 late=2ms h=android.app.ActivityThread$H w=110), msg 2 took 579ms (seq=3 late=222ms h=android.app.ActivityThread$H w=159)
+11-25 14:53:46.776   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:46.781 20381 20381 W Looper  : Slow Looper main: Activity com.jinyuni.dengbei_care/.MainActivity is 517ms late (wall=15ms running=0ms ClientTransaction{ lifecycleRequest=android.app.servertransaction.StopActivityItem }) because of 10 msg, msg 1 took 579ms (seq=3 late=222ms h=android.app.ActivityThread$H w=159), msg 7 took 144ms (seq=9 late=617ms h=android.view.Choreographer$FrameHandler c=android.view.Choreographer$FrameDisplayEventReceiver)
+11-25 14:53:47.081   783  1096 I chatty  : uid=0(root) Binder:783_2 identical 6 lines
+11-25 14:53:47.131   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:47.178  1580  1802 I MiuiNetworkPolicy: bandwidth: 15 KB/s, Max bandwidth: 200 KB/s
+11-25 14:53:47.178   783  1848 D         : readbrightness,out1:0
+11-25 14:53:47.178   783  1848 D         : .
+11-25 14:53:47.178   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:47.182   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:48.105   783  1096 I chatty  : uid=0(root) Binder:783_2 identical 18 lines
+11-25 14:53:48.156   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:48.180   783  1848 D         : readbrightness,out1:0
+11-25 14:53:48.180   783  1848 D         : .
+11-25 14:53:48.180   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:48.208   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:48.413   783  1096 I chatty  : uid=0(root) Binder:783_2 identical 4 lines
+11-25 14:53:48.465   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=suspend
+11-25 14:53:48.632 20264 20294 I com.miui.hybri: Waiting for a blocking GC ProfileSaver
+11-25 14:53:48.640 20264 20294 I com.miui.hybri: WaitForGcToComplete blocked ProfileSaver on AddRemoveAppImageSpace for 8.506ms
+11-25 14:53:48.712   783  1096 D         : setFeatureC3E set cabc_mode = 1.
+11-25 14:53:48.713   594   594 W BpBinder: Slow Binder: BpBinder transact took 2945ms, interface=miui.hardware.display.IDisplayFeatureControl, code=100 oneway=false
+11-25 14:53:48.713  2783  2825 I octvm_drv_xm: platform_set_lcd_mode default(1) success
+11-25 14:53:48.714  2783  2825 I octvm_drv: common drv: get_current_battery_uAh will return 0
+11-25 14:53:48.714  2783  2825 I octvm_power: onPowerModeChanged[normal] called
+11-25 14:53:48.714 30961 31001 W BpBinder: Slow Binder: BpBinder transact took 2974ms, interface=miui.whetstone.power, code=2 oneway=false
+11-25 14:53:48.715 30961 31001 W Looper  : Slow Looper PowerStateMachine: Long Msg: seq=125 plan=14:53:45.738  late=1ms wall=2975ms running=0ms h=com.miui.powerkeeper.statemachine.PowerStateMachine w=100
+11-25 14:53:48.872 20302 20329 I hybrid:entranc: Waiting for a blocking GC ProfileSaver
+11-25 14:53:49.182   783  1848 D         : readbrightness,out1:0
+11-25 14:53:49.182   783  1848 D         : .
+11-25 14:53:49.182   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:50.047  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-25 14:53:50.047  1904  1904 I KeyguardIndication: updateIndication: mVisible true mDozing false mTransientIndication null mPowerPluggedIn true mUpArrowIndication null
+11-25 14:53:50.052 30961 30961 I PowerKeeperBackgroundService: onStartCommand()
+11-25 14:53:50.052 30961 30961 I PowerKeeperService: onAlarm
+11-25 14:53:50.054  3421  3421 W PushService: [Tid:2] onStart() with intent.Action = com.xiaomi.push.timer, chid = null, pkg = null|null
+11-25 14:53:50.055  3421  3799 W PushService: [Tid:238] [Job] Handle intent action = com.xiaomi.push.timer
+11-25 14:53:50.055  3421  3799 W PushService: [Tid:238] [Alarm] Service called on timer
+11-25 14:53:50.056  3421  3799 W PushService: [Tid:238] [Alarm] register alarm. (false)
+11-25 14:53:50.056  3421  3799 W PushService: [Tid:238] [HB] ping interval:600000
+11-25 14:53:50.060  3421  3799 W PushService: [Tid:238] [Slim] SND ping id=0
+11-25 14:53:50.061  3421  3795 W PushService: [Tid:237] [Alarm] heartbeat alarm finish in 11
+11-25 14:53:50.073  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:53:50.108  3421  8445 W PushService: [Tid:268] [Slim] RCV ping id=0
+11-25 14:53:50.109  3421  3799 W PushService: [Tid:238] stats key not found
+11-25 14:53:50.183   783  1848 D         : readbrightness,out1:0
+11-25 14:53:50.183   783  1848 D         : .
+11-25 14:53:50.183   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:50.183  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:53:51.184   783  1848 D         : readbrightness,out1:0
+11-25 14:53:51.184   783  1848 D         : .
+11-25 14:53:51.185   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:52.186   783  1848 D         : readbrightness,out1:0
+11-25 14:53:52.186   783  1848 D         : .
+11-25 14:53:52.186   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:52.622 20381 20420 D ProfileInstaller: Installing profile for com.jinyuni.dengbei_care
+11-25 14:53:53.187   783  1848 D         : readbrightness,out1:0
+11-25 14:53:53.187   783  1848 D         : .
+11-25 14:53:53.187   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:53.188  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:53:53.494     0     0 W swapper/5: type=1400 audit(0.0:37324): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-25 14:53:53.896  1904  1904 D StatusBar: updateNotificationRankingDelayed messageReceiveTime=319475505
+11-25 14:53:53.936 20381 20403 I ni.dengbei_car: ProcessProfilingInfo new_methods=79 is saved saved_to_disk=1 resolve_classes_delay=8000
+11-25 14:53:54.189   783  1848 D         : readbrightness,out1:0
+11-25 14:53:54.189   783  1848 D         : .
+11-25 14:53:54.189   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:55.191   783  1848 D         : readbrightness,out1:0
+11-25 14:53:55.191   783  1848 D         : .
+11-25 14:53:55.191   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:56.193   783  1848 D         : readbrightness,out1:0
+11-25 14:53:56.193   783  1848 D         : .
+11-25 14:53:56.193   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:56.193  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:53:57.194   783  1848 D         : readbrightness,out1:0
+11-25 14:53:57.194   783  1848 D         : .
+11-25 14:53:57.194   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:58.195   783  1848 D         : readbrightness,out1:0
+11-25 14:53:58.195   783  1848 D         : .
+11-25 14:53:58.195   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:59.196   783  1848 D         : readbrightness,out1:0
+11-25 14:53:59.196   783  1848 D         : .
+11-25 14:53:59.196   783  1848 D         : readbrightness,out2:0.
+11-25 14:53:59.198  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:00.062  3421  3799 W PushService: [Tid:238] [Job] check the ping-pong.1795589630059
+11-25 14:54:00.198   783  1848 D         : readbrightness,out1:0
+11-25 14:54:00.198   783  1848 D         : .
+11-25 14:54:00.198   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:01.200   783  1848 D         : readbrightness,out1:0
+11-25 14:54:01.200   783  1848 D         : .
+11-25 14:54:01.200   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:02.201   783  1848 D         : readbrightness,out1:0
+11-25 14:54:02.201   783  1848 D         : .
+11-25 14:54:02.201   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:02.202  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:03.203   783  1848 D         : readbrightness,out1:0
+11-25 14:54:03.203   783  1848 D         : .
+11-25 14:54:03.203   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:03.494     0     0 W swapper/6: type=1400 audit(0.0:37325): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-25 14:54:04.205   783  1848 D         : readbrightness,out1:0
+11-25 14:54:04.205   783  1848 D         : .
+11-25 14:54:04.205   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:05.206   783  1848 D         : readbrightness,out1:0
+11-25 14:54:05.206   783  1848 D         : .
+11-25 14:54:05.206   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:05.207  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:05.392  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-25 14:54:05.392  1580  1639 I MiuiNetworkPolicy: label wlan0, uid -1, active false, tsNanos 329415349089952
+11-25 14:54:05.394   514  1941 D OemNetd : setLimit: disable, rate=0
+11-25 14:54:06.208   783  1848 D         : readbrightness,out1:0
+11-25 14:54:06.208   783  1848 D         : .
+11-25 14:54:06.208   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:07.208   783  1848 D         : readbrightness,out1:0
+11-25 14:54:07.208   783  1848 D         : .
+11-25 14:54:07.209   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:08.210   783  1848 D         : readbrightness,out1:0
+11-25 14:54:08.210   783  1848 D         : .
+11-25 14:54:08.210   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:08.211  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:09.212   783  1848 D         : readbrightness,out1:0
+11-25 14:54:09.212   783  1848 D         : .
+11-25 14:54:09.212   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:10.213   783  1848 D         : readbrightness,out1:0
+11-25 14:54:10.213   783  1848 D         : .
+11-25 14:54:10.213   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:11.215   783  1848 D         : readbrightness,out1:0
+11-25 14:54:11.215   783  1848 D         : .
+11-25 14:54:11.215   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:11.215  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:12.217   783  1848 D         : readbrightness,out1:0
+11-25 14:54:12.217   783  1848 D         : .
+11-25 14:54:12.217   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:13.217   783  1848 D         : readbrightness,out1:0
+11-25 14:54:13.217   783  1848 D         : .
+11-25 14:54:13.217   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:13.504     0     0 W swapper/4: type=1400 audit(0.0:37326): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-25 14:54:14.219   783  1848 D         : readbrightness,out1:0
+11-25 14:54:14.219   783  1848 D         : .
+11-25 14:54:14.219   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:14.220  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:14.813  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-25 14:54:14.814  1904  1904 I KeyguardIndication: updateIndication: mVisible true mDozing false mTransientIndication null mPowerPluggedIn true mUpArrowIndication null
+11-25 14:54:14.816  1580  1799 D NtpTrustedTime: currentTimeMillis() cache hit
+11-25 14:54:14.820  1580  1778 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:54:14.820  1580  1778 D CompatibilityInfo: applicationDensity - 320
+11-25 14:54:14.820  1580  1778 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:54:14.822   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:54:14.831  1580  1778 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:54:14.831  1580  1778 D CompatibilityInfo: applicationDensity - 320
+11-25 14:54:14.831  1580  1778 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:54:14.831   514  1941 I netd    : trafficSwapActiveStatsMap() <14.58ms>
+11-25 14:54:14.836   514  1941 I netd    : tetherGetStats() <2.28ms>
+11-25 14:54:14.840  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:54:14.842   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:54:14.844   432   432 I chatty  : uid=1000(system) hwservicemanage identical 1 line
+11-25 14:54:14.846   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:54:14.853  3355  3355 W BatteryHistoryManager: checkReset
+11-25 14:54:14.853  3355  4215 W BatteryHistoryManager: check reset inner : 2026.11.25  14:54
+11-25 14:54:14.856 30961 30961 I PowerKeeperBackgroundService: onStartCommand()
+11-25 14:54:14.856 30961 30961 I PowerKeeperService: onAlarm
+11-25 14:54:14.862  1580  1799 D NtpTrustedTime: currentTimeMillis() cache hit
+11-25 14:54:14.864  3355  4144 I TrafficManageService: mina mTrafficStatsReceiver onReceive
+11-25 14:54:14.865   514  1941 I netd    : bandwidthSetGlobalAlert(131072) <0.47ms>
+11-25 14:54:14.927  1580  1664 E KernelCpuSpeedReader: Failed to read cpu-freq: /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state: open failed: ENOENT (No such file or directory)
+11-25 14:54:14.962   514  1941 I netd    : trafficSwapActiveStatsMap() <20.42ms>
+11-25 14:54:14.967   514  1941 I netd    : tetherGetStats() <2.88ms>
+11-25 14:54:15.020  3355  4215 I PowerRankHelperHolder: refreshStats begin
+11-25 14:54:15.111   514  1941 I netd    : trafficSwapActiveStatsMap() <15.50ms>
+11-25 14:54:15.116   514  1941 I netd    : tetherGetStats() <2.84ms>
+11-25 14:54:15.171  3355  4215 W CpuPowerCalculator: UID 0 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.171  3355  4215 W CpuPowerCalculator: UID 1000 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.171  3355  4215 W CpuPowerCalculator: UID 1001 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.171  3355  4215 W CpuPowerCalculator: UID 1002 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.171  3355  4215 W CpuPowerCalculator: UID 1010 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.171  3355  4215 W CpuPowerCalculator: UID 1013 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.171  3355  4215 W CpuPowerCalculator: UID 1036 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.171  3355  4215 W CpuPowerCalculator: UID 1041 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.171  3355  4215 W CpuPowerCalculator: UID 1066 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.171  3355  4215 W CpuPowerCalculator: UID 1069 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.172  3355  4215 W CpuPowerCalculator: UID 10063 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.172  3355  4215 W CpuPowerCalculator: UID 10068 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.172  3355  4215 W CpuPowerCalculator: UID 10087 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.172  3355  4215 W CpuPowerCalculator: UID 10091 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.172  3355  4215 W CpuPowerCalculator: UID 10102 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.173  3355  4215 W CpuPowerCalculator: UID 10133 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.173  3355  4215 W CpuPowerCalculator: UID 10136 CPU cluster # mismatch: Power Profile # 1 actual # 2
+11-25 14:54:15.206  3355  4215 I PowerRankHelperHolder: refreshStats end
+11-25 14:54:15.221   783  1848 D         : readbrightness,out1:0
+11-25 14:54:15.221   783  1848 D         : .
+11-25 14:54:15.221   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:15.449 29637 29781 D AggregateListener: sbn enq 0|com.miui.systemAdSolution|4|{"ex":"ema_ZiJY_SHA1TEdKSnpmsj8xuJt-SwuP5o7wToQ7wLK-P5lwhxnS-odTZCSeEfcVmBuKNLZK34EMaokYaf4M1H1BDUS3_hC7c_BTOUbIcRzeKQDLLu4Lwcfv_XFwWfjja5LEs9yTRrPHn-J96bLnK3JKBJP8eUL1y3NnHSnw_08p516dn3z8v7Vh4IRMM39kzYHrC73xbo-B35dlB4-cW0GSALJim7AOgSHVTTbPLH1DBJvY2Ac-tg0D64COHLYjHFC-CMn3JEHiAS5MfInMZI8252aBY5uJgET09FNm7ahhMvqtJJXgjbuD2yaHGr_URidswp-3dZyhtInlYz69VIbSydqMfBWbdy5h7v_8qp8EMZVvH7KKyDWRAc5WKWVza4K051-iMzJ51Ottbv0g1_3dSbaDKdtu6ZRjT1ZLQlepZr3ffYeNze3mHi-YhzifQKV0xSn55p6lAnzM0QmofU3nIzcoxTqsWIoeZizSDPkbk4Qh4XLrnaDiGyChkDfqIhNBY4bm7TkHm2-FbrSM6SOj9Z-pcbehWFWwKMPeGFkurTxkd8oJI_bPOl3wKONlWOI8OiOJ5gEPTRdOJ9RVKXd341fhoVikyWYU70zFNZEi6KfaNxQtjl5GhAWVaZwBKMvshp3WTHKa3zhsWQHbxSrr7F64OJudH8_f5Ljwn_DkEiTaSj-G8uAGfzx2vHKRD6Sr8s6Kf11adY3sySdzvlMJjkXk4q8BdIFl-pEFwoRmPSEHmn6qwGk5DWsgb_TuebWwqgV72UkrtWsZxmnf1RxTqpTD3jOLRr9GVq5xSlMG4p-ZtcQg8GmDdmop_9fRR2xcrIu3ZvXsHuisiy3u4PhvAd84EG5Om1Fwbvy3UVhmURw8Vm4fslbbIqJaVbms9MDcD-xGKPOMupQ5zMpHdvddW5KE6wWy6DyOb597VD21LSpbzJzSXU4PpvPHvbyLtPhyQo_1hH2eXMzA6ss2T3At6HMTF4njYhixPZxDN2bMjzBhd4ITyFTYis5tYTUMTwZFDlsI6EOTsoNte6_u6TGojiO3evye3DzoIp1JVsJS2lbUbYtY9iOGPCNb0PTS3y0Yg5SdiYZ9m6PMut1TlcFxMgdF7l1PxiO_G6zpdvlOF5IThkgQsiXFKk50TRX2Cikaqg1kfQsrOPAyXzAO2JqI3ygWX-kyP6RdB0uxB8Ojxra82WbWl2WdUz2W6zYqiCjmA-vjmTOeTn58oc6GYahHUSJqR4R2NJBRi2IgiOXS3NW2Vbi-FWpt6YIOR4hL1LVXswbZybaDs_c283KUESEAEbCQfRSiRWJMcNFAr3IrdZ2htJzTNq77ZiPLVjaJ2XfFwdqvGbkkeOMT0QgmR92q-yqBuEM3u_ikT3BDrJqPAYzd9Gk31UamJKbksUlzjKBmcVdm5Is32bxzI1TeHqtS8IHc7AEBYZwPlefCsOrc9E35sn3nj_1ONqiz47Y72CHGOmjQTJqqGVIp8N4JWSJjqTDVsbSJDR1Xm5ohWgPOe4vRE9_DO5CXzUxqsZ6rfr7ebqtkCsqDIC6TJvNzXyBHf-bMeB90cCjCxJQGFSq4PKjNyfiIrImND097yqfd5o9EkkEza0UhdrR1WYhzWqgZVAPkoGXpY_21P7R07emWNVn_LNerKDSGQ3J-iyAAaaCuiAYQ9Kcd2uo6m2H6VE6ZXcSfp6N7JoEwSdm-5N2LXCBMUis9A9pHiUMOsPh533192rhBizvqQ7OAMwJ_cPY2sqK0eSQbRoHuCS8yhQtU64D_fVyHXqt8UJE9oCnlVqZV8sIhdU76bYufupSVkMx6qDIMrahKVq81Jxiu-FGc-MJZD-dq4kp8GZUjKQD68nVKIdgOiAyjTWReahPaoNi2FJFzqtoB2wW0q2Fzm68GDY2jQYVCdXKLohDonhmAP61FrNA5nx60vxWUup10abaCVOM-67nbIcZTEHVkLdkoKH7b-vINHIkeB4HfSvT_SutH3HbWn8H2OQG9R3eMYzR8IfrAOlDKd6tQ8pt7UcLLAWq-8C5ltLV5KVhWSv28rooukd-jmoLtuuE3m8nCCrbYrfx9cXLlbcKK6hZyL89DxlGkagezIq1QA9D-45nc6YOEdZGuP158wpeGS7xW63JqIIov698pxa0pSBcg1wa6EGWZflEu50qstxeKXipxGmQQDTaR-pXBcet9egdOosGP7FWjSg9Ib2vyKS93hFlncIA6ELWhRKURbdk843mo_a6OaKFRgAH5qOhsrm2xuqjVkgwH8ACbKhEcs1-MJLEJruILTNsH-I-zqlFd-HY7zcrITVorjZXDZ699-QGkCOIiD_gNBs"}|10132
+11-25 14:54:15.450 29637 29781 W Bundle  : Key adId expected IBinder but value was a java.lang.String.  The default value <null> was returned.
+11-25 14:54:15.450 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:54:15.450 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.String cannot be cast to android.os.IBinder
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:19)
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:54:15.450 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:54:15.451 29637 29781 W Bundle  : Key notificationId expected IBinder but value was a java.lang.Integer.  The default value <null> was returned.
+11-25 14:54:15.451 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:54:15.451 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.Integer cannot be cast to android.os.IBinder
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:19)
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:54:15.451 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:54:15.453 29637 29781 W Bundle  : Key adId expected IBinder but value was a java.lang.String.  The default value <null> was returned.
+11-25 14:54:15.453 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:54:15.453 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.String cannot be cast to android.os.IBinder
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:20)
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:54:15.453 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:54:15.454 29637 29781 W Bundle  : Key notificationId expected IBinder but value was a java.lang.Integer.  The default value <null> was returned.
+11-25 14:54:15.454 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:54:15.454 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.Integer cannot be cast to android.os.IBinder
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:20)
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:54:15.454 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:54:15.456 29637 29781 W Bundle  : Key adId expected IBinder but value was a java.lang.String.  The default value <null> was returned.
+11-25 14:54:15.456 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:54:15.456 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.String cannot be cast to android.os.IBinder
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.ActionFake.<init>(AggregateDb.kt:2)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:25)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:54:15.456 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:54:15.456 29637 29781 W Bundle  : Key notificationId expected IBinder but value was a java.lang.Integer.  The default value <null> was returned.
+11-25 14:54:15.457 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:54:15.457 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.Integer cannot be cast to android.os.IBinder
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.ActionFake.<init>(AggregateDb.kt:2)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:25)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:54:15.457 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:54:15.459 29637 29781 W Bundle  : Key adId expected IBinder but value was a java.lang.String.  The default value <null> was returned.
+11-25 14:54:15.460 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:54:15.460 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.String cannot be cast to android.os.IBinder
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.ActionFake.<init>(AggregateDb.kt:2)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:25)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:54:15.460 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:54:15.461 29637 29781 W Bundle  : Key notificationId expected IBinder but value was a java.lang.Integer.  The default value <null> was returned.
+11-25 14:54:15.461 29637 29781 W Bundle  : Attempt to cast generated internal exception:
+11-25 14:54:15.461 29637 29781 W Bundle  : java.lang.ClassCastException: java.lang.Integer cannot be cast to android.os.IBinder
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at android.os.Bundle.getBinder(Bundle.java:1184)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.PendingIntentFake.<init>(AggregateDb.kt:11)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.ActionFake.<init>(AggregateDb.kt:2)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at miui.notification.aggregation.db.NotificationFake.<init>(AggregateDb.kt:25)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at d.d.a.a.s.<init>(AggregateDb.kt:9)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at d.d.a.d.a(NotificationAggregateListener.kt:29)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at com.miui.notification.NotificationListener.a(NotificationListener.java:15)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at b.d.b.d.run(Unknown Source:4)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at android.os.Looper.loop(Looper.java:223)
+11-25 14:54:15.461 29637 29781 W Bundle  : 	at android.os.HandlerThread.run(HandlerThread.java:67)
+11-25 14:54:15.562  3355  3400 W Parcel  : **** enforceInterface() expected 'com.miui.gamebooster.service.ISecurityCenterNotificationListener' but read 'android.service.notification.INotificationListener'
+11-25 14:54:15.563  3355  3400 W Binder  : Caught a RuntimeException from the binder stub implementation.
+11-25 14:54:15.563  3355  3400 W Binder  : java.lang.SecurityException: Binder invocation to an incorrect interface
+11-25 14:54:15.563  3355  3400 W Binder  : 	at android.os.Parcel.nativeEnforceInterface(Native Method)
+11-25 14:54:15.563  3355  3400 W Binder  : 	at android.os.Parcel.enforceInterface(Parcel.java:626)
+11-25 14:54:15.563  3355  3400 W Binder  : 	at com.miui.gamebooster.service.ISecurityCenterNotificationListener$Stub.onTransact(Unknown Source:22)
+11-25 14:54:15.563  3355  3400 W Binder  : 	at android.os.Binder.execTransactInternal(Binder.java:1021)
+11-25 14:54:15.563  3355  3400 W Binder  : 	at android.os.Binder.execTransact(Binder.java:994)
+11-25 14:54:15.575  1904  1904 D StatusBar: onNotificationPosted key=0|com.miui.systemAdSolution|4|{"ex":"ema_ZiJY_SHA1TEdKSnpmsj8xuJt-SwuP5o7wToQ7wLK-P5lwhxnS-odTZCSeEfcVmBuKNLZK34EMaokYaf4M1H1BDUS3_hC7c_BTOUbIcRzeKQDLLu4Lwcfv_XFwWfjja5LEs9yTRrPHn-J96bLnK3JKBJP8eUL1y3NnHSnw_08p516dn3z8v7Vh4IRMM39kzYHrC73xbo-B35dlB4-cW0GSALJim7AOgSHVTTbPLH1DBJvY2Ac-tg0D64COHLYjHFC-CMn3JEHiAS5MfInMZI8252aBY5uJgET09FNm7ahhMvqtJJXgjbuD2yaHGr_URidswp-3dZyhtInlYz69VIbSydqMfBWbdy5h7v_8qp8EMZVvH7KKyDWRAc5WKWVza4K051-iMzJ51Ottbv0g1_3dSbaDKdtu6ZRjT1ZLQlepZr3ffYeNze3mHi-YhzifQKV0xSn55p6lAnzM0QmofU3nIzcoxTqsWIoeZizSDPkbk4Qh4XLrnaDiGyChkDfqIhNBY4bm7TkHm2-FbrSM6SOj9Z-pcbehWFWwKMPeGFkurTxkd8oJI_bPOl3wKONlWOI8OiOJ5gEPTRdOJ9RVKXd341fhoVikyWYU70zFNZEi6KfaNxQtjl5GhAWVaZwBKMvshp3WTHKa3zhsWQHbxSrr7F64OJudH8_f5Ljwn_DkEiTaSj-G8uAGfzx2vHKRD6Sr8s6Kf11adY3sySdzvlMJjkXk4q8BdIFl-pEFwoRmPSEHmn6qwGk5DWsgb_TuebWwqgV72UkrtWsZxmnf1RxTqpTD3jOLRr9GVq5xSlMG4p-ZtcQg8GmDdmop_9fRR2xcrIu3ZvXsHuisiy3u4PhvAd84EG5Om1Fwbvy3UVhmURw8Vm4fslbbIqJaVbms9MDcD-xGKPOMupQ5zMpHdvddW5KE6wWy6DyOb597VD21LSpbzJzSXU4PpvPHvbyLtPhyQo_1hH2eXMzA6ss2T3At6HMTF4njYhixPZxDN2bMjzBhd4ITyFTYis5tYTUMTwZFDlsI6EOTsoNte6_u6TGojiO3evye3DzoIp1JVsJS2lbUbYtY9iOGPCNb0PTS3y0Yg5SdiYZ9m6PMut1TlcFxMgdF7l1PxiO_G6zpdvlOF5IThkgQsiXFKk50TRX2Cikaqg1kfQsrOPAyXzAO2JqI3ygWX-kyP6RdB0uxB8Ojxra82WbWl2WdUz2W6zYqiCjmA-vjmTOeTn58oc6GYahHUSJqR4R2NJBRi2IgiOXS3NW2Vbi-FWpt6YIOR4hL1LVXswbZybaDs_c283KUESEAEbCQfRSiRWJMcNFAr3IrdZ2htJzTNq77ZiPLVjaJ2XfFwdqvGbkkeOMT0QgmR92q-yqBuEM3u_ikT3BDrJqPAYzd9Gk31UamJKbksUlzjKBmcVdm5Is32bxzI1TeHqtS8IHc7AEBYZwPlefCsOrc9E35sn3nj_1ONqiz47Y72CHGOmjQTJqqGVIp8N4JWSJjqTDVsbSJDR1Xm5ohWgPOe4vRE9_DO5CXzUxqsZ6rfr7ebqtkCsqDIC6TJvNzXyBHf-bMeB90cCjCxJQGFSq4PKjNyfiIrImND097yqfd5o9EkkEza0UhdrR1WYhzWqgZVAPkoGXpY_21P7R07emWNVn_LNerKDSGQ3J-iyAAaaCuiAYQ9Kcd2uo6m2H6VE6ZXcSfp6N7JoEwSdm-5N2LXCBMUis9A9pHiUMOsPh533192rhBizvqQ7OAMwJ_cPY2sqK0eSQbRoHuCS8yhQtU64D_fVyHXqt8UJE9oCnlVqZV8sIhdU76bYufupSVkMx6qDIMrahKVq81Jxiu-FGc-MJZD-dq4kp8GZUjKQD68nVKIdgOiAyjTWReahPaoNi2FJFzqtoB2wW0q2Fzm68GDY2jQYVCdXKLohDonhmAP61FrNA5nx60vxWUup10abaCVOM-67nbIcZTEHVkLdkoKH7b-vINHIkeB4HfSvT_SutH3HbWn8H2OQG9R3eMYzR8IfrAOlDKd6tQ8pt7UcLLAWq-8C5ltLV5KVhWSv28rooukd-jmoLtuuE3m8nCCrbYrfx9cXLlbcKK6hZyL89DxlGkagezIq1QA9D-45nc6YOEdZGuP158wpeGS7xW63JqIIov698pxa0pSBcg1wa6EGWZflEu50qstxeKXipxGmQQDTaR-pXBcet9egdOosGP7FWjSg9Ib2vyKS93hFlncIA6ELWhRKURbdk843mo_a6OaKFRgAH5qOhsrm2xuqjVkgwH8ACbKhEcs1-MJLEJruILTNsH-I-zqlFd-HY7zcrITVorjZXDZ699-QGkCOIiD_gNBs"}|10132 isUpdate=true
+11-25 14:54:15.577  1904  1904 D StatusBar: updateNotification old=StatusBarNotification(pkg=com.miui.systemAdSolution user=UserHandle{0} id=4 tag={"ex":"ema_ZiJY_SHA1TEdKSnpmsj8xuJt-SwuP5o7wToQ7wLK-P5lwhxnS-odTZCSeEfcVmBuKNLZK34EMaokYaf4M1H1BDUS3_hC7c_BTOUbIcRzeKQDLLu4Lwcfv_XFwWfjja5LEs9yTRrPHn-J96bLnK3JKBJP8eUL1y3NnHSnw_08p516dn3z8v7Vh4IRMM39kzYHrC73xbo-B35dlB4-cW0GSALJim7AOgSHVTTbPLH1DBJvY2Ac-tg0D64COHLYjHFC-CMn3JEHiAS5MfInMZI8252aBY5uJgET09FNm7ahhMvqtJJXgjbuD2yaHGr_URidswp-3dZyhtInlYz69VIbSydqMfBWbdy5h7v_8qp8EMZVvH7KKyDWRAc5WKWVza4K051-iMzJ51Ottbv0g1_3dSbaDKdtu6ZRjT1ZLQlepZr3ffYeNze3mHi-YhzifQKV0xSn55p6lAnzM0QmofU3nIzcoxTqsWIoeZizSDPkbk4Qh4XLrnaDiGyChkDfqIhNBY4bm7TkHm2-FbrSM6SOj9Z-pcbehWFWwKMPeGFkurTxkd8oJI_bPOl3wKONlWOI8OiOJ5gEPTRdOJ9RVKXd341fhoVikyWYU70zFNZEi6KfaNxQtjl5GhAWVaZwBKMvshp3WTHKa3zhsWQHbxSrr7F64OJudH8_f5Ljwn_DkEiTaSj-G8uAGfzx2vHKRD6Sr8s6Kf11adY3sySdzvlMJjkXk4q8BdIFl-pEFwoRmPSEHmn6qwGk5DWsgb_TuebWwqgV72UkrtWsZxmnf1RxTqpTD3jOLRr9GVq5xSlMG4p-ZtcQg8GmDdmop_9fRR2xcrIu3ZvXsHuisiy3u4PhvAd84EG5Om1Fwbvy3UVhmURw8Vm4fslbbIqJaVbms9MDcD-xGKPOMupQ5zMpHdvddW5KE6wWy6DyOb597VD21LSpbzJzSXU4PpvPHvbyLtPhyQo_1hH2eXMzA6ss2T3At6HMTF4njYhixPZxDN2bMjzBhd4ITyFTYis5tYTUMTwZFDlsI6EOTsoNte6_u6TGojiO3evye3DzoIp1JVsJS2lbUbYtY9iOGPCNb0PTS3y0Yg5SdiYZ9m6PMut1TlcFxMgdF7l1PxiO_G6zpdvlOF5IThkgQsiXFKk50TRX2Cikaqg1kfQsrOPAyXzAO2JqI3ygWX-kyP6RdB0uxB8Ojxra82WbWl2WdUz2W6zYqiCjmA-vjmTOeTn58oc6GYahHUSJqR4R2NJBRi2IgiOXS3NW2Vbi-FWpt6YIOR4hL1LVXswbZybaDs_c283KUESEAEbCQfRSiRWJMcNFAr3IrdZ2htJzTNq77ZiPLVjaJ2XfFwdqvGbkkeOMT0QgmR92q-yqBuEM3u_ikT3BDrJqPAYzd9Gk31UamJKbksUlzjKBmcVdm5Is32bxzI1TeHqtS8IHc7AEBYZwPlefCsOrc9E35sn3nj_1ONqiz47Y72CHGOmjQTJqqGVIp8N4JWSJjqTDVsbSJDR1Xm5ohWgPOe4vRE9_DO5CXzUxqsZ6rfr7ebqtkCsqDIC6TJvNzXyBHf-bMeB90cCjCxJQGFSq4PKjNyfiIrImND097yqfd5o9EkkEza0UhdrR1WYhzWqgZVAPkoGXpY_21P7R07emWNVn_LNerKDSGQ3J-iyAAaaCuiAYQ9Kcd2uo6m2H6VE6ZXcSfp6N7JoEwSdm-5N2LXCBMUis9A9pHiUMOsPh533192rhBizvqQ7OAMwJ_cPY2sqK0eSQbRoHuCS8yhQtU64D_fVyHXqt8UJE9oCnlVqZV8sIhdU76bYufupSVkMx6qDIMrahKVq81Jxiu-FGc-MJZD-dq4kp8GZUjKQD68nVKIdgOiAyjTWReahPaoNi2FJFzqtoB2wW0q2Fzm68GDY2jQYVCdXKLohDonhmAP61FrNA5nx60vxWUup10abaCVOM-67nbIcZTEHVkLdkoKH7b-vINHIkeB4HfSvT_SutH3HbWn8H2OQG9R3eMYzR8IfrAOlDKd6tQ8pt7UcLLAWq-8C5ltLV5KVhWSv28rooukd-jmoLtuuE3m8nCCrbYrfx9cXLlbcKK6hZyL89DxlGkagezIq1QA9D-45nc6YOEdZGuP158wpeGS7xW63JqIIov698pxa0pSBcg1wa6EGWZflEu50qstxeKXipxGmQQDTaR-pXBcet9egdOosGP7FWjSg9Ib2vyKS93hFlncIA6ELWhRKURbdk843mo_a6OaKFRgAH5qOhsrm2xuqjVkgwH8ACbKhEcs1-MJLEJruILTNsH-I-zqlFd-HY7zcrITVorjZXDZ699-QGkCOIiD_gNBs"} key=0|com.miui.systemAdSolution|4|{"ex":"ema_ZiJY_SHA1TEdKSnpmsj8xuJt-SwuP5o7wToQ7wLK-P5lwhxnS-odTZCSeEfcVmBuKNLZK34EMaokYaf4M1H1BDUS3_hC7c_BTOUbIcRzeKQDLLu4Lwcfv_XFwWfjja5LEs9yTRrPHn-J96bLnK3JKBJP8eUL1y3NnHSnw_08p516dn3z8v7Vh4IRMM39kzYHrC73xbo-B35dlB4-cW0GSALJim7AOgSHVTTbPLH1DBJvY2Ac-tg0D64COHLYjHFC-CMn3JEHiAS5MfInMZI8252aBY5uJgET09FNm7ahhMvqtJJXgjbuD2yaHGr_URidswp-3dZyhtInlYz69VIbSydqMfBWbdy5h7v_8qp8EMZVvH7KKyDWRAc5WKWVza4K051-iMzJ51Ottbv0g1_3dSbaDKdtu6ZRjT1ZLQlepZr3ffYeNze3mHi-YhzifQKV0xSn55p6lAnzM0QmofU3nIzcoxTqsWIoeZizSDPkbk4Qh4XLrnaDiGyChkDfqIhNBY4bm7TkHm2-FbrSM6SOj9Z-pcbehWFWwKMPeGFkurTxkd8oJI_bPOl3wKONlWOI8OiOJ5gEPTRdOJ9RVKXd341fhoVikyWYU70zFNZEi6KfaNxQtjl5GhAWVaZwBKMvshp3WTHKa3zhsWQHbxSrr7F64OJudH8_f5Ljwn_DkEiTaSj-G8uAGfzx2vHKRD6Sr8s6Kf11adY3sySdzvlMJjkXk4q8BdIFl-pEFwoRmPSEHmn6qwGk5DWsgb_TuebWwqgV72UkrtWsZxmnf1RxTqpTD3jOLRr9GVq5xSlMG4p-ZtcQg8GmDdmop_9fRR2xcrIu3ZvXsHuisiy3u4PhvAd84EG5Om1Fwbvy3UVhmURw8Vm4fslbbIqJaVbms9MDcD-xGKPOMupQ5zMpHdvddW5KE6wWy6DyOb597VD21LSpbzJzSXU4PpvPHvbyLtPhyQo_1hH2eXMzA6ss2T3At6HMTF4njYhixPZxDN2bMjzBhd4ITyFTYis5tYTUMTwZFDlsI6EOTsoNte6_u6TGojiO3evye3DzoIp1JVsJS2lbUbYtY9iOGPCNb0PTS3y0Yg5SdiYZ9m6PMut1TlcFxMgdF7l1PxiO_G6zpdvlOF5IThkgQsiXFKk50TRX2Cikaqg1kfQsrOPAyXzAO2JqI3ygWX-kyP6RdB0uxB8Ojxra82WbWl2WdUz2W6zYqiCjmA-vjmTOeTn58oc6GYahHUSJqR4R2NJBRi2IgiOXS3NW2Vbi-FWpt6YIOR4hL1LVXswbZybaDs_c283KUESEAEbCQfRSiRWJMcNFAr3IrdZ2htJzTNq77ZiPLVjaJ2XfFwdqvGbkkeOMT0QgmR92q-yqBuEM3u_ikT3BDrJqPAYzd9Gk31UamJKbksUlzjKBmcVdm5Is32bxzI1TeHqtS8IHc7AEBYZwPlefCsOrc9E35sn3nj_1ONqiz47Y72CHGOmjQTJqqGVIp8N4JWSJjqTDVsbSJDR1Xm5ohWgPOe4vRE9_DO5CXzUxqsZ6rfr7ebqtkCsqDIC6TJvNzXyBHf-bMeB
+11-25 14:54:15.610  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:54:15.639  1904  1904 D StatusBar: No peeking: not in use: 0|com.miui.systemAdSolution|4|{"ex":"ema_ZiJY_SHA1TEdKSnpmsj8xuJt-SwuP5o7wToQ7wLK-P5lwhxnS-odTZCSeEfcVmBuKNLZK34EMaokYaf4M1H1BDUS3_hC7c_BTOUbIcRzeKQDLLu4Lwcfv_XFwWfjja5LEs9yTRrPHn-J96bLnK3JKBJP8eUL1y3NnHSnw_08p516dn3z8v7Vh4IRMM39kzYHrC73xbo-B35dlB4-cW0GSALJim7AOgSHVTTbPLH1DBJvY2Ac-tg0D64COHLYjHFC-CMn3JEHiAS5MfInMZI8252aBY5uJgET09FNm7ahhMvqtJJXgjbuD2yaHGr_URidswp-3dZyhtInlYz69VIbSydqMfBWbdy5h7v_8qp8EMZVvH7KKyDWRAc5WKWVza4K051-iMzJ51Ottbv0g1_3dSbaDKdtu6ZRjT1ZLQlepZr3ffYeNze3mHi-YhzifQKV0xSn55p6lAnzM0QmofU3nIzcoxTqsWIoeZizSDPkbk4Qh4XLrnaDiGyChkDfqIhNBY4bm7TkHm2-FbrSM6SOj9Z-pcbehWFWwKMPeGFkurTxkd8oJI_bPOl3wKONlWOI8OiOJ5gEPTRdOJ9RVKXd341fhoVikyWYU70zFNZEi6KfaNxQtjl5GhAWVaZwBKMvshp3WTHKa3zhsWQHbxSrr7F64OJudH8_f5Ljwn_DkEiTaSj-G8uAGfzx2vHKRD6Sr8s6Kf11adY3sySdzvlMJjkXk4q8BdIFl-pEFwoRmPSEHmn6qwGk5DWsgb_TuebWwqgV72UkrtWsZxmnf1RxTqpTD3jOLRr9GVq5xSlMG4p-ZtcQg8GmDdmop_9fRR2xcrIu3ZvXsHuisiy3u4PhvAd84EG5Om1Fwbvy3UVhmURw8Vm4fslbbIqJaVbms9MDcD-xGKPOMupQ5zMpHdvddW5KE6wWy6DyOb597VD21LSpbzJzSXU4PpvPHvbyLtPhyQo_1hH2eXMzA6ss2T3At6HMTF4njYhixPZxDN2bMjzBhd4ITyFTYis5tYTUMTwZFDlsI6EOTsoNte6_u6TGojiO3evye3DzoIp1JVsJS2lbUbYtY9iOGPCNb0PTS3y0Yg5SdiYZ9m6PMut1TlcFxMgdF7l1PxiO_G6zpdvlOF5IThkgQsiXFKk50TRX2Cikaqg1kfQsrOPAyXzAO2JqI3ygWX-kyP6RdB0uxB8Ojxra82WbWl2WdUz2W6zYqiCjmA-vjmTOeTn58oc6GYahHUSJqR4R2NJBRi2IgiOXS3NW2Vbi-FWpt6YIOR4hL1LVXswbZybaDs_c283KUESEAEbCQfRSiRWJMcNFAr3IrdZ2htJzTNq77ZiPLVjaJ2XfFwdqvGbkkeOMT0QgmR92q-yqBuEM3u_ikT3BDrJqPAYzd9Gk31UamJKbksUlzjKBmcVdm5Is32bxzI1TeHqtS8IHc7AEBYZwPlefCsOrc9E35sn3nj_1ONqiz47Y72CHGOmjQTJqqGVIp8N4JWSJjqTDVsbSJDR1Xm5ohWgPOe4vRE9_DO5CXzUxqsZ6rfr7ebqtkCsqDIC6TJvNzXyBHf-bMeB90cCjCxJQGFSq4PKjNyfiIrImND097yqfd5o9EkkEza0UhdrR1WYhzWqgZVAPkoGXpY_21P7R07emWNVn_LNerKDSGQ3J-iyAAaaCuiAYQ9Kcd2uo6m2H6VE6ZXcSfp6N7JoEwSdm-5N2LXCBMUis9A9pHiUMOsPh533192rhBizvqQ7OAMwJ_cPY2sqK0eSQbRoHuCS8yhQtU64D_fVyHXqt8UJE9oCnlVqZV8sIhdU76bYufupSVkMx6qDIMrahKVq81Jxiu-FGc-MJZD-dq4kp8GZUjKQD68nVKIdgOiAyjTWReahPaoNi2FJFzqtoB2wW0q2Fzm68GDY2jQYVCdXKLohDonhmAP61FrNA5nx60vxWUup10abaCVOM-67nbIcZTEHVkLdkoKH7b-vINHIkeB4HfSvT_SutH3HbWn8H2OQG9R3eMYzR8IfrAOlDKd6tQ8pt7UcLLAWq-8C5ltLV5KVhWSv28rooukd-jmoLtuuE3m8nCCrbYrfx9cXLlbcKK6hZyL89DxlGkagezIq1QA9D-45nc6YOEdZGuP158wpeGS7xW63JqIIov698pxa0pSBcg1wa6EGWZflEu50qstxeKXipxGmQQDTaR-pXBcet9egdOosGP7FWjSg9Ib2vyKS93hFlncIA6ELWhRKURbdk843mo_a6OaKFRgAH5qOhsrm2xuqjVkgwH8ACbKhEcs1-MJLEJruILTNsH-I-zqlFd-HY7zcrITVorjZXDZ699-QGkCOIiD_gNBs"}|10132
+11-25 14:54:15.639  1904  1904 D StatusBar: updateHeadsUp wasHeadsUp=false shouldPeek=false alertAgain=true
+11-25 14:54:15.645  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:54:16.223   783  1848 D         : readbrightness,out1:0
+11-25 14:54:16.223   783  1848 D         : .
+11-25 14:54:16.223   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:17.225   783  1848 D         : readbrightness,out1:0
+11-25 14:54:17.225   783  1848 D         : .
+11-25 14:54:17.225   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:17.225  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:18.227   783  1848 D         : readbrightness,out1:0
+11-25 14:54:18.227   783  1848 D         : .
+11-25 14:54:18.227   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:19.228   783  1848 D         : readbrightness,out1:0
+11-25 14:54:19.228   783  1848 D         : .
+11-25 14:54:19.228   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:20.230   783  1848 D         : readbrightness,out1:0
+11-25 14:54:20.230   783  1848 D         : .
+11-25 14:54:20.230   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:20.231  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:21.231   783  1848 D         : readbrightness,out1:0
+11-25 14:54:21.231   783  1848 D         : .
+11-25 14:54:21.232   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:22.233   783  1848 D         : readbrightness,out1:0
+11-25 14:54:22.233   783  1848 D         : .
+11-25 14:54:22.233   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:23.234   783  1848 D         : readbrightness,out1:0
+11-25 14:54:23.234   783  1848 D         : .
+11-25 14:54:23.234   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:23.235  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:23.504     0     0 W swapper/5: type=1400 audit(0.0:37327): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-25 14:54:24.234   783  1848 D         : readbrightness,out1:0
+11-25 14:54:24.234   783  1848 D         : .
+11-25 14:54:24.235   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:25.235   783  1848 D         : readbrightness,out1:0
+11-25 14:54:25.235   783  1848 D         : .
+11-25 14:54:25.235   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:25.810  1904  1904 D StatusBar: updateNotificationRankingDelayed messageReceiveTime=319507418
+11-25 14:54:26.237   783  1848 D         : readbrightness,out1:0
+11-25 14:54:26.237   783  1848 D         : .
+11-25 14:54:26.237   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:26.239  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:27.239   783  1848 D         : readbrightness,out1:0
+11-25 14:54:27.239   783  1848 D         : .
+11-25 14:54:27.239   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:28.240   783  1848 D         : readbrightness,out1:0
+11-25 14:54:28.240   783  1848 D         : .
+11-25 14:54:28.240   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:29.241   783  1848 D         : readbrightness,out1:0
+11-25 14:54:29.241   783  1848 D         : .
+11-25 14:54:29.241  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:29.241   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:29.427  1882  2353 I bt_stack: [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-25 14:54:30.242   783  1848 D         : readbrightness,out1:0
+11-25 14:54:30.242   783  1848 D         : .
+11-25 14:54:30.242   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:31.244   783  1848 D         : readbrightness,out1:0
+11-25 14:54:31.244   783  1848 D         : .
+11-25 14:54:31.244   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:32.246   783  1848 D         : readbrightness,out1:0
+11-25 14:54:32.246   783  1848 D         : .
+11-25 14:54:32.246   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:32.246  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:33.247   783  1848 D         : readbrightness,out1:0
+11-25 14:54:33.247   783  1848 D         : .
+11-25 14:54:33.247   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:33.504     0     0 W swapper/4: type=1400 audit(0.0:37328): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-25 14:54:33.550  2482  2620 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-25 14:54:34.248   783  1848 D         : readbrightness,out1:0
+11-25 14:54:34.248   783  1848 D         : .
+11-25 14:54:34.248   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:35.250   783  1848 D         : readbrightness,out1:0
+11-25 14:54:35.250   783  1848 D         : .
+11-25 14:54:35.250   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:35.251  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:36.251   783  1848 D         : readbrightness,out1:0
+11-25 14:54:36.251   783  1848 D         : .
+11-25 14:54:36.251   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:37.253   783  1848 D         : readbrightness,out1:0
+11-25 14:54:37.253   783  1848 D         : .
+11-25 14:54:37.253   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:37.488  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-25 14:54:37.490  2194  2194 D QtiCarrierConfigHelper: WARNING, no carrier configs on phone Id: 0
+11-25 14:54:37.493  3355  3355 I BatteryInfoReceiver: ACTION_BATTERY_CHANGED
+11-25 14:54:37.500 30961 30998 D PowerCheckerService: onBatteryChanged, mBatteryLevel = 100, status = 5, level = 100, plug = 2, scale = 100
+11-25 14:54:37.503  3039 20431 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 54104
+11-25 14:54:38.254   783  1848 D         : readbrightness,out1:0
+11-25 14:54:38.254   783  1848 D         : .
+11-25 14:54:38.255   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:38.255  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:39.256   783  1848 D         : readbrightness,out1:0
+11-25 14:54:39.256   783  1848 D         : .
+11-25 14:54:39.256   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:40.257   783  1848 D         : readbrightness,out1:0
+11-25 14:54:40.257   783  1848 D         : .
+11-25 14:54:40.257   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:41.259   783  1848 D         : readbrightness,out1:0
+11-25 14:54:41.259   783  1848 D         : .
+11-25 14:54:41.259   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:41.260  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:54:42.261   783  1848 D         : readbrightness,out1:0
+11-25 14:54:42.261   783  1848 D         : .
+11-25 14:54:42.261   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:43.262   783  1848 D         : readbrightness,out1:0
+11-25 14:54:43.262   783  1848 D         : .
+11-25 14:54:43.262   783  1848 D         : readbrightness,out2:0.
+11-25 14:54:43.504     0     0 W swapper/5: type=1400 audit(0.0:37329): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0

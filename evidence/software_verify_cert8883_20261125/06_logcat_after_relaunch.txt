@@ -1,0 +1,429 @@
+--------- beginning of main
+11-25 14:55:48.755 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:55:48.819 20381 20381 I chatty  : uid=10169(com.jinyuni.dengbei_care) identical 2 lines
+11-25 14:55:48.824 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:55:48.824   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.display.config@1.7::IDisplayConfig/default in either framework or device manifest.
+11-25 14:55:48.825   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.display.config@1.7::IDisplayConfig/default in either framework or device manifest.
+11-25 14:55:48.835 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:55:48.855 20381 20381 I chatty  : uid=10169(com.jinyuni.dengbei_care) identical 3 lines
+11-25 14:55:48.866 20381 20381 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@bc5550a
+11-25 14:55:48.997   432   432 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device manifest.
+11-25 14:55:48.997 20381 20406 W Gralloc3: mapper 3.x is not supported
+--------- beginning of system
+11-25 14:55:49.023  1580  1643 I Timeline: Timeline: App_transition_ready time:319590833
+11-25 14:55:49.025  1904  1904 I KeyguardViewMediator: handleStartKeyguardExitAnimation startTime=319590832 fadeoutDuration=300
+11-25 14:55:49.027  1904  1904 D LockScreenMagazineClient: hideOverlay animate=true;mOverlay=null
+11-25 14:55:49.027  1904  1904 D KeyguardCameraView: removeViewFromWindow true
+11-25 14:55:49.048  1580  1642 W UsageStatsService: Event reported without a package name, eventType:18
+11-25 14:55:49.051  1580  1642 I WindowManager: updateContrastOverlay, darkmode: true isContrastEnabled: false alpha: 0.24521574
+11-25 14:55:49.080  1904  1904 D StatusBar: give up recomputeDisableFlags
+11-25 14:55:49.080  1904  1904 D KeyguardViewMediator: adjustStatusBarLocked: mShowing=false mOccluded=false force=false --> flags=0x0
+11-25 14:55:49.081  1904  1904 D StatusBar: give up recomputeDisableFlags
+11-25 14:55:49.081  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.083  1904  1904 I StatusBar: updateDozing: mDozing:false
+11-25 14:55:49.083  1904  1904 I KeyguardViewMediator: setAodShowing: false
+11-25 14:55:49.083  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.083  1904  1904 D KeyguardUpdateMonitor: onKeyguardVisibilityChanged(false)
+11-25 14:55:49.084  1904  1904 I KeyguardIndication: updateIndication: mVisible true mDozing false mTransientIndication null mPowerPluggedIn true mUpArrowIndication null
+11-25 14:55:49.090  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.090  1904  1904 I chatty  : uid=1000(system) com.android.systemui identical 1 line
+11-25 14:55:49.092  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.093  1904  1904 D StatusBar: updatePublicMode() showingKeyguard=false,devicePublic=false
+11-25 14:55:49.093  1904  1904 D StatusBar: updateStackScrollerState() publicMode=false,isKeyguardShowing=false
+11-25 14:55:49.094  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.094  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.096  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-25 14:55:49.096  1904  1904 D KeyguardViewMediator: adjustStatusBarLocked: mShowing=false mOccluded=false force=false --> flags=0x0
+11-25 14:55:49.097  1904  1904 I miui_face: face unlock success time=1795589749097
+11-25 14:55:49.097  1904  2321 D QSTile.BluetoothTile: handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-25 14:55:49.103  1580  1654 W BroadcastQueue: Background execution not allowed: receiving Intent { act=android.intent.action.USER_PRESENT flg=0x24200010 } to com.miui.voiceassist/com.xiaomi.voiceassistant.voiceTrigger.adapter.BootupReceiver
+11-25 14:55:49.103  3970  3970 D IntercomReceiver: onReceive android.intent.action.USER_PRESENT
+11-25 14:55:49.104  3039  3039 D IntercomReceiver: onReceive android.intent.action.USER_PRESENT
+11-25 14:55:49.105  2482  2482 D MiuiFastConnectService: onReceive: action = android.intent.action.USER_PRESENT
+11-25 14:55:49.107  3355  3355 D home_receiver: receive broadcast
+11-25 14:55:49.108  3421  3754 W PushService: [Tid:231] [PullDownLog] PullDownManager start check data expired
+11-25 14:55:49.109  2783  2825 I octvm_power: power mode [normal] start 1795589749
+11-25 14:55:49.110  2783  2825 I octvm_drv: common drv: get_current_battery_uAh will return 0
+11-25 14:55:49.110  2783  2825 I octvm_power: Action: set_lcd_mode(default) for [foreground_change]
+11-25 14:55:49.113   594   594 D         : excute transact!
+11-25 14:55:49.113   783  1096 D         : onTransact received request.
+11-25 14:55:49.113   783  1096 D         : SET_FEATURE
+11-25 14:55:49.114   783  1096 D         : setFeatureC3E, called caseid:7 mode:1.
+11-25 14:55:49.114   783  1096 D         : setFeatureC3E begin,lastmode = 0, mode = 7,value = 1.
+11-25 14:55:49.115 30737 30737 I Timeline: Timeline: Activity_launch_request time:319590924
+11-25 14:55:49.122  1904  1904 D miui_face: updateShowingStatus showing=false
+11-25 14:55:49.124  1904  1904 D StatusBar: disable<e i a s b!h!r!c!s > disable2<q i n g r >
+11-25 14:55:49.124  1580 11134 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.android.settings/.Settings$UsbDetailsActivity} from uid 1000
+11-25 14:55:49.125  1580 11134 D MiuiMultiWindowAdapter: MiuiMultiWindowAdapter::getFreeformBlackList::sSmallWindowBlackList = [com.miui.securitycenter, com.miui.weather2, com.miui.miservice, com.android.calendar, com.xiaomi.calendar, com.android.contacts, com.miui.mishare.connectivity, com.android.settings, com.android.printspooler, com.miui.backup, com.miui.huanji, com.miui.calculator, com.android.deskclock, com.android.thememanager, com.mfashiongallery.emag, com.miui.virtualsim, com.miui.smarttravel, com.mi.health, com.android.camera, com.lbe.security.miui, com.miui.cleanmaster, com.miui.newhome, com.miui.voiceassist, com.android.phone, com.miui.yellowpage, com.android.updater, com.miui.tsmclient, com.miui.securitycore, com.xiaomi.account, com.xiaomi.shop, com.mipay.wallet, com.xiaomi.youpin, com.xiaomi.hm.health, com.miui.bugreport, com.xiaomi.mibrain.speech, com.xiaomi.mimoji, com.xiaomi.scanner, com.duokan.phone.remotecontroller, com.miui.hybrid, com.android.incallui, com.miui.video, com.miui.videoplayer, com.miui.player, com.miui.fm, com.miui.packageinstaller, com.mi.android.globallauncher, com.google.android.dialer, com.google.android.apps.magazines, com.miui.compass, com.miui.greenguard, com.kiteguard, com.google.android.apps.prodcasts, com.google.ar.lens, com.xiangkan.android, com.android.bankabc, com.sohu.inputmethod.sogou, com.tencent.mtt, com.shyz.toutiao, com.netease.mc.mi, com.outfit7.talkingtomgoldrun.mi, com.doudz.mi, com.wepie.snake.new.mi, cn.jj, com.standddz002.mi, com.miHoYo.bh3.mi, com.qqgame.hlddz, com.happyelements.AndroidAnimal, com.minitech.miniworld.TMobile.mi, com.mfp.jelly.xiaomi, com.lilithgames.afk.mi, com.tencent.peng, com.teenpatti.hd.gold, blockpuzzle.jewelgames.jewelslegend, com.playgendary.tanks, com.chillingo.robberybobfree.android.row, com.episodeinteractive.android.catalog, com.playrix.township, com.ansangha.drdriving, com.google.android.youtube, com.gbits.atm.mi]
+11-25 14:55:49.126   620   674 E ANDR-PERF-RESOURCEQS: Resource with major=3, minor=0 not supported
+11-25 14:55:49.127   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:55:49.128   620   674 E ANDR-PERF-RESOURCEQS: Resource with major=3, minor=0 not supported
+11-25 14:55:49.149  3039  3039 E VoiceTrigger:ForceDoze: ACTION_USER_PRESENTIntent { act=android.intent.action.USER_PRESENT flg=0x24200010 }
+11-25 14:55:49.149  3970  3970 E VoiceTrigger:ForceDoze: ACTION_USER_PRESENTIntent { act=android.intent.action.USER_PRESENT flg=0x24200010 }
+11-25 14:55:49.149  3039  3039 D BatteryReceiver: action = android.intent.action.USER_PRESENT
+11-25 14:55:49.149  3039  3039 D BatteryReceiver: removeActivity
+11-25 14:55:49.150  3039  3039 E UiManagerReceiver: ACTION_USER_PRESENT
+11-25 14:55:49.155  3039  3039 D UiManagerReceiver: pending action = null
+11-25 14:55:49.161  1580  6496 W DevicePolicyManager: Package com.iflytek.inputmethod.miui (uid=10187, pid=4576) cannot access Device IDs
+11-25 14:55:49.162  2194  2653 W TelephonyPermissions: reportAccessDeniedToReadIdentifiers:com.iflytek.inputmethod.miui:getDeviceId:isPreinstalled=false:isPrivApp=false
+11-25 14:55:49.164  4576  4635 D IdProviderImpl: getOAID
+11-25 14:55:49.186  2211  2211 D Launcher_UnlockAnimationStateMachine: onUserPresent:IDLE
+11-25 14:55:49.254  3039  3039 D MainBoardPalette: sender:com.miui.home
+11-25 14:55:49.254  3039  3039 D MainBoardPalette: calcSwatchColor main:true
+11-25 14:55:49.254  3039  3039 D MainBoardPalette: HomePalette.calcColor mColor:0,doing:false,wallpaperName:
+11-25 14:55:49.254  3039  3039 D MainBoardPalette: LockPalette.calcColor mColor:ff7890b8,doing:false
+11-25 14:55:49.254  3039  3533 D MainBoardPalette: b paletteRun begin 
+11-25 14:55:49.255  3039  3533 D MainBoardPalette: HomePalette.getBitmap WallpaperInfo null
+11-25 14:55:49.269 30961 31015 W PowerKeeper-ReflectionUtils: failed to callStaticMethod class com.miui.whetstone.WhetstoneActivityManager.enableMiuiStandby
+11-25 14:55:49.269 30961 31015 W PowerKeeper-ReflectionUtils: java.lang.NoSuchMethodException: com.miui.whetstone.WhetstoneActivityManager.enableMiuiStandby [boolean]
+11-25 14:55:49.269 30961 31015 W PowerKeeper-ReflectionUtils: 	at java.lang.Class.getMethod(Class.java:2072)
+11-25 14:55:49.269 30961 31015 W PowerKeeper-ReflectionUtils: 	at java.lang.Class.getMethod(Class.java:1693)
+11-25 14:55:49.269 30961 31015 W PowerKeeper-ReflectionUtils: 	at com.miui.powerkeeper.utils.ReflectionUtils.callStaticMethod(Unknown Source:5)
+11-25 14:55:49.269 30961 31015 W PowerKeeper-ReflectionUtils: 	at com.miui.powerkeeper.utils.NetdExecutor$2.run(Unknown Source:18)
+11-25 14:55:49.269 30961 31015 W PowerKeeper-ReflectionUtils: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1167)
+11-25 14:55:49.269 30961 31015 W PowerKeeper-ReflectionUtils: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:641)
+11-25 14:55:49.269 30961 31015 W PowerKeeper-ReflectionUtils: 	at java.lang.Thread.run(Thread.java:919)
+11-25 14:55:49.272  1580  6496 W DevicePolicyManager: Package com.iflytek.inputmethod.miui (uid=10187, pid=4576) cannot access Device IDs
+11-25 14:55:49.273  3039  3533 I PermissionUtils: permission android.permission.READ_EXTERNAL_STORAGE result = true
+11-25 14:55:49.274  2194  2653 W TelephonyPermissions: reportAccessDeniedToReadIdentifiers:com.iflytek.inputmethod.miui:getDeviceId:isPreinstalled=false:isPrivApp=false
+11-25 14:55:49.275  3039  3533 W MainBoardPalette: HomePalette.getBitmap file descriptor is null.
+11-25 14:55:49.276  3039  3533 D MainBoardPalette: b paletteRun inner bitmap is null:true
+11-25 14:55:49.276  3039  3533 D MainBoardPalette: b paletteRun end
+11-25 14:55:49.278  1580  6496 W DevicePolicyManager: Package com.iflytek.inputmethod.miui (uid=10187, pid=4576) cannot access Device IDs
+11-25 14:55:49.279  2194  2653 W TelephonyPermissions: reportAccessDeniedToReadIdentifiers:com.iflytek.inputmethod.miui:getSubscriberId:isPreinstalled=false:isPrivApp=false
+11-25 14:55:49.286  1580  6496 W DevicePolicyManager: Package com.iflytek.inputmethod.miui (uid=10187, pid=4576) cannot access Device IDs
+11-25 14:55:49.288  2194  2653 W TelephonyPermissions: reportAccessDeniedToReadIdentifiers:com.iflytek.inputmethod.miui:getDeviceId:isPreinstalled=false:isPrivApp=false
+11-25 14:55:49.292  1580  6496 W DevicePolicyManager: Package com.iflytek.inputmethod.miui (uid=10187, pid=4576) cannot access Device IDs
+11-25 14:55:49.292  2194  2653 W TelephonyPermissions: reportAccessDeniedToReadIdentifiers:com.iflytek.inputmethod.miui:getSubscriberId:isPreinstalled=false:isPrivApp=false
+11-25 14:55:49.304  1580  6496 W DevicePolicyManager: Package com.iflytek.inputmethod.miui (uid=10187, pid=4576) cannot access Device IDs
+11-25 14:55:49.305  2194  2653 W TelephonyPermissions: reportAccessDeniedToReadIdentifiers:com.iflytek.inputmethod.miui:getDeviceId:isPreinstalled=false:isPrivApp=false
+11-25 14:55:49.307  3355  3355 I BeautyService: ac:android.intent.action.USER_PRESENT
+11-25 14:55:49.308  1580  6496 W DevicePolicyManager: Package com.iflytek.inputmethod.miui (uid=10187, pid=4576) cannot access Device IDs
+11-25 14:55:49.309  2194  2653 W TelephonyPermissions: reportAccessDeniedToReadIdentifiers:com.iflytek.inputmethod.miui:getSubscriberId:isPreinstalled=false:isPrivApp=false
+11-25 14:55:49.310  3355  8386 E PackageUtils: package not install, pkg=com.xiaomi.smarthome
+11-25 14:55:49.310   514 20613 E ResolverController: No valid NAT64 prefix (101, <unspecified>/0)
+11-25 14:55:49.316  1580  2036 W DevicePolicyManager: Package com.iflytek.inputmethod.miui (uid=10187, pid=4576) cannot access Device IDs
+11-25 14:55:49.317  2194  2653 W TelephonyPermissions: reportAccessDeniedToReadIdentifiers:com.iflytek.inputmethod.miui:getDeviceId:isPreinstalled=false:isPrivApp=false
+11-25 14:55:49.322  1580  3470 W DevicePolicyManager: Package com.iflytek.inputmethod.miui (uid=10187, pid=4576) cannot access Device IDs
+11-25 14:55:49.323  2194  2570 W TelephonyPermissions: reportAccessDeniedToReadIdentifiers:com.iflytek.inputmethod.miui:getSubscriberId:isPreinstalled=false:isPrivApp=false
+11-25 14:55:49.348   783  1096 D         : displayfeature msm_fb_panel_status：panel_status=alive
+11-25 14:55:49.361   783  1848 D         : readbrightness,out1:11
+11-25 14:55:49.361   783  1848 D         : .
+11-25 14:55:49.361   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:49.372  1580 11134 W system_server: Long monitor contention with owner main (1580) at android.content.res.Resources android.app.ResourcesManager.getOrCreateResources(android.os.IBinder, android.content.res.ResourcesKey, java.lang.ClassLoader)(ResourcesManager.java:780) waiters=0 in android.app.LoadedApk android.app.ActivityThread.getPackageInfo(java.lang.String, android.content.res.CompatibilityInfo, int, int) for 234ms
+11-25 14:55:49.374  1580 11134 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:55:49.374  1580 11134 D CompatibilityInfo: applicationDensity - 320
+11-25 14:55:49.374  1580 11134 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:55:49.375   514 20616 E ResolverController: No valid NAT64 prefix (101, <unspecified>/0)
+11-25 14:55:49.376   620   674 E ANDR-PERF-RESOURCEQS: Resource with major=3, minor=0 not supported
+11-25 14:55:49.376  1580 11134 D ActivityTrigger: ActivityTrigger activityPauseTrigger 
+11-25 14:55:49.382   783  1096 D         : setFeatureC3E set cabc_mode = 1.
+11-25 14:55:49.382   594   594 W BpBinder: Slow Binder: BpBinder transact took 268ms, interface=miui.hardware.display.IDisplayFeatureControl, code=100 oneway=false
+11-25 14:55:49.382  2783  2825 I octvm_drv_xm: platform_set_lcd_mode default(1) success
+11-25 14:55:49.382  2783  2825 I octvm_drv: common drv: get_current_battery_uAh will return 0
+11-25 14:55:49.382  2783  2825 I octvm_power: onPowerModeChanged[normal] called
+11-25 14:55:49.382 30961 31001 W BpBinder: Slow Binder: BpBinder transact took 273ms, interface=miui.whetstone.power, code=2 oneway=false
+11-25 14:55:49.383  1904  1904 W BpBinder: Slow Binder: BpBinder transact took 258ms, interface=android.app.IActivityManager, code=158 oneway=false
+11-25 14:55:49.383  1904  1904 D PhoneStatusBar/NavigationBarView: setDisabledFlags back:false home:false recent:false
+11-25 14:55:49.383 30737 30737 W BpBinder: Slow Binder: BpBinder transact took 267ms, interface=android.app.IActivityTaskManager, code=1 oneway=false
+11-25 14:55:49.384  1904  1904 D StatusBarClock:  isNormalMode= true clock visible=true
+11-25 14:55:49.386  1904  2252 W BpBinder: Slow Binder: BpBinder transact took 261ms, interface=android.app.IActivityTaskManager, code=138 oneway=false
+11-25 14:55:49.386  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.387 20381 20381 W BpBinder: Slow Binder: BpBinder transact took 250ms, interface=android.app.IActivityTaskManager, code=19 oneway=false
+11-25 14:55:49.387  1580 11134 D systemui_boost: notification panel visible=false
+11-25 14:55:49.387  1580 11134 D systemui_boost: ui thread tid=1904
+11-25 14:55:49.387  1580 11134 D systemui_boost: render thread tid=2309
+11-25 14:55:49.388  1580 11134 D systemui_boost: thread tid=1904, priority is set to -10
+11-25 14:55:49.388  1580 11134 D systemui_boost: thread tid=2309, priority is set to -10
+11-25 14:55:49.388  1580 11134 D systemui_boost: ui thread and render thread are reset
+11-25 14:55:49.388  1580  1643 I Timeline: Timeline: Activity_windows_visible id: ActivityRecord{e97a54b u0 com.jinyuni.dengbei_care/.MainActivity t84} time:319591197
+11-25 14:55:49.388  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.388  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.389  1904  1904 D StatusBar: disable<e i a s b h r c s > disable2<q i n g r >
+11-25 14:55:49.389  1904  1904 D StatusBarClock:  isNormalMode= true clock visible=true
+11-25 14:55:49.390  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.390  1904  1904 I StatusBar: updateDozing: mDozing:false
+11-25 14:55:49.391  1580  1643 I Timeline: Timeline: App_transition_stopped time:319591201
+11-25 14:55:49.391  1904  1904 I KeyguardViewMediator: setAodShowing: false
+11-25 14:55:49.391  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.395 20381 20381 D MqttService: onPause called
+11-25 14:55:49.400   620   674 E ANDR-PERF-RESOURCEQS: Resource with major=3, minor=0 not supported
+11-25 14:55:49.401  1904  1904 I MiuiChargeController: dismissRapidChargeAnimation: USER_PRESENT
+11-25 14:55:49.401  1904  1904 I MiuiChargeController: dismissWirelessRapidChargeAnimation: USER_PRESENT
+11-25 14:55:49.401  1580 11134 I ActivityTaskManager: The Process com.android.settings Already Exists in BG. So sending its PID: 30737
+11-25 14:55:49.405  1580 11134 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:55:49.405  1580 11134 D CompatibilityInfo: applicationDensity - 320
+11-25 14:55:49.405  1580 11134 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:55:49.405 30737 30737 W ActivityThread: handleWindowVisibility: no activity for token android.os.BinderProxy@e080434
+11-25 14:55:49.406  4239  6584 I GST     : forePkg: com.android.settings, preForePkg: com.jinyuni.dengbei_care
+11-25 14:55:49.406 30961 31022 D PerfEngineController: ForegroundInfo{mForegroundPackageName='com.android.settings', mForegroundUid=1000, mForegroundPid=30737, mLastForegroundPackageName='com.jinyuni.dengbei_care', mLastForegroundUid=10169, mLastForegroundPid=20381, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-25 14:55:49.406 32232 32248 D AutoInstallService: onForegroundInfoChanged: com.android.settings
+11-25 14:55:49.406  3355  3420 I ProcessMonitor: onForegroundInfoChanged: ForegroundInfo{mForegroundPackageName='com.android.settings', mForegroundUid=1000, mForegroundPid=30737, mLastForegroundPackageName='com.jinyuni.dengbei_care', mLastForegroundUid=10169, mLastForegroundPid=20381, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-25 14:55:49.406  3355  3420 I GameBoosterService: onForegroundInfoChanged: Cur=com.android.settings	 last=com.jinyuni.dengbei_care
+11-25 14:55:49.407  3355  3420 D GameBoosterService: onGameStatusChange foreground:ForegroundInfo{mForegroundPackageName='com.android.settings', mForegroundUid=1000, mForegroundPid=30737, mLastForegroundPackageName='com.jinyuni.dengbei_care', mLastForegroundUid=10169, mLastForegroundPid=20381, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-25 14:55:49.407  3355  3420 I GameBoosterService: onForegroundInfoChanged: Exit
+11-25 14:55:49.407  3355  3420 I VideoBoxUtils: isSupportVideoBox: false
+11-25 14:55:49.409  3355  3420 I VideoToolBoxService: onForegroundInfoChanged: Exit Vtb
+11-25 14:55:49.412  1580 11134 I Timeline: Timeline: App_transition_ready time:319591221
+11-25 14:55:49.424 30737 30768 D ViewContentFactory: initViewContentFetcherClass
+11-25 14:55:49.424 30737 30768 I ContentCatcher: ViewContentFetcher : ViewContentFetcher
+11-25 14:55:49.424 30737 30768 D ViewContentFactory: createInterceptor took 1ms
+11-25 14:55:49.425  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.426  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.426  1904  1904 D KeyguardUpdateMonitor: set_lock_wallpaper_result:false
+11-25 14:55:49.427  1904  1904 D EventBus: [1904, u0] send(AppTransitionFinishedEvent)
+11-25 14:55:49.427  1904  1904 D EventBus: [1904, u0]  -> ForcedResizableInfoActivityController [0x545c07, P1] onBusEvent(AppTransitionFinishedEvent)
+11-25 14:55:49.427  1904  1904 D EventBus: [1904, u0] onBusEvent(AppTransitionFinishedEvent) duration: 27 microseconds, avg: 1607
+11-25 14:55:49.428  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10102, uidState = 4
+11-25 14:55:49.428   514  1941 D OemNetd : whiteListUid: uid=10102, wmm=add
+11-25 14:55:49.431  3039  3533 D AppChangedListener: get package name by pid:com.android.settings
+11-25 14:55:49.431  3039  3533 D AppChangedListener: packageName:com.android.settings,current:com.jinyuni.dengbei_care
+11-25 14:55:49.432  3039  3039 D AppChangedListener: onAppChanged...com.android.settings
+11-25 14:55:49.432  3039  3039 D AppChangedListener: onAppChanged notify listener:m
+11-25 14:55:49.433 26348 26384 D AudioPolicyService: updateUidStates_l: appName com.miui.voiceassist, appState 2
+11-25 14:55:49.433  3039  3039 I HybridLifecycleListener: onTopAppChanged: newApp=com.android.settings from=com.jinyuni.dengbei_care fromPkg=com.android.settings
+11-25 14:55:49.433 26348 26384 D AudioPolicyService: Allow concurrent recording apps to record
+11-25 14:55:49.434  3039  3039 D AppChangedListener: onAppChanged notify listener:h
+11-25 14:55:49.434  3039  3039 E AppBackListener: onTopAppChanged newApp=com.android.settings,oldApp=com.jinyuni.dengbei_care,mPersistentApp=null,innerApp=false
+11-25 14:55:49.434  3039  3039 W LingXiViewManager: hide failed for LingXiView is null
+11-25 14:55:49.434  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10092, uidState = 4
+11-25 14:55:49.435   514  1941 D OemNetd : whiteListUid: uid=10092, wmm=add
+11-25 14:55:49.435  3039  3039 D AppChangedListener: onAppChanged notify listener:
+11-25 14:55:49.435  1580  3118 W ActivityManager: Sending non-protected broadcast com.android.systemui.fsgesture from system 1904:com.android.systemui/1000 pkg com.android.systemui. Callers=
+11-25 14:55:49.435  1580  3118 W ActivityManager: Sending non-protected broadcast com.android.systemui.fsgesture from system 1904:com.android.systemui/1000 pkg com.android.systemui. Callers=
+11-25 14:55:49.437 26348 26384 I AudioFlinger: create audiotrack for com.miui.voiceassist  uid 10133
+11-25 14:55:49.439 26348 26384 D AudioPolicyService: updateUidStates_l: appName com.miui.voiceassist, appState 2
+11-25 14:55:49.439 26348 26384 D AudioPolicyService: Allow concurrent recording apps to record
+11-25 14:55:49.440 26348 26384 I AudioFlinger: create audiotrack for com.miui.voiceassist  uid 10133
+11-25 14:55:49.442  1904  1904 D GestureStubView: resetRenderProperty: showGestureStub
+11-25 14:55:49.442  1904  1904 D GestureStubView: showGestureStub
+11-25 14:55:49.442  1904  1904 D GestureStubView: resetRenderProperty: showGestureStub
+11-25 14:55:49.443  1904  1904 D GestureStubView: showGestureStub
+11-25 14:55:49.445  1904  1904 D RecentsImpl: receive FSG_STATE_CHANGE_ACTION, isEnter=false, typeFrom=typefrom_status_bar_expansion, fsgState=0
+11-25 14:55:49.451 30737 30737 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.android.settings activity: com.android.settings.connecteddevice.usb.UsbModeChooserActivity@ee9d25d
+11-25 14:55:49.455  1580  3118 I Timeline: Timeline: App_transition_ready time:319591264
+11-25 14:55:49.466  1580  3118 I Timeline: Timeline: App_transition_ready time:319591276
+11-25 14:55:49.452 30737 30737 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.android.settings activity: com.android.settings.connecteddevice.usb.UsbModeChooserActivity@ee9d25d
+11-25 14:55:49.468  1904  1904 D GestureStubView: gatherTransparentRegion: need render w:54  h:912
+11-25 14:55:49.477  1580 19134 I Timeline: Timeline: App_transition_ready time:319591287
+11-25 14:55:49.490  1580  1643 I Timeline: Timeline: App_transition_ready time:319591299
+11-25 14:55:49.493  1580  1643 I Timeline: Timeline: App_transition_ready time:319591303
+11-25 14:55:49.479  1904  1904 D GestureStubView: gatherTransparentRegion: need render w:54  h:912
+11-25 14:55:49.495  1904  1904 D GestureStubView: resetRenderProperty: showGestureStub
+11-25 14:55:49.495  1904  1904 D GestureStubView: showGestureStub
+11-25 14:55:49.495  1904  1904 D GestureStubView: resetRenderProperty: showGestureStub
+11-25 14:55:49.495  1904  1904 D GestureStubView: showGestureStub
+11-25 14:55:49.497  1580  1643 I Timeline: Timeline: App_transition_ready time:319591306
+11-25 14:55:49.502  1580 11134 I Timeline: Timeline: App_transition_ready time:319591311
+11-25 14:55:49.503  1904  1904 D GestureStubView: gatherTransparentRegion: need render w:54  h:912
+11-25 14:55:49.509  1580 11134 I Timeline: Timeline: App_transition_ready time:319591319
+11-25 14:55:49.511  1904  1904 D GestureStubView: gatherTransparentRegion: need render w:54  h:912
+11-25 14:55:49.512 30737 30737 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.android.settings activity: com.android.settings.connecteddevice.usb.UsbModeChooserActivity@ee9d25d
+11-25 14:55:49.512 30737 30737 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.android.settings activity: com.android.settings.connecteddevice.usb.UsbModeChooserActivity@ee9d25d
+11-25 14:55:49.514  1904  1904 E DeviceLevelUtils: isLowGpuDevice:1
+11-25 14:55:49.523  1580 11134 I Timeline: Timeline: App_transition_ready time:319591332
+11-25 14:55:49.526  1580 11134 I Timeline: Timeline: App_transition_ready time:319591336
+11-25 14:55:49.531  1904  2321 D BrightnessController: BrightnessObserver: stopObserving.
+11-25 14:55:49.543 30737 30737 I ContextHelper: fail to get activity
+11-25 14:55:49.543   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:55:49.544 30737 30737 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.android.settings activity: com.android.settings.connecteddevice.usb.UsbModeChooserActivity@ee9d25d
+11-25 14:55:49.545 30737 30737 I chatty  : uid=1000(system) com.android.settings identical 2 lines
+11-25 14:55:49.545 30737 30737 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.android.settings activity: com.android.settings.connecteddevice.usb.UsbModeChooserActivity@ee9d25d
+11-25 14:55:49.549 30737 30737 I ContextHelper: fail to get activity
+11-25 14:55:49.559  1904  1904 D GestureStubView: resetRenderProperty: showGestureStub
+11-25 14:55:49.559  1904  1904 D GestureStubView: showGestureStub
+11-25 14:55:49.559  1904  1904 D GestureStubView: resetRenderProperty: showGestureStub
+11-25 14:55:49.559  1904  1904 D GestureStubView: showGestureStub
+11-25 14:55:49.559  1580 26343 I Timeline: Timeline: App_transition_ready time:319591369
+11-25 14:55:49.562  1580 26343 I Timeline: Timeline: App_transition_ready time:319591372
+11-25 14:55:49.567 30737 30737 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.android.settings activity: com.android.settings.connecteddevice.usb.UsbModeChooserActivity@ee9d25d
+11-25 14:55:49.573  1580 26343 I Timeline: Timeline: App_transition_ready time:319591382
+11-25 14:55:49.570 30737 30737 I chatty  : uid=1000(system) com.android.settings identical 6 lines
+11-25 14:55:49.570 30737 30737 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.android.settings activity: com.android.settings.connecteddevice.usb.UsbModeChooserActivity@ee9d25d
+11-25 14:55:49.574  1904  1904 D GestureStubView: gatherTransparentRegion: need render w:54  h:912
+11-25 14:55:49.577   514 20627 E ResolverController: No valid NAT64 prefix (101, <unspecified>/0)
+11-25 14:55:49.578  1580 26343 I Timeline: Timeline: App_transition_ready time:319591388
+11-25 14:55:49.580  1904  1904 D GestureStubView: gatherTransparentRegion: need render w:54  h:912
+11-25 14:55:49.591  3355  3420 I PowerCenterProvider: call METHOD_GET_BATTERY_INFO
+11-25 14:55:49.595  1580 26343 I Timeline: Timeline: App_transition_ready time:319591405
+11-25 14:55:49.595  3355  3420 W BatteryHistoryLoadMgr: getHistoryInfo begin
+11-25 14:55:49.601  1580  1643 I Timeline: Timeline: App_transition_ready time:319591411
+11-25 14:55:49.605  1580  1580 W system_server: resources.arsc in APK '/data/app/com.iflytek.inputmethod.miui/com.iflytek.inputmethod.miui.apk' is compressed.
+11-25 14:55:49.621  1580  1580 W Looper  : Slow dispatch took 522ms main h=android.app.ActivityThread$H c=android.app.-$$Lambda$LoadedApk$ReceiverDispatcher$Args$_BumDX2UKsnxLVrE6UJsJZkotuA@45b4236 m=0
+11-25 14:55:49.621  1580  1580 W Looper  : Slow delivery took 522ms main h=android.app.ActivityThread$H c=android.app.-$$Lambda$LoadedApk$ReceiverDispatcher$Args$_BumDX2UKsnxLVrE6UJsJZkotuA@4cbd537 m=0
+11-25 14:55:49.626  1580  1643 I Timeline: Timeline: App_transition_ready time:319591435
+11-25 14:55:49.644   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:55:49.645  1580  1653 I ActivityTaskManager: Displayed com.android.settings/.Settings$UsbDetailsActivity: +495ms
+11-25 14:55:49.645   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.iop@2.0::IIop/default in either framework or device manifest.
+11-25 14:55:49.647  1580  1664 E KernelCpuSpeedReader: Failed to read cpu-freq: /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state: open failed: ENOENT (No such file or directory)
+11-25 14:55:49.690   514  1941 I netd    : trafficSwapActiveStatsMap() <35.38ms>
+11-25 14:55:49.693   514  1941 I netd    : tetherGetStats() <1.27ms>
+11-25 14:55:49.728  3355  3420 W BatteryHistoryLoadMgr: get firstHistoryInfo time: 282380736
+11-25 14:55:49.728  3355  3420 D BatteryHistoryLoadMgr: getHistoryInfo end
+11-25 14:55:49.729  3355  3420 I PowerUtils: Device name:olivelite
+11-25 14:55:49.729  3355  3420 W PowerUtils: should not use this capacity value 5000
+11-25 14:55:49.731  3355  3420 I PowerUtils: Device name:olivelite
+11-25 14:55:49.731  3355  3420 W PowerUtils: should not use this capacity value 5000
+11-25 14:55:49.732  3355  3420 I BatteryChargeTimeHelper: Only use maxChargeTime in CV level
+11-25 14:55:49.732  3355  3420 I BatteryChargeTimeHelper: Use default time,  0.0 0ms
+11-25 14:55:49.732  3355  3420 I PowerUtils: Device name:olivelite
+11-25 14:55:49.732  3355  3420 W PowerUtils: should not use this capacity value 5000
+11-25 14:55:49.919  1580  1643 I Timeline: Timeline: Activity_windows_visible id: ActivityRecord{ccf7ab2 u0 com.android.settings/.Settings$UsbDetailsActivity t85} time:319591729
+11-25 14:55:49.921  1904  1904 D EventBus: [1904, u0] send(AppTransitionFinishedEvent)
+11-25 14:55:49.921  1904  1904 D EventBus: [1904, u0]  -> ForcedResizableInfoActivityController [0x545c07, P1] onBusEvent(AppTransitionFinishedEvent)
+11-25 14:55:49.921  1904  1904 D EventBus: [1904, u0] onBusEvent(AppTransitionFinishedEvent) duration: 27 microseconds, avg: 1606
+11-25 14:55:49.922  1580  1643 I Timeline: Timeline: App_transition_stopped time:319591732
+11-25 14:55:50.359  1580  1802 I MiuiNetworkPolicy: bandwidth: 7 KB/s, Max bandwidth: 200 KB/s
+11-25 14:55:50.362   783  1848 D         : readbrightness,out1:11
+11-25 14:55:50.362   783  1848 D         : .
+11-25 14:55:50.362   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:50.797  1580 19134 I ActivityTaskManager: START u0 {flg=0x10000000 cmp=com.jinyuni.dengbei_care/.MainActivity} from uid 2000
+11-25 14:55:50.797  1580 19134 D MiuiMultiWindowAdapter: MiuiMultiWindowAdapter::getFreeformBlackList::sSmallWindowBlackList = [com.miui.securitycenter, com.miui.weather2, com.miui.miservice, com.android.calendar, com.xiaomi.calendar, com.android.contacts, com.miui.mishare.connectivity, com.android.settings, com.android.printspooler, com.miui.backup, com.miui.huanji, com.miui.calculator, com.android.deskclock, com.android.thememanager, com.mfashiongallery.emag, com.miui.virtualsim, com.miui.smarttravel, com.mi.health, com.android.camera, com.lbe.security.miui, com.miui.cleanmaster, com.miui.newhome, com.miui.voiceassist, com.android.phone, com.miui.yellowpage, com.android.updater, com.miui.tsmclient, com.miui.securitycore, com.xiaomi.account, com.xiaomi.shop, com.mipay.wallet, com.xiaomi.youpin, com.xiaomi.hm.health, com.miui.bugreport, com.xiaomi.mibrain.speech, com.xiaomi.mimoji, com.xiaomi.scanner, com.duokan.phone.remotecontroller, com.miui.hybrid, com.android.incallui, com.miui.video, com.miui.videoplayer, com.miui.player, com.miui.fm, com.miui.packageinstaller, com.mi.android.globallauncher, com.google.android.dialer, com.google.android.apps.magazines, com.miui.compass, com.miui.greenguard, com.kiteguard, com.google.android.apps.prodcasts, com.google.ar.lens, com.xiangkan.android, com.android.bankabc, com.sohu.inputmethod.sogou, com.tencent.mtt, com.shyz.toutiao, com.netease.mc.mi, com.outfit7.talkingtomgoldrun.mi, com.doudz.mi, com.wepie.snake.new.mi, cn.jj, com.standddz002.mi, com.miHoYo.bh3.mi, com.qqgame.hlddz, com.happyelements.AndroidAnimal, com.minitech.miniworld.TMobile.mi, com.mfp.jelly.xiaomi, com.lilithgames.afk.mi, com.tencent.peng, com.teenpatti.hd.gold, blockpuzzle.jewelgames.jewelslegend, com.playgendary.tanks, com.chillingo.robberybobfree.android.row, com.episodeinteractive.android.catalog, com.playrix.township, com.ansangha.drdriving, com.google.android.youtube, com.gbits.atm.mi]
+11-25 14:55:50.800  1580  1580 W Looper  : Drained
+11-25 14:55:50.803   620   674 E ANDR-PERF-RESOURCEQS: Resource with major=3, minor=0 not supported
+11-25 14:55:50.803  1580 19134 D ActivityTrigger: ActivityTrigger activityPauseTrigger 
+11-25 14:55:50.805  1580 19134 D CompatibilityInfo: mCompatibilityFlags - 0
+11-25 14:55:50.805  1580 19134 D CompatibilityInfo: applicationDensity - 320
+11-25 14:55:50.805  1580 19134 D CompatibilityInfo: applicationScale - 1.0
+11-25 14:55:50.828   620   674 E ANDR-PERF-RESOURCEQS: Resource with major=3, minor=0 not supported
+11-25 14:55:50.833  4239  6584 I GST     : forePkg: com.jinyuni.dengbei_care, preForePkg: com.android.settings
+11-25 14:55:50.833 32232 32248 D AutoInstallService: onForegroundInfoChanged: com.jinyuni.dengbei_care
+11-25 14:55:50.833  3355 19679 I ProcessMonitor: onForegroundInfoChanged: ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=20381, mLastForegroundPackageName='com.android.settings', mLastForegroundUid=1000, mLastForegroundPid=30737, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-25 14:55:50.833  3355 19679 I GameBoosterService: onForegroundInfoChanged: Cur=com.jinyuni.dengbei_care	 last=com.android.settings
+11-25 14:55:50.834 30961 31023 D PerfEngineController: ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=20381, mLastForegroundPackageName='com.android.settings', mLastForegroundUid=1000, mLastForegroundPid=30737, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-25 14:55:50.834  3355 19679 D GameBoosterService: onGameStatusChange foreground:ForegroundInfo{mForegroundPackageName='com.jinyuni.dengbei_care', mForegroundUid=10169, mForegroundPid=20381, mLastForegroundPackageName='com.android.settings', mLastForegroundUid=1000, mLastForegroundPid=30737, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-25 14:55:50.834  3355 19679 I GameBoosterService: onForegroundInfoChanged: Exit
+11-25 14:55:50.834  3355 19679 I VideoBoxUtils: isSupportVideoBox: false
+11-25 14:55:50.835  3355 19679 I VideoToolBoxService: onForegroundInfoChanged: Exit Vtb
+11-25 14:55:50.843  1904  1904 D EventBus: [1904, u0] send(AppTransitionFinishedEvent)
+11-25 14:55:50.843  1904  1904 D EventBus: [1904, u0]  -> ForcedResizableInfoActivityController [0x545c07, P1] onBusEvent(AppTransitionFinishedEvent)
+11-25 14:55:50.843  1904  1904 D EventBus: [1904, u0] onBusEvent(AppTransitionFinishedEvent) duration: 22 microseconds, avg: 1605
+11-25 14:55:50.849  1580  3118 I Timeline: Timeline: App_transition_ready time:319592658
+11-25 14:55:50.863  1904  1904 D EventBus: [1904, u0] send(TaskSnapshotChangedEvent)
+11-25 14:55:50.864  3112  4553 W MiuiPerfServiceClient: interceptAndQueuing:1904|com.android.systemui|554|286|unknown|null|StatusBar|319591396840323|Slow main thread|9
+11-25 14:55:50.873 20381 20381 D MqttService: onResume called
+11-25 14:55:50.886  1904  1904 D GestureStubView: resetRenderProperty: showGestureStub
+11-25 14:55:50.886  1904  1904 D GestureStubView: showGestureStub
+11-25 14:55:50.886  1904  1904 D GestureStubView: resetRenderProperty: showGestureStub
+11-25 14:55:50.886  1904  1904 D GestureStubView: showGestureStub
+11-25 14:55:50.895  1904  1904 D GestureStubView: gatherTransparentRegion: need render w:54  h:912
+11-25 14:55:50.902  1904  1904 D GestureStubView: gatherTransparentRegion: need render w:54  h:912
+11-25 14:55:50.939  1580  1642 D ActivityTrigger: ActivityTrigger activityStopTrigger 
+11-25 14:55:50.943  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10102, uidState = 11
+11-25 14:55:50.943   514  1941 D OemNetd : whiteListUid: uid=10102, wmm=del
+11-25 14:55:50.943 26348 26384 D AudioPolicyService: updateUidStates_l: appName com.miui.voiceassist, appState 2
+11-25 14:55:50.943 26348 26384 D AudioPolicyService: Allow concurrent recording apps to record
+11-25 14:55:50.944 26348 26384 I AudioFlinger: create audiotrack for com.miui.voiceassist  uid 10133
+11-25 14:55:50.945 26348 26384 D AudioPolicyService: updateUidStates_l: appName com.miui.voiceassist, appState 2
+11-25 14:55:50.945 26348 26384 D AudioPolicyService: Allow concurrent recording apps to record
+11-25 14:55:50.946  1580  1802 I MiuiNetworkPolicy: updateUidState uid = 10092, uidState = 11
+11-25 14:55:50.946   514  1941 D OemNetd : whiteListUid: uid=10092, wmm=del
+11-25 14:55:50.946  1904  1904 D EventBus: [1904, u0] send(AppTransitionFinishedEvent)
+11-25 14:55:50.946 26348 26384 I AudioFlinger: create audiotrack for com.miui.voiceassist  uid 10133
+11-25 14:55:50.946  1904  1904 D EventBus: [1904, u0]  -> ForcedResizableInfoActivityController [0x545c07, P1] onBusEvent(AppTransitionFinishedEvent)
+11-25 14:55:50.946  1904  1904 D EventBus: [1904, u0] onBusEvent(AppTransitionFinishedEvent) duration: 32 microseconds, avg: 1605
+11-25 14:55:50.957  1580  1643 I Timeline: Timeline: App_transition_stopped time:319592767
+11-25 14:55:50.958  1904  1904 D EventBus: [1904, u0] send(AppTransitionFinishedEvent)
+11-25 14:55:50.958  1904  1904 D EventBus: [1904, u0]  -> ForcedResizableInfoActivityController [0x545c07, P1] onBusEvent(AppTransitionFinishedEvent)
+11-25 14:55:50.958  1904  1904 D EventBus: [1904, u0] onBusEvent(AppTransitionFinishedEvent) duration: 33 microseconds, avg: 1604
+11-25 14:55:50.987  3039  3533 D ActivityUtils: packageName:ComponentInfo{com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}
+11-25 14:55:50.987  3039  3533 D AppChangedListener: get package name by top component:com.jinyuni.dengbei_care
+11-25 14:55:50.987  3039  3533 D AppChangedListener: packageName:com.jinyuni.dengbei_care,current:com.android.settings
+11-25 14:55:50.991  3039  3039 D AppChangedListener: onAppChanged...com.jinyuni.dengbei_care
+11-25 14:55:50.991  3039  3039 D AppChangedListener: onAppChanged notify listener:m
+11-25 14:55:50.991  3039  3039 I HybridLifecycleListener: onTopAppChanged: newApp=com.jinyuni.dengbei_care from=com.android.settings fromPkg=com.jinyuni.dengbei_care
+11-25 14:55:50.992  3039  3039 D AppChangedListener: onAppChanged notify listener:h
+11-25 14:55:50.992  3039  3039 E AppBackListener: onTopAppChanged newApp=com.jinyuni.dengbei_care,oldApp=com.android.settings,mPersistentApp=null,innerApp=false
+11-25 14:55:50.992  3039  3039 W LingXiViewManager: hide failed for LingXiView is null
+11-25 14:55:50.993  3039  3039 D AppChangedListener: onAppChanged notify listener:
+11-25 14:55:51.362   783  1848 D         : readbrightness,out1:11
+11-25 14:55:51.362   783  1848 D         : .
+11-25 14:55:51.362   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:52.363   783  1848 D         : readbrightness,out1:11
+11-25 14:55:52.363   783  1848 D         : .
+11-25 14:55:52.363   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:53.363  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:55:53.364   783  1848 D         : readbrightness,out1:11
+11-25 14:55:53.364   783  1848 D         : .
+11-25 14:55:53.364   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:53.514     0     0 W swapper/4: type=1400 audit(0.0:37350): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-25 14:55:53.897  1580  2969 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+11-25 14:55:53.934  9886  9886 W ot_track_worker: type=1400 audit(0.0:37351): avc: denied { read } for name="u:object_r:pcba_config_prop:s0" dev="tmpfs" ino=11161 scontext=u:r:platform_app:s0:c512,c768 tcontext=u:object_r:pcba_config_prop:s0 tclass=file permissive=0
+11-25 14:55:53.950  9886 10441 E libc    : Access denied finding property "ro.ril.oem.psno"
+11-25 14:55:53.960  9886 10441 D IdProviderImpl: getVAID
+11-25 14:55:53.965  9886 10441 D IdProviderImpl: getUDID
+11-25 14:55:54.031  1904  1904 D LockScreenMagazineClient: unBind
+11-25 14:55:54.031  1904  1904 D LockScreenMagazineClient: removeClient mDestroyed=false
+11-25 14:55:54.364   783  1848 D         : readbrightness,out1:11
+11-25 14:55:54.364   783  1848 D         : .
+11-25 14:55:54.364   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:54.752 20516 20542 I aomi.misetting: ProcessProfilingInfo new_methods=0 is saved saved_to_disk=0 resolve_classes_delay=8000
+11-25 14:55:55.352 20556 20576 I viders.calenda: ProcessProfilingInfo new_methods=0 is saved saved_to_disk=0 resolve_classes_delay=8000
+11-25 14:55:55.365   783  1848 D         : readbrightness,out1:11
+11-25 14:55:55.365   783  1848 D         : .
+11-25 14:55:55.365   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:55.493  1580  1799 D NtpTrustedTime: currentTimeMillis() cache hit
+11-25 14:55:55.512   514  1941 I netd    : trafficSwapActiveStatsMap() <18.29ms>
+11-25 14:55:55.518   514  1941 I netd    : tetherGetStats() <3.09ms>
+11-25 14:55:55.525  1580  1799 D NtpTrustedTime: currentTimeMillis() cache hit
+11-25 14:55:55.529  3355  4144 I TrafficManageService: mina mTrafficStatsReceiver onReceive
+11-25 14:55:55.531   514  1941 I netd    : bandwidthSetGlobalAlert(131072) <0.89ms>
+11-25 14:55:55.994 10154 10166 W :accountservic: Reducing the number of considered missed Gc histogram windows from 4285 to 100
+11-25 14:55:56.002   432   432 I hwservicemanager: getTransport: Cannot find entry vendor.qti.hardware.servicetracker@1.0::IServicetracker/default in either framework or device manifest.
+11-25 14:55:56.105 30737 30749 W ndroid.setting: Reducing the number of considered missed Gc histogram windows from 690 to 100
+11-25 14:55:56.366   783  1848 D         : readbrightness,out1:11
+11-25 14:55:56.366   783  1848 D         : .
+11-25 14:55:56.366   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:56.367  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:55:57.366   783  1848 D         : readbrightness,out1:11
+11-25 14:55:57.366   783  1848 D         : .
+11-25 14:55:57.367   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:58.367   783  1848 D         : readbrightness,out1:11
+11-25 14:55:58.367   783  1848 D         : .
+11-25 14:55:58.367   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:59.368   783  1848 D         : readbrightness,out1:11
+11-25 14:55:59.368   783  1848 D         : .
+11-25 14:55:59.368   783  1848 D         : readbrightness,out2:11.
+11-25 14:55:59.372  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:56:00.003  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-25 14:56:00.369   783  1848 D         : readbrightness,out1:11
+11-25 14:56:00.369   783  1848 D         : .
+11-25 14:56:00.369   783  1848 D         : readbrightness,out2:11.
+11-25 14:56:01.370   783  1848 D         : readbrightness,out1:11
+11-25 14:56:01.370   783  1848 D         : .
+11-25 14:56:01.370   783  1848 D         : readbrightness,out2:11.
+11-25 14:56:02.371   783  1848 D         : readbrightness,out1:11
+11-25 14:56:02.371   783  1848 D         : .
+11-25 14:56:02.371   783  1848 D         : readbrightness,out2:11.
+11-25 14:56:02.376  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:56:03.372   783  1848 D         : readbrightness,out1:11
+11-25 14:56:03.372   783  1848 D         : .
+11-25 14:56:03.372   783  1848 D         : readbrightness,out2:11.
+11-25 14:56:03.514     0     0 W swapper/7: type=1400 audit(0.0:37352): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-25 14:56:04.374   783  1848 D         : readbrightness,out1:11
+11-25 14:56:04.374   783  1848 D         : .
+11-25 14:56:04.374   783  1848 D         : readbrightness,out2:11.
+11-25 14:56:05.376   783  1848 D         : readbrightness,out1:11
+11-25 14:56:05.376   783  1848 D         : .
+11-25 14:56:05.376   783  1848 D         : readbrightness,out2:11.
+11-25 14:56:05.381  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-25 14:56:06.376   783  1848 D         : readbrightness,out1:11
+11-25 14:56:06.376   783  1848 D         : .
+11-25 14:56:06.377   783  1848 D         : readbrightness,out2:11.
+11-25 14:56:07.076   868  8348 I LOWI-8.6.0.72: [LOWI-Scan] lowi_close_record:Scan done in 329512977ms, 18 APs in scan results
+11-25 14:56:07.076  1580  3470 D WificondControl: Scan result ready event
+11-25 14:56:07.085   813   813 I wificond: wifi generation capability mask: 5
+11-25 14:56:07.101  8346  8346 I wpa_supplicant: wlan0: GAS-QUERY-START addr=e0:ef:02:96:79:74 dialog_token=1 freq=2412
+11-25 14:56:07.103  1580  1804 D HS20    : ANQP initiated on e0:ef:02:96:79:74
+11-25 14:56:07.104  1580  1804 D PasspointManager: ANQP entry not found for: e0:ef:02:96:79:74:<ChinaNet-76bY>
+11-25 14:56:07.106  1580  1846 E AppScanObserverService: Result available, null observers for user: 0
+11-25 14:56:07.149  8346  8346 I wpa_supplicant: wlan0: GAS-QUERY-DONE addr=e0:ef:02:96:79:74 dialog_token=1 freq=2412 status_code=0 result=SUCCESS
+11-25 14:56:07.175  8346  8346 I wpa_supplicant: wlan0: RX-ANQP e0:ef:02:96:79:74 Venue Name
+11-25 14:56:07.175  8346  8346 I wpa_supplicant: wlan0: RX-ANQP e0:ef:02:96:79:74 IP Address Type Availability information
+11-25 14:56:07.175  8346  8346 I wpa_supplicant: wlan0: RX-ANQP e0:ef:02:96:79:74 NAI Realm list
+11-25 14:56:07.175  8346  8346 I wpa_supplicant: wlan0: RX-ANQP e0:ef:02:96:79:74 3GPP Cellular Network information
+11-25 14:56:07.175  8346  8346 I wpa_supplicant: wlan0: RX-ANQP e0:ef:02:96:79:74 Domain Name list
+11-25 14:56:07.175  8346  8346 I wpa_supplicant: wlan0: ANQP-QUERY-DONE addr=e0:ef:02:96:79:74 result=SUCCESS
+11-25 14:56:07.379   783  1848 D         : readbrightness,out1:11
+11-25 14:56:07.379   783  1848 D         : .
+11-25 14:56:07.379   783  1848 D         : readbrightness,out2:11.
