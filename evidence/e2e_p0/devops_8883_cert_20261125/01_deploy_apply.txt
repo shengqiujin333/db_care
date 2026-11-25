@@ -1,0 +1,82 @@
+# deploy start 20261125T025701Z
+FIELD workdir=/root/rd_ops_20261125
+FIELD certfile=/var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA
+FIELD keyfile=/var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948
+## gate: new cert self-check
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+notBefore=Nov 25 02:55:16 2026 GMT
+notAfter=Nov 24 02:55:16 2028 GMT
+sha256 Fingerprint=E7:AD:1E:46:FA:5B:5D:06:02:C5:AD:04:B7:8B:1C:AF:2E:78:EE:47:8A:9F:6A:79:EA:B6:3B:D5:54:BD:88:84
+X509v3 Extended Key Usage: 
+    TLS Web Server Authentication
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+/root/rd_ops_20261125/leaf.pem: OK
+/root/rd_ops_20261125/leaf.pem: OK
+FIELD ca_fingerprint=75:33:09:B3:9F:1B:8F:85:B4:D7:57:76:BF:D3:8A:42:52:0D:C1:A0:5E:A2:0B:A3:11:7E:B3:9C:BA:B2:15:2B
+RESULT gate_self_check=OK
+## backup
+FIELD backup_dir=/root/emqx-8883-cert-backup-20261125T025701Z
+a91de074d8ca09549abafc7787019ab2e68b4c8042e04130e9c27f610a0855f9  leaf.crt.bak
+dad5b6fc984c8493163e5e561d5cbc9e81d3d8a481e9a199f6ba456e3ef4d9c0  leaf.key.bak
+## install
+-rw-r--r-- 1 emqx emqx 1452 Nov 25 10:57 /var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA
+-rw------- 1 emqx emqx 1736 Nov 25 10:57 /var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948
+27964ca8ed1c15964450a01240ebf0185e813332214c6f6f61cc4239cb62ccaa  /var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA
+d7966e9207e10837e54ce8d50cafee6abac315829536756ad4849c7b36a07625  /var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948
+RESULT install=OK
+## reload listener
+Restarted ssl:default listener successfully.
+FIELD reload_rc=0
+tcp:default
+  listen_on       : 0.0.0.0:1883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : [{tcp_closed,5},{bad_username_or_password,12},{malformed_packet,5},{invalid_proto_name,2}]
+ssl:default
+  listen_on       : 0.0.0.0:8883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+ws:default
+  listen_on       : 0.0.0.0:8083
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+wss:default
+  listen_on       : 0.0.0.0:8084
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+## live verify (new)
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+Verify return code: 64 (IP address mismatch)
+FIELD installed_serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+## live verify failed -> rollback
+RESULT live_verify=FAIL
+Restarted ssl:default listener successfully.
+FIELD restored_serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB82
+RESULT baseline_restored=YES
+  running         : true
+RESULT overall=ROLLED_BACK
+
+[rc=3]

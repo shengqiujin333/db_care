@@ -1,0 +1,65 @@
+# 原 CA 能否签发：核查证据（devops_engineer.infrastructure_management）
+# 时间(UTC): 2026-11-25T02:45Z ~ 2026-11-25T02:56Z
+# 目标: 平台 8.140.23.253 EMQX 8883 listener 服务器证书；App 信任锚 dengbei_care/app/src/main/assets/jd-ca.crt
+# 结论: 原 CA（CN=Tiktok Root CA, O=LinkValue）可以签发，无需更换 App 信任锚。
+
+## 1) 身份核对：App 信任锚 == 服务器现用 CA 文件 == 工程资料中的 rootCA.crt
+
+App 信任锚（仓库）
+  $ openssl x509 -in dengbei_care/app/src/main/assets/jd-ca.crt -outform der | sha256
+  753309b39f1b8f85b4d75776bfd38a42520dc1a05ea20ba3117eb39cbab2152b
+
+服务器 cacertfile（EMQX 8883 ssl_options.cacertfile）
+  /var/lib/emqx/certs/listeners/ssl/default/cacert-613B9023E1E698F0
+  $ openssl x509 -in <cacert> -outform der | sha256
+  753309b39f1b8f85b4d75776bfd38a42520dc1a05ea20ba3117eb39cbab2152b
+
+工程资料中的 CA 证书（readme 指向 D:\Program Files\OpenSSL-Win64\bin\myca1）
+  rootCA.crt
+  $ openssl x509 -in rootCA.crt -outform der | sha256
+  753309b39f1b8f85b4d75776bfd38a42520dc1a05ea20ba3117eb39cbab2152b
+
+三者 DER 摘要一致（= SHA-256 指纹 75:33:09:B3:…:15:2B），有效期 2024-10-12 ~ 2034-10-10，
+serial 1C963AC926A5ADC6D394B1F5346375722B4345。同一信任锚，未被替换。
+
+## 2) 服务器侧是否存在该 CA 私钥（只读枚举，未读取任何私钥内容）
+
+枚举范围：/root /etc/emqx /var/lib/emqx /opt /srv /home（排除 venv、node_modules、.npm/.cache、
+site-packages、mysql-data、containerd 快照）。
+做法：对每个 *.key / *.pem 执行 `openssl pkey -in <f> -pubout | openssl sha256`，与 CA 证书公钥比对。
+
+结果：
+  可解析的私钥仅 2 个，均为 EMQX 安装自带的默认自签证书私钥：
+    /etc/emqx/certs/client-key.pem
+    /etc/emqx/certs/key.pem
+  两者公钥均与 Tiktok Root CA 公钥不匹配。
+  /root/migrate/emqx_config.tar.gz（迁移时的 EMQX 配置包）成员清单中只有 etc/emqx/certs/{cert,key,cacert,client-cert,client-key}.pem，
+  即 EMQX 默认证书，不含 CA 私钥。
+  旧服务器 117.72.84.210:22 从本服务器探测为 CLOSED，无法从旧主机取回密钥材料。
+
+结论：服务器上**没有** Tiktok Root CA 私钥；签发必须在其它受控主机完成。
+
+## 3) 操作主机上的原 CA 私钥与可用性
+
+位置：D:\Program Files\OpenSSL-Win64\bin\myca1\rootCA.key（工程资料 readme.txt 第 5 条指明的签发目录）
+格式：PKCS#8 ENCRYPTED PRIVATE KEY（带口令；口令由受控环境变量提供，不写入本证据、不进入仓库）
+匹配核对：
+  - rootCA.crt 与 App 信任锚 DER 摘要一致（见 §1）
+  - 用该私钥签发新叶子证书后 `openssl verify -CAfile jd-ca.crt leaf.pem` 返回 OK，
+    证明私钥与 jd-ca.crt 公钥成对（该项是最终判据，见 02/03 号证据）
+同目录另有 rootCA.srl（CA 序列号文件）与 server.crt/server.key（2024 年签发的旧叶子，CN=117.72.84.210）。
+
+## 4) 判定
+
+| 项 | 结论 |
+|---|---|
+| 原 CA 私钥是否可用 | 可用（操作主机受控目录，口令可取得） |
+| 是否可用原 CA 签发含 IP:8.140.23.253 的新叶子证书 | 可以（已签发并部署，serial …B83） |
+| 是否需要更换 App 信任锚 / 重建 APK | **不需要** |
+| 需要更换信任锚的触发条件（本轮未发生） | 原 CA 私钥不可用，或产品决定改用其它 CA |
+
+## 5) 边界
+
+- 本文件不包含任何私钥、口令或可复原私钥的片段。
+- 未把 CA 私钥复制到服务器、项目仓库或证据目录；服务器上只出现叶子证书与其私钥。
+- 未访问数据库、未读取 MQTT 凭据、未修改认证库。

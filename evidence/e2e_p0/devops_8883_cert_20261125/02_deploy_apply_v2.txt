@@ -1,0 +1,76 @@
+# deploy v2 start 20261125T025805Z
+FIELD new_serial_expected=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+RESULT gate_self_check=OK
+FIELD backup_dir=/root/emqx-8883-cert-backup-20261125T025805Z
+a91de074d8ca09549abafc7787019ab2e68b4c8042e04130e9c27f610a0855f9  leaf.crt.bak
+dad5b6fc984c8493163e5e561d5cbc9e81d3d8a481e9a199f6ba456e3ef4d9c0  leaf.key.bak
+FIELD installed_file_sha256=27964ca8ed1c15964450a01240ebf0185e813332214c6f6f61cc4239cb62ccaa
+RESULT install=OK
+## step A: emqx ctl conf reload
+load dashboard on 'emqx@127.0.0.1' ok
+load log on 'emqx@127.0.0.1' ok
+FIELD conf_reload_rc=0
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+Verify return code: 64 (IP address mismatch)
+FIELD served_serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB82
+## step B: systemctl restart emqx (listener did not pick up new cert after conf reload)
+FIELD uptime_before=uptime    : 10 days, 4 hours, 15 minutes, 13 seconds
+FIELD restart_rc=0
+FIELD emqx_up_after_s=2
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+Verify return code: 0 (ok)
+FIELD served_serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+RESULT reload_mode=service_restart
+RESULT live_verify=OK
+## post-change observations
+tcp:default
+  listen_on       : 0.0.0.0:1883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+ssl:default
+  listen_on       : 0.0.0.0:8883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : [{einval,1},{ssl_closed,1}]
+ws:default
+  listen_on       : 0.0.0.0:8083
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+wss:default
+  listen_on       : 0.0.0.0:8084
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+FIELD uptime_after=uptime    : 7 seconds
+PORT 1883 OPEN
+PORT 8883 OPEN
+PORT 8083 OPEN
+PORT 8084 OPEN
+PORT 18083 OPEN
+PORT 5000 OPEN
+PORT 3306 OPEN
+flask_login_get_http=405
+dashboard_http=200
+RESULT overall=APPLIED
+
+[rc=0]

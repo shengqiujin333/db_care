@@ -1,0 +1,28 @@
+# EMQX 8883 服务器叶子证书 CSR / 签发模板
+# 用途：由 App 信任锚（assets/jd-ca.crt，CN=Tiktok Root CA）签发 8883 listener 叶子证书。
+# 判据是 SAN，不是 CN：客户端连接目标是 IP，必须命中 IP:8.140.23.253。
+# 保留 IP:117.72.84.210 仅为历史资料兼容；它不是连接目标，也不改变回退路径。
+# 本文件不含任何私钥。
+
+[req]
+distinguished_name = dn
+prompt             = no
+req_extensions     = v3_req
+
+[dn]
+C  = US
+ST = State
+L  = City
+O  = Organization
+OU = Organizational Unit
+CN = 8.140.23.253
+
+[v3_req]
+basicConstraints = critical,CA:FALSE
+keyUsage         = critical,digitalSignature,keyEncipherment
+extendedKeyUsage = serverAuth
+subjectAltName   = @alt
+
+[alt]
+IP.1 = 8.140.23.253
+IP.2 = 117.72.84.210

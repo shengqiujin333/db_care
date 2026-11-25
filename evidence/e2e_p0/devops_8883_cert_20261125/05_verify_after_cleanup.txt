@@ -1,0 +1,25 @@
+# EMQX TLS leaf certificate check
+# time_utc=2026-11-25T02:59:33Z host=8.140.23.253 port=8883 mode=--expect-new
+# ca=dengbei_care/app/src/main/assets/jd-ca.crt
+RESULT tls_handshake=OK
+# --- leaf certificate ---
+# subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+# issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+# serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+# notBefore=Nov 25 02:55:16 2026 GMT
+# notAfter=Nov 24 02:55:16 2028 GMT
+# sha256 Fingerprint=E7:AD:1E:46:FA:5B:5D:06:02:C5:AD:04:B7:8B:1C:AF:2E:78:EE:47:8A:9F:6A:79:EA:B6:3B:D5:54:BD:88:84
+# X509v3 Subject Alternative Name: 
+#     IP Address:8.140.23.253, IP Address:117.72.84.210
+FIELD serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+FIELD sha256=E7:AD:1E:46:FA:5B:5D:06:02:C5:AD:04:B7:8B:1C:AF:2E:78:EE:47:8A:9F:6A:79:EA:B6:3B:D5:54:BD:88:84
+RESULT san_contains_target=YES
+# --- verify with App trust anchor ---
+# C:/Users/kason/AppData/Local/Temp/tmp.jWbhmMmo8W/leaf.pem: OK
+RESULT chain_verify=OK
+# --- verify_ip 8.140.23.253 (authoritative for IP endpoints) ---
+# C:/Users/kason/AppData/Local/Temp/tmp.jWbhmMmo8W/leaf.pem: OK
+RESULT ip_san_match=OK
+RESULT negative_control=OK
+RESULT serial_changed=YES
+RESULT overall=PASS

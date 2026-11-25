@@ -1,0 +1,91 @@
+# pre-change baseline snapshot time_utc=20261125T025617Z host=iZ2zeih0gmrk47og5r4z7sZ
+## systemctl
+active
+enabled
+## emqx status
+Node 'emqx@127.0.0.1' 5.8.0 is started
+## listeners
+tcp:default
+  listen_on       : 0.0.0.0:1883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : [{tcp_closed,4},{bad_username_or_password,12},{malformed_packet,5},{invalid_proto_name,2}]
+ssl:default
+  listen_on       : 0.0.0.0:8883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : [{ssl_error,2019},{bad_username_or_password,5},{ssl_upgrade_timeout,27},{malformed_packet,16},{einval,1},{idle_timeout,1},{ssl_closed,18}]
+ws:default
+  listen_on       : 0.0.0.0:8083
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+wss:default
+  listen_on       : 0.0.0.0:8084
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+## broker uptime
+sysdescr  : EMQX
+version   : 5.8.0
+datetime  : 2026-11-25T10:56:19.529490617+08:00
+uptime    : 10 days, 4 hours, 13 minutes, 20 seconds
+## cert files
+total 12
+-rw-r--r-- 1 emqx emqx 1514 Oct 13  2024 cacert-613B9023E1E698F0
+-rw-r--r-- 1 emqx emqx 1464 Oct 13  2024 cert-2D2ADC29A9BE14AA
+-rw-r--r-- 1 emqx emqx 1736 Oct 13  2024 key-6E6F6ED56285A948
+a91de074d8ca09549abafc7787019ab2e68b4c8042e04130e9c27f610a0855f9  /var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA
+dad5b6fc984c8493163e5e561d5cbc9e81d3d8a481e9a199f6ba456e3ef4d9c0  /var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948
+db910d3c363aa3c090a6e74adb115bcf17f780e849575de60e864aa11f213200  /var/lib/emqx/certs/listeners/ssl/default/cacert-613B9023E1E698F0
+## leaf identity
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB82
+notBefore=Oct 12 16:07:40 2024 GMT
+notAfter=Dec 21 16:07:40 2026 GMT
+sha256 Fingerprint=48:76:E7:30:CC:AB:3E:35:4C:5B:38:19:B9:D7:0D:F1:10:63:51:91:6E:06:EE:EF:22:6A:37:7C:E3:54:AD:75
+X509v3 Subject Alternative Name: 
+    IP Address:117.72.84.210
+## ca identity
+subject=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+serial=1C963AC926A5ADC6D394B1F5346375722B4345
+sha256 Fingerprint=75:33:09:B3:9F:1B:8F:85:B4:D7:57:76:BF:D3:8A:42:52:0D:C1:A0:5E:A2:0B:A3:11:7E:B3:9C:BA:B2:15:2B
+## key/cert pair
+SHA2-256(stdin)= efa1bb109e942521a21e4e48b409ce40acd2aaf43db75abf5ee2e8a011248f80
+SHA2-256(stdin)= efa1bb109e942521a21e4e48b409ce40acd2aaf43db75abf5ee2e8a011248f80
+## local tls handshake on 8883 (before)
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 117.72.84.210
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+Verify return code: 0 (ok)
+## port baseline
+PORT 1883 OPEN
+PORT 8883 OPEN
+PORT 8083 OPEN
+PORT 8084 OPEN
+PORT 18083 OPEN
+PORT 5000 OPEN
+PORT 3306 OPEN
+## http baseline
+flask_login_get_http=405
+dashboard_http=200
+## disk
+/dev/vda3        79G  7.1G   68G  10% /
+
+[rc=0]

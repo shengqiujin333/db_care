@@ -1,0 +1,33 @@
+## hashes of duplicate backups (v1 vs v2)
+a91de074d8ca09549abafc7787019ab2e68b4c8042e04130e9c27f610a0855f9  /root/emqx-8883-cert-backup-20261125T025701Z/leaf.crt.bak
+dad5b6fc984c8493163e5e561d5cbc9e81d3d8a481e9a199f6ba456e3ef4d9c0  /root/emqx-8883-cert-backup-20261125T025701Z/leaf.key.bak
+a91de074d8ca09549abafc7787019ab2e68b4c8042e04130e9c27f610a0855f9  /root/emqx-8883-cert-backup-20261125T025805Z/leaf.crt.bak
+dad5b6fc984c8493163e5e561d5cbc9e81d3d8a481e9a199f6ba456e3ef4d9c0  /root/emqx-8883-cert-backup-20261125T025805Z/leaf.key.bak
+## remove stray .pre- copies in cert dir (rollback source is /root backup)
+## harden backup copies + drop duplicate v1 (identical hashes)
+## remove staged private key from work dir (deployed copy remains at listener path)
+## resulting state
+total 12
+-rw-r--r-- 1 emqx emqx 1514 Oct 13  2024 cacert-613B9023E1E698F0
+-rw-r--r-- 1 emqx emqx 1452 Nov 25 10:58 cert-2D2ADC29A9BE14AA
+-rw------- 1 emqx emqx 1736 Nov 25 10:58 key-6E6F6ED56285A948
+drwx------ 2 root root 4096 Nov 25 10:58 /root/emqx-8883-cert-backup-20261125T025805Z
+/root/emqx-8883-cert-backup-20261125T025805Z/:
+total 12
+-rw-r--r-- 1 emqx emqx 1464 Oct 13  2024 leaf.crt.bak
+-rw------- 1 emqx emqx 1736 Oct 13  2024 leaf.key.bak
+-rw------- 1 root root  158 Nov 25 10:58 SHA256SUMS.txt
+
+/root/rd_ops_20261125/:
+total 44
+-rw-r--r-- 1 root root 1144 Nov 25 10:59 cleanup.sh
+-rw-r--r-- 1 root root 3468 Nov 25 10:57 deploy.log
+-rwx------ 1 root root 4706 Nov 25 10:56 deploy.sh
+-rw-r--r-- 1 root root 2652 Nov 25 10:58 deploy_v2.log
+-rwx------ 1 root root 4449 Nov 25 10:57 deploy_v2.sh
+-rw-r--r-- 1 root root 1512 Nov 25 10:56 jd-ca.crt
+-rw-r--r-- 1 root root 1452 Nov 25 10:56 leaf.pem
+-rw------- 1 root root 3239 Nov 25 10:58 live.txt
+-rw-r--r-- 1 root root 1720 Nov 25 10:56 pre.sh
+
+[rc=0]

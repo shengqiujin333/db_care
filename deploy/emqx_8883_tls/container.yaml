@@ -1,0 +1,132 @@
+# EMQX 8883 叶子证书基础设施交付清单（ContainerArtifact 入口）
+#
+# 本文件是本次基础设施交付的入口，描述本目录各文件的用途、依赖路径、执行顺序、
+# 验收判据与回退方式；同目录其余文件均由此文件引用。
+# 本文件只描述“已制作的配置 + 本次已执行的变更与实测结果”，不包含任何私钥、
+# CA 私钥或口令。
+
+kind: tls-listener-certificate-bundle
+version: 1
+owner_role: devops_engineer
+updated_at: "2026-11-25T03:05:00Z"
+
+target:
+  resource: existing_service
+  host: 8.140.23.253
+  service: "EMQX 5.8.0 (systemd unit emqx, node emqx@127.0.0.1)"
+  listener: "ssl:default (0.0.0.0:8883, TLS)"
+  deployment_mode: >-
+    证书由 EMQX Dashboard/API 写入 data/configs/cluster.hocon，listener 以文件路径引用：
+    certfile=/var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA
+    keyfile =/var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948
+    cacertfile=/var/lib/emqx/certs/listeners/ssl/default/cacert-613B9023E1E698F0
+  unchanged_scope:
+    - "MQTT 认证库（mnesia）与用户名/口令规则"
+    - "listener 1883 / 8083 / 8084 / 18083 语义与端口"
+    - "Flask 注册服务 5000（user_script.service）与 MySQL 3306（docker mysql）"
+    - "App 侧目标地址 ssl://8.140.23.253:8883 与信任锚 assets/jd-ca.crt"
+
+files:
+  - path: deploy/emqx_8883_tls/container.yaml
+    purpose: 本清单（入口）。文件用途、执行顺序、判据、回退与本次执行结果。
+  - path: deploy/emqx_8883_tls/leaf-openssl.cnf
+    purpose: 叶子证书 CSR/签发模板（CN=8.140.23.253；SAN=IP:8.140.23.253, IP:117.72.84.210；CA:FALSE；serverAuth）。
+  - path: deploy/emqx_8883_tls/issue_leaf.sh
+    purpose: 在受控主机本地签发叶子证书与私钥（需显式传入 CA 私钥路径），签发前强制核对 CA 私钥与 App 信任锚公钥一致，签发后做链/IP SAN/负例/密钥匹配自检；不打印私钥。
+  - path: deploy/emqx_8883_tls/apply_remote.sh
+    purpose: 服务器侧安装脚本：门禁自检 → 备份现用证书/私钥 → 安装 → 逐级重载（conf reload → service restart）→ 复核，失败自动回退。
+  - path: deploy/emqx_8883_tls/verify_listener.sh
+    purpose: 服务器侧只读复核：本机 8883 握手（-verify_ip）、listener/uptime、1883/8083/8084/18083/5000/3306 端口与 HTTP 响应。
+  - path: deploy/emqx_8883_tls/rollback_remote.sh
+    purpose: 由备份目录恢复原证书/私钥并重启 EMQX，复核回到已知失败基线（serial 77ADCFD9…B82）。
+  - path: scripts/emqx_8883_cert_verify.sh
+    purpose: 外部只读核验（已存在，本交付直接复用）：从任意主机对 8.140.23.253:8883 做握手 + 链 + SAN + verify_ip + 负例对照。
+  - path: evidence/e2e_p0/devops_8883_cert_20261125/
+    purpose: 本次变更的原始证据目录（变更前基线、两次 apply 输出、外部核验、清理、变更记录）。
+
+dependencies:
+  ca_cert: dengbei_care/app/src/main/assets/jd-ca.crt
+  ca_cert_sha256_fingerprint: "75:33:09:B3:9F:1B:8F:85:B4:D7:57:76:BF:D3:8A:42:52:0D:C1:A0:5E:A2:0B:A3:11:7E:B3:9C:BA:B2:15:2B"
+  ca_private_key: 由操作主机受控目录提供，经 issue_leaf.sh 参数传入；不进入本仓库、不复制到服务器、不出现在证据中
+  tools: [openssl, ssh, emqx ctl, systemctl]
+
+procedure:
+  issue: |
+    deploy/emqx_8883_tls/issue_leaf.sh --ca-key <CA 私钥路径> --ca dengbei_care/app/src/main/assets/jd-ca.crt \
+        --host-ip 8.140.23.253 --out-dir <受控本地目录>
+  apply: |
+    scp leaf.pem leaf.key jd-ca.crt apply_remote.sh <host>:/root/rd_ops_<date>/
+    bash /root/rd_ops_<date>/apply_remote.sh --workdir /root/rd_ops_<date> \
+        --certfile /var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA \
+        --keyfile  /var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948 \
+        --ca /root/rd_ops_<date>/jd-ca.crt --host-ip 8.140.23.253
+  reload_note: >-
+    实测（2026-11-25T02:57Z）：本部署上 `emqx ctl listeners restart ssl:default` 与
+    `emqx ctl conf reload` 都不会让 listener 重新读取磁盘上的证书文件（握手仍返回旧叶子证书）；
+    必须 `systemctl restart emqx` 才生效（重启后 uptime 归零、全部 listener running）。
+    apply_remote.sh 已把该顺序固化为：conf reload → 仍为旧证书则 service restart → 复核。
+  verify: |
+    bash scripts/emqx_8883_cert_verify.sh 8.140.23.253 8883 dengbei_care/app/src/main/assets/jd-ca.crt --expect-new
+    bash /root/rd_ops_<date>/verify_listener.sh      # 服务器侧端口/服务回归
+  rollback: |
+    bash deploy/emqx_8883_tls/rollback_remote.sh --backup-dir /root/emqx-8883-cert-backup-20261125T025805Z \
+        --certfile /var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA \
+        --keyfile  /var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948 \
+        --ca       /root/rd_ops_20261125/jd-ca.crt
+    # 脚本需先上传到服务器（备份目录保留在服务器 /root 下，目录 700、私钥 600）
+
+acceptance_criteria:
+  - "TLS 握手成功，叶子证书由 CN=Tiktok Root CA 签发"
+  - "SAN 含 IP Address:8.140.23.253（openssl verify -verify_ip 返回 0）"
+  - "负例 8.140.23.254 仍失败（判据未被放宽）"
+  - "叶子 serial 与变更前不同且与签发记录一致"
+  - "listener 8883 running；1883/8083/8084/18083/5000/3306 无回归"
+
+applied_change:
+  state: APPLIED
+  window_utc: "2026-11-25T02:57:00Z ~ 2026-11-25T02:59:00Z"
+  result: >-
+    已替换 8883 叶子证书并通过全部服务器侧与外部判据；EMQX 于 2026-11-25T02:58Z 重启一次
+    （uptime 归零，current_conn 前后均为 0）。
+  new_leaf:
+    subject: "C=US, ST=State, L=City, O=Organization, OU=Organizational Unit, CN=8.140.23.253"
+    issuer: "C=US, ST=California, L=San Francisco, O=LinkValue, OU=Engineering, CN=Tiktok Root CA"
+    serial: "77ADCFD924BA0F87F845C81934D4A3F346D4BB83"
+    not_before: "2026-11-25T02:55:16Z"
+    not_after: "2028-11-24T02:55:16Z"
+    san: ["IP:8.140.23.253", "IP:117.72.84.210"]
+    sha256_fingerprint: "E7:AD:1E:46:FA:5B:5D:06:02:C5:AD:04:B7:8B:1C:AF:2E:78:EE:47:8A:9F:6A:79:EA:B6:3B:D5:54:BD:88:84"
+  replaces:
+    serial: "77ADCFD924BA0F87F845C81934D4A3F346D4BB82"
+    sha256_fingerprint: "48:76:E7:30:CC:AB:3E:35:4C:5B:38:19:B9:D7:0D:F1:10:63:51:91:6E:06:EE:EF:22:6A:37:7C:E3:54:AD:75"
+    san: ["IP:117.72.84.210"]
+  rollback_point:
+    backup_dir_host: /root/emqx-8883-cert-backup-20261125T025805Z
+    contents: leaf.crt.bak / leaf.key.bak / SHA256SUMS.txt（目录 700，私钥 600）
+    note: "回退后仍为已知失败状态（App 会再次因 SAN 不匹配失败），不得计为通过"
+
+verification_evidence:
+  - evidence/e2e_p0/devops_8883_cert_20261125/00_pre_change_baseline.txt     # 变更前 listener/证书/端口/HTTP 基线
+  - evidence/e2e_p0/devops_8883_cert_20261125/01_deploy_apply.txt            # 首次 apply：listener restart 未生效，脚本自动回退（RESULT overall=ROLLED_BACK）
+  - evidence/e2e_p0/devops_8883_cert_20261125/02_deploy_apply_v2.txt         # 正式 apply：conf reload 无效 → service restart → 复核 OK（RESULT overall=APPLIED）
+  - evidence/e2e_p0/devops_8883_cert_20261125/03_verify_from_host.txt        # 外部主机判据（handshake/chain/san/verify_ip/负例/serial）overall=PASS
+  - evidence/e2e_p0/devops_8883_cert_20261125/04_cleanup.txt                 # 私钥副本清理与权限加固
+  - evidence/e2e_p0/devops_8883_cert_20261125/05_verify_after_cleanup.txt    # 清理后复跑外部判据 overall=PASS
+  - evidence/e2e_p0/devops_8883_cert_20261125/06_mqtt_layer_probe.txt        # 启用主机名校验的 TLS 连接 + 无效凭据 CONNACK rc=5（MQTT 层存活）
+  - evidence/e2e_p0/devops_8883_cert_20261125/07_post_change_state.txt       # 变更后服务器侧只读复核（部署文件/SAN/握手/listener/端口/serial_match=YES）
+  - evidence/e2e_p0/devops_8883_cert_20261125/CHANGE_RECORD.md               # 变更记录（时间线、判据、未执行项、影响与交回）
+  - evidence/e2e_p0/devops_8883_cert_20261125/ca_signing_capability.txt      # 原 CA 能否签发的核查证据
+
+not_executed:
+  - "Android App → 平台 8883 的真实复测（TLS/CONNACK/上传）由软件测试能力在同一用例、同一 APK 上执行"
+  - "P1 上传/MySQL 持久化回读（需测试身份与 DB 授权）"
+  - "EMQX 服务日志/连接数基线与 Dashboard 凭据侧操作"
+  - "证书自动轮换（本次一次性替换，未引入自动轮换机制）"
+
+handoff:
+  to: software_tester
+  requirement: >-
+    使用同一 APK（com.jinyuni.dengbei_care vC10/vN1.9，SHA-256 80232c50…3de4b）在同一手机
+    12f046690506 上复验 App→ssl://8.140.23.253:8883：不应再出现
+    `No subjectAltNames on the certificate match`，应进入 MQTT CONNECT 并记录实际 CONNACK；
+    随后继续 P0 平台段其余项与受影响的端到端用例。本机仅完成基础设施变更与服务器侧判据。

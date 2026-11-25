@@ -190,6 +190,14 @@ dengbei_care/readme.txt | active | Android 版本变更记录（最新 V1.9：�
 dengbei_care/settings.gradle.kts | active | Gradle 工程设置
 dengbei_care/爱守护.apk | active | 已打包 APK（参考产物）
 dengbei_care/用户使用说明书.md | active | Android 用户使用说明书（1.9；随 DOC-PKG-001 rev 14 交付；rev 13 已按 AB-003 更新 APK 身份 `80232c50…`/10,370,964 B、扫描授权自动续扫、`GATEWAY_NO_DEVICE` 终态与报告再生成反馈；有数据时删除仍标“尚待实机验证”）
+deploy/ | active | 平台侧基础设施配置目录（按目标环境组织的可复现配置与执行脚本；每项由 container.yaml 作为入口文件）
+deploy/emqx_8883_tls/ | active | EMQX 8883 TLS 监听证书交付目录（入口 container.yaml：文件用途、执行顺序、判据、回退与本次执行结果）
+deploy/emqx_8883_tls/apply_remote.sh | active | 服务器侧应用脚本：门禁→备份（目录 700/私钥 600）→安装（644/600 emqx:emqx）→conf reload→仍为旧证书则 service restart→复核→失败自动回退
+deploy/emqx_8883_tls/container.yaml | active | ContainerArtifact 入口清单：目标 listener 与证书路径、CA/信任锚指纹、签发-部署-核验-回退流程、本次已应用变更（serial …B83、SAN 含 IP:8.140.23.253）、未执行项与交回
+deploy/emqx_8883_tls/issue_leaf.sh | active | 本地签发脚本：CA 指纹基线校验、CA 私钥与信任锚公钥配对校验、链/IP SAN/负例/密钥匹配自检；不打印私钥
+deploy/emqx_8883_tls/leaf-openssl.cnf | active | 8883 叶子证书 CSR/签发模板（CN=8.140.23.253、SAN=IP:8.140.23.253 + 保留旧 IP、CA:FALSE、serverAuth；不含私钥）
+deploy/emqx_8883_tls/rollback_remote.sh | active | 服务器侧回退脚本：由备份目录恢复证书与私钥并重启 EMQX，复核回到已知失败基线 serial
+deploy/emqx_8883_tls/verify_listener.sh | active | 服务器侧只读复核：部署文件身份/SAN/-verify_ip/本机握手/listener 状态/端口与 Flask、Dashboard 回归
 docs/ | active | 交付文档包 DOC-PKG-001 rev 14（技术文档角色；按版本化的用户/安装/调试/配置/维护手册）
 docs/01_产品说明与版本变更.md | active | 产品说明 rev 14：系统链路、8 项需求落地、判定规则（含 T=0）、时间语义、交付物（固件 FD-002r8 + Android AB-003）、已验证/未验证与整体验收状态
 docs/02_传感器固件安装与烧录.md | active | 传感器固件安装：发布包 MD5/成员校验、CW-DAPLink 与工程保存配置、mdk_build/mdk_flash 步骤、Verify OK 与上电五行核对、故障处理、升级回退与禁止事项（FW-REL-001 rev 3、EV-040/039）
@@ -837,6 +845,17 @@ evidence/e2e_p0/backend_cert_recheck_20261124_0931Z.txt | active | 2026-11-24T09
 evidence/e2e_p0/backend_cert_recheck_20261124_1015Z.txt | active | 2026-11-24T10:19:59Z 只读 8883 复检原始输出（--expect-baseline）：serial 77ADCFD9…、指纹 48:76:E7:30…、SAN 仅 IP:117.72.84.210、链校验 OK、-verify_ip 8.140.23.253 error 64、负例 8.140.23.254 不通过、overall=RECORDED/known_failure；证明权限审查答复后线上证书仍未变更
 evidence/e2e_p0/backend_cert_replace_drill_20261124.txt | active | 8883 证书替换执行器本地演练原始输出（T1 缺 CA 私钥拒签、T2 CA 与信任锚不匹配拒签、T3 issue 自检链+IP SAN+负例、T4 apply 安装重载复核 APPLIED、T5 复核失败自动回退 ROLLED_BACK、T6 rollback 独立回退、T7 recon 只读记录；仅本地临时测试 CA，演练后已删除，不构成线上修复）
 evidence/e2e_p0/backend_repair_cert_recheck.txt | active | 2026-11-24T04:54:46Z 首次后端修复调用的只读 TLS 复检原始输出（服务器证书 subject/issuer/有效期/serial/指纹/SAN、jd-ca.crt 字段、-verify_hostname 返回码 62、本地候选私钥与部署证书公钥比对不一致）
+evidence/e2e_p0/devops_8883_cert_20261125/ | active | 8883 证书变更证据目录（原 CA 可签发核查、变更前基线、两次 apply、外部判据、清理、MQTT 层探测、变更记录）
+evidence/e2e_p0/devops_8883_cert_20261125/00_pre_change_baseline.txt | active | 变更前基线原始输出（listener/证书身份/文件摘要/端口/HTTP/磁盘）
+evidence/e2e_p0/devops_8883_cert_20261125/01_deploy_apply.txt | active | 首次 apply 原始输出：listeners restart 未使 listener 重读证书，脚本按判据自动回退（overall=ROLLED_BACK）
+evidence/e2e_p0/devops_8883_cert_20261125/02_deploy_apply_v2.txt | active | 正式 apply 原始输出：conf reload 无效→systemctl restart emqx→新 serial 生效（APPLIED）、端口与 HTTP 回归
+evidence/e2e_p0/devops_8883_cert_20261125/03_verify_from_host.txt | active | 外部主机判据原始输出（handshake/chain/SAN/verify_ip/负例/serial）overall=PASS
+evidence/e2e_p0/devops_8883_cert_20261125/04_cleanup.txt | active | 清理原始输出：删除证书目录内 .pre- 私钥副本、备份权限加固为 600、shred 暂存私钥、去除重复备份
+evidence/e2e_p0/devops_8883_cert_20261125/05_verify_after_cleanup.txt | active | 清理后外部判据复跑原始输出 overall=PASS
+evidence/e2e_p0/devops_8883_cert_20261125/06_mqtt_layer_probe.txt | active | MQTT 层存活探测：开启主机名校验的 TLS 连接成功、故意无效凭据返回 CONNACK rc=5（仅证明 listener/认证子系统存活，不证明业务上传）
+evidence/e2e_p0/devops_8883_cert_20261125/07_post_change_state.txt | active | 变更后服务器侧只读复核（部署文件身份/SAN/-verify_ip/本机握手/listener/端口/serial_match=YES）
+evidence/e2e_p0/devops_8883_cert_20261125/CHANGE_RECORD.md | active | 8883 证书变更记录：前后对照、服务器对象与备份路径、时间线、判据核对、运维发现（本环境需 systemctl restart emqx）、未执行项、影响、回退与交回
+evidence/e2e_p0/devops_8883_cert_20261125/ca_signing_capability.txt | active | 原 CA 能否签发核查：App 信任锚/服务器 cacert/工程 rootCA.crt DER 摘要一致、服务器无 CA 私钥、操作主机私钥可用；结论为无需更换 App 信任锚
 evidence/e2e_p0/emqx_8883_execution_record_template.md | active | 8883 证书变更运维回传模板：基本事实/变更前基线/备份/签发/部署重载/8 项变更后判据/回退/缺口字段；不含任何私钥或口令
 evidence/e2e_p0/emqx_8883_san.cnf | active | 8883 服务器叶子证书 CSR/签发模板（SAN=IP:8.140.23.253 + 保留旧 IP、CA:FALSE、serverAuth、AKID 仅在签发段；不含任何私钥）
 evidence/e2e_p0/p0_correlation_index.md | active | E2E-JOINT-P0 单一证据索引（uid4、gateway_ble_addr、GwID、APK SHA-256、平台服务身份、时间窗）
