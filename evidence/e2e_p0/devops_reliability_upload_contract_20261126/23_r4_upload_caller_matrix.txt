@@ -1,0 +1,32 @@
+# fourth window pass 3: upload caller/status matrix (read-only)
+started_utc=2026-11-25T21:27:13Z
+
+---caller_status_since_2159---
+      2 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+      2 127.0.0.1 - - [25/Nov/2026 21:59:20] "POST /upload_data HTTP/1.1" 400 -
+      3 127.0.0.1 - - [25/Nov/2026 22:15:56] "POST /upload_data HTTP/1.1" 400 -
+      3 127.0.0.1 - - [25/Nov/2026 22:16:24] "POST /upload_data HTTP/1.1" 400 -
+      1 27.128.89.184 - - [25/Nov/2026 22:00:23] "POST /upload_data HTTP/1.1" 400 -
+      1 27.128.89.184 - - [25/Nov/2026 22:00:32] "POST /upload_data HTTP/1.1" 400 -
+      1 27.128.89.184 - - [25/Nov/2026 22:00:41] "POST /upload_data HTTP/1.1" 400 -
+      1 27.128.89.184 - - [25/Nov/2026 22:04:38] "POST /upload_data HTTP/1.1" 400 -
+      1 27.128.89.184 - - [25/Nov/2026 22:04:47] "POST /upload_data HTTP/1.1" 400 -
+      1 27.128.89.184 - - [25/Nov/2026 22:04:56] "POST /upload_data HTTP/1.1" 400 -
+      1 27.128.89.184 - - [25/Nov/2026 22:16:57] "POST /upload_data HTTP/1.1" 400 -
+      1 27.128.89.184 - - [25/Nov/2026 22:17:06] "POST /upload_data HTTP/1.1" 400 -
+      1 27.128.89.184 - - [25/Nov/2026 22:17:15] "POST /upload_data HTTP/1.1" 400 -
+---last_upload_request---
+Nov 25 22:17:15 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:17:15] "POST /upload_data HTTP/1.1" 400 -
+---first_upload_request_after_redeploy---
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+---quiet_hours_since_last_request---
+now=2026-11-26 05:27:14 CST
+---total_requests_per_hour---
+80
+
+## machine checks
+RESULT upload_requests=19
+RESULT distinct_callers=['127.0.0.1', '27.128.89.184']
+RESULT status_counts={'400': 19}
+RESULT upload_2xx_count=0
+RESULT upload_5xx_count=0

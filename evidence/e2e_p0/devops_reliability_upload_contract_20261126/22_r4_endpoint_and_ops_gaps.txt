@@ -1,0 +1,112 @@
+# fourth window pass 2: endpoint callers, error budget, ops gaps (read-only)
+started_utc=2026-11-25T21:26:08Z
+
+--- [upload_callers_since_2159]
+     10 127.0.0.1 -
+      9 27.128.89.184 -
+
+--- [all_status_lines_since_2159]
+     19 "POST /upload_data HTTP/1.1" 400
+     11 "GET /etc/passwd HTTP/1.1" 404
+     10 "GET /upload_data HTTP/1.1" 405
+     10 "GET /login HTTP/1.1" 405
+      5 "GET /@fs/etc/passwd?raw?? HTTP/1.1" 404
+      3 "GET / HTTP/1.1" 404
+      2 "GET /webpack-dev-server/../../../../etc/passwd HTTP/1.1" 404
+      2 "GET /@vite/client HTTP/1.1" 404
+      2 "GET /_nuxt/../../../../etc/passwd HTTP/1.1" 404
+      2 "GET /_next/../../../../etc/passwd HTTP/1.1" 404
+      2 "GET /../../../../etc/passwd HTTP/1.1" 404
+      1 "POST /sdk HTTP/1.1" 404
+      1 "GET /sse HTTP/1.1" 404
+      1 "GET /nmaplowercheck1795638917 HTTP/1.1" 404
+      1 "GET /mcp/ HTTP/1.1" 404
+      1 "GET /mcp HTTP/1.1" 404
+      1 "GET /HNAP1 HTTP/1.1" 404
+      1 "GET /favicon.ico HTTP/1.1" 404
+      1 "GET /evox/about HTTP/1.1" 404
+      1 "GET /api/mcp HTTP/1.1" 404
+
+--- [public_scan_lines]
+Nov 26 00:48:27 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 5.226.140.36 - - [26/Nov/2026 00:48:27] "GET /mcp HTTP/1.1" 404 -
+Nov 26 00:48:27 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 89.37.172.138 - - [26/Nov/2026 00:48:27] "GET /mcp/ HTTP/1.1" 404 -
+Nov 26 00:48:30 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 89.37.172.132 - - [26/Nov/2026 00:48:30] "GET /sse HTTP/1.1" 404 -
+Nov 26 04:35:17 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 47.92.213.152 - - [26/Nov/2026 04:35:17] "POST /sdk HTTP/1.1" 404 -
+
+--- [restart_policy]
+Restart=on-failure
+RestartUSec=100ms
+WatchdogUSec=0
+ExecStart={ path=/root/venv/bin/python ; argv[]=/root/venv/bin/python /root/abr.py ; ignore_errors=no ; start_time=[Wed 2026-11-25 21:59:02 CST] ; stop_time=[n/a] ; pid=312368 ; code=(null) ; status=0/0 }
+StartLimitIntervalUSec=10s
+StartLimitBurst=5
+
+--- [unit_file]
+# /etc/systemd/system/user_script.service
+[Unit]
+Description=user add Python Script
+
+[Service]
+ExecStart=/root/venv/bin/python /root/abr.py
+WorkingDirectory=/root
+Environment=ALIBABA_CLOUD_ACCESS_KEY_ID=<secret-redacted>
+Environment=ALIBABA_CLOUD_ACCESS_KEY_SECRET=<secret-redacted>
+StandardOutput=journal
+StandardError=journal
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+--- [emqx_warn_rate]
+422
+--last_warn--
+2026-11-26T05:20:32.443708+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22823, username: 0200000000A1, reason: not_authorized
+2026-11-26T05:21:21.200745+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T05:25:32.468201+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22684, username: 0200000000A1, reason: not_authorized
+
+--- [log_rotation]
+total 88
+-rw-r--r-- 1 emqx emqx 74787 2026-11-26T05:25 emqx.log.1
+-rw-r--r-- 1 emqx emqx    18 2026-11-25T10:58 emqx.log.idx
+-rw-r--r-- 1 emqx emqx    13 2026-11-25T10:58 emqx.log.siz
+--emqx_log_rules--
+4:    bootstrap_file = "${EMQX_ETC_DIR}/auth-built-in-db-bootstrap.csv"
+27:      log_level = notice
+55:        cacertfile = "/var/lib/emqx/certs/listeners/ssl/default/cacert-613B9023E1E698F0"
+56:        certfile = "/var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA"
+66:        keyfile = "/var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948"
+67:        log_level = notice
+156:          mem_level = 8
+189:        cacertfile = "${EMQX_ETC_DIR}/certs/cacert.pem"
+
+--- [cron_and_timers]
+--timers--
+Thu 2026-11-26 05:30:00 sysstat-collect.service
+Thu 2026-11-26 06:01:52 apt-daily-upgrade.service
+Thu 2026-11-26 08:13:45 man-db.service
+Thu 2026-11-26 16:13:35 apt-daily.service
+Thu 2026-11-26 16:25:43 update-notifier-motd.service
+Thu 2026-11-26 19:33:11 motd-news.service
+Thu 2026-11-26 21:58:11 update-notifier-download.service
+Thu 2026-11-26 22:06:01 systemd-tmpfiles-clean.service
+
+--- [disk_and_inode]
+/dev/vda3        79G  7.1G   68G  10% /
+/dev/vda3      5224464 188504 5035960    4% /
+--top_dirs--
+162M	/var/log
+
+--- [backup_retention]
+/root/abr.py.bak_20260926
+/root/abr.py.bak_20261125T135902Z
+--cert_backups--
+/root/emqx-8883-cert-backup-20261125T025805Z
+
+## machine checks
+RESULT upload_callers=none
+RESULT distinct_caller_ips=[]
+RESULT non_2xx_only=NO
+RESULT any_2xx_response_since_2159=NO
+RESULT restart_policy=on-failure
+RESULT emqx_warning_count_in_current_log=422

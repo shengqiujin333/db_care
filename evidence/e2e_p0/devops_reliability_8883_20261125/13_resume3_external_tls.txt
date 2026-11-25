@@ -1,0 +1,19 @@
+# external 8883 TLS sample (App trust anchor, host name check by IP SAN)
+started_utc=2026-11-25T14:37:02Z
+ca=dengbei_care/app/src/main/assets/jd-ca.crt
+target=8.140.23.253:8883 samples=12
+forbidden=mqtt-connect,credentials,write
+
+peer_cert_sha256=E7AD1E46FA5B5D0602C5AD04B78B1CAF2E78EE478A9F6A79EAB63BD554BD8884
+tls_version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384
+subject=((('countryName', 'US'),), (('stateOrProvinceName', 'State'),), (('localityName', 'City'),), (('organizationName', 'Organization'),), (('organizationalUnitName', 'Organizational Unit'),), (('commonName', '8.140.23.253'),))
+issuer=((('countryName', 'US'),), (('stateOrProvinceName', 'California'),), (('localityName', 'San Francisco'),), (('organizationName', 'LinkValue'),), (('organizationalUnitName', 'Engineering'),), (('commonName', 'Tiktok Root CA'),), (('emailAddress', 'snack_yx@126.com'),))
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+san_ip=['8.140.23.253', '117.72.84.210']
+not_after=Nov 24 02:55:16 2028 GMT
+
+## machine checks
+RESULT handshake_ok=12/12
+RESULT failures=0
+RESULT latency_ms_median=89.0 min=80.1 max=105.8
+RESULT cipher_ok=YES

@@ -1,0 +1,45 @@
+# App local snapshot analysis (read-only copy: databases/bwtemperature_database1)
+snapshot_taken_cst=2026-11-26 05:27:00
+source=adb exec-out run-as com.jinyuni.dengbei_care cat (read-only)
+
+--- [temperature]
+rows=124 first_cst=2026-11-24 12:55:24 last_cst=2026-11-25 21:58:41
+per_hour 2026-11-25 21 rows=1
+per_hour 2026-11-25 16 rows=9
+per_hour 2026-11-25 15 rows=4
+per_hour 2026-11-24 18 rows=10
+per_hour 2026-11-24 17 rows=20
+per_hour 2026-11-24 16 rows=19
+per_hour 2026-11-24 15 rows=20
+per_hour 2026-11-24 14 rows=19
+
+--- [pending_uploads]
+rows=9 first_cst=2026-11-25 16:21:29 last_cst=2026-11-25 21:58:41
+row device=6A002C00 time_cst=2026-11-25 16:21:29 temp=18.0 hum=35.8 attempts=20 next_attempt=-
+row device=6A002C00 time_cst=2026-11-25 16:25:26 temp=18.0 hum=35.8 attempts=20 next_attempt=-
+row device=6A002C00 time_cst=2026-11-25 16:29:25 temp=18.0 hum=35.8 attempts=20 next_attempt=-
+row device=6A002C00 time_cst=2026-11-25 16:33:23 temp=18.0 hum=35.8 attempts=20 next_attempt=-
+row device=6A002C00 time_cst=2026-11-25 16:37:20 temp=18.0 hum=35.8 attempts=20 next_attempt=-
+row device=6A002C00 time_cst=2026-11-25 16:44:54 temp=18.0 hum=35.8 attempts=0 next_attempt=-
+row device=6A002C00 time_cst=2026-11-25 16:48:52 temp=18.0 hum=35.8 attempts=0 next_attempt=-
+row device=6A002C00 time_cst=2026-11-25 16:52:53 temp=18.0 hum=35.8 attempts=0 next_attempt=-
+row device=6A002C00 time_cst=2026-11-25 21:58:41 temp=21.7 hum=37.1 attempts=0 next_attempt=-
+
+--- [alarm_events]
+rows=515 first_cst=2026-11-24 12:55:24 last_cst=2026-11-26 05:26:30
+row time_cst=2026-11-26 05:26:30 device=6A002C00 kind=threshold msg=温湿度超限报警
+row time_cst=2026-11-26 05:18:59 device=6A002C00 kind=threshold msg=温湿度超限报警
+row time_cst=2026-11-26 05:11:26 device=6A002C00 kind=threshold msg=温湿度超限报警
+row time_cst=2026-11-26 05:03:54 device=6A002C00 kind=threshold msg=温湿度超限报警
+row time_cst=2026-11-26 04:56:24 device=6A002C00 kind=threshold msg=温湿度超限报警
+row time_cst=2026-11-26 04:45:41 device=6A002C00 kind=threshold msg=温湿度超限报警
+
+## machine checks
+RESULT temperature_rows=124
+RESULT last_temperature_row_cst=2026-11-25 21:58:41
+RESULT pending_rows=9
+RESULT pending_last_cst=2026-11-25 21:58:41
+RESULT pending_attempts_sum=100
+RESULT alarm_rows=515 last_alarm_cst=2026-11-26 05:26:30
+RESULT measurements_continue_after_crash=NO
+RESULT alarms_continue_after_crash=YES

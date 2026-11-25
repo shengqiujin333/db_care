@@ -1,0 +1,94 @@
+# phone-side window, third reliability round (read-only)
+started_utc=2026-11-25T14:32:52Z
+adb=platform-tools serial=12f046690506
+forbidden=install,uninstall,clear-data,settings-change,input,reboot
+
+--- [device]
+2026-11-25T14:32:50Z
+2026-11-25T22:32:50+0800
+Redmi 8A
+10
+29
+
+--- [app_identity]
+    versionCode=10 minSdk=26 targetSdk=34
+    versionName=1.9
+    firstInstallTime=2026-11-23 21:25:13
+    lastUpdateTime=2026-11-23 21:25:13
+
+--- [app_process]
+pid=32061
+  PID     ELAPSED ARGS                       
+32061       32:24 com.jinyuni.dengbei_care
+
+--- [network]
+Active default network: 101
+  NetworkAgentInfo{ ni{[type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]}  network{101}  nethandle{437197393933}  lp{{InterfaceName: wlan0 LinkAddresses: [ ] DnsAddresses: [ /192.168.0.1 ] Domains: null MTU: 0 TcpBufferSizes: 524288,1048576,5505024,262144,524288,4194304 Routes: [ fe80::/64 -> :: wlan0,192.168.0.0/24 -> 0.0.0.0 wlan0,0.0.0.0/0 -> 192.168.0.1 wlan0 ]}}  nc{[ Transports: WIFI Capabilities: NOT_METERED&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED LinkUpBandwidth>=1048576Kbps LinkDnBandwidth>=1048576Kbps Specifier: <WifiNetworkAgentSpecifier [WifiConfiguration=, SSID="ZTE_607157", BSSID=7c:21:d8:60:71:57, mOriginalRequestorUid=-1, mOriginalRequestorPackageName=]> SignalStrength: -55 SSID: xxxx]}  Score{60}  everValidated{true}  lastValidated{true}  created{true} lingering{false} explicitlySelected{false} acceptUnvalidated{false} everCaptivePortalDetected{false} lastCaptivePortalDetected{false} captivePortalValidationPending{false} partialConnectivity{false} acceptPartialConnectivity{false} clat{mBaseIface: null, mIface: null, mState: IDLE} }
+
+--- [prefs_upload_state]
+<string name="mac_addr">0200000000A1</string>
+<string name="upload_last_status">401</string>
+<string name="upload_blocked_reason">AUTH_REJECTED</string>
+<long name="upload_blocked_at" value="1795595909" />
+<string name="registerphone">14000000001</string>
+<int name="upload_pending_count" value="5" />
+<string name="measure_state">starting</string>
+
+--- [logcat_buffer_app_tags]
+buffer_lines=445 oldest=21:54:44 newest=22:30:30
+
+--- [logcat_live_window_20s]
+window_start=2026-11-25T14:32:54Z window_end=2026-11-25T14:33:14Z matched_lines=0
+
+
+--- [last_40_app_lines]
+11-25 22:27:03.942 E/MqttService(32061): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-25 22:27:03.942 E/MqttService(32061): 	at java.lang.Thread.run(Thread.java:919)
+11-25 22:27:03.947 I/MqttService(32061): Retrying connection after delay...
+11-25 22:27:05.950 I/MqttService(32061): Attempt 5 to connect to Bluetooth device...
+11-25 22:27:06.397 I/MqttService(32061): Connect error status=133
+11-25 22:27:06.404 I/MqttService(32061): Max attempts reached. Connection failed.
+11-25 22:27:06.404 I/MqttService(32061): link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-25 22:30:06.423 I/MqttService(32061): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=0200000000A1 (平台身份)
+11-25 22:30:06.424 I/MqttService(32061): link_state=CONNECTING msg=正在连接网关…
+11-25 22:30:06.424 I/MqttService(32061): Attempt 1 to connect to Bluetooth device...
+11-25 22:30:06.776 I/MqttService(32061): Connected to device, discovering services...
+11-25 22:30:22.435 E/MqttService(32061): Error during connection or data read: Timed out waiting for 16000 ms
+11-25 22:30:22.435 E/MqttService(32061): kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-25 22:30:22.435 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-25 22:30:22.435 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-25 22:30:22.435 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-25 22:30:22.435 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-25 22:30:22.435 E/MqttService(32061): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-25 22:30:22.435 E/MqttService(32061): 	at java.lang.Thread.run(Thread.java:919)
+11-25 22:30:22.440 I/MqttService(32061): Retrying connection after delay...
+11-25 22:30:24.444 I/MqttService(32061): Attempt 2 to connect to Bluetooth device...
+11-25 22:30:26.322 I/MqttService(32061): Connected to device, discovering services...
+11-25 22:30:27.575 I/MqttService(32061): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-25 22:30:27.870 D/MqttService(32061): Attempting to reconnect to broker
+11-25 22:30:27.888 I/MqttService(32061): Saved MAC address: 0200000000A1
+11-25 22:30:28.108 I/MqttService(32061): cipher length = 160
+11-25 22:30:28.125 I/MqttService(32061): GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-25 22:30:28.126 I/MqttService(32061):  id=6A002C00, H=36.4%, T=22.7°C
+11-25 22:30:28.152 I/MqttService(32061): link_state=DATA_OK msg=网关已连接（最近读取 22:30）
+11-25 22:30:28.152 I/MqttService(32061): BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-25 22:30:28.154 I/MqttService(32061): MQTT offline: keep latest BLE batch (bounded=1)
+11-25 22:30:28.157 I/MqttService(32061): writeCharacteristic(legacy) ok=true, bytes=6
+11-25 22:30:28.305 I/MqttService(32061): Chunk written OK, left=0
+11-25 22:30:28.307 I/MqttService(32061): Successfully connected and read data on attempt 2
+11-25 22:30:30.108 E/MqttService(32061): Failed to connect to broker
+11-25 22:30:30.108 E/MqttService(32061): 无权连接 (5)
+11-25 22:30:30.108 E/MqttService(32061): 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-25 22:30:30.108 E/MqttService(32061): 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-25 22:30:30.108 E/MqttService(32061): 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-25 22:30:30.108 E/MqttService(32061): 	at java.lang.Thread.run(Thread.java:919)
+
+## machine checks (device-local time)
+RESULT app_running=YES
+RESULT buffer_entries=445
+RESULT tls_error_events=0 first=- last=-
+RESULT connack_not_authorized_events=7 first=21:59:47 last=22:30:30
+RESULT reconnect_attempts=7
+RESULT http_401_mentions=0 first=- last=-
+RESULT http_2xx_upload_mentions=0
+RESULT crash_or_anr_lines=1

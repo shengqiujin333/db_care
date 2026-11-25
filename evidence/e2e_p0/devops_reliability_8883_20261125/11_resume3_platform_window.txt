@@ -1,0 +1,227 @@
+# third reliability window (8883 certificate replacement, same objects)
+started_utc=2026-11-25T14:34:19Z
+scope=service-stability,listener,handshake-rate,auth-outcome,upload-endpoint-rate,drift,rollback-point
+forbidden=mutation,sudo,restart,deploy,database,write-endpoint,credential-login,mqtt-connect
+
+connect_result=OK after=0.3s
+--- [identity]
+2026-11-25T14:34:20Z
+2026-11-25T22:34:20+0800
+iZ2zeih0gmrk47og5r4z7sZ
+2940895.39 5821300.51
+
+--- [unit_state]
+NRestarts=0
+MemoryCurrent=268865536
+ActiveState=active
+SubState=running
+ActiveEnterTimestamp=Wed 2026-11-25 10:58:15 CST
+NRestarts=0
+MemoryCurrent=60215296
+ActiveState=active
+SubState=running
+ActiveEnterTimestamp=Wed 2026-11-25 21:59:02 CST
+
+--- [host_load]
+0.00 0.00 0.00 1/389 314817
+               total        used        free      shared  buff/cache   available
+Mem:            3499        1494         235          58        2117        2005
+Swap:              0           0           0
+/dev/vda3        79G  7.1G   68G  10% /
+/dev/vda3      5224464 188505 5035959    4% /
+
+--- [emqx_status]
+Node 'emqx@127.0.0.1' 5.8.0 is started
+
+--- [broker]
+sysdescr  : EMQX
+version   : 5.8.0
+datetime  : 2026-11-25T22:34:22.488760120+08:00
+uptime    : 11 hours, 36 minutes, 4 seconds
+
+--- [listener_ssl]
+  running         : true
+  current_conn    : 0
+  shutdown_count  : [{not_authorized,328},{ssl_closed,42},{malformed_packet,1},{ssl_upgrade_timeout,1},{einval,31},{ssl_error,18},{bad_username_or_password,5}]
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+
+--- [clients]
+No clients.
+
+--- [leaf]
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+notBefore=Nov 25 02:55:16 2026 GMT
+notAfter=Nov 24 02:55:16 2028 GMT
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+
+--- [cert_file_stat]
+mtime=2026-11-25 10:58:05.577998843 +0800 size=1452 mode=644
+27964ca8ed1c1596
+
+--- [handshake_10]
+handshake_ok_count=10/10 elapsed_ms=102
+
+--- [established_8883]
+0
+
+--- [authn_recent]
+2026-11-25T19:56:11.258644+08:00 [warning] tag: AUTHN, clientid: scanner655cf0653, msg: authentication_failure, peername: 71.6.134.237:49848, reason: bad_username_or_password
+2026-11-25T21:59:49.060510+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22788, username: 0200000000A1, reason: not_authorized
+2026-11-25T22:05:30.704405+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22732, username: 0200000000A1, reason: not_authorized
+2026-11-25T22:10:30.628040+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22767, username: 0200000000A1, reason: not_authorized
+2026-11-25T22:15:31.107267+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22717, username: 0200000000A1, reason: not_authorized
+2026-11-25T22:20:30.667211+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22825, username: 0200000000A1, reason: not_authorized
+2026-11-25T22:25:30.669107+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22780, username: 0200000000A1, reason: not_authorized
+2026-11-25T22:30:31.299330+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22883, username: 0200000000A1, reason: not_authorized
+
+--- [upload_log_recent]
+Nov 25 16:08:19 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:08:19] "OPTIONS /register HTTP/1.1" 200 -
+Nov 25 16:08:38 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:08:38] "POST /register HTTP/1.1" 200 -
+Nov 25 16:09:12 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:09:12] "POST /login HTTP/1.1" 200 -
+Nov 25 16:15:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:15:57] "POST /login HTTP/1.1" 200 -
+Nov 25 16:21:22 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:21:22] "POST /setmac HTTP/1.1" 200 -
+Nov 25 16:21:31 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:21:31] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 16:27:17 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:27:17] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 16:28:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:28:57] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 16:28:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:28:57] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 16:38:31 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:38:31] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 18:13:48 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 18:13:48] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 18:13:48 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 18:13:48] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 25 18:13:48 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 18:13:48] "GET /login HTTP/1.1" 405 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "GET /login HTTP/1.1" 405 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "GET /login HTTP/1.1" 405 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "GET /login HTTP/1.1" 405 -
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:20 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 21:59:20 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 25 21:59:20 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "GET /login HTTP/1.1" 405 -
+Nov 25 21:59:20 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:20 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:00:13 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:13] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 22:00:23 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:23] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:00:32 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:32] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:00:41 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:41] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:00:50 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:50] "GET /login HTTP/1.1" 405 -
+Nov 25 22:04:29 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:04:29] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 22:04:38 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:04:38] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:04:47 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:04:47] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:04:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:04:56] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:05:05 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:05:05] "GET /login HTTP/1.1" 405 -
+Nov 25 22:15:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:15:56] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 22:15:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:15:56] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 25 22:15:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:15:56] "GET /login HTTP/1.1" 405 -
+Nov 25 22:15:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:15:56] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:15:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:15:56] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:15:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:15:56] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:16:24 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:16:24] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 22:16:24 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:16:24] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 25 22:16:24 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:16:24] "GET /login HTTP/1.1" 405 -
+Nov 25 22:16:24 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:16:24] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:16:24 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:16:24] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:16:24 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:16:24] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:16:47 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:16:47] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 22:16:57 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:16:57] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:17:06 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:17:06] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:17:15 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:17:15] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:17:24 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:17:24] "GET /login HTTP/1.1" 405 -
+Nov 25 22:30:07 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:30:07] "GET /login HTTP/1.1" 405 -
+Nov 25 22:30:07 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:30:07] "GET /upload_data HTTP/1.1" 405 -
+
+--- [upload_post_status_counts]
+     22 "POST /upload_data HTTP/1.1" 400
+      6 "POST /upload_data HTTP/1.1" 401
+---after_restart_2159---
+     19 "POST /upload_data HTTP/1.1" 400
+---by_hour---
+      5 16
+      8 21
+     15 22
+
+--- [flask_process]
+MainPID=312368
+ExecStart={ path=/root/venv/bin/python ; argv[]=/root/venv/bin/python /root/abr.py ; ignore_errors=no ; start_time=[Wed 2026-11-25 21:59:02 CST] ; stop_time=[n/a] ; pid=312368 ; code=(null) ; status=0/0 }
+    PID                  STARTED     ELAPSED COMMAND
+ 312368 Wed Nov 25 21:59:01 2026       35:22 /root/venv/bin/python /root/abr.py
+-rw-r--r-- 1 root root 8416 2025-11-21T21:44:03 /root/abr_20241221.py
+-rw-r--r-- 1 root root 7048 2024-12-21T09:14:16 /root/abr_bkp.py
+-rw-r--r-- 1 root root 8688 2026-11-25T21:59:02 /root/abr.py
+-rw-r--r-- 1 root root 8688 2026-11-25T21:59:02 /root/abr.py
+-rw-r--r-- 1 root root 2746 2024-10-19T23:03:13 /root/mysms.py
+-rw-r--r-- 1 root root 7048 2024-10-20T17:29:48 /root/sysbr.py
+/root/abr.py mtime=2026-11-25 21:59:02.622930574 +0800 size=8688
+
+--- [flask_error_scan]
+0
+
+--- [service_ports]
+22 53 80 443 1883 2019 3000 3306 4370 5000 5370 5432 8083 8084 8883 18083 21115 21116 21117 21118 21119 32969 44865
+
+--- [http_semantics]
+/login=405
+/upload_data_GET=405
+dashboard_status=200
+
+--- [backup_point]
+dir=/root/emqx-8883-cert-backup-20261125T025805Z mode=700 owner=root:root
+a91de074d8ca0954
+a91de074d8ca0954
+dad5b6fc984c8493
+
+--- [counter_delta_120s]
+t0_utc=14:34:26Z
+  running         : true
+  current_conn    : 0
+  shutdown_count  : [{not_authorized,328},{ssl_closed,48},{malformed_packet,1},{ssl_upgrade_timeout,1},{einval,35},{ssl_error,18},{bad_username_or_password,5}]
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+t0_established=0
+t1_utc=14:36:27Z elapsed_s=128
+  running         : true
+  current_conn    : 0
+  shutdown_count  : [{not_authorized,330},{ssl_closed,48},{malformed_packet,1},{ssl_upgrade_timeout,1},{einval,35},{ssl_error,18},{bad_username_or_password,5}]
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+t1_established=0
+
+## machine checks
+RESULT emqx_active=YES
+RESULT nrestarts=0
+RESULT active_since=Wed 2026-11-25 10:58:15 CST
+RESULT served_serial_matches_approved=YES
+RESULT san_has_connect_ip=YES
+RESULT handshake_rate=10/10
+RESULT ssl_listener_running=YES
+RESULT ssl_not_authorized_delta_120s=2
+RESULT ssl_ssl_error_delta_120s=0
+RESULT ssl_ssl_closed_delta_120s=0
+RESULT established_8883_t0=0 t1=0
+RESULT backup_baseline_cert_present=YES
+RESULT flask_error_or_5xx_lines_since_1600=0
+RESULT upload_post_status_breakdown=22 "POST /upload_data HTTP/1.1" 400 | 6 "POST /upload_data HTTP/1.1" 401 | 19 "POST /upload_data HTTP/1.1" 400 | 5 16 | 8 21 | 15 22

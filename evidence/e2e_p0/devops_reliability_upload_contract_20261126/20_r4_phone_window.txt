@@ -1,0 +1,131 @@
+# phone-side window, fourth reliability round (read-only)
+started_utc=2026-11-25T21:25:31Z
+adb=platform-tools serial=12f046690506
+forbidden=install,uninstall,clear-data,settings-change,input,reboot
+
+--- [device]
+2026-11-25T21:25:29Z
+2026-11-26T05:25:29+0800
+Redmi 8A
+10
+29
+
+--- [app_identity]
+    versionCode=10 minSdk=26 targetSdk=34
+    versionName=1.9
+    lastUpdateTime=2026-11-23 21:25:13
+
+--- [app_process]
+pid=32061
+  PID     ELAPSED ARGS                       
+32061    07:25:03 com.jinyuni.dengbei_care
+
+--- [network]
+Active default network: 101
+
+--- [prefs_upload_state]
+<string name="mac_addr">0200000000A1</string>
+<string name="upload_last_status">401</string>
+<string name="upload_blocked_reason">AUTH_REJECTED</string>
+<long name="upload_blocked_at" value="1795595909" />
+<string name="registerphone">14000000001</string>
+<int name="upload_pending_count" value="5" />
+<string name="measure_state">starting</string>
+
+--- [crash_buffer]
+crash_buffer_lines=22
+uni.dengbei_care:id/action_homeFragment_to_deviceDetailFragment cannot be found from the current destination Destination(com.jinyuni.dengbei_care:id/deviceDetailFragment) label=首页 class=com.jinyuni.dengbei_care.ui.detail.DeviceDetailFragment
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at androidx.navigation.NavController.navigate(NavController.kt:1663)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at androidx.navigation.NavController.navigate(NavController.kt:1595)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at androidx.navigation.NavController.navigate(NavController.kt:1577)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.jinyuni.dengbei_care.ui.home.HomeFragment$setupRecyclerView$1.invoke(HomeFragment.kt:69)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.jinyuni.dengbei_care.ui.home.HomeFragment$setupRecyclerView$1.invoke(HomeFragment.kt:65)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.jinyuni.dengbei_care.ui.home.DeviceCardAdapter$CardViewHolder._init_$lambda$0(DeviceCardAdapter.kt:47)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.jinyuni.dengbei_care.ui.home.DeviceCardAdapter$CardViewHolder.$r8$lambda$T3ICK7iknNEGoLD2aZ-B1kUgCFM(Unknown Source:0)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.jinyuni.dengbei_care.ui.home.DeviceCardAdapter$CardViewHolder$$ExternalSyntheticLambda0.onClick(D8$$SyntheticClass:0)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.view.View.performClick(View.java:7184)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.view.View.performClickInternal(View.java:7161)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.view.View.access$3500(View.java:818)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.view.View$PerformClick.run(View.java:27677)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.os.Looper.loop(Looper.java:223)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.app.ActivityThread.main(ActivityThread.java:7562)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at java.lang.reflect.Method.invoke(Native Method)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:539)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:950)
+
+--- [logcat_buffer_app_tags]
+buffer_lines=1574 oldest=03:07:10 newest=05:25:29
+
+--- [app_log_tail_60]
+11-26 05:21:59.440 I/MqttService(32061): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=0200000000A1 (平台身份)
+11-26 05:21:59.441 I/MqttService(32061): link_state=CONNECTING msg=正在连接网关…
+11-26 05:21:59.441 I/MqttService(32061): Attempt 1 to connect to Bluetooth device...
+11-26 05:22:00.053 I/MqttService(32061): Connected to device, discovering services...
+11-26 05:22:15.450 E/MqttService(32061): Error during connection or data read: Timed out waiting for 16000 ms
+11-26 05:22:15.450 E/MqttService(32061): kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 05:22:15.450 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 05:22:15.450 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 05:22:15.450 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 05:22:15.450 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 05:22:15.450 E/MqttService(32061): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 05:22:15.450 E/MqttService(32061): 	at java.lang.Thread.run(Thread.java:919)
+11-26 05:22:15.454 I/MqttService(32061): Retrying connection after delay...
+11-26 05:22:17.456 I/MqttService(32061): Attempt 2 to connect to Bluetooth device...
+11-26 05:22:17.947 I/MqttService(32061): Connected to device, discovering services...
+11-26 05:22:33.464 E/MqttService(32061): Error during connection or data read: Timed out waiting for 16000 ms
+11-26 05:22:33.464 E/MqttService(32061): kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 05:22:33.464 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 05:22:33.464 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 05:22:33.464 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 05:22:33.464 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 05:22:33.464 E/MqttService(32061): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 05:22:33.464 E/MqttService(32061): 	at java.lang.Thread.run(Thread.java:919)
+11-26 05:22:33.467 I/MqttService(32061): Retrying connection after delay...
+11-26 05:22:35.469 I/MqttService(32061): Attempt 3 to connect to Bluetooth device...
+11-26 05:22:36.180 I/MqttService(32061): Connected to device, discovering services...
+11-26 05:22:51.477 E/MqttService(32061): Error during connection or data read: Timed out waiting for 16000 ms
+11-26 05:22:51.477 E/MqttService(32061): kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 05:22:51.477 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 05:22:51.477 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 05:22:51.477 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 05:22:51.477 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 05:22:51.477 E/MqttService(32061): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 05:22:51.477 E/MqttService(32061): 	at java.lang.Thread.run(Thread.java:919)
+11-26 05:22:51.480 I/MqttService(32061): Retrying connection after delay...
+11-26 05:22:53.482 I/MqttService(32061): Attempt 4 to connect to Bluetooth device...
+11-26 05:22:54.458 I/MqttService(32061): Connected to device, discovering services...
+11-26 05:23:09.490 E/MqttService(32061): Error during connection or data read: Timed out waiting for 16000 ms
+11-26 05:23:09.490 E/MqttService(32061): kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 05:23:09.490 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 05:23:09.490 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 05:23:09.490 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 05:23:09.490 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 05:23:09.490 E/MqttService(32061): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 05:23:09.490 E/MqttService(32061): 	at java.lang.Thread.run(Thread.java:919)
+11-26 05:23:09.494 I/MqttService(32061): Retrying connection after delay...
+11-26 05:23:11.496 I/MqttService(32061): Attempt 5 to connect to Bluetooth device...
+11-26 05:23:12.062 I/MqttService(32061): Connected to device, discovering services...
+11-26 05:23:27.503 E/MqttService(32061): Error during connection or data read: Timed out waiting for 16000 ms
+11-26 05:23:27.503 E/MqttService(32061): kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 05:23:27.503 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 05:23:27.503 E/MqttService(32061): 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 05:23:27.503 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 05:23:27.503 E/MqttService(32061): 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 05:23:27.503 E/MqttService(32061): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 05:23:27.503 E/MqttService(32061): 	at java.lang.Thread.run(Thread.java:919)
+11-26 05:23:27.508 I/MqttService(32061): Max attempts reached. Connection failed.
+11-26 05:23:27.508 I/MqttService(32061): link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 05:25:29.606 D/MqttService(32061): Attempting to reconnect to broker
+11-26 05:25:29.622 I/MqttService(32061): Saved MAC address: 0200000000A1
+
+## machine checks (device-local time)
+RESULT app_running=YES
+RESULT buffer_entries=1574 oldest=03:07:10 newest=05:25:29
+RESULT tls_error_events=0
+RESULT connack_not_authorized_events=27 last=05:20:30
+RESULT reconnect_attempts_in_buffer=28
+RESULT http_401_mentions=2 last=04:30:36
+RESULT http_2xx_upload_mentions=0
+RESULT crash_lines_in_buffer=0

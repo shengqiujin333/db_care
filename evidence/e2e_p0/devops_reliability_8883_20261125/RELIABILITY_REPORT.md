@@ -2,8 +2,8 @@
 
 - 负责角色：运维工程
 - 能力：可靠性运维
-- 观测时间（UTC）：首轮 2026-11-25T03:27Z ~ 03:42Z（CST 11:27 ~ 11:42）；续接轮 2026-11-25T06:32Z ~ 06:39Z（CST 14:32 ~ 14:39）。两轮对象、判据、工具一致，用于区分“短暂连上”与“持续可用”
-- 续接原因：首轮结束时 MQTT 会话仍被身份占位阻塞，可靠性结论只覆盖 44 分钟；本轮在上一次中断后补做约 2 小时 50 分钟之后的复观测，避免用单点窗口下结论
+- 观测时间（UTC）：首轮 2026-11-25T03:27Z ~ 03:42Z（CST 11:27 ~ 11:42）；续接轮 2026-11-25T06:32Z ~ 06:39Z（CST 14:32 ~ 14:39）；第三轮 2026-11-25T14:30Z ~ 14:47Z（CST 22:30 ~ 22:47）。三轮对象、判据、工具一致，用于区分“短暂连上”与“持续可用”
+- 续接原因：首轮结束时 MQTT 会话仍被身份占位阻塞，可靠性结论只覆盖 44 分钟；续接轮补做约 2 小时 50 分钟之后的复观测；第三轮是在软件测试实测 `POST /upload_data` 401 失败、实现侧于 CST 21:59:02 重新部署上传服务之后，旧 Runtime 退出的重试观测，覆盖变更后约 11.5 小时并单独核对上传受理结果与回退点
 - 变更时间基准：EMQX 于 CST 2026-11-25 10:58:15（02:58:15Z）重启并加载新证书；两轮观测分别覆盖变更后约 27–44 分钟与 3 小时 34–41 分钟
 - 被测对象：既有平台 `8.140.23.253`（EMQX 5.8.0，`ssl:default` 0.0.0.0:8883），Android App `com.jinyuni.dengbei_care` vC10/v1.9，手机 Redmi 8A `12f046690506`
 - 上游依据：`evidence/e2e_p0/devops_8883_cert_20261125/DEPLOYMENT_EVIDENCE.md`（部署结果）、`CHANGE_RECORD.md`（变更与回退点）、`evidence/e2e_p0/P0_platform_stage_report.md`（原缺陷现象）
@@ -15,16 +15,16 @@
 
 | 维度 | 判定 |
 |---|---|
-| 8883 TLS 传输可用性（App 信任锚 + 主机名校验） | **PASS**：首轮 20/20 次握手成功（105–133 ms），负例 `8.140.23.254` 被拒；续接轮 10/10 与 5/5 再次成功 |
-| 客户端 TLS 阻断是否解除（同一 App、同一手机） | **PASS**：修复前 18 次 `No subjectAltNames` 事件（10:31–10:56）；修复后 0 次，覆盖 11:01–14:34 的可观测重连（首轮 24 次、续接轮 33 次）且全部到达 MQTT CONNACK |
-| 客户端 MQTT 会话是否建立 | **未达成**：首轮 24 次、续接轮 33 次均为 `CONNACK rc=5 无权连接`，username=`000000000000`（App 默认占位身份），`reason=not_authorized` |
-| 安卓上传 `/upload_data` 是否恢复 | **NOT EXECUTED**：被上一行的身份缺失阻塞，需测试能力在补齐测试身份后执行；本能力不据此判通过 |
-| 非 MQTT 路径与其他 listener 回归 | **PASS**：两轮均 1883/8883/8083/8084/18083/5000/3306 OPEN；Flask `/login` 与 `/upload_data` GET 405、Dashboard `/status` 200；手机 BLE 读取 `DATA_OK`（14:31 仍成功） |
-| 服务稳定性 | **PASS**：两轮均 `emqx active`、`NRestarts=0`、负载 0.00、根分区 10%/inode 4%；uptime 至 3h34m 无重启，内存 258 MiB → 271 MiB |
-| 回滚点 | **PASS**：备份目录 `700 root:root` 存在，`leaf.crt.bak` 摘要 = 基线 `a91de074…0855f9` |
-| 监控/告警覆盖 | **GAP**：未发现指标采集或告警配置；TLS 失败只体现为 listener 计数器，且随重启清零 |
+| 8883 TLS 传输可用性（App 信任锚 + 主机名校验） | **PASS**：首轮 20/20 次握手成功（105–133 ms），负例 `8.140.23.254` 被拒；续接轮 10/10 与 5/5 再次成功；第三轮平台内 10/10、外网 12/12（中位 89 ms） |
+| 客户端 TLS 阻断是否解除（同一 App、同一手机） | **PASS**：修复前 18 次 `No subjectAltNames` 事件（10:31–10:56）；修复后 0 次，覆盖 11:01–22:30 的可观测重连（三轮累计 64 次）且全部到达 MQTT CONNACK |
+| 客户端 MQTT 会话是否建立 | **未达成**：三轮均为 `CONNACK rc=5 无权连接`，第三轮 username 已从占位 `000000000000` 变为测试身份 `0200000000A1`，仍 `reason=not_authorized` |
+| 安卓上传 `/upload_data` 是否恢复 | **未证实（0 次成功）**：软件测试 16:21/16:38 实测 401；实现侧 21:59:02 重新部署后 401 不再出现，但此后**没有任何真实客户端上传**（19 次均为空/短载荷探测，返回 400），访问日志中 2xx = 0。不得据此判恢复 |
+| 非 MQTT 路径与其他 listener 回归 | **PASS**：三轮均 1883/8883/8083/8084/18083/5000/3306 OPEN；Flask `/login` 与 `/upload_data` GET 405、Dashboard `/status` 200；手机 BLE 22:30 仍 `DATA_OK` |
+| 服务稳定性 | **PASS（有新事件）**：EMQX 三轮均 active、`NRestarts=0`、变更后 11h31m 未重启、负载 0.00、根分区 10%/inode 4%；Flask 于 21:59:02 由实现侧按变更窗口重启 1 次。第三轮观测到 App 22:00:24 崩溃，进程约 30 秒后重启、22:30 恢复采集（见 §12.4） |
+| 回滚点 | **PASS**：证书备份目录 `700 root:root`，`leaf.crt.bak` 摘要 = 基线 `a91de074…0855f9`；上传服务另有 `abr.py.bak_20261125T135902Z`（8949 B，sha `534dd40a…`）与 `rollback_remote.sh` |
+| 监控/告警覆盖 | **GAP**：仍未发现指标采集或告警配置；本轮新增识别：上传受理结果无计数器、App 崩溃无上报、重部署无变更事件记录 |
 
-**一句话**：证书修复在传输层已被平台与客户端两侧独立证据证实有效，且在间隔约 2 小时 50 分钟的第二轮观测中重复成立；当前 App 仍不能上传，原因是既有的平台身份缺失（`mac_addr`/`registerphone` 为空），不是证书问题，也不是本次变更引入的回归。
+**一句话**：证书修复在传输层已被平台与客户端两侧独立证据证实有效，并在三轮、覆盖变更后约 11.5 小时的观测中持续成立；上传 401 的受理门已在 21:59:02 由实现侧移除（此后 401 归零），但**没有真实客户端上传被观测到**，成功率仍为 0/0，故不能声明“安卓上传已恢复”；App 仍因平台认证拒绝（`CONNACK 5`）无法建立 MQTT 会话，该阻塞与证书无关。
 
 ---
 
@@ -174,6 +174,12 @@ C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_2026
 C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_20261125/ssl_error_attribution.py
 C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_20261125/resume_regression_probe.py
 C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_20261125/resume_phone_probe.py
+# 第三轮（22:30 之后）：平台窗口 / 外网握手 / 变更事实 / 上传受理统计 / 手机窗口（只读）
+C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_20261125/resume3_check.py
+C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_20261125/resume3_external_tls.py
+C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_20261125/resume3_change_check.py
+C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_20261125/resume3_upload_outcomes.py
+C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_20261125/resume3_phone_probe.py
 ```
 
 预期：TLS 抽样 `20/20`、`negative_control=OK`；手机 `post_fix_tls_error_events=0`；回退点 `baseline_cert_in_backup=YES`。
@@ -196,6 +202,15 @@ C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_2026
 | `09_resume_phone_window.txt` | 续接轮手机窗口：13:39–14:34 的 829 条日志分类、33 次重连、0 TLS 错误、BLE 网关连接失败事件 |
 | `10_service_regression_resume.txt` | 续接轮非 8883 回归：单元状态、监听端口、Flask/Dashboard HTTP 码、Flask 变更后错误行数、磁盘 inode |
 | `resume_check.py`、`ssl_error_attribution.py`、`resume_regression_probe.py`、`resume_phone_probe.py` | 续接轮只读探针（同样是限时、脱敏、不改动线上） |
+| `11_resume3_platform_window.txt` | 第三轮平台窗口：单元状态/uptime、listener 计数器与 128 秒配对增量、证书身份与文件摘要、平台内 10 次握手、AUTHN 原文、上传服务进程与文件变更、端口/HTTP 基线、证书回退点 |
+| `12_resume3_phone_window.txt` | 第三轮手机窗口：设备/APK 版本、前台进程、`MyPrefs` 上传状态、21:54~22:30 应用日志分类（TLS 错误、CONNACK、401 提及、崩溃计数） |
+| `13_resume3_external_tls.txt` | 外网 12 次 TLS 握手（App 信任锚 + IP SAN 主机名校验）、时延与叶子证书摘要 |
+| `14_resume3_app_crash.txt` | 22:00:24 `FATAL EXCEPTION` 完整栈与系统侧 `Force finishing` 记录原文 |
+| `15_resume3_upload_service_change.txt` | 上传服务变更事实：`abr.py` 大小/摘要/mtime、变更前副本、单元时间线、启动日志、`/root` 近期变更 |
+| `16_resume3_deploy_context.txt` | 实现角色 21:59:02 重部署目录清单与 `deploy_v2.log` 尾部（仅作窗口上下文） |
+| `17_resume3_upload_gate_apply_log.txt` | 上传门补丁 `apply.log` 全文（pre/post 校验、401→400 行为、备份摘要、自述待复测项） |
+| `18_resume3_upload_outcomes.txt` | 16:00~22:45 `POST /upload_data` 逐次状态与来源统计（401/400/2xx） |
+| `resume3_check.py`、`resume3_phone_probe.py`、`resume3_external_tls.py`、`resume3_change_check.py`、`resume3_deploy_context.py`、`resume3_apply_log.py`、`resume3_upload_outcomes.py` | 第三轮只读探针（限时、脱敏、不写入、不重启、不连 DB） |
 
 ---
 
@@ -257,3 +272,90 @@ C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_reliability_8883_2026
 3. 上传仍未执行；本轮不因“TLS 好转”或“App 在重连”推断上传已恢复。
 4. 新增 1 项与本变更无关的运行观察（BLE 网关连接失败），按跨组件事实记录，不改变证书维度判定。
 5. 平台 `not_authorized` 增量（约 1.2 次/分）高于手机日志可见的重连次数（约 0.7 次/分），差值来源未知（可能为日志缓冲区截断或其他占用同一 clientId/占位用户名的设备）；本条仅作口径提示，不作为归因结论。
+
+---
+
+## 12. 第三轮观测（CST 22:30 ~ 22:47，变更后 11h32m ~ 11h49m；覆盖 21:59:02 上传服务重部署）
+
+### 12.1 本轮起因与观测对象的变化
+
+- 触发：软件测试在 16:21:31 / 16:38:31 实测 `POST /upload_data` 返回 **401**（`artifacts/software_test_report_cert8883.md` §5），旧 Runtime 退出后由本能力重试可靠性检查。
+- 对象变化（本轮实测，非推断）：
+  - `/root/abr.py` 于 **21:59:02** 被替换：8949 B / sha256 `534dd40aac40c005…` → **8688 B / sha256 `a062b05f524dc8f6…`**；
+  - `user_script.service` 于 **21:59:02** 重启，PID 214002 → **312368**，`NRestarts=0`（systemd 只记录一次启动，未计为崩溃重启）；
+  - 变更目录 `/root/rd_upload_contract_20261125T135855Z`（`apply.log`、`rollback_remote.sh`、`verify_upload_contract.sh`、`BACKUP_SHA256SUMS.txt`），`apply.log` 记录 `removed=4 lines`、`VERDICT=PASS phase=post-fix`，并自述“next: real App upload retest must confirm 2xx and persistence readback”。
+- 因此本轮**分段判定**：16:38 之前的 401 证据只属于旧版本；21:59:02 之后的受理结果单独统计。证书维度不受该重部署影响（`/var/lib/emqx` 证书文件 mtime 仍为 10:58:05，sha 未变）。
+
+### 12.2 平台与 TLS（变更后 11h32m）
+
+| 项 | 实测（CST 22:30 ~ 22:37） | 判读 |
+|---|---|---|
+| EMQX 单元 | active，`NRestarts=0`，`ActiveEnterTimestamp=2026-11-25 10:58:15`，uptime 11h31m47s | 未重启 |
+| 8883 listener | `running=true`，`current_conn=0`，`established=0` | 可用 |
+| 8883 计数器 128 秒配对增量 | `not_authorized` 328→330（+2），`ssl_error` 18→18（**0**），`ssl_closed` 48→48（0）；另有一次 96 秒配对 326→328 | 无真实 TLS 失败 |
+| 证书身份 | serial `77ADCFD924BA0F87F845C81934D4A3F346D4BB83`，SAN `8.140.23.253` + `117.72.84.210`，有效期至 2028-11-24，文件 sha256 前缀 `27964ca8ed1c1596` | 无漂移 |
+| 平台内握手（`-verify_ip` + App 信任锚） | 10/10，总耗时 101 ms | 通过 |
+| 外网握手（同一信任锚，测试主机发起） | **12/12**，时延 min 80.1 / median 89.0 / max 105.8 ms，TLSv1.3 `TLS_AES_256_GCM_SHA384`，返回的叶子 sha256 `E7AD1E46…8884` | 通过 |
+| 主机资源 | 负载 0.00，内存 1480/3499 MiB，根分区 10%，inode 4%，主机 uptime 34 天 | 无容量压力 |
+
+`ssl_error` 自续接轮 9 次增至 18 次（跨约 7h51m，约 1.1 次/小时），但本轮 128 秒静默窗口与 12 次外网握手期间增量均为 **0**，客户端 TLS 错误为 0；因此仍判为**来源不明的外部 8883 失败尝试**（公网扫描类），不归因于新证书、不归因于 App，也不作为通过项。
+
+### 12.3 上传受理结果（关键：0 次成功）
+
+`journalctl -u user_script` 16:00 ~ 22:45 内 `POST /upload_data` 共 **28** 次：
+
+| 结果 | 次数 | 时间/来源 | 说明 |
+|---|---|---|---|
+| 401 unauthorized | **6** | 16:21:31、16:27:17、16:28:57、16:38:31（`27.128.89.184`）；21:58:57、21:59:02（`127.0.0.1`，部署自检基线） | 全部发生在 **21:59:02 之前**；最后一例是部署前基线探测 |
+| 400 body 校验 | **22** | 21:59:03 之后 19 次（`127.0.0.1` 部署自检 + `27.128.89.184` 9 秒级脚本探测）；其余为 16:28 空 JSON 与 22:00–22:17 的脚本探测 | `{"error":"No json data"}` / `{"error":"phone is required"}`，未进入 DB 写入路径 |
+| 2xx 受理 | **0** | — | 21:59:03 之后仍为 0 |
+
+要点：
+
+1. **401 症状在 21:59:02 之后未再出现**（可比指标改善）：同身份、同 MAC 的探测从 `401 unauthorized` 前进到载荷校验（400），说明受理门被移除。
+2. **没有任何真实客户端上传被观测到**：手机侧 `upload_last_status=401`、`upload_blocked_reason=AUTH_REJECTED`、`upload_blocked_at`=16:38:29、`upload_pending_count=5`；21:59 之后日志与平台记录中都没有来自该 App 的 `POST /upload_data`。即 App 仍处于暂停自动上传的状态，未重试。
+3. 因此上传成功率是 **0 成功 / 0 真实尝试**（不可测量），**不得判恢复**；2xx 与 `sensor_data` 回读仍缺证据。
+4. 观测限制：Flask 访问日志不含 User-Agent 与请求体，无法把每条 400 与具体客户端逐条绑定；`27.128.89.184` 是测试 LAN 共用出口（本机探测、其他角色测试同源），故按“节奏特征 + App 侧状态”判定为脚本探测，不当作 App 行为。
+
+### 12.4 App 崩溃与自恢复（本轮新事件，交回实现）
+
+| 项 | 实测 |
+|---|---|
+| 时间 | 22:00:24.731 CST，进程 31852 |
+| 异常 | `FATAL EXCEPTION: main` — `java.lang.IllegalArgumentException: Navigation action/destination ...:id/action_homeFragment_to_deviceDetailFragment cannot be found from the current destination Destination(...:id/deviceDetailFragment)` |
+| 栈位置 | `HomeFragment$setupRecyclerView$1.invoke(HomeFragment.kt:69)` ← `DeviceCardAdapter$CardViewHolder` 点击回调（`DeviceCardAdapter.kt:47`） |
+| 影响 | `Force finishing activity`，进程被 SIG 9，前台退回桌面；采集/上传守护中断约 30 秒 |
+| 自恢复 | 进程 32061 重启；22:27 曾 5 次 BLE `status=133` 失败并 `CONNECT_FAILED`；22:30:06 重连网关，22:30:28 `DATA_OK`（`id=6A002C00`、T=22.7 ℃、H=36.4 %）；待发箱仍为 5 条，无丢数据 |
+| 归因 | 纯 UI 导航图缺陷（在 `deviceDetailFragment` 上再次点击设备卡触发），**与证书、TLS、上传受理均无关**；本能力只记录可复现栈，不修实现 |
+| 说明 | 22:00 的点击不是本能力执行（本轮只做只读观测），故未主动复现崩溃 |
+
+### 12.5 回退点与回退条件（更新）
+
+| 对象 | 回退点 | 核对结果 |
+|---|---|---|
+| 8883 证书 | `/root/emqx-8883-cert-backup-20261125T025805Z` | `700 root:root`；`leaf.crt.bak` sha256 前缀 `a91de074d8ca0954` = 变更前基线；`leaf.key.bak`、`SHA256SUMS.txt` 齐全 |
+| 上传服务 | `/root/abr.py.bak_20261125T135902Z`（8949 B，mode 600，sha256 `534dd40a…5063`） | 与 `apply.log` 的 `before_sha256` 一致；`rollback_remote.sh` + `BACKUP_SHA256SUMS.txt` 存在 |
+
+回退后果须如实披露：上传服务回退即回到“401 拒绝所有上传”的已知失败状态；证书回退即回到 `No subjectAltNames` 的已知失败状态。两者都只能用于止损，**不得记为恢复健康**，也不得用回退后的状态证明任何用例通过。
+
+新增回退触发条件（上传服务）：变更后出现 5xx / DB 连接异常 / 客户端上传出现无法归因的错误分类，且影响面大于原缺陷 → 用上述备份回退并重跑真实客户端复测。
+
+### 12.6 监控项更新（仅建议，未改动任何 SLO）
+
+M1–M8 保持原判据不变。本轮新增/强化：
+
+| # | 观测项 | 建议阈值/判据 | 检查方式 | 当前基线 |
+|---|---|---|---|---|
+| M9 | 上传受理结果分布 | 真实客户端连续 10 分钟 2xx=0 → 告警；401/400 突增 → 告警 | Flask 访问日志按 `POST /upload_data` 状态码聚合 | 28 次中 401=6（均在 21:59 前）、400=22、2xx=0 |
+| M10 | App 崩溃/ANR | 任一 `FATAL EXCEPTION` → 告警 | `logcat -b crash` 或崩溃上报 SDK | 22:00:24 崩溃 1 次，无自动上报 |
+| M11 | 变更事件登记 | 服务重启 + 文件哈希变化即记事件 | `systemctl show` + `sha256sum` 定时抓取 | 21:59:02 `abr.py` 变更已由本轮人工发现 |
+
+未变的可观测性缺口：无指标采集/告警平台；listener `shutdown_count` 随重启清零；EMQX 日志级别 warning 且无逐次 TLS 失败明细；证书到期无自动检查。
+
+### 12.7 第三轮结论
+
+1. **证书/TLS 维度：持续健康**。变更后 11.5 小时、三轮独立观测；平台内 10/10 与外网 12/12 握手全部通过，负例仍被拒，证书 serial/SAN 无漂移，`ssl_error` 在受控窗口内增量为 0。
+2. **上传维度：症状改善但未证实恢复**。401 受理门已在 21:59:02 移除，此后 401 归零；但真实客户端未重试、2xx=0、无落库回读，成功率不可测，不能判 PASS。
+3. **MQTT 会话：仍未建立**（`CONNACK 5`，`username=0200000000A1`）；属认证层既有缺口，与本证书变更无因果。
+4. **新增 2 项未归因运行事件**：22:00:24 App 崩溃（UI 导航图）、22:27 BLE 连接失败（随后自恢复）；均记录事实与复现线索，交回实现/测试，运维侧不修产品代码。
+5. **未执行项**：真实 App 上传复测与 `sensor_data` 回读（无写入口与 DB 直连授权）；本能力不据此判通过，也不代替测试能力执行。

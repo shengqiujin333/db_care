@@ -1,0 +1,120 @@
+# upload-gate apply log (written by the implementation role at 21:59:02 CST)
+# quoted for the reliability window only; no judgement of code here
+
+== identity ==
+2026-11-25T13:58:57Z
+iZ2zeih0gmrk47og5r4z7sZ
+file=/root/abr.py unit=user_script.service workdir=/root/rd_upload_contract_20261125T135855Z confirm=0
+== preflight ==
+before_sha256=534dd40aac40c00597b06710069cbcc70533650e01318e0637cd924851740c63 before_size=8949
+== baseline behaviour (expects 401 without header) ==
+== unit ==
+unit_active=active pid=214002 nrestarts=0 started=Sun 2026-11-15 06:42:51 CST
+  OK   unit active (active)
+== route shape ==
+  OK   GET /upload_data (405)
+  OK   OPTIONS /upload_data (200)
+  OK   GET /login (regression) (405)
+== body validation unchanged (no DB path) ==
+  empty_json -> 400 {"error":"No json data"}
+
+  OK   empty json status (400)
+== acceptance gate probe (payload cannot reach mysql.connect) ==
+  probe_json -> 401 {"error":"unauthorized"}
+
+  OK   gate still rejects without header (401)
+  expectation: 401 {"error":"unauthorized"} = defect baseline present
+== recent service log ==
+  2026-11-25T21:58:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "GET /upload_data HTTP/1.1" 405 -
+  2026-11-25T21:58:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "OPTIONS /upload_data HTTP/1.1" 200 -
+  2026-11-25T21:58:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "GET /login HTTP/1.1" 405 -
+  2026-11-25T21:58:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "POST /upload_data HTTP/1.1" 400 -
+  2026-11-25T21:58:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "POST /upload_data HTTP/1.1" 401 -
+VERDICT=PASS phase=pre-fix
+== patch dry run ==
+RESULT=DRY_RUN_READY removed=4 lines_after=250 sha256=534dd40aac40c00597b06710069cbcc70533650e01318e0637cd924851740c63
+RESULT=DRY_RUN_ONLY no change applied; re-run with --confirm under an authorized window
+== identity ==
+2026-11-25T13:59:02Z
+iZ2zeih0gmrk47og5r4z7sZ
+file=/root/abr.py unit=user_script.service workdir=/root/rd_upload_contract_20261125T135855Z confirm=1
+== preflight ==
+before_sha256=534dd40aac40c00597b06710069cbcc70533650e01318e0637cd924851740c63 before_size=8949
+== baseline behaviour (expects 401 without header) ==
+== unit ==
+unit_active=active pid=214002 nrestarts=0 started=Sun 2026-11-15 06:42:51 CST
+  OK   unit active (active)
+== route shape ==
+  OK   GET /upload_data (405)
+  OK   OPTIONS /upload_data (200)
+  OK   GET /login (regression) (405)
+== body validation unchanged (no DB path) ==
+  empty_json -> 400 {"error":"No json data"}
+
+  OK   empty json status (400)
+== acceptance gate probe (payload cannot reach mysql.connect) ==
+  probe_json -> 401 {"error":"unauthorized"}
+
+  OK   gate still rejects without header (401)
+  expectation: 401 {"error":"unauthorized"} = defect baseline present
+== recent service log ==
+  2026-11-25T21:58:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "GET /upload_data HTTP/1.1" 405 -
+  2026-11-25T21:58:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "OPTIONS /upload_data HTTP/1.1" 200 -
+  2026-11-25T21:58:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "GET /login HTTP/1.1" 405 -
+  2026-11-25T21:58:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "POST /upload_data HTTP/1.1" 400 -
+  2026-11-25T21:58:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "POST /upload_data HTTP/1.1" 401 -
+  2026-11-25T21:59:02+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "GET /upload_data HTTP/1.1" 405 -
+  2026-11-25T21:59:02+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "OPTIONS /upload_data HTTP/1.1" 200 -
+  2026-11-25T21:59:02+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "GET /login HTTP/1.1" 405 -
+  2026-11-25T21:59:02+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "POST /upload_data HTTP/1.1" 400 -
+  2026-11-25T21:59:02+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "POST /upload_data HTTP/1.1" 401 -
+VERDICT=PASS phase=pre-fix
+== patch dry run ==
+RESULT=DRY_RUN_READY removed=4 lines_after=250 sha256=534dd40aac40c00597b06710069cbcc70533650e01318e0637cd924851740c63
+== backup ==
+backup=/root/abr.py.bak_20261125T135902Z backup_sha256=534dd40aac40c00597b06710069cbcc70533650e01318e0637cd924851740c63
+== apply minimal patch ==
+RESULT=PATCHED removed=4 lines_after=250 sha256_before=534dd40aac40c00597b06710069cbcc70533650e01318e0637cd924851740c63 sha256_after=a062b05f524dc8f6bce596e4571d339f697ef909b318503ad418ee0add24017c
+patch_rc=0
+== restart service ==
+service_ready pid=312368 nrestarts=0
+== post-fix verification ==
+== unit ==
+unit_active=active pid=312368 nrestarts=0 started=Wed 2026-11-25 21:59:02 CST
+  OK   unit active (active)
+== route shape ==
+  OK   GET /upload_data (405)
+  OK   OPTIONS /upload_data (200)
+  OK   GET /login (regression) (405)
+== body validation unchanged (no DB path) ==
+  empty_json -> 400 {"error":"No json data"}
+
+  OK   empty json status (400)
+== acceptance gate probe (payload cannot reach mysql.connect) ==
+  probe_json -> 400 {"error":"phone is required"}
+
+  OK   gate removed (reaches body validation) (400)
+  OK   body advanced to phone validation (no 401, no DB write)
+== recent service log ==
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]:  * Debug mode: off
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]:  * Running on all addresses (0.0.0.0)
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]:  * Running on http://127.0.0.1:5000
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]:  * Running on http://172.31.81.253:5000
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: Press CTRL+C to quit
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "OPTIONS /upload_data HTTP/1.1" 200 -
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "GET /upload_data HTTP/1.1" 405 -
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "OPTIONS /upload_data HTTP/1.1" 200 -
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "GET /login HTTP/1.1" 405 -
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+VERDICT=PASS phase=post-fix
+== certificate / listener regression (unchanged by this change) ==
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+after_sha256=a062b05f524dc8f6bce596e4571d339f697ef909b318503ad418ee0add24017c after_size=8688
+RESULT=APPLIED backup=/root/abr.py.bak_20261125T135902Z
+next: real App upload retest must confirm 2xx and persistence readback; this script does not write sensor_data
+---backup sums---
+534dd40aac40c00597b06710069cbcc70533650e01318e0637cd924851740c63  /root/abr.py.bak_20261125T135902Z

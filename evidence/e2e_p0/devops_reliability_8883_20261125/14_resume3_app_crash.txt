@@ -1,0 +1,29 @@
+# App crash observed during the third reliability window (read-only logcat)
+# device: Redmi 8A 12f046690506, App com.jinyuni.dengbei_care vC10/1.9 (unchanged)
+# captured_utc=2026-11-25T14:44Z; the click that triggered it was NOT performed by this capability
+
+11-25 22:00:24.711 D/AndroidRuntime(31852): Shutting down VM
+--------- beginning of crash
+11-25 22:00:24.731 E/AndroidRuntime(31852): FATAL EXCEPTION: main
+11-25 22:00:24.731 E/AndroidRuntime(31852): Process: com.jinyuni.dengbei_care, PID: 31852
+11-25 22:00:24.731 E/AndroidRuntime(31852): java.lang.IllegalArgumentException: Navigation action/destination com.jinyuni.dengbei_care:id/action_homeFragment_to_deviceDetailFragment cannot be found from the current destination Destination(com.jinyuni.dengbei_care:id/deviceDetailFragment) label=首页 class=com.jinyuni.dengbei_care.ui.detail.DeviceDetailFragment
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at androidx.navigation.NavController.navigate(NavController.kt:1663)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at androidx.navigation.NavController.navigate(NavController.kt:1595)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at androidx.navigation.NavController.navigate(NavController.kt:1577)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.jinyuni.dengbei_care.ui.home.HomeFragment$setupRecyclerView$1.invoke(HomeFragment.kt:69)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.jinyuni.dengbei_care.ui.home.HomeFragment$setupRecyclerView$1.invoke(HomeFragment.kt:65)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.jinyuni.dengbei_care.ui.home.DeviceCardAdapter$CardViewHolder._init_$lambda$0(DeviceCardAdapter.kt:47)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.jinyuni.dengbei_care.ui.home.DeviceCardAdapter$CardViewHolder.$r8$lambda$T3ICK7iknNEGoLD2aZ-B1kUgCFM(Unknown Source:0)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.jinyuni.dengbei_care.ui.home.DeviceCardAdapter$CardViewHolder$$ExternalSyntheticLambda0.onClick(D8$$SyntheticClass:0)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.view.View.performClick(View.java:7184)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.view.View.performClickInternal(View.java:7161)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.view.View.access$3500(View.java:818)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.view.View$PerformClick.run(View.java:27677)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.os.Looper.loop(Looper.java:223)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at android.app.ActivityThread.main(ActivityThread.java:7562)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at java.lang.reflect.Method.invoke(Native Method)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:539)
+11-25 22:00:24.731 E/AndroidRuntime(31852): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:950)
+11-25 22:00:24.747 I/DropBoxManagerService( 1580): add tag=data_app_crash isTagEnabled=true flags=0x2

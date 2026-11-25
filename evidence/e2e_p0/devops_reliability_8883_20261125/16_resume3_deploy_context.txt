@@ -1,0 +1,89 @@
+# deploy context for the 21:59:02 CST upload-service change (read-only)
+note=produced by the implementation role; read here only for the reliability window
+
+connect_result=OK
+--- [deploy_dir]
+total 36
+-rw-r--r-- 1 root root 7465 2026-11-25T21:59:03 apply.log
+-rwxr-xr-x 1 root root 4691 2026-11-25T21:58:56 apply_remote.sh
+-rw-r--r-- 1 root root  100 2026-11-25T21:59:02 BACKUP_SHA256SUMS.txt
+-rwxr-xr-x 1 root root 4314 2026-11-25T21:58:56 patch_upload_gate.py
+-rwxr-xr-x 1 root root 1641 2026-11-25T21:58:57 rollback_remote.sh
+-rwxr-xr-x 1 root root 3103 2026-11-25T21:58:56 verify_upload_contract.sh
+total 48
+-rw-r--r-- 1 root root 1144 2026-11-25T10:59:23 cleanup.sh
+-rw-r--r-- 1 root root 3468 2026-11-25T10:57:13 deploy.log
+-rwx------ 1 root root 4706 2026-11-25T10:56:47 deploy.sh
+-rw-r--r-- 1 root root 2652 2026-11-25T10:58:25 deploy_v2.log
+-rwx------ 1 root root 4449 2026-11-25T10:57:58 deploy_v2.sh
+-rw-r--r-- 1 root root 1512 2026-11-25T10:56:47 jd-ca.crt
+-rw-r--r-- 1 root root 1452 2026-11-25T10:56:46 leaf.pem
+-rw------- 1 root root 3239 2026-11-25T10:58:22 live.txt
+-rw-r--r-- 1 root root 1720 2026-11-25T10:56:13 pre.sh
+-rw-r--r-- 1 root root 2240 2026-11-25T11:03:34 verify_listener.sh
+
+--- [deploy_log_tail]
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+wss:default
+  listen_on       : 0.0.0.0:8084
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+FIELD uptime_after=uptime    : 7 seconds
+PORT 1883 OPEN
+PORT 8883 OPEN
+PORT 8083 OPEN
+PORT 8084 OPEN
+PORT 18083 OPEN
+PORT 5000 OPEN
+PORT 3306 OPEN
+flask_login_get_http=405
+dashboard_http=200
+RESULT overall=APPLIED
+
+--- [deploy_script_head]
+#!/bin/bash
+# EMQX 8883 叶子证书替换 v2：安装 -> 逐级重载（conf reload -> service restart）-> 复核 -> 失败回退
+set -u
+
+TS=$(date -u +%Y%m%dT%H%M%SZ)
+W=/root/rd_ops_20261125
+CERT=/var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA
+KEY=/var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948
+CA="$W/jd-ca.crt"
+NEW="$W/leaf.pem"
+NEWKEY="$W/leaf.key"
+TARGET_IP=8.140.23.253
+BASE_SERIAL=77ADCFD924BA0F87F845C81934D4A3F346D4BB82
+NEW_SERIAL=$(openssl x509 -in "$NEW" -noout -serial | sed 's/^serial=//')
+BK=/root/emqx-8883-cert-backup-$(date -u +%Y%m%dT%H%M%SZ)
+LOG="$W/deploy_v2.log"
+exec > >(tee "$LOG") 2>&1
+
+echo "# deploy v2 start $TS"
+echo "FIELD new_serial_expected=$NEW_SERIAL"
+
+--- [other_logs]
+apply.log
+apply_remote.sh
+BACKUP_SHA256SUMS.txt
+patch_upload_gate.py
+rollback_remote.sh
+verify_upload_contract.sh
+== /root/rd_upload_contract_20261125T135855Z/apply.log
+VERDICT=PASS phase=post-fix
+== certificate / listener regression (unchanged by this change) ==
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+after_sha256=a062b05f524dc8f6bce596e4571d339f697ef909b318503ad418ee0add24017c after_size=8688
+RESULT=APPLIED backup=/root/abr.py.bak_20261125T135902Z
+next: real App upload retest must confirm 2xx and persistence readback; this script does not write sensor_data

@@ -1,0 +1,59 @@
+# upload service change observed in the third reliability window (read-only)
+started_utc=2026-11-25T14:38:01Z
+
+connect_result=OK
+--- [app_file_identity]
+/root/abr.py size=8688 mode=644 owner=root:root mtime=2026-11-25 21:59:02.622930574 +0800
+a062b05f524dc8f6bce596e4
+
+--- [pre_change_copies]
+-rw-r--r-- 1 root root 8416 2025-11-21T21:44:03 /root/abr_20241221.py
+-rw-r--r-- 1 root root 7048 2024-12-21T09:14:16 /root/abr_bkp.py
+-rw-r--r-- 1 root root 8688 2026-11-25T21:59:02 /root/abr.py
+/root/abr.py
+/root/rd_ops_20261125/deploy_v2.log
+/root/rd_ops_20261125/deploy.log
+/root/rd_ops_20261125/deploy.sh
+/root/rd_ops_20261125/deploy_v2.sh
+/root/rd_upload_contract_20261125T135855Z
+
+--- [unit_timeline]
+MainPID=312368
+NRestarts=0
+ExecMainStartTimestamp=Wed 2026-11-25 21:59:02 CST
+ActiveEnterTimestamp=Wed 2026-11-25 21:59:02 CST
+InactiveEnterTimestamp=Wed 2026-11-25 21:59:02 CST
+
+--- [startup_log]
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "GET /login HTTP/1.1" 405 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "OPTIONS /upload_data HTTP/1.1" 200 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "GET /login HTTP/1.1" 405 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Stopping user_script.service - user add Python Script...
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: user_script.service: Deactivated successfully.
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Stopped user_script.service - user add Python Script.
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: user_script.service: Consumed 58.649s CPU time, 53.9M memory peak, 0B memory swap peak.
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Started user_script.service - user add Python Script.
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]:  * Serving Flask app 'abr'
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]:  * Debug mode: off
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+
+--- [recent_root_changes]
+total 44644
+drwxr-xr-x 2 root root     4096 2026-11-25T22:01:28 __pycache__
+-rw-r--r-- 1 root root     8688 2026-11-25T21:59:02 abr.py
+drwx------ 2 root root     4096 2026-11-25T21:59:02 rd_upload_contract_20261125T135855Z
+drwx------ 2 root root     4096 2026-11-25T11:03:34 rd_ops_20261125
+drwx------ 2 root root     4096 2026-11-25T10:58:05 emqx-8883-cert-backup-20261125T025805Z
+-rw------- 1 root root     8949 2026-10-22T19:31:04 abr.py.bak_20261125T135902Z
+-rw-r--r-- 1 root root     7048 2026-09-26T08:57:58 abr.py.bak_20260926
+drwxr-xr-x 2 root root     4096 2026-09-25T22:27:04 migrate
+drwxr-xr-x 5 root root     4096 2026-09-25T22:14:44 venv
+-rw-r--r-- 1 root root      342 2026-09-25T22:14:26 mysql_pull.log
+-rw-r--r-- 1 root root 45613396 2026-09-25T22:07:08 emqx_5.8.0.deb
