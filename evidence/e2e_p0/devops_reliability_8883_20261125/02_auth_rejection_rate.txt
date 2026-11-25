@@ -1,0 +1,170 @@
+# MQTT auth-rejection rate on 8883 (read-only)
+started_utc=2026-11-25T03:28:30Z
+scope=listener-counters,established-tcp,broker-log,auth-config
+forbidden=connect,publish,subscribe,mutation,restart,db,credential-login
+
+connect_result=OK
+
+--- [listener_counters_t0] 03:28:30Z
+ssl=[]
+tcp=[{tcp_closed,5}]
+
+--- [established_8883_samples]
+note: exported columns are remote address/port only; no payload is read
+t=03:28:32Z established=0 
+t=03:28:47Z established=0 
+t=03:29:02Z established=0 
+t=03:29:17Z established=0 
+t=03:29:32Z established=0 
+t=03:29:47Z established=0 
+
+--- [listener_counters_t1] 03:29:47Z
+ssl=[]
+tcp=[{tcp_closed,5}]
+
+RESULT ssl_not_authorized_delta_75s=unknown
+RESULT ssl_ssl_error_delta_75s=unknown
+RESULT ssl_closed_delta_75s=unknown
+
+--- [emqx_log_files]
+total 28
+drwxr-xr-x  2 emqx emqx   4096 Nov 25 10:58 .
+drwxrwxr-x 15 root syslog 4096 Nov 22 00:00 ..
+-rw-r--r--  1 emqx emqx   9036 Nov 25 11:27 emqx.log.1
+-rw-r--r--  1 emqx emqx     18 Nov 25 10:58 emqx.log.idx
+-rw-r--r--  1 emqx emqx     13 Nov 25 10:58 emqx.log.siz
+
+--- [emqx_log_1_tail]
+2026-11-09T14:25:50.907867+08:00 [error] msg: ctl_command_crashed, function: broker, module: emqx_mgmt_cli, reason: badarg, stacktrace: [{io,format,["~ts",["packets.disconnect.received   : 0\n"]],[{file,"io.erl"},{line,103},{error_info,#{cause => {device,epipe},module => erl_stdlib_errors}}]},{emqx_mgmt_cli,'-broker/1-lc$^2/1-1-',1,[{file,"emqx_mgmt_cli.erl"},{line,88}]},{emqx_mgmt_cli,'-broker/1-lc$^2/1-1-',1,[{file,"emqx_mgmt_cli.erl"},{line,89}]},{emqx_ctl,run_command,2,[{file,"emqx_ctl.erl"},{line,128}]},{erpc,execute_call,4,[{file,"erpc.erl"},{line,589}]}]
+2026-11-23T23:09:23.766317+08:00 [warning] tag: AUTHN, clientid: ONYPHE, msg: authentication_failure, peername: 91.196.152.48:36213, reason: bad_username_or_password
+2026-11-24T00:15:58.250446+08:00 [warning] tag: AUTHN, clientid: iw-f6b165, msg: authentication_failure, peername: 188.240.59.27:15040, reason: bad_username_or_password
+2026-11-24T09:56:22.409339+08:00 [warning] tag: AUTHN, clientid: CENSYS, msg: authentication_failure, peername: 66.132.159.168:43508, reason: bad_username_or_password
+2026-11-24T10:15:25.216066+08:00 [warning] msg: unexpected_api_access, request: #{pid => <0.117304.0>,port => 18083,scheme => <<"http">>,version => 'HTTP/1.1',path => <<"/favicon.ico">>,host => <<"8.140.23.253">>,peer => {{142,91,102,186},59078},bindings => #{},sock => {{172,31,81,253},18083},ref => 'http:dashboard',cert => undefined,headers => #{<<"accept-encoding">> => <<"gzip">>,<<"host">> => <<"8.140.23.253:18083">>,<<"user-agent">> => <<"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 ModatScanner/1.2 (+https://modat.io/)">>},method => <<"GET">>,body_length => 0,path_info => undefined,qs => <<>>,host_info => undefined,has_body => false,streamid => 3}
+2026-11-24T18:24:07.173145+08:00 [warning] tag: AUTHN, clientid: go, msg: authentication_failure, peername: 5.226.140.14:57245, reason: bad_username_or_password
+2026-11-24T18:24:42.870010+08:00 [warning] tag: AUTHN, clientid: iw-dca281, msg: authentication_failure, peername: 5.226.140.3:12744, reason: bad_username_or_password
+2026-11-24T20:14:29.303645+08:00 [warning] tag: AUTHN, clientid: 1S8JTVH3Eb5mStoyJnSwH0, msg: authentication_failure, peername: 18.97.19.207:49094, reason: bad_username_or_password
+2026-11-24T20:15:14.973434+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 2}
+2026-11-24T20:31:11.951837+08:00 [warning] tag: AUTHN, clientid: MzMxMjE1NjE5NjU0MzIyODY0NTAwNjU0NzY4NjUxNjMyNjE, msg: authentication_failure, peername: 195.96.139.68:43873, reason: bad_username_or_password
+2026-11-24T22:02:23.298846+08:00 [warning] tag: AUTHN, clientid: ONYPHE, msg: authentication_failure, peername: 195.184.76.97:42619, reason: bad_username_or_password
+2026-11-24T22:33:00.322776+08:00 [warning] tag: AUTHN, clientid: MqttClient, msg: authentication_failure, peername: 65.49.1.38:44256, reason: bad_username_or_password
+2026-11-25T03:19:59.974070+08:00 [warning] tag: AUTHN, clientid: ONYPHE, msg: authentication_failure, peername: 195.184.76.31:56771, reason: bad_username_or_password
+2026-11-25T03:39:16.399659+08:00 [warning] tag: AUTHN, clientid: CENSYS, msg: authentication_failure, peername: 66.132.195.117:20512, reason: bad_username_or_password
+2026-11-25T06:49:46.138429+08:00 [warning] tag: AUTHN, clientid: test, msg: authentication_failure, peername: 216.25.90.44:58874, reason: bad_username_or_password
+2026-11-25T07:03:47.055931+08:00 [warning] tag: AUTHN, clientid: test, msg: authentication_failure, peername: 198.235.24.116:62722, reason: bad_username_or_password
+2026-11-25T09:44:30.592511+08:00 [warning] tag: AUTHN, clientid: CENSYS, msg: authentication_failure, peername: 66.132.195.110:42790, reason: bad_username_or_password
+2026-11-25T09:48:23.683339+08:00 [warning] msg: unexpected_api_access, request: #{pid => <0.135931.0>,port => 18083,scheme => <<"http">>,version => 'HTTP/1.1',path => <<"/app-ads.txt">>,host => <<"8.140.23.253">>,peer => {{66,132,224,88},58574},bindings => #{},sock => {{172,31,81,253},18083},ref => 'http:dashboard',cert => undefined,headers => #{<<"accept">> => <<"*/*">>,<<"accept-encoding">> => <<"gzip">>,<<"host">> => <<"8.140.23.253:18083">>,<<"user-agent">> => <<"Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)">>},method => <<"GET">>,body_length => 0,path_info => undefined,qs => <<>>,host_info => undefined,has_body => false,streamid => 1}
+2026-11-25T10:31:46.501009+08:00 [warning] tag: AUTHN, clientid: CENSYS, msg: authentication_failure, peername: 66.132.224.90:61050, reason: bad_username_or_password
+2026-11-25T11:00:16.211920+08:00 [warning] tag: AUTHN, clientid: devops-cert-check-20261125, msg: authentication_failure, peername: 27.128.89.184:22867, username: devops-probe-invalid, reason: not_authorized
+2026-11-25T11:01:03.652684+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22826, username: 000000000000, reason: not_authorized
+2026-11-25T11:01:20.100798+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:01:21.702684+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22804, username: 000000000000, reason: not_authorized
+2026-11-25T11:02:20.101784+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+2026-11-25T11:06:03.642401+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22885, username: 000000000000, reason: not_authorized
+2026-11-25T11:06:20.105740+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:06:21.699268+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22719, username: 000000000000, reason: not_authorized
+2026-11-25T11:07:20.106778+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+2026-11-25T11:11:03.684587+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22743, username: 000000000000, reason: not_authorized
+2026-11-25T11:11:20.110727+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:11:21.720408+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22786, username: 000000000000, reason: not_authorized
+2026-11-25T11:12:20.111729+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+2026-11-25T11:16:03.664195+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22765, username: 000000000000, reason: not_authorized
+2026-11-25T11:16:20.115731+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:16:21.752979+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22809, username: 000000000000, reason: not_authorized
+2026-11-25T11:17:20.116795+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 4}
+2026-11-25T11:21:03.706687+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22788, username: 000000000000, reason: not_authorized
+2026-11-25T11:21:20.120741+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:21:21.802557+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22774, username: 000000000000, reason: not_authorized
+2026-11-25T11:22:20.121812+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+2026-11-25T11:26:03.693584+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22758, username: 000000000000, reason: not_authorized
+2026-11-25T11:26:20.125733+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:26:22.011813+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22816, username: 000000000000, reason: not_authorized
+2026-11-25T11:27:20.126776+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+
+--- [emqx_log_1_auth_and_tls]
+2026-11-24T00:15:58.250446+08:00 [warning] tag: AUTHN, clientid: iw-f6b165, msg: authentication_failure, peername: 188.240.59.27:15040, reason: bad_username_or_password
+2026-11-24T09:56:22.409339+08:00 [warning] tag: AUTHN, clientid: CENSYS, msg: authentication_failure, peername: 66.132.159.168:43508, reason: bad_username_or_password
+2026-11-24T18:24:07.173145+08:00 [warning] tag: AUTHN, clientid: go, msg: authentication_failure, peername: 5.226.140.14:57245, reason: bad_username_or_password
+2026-11-24T18:24:42.870010+08:00 [warning] tag: AUTHN, clientid: iw-dca281, msg: authentication_failure, peername: 5.226.140.3:12744, reason: bad_username_or_password
+2026-11-24T20:14:29.303645+08:00 [warning] tag: AUTHN, clientid: 1S8JTVH3Eb5mStoyJnSwH0, msg: authentication_failure, peername: 18.97.19.207:49094, reason: bad_username_or_password
+2026-11-24T20:15:14.973434+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 2}
+2026-11-24T20:31:11.951837+08:00 [warning] tag: AUTHN, clientid: MzMxMjE1NjE5NjU0MzIyODY0NTAwNjU0NzY4NjUxNjMyNjE, msg: authentication_failure, peername: 195.96.139.68:43873, reason: bad_username_or_password
+2026-11-24T22:02:23.298846+08:00 [warning] tag: AUTHN, clientid: ONYPHE, msg: authentication_failure, peername: 195.184.76.97:42619, reason: bad_username_or_password
+2026-11-24T22:33:00.322776+08:00 [warning] tag: AUTHN, clientid: MqttClient, msg: authentication_failure, peername: 65.49.1.38:44256, reason: bad_username_or_password
+2026-11-25T03:19:59.974070+08:00 [warning] tag: AUTHN, clientid: ONYPHE, msg: authentication_failure, peername: 195.184.76.31:56771, reason: bad_username_or_password
+2026-11-25T03:39:16.399659+08:00 [warning] tag: AUTHN, clientid: CENSYS, msg: authentication_failure, peername: 66.132.195.117:20512, reason: bad_username_or_password
+2026-11-25T06:49:46.138429+08:00 [warning] tag: AUTHN, clientid: test, msg: authentication_failure, peername: 216.25.90.44:58874, reason: bad_username_or_password
+2026-11-25T07:03:47.055931+08:00 [warning] tag: AUTHN, clientid: test, msg: authentication_failure, peername: 198.235.24.116:62722, reason: bad_username_or_password
+2026-11-25T09:44:30.592511+08:00 [warning] tag: AUTHN, clientid: CENSYS, msg: authentication_failure, peername: 66.132.195.110:42790, reason: bad_username_or_password
+2026-11-25T10:31:46.501009+08:00 [warning] tag: AUTHN, clientid: CENSYS, msg: authentication_failure, peername: 66.132.224.90:61050, reason: bad_username_or_password
+2026-11-25T11:00:16.211920+08:00 [warning] tag: AUTHN, clientid: devops-cert-check-20261125, msg: authentication_failure, peername: 27.128.89.184:22867, username: devops-probe-invalid, reason: not_authorized
+2026-11-25T11:01:03.652684+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22826, username: 000000000000, reason: not_authorized
+2026-11-25T11:01:20.100798+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:01:21.702684+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22804, username: 000000000000, reason: not_authorized
+2026-11-25T11:02:20.101784+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+2026-11-25T11:06:03.642401+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22885, username: 000000000000, reason: not_authorized
+2026-11-25T11:06:20.105740+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:06:21.699268+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22719, username: 000000000000, reason: not_authorized
+2026-11-25T11:07:20.106778+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+2026-11-25T11:11:03.684587+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22743, username: 000000000000, reason: not_authorized
+2026-11-25T11:11:20.110727+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:11:21.720408+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22786, username: 000000000000, reason: not_authorized
+2026-11-25T11:12:20.111729+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+2026-11-25T11:16:03.664195+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22765, username: 000000000000, reason: not_authorized
+2026-11-25T11:16:20.115731+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:16:21.752979+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22809, username: 000000000000, reason: not_authorized
+2026-11-25T11:17:20.116795+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 4}
+2026-11-25T11:21:03.706687+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22788, username: 000000000000, reason: not_authorized
+2026-11-25T11:21:20.120741+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:21:21.802557+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22774, username: 000000000000, reason: not_authorized
+2026-11-25T11:22:20.121812+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+2026-11-25T11:26:03.693584+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22758, username: 000000000000, reason: not_authorized
+2026-11-25T11:26:20.125733+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-25T11:26:22.011813+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22816, username: 000000000000, reason: not_authorized
+2026-11-25T11:27:20.126776+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+
+--- [auth_config]
+authentication = [
+  {
+    backend = built_in_database
+    bootstrap_file = "${EMQX_ETC_DIR}/auth-built-in-db-bootstrap.csv"
+    bootstrap_type = plain
+    enable = true
+    mechanism = password_based
+    password_hash_algorithm {name = plain, salt_position = disable}
+    user_id_type = username
+  },
+  {
+    backend = mysql
+    database = emqx_data
+    enable = false
+    mechanism = password_based
+    password = jinyuni123
+    password_hash_algorithm {name = plain, salt_position = disable}
+    pool_size = 8
+    query = "SELECT password_hash FROM mqtt_user where username = ${username} LIMIT 1"
+    query_timeout = "5s"
+    server = "127.0.0.1:3306"
+    ssl {
+      ciphers = []
+      depth = 10
+      enable = false
+      hibernate_after = "5s"
+      log_level = notice
+      reuse_sessions = true
+      secure_renegotiate = true
+      verify = verify_peer
+      versions = [
+        "tlsv1.3",
+        "tlsv1.2"
+      ]
+    }
+    username = root
+  }
+]
+
+--- [listener_ssl_config]
+[31mkey_not_found
+[0m
+
+--- [journal_auth]
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener ssl:default on 0.0.0.0:8883 started.

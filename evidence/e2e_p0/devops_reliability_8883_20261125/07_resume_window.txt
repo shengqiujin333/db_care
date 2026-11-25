@@ -1,0 +1,133 @@
+# resumed reliability window (8883 certificate replacement, same objects)
+started_utc=2026-11-25T06:32:34Z
+scope=service-stability,listener,handshake-rate,auth-outcome,drift,rollback-point
+forbidden=mutation,sudo,restart,deploy,database,write-endpoint,credential-login,mqtt-connect
+
+connect_result=OK after=0.3s
+--- [identity]
+2026-11-25T06:32:33Z
+2026-11-25T14:32:33+0800
+iZ2zeih0gmrk47og5r4z7sZ
+
+--- [unit_state]
+NRestarts=0
+MemoryCurrent=270766080
+ActiveState=active
+SubState=running
+ActiveEnterTimestamp=Wed 2026-11-25 10:58:15 CST
+
+--- [host_load]
+0.00 0.00 0.00 1/390 305845
+               total        used        free      shared  buff/cache   available
+Mem:            3499        1473         178          58        2194        2025
+Swap:              0           0           0
+/dev/vda3        79G  7.1G   68G  10% /
+ 14:32:34 up 33 days, 16:53,  1 user,  load average: 0.00, 0.00, 0.00
+
+--- [emqx_status]
+Node 'emqx@127.0.0.1' 5.8.0 is started
+
+--- [broker]
+sysdescr  : EMQX
+version   : 5.8.0
+datetime  : 2026-11-25T14:32:35.869385229+08:00
+uptime    : 3 hours, 34 minutes, 18 seconds
+
+--- [listener_ssl]
+  running         : true
+  current_conn    : 0
+  shutdown_count  : [{einval,19},{ssl_error,3},{bad_username_or_password,1},{ssl_closed,20},{not_authorized,260}]
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+
+--- [clients]
+No clients.
+
+--- [leaf]
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+notBefore=Nov 25 02:55:16 2026 GMT
+notAfter=Nov 24 02:55:16 2028 GMT
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+
+--- [cert_file_stat]
+mtime=2026-11-25 10:58:05.577998843 +0800 size=1452 mode=644
+27964ca8ed1c1596
+
+--- [handshake_10]
+handshake_ok_count=10/10
+
+--- [established_8883]
+1
+
+--- [authn_recent]
+2026-11-25T14:06:04.023422+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22702, username: 000000000000, reason: not_authorized
+2026-11-25T14:06:22.018969+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22732, username: 000000000000, reason: not_authorized
+2026-11-25T14:11:04.075895+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22849, username: 000000000000, reason: not_authorized
+2026-11-25T14:11:22.081819+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22765, username: 000000000000, reason: not_authorized
+2026-11-25T14:16:04.011056+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22831, username: 000000000000, reason: not_authorized
+2026-11-25T14:16:22.006124+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22708, username: 000000000000, reason: not_authorized
+2026-11-25T14:21:04.053710+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22732, username: 000000000000, reason: not_authorized
+2026-11-25T14:21:22.012771+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22682, username: 000000000000, reason: not_authorized
+2026-11-25T14:26:04.000799+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22912, username: 000000000000, reason: not_authorized
+2026-11-25T14:26:22.038172+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22688, username: 000000000000, reason: not_authorized
+2026-11-25T14:31:04.003278+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22842, username: 000000000000, reason: not_authorized
+2026-11-25T14:31:22.041059+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22728, username: 000000000000, reason: not_authorized
+
+--- [ssl_error_logscan]
+---
+total 48
+-rw-r--r-- 1 emqx emqx 34714 Nov 25 14:32 emqx.log.1
+-rw-r--r-- 1 emqx emqx    18 Nov 25 10:58 emqx.log.idx
+-rw-r--r-- 1 emqx emqx    13 Nov 25 10:58 emqx.log.siz
+
+--- [backup_point]
+dir=%n mode=%a owner=%U:%G
+a91de074d8ca0954
+
+--- [mtime_listener_conf]
+
+
+--- [counter_delta_90s]
+t0_utc=06:32:40Z
+  running         : true
+  current_conn    : 0
+  shutdown_count  : [{einval,19},{ssl_error,4},{bad_username_or_password,1},{ssl_closed,30},{not_authorized,260}]
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+t0_established=0
+t1_utc=06:34:11Z elapsed_s=97
+  running         : true
+  current_conn    : 0
+  shutdown_count  : [{einval,19},{ssl_error,9},{bad_username_or_password,1},{ssl_closed,30},{not_authorized,260}]
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+t1_established=0
+
+## machine checks
+RESULT emqx_active=YES
+RESULT nrestarts=0
+RESULT active_since=Wed 2026-11-25 10:58:15 CST
+RESULT served_serial_matches_approved=YES
+RESULT san_has_connect_ip=YES
+RESULT handshake_rate=10/10
+RESULT ssl_listener_running=YES
+RESULT ssl_not_authorized_delta_90s=0
+RESULT ssl_ssl_error_delta_90s=5
+RESULT ssl_ssl_closed_delta_90s=0
+RESULT established_8883_t0=0 t1=0
+RESULT backup_baseline_cert_present=YES
+RESULT authn_recent_lines=12

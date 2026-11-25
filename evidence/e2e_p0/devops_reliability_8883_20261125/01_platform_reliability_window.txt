@@ -1,0 +1,157 @@
+# post-change reliability observation (8883 TLS certificate replacement)
+started_utc=2026-11-25T03:27:37Z
+host=8.140.23.253 port=22 transport=paramiko/2.8.1
+scope=service-stability,listener,sessions,handshake-rate,log-window-pre/post
+forbidden=mutation,sudo,restart,deploy,database,write-endpoint,credential-login,private-key-output
+pre_window=2026-11-24 02:58:15..2026-11-25 02:58:15 (local CST)  post_window=2026-11-25 10:58:15..now (local CST)
+
+connect_result=OK after=0.3s
+
+--- [identity]
+exit=0 elapsed_ms=569
+2026-11-25T03:27:37Z
+2026-11-25T11:27:37+0800
+iZ2zeih0gmrk47og5r4z7sZ
+
+--- [unit_state]
+exit=0 elapsed_ms=106
+NRestarts=0
+MemoryCurrent=270389248
+CPUUsageNSec=14331782000
+ActiveState=active
+SubState=running
+ActiveEnterTimestamp=Wed 2026-11-25 10:58:15 CST
+
+--- [host_load]
+exit=0 elapsed_ms=106
+0.00 0.00 0.00 1/388 302731
+               total        used        free      shared  buff/cache   available
+Mem:            3499        1475         176          58        2193        2023
+Swap:              0           0           0
+/dev/vda3        79G  7.1G   68G  10% /
+
+--- [emqx_status]
+exit=0 elapsed_ms=911
+Node 'emqx@127.0.0.1' 5.8.0 is started
+
+--- [broker]
+exit=0 elapsed_ms=932
+sysdescr  : EMQX
+version   : 5.8.0
+datetime  : 2026-11-25T11:27:39.587232491+08:00
+uptime    : 29 minutes, 22 seconds
+
+--- [listeners]
+exit=0 elapsed_ms=918
+tcp:default
+  listen_on       : 0.0.0.0:1883
+  running         : true
+  current_conn    : 0
+  shutdown_count  : [{tcp_closed,5}]
+ssl:default
+  listen_on       : 0.0.0.0:8883
+  running         : true
+  current_conn    : 0
+  shutdown_count  : [{einval,4},{ssl_error,1},{ssl_closed,9},{not_authorized,38}]
+ws:default
+  listen_on       : 0.0.0.0:8083
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+wss:default
+  listen_on       : 0.0.0.0:8084
+  running         : true
+  current_conn    : 0
+  shutdown_count  : []
+
+--- [clients]
+exit=0 elapsed_ms=906
+No clients.
+
+--- [leaf]
+exit=0 elapsed_ms=139
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+notBefore=Nov 25 02:55:16 2026 GMT
+notAfter=Nov 24 02:55:16 2028 GMT
+
+--- [handshake_rate]
+exit=0 elapsed_ms=161
+handshake_ok_count=5/5
+
+--- [log_total_pre]
+exit=0 elapsed_ms=117
+1
+
+--- [log_total_post]
+exit=0 elapsed_ms=112
+15
+
+--- [log_ssl_err_pre]
+exit=1 elapsed_ms=109
+0
+
+--- [log_ssl_err_post]
+exit=1 elapsed_ms=106
+0
+
+--- [log_handshake_pre]
+exit=1 elapsed_ms=105
+0
+
+--- [log_handshake_post]
+exit=1 elapsed_ms=104
+0
+
+--- [log_auth_pre]
+exit=1 elapsed_ms=104
+0
+
+--- [log_auth_post]
+exit=1 elapsed_ms=105
+0
+
+--- [log_ssl_sample_pre]
+exit=0 elapsed_ms=105
+
+--- [log_tail_post]
+exit=0 elapsed_ms=104
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ bash[299077]: ok
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ emqx[299212]: STOP: OK
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: emqx.service: Deactivated successfully.
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Stopped emqx.service - emqx daemon.
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: emqx.service: Consumed 1h 17min 8.422s CPU time.
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Started emqx.service - emqx daemon.
+Nov 25 10:58:16 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: WARNING: Default (insecure) Erlang cookie is in use.
+Nov 25 10:58:16 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: WARNING: Configure node.cookie in /etc/emqx/emqx.conf or override from environment variable EMQX_NODE__COOKIE
+Nov 25 10:58:16 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: WARNING: NOTE: Use the same cookie for all nodes in the cluster.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener tcp:default on 0.0.0.0:1883 started.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener ssl:default on 0.0.0.0:8883 started.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener ws:default on 0.0.0.0:8083 started.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener wss:default on 0.0.0.0:8084 started.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener http:dashboard on :18083 started.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: EMQX 5.8.0 is running now!
+
+--- [log_tail_pre]
+exit=0 elapsed_ms=107
+-- No entries --
+
+--- [logfile_list]
+exit=0 elapsed_ms=94
+total 20
+-rw-r--r-- 1 emqx emqx 9036 Nov 25 11:27 emqx.log.1
+-rw-r--r-- 1 emqx emqx   18 Nov 25 10:58 emqx.log.idx
+-rw-r--r-- 1 emqx emqx   13 Nov 25 10:58 emqx.log.siz
+
+## machine checks
+RESULT emqx_active=YES
+RESULT nrestarts=0
+RESULT handshake_rate=5/5
+RESULT ssl_error_pre_24h=0
+RESULT ssl_error_post_window=0
+RESULT ssl_error_rate_pre_per_h=0.00
+RESULT ssl_error_rate_post_per_h=0.00
+RESULT post_window_minutes=27
+RESULT ssl_listener_running=YES
+RESULT ssl_current_conn=0
+RESULT broker_sessions_line=none

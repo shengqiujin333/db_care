@@ -1,0 +1,70 @@
+# resumed non-8883 regression window
+started_utc=2026-11-25T06:38:49Z
+forbidden=mutation,POST,login,db-query,restart,deploy
+
+connect_result=OK
+--- [units]
+active
+active
+NRestarts=0
+ActiveEnterTimestamp=Wed 2026-11-25 10:58:15 CST
+
+NRestarts=0
+ActiveEnterTimestamp=Sun 2026-11-15 06:42:51 CST
+
+--- [listen_ports]
+22 53 80 443 1883 2019 3000 3306 4370 5000 5370 5432 8083 8084 8883 18083 21115 21116 21117 21118 21119 32969 44865
+
+--- [listener_states]
+tcp:default
+  running         : true
+ssl:default
+  running         : true
+ws:default
+  running         : true
+wss:default
+  running         : true
+
+--- [http_codes]
+http://127.0.0.1:5000/login -> 405
+http://127.0.0.1:5000/upload_data -> 405
+http://127.0.0.1:18083/status -> 200
+
+--- [flask_recent_errors]
+0
+---tail---
+Nov 25 11:03:35 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 11:03:35] "GET /login HTTP/1.1" 405 -
+Nov 25 11:10:12 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 59.82.135.46 - - [25/Nov/2026 11:10:12] "GET / HTTP/1.1" 404 -
+Nov 25 11:16:18 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 11:16:18] "GET /login HTTP/1.1" 405 -
+Nov 25 11:16:37 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 11:16:37] "GET /login HTTP/1.1" 405 -
+Nov 25 11:17:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 11:17:57] "GET /login HTTP/1.1" 405 -
+Nov 25 12:29:44 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 65.49.1.94 - - [25/Nov/2026 12:29:44] "GET / HTTP/1.1" 404 -
+Nov 25 12:30:14 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 65.49.1.96 - - [25/Nov/2026 12:30:14] "GET /favicon.ico HTTP/1.1" 404 -
+Nov 25 14:35:44 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 14:35:44] code 400, message Bad request syntax ('\x16\x03\x01\x05â\x01\x00\x05Þ\x03\x03ô\x95\x16QMé°jà«Vàlom)eM))¬¾¦¦øA')
+Nov 25 14:35:44 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 14:35:44] "\x16\x03\x01\x05â\x01\x00\x05Þ\x03\x03ô\x95\x16QMé°jà«Vàlom)eM))¬¾¦¦øA" 400 -
+Nov 25 14:35:45 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 14:35:45] "GET /health HTTP/1.1" 404 -
+Nov 25 14:38:49 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 14:38:49] "GET /login HTTP/1.1" 405 -
+Nov 25 14:38:49 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 14:38:49] "GET /upload_data HTTP/1.1" 405 -
+
+--- [mysql_alive]
+inactive
+inactive
+2
+
+--- [disk_inode]
+/dev/vda3      5224464 188484 5035980    4% /
+/dev/vda3        79G  7.1G   68G  10% /
+
+## machine checks
+RESULT port_1883_open=YES
+RESULT port_8883_open=YES
+RESULT port_8083_open=YES
+RESULT port_8084_open=YES
+RESULT port_18083_open=YES
+RESULT port_5000_open=YES
+RESULT port_3306_open=YES
+RESULT flask_login_code=405
+RESULT upload_get_code=405
+RESULT dashboard_status_code=200
+RESULT flask_error_lines_since_change=0
+RESULT units_active=['active', 'active']

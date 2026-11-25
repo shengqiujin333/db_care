@@ -1,0 +1,112 @@
+# phone-side MQTT window after the 8883 certificate fix (read-only)
+started_utc=2026-11-25T03:37:58Z
+adb=platform-tools serial=12f046690506
+forbidden=install,uninstall,clear-data,settings-change,input,reboot
+
+--- [device]
+2026-11-25T03:37:55Z
+Redmi 8A
+10
+29
+
+--- [app_identity]
+    versionCode=10 minSdk=26 targetSdk=34
+    versionName=1.9
+    firstInstallTime=2026-11-23 21:25:13
+    lastUpdateTime=2026-11-23 21:25:13
+
+--- [app_process]
+pid=32200
+  PID     ELAPSED ARGS                       
+32200    14:01:58 com.jinyuni.dengbei_care
+
+--- [logcat_buffer_MqttService]
+buffer_lines=975
+
+--- [logcat_live_window_20s]
+window_start=2026-11-25T03:37:59Z window_end=2026-11-25T03:38:19Z
+
+--- [pre_fix_entries] entries=624 oldest=10:27:23 newest=06:01:00
+11-25 05:56:56.347 I/MqttService(32200): cipher length = 160
+11-25 05:56:56.353 I/MqttService(32200): GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-25 05:56:56.354 I/MqttService(32200):  id=6A002C00, H=35.5%, T=18.7°C
+11-25 05:56:56.374 I/MqttService(32200): link_state=DATA_OK msg=网关已连接（最近读取 05:56）
+11-25 05:56:56.374 I/MqttService(32200): BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-25 05:56:56.375 I/MqttService(32200): MQTT offline: keep latest BLE batch (bounded=1)
+11-25 05:56:56.378 I/MqttService(32200): writeCharacteristic(legacy) ok=true, bytes=6
+11-25 05:56:56.494 I/MqttService(32200): Chunk written OK, left=0
+11-25 05:56:56.499 I/MqttService(32200): Successfully connected and read data on attempt 4
+11-25 05:59:56.512 I/MqttService(32200): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-25 05:59:56.513 I/MqttService(32200): link_state=CONNECTING msg=正在连接网关…
+11-25 05:59:56.513 I/MqttService(32200): Attempt 1 to connect to Bluetooth device...
+11-25 05:59:57.173 I/MqttService(32200): Connected to device, discovering services...
+11-25 05:59:58.527 I/MqttService(32200): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-25 05:59:59.209 I/MqttService(32200): cipher length = 160
+11-25 05:59:59.230 I/MqttService(32200): GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-25 05:59:59.231 I/MqttService(32200):  id=6A002C00, H=35.5%, T=18.7°C
+11-25 05:59:59.247 I/MqttService(32200): link_state=DATA_OK msg=网关已连接（最近读取 05:59）
+11-25 05:59:59.247 I/MqttService(32200): BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-25 05:59:59.248 I/MqttService(32200): MQTT offline: keep latest BLE batch (bounded=1)
+11-25 05:59:59.251 I/MqttService(32200): writeCharacteristic(legacy) ok=true, bytes=6
+11-25 05:59:59.405 I/MqttService(32200): Chunk written OK, left=0
+11-25 05:59:59.408 I/MqttService(32200): Successfully connected and read data on attempt 1
+11-25 06:01:00.311 D/MqttService(32200): Attempting to reconnect to broker
+11-25 06:01:00.317 I/MqttService(32200): Saved MAC address: 000000000000
+
+--- [post_fix_entries] entries=387 oldest=11:01:00 newest=11:36:45
+11-25 11:32:04.757 I/MqttService(32200): Successfully connected and read data on attempt 1
+11-25 11:35:04.773 I/MqttService(32200): BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-25 11:35:04.773 I/MqttService(32200): link_state=CONNECTING msg=正在连接网关…
+11-25 11:35:04.773 I/MqttService(32200): Attempt 1 to connect to Bluetooth device...
+11-25 11:35:05.241 I/MqttService(32200): Connect error status=133
+11-25 11:35:05.246 I/MqttService(32200): Retrying connection after delay...
+11-25 11:35:07.248 I/MqttService(32200): Attempt 2 to connect to Bluetooth device...
+11-25 11:35:07.971 I/MqttService(32200): Connect error status=133
+11-25 11:35:07.975 I/MqttService(32200): Retrying connection after delay...
+11-25 11:35:09.978 I/MqttService(32200): Attempt 3 to connect to Bluetooth device...
+11-25 11:35:10.503 I/MqttService(32200): Connected to device, discovering services...
+11-25 11:35:11.950 I/MqttService(32200): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-25 11:35:12.731 I/MqttService(32200): cipher length = 160
+11-25 11:35:12.735 I/MqttService(32200): GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-25 11:35:12.736 I/MqttService(32200):  id=6A002C00, H=36.7%, T=18.4°C
+11-25 11:35:12.755 I/MqttService(32200): link_state=DATA_OK msg=网关已连接（最近读取 11:35）
+11-25 11:35:12.755 I/MqttService(32200): BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-25 11:35:12.756 I/MqttService(32200): MQTT offline: keep latest BLE batch (bounded=1)
+11-25 11:35:12.759 I/MqttService(32200): writeCharacteristic(legacy) ok=true, bytes=6
+11-25 11:35:12.877 I/MqttService(32200): Chunk written OK, left=0
+11-25 11:35:12.881 I/MqttService(32200): Successfully connected and read data on attempt 3
+11-25 11:36:00.959 D/MqttService(32200): Attempting to reconnect to broker
+11-25 11:36:00.965 I/MqttService(32200): Saved MAC address: 000000000000
+11-25 11:36:02.011 E/MqttService(32200): Failed to connect to broker
+11-25 11:36:02.011 E/MqttService(32200): 无权连接 (5)
+11-25 11:36:02.011 E/MqttService(32200): 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-25 11:36:02.011 E/MqttService(32200): 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-25 11:36:02.011 E/MqttService(32200): 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-25 11:36:02.011 E/MqttService(32200): 	at java.lang.Thread.run(Thread.java:919)
+11-25 11:36:19.015 D/MqttService(32200): Attempting to reconnect to broker
+11-25 11:36:19.021 I/MqttService(32200): Saved MAC address: 000000000000
+11-25 11:36:20.055 E/MqttService(32200): Failed to connect to broker
+11-25 11:36:20.055 E/MqttService(32200): 无权连接 (5)
+11-25 11:36:20.055 E/MqttService(32200): 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-25 11:36:20.055 E/MqttService(32200): 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-25 11:36:20.055 E/MqttService(32200): 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-25 11:36:20.055 E/MqttService(32200): 	at java.lang.Thread.run(Thread.java:919)
+11-25 11:36:44.905 D/MqttService(32200): Attempting to reconnect to broker
+11-25 11:36:44.912 I/MqttService(32200): Saved MAC address: 000000000000
+11-25 11:36:45.976 E/MqttService(32200): Failed to connect to broker
+11-25 11:36:45.976 E/MqttService(32200): 无权连接 (5)
+11-25 11:36:45.976 E/MqttService(32200): 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-25 11:36:45.976 E/MqttService(32200): 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-25 11:36:45.976 E/MqttService(32200): 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-25 11:36:45.976 E/MqttService(32200): 	at java.lang.Thread.run(Thread.java:919)
+
+## machine checks (device-local time, cutoff 11:00:00 CST = certificate reload)
+RESULT pre_fix_entries=624
+RESULT pre_fix_tls_error_events=18 first=10:31:02 last=10:56:45
+RESULT pre_fix_connack_not_authorized_events=0
+RESULT post_fix_entries=387
+RESULT post_fix_tls_error_events=0
+RESULT post_fix_connack_not_authorized_events=24 first=11:01:01 last=11:36:45
+RESULT post_fix_reconnect_attempts=24
+RESULT post_fix_connected_to_broker=0
+RESULT post_fix_saved_mac_placeholder=24

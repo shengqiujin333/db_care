@@ -1,0 +1,45 @@
+# ssl_error attribution control (8883 certificate change follow-up)
+started_utc=2026-11-25T06:35:10Z
+method=idle window vs local-correct-handshake window, plus peer socket sampling
+forbidden=mutation,sudo,restart,deploy,packet-capture,mqtt-connect
+
+connect_result=OK
+--- [counters_start 06:35:12Z]
+  current_conn    : 0
+  shutdown_count  : [{einval,19},{ssl_error,9},{bad_username_or_password,1},{ssl_closed,30},{not_authorized,260}]
+  current_conn    : 0
+  shutdown_count  : []
+  current_conn    : 0
+  shutdown_count  : []
+--- [counters_after_idle_120s @06:37:13Z]
+  current_conn    : 0
+  shutdown_count  : [{einval,19},{ssl_error,9},{bad_username_or_password,1},{ssl_closed,30},{not_authorized,266}]
+  current_conn    : 0
+  shutdown_count  : []
+  current_conn    : 0
+  shutdown_count  : []
+--- [peer_sample_60s]
+(no sockets observed in sampling points)
+--- [counters_after_sampling @06:38:15Z]
+  current_conn    : 0
+  shutdown_count  : [{einval,19},{ssl_error,9},{bad_username_or_password,1},{ssl_closed,30},{not_authorized,266}]
+  current_conn    : 0
+  shutdown_count  : []
+  current_conn    : 0
+  shutdown_count  : []
+--- [local_correct_handshakes]
+handshake_ok_count=5/5
+--- [counters_after_correct_handshakes @06:38:16Z]
+  current_conn    : 0
+  shutdown_count  : [{einval,21},{ssl_error,9},{bad_username_or_password,1},{ssl_closed,33},{not_authorized,266}]
+  current_conn    : 0
+  shutdown_count  : []
+  current_conn    : 0
+  shutdown_count  : []
+
+## machine checks
+RESULT ssl_error_idle_delta=0
+RESULT ssl_error_sampling_delta=0
+RESULT ssl_error_local_handshake_delta=0
+RESULT not_authorized_idle_delta=6
+RESULT ssl_closed_idle_delta=0

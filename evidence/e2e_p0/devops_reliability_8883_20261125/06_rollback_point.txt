@@ -1,0 +1,16 @@
+# rollback point check (read-only)
+backup_dir=/root/emqx-8883-cert-backup-20261125T025805Z
+
+backup_dir=/root/emqx-8883-cert-backup-20261125T025805Z mode=700 owner=root:root mtime=2026-11-25 10:58:05.572998776 +0800
+total 12
+-rw-r--r-- 1 emqx emqx 1464 2024-10-13 00:08:16.000000000 +0800 leaf.crt.bak
+-rw------- 1 emqx emqx 1736 2024-10-13 00:08:16.000000000 +0800 leaf.key.bak
+-rw------- 1 root root  158 2026-11-25 10:58:05.573998789 +0800 SHA256SUMS.txt
+a91de074d8ca09549abafc7787019ab2e68b4c8042e04130e9c27f610a0855f9  /root/emqx-8883-cert-backup-20261125T025805Z/leaf.crt.bak
+dad5b6fc984c8493163e5e561d5cbc9e81d3d8a481e9a199f6ba456e3ef4d9c0  /root/emqx-8883-cert-backup-20261125T025805Z/leaf.key.bak
+a91de074d8ca09549abafc7787019ab2e68b4c8042e04130e9c27f610a0855f9  leaf.crt.bak
+dad5b6fc984c8493163e5e561d5cbc9e81d3d8a481e9a199f6ba456e3ef4d9c0  leaf.key.bak
+
+## machine checks
+RESULT baseline_cert_in_backup=YES
+RESULT backup_dir_present=YES

@@ -107,7 +107,9 @@ artifacts/firmware_release.md | active | 固件发布记录 FW-REL-001 rev 3（�
 artifacts/firmware_requirements.md | active | 固件需求 FWR-002 rev 8（FWR-101..123：GXHT40、光照采样、3 分钟、升温 >0.9℃ 且无光或 >35℃、UART1、失败可诊断、当前构建再观测、有界等待、LIGHT-DEF-2 绝对阈值形制与启用门禁、旧 1/3 退役可复核、本阶段禁止调温/调光/功耗实验；含 as-built 对照与 12 项未决项）
 artifacts/firmware_rtos_architecture.md | active | 固件运行时/任务架构 RTA-002 rev 8（裸机超级循环 + RTC 深睡；T1–T4/F-1 冻结；光照分类改为无状态 LIGHT-DEF-2、未启用即 V=0/D=0；上电诊断、S/G/P 轨迹、冻结快照、有界等待、资源与不变量；功耗只作估算且本阶段不测量）
 artifacts/firmware_tasks.yaml | active | 固件任务清单 rev 8（6 项：FW-REG-ASBUILT 回归、FW-REG-REPORT T1/T2/T3 向量、FW-LIGHT-DEF2-MECH 判据形制落地门禁关闭、FW-OBS-PASSIVE COM43 被动观测、FW-LIGHT-DEF2-ENABLE 数值接受后启用取证、FW-DIAG-BOOT 上电五行与 pyocd 复位候选；均禁调温/改变光强/遮光刺激/功耗测量）
+artifacts/health_evidence_reliability_8883.yaml | active | HealthEvidence 指针：证书变更后健康证据逐项判定
 artifacts/interface_contract.md | active | 系统架构：IC-002 v4.0，撤旧1/3强制要求、保留无光判据未决；兼容RF/BLE/平台，明确160B容量与完整读取、占位、观测时间、错误分类及服务闭合条件
+artifacts/monitoring_reliability_8883.yaml | active | MonitoringArtifact 指针：证书变更后可靠性观测与监控方案
 artifacts/software_e2e_plan.md | history | 历史软件端到端测试计划 E2E-SW-004 rev 4.0（AA-005 七项增量；当前 AA-006 阶段不适用，跨链路联调属后续阶段）
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-005 rev 5.0（AA-006 ITEM-001..003 扫描权限自动续跑/BLE 读取终态/报告再生成反馈逐条追踪；宿主机映射矩阵、静态核查、真机 API29 与真实网关 devCount=0 用例、证据边界、人工延期与阶段外项、最终判定规则）
 artifacts/software_test_design_cert8883.md | active | 软件测试：8883 证书与客户端地址不匹配修复测试设计 TD-CERT8883-001 v1.0（原 CA 签发/链/IP SAN/负例、App TLS/CONNACK 真实复验、不受影响路径回归、安卓上传与 P1 四段一致条件、信任锚变更分支、证据/退出准则/NOT EXECUTED；只做设计不执行）
@@ -862,6 +864,28 @@ evidence/e2e_p0/devops_8883_cert_20261125/DEPLOYMENT_EVIDENCE.md | active | 部�
 evidence/e2e_p0/devops_8883_cert_20261125/ca_signing_capability.txt | active | 原 CA 能否签发核查：App 信任锚/服务器 cacert/工程 rootCA.crt DER 摘要一致、服务器无 CA 私钥、操作主机私钥可用；结论为无需更换 App 信任锚
 evidence/e2e_p0/devops_8883_cert_20261125/deploy_state_probe.py | active | 可复跑只读部署状态核对脚本（SSH 连接信息取自项目资料、限时只读、输出脱敏）
 evidence/e2e_p0/devops_8883_cert_20261125/mqtt_hostname_probe.py | active | 可复跑 MQTT 层主机名校验探测脚本（故意无效凭据，不发布/订阅业务数据）
+evidence/e2e_p0/devops_reliability_8883_20261125/01_platform_reliability_window.txt | active | 平台只读可靠性窗口原始输出：服务/NRestarts/内存/负载、listener 计数器、会话、5 次握手抽样、变更前后日志窗口计数
+evidence/e2e_p0/devops_reliability_8883_20261125/02_auth_rejection_rate.txt | active | 8883 认证拒绝率与 broker 日志原文：75 秒建连采样、not_authorized 增量、android_client 认证失败行、认证后端配置
+evidence/e2e_p0/devops_reliability_8883_20261125/03_alarms_and_log_retention.txt | active | listener 完整块、alarms 命令可用性、EMQX 日志级别/轮转、主机运行服务清单（判断监控覆盖）
+evidence/e2e_p0/devops_reliability_8883_20261125/04_connectivity_sample.txt | active | 主机侧 20 次 TLS 握手抽样（App 信任锚、主机名校验、时延）与错误 IP 负例
+evidence/e2e_p0/devops_reliability_8883_20261125/05_phone_app_window.txt | active | 手机只读观测：设备/APK/PID、App 日志缓冲按 11:00 切分的 TLS 错误与 CONNACK 分类计数
+evidence/e2e_p0/devops_reliability_8883_20261125/06_rollback_point.txt | active | 回退点只读复核：备份目录权限、基线证书摘要、SHA256SUMS
+evidence/e2e_p0/devops_reliability_8883_20261125/07_resume_window.txt | active | 续接轮平台窗口原始输出：服务/uptime/NRestarts、listener 计数器与 90 秒配对增量、证书 serial/SAN/mtime、10 次握手、AUTHN 原文、回退点摘要
+evidence/e2e_p0/devops_reliability_8883_20261125/08_ssl_error_attribution.txt | active | ssl_error 突发的归因对照原始输出：120 秒静默、60 秒套接字采样、5 次正确握手的增量分离
+evidence/e2e_p0/devops_reliability_8883_20261125/09_resume_phone_window.txt | active | 续接轮手机只读窗口：13:39–14:34 日志分类、33 次重连、0 TLS 错误、BLE 网关连接失败事件
+evidence/e2e_p0/devops_reliability_8883_20261125/10_service_regression_resume.txt | active | 续接轮非 8883 回归原始输出：单元状态、监听端口、Flask/Dashboard HTTP 码、Flask 变更后错误行数、磁盘容量与 inode
+evidence/e2e_p0/devops_reliability_8883_20261125/HEALTH_EVIDENCE.md | active | 8883 证书变更后健康证据：H1-H9 逐项判定，证书维度 PASS、客户端会话未达成、上传 NOT EXECUTED
+evidence/e2e_p0/devops_reliability_8883_20261125/RELIABILITY_REPORT.md | active | 8883 证书变更后可靠性观测与监控方案：变更前后 TLS/认证指标、日志关联、监控阈值与已知可观测性缺口、回退条件与影响范围
+evidence/e2e_p0/devops_reliability_8883_20261125/alarms_logretention_probe.py | active | 告警/日志保留/计数器只读探针
+evidence/e2e_p0/devops_reliability_8883_20261125/auth_rejection_probe.py | active | 认证拒绝率只读探针（建连采样与 broker 日志，不发 CONNECT）
+evidence/e2e_p0/devops_reliability_8883_20261125/connectivity_sample.py | active | 20 次 TLS 可达性抽样脚本（含负例）
+evidence/e2e_p0/devops_reliability_8883_20261125/phone_window_probe.py | active | 手机 MQTT 日志窗口只读采集与分类脚本（不交互、不安装）
+evidence/e2e_p0/devops_reliability_8883_20261125/reliability_probe.py | active | 平台可靠性窗口只读探针（限时、脱敏、不重启/不写）
+evidence/e2e_p0/devops_reliability_8883_20261125/resume_check.py | active | 续接轮平台窗口只读探针（限时、脱敏、不重启/不写）
+evidence/e2e_p0/devops_reliability_8883_20261125/resume_phone_probe.py | active | 续接轮手机 MQTT 日志只读采集与分类脚本（不交互、不安装）
+evidence/e2e_p0/devops_reliability_8883_20261125/resume_regression_probe.py | active | 续接轮非 8883 回归只读探针（单元、端口、HTTP GET、磁盘）
+evidence/e2e_p0/devops_reliability_8883_20261125/rollback_point_check.py | active | 回退点复核只读脚本
+evidence/e2e_p0/devops_reliability_8883_20261125/ssl_error_attribution.py | active | ssl_error 归因对照只读探针（静默/采样/正确握手三段）
 evidence/e2e_p0/emqx_8883_execution_record_template.md | active | 8883 证书变更运维回传模板：基本事实/变更前基线/备份/签发/部署重载/8 项变更后判据/回退/缺口字段；不含任何私钥或口令
 evidence/e2e_p0/emqx_8883_san.cnf | active | 8883 服务器叶子证书 CSR/签发模板（SAN=IP:8.140.23.253 + 保留旧 IP、CA:FALSE、serverAuth、AKID 仅在签发段；不含任何私钥）
 evidence/e2e_p0/p0_correlation_index.md | active | E2E-JOINT-P0 单一证据索引（uid4、gateway_ble_addr、GwID、APK SHA-256、平台服务身份、时间窗）
