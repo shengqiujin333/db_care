@@ -1,0 +1,10 @@
+# MQTT 8883 probe with TLS hostname verification enabled
+host=8.140.23.253 port=8883 ca=assets/jd-ca.crt
+tls_handshake=OK hostname_verify=OK
+tls_version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384
+peer_cn=8.140.23.253
+peer_san=8.140.23.253,117.72.84.210
+CONNACK_RC=5
+RESULT mqtt_connect_reached=YES
+RESULT negative_hostname_control=OK (IP address mismatch, certificate is not valid for '8.140.23.254'.)
+RESULT overall=PASS

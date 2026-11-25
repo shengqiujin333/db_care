@@ -854,8 +854,14 @@ evidence/e2e_p0/devops_8883_cert_20261125/04_cleanup.txt | active | 清理原始
 evidence/e2e_p0/devops_8883_cert_20261125/05_verify_after_cleanup.txt | active | 清理后外部判据复跑原始输出 overall=PASS
 evidence/e2e_p0/devops_8883_cert_20261125/06_mqtt_layer_probe.txt | active | MQTT 层存活探测：开启主机名校验的 TLS 连接成功、故意无效凭据返回 CONNACK rc=5（仅证明 listener/认证子系统存活，不证明业务上传）
 evidence/e2e_p0/devops_8883_cert_20261125/07_post_change_state.txt | active | 变更后服务器侧只读复核（部署文件身份/SAN/-verify_ip/本机握手/listener/端口/serial_match=YES）
+evidence/e2e_p0/devops_8883_cert_20261125/08_deploy_state.txt | active | 本轮部署操作只读复核原始输出：证书/私钥摘要与权限、listener 状态、cluster.hocon 引用、备份回退点、握手 serial、端口与 HTTP、变更窗口日志；overall=DEPLOYED_VERIFIED
+evidence/e2e_p0/devops_8883_cert_20261125/09_deploy_verify_from_host.txt | active | 本轮外部判据复跑原始输出（handshake/chain/SAN/verify_ip/负例/serial_changed）overall=PASS
+evidence/e2e_p0/devops_8883_cert_20261125/10_mqtt_hostname_probe.txt | active | 本轮 MQTT 层主机名校验探测：TLS1.3 握手成功、peer_cn=8.140.23.253、无效凭据 CONNACK rc=5、错误主机名被拒
 evidence/e2e_p0/devops_8883_cert_20261125/CHANGE_RECORD.md | active | 8883 证书变更记录：前后对照、服务器对象与备份路径、时间线、判据核对、运维发现（本环境需 systemctl restart emqx）、未执行项、影响、回退与交回
+evidence/e2e_p0/devops_8883_cert_20261125/DEPLOYMENT_EVIDENCE.md | active | 部署执行与复验记录：部署单元/版本标识、只读核对结果、前提与授权、未执行项、复验命令与交付判定
 evidence/e2e_p0/devops_8883_cert_20261125/ca_signing_capability.txt | active | 原 CA 能否签发核查：App 信任锚/服务器 cacert/工程 rootCA.crt DER 摘要一致、服务器无 CA 私钥、操作主机私钥可用；结论为无需更换 App 信任锚
+evidence/e2e_p0/devops_8883_cert_20261125/deploy_state_probe.py | active | 可复跑只读部署状态核对脚本（SSH 连接信息取自项目资料、限时只读、输出脱敏）
+evidence/e2e_p0/devops_8883_cert_20261125/mqtt_hostname_probe.py | active | 可复跑 MQTT 层主机名校验探测脚本（故意无效凭据，不发布/订阅业务数据）
 evidence/e2e_p0/emqx_8883_execution_record_template.md | active | 8883 证书变更运维回传模板：基本事实/变更前基线/备份/签发/部署重载/8 项变更后判据/回退/缺口字段；不含任何私钥或口令
 evidence/e2e_p0/emqx_8883_san.cnf | active | 8883 服务器叶子证书 CSR/签发模板（SAN=IP:8.140.23.253 + 保留旧 IP、CA:FALSE、serverAuth、AKID 仅在签发段；不含任何私钥）
 evidence/e2e_p0/p0_correlation_index.md | active | E2E-JOINT-P0 单一证据索引（uid4、gateway_ble_addr、GwID、APK SHA-256、平台服务身份、时间窗）

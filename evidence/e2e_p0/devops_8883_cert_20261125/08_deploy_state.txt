@@ -1,0 +1,175 @@
+# read-only deployment-state verification (8883 certificate change)
+started_utc=2026-11-25T03:17:53Z
+host=8.140.23.253 port=22 transport=paramiko/2.8.1
+scope=listener/deployed-cert/backup/config-reference/ports/HTTP/recent-log
+forbidden=mutation,sudo,restart,deploy,database,write-endpoint,private-key-output
+
+connect_result=OK after=0.3s
+
+--- [identity]
+exit=0 elapsed_ms=550
+2026-11-25T03:17:53Z
+2026-11-25T11:17:53+0800
+iZ2zeih0gmrk47og5r4z7sZ
+Linux 6.8.0-136-generic x86_64
+
+--- [units]
+exit=0 elapsed_ms=112
+emqx active=active enabled=enabled
+user_script active=active enabled=enabled
+
+--- [unit_detail]
+exit=0 elapsed_ms=97
+NRestarts=0
+ExecMainStartTimestamp=Wed 2026-11-25 10:58:15 CST
+ActiveState=active
+SubState=running
+
+--- [emqx_status]
+exit=0 elapsed_ms=910
+Node 'emqx@127.0.0.1' 5.8.0 is started
+
+--- [emqx_package]
+exit=0 elapsed_ms=98
+emqx 5.8.0 install ok installed
+cluster.hocon mtime=2025-10-26 23:53:05.000000000 +0800 size=6602
+
+--- [emqx_broker]
+exit=0 elapsed_ms=888
+sysdescr  : EMQX
+version   : 5.8.0
+datetime  : 2026-11-25T11:17:55.564159387+08:00
+uptime    : 19 minutes, 38 seconds
+
+--- [emqx_listeners]
+exit=0 elapsed_ms=896
+tcp:default
+  listen_on       : 0.0.0.0:1883
+  running         : true
+  current_conn    : 0
+ssl:default
+  listen_on       : 0.0.0.0:8883
+  running         : true
+  current_conn    : 0
+ws:default
+  listen_on       : 0.0.0.0:8083
+  running         : true
+  current_conn    : 0
+wss:default
+  listen_on       : 0.0.0.0:8084
+  running         : true
+  current_conn    : 0
+
+--- [deployed_files]
+exit=0 elapsed_ms=80
+-rw-r--r-- 1 emqx emqx 1514 2024-10-13 00:08:16.000000000 +0800 /var/lib/emqx/certs/listeners/ssl/default/cacert-613B9023E1E698F0
+-rw-r--r-- 1 emqx emqx 1452 2026-11-25 10:58:05.577998843 +0800 /var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA
+-rw------- 1 emqx emqx 1736 2026-11-25 10:58:05.578998856 +0800 /var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948
+
+--- [deployed_digests]
+exit=0 elapsed_ms=97
+27964ca8ed1c15964450a01240ebf0185e813332214c6f6f61cc4239cb62ccaa  /var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA
+d7966e9207e10837e54ce8d50cafee6abac315829536756ad4849c7b36a07625  /var/lib/emqx/certs/listeners/ssl/default/key-6E6F6ED56285A948
+db910d3c363aa3c090a6e74adb115bcf17f780e849575de60e864aa11f213200  /var/lib/emqx/certs/listeners/ssl/default/cacert-613B9023E1E698F0
+
+--- [deployed_leaf]
+exit=0 elapsed_ms=104
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+notBefore=Nov 25 02:55:16 2026 GMT
+notAfter=Nov 24 02:55:16 2028 GMT
+sha256 Fingerprint=E7:AD:1E:46:FA:5B:5D:06:02:C5:AD:04:B7:8B:1C:AF:2E:78:EE:47:8A:9F:6A:79:EA:B6:3B:D5:54:BD:88:84
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+
+--- [keypair_match]
+exit=0 elapsed_ms=123
+cert_pub_sha256=SHA2-256(stdin)= 4b43098d65739726a6e2c55befdb266992d053bb438f2c5fa9b21dbddc60f6f8
+key_pub_sha256=SHA2-256(stdin)= 4b43098d65739726a6e2c55befdb266992d053bb438f2c5fa9b21dbddc60f6f8
+
+--- [listener_config]
+exit=0 elapsed_ms=91
+54:      ssl_options {
+55-        cacertfile = "/var/lib/emqx/certs/listeners/ssl/default/cacert-613B9023E1E698F0"
+56-        certfile = "/var/lib/emqx/certs/listeners/ssl/default/cert-2D2ADC29A9BE14AA"
+57-        ciphers = []
+58-        client_renegotiation = true
+59-        depth = 10
+--
+188:      ssl_options {
+189-        cacertfile = "${EMQX_ETC_DIR}/certs/cacert.pem"
+190-        certfile = "${EMQX_ETC_DIR}/certs/cert.pem"
+191-        ciphers = []
+192-        client_renegotiation = true
+193-        depth = 10
+
+--- [backup_state]
+exit=0 elapsed_ms=105
+backup_dir=/root/emqx-8883-cert-backup-20261125T025805Z mode=700 owner=root:root mtime=2026-11-25 10:58:05.572998776 +0800
+total 12
+-rw-r--r-- 1 emqx emqx 1464 2024-10-13 00:08:16.000000000 +0800 leaf.crt.bak
+-rw------- 1 emqx emqx 1736 2024-10-13 00:08:16.000000000 +0800 leaf.key.bak
+-rw------- 1 root root  158 2026-11-25 10:58:05.573998789 +0800 SHA256SUMS.txt
+a91de074d8ca09549abafc7787019ab2e68b4c8042e04130e9c27f610a0855f9  leaf.crt.bak
+dad5b6fc984c8493163e5e561d5cbc9e81d3d8a481e9a199f6ba456e3ef4d9c0  leaf.key.bak
+
+--- [local_handshake]
+exit=0 elapsed_ms=104
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+Verify return code: 0 (ok)
+
+--- [local_handshake_serial]
+exit=0 elapsed_ms=130
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+
+--- [ports]
+exit=0 elapsed_ms=110
+PORT 1883 OPEN
+PORT 8883 OPEN
+PORT 8083 OPEN
+PORT 8084 OPEN
+PORT 18083 OPEN
+PORT 5000 OPEN
+PORT 3306 OPEN
+flask_login_get_http=405
+dashboard_http=200
+
+--- [emqx_recent_log]
+exit=0 elapsed_ms=100
+Nov 25 10:58:12 iZ2zeih0gmrk47og5r4z7sZ bash[214319]: Stop listener http:dashboard on :18083 successfully.
+Nov 25 10:58:12 iZ2zeih0gmrk47og5r4z7sZ bash[214319]: Listener tcp:default on 0.0.0.0:1883 stopped.
+Nov 25 10:58:12 iZ2zeih0gmrk47og5r4z7sZ bash[214319]: Listener ssl:default on 0.0.0.0:8883 stopped.
+Nov 25 10:58:12 iZ2zeih0gmrk47og5r4z7sZ bash[214319]: Listener ws:default on 0.0.0.0:8083 stopped.
+Nov 25 10:58:12 iZ2zeih0gmrk47og5r4z7sZ bash[214319]: Listener wss:default on 0.0.0.0:8084 stopped.
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ bash[299077]: ok
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ emqx[299212]: STOP: OK
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: emqx.service: Deactivated successfully.
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Stopped emqx.service - emqx daemon.
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: emqx.service: Consumed 1h 17min 8.422s CPU time.
+Nov 25 10:58:15 iZ2zeih0gmrk47og5r4z7sZ systemd[1]: Started emqx.service - emqx daemon.
+Nov 25 10:58:16 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: WARNING: Default (insecure) Erlang cookie is in use.
+Nov 25 10:58:16 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: WARNING: Configure node.cookie in /etc/emqx/emqx.conf or override from environment variable EMQX_NODE__COOKIE
+Nov 25 10:58:16 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: WARNING: NOTE: Use the same cookie for all nodes in the cluster.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener tcp:default on 0.0.0.0:1883 started.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener ssl:default on 0.0.0.0:8883 started.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener ws:default on 0.0.0.0:8083 started.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener wss:default on 0.0.0.0:8084 started.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: Listener http:dashboard on :18083 started.
+Nov 25 10:58:20 iZ2zeih0gmrk47og5r4z7sZ bash[299216]: EMQX 5.8.0 is running now!
+
+## machine checks
+RESULT deployed_cert_sha256=27964ca8ed1c15964450a01240ebf0185e813332214c6f6f61cc4239cb62ccaa
+RESULT deployed_cert_matches_approved=YES
+RESULT deployed_serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+RESULT deployed_serial_matches_approved=YES
+RESULT served_serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+RESULT served_serial_matches_deployed=YES
+RESULT ca_digest_unchanged=YES
+RESULT backup_contains_baseline_cert=YES
+RESULT keypair_match=YES
+RESULT eight883_open=YES
+RESULT all_expected_ports_open=YES
+RESULT ssl_listener_running=YES
+RESULT overall=DEPLOYED_VERIFIED
