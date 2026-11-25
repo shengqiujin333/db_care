@@ -1,0 +1,42 @@
+# external post-fix probe  2026-11-25T14:16:38Z
+target=8.140.23.253
+
+== port reachability (TCP connect only) ==
+  1883  OPEN
+  8883  OPEN
+  8083  OPEN
+  8084  OPEN
+  18083 OPEN
+  5000  OPEN
+  3306  OPEN
+
+== HTTP /upload_data over the public interface (no DB-reaching body) ==
+  GET            -> 405 <!doctype html>
+<html lang=en>
+<title>405 Method Not Allowed</title>
+<h1>Method Not Allowed</h1>
+<p>The method is not al
+  POST {}        -> 400 {"error":"No json data"}
+  POST probe     -> 400 {"error":"phone is required"}
+  POST probe+hd  -> 400 {"error":"phone is required"}
+  GET /login     -> 405 <!doctype html>
+<html lang=en>
+<title>405 Method Not Allowed</title>
+<h1>Method Not Allowed</h1>
+<p>The method is not al
+
+== 8883 TLS identity against the App trust anchor ==
+  handshake      : OK (TLSv1.3)
+  certificate OK : chain verified against jd-ca.crt
+  subject        : {"countryName": "US", "stateOrProvinceName": "State", "localityName": "City", "organizationName": "Organization", "organizationalUnitName": "Organizational Unit", "commonName": "8.140.23.253"}
+  issuer         : {"countryName": "US", "stateOrProvinceName": "California", "localityName": "San Francisco", "organizationName": "LinkValue", "organizationalUnitName": "Engineering", "commonName": "Tiktok Root CA", "emailAddress": "snack_yx@126.com"}
+  SAN            : ['8.140.23.253', '117.72.84.210']
+  notAfter       : Nov 24 02:55:16 2028 GMT
+  sha256         : e7ad1e46fa5b5d0602c5ad04b78b1caf2e78ee478a9f6a79eab63bd554bd8884
+
+== negative control (wrong server name must fail) ==
+  OK rejected: CERTIFICATE_VERIFY_FAILED (verify_code=62)
+
+== interpretation ==
+  400 phone is required  => header gate removed, body validation kept, no DB write
+  8883 SAN/chain         => certificate dimension unchanged by this repair

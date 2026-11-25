@@ -1,0 +1,108 @@
+# post-deploy state drift check (read-only)
+# judged against candidate sha256 a062b05f524dc8f6bce596e4571d339f697ef909b318503ad418ee0add24017c
+
+## deployed_object (rc=0)
+a062b05f524dc8f6bce596e4571d339f697ef909b318503ad418ee0add24017c  /root/abr.py
+path=/root/abr.py size=8688 mode=644 uid=0 gid=0 inode=1054060 mtime=2026-11-25 21:59:02.622930574 +0800
+250
+
+## gate_absence (rc=0)
+0
+0
+200:def upload_data():
+
+## unit (rc=0)
+NRestarts=0
+ExecMainStartTimestamp=Wed 2026-11-25 21:59:02 CST
+ExecMainPID=312368
+ExecStart={ path=/root/venv/bin/python ; argv[]=/root/venv/bin/python /root/abr.py ; ignore_errors=no ; start_time=[Wed 2026-11-25 21:59:02 CST] ; stop_time=[n/a] ; pid=312368 ; code=(null) ; status=0/0 }
+ActiveState=active
+SubState=running
+
+## rollback_point (rc=0)
+534dd40aac40c00597b06710069cbcc70533650e01318e0637cd924851740c63  /root/abr.py.bak_20261125T135902Z
+/root/abr.py.bak_20261125T135902Z 8949 600 root:root
+/root/rd_upload_contract_20261125T135855Z/rollback_remote.sh
+
+## ports (rc=0)
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+LISTEN 0      1024         0.0.0.0:8883       0.0.0.0:*          
+LISTEN 0      128          0.0.0.0:5000       0.0.0.0:*          
+LISTEN 0      1024         0.0.0.0:18083      0.0.0.0:*          
+LISTEN 0      1024         0.0.0.0:1883       0.0.0.0:*          
+
+## emqx (rc=0)
+active
+  listen_on       : 0.0.0.0:1883
+  acceptors       : 16
+  running         : true
+ssl:default
+  listen_on       : 0.0.0.0:8883
+  acceptors       : 16
+  running         : true
+  listen_on       : 0.0.0.0:8083
+  acceptors       : 16
+  running         : true
+  listen_on       : 0.0.0.0:8084
+  acceptors       : 16
+
+## tls_leaf (rc=0)
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+notBefore=Nov 25 02:55:16 2026 GMT
+notAfter=Nov 24 02:55:16 2028 GMT
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+
+## local_http (rc=0)
+GET_upload=405
+OPTIONS_upload=200
+GET_login=405
+{"error":"No json data"}
+
+EMPTY=400
+{"error":"phone is required"}
+
+PROBE=400
+{"error":"phone is required"}
+
+PROBE_TOKEN=400
+
+## upload_window (rc=0)
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:20 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:20 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:00:23 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:23] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:00:32 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:32] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:00:41 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:41] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:04:38 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:04:38] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:04:47 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:04:47] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:04:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:04:56] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:15:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:15:56] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:15:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:15:56] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:15:56 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:15:56] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:16:24 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:16:24] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:16:24 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:16:24] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:16:24 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 22:16:24] "POST /upload_data HTTP/1.1" 400 -
+-- end --
+
+## service_errors (rc=0)
+-- No entries --
+-- end --
+
+== summary ==
+  deployed_sha_matches_candidate       OK
+  deployed_size_8688                   OK
+  gate_constant_absent                 OK
+  unit_active                          OK
+  unit_no_restart_loop                 OK
+  backup_baseline_present              OK
+  ports_5000_8883_open                 OK
+  emqx_ssl_running                     OK
+  cert_serial_unchanged                OK
+  san_has_target                       OK
+  route_semantics_unchanged            OK
+  no_token_401_anymore                 OK
+  body_validation_kept                 OK
+  gate_counters_zero                   OK
+VERDICT=PASS

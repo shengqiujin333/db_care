@@ -872,7 +872,7 @@ evidence/e2e_p0/devops_8883_cert_20261125/DEPLOYMENT_EVIDENCE.md | active | 部�
 evidence/e2e_p0/devops_8883_cert_20261125/ca_signing_capability.txt | active | 原 CA 能否签发核查：App 信任锚/服务器 cacert/工程 rootCA.crt DER 摘要一致、服务器无 CA 私钥、操作主机私钥可用；结论为无需更换 App 信任锚
 evidence/e2e_p0/devops_8883_cert_20261125/deploy_state_probe.py | active | 可复跑只读部署状态核对脚本（SSH 连接信息取自项目资料、限时只读、输出脱敏）
 evidence/e2e_p0/devops_8883_cert_20261125/mqtt_hostname_probe.py | active | 可复跑 MQTT 层主机名校验探测脚本（故意无效凭据，不发布/订阅业务数据）
-evidence/e2e_p0/devops_platform_upload_contract_20261125/ | active | 平台上传受理条件只读核查目录（重试中断的检查）：服务/对象身份、处理器结构、脱敏复查与补丁自测；本轮未做任何平台变更
+evidence/e2e_p0/devops_platform_upload_contract_20261125/ | active | 平台上传受理条件核查、修复执行与部署复核目录：服务/对象身份、处理器结构、脱敏复查、补丁自测、实际变更与重启记录、公网/服务器侧变更后核验及部署证据（入口 DEPLOYMENT_EVIDENCE.md）
 evidence/e2e_p0/devops_platform_upload_contract_20261125/01_platform_upload_contract_state.txt | active | 只读原始输出：单元/启动时间/PID、/root/abr.py 摘要与 inode、处理器摘录、令牌元数据、路由码、listener、叶子证书、当日日志（口令/AccessKey/令牌值已脱敏）
 evidence/e2e_p0/devops_platform_upload_contract_20261125/02_handler_structure_map.txt | active | 只读结构图：路由/函数/请求头检查/401 分支行号（值脱敏）
 evidence/e2e_p0/devops_platform_upload_contract_20261125/03_evidence_redaction_check.txt | active | 证据脱敏复查结果（仅替换值、保留结构）
@@ -888,6 +888,10 @@ evidence/e2e_p0/devops_platform_upload_contract_20261125/12_artefact_check.txt |
 evidence/e2e_p0/devops_platform_upload_contract_20261125/13_cleanup.txt | active | 清理记录：仅删除本轮 py_compile 残留 abr_patch_*.pyc，既有 abr.cpython-312.pyc 保留
 evidence/e2e_p0/devops_platform_upload_contract_20261125/14_impact_scope_and_final_state.txt | active | 影响面与最终状态：/root 下无其他脚本引用 X-Upload-Token、备份/现文件摘要、单元 active/enabled
 evidence/e2e_p0/devops_platform_upload_contract_20261125/15_apply_record.md | active | 修复执行记录：授权链（用户选择方案 A）、变更前后身份、4 行差异、核验矩阵、回退与残留风险、交软件测试复测要求
+evidence/e2e_p0/devops_platform_upload_contract_20261125/16_state_drift_check.py | active | 可复跑只读漂移复核脚本：线上对象摘要/行数、门禁常量计数、单元状态、回退点、端口、ssl:default、8883 叶子证书、路由码与两种不触达数据库的请求体，任一不符返回非零
+evidence/e2e_p0/devops_platform_upload_contract_20261125/16_state_drift_check.txt | active | 本轮漂移复核原始输出（2026-11-25T14:16Z 前后）：14 项判据 OK、VERDICT=PASS、重启后无错误日志、上传窗口均为探针 400
+evidence/e2e_p0/devops_platform_upload_contract_20261125/17_external_recheck.txt | active | 本轮公网复验（2026-11-25T14:16:38Z）：POST {"probe":1}→400 phone is required、{}→400、GET 405、7 端口可达、8883 链校验 OK 且错误主机名被拒
+evidence/e2e_p0/devops_platform_upload_contract_20261125/DEPLOYMENT_EVIDENCE.md | active | 部署证据：部署入口与候选版本 sha256/字节/行数、授权与前提、重试轮只读漂移复核 14 项 PASS、公网复验、回退方案与未演练说明、残留风险（安全/备份令牌）、未执行的 App 真实上传与回读交接
 evidence/e2e_p0/devops_platform_upload_contract_20261125/apply_driver.py | active | 可复跑执行驱动：SFTP 上传脚本并远程执行，凭据不落盘不回显，输出脱敏
 evidence/e2e_p0/devops_platform_upload_contract_20261125/artefact_check.py | active | 残留物/单元/日志只读核对脚本（可复跑）
 evidence/e2e_p0/devops_platform_upload_contract_20261125/cleanup_pycache.py | active | 只删除本轮 py_compile 残留的可复跑清理脚本（不动既有 abr.cpython-312.pyc）
