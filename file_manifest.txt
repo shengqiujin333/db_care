@@ -202,6 +202,12 @@ deploy/emqx_8883_tls/issue_leaf.sh | active | 本地签发脚本：CA 指纹基�
 deploy/emqx_8883_tls/leaf-openssl.cnf | active | 8883 叶子证书 CSR/签发模板（CN=8.140.23.253、SAN=IP:8.140.23.253 + 保留旧 IP、CA:FALSE、serverAuth；不含私钥）
 deploy/emqx_8883_tls/rollback_remote.sh | active | 服务器侧回退脚本：由备份目录恢复证书与私钥并重启 EMQX，复核回到已知失败基线 serial
 deploy/emqx_8883_tls/verify_listener.sh | active | 服务器侧只读复核：部署文件身份/SAN/-verify_ip/本机握手/listener 状态/端口与 Flask、Dashboard 回归
+deploy/platform_upload_contract/ | active | 平台 POST /upload_data 上传受理对齐交付目录（入口 container.yaml）：只读核查事实、方案 A/B/C、最小补丁与执行/回退脚本
+deploy/platform_upload_contract/apply_remote.sh | active | 服务器侧执行器（默认 DRY RUN，--confirm 才变更）：前置检查→缺陷基线核验→备份(600)→最小补丁→重启→后置核验→失败自动回退
+deploy/platform_upload_contract/container.yaml | active | ContainerArtifact 入口清单：目标对象身份与摘要、X-Upload-Token 门禁事实与契约冲突、方案与授权状态、执行顺序、验收与回退（v2：已按用户方案 A 执行并服务器侧核验）
+deploy/platform_upload_contract/patch_upload_gate.py | active | 服务器侧最小补丁：基线 sha256 门禁、精确删除 4 行、py_compile 后原子替换、幂等、不打印令牌值
+deploy/platform_upload_contract/rollback_remote.sh | active | 从备份恢复 /root/abr.py 并重启，复核回到 401 已知失败基线（不得记为健康）
+deploy/platform_upload_contract/verify_upload_contract.sh | active | 服务器侧核验：单元/路由码；仅发送 {} 与 {"probe":1} 两种不触达数据库的请求体，以 401→400(phone is required) 证明门禁移除
 docs/ | active | 交付文档包 DOC-PKG-001 rev 14（技术文档角色；按版本化的用户/安装/调试/配置/维护手册）
 docs/01_产品说明与版本变更.md | active | 产品说明 rev 14：系统链路、8 项需求落地、判定规则（含 T=0）、时间语义、交付物（固件 FD-002r8 + Android AB-003）、已验证/未验证与整体验收状态
 docs/02_传感器固件安装与烧录.md | active | 传感器固件安装：发布包 MD5/成员校验、CW-DAPLink 与工程保存配置、mdk_build/mdk_flash 步骤、Verify OK 与上电五行核对、故障处理、升级回退与禁止事项（FW-REL-001 rev 3、EV-040/039）
@@ -866,6 +872,32 @@ evidence/e2e_p0/devops_8883_cert_20261125/DEPLOYMENT_EVIDENCE.md | active | 部�
 evidence/e2e_p0/devops_8883_cert_20261125/ca_signing_capability.txt | active | 原 CA 能否签发核查：App 信任锚/服务器 cacert/工程 rootCA.crt DER 摘要一致、服务器无 CA 私钥、操作主机私钥可用；结论为无需更换 App 信任锚
 evidence/e2e_p0/devops_8883_cert_20261125/deploy_state_probe.py | active | 可复跑只读部署状态核对脚本（SSH 连接信息取自项目资料、限时只读、输出脱敏）
 evidence/e2e_p0/devops_8883_cert_20261125/mqtt_hostname_probe.py | active | 可复跑 MQTT 层主机名校验探测脚本（故意无效凭据，不发布/订阅业务数据）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/ | active | 平台上传受理条件只读核查目录（重试中断的检查）：服务/对象身份、处理器结构、脱敏复查与补丁自测；本轮未做任何平台变更
+evidence/e2e_p0/devops_platform_upload_contract_20261125/01_platform_upload_contract_state.txt | active | 只读原始输出：单元/启动时间/PID、/root/abr.py 摘要与 inode、处理器摘录、令牌元数据、路由码、listener、叶子证书、当日日志（口令/AccessKey/令牌值已脱敏）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/02_handler_structure_map.txt | active | 只读结构图：路由/函数/请求头检查/401 分支行号（值脱敏）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/03_evidence_redaction_check.txt | active | 证据脱敏复查结果（仅替换值、保留结构）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/04_readonly_findings.md | active | 只读核查小结：与上游归因的一致性、安全影响、未执行项与文件说明
+evidence/e2e_p0/devops_platform_upload_contract_20261125/05_patch_selftest.txt | active | 补丁离线自测：dry-run/apply/幂等/语法/删除完整性/漂移与结构门禁，OVERALL=PASS
+evidence/e2e_p0/devops_platform_upload_contract_20261125/06_service_port_recheck.txt | active | 端口可达性复查（仅 TCP connect）：1883/8883/8083/8084/18083/5000/3306 全 OPEN，用于说明本次核查时服务面未变化
+evidence/e2e_p0/devops_platform_upload_contract_20261125/07_apply_dryrun.log | active | 变更前 dry-run 输出：基线 401 复核、4 行结构计数、254→250、声明不落盘变更
+evidence/e2e_p0/devops_platform_upload_contract_20261125/08_apply_execution.log | active | 实际执行输出：备份 sha256、RESULT=PATCHED removed=4、重启后 400 phone is required、8883 serial/SAN 回归
+evidence/e2e_p0/devops_platform_upload_contract_20261125/09_postfix_state.txt | active | 变更后状态：单元/文件摘要/处理器行号结构/端口/EMQX/叶子证书/上传日志窗口
+evidence/e2e_p0/devops_platform_upload_contract_20261125/10_apply_diff.txt | active | 变更前后结构差异（仅 4 行删除：注释、UPLOAD_TOKEN 常量、门禁 if/return；令牌值已脱敏）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/11_external_postfix_probe.txt | active | 公网侧核验：POST {"probe":1}→400 phone is required（原 401）、端口 7/7 OPEN、8883 以 App 信任锚 jd-ca.crt 链校验通过、错误主机名被拒
+evidence/e2e_p0/devops_platform_upload_contract_20261125/12_artefact_check.txt | active | 残留物与工作目录核对（py_compile 残留、/root/rd_upload_contract_* 内容、单元计数）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/13_cleanup.txt | active | 清理记录：仅删除本轮 py_compile 残留 abr_patch_*.pyc，既有 abr.cpython-312.pyc 保留
+evidence/e2e_p0/devops_platform_upload_contract_20261125/14_impact_scope_and_final_state.txt | active | 影响面与最终状态：/root 下无其他脚本引用 X-Upload-Token、备份/现文件摘要、单元 active/enabled
+evidence/e2e_p0/devops_platform_upload_contract_20261125/15_apply_record.md | active | 修复执行记录：授权链（用户选择方案 A）、变更前后身份、4 行差异、核验矩阵、回退与残留风险、交软件测试复测要求
+evidence/e2e_p0/devops_platform_upload_contract_20261125/apply_driver.py | active | 可复跑执行驱动：SFTP 上传脚本并远程执行，凭据不落盘不回显，输出脱敏
+evidence/e2e_p0/devops_platform_upload_contract_20261125/artefact_check.py | active | 残留物/单元/日志只读核对脚本（可复跑）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/cleanup_pycache.py | active | 只删除本轮 py_compile 残留的可复跑清理脚本（不动既有 abr.cpython-312.pyc）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/external_postfix_probe.py | active | 可复跑公网探针（不触发数据库写入）+ 8883 链校验与错误主机名负例
+evidence/e2e_p0/devops_platform_upload_contract_20261125/handler_structure_probe.py | active | 可复跑只读结构探针（令牌/凭据值不输出）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/impact_scope_check.py | active | 可复跑影响面/最终状态只读检查（本机其他客户端是否依赖被移除的请求头）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/patch_selftest.py | active | 补丁自测脚本（合成 fixture，无平台访问）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/platform_upload_contract_probe.py | active | 可复跑只读探针：SSH 限时、无 sudo、无写入、无数据库、无 POST
+evidence/e2e_p0/devops_platform_upload_contract_20261125/port_recheck.py | active | 可复跑端口复查脚本（无协议负载、无认证）
+evidence/e2e_p0/devops_platform_upload_contract_20261125/scrub_evidence.py | active | 证据脱敏复查脚本（替换口令/AccessKey/令牌值，保留结构）
 evidence/e2e_p0/devops_reliability_8883_20261125/01_platform_reliability_window.txt | active | 平台只读可靠性窗口原始输出：服务/NRestarts/内存/负载、listener 计数器、会话、5 次握手抽样、变更前后日志窗口计数
 evidence/e2e_p0/devops_reliability_8883_20261125/02_auth_rejection_rate.txt | active | 8883 认证拒绝率与 broker 日志原文：75 秒建连采样、not_authorized 增量、android_client 认证失败行、认证后端配置
 evidence/e2e_p0/devops_reliability_8883_20261125/03_alarms_and_log_retention.txt | active | listener 完整块、alarms 命令可用性、EMQX 日志级别/轮转、主机运行服务清单（判断监控覆盖）

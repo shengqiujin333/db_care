@@ -1,0 +1,51 @@
+﻿# read-only structural map of the deployed upload handler
+mode=READ_ONLY; forbidden=write,restart,deploy,secret-output
+
+total_lines=254
+  20| # 浼犳劅鍣ㄦ暟鎹笂浼犲叡浜瘑閽?App 闇€鍦ㄨ姹傚ご鎼哄甫 X-Upload-Token)
+  21| UPLOAD_TOKEN = "<token-or-digest-redacted>"
+  32| def generate_code():
+  37|     def create_client() -> Dysmsapi20170525Client:
+  46|     def send_verification_code(phone_number: str, code: str) -> bool:
+  61| def hash_password(password):
+  64| @app.route('/sendVerificationCode', methods=['POST'])
+  65| def send_verification_code():
+  70|         return jsonify({"error":"No json data"}),400
+  75|         return jsonify({"error": "Phone number is required"}), 400 
+  79|         return jsonify("error","cannot send code,api error"),400
+  83|     return jsonify({"message": "Verification code sent"}), 200
+  85| @app.route('/verifyCode', methods=['POST'])
+  86| def verify_code():
+  91|         return jsonify({"error":"phone number not found"}),404
+  94|         return jsonify({"error":"verification code expired"}),400
+  97|         return jsonify({"message":"verification successful"}),200
+  99|         return jsonify({"error":"invalid verification code"}),400
+ 102| @app.route('/register', methods=['POST'])
+ 103| def register():
+ 121|             return jsonify({"message": "Password updated successfully"}), 200
+ 127|             return jsonify({"message": "User registered successfully"}), 200
+ 130|         return jsonify({"message": "Registration failed"}), 500
+ 135| @app.route('/login', methods=['POST'])
+ 136| def login():
+ 151|             return jsonify({"message": "Login successful", "token": "some-jwt-token"}), 200
+ 153|             return jsonify({"message": "Invalid credentials"}), 400
+ 159| @app.route('/setmac', methods=['POST'])
+ 160| def set_mac():
+ 166|         return jsonify({"error": "Phone number and MAC address are required"}), 400
+ 177|         return jsonify({"error": "Phone number not found"}), 404
+ 189|             return jsonify({"message": "MAC address set successfully"}), 200
+ 193|             return jsonify({"message":"mac address is already set with current phone"}),200
+ 198|     return jsonify({"error": "All MAC fields are occupied"}), 400
+ 201| @app.route('/upload_data', methods=['POST'])
+ 202| def upload_data():
+ 210|         return jsonify({"error": "No json data"}), 400
+ 212|     if request.headers.get('X-Upload-Token') != UPLOAD_TOKEN:
+ 213|         return jsonify({"error": "unauthorized"}), 401
+ 218|         return jsonify({"error": "phone is required"}), 400
+ 220|         return jsonify({"error": "readings is required"}), 400
+ 242|         return jsonify({"message": "ok", "inserted": inserted}), 200
+ 246|         return jsonify({"message": "upload failed"}), 500
+--- count header-name literals ---
+lines_with_header_literal=2
+lines_with_token_const=2 (definition line 21, gate line 212)
+

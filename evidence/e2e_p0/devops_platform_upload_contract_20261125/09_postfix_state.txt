@@ -1,0 +1,105 @@
+## post-fix verify rc=0
+== unit ==
+unit_active=active pid=312368 nrestarts=0 started=Wed 2026-11-25 21:59:02 CST
+  OK   unit active (active)
+== route shape ==
+  OK   GET /upload_data (405)
+  OK   OPTIONS /upload_data (200)
+  OK   GET /login (regression) (405)
+== body validation unchanged (no DB path) ==
+  empty_json -> 400 {"error":"No json data"}
+
+  OK   empty json status (400)
+== acceptance gate probe (payload cannot reach mysql.connect) ==
+  probe_json -> 400 {"error":"phone is required"}
+
+  OK   gate removed (reaches body validation) (400)
+  OK   body advanced to phone validation (no 401, no DB write)
+== recent service log ==
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: Press CTRL+C to quit
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "OPTIONS /upload_data HTTP/1.1" 200 -
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "GET /upload_data HTTP/1.1" 405 -
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "OPTIONS /upload_data HTTP/1.1" 200 -
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "GET /login HTTP/1.1" 405 -
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+  2026-11-25T21:59:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+  2026-11-25T21:59:20+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "GET /upload_data HTTP/1.1" 405 -
+  2026-11-25T21:59:20+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "OPTIONS /upload_data HTTP/1.1" 200 -
+  2026-11-25T21:59:20+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "GET /login HTTP/1.1" 405 -
+  2026-11-25T21:59:20+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "POST /upload_data HTTP/1.1" 400 -
+  2026-11-25T21:59:20+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "POST /upload_data HTTP/1.1" 400 -
+VERDICT=PASS phase=post-fix
+======================================================================
+## unit (rc=0)
+0
+Wed 2026-11-25 21:59:02 CST
+312368
+active
+running
+enabled
+======================================================================
+## deployed_object (rc=0)
+path=/root/abr.py size=8688 mode=644 uid=0 gid=0 inode=1054060 mtime=2026-11-25 21:59:02.622930574 +0800
+a062b05f524dc8f6bce596e4571d339f697ef909b318503ad418ee0add24017c  /root/abr.py
+250 /root/abr.py
+0
+-rw-r--r--  1 root root     8416 Nov 21  2025 abr_20241221.py
+-rw-r--r--  1 root root     7048 Dec 21  2024 abr_bkp.py
+-rw-r--r--  1 root root     8688 Nov 25 21:59 abr.py
+-rw-r--r--  1 root root     7048 Sep 26 08:57 abr.py.bak_20260926
+-rw-------  1 root root     8949 Oct 22 19:31 abr.py.bak_20261125T135902Z
+======================================================================
+## handler_shape (rc=0)
+65|     data = request.get_json()
+67|         print("No json data received")
+68|         return jsonify({"error":"No json data"}),400
+85|     data = request.get_json()
+102|     conn = mysql.connect()
+105|     data = request.get_json()
+135|     conn = mysql.connect()
+138|         data = request.get_json()
+159|     data = request.get_json()
+167|     conn = mysql.connect()
+200| def upload_data():
+206|     data = request.get_json()
+208|         return jsonify({"error": "No json data"}), 400
+211|     phone = data.get('phone')
+212|     readings = data.get('readings')
+218|     conn = mysql.connect()
+======================================================================
+## ports (rc=0)
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+======================================================================
+## emqx (rc=0)
+active
+  running         : true
+ssl:default
+  running         : true
+  running         : true
+  running         : true
+======================================================================
+## tls_leaf (rc=0)
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+notAfter=Nov 24 02:55:16 2028 GMT
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+======================================================================
+## upload_log_window (rc=0)
+Nov 25 16:27:17 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:27:17] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 16:28:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:28:57] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 16:28:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:28:57] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 16:38:31 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:38:31] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:58:57 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:58:57] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:02 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 21:59:02] "POST /upload_data HTTP/1.1" 401 -
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:03 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:03] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:20 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 21:59:20 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [25/Nov/2026 21:59:20] "POST /upload_data HTTP/1.1" 400 -
+======================================================================
+## backups (rc=0)
+-rw-r--r--  1 root root     7048 Sep 26 08:57 abr.py.bak_20260926
+-rw-------  1 root root     8949 Oct 22 19:31 abr.py.bak_20261125T135902Z

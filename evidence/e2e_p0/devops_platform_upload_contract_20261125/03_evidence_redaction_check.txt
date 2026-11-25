@@ -1,0 +1,20 @@
+# 证据脱敏复查（01/02 只读输出）
+
+pass_1_2026-11-25T10:20Z：
+  01_platform_upload_contract_state.txt  replaced=[1, 0, 1, 1]
+    说明：systemd `Environment=` 行含服务单元 AccessKey 变量值 → 已替换为 <credential-redacted>；
+          另有 1 处 48 位十六进制上传共享令牌值 → 已替换；`LTAI…` AccessKey ID → 已替换。
+  02_handler_structure_map.txt           replaced=[0, 0, 1, 0]
+    说明：`UPLOAD_TOKEN = "…"` 字面量 → 已替换为 <token-value-redacted>；行号/长度/结构保留。
+  处理方式：只替换值，保留变量名、行号与结构，便于复核事实；脚本见 scrub_evidence.py。
+
+pass_2（校验模式，同脚本再次执行）：
+  01 replaced=[0,0,0] residual=none
+  02 replaced=[0,0,0] residual=none
+  结论：两个输出文件中不再存在口令、AccessKey、48 位令牌字面量。
+
+其它说明：
+  - `deploy/platform_upload_contract/container.yaml` 与 `patch_upload_gate.py` 中出现的一处 64 位十六进制
+    是 `/root/abr.py` 的 sha256 摘要（用于漂移判定），不是凭据。
+  - `05_patch_selftest.txt` 中的摘要是合成 fixture 的计算结果。
+  - 令牌值、SSH 口令、数据库口令、AccessKey 均未写入任何交付文件。

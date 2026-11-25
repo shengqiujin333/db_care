@@ -1,0 +1,19 @@
+## structural diff before->after (rc=0)
+--- abr.py.before
++++ abr.py.after
+@@ -18,6 +18,4 @@
+ verification_codes = {}
+ 
+-# 传感器数据上传共享密钥(App 需在请求头携带 X-Upload-Token)
+-UPLOAD_TOKEN = "<token-value-redacted>"
+ 
+ app.config['MYSQL_DATABASE_USER'] = 'bwadmin'
+@@ -210,6 +208,4 @@
+         return jsonify({"error": "No json data"}), 400
+ 
+-    if request.headers.get('X-Upload-Token') != UPLOAD_TOKEN:
+-        return jsonify({"error": "unauthorized"}), 401
+ 
+     phone = data.get('phone')
+
+lines_before=254 lines_after=250

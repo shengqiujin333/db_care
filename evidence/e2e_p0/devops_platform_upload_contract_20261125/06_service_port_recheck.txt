@@ -1,0 +1,10 @@
+# platform TCP reachability recheck (connect only, no protocol payload)
+started_utc=2026-11-25T10:23:33Z host=8.140.23.253
+1883  MQTT tcp   OPEN                   1 ms
+8883  MQTT TLS   OPEN                   1 ms
+8083  WS         OPEN                   26 ms
+8084  WSS        OPEN                   1 ms
+18083 dashboard  OPEN                   15 ms
+5000  flask      OPEN                   15 ms
+3306  mysql      OPEN                   1 ms
+open=7/7

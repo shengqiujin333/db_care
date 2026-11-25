@@ -1,0 +1,198 @@
+# 平台 /upload_data 上传受理条件对齐 —— 基础设施交付清单（ContainerArtifact 入口）
+#
+# 本文件是本次基础设施交付的入口：说明目标对象、已核实事实、修复方案、已制作配置、
+# 实际执行结果、验收判据、回退方式与交接事项。同目录其余文件均由本文件引用。
+# 本文件不包含、也不复制任何口令、AccessKey、数据库密码或上传共享令牌值。
+# 状态区分：①已制作配置 ②已执行变更（本次已执行）③尚未执行的验证（App 真实上传/落库回读）。
+
+kind: existing-service-upload-acceptance-alignment
+version: 2
+owner_role: devops_engineer
+updated_at: "2026-11-25T14:05:00Z"
+change_status: APPLIED_AND_VERIFIED_SERVER_SIDE
+
+target:
+  resource: existing_service
+  host: 8.140.23.253
+  hostname: iZ2zeih0gmrk47og5r4z7sZ
+  service: "user_script.service (Flask, 0.0.0.0:5000, ExecStart=/root/venv/bin/python /root/abr.py)"
+  deployed_object: /root/abr.py
+  unchanged_scope:
+    - "EMQX 8883/1883/8083/8084/18083 与其证书（本次未触碰；叶子 serial 77ADCFD9…B83、SAN 含 8.140.23.253，用 App 信任锚实握手校验 OK）"
+    - "MySQL 3306 与 bwusernamebase 数据（本次未连接、未迁移、未清空、未写入）"
+    - "/register、/login、/sendVerificationCode、/verifyCode、/setmac 的语义"
+    - "App、网关、传感器固件与设备身份（未改 App、未重装 APK）"
+
+finding:
+  summary: >-
+    平台 `POST /upload_data` 在进入请求体校验和数据库写入之前，要求请求头
+    `X-Upload-Token` 等于服务端硬编码常量；App 按已批准接口契约只发送
+    `Content-Type: application/json`，因此所有真实上传都在该分支被 401 拒绝。
+  mechanism:
+    - "abr.py:212 `if request.headers.get('X-Upload-Token') != UPLOAD_TOKEN: return 401`"
+    - "UPLOAD_TOKEN 定义于 abr.py:21，为字面量常量（48 字符），非环境变量；值不复制到本交付"
+    - "该检查位于 `data.get('phone')` / `readings` 校验与 `mysql.connect()` 之前"
+  contract_conflict:
+    - "已批准契约 IC-002 v4.0 §8：/upload_data 不增加认证头、token 用法、响应字段或表结构"
+    - "服务器迁移记录 §八：请求体仅 phone/mac/readings；2026-09-26 初始验证为直接 POST 成功"
+    - "/root/abr.py.bak_20260926（7048 B，2026-09-26）不含该常量与该检查；变更前对象 8949 B、2026-10-22 19:31:04"
+  impact:
+    - "真实 App 上传 2 次、同身份直连 1 次、未注册身份 1 次全部 401；空 JSON 为 400（与检查顺序一致）"
+    - "401 在任何 sensor_data 写入之前返回，因此没有可回读的受理行，安卓上传与持久化回读不可达"
+    - "E2E-JOINT-P1 平台受理/回读段被阻断；CERT8883-UPLOAD-04 与 FINAL-05 不能判通过"
+  security_note: >-
+    移除门禁后 /upload_data 回到契约声明的无认证状态（5000 端口对公网开放），
+    任何可达客户端都能向 sensor_data 写行。该取舍已由用户在方案选择中确认（见 authorization），
+    残留的限流/防滥用措施尚未实现，需另行决策。
+
+authorization:
+  status: GRANTED_BY_USER_OPTION_A
+  decision_owner: "用户（生产服务与安全策略决策人）"
+  basis: >-
+    2026-11-25 本能力提出 A/B/C 方案并请求授权；用户回复“选择A”，即授权移除
+    `X-Upload-Token` 门禁、保留请求体校验、不改 App 与 APK 身份，修复后继续复测上传。
+  granted_scope:
+    - "删除 /root/abr.py 中 4 行（注释、常量、if 判断、return 401）"
+    - "重启 user_script.service（5000 端口数秒中断）"
+  not_granted_and_not_done:
+    - "数据库直连或直接写 sensor_data"
+    - "其他 listener / EMQX 证书 / 配置文件变更"
+    - "App 修改、APK 重建与重装"
+    - "限流/WAF/新鉴权机制的实现"
+  maintenance_window: >-
+    用户未指定具体窗口；执行时观测到 16:38 之后无真实上传请求，中断为一次服务重启，
+    `OPTIONS /upload_data` 在同秒内恢复 200。
+
+execution_2026_11_25T13_59Z:
+  driver: "evidence/e2e_p0/devops_platform_upload_contract_20261125/apply_driver.py（SFTP 上传脚本 + 远程执行，密码不落盘、不回显）"
+  remote_executor: "/root/rd_upload_contract_20261125T135855Z/apply_remote.sh --confirm（dry-run → 基线核验 → 备份 → 补丁 → 重启 → 后置核验 → 失败自动回退）"
+  before:
+    sha256: "534dd40aac40c00597b06710069cbcc70533650e01318e0637cd924851740c63"
+    size: 8949
+    lines: 254
+    inode: 1088447
+    mtime: "2026-10-22 19:31:04 +0800"
+    unit: "active/running PID 214002 NRestarts=0 started 2026-11-15 06:42:51 CST"
+    baseline_behaviour: "POST {\"probe\":1} -> 401 unauthorized；POST {} -> 400 No json data；GET -> 405"
+  change:
+    result: "RESULT=PATCHED removed=4 lines_after=250"
+    backup: "/root/abr.py.bak_20261125T135902Z (600 root:root, sha256 534dd40a…0c63)"
+    restarted_at: "2026-11-25 21:59:02 CST"
+  after:
+    sha256: "a062b05f524dc8f6bce596e4571d339f697ef909b318503ad418ee0add24017c"
+    size: 8688
+    lines: 250
+    inode: 1054060
+    unit: "active/running PID 312368 NRestarts=0 started 2026-11-25 21:59:02 CST"
+    handler_shape: "200 def upload_data / 206 get_json / 208 400 No json data / 211 phone / 212 readings / 218 mysql.connect（门禁已不存在，校验与写库顺序未变）"
+  diff_scope: "仅 4 行删除（1 注释 + 1 常量 + if/return），其余字节不变（10_apply_diff.txt，令牌值脱敏）"
+  cleanup: "补丁 py_compile 残留 /root/__pycache__/abr_patch_*.pyc 已删除；既有 abr.cpython-312.pyc（2026-10-22）保留"
+
+verified_state:
+  server_side:
+    - "服务器本机 POST {\"probe\":1} -> 400 phone is required（原 401）；POST {} -> 400 No json data"
+    - "GET /upload_data 405、OPTIONS 200、GET /login 405（路由与回归面不变）"
+    - "探针在 phone 校验处返回，未进入 mysql.connect()，未产生任何业务写入"
+    - "VERDICT=PASS phase=post-fix（09_postfix_state.txt）"
+  public_interface:
+    - "公网 http://8.140.23.253:5000 POST {\"probe\":1} -> 400 phone is required；携任意 X-Upload-Token 亦然（门禁已去除）"
+    - "公网 POST {} -> 400 No json data；GET /upload_data -> 405"
+    - "1883/8883/8083/8084/18083/5000/3306 全部 TCP 可达（11_external_postfix_probe.txt）"
+  unchanged_dimensions:
+    - "8883：TLSv1.3 握手 OK，链以 App 信任锚 jd-ca.crt 校验通过，CN=8.140.23.253，SAN 含 8.140.23.253，serial …B83，notAfter 2028-11-24；错误主机名仍被拒（verify_code=62）"
+    - "EMQX ssl:default running=true；其他端口与 Flask 路由无回归"
+    - "其他本机客户端：/root 下除备份与本轮补丁脚本外无脚本引用 X-Upload-Token"
+
+acceptance_criteria:
+  satisfied_server_side:
+    - "补丁结果 RESULT=PATCHED removed=4；行数 254→250；前后 sha256 已记录"
+    - "user_script.service active、OPTIONS /upload_data=200"
+    - "POST {\"probe\":1} 由 401 变为 400 phone is required（门禁移除、请求体校验保留、未触达数据库）"
+    - "POST {} 仍 400 No json data；GET /upload_data 仍 405；/login 仍 405"
+    - "8883 叶子 serial/SAN/链与变更前一致（本次未影响）"
+  downstream_required_not_yet_met:
+    - "同一 App（SHA-256 80232c50…3de4b）、同一手机 12f046690506 的真实上传返回 2xx，待发箱被清空/减少"
+    - "在获准的只读入口按 (phone, dev_id, time) 回读 temperature/humidity 数值一致"
+    - "同一 (dev_id,time) 重放不新增行（INSERT IGNORE 幂等）"
+  explicitly_not_acceptance:
+    - "HTTP 2xx 不等于持久化通过；没有回读证据不得判 UPLOAD-04 通过"
+    - "回退后回到 401 属已知失败状态，不得计为健康"
+    - "本轮未执行真实 App 上传，故不声称安卓到平台业务闭环已通过"
+
+files:
+  entry: deploy/platform_upload_contract/container.yaml
+  config_files:
+    - path: deploy/platform_upload_contract/patch_upload_gate.py
+      purpose: 服务器侧最小补丁：基线 sha256 门禁 → 精确识别 4 行 → 服务解释器 py_compile → 原子替换；幂等（已改报 ALREADY_APPLIED），不打印令牌值。
+    - path: deploy/platform_upload_contract/verify_upload_contract.sh
+      purpose: 服务器侧核验：单元/路由码；只发送 `{}` 与 `{"probe":1}`（均不会进入 mysql.connect()），用 401→400(phone is required) 证明门禁移除。
+    - path: deploy/platform_upload_contract/apply_remote.sh
+      purpose: 服务器侧执行器（默认 DRY RUN，--confirm 才变更）：前置检查 → 缺陷基线核验 → 备份(600) → 补丁 → 重启 → 后置核验 → 失败自动回退。
+    - path: deploy/platform_upload_contract/rollback_remote.sh
+      purpose: 从备份恢复 /root/abr.py 并重启，复核回到 401 已知失败基线（不得记为健康）。
+  evidence:
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/15_apply_record.md
+      purpose: 本轮执行记录（授权链、前后对象身份、变更内容、核验矩阵、回退、残留风险）。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/07_apply_dryrun.log
+      purpose: dry-run 输出（基线 401 复核、结构计数、无变更声明）。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/08_apply_execution.log
+      purpose: 实际执行输出（备份、PATCHED、重启、后置 PASS、8883 回归）。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/09_postfix_state.txt
+      purpose: 变更后状态（单元/文件摘要/处理器结构/端口/EMQX/证书/日志窗口）。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/10_apply_diff.txt
+      purpose: 变更前后结构差异（仅 4 行删除，令牌值已脱敏）。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/11_external_postfix_probe.txt
+      purpose: 公网侧核验（400 phone is required、端口、8883 链校验与负例）。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/12_artefact_check.txt
+      purpose: 残留物与工作目录核对。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/13_cleanup.txt
+      purpose: py_compile 残留清理记录。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/14_impact_scope_and_final_state.txt
+      purpose: 影响面（本机无其他客户端依赖该头）与最终摘要/单元状态。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/apply_driver.py
+      purpose: 可复跑执行驱动（SFTP + 远程执行，凭据不落盘不回显）。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/external_postfix_probe.py
+      purpose: 可复跑公网探针（不触发数据库写入）+ 8883 链/负例校验。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/impact_scope_check.py
+      purpose: 可复跑影响面/最终状态只读检查。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/cleanup_pycache.py
+      purpose: 仅删除本轮 py_compile 残留的可复跑清理脚本。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/artefact_check.py
+      purpose: 残留物/单元/日志只读核对脚本。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/04_readonly_findings.md
+      purpose: 变更前只读核查小结（历史，描述变更前状态）。
+    - path: evidence/e2e_p0/devops_platform_upload_contract_20261125/05_patch_selftest.txt
+      purpose: 补丁离线自测（dry-run/apply/幂等/语法/漂移与结构门禁，OVERALL=PASS）。
+
+procedure:
+  rerun_verify: |
+    C:/Users/kason/anaconda3/python.exe evidence/e2e_p0/devops_platform_upload_contract_20261125/external_postfix_probe.py
+  server_side_verify: |
+    bash /root/rd_upload_contract_20261125T135855Z/verify_upload_contract.sh --phase post-fix
+  rollback: |
+    bash /root/rd_upload_contract_20261125T135855Z/rollback_remote.sh --backup /root/abr.py.bak_20261125T135902Z
+
+rollback:
+  point: "/root/abr.py.bak_20261125T135902Z（600 root:root，sha256 534dd40a…0c63 = 变更前逐字节一致）"
+  method: "rollback_remote.sh 恢复文件并重启，复核回到 401 门禁基线"
+  expected_after_rollback: "App 上传再次 401；属已知失败，不得记为通过"
+  drill_status: NOT_DRILLED_IN_PRODUCTION
+  drill_rationale: >-
+    备份摘要与变更前逐字节一致、回退脚本逻辑已离线自测、执行器在后置核验失败时会自动回退；
+    生产演练需要再中断 5000 两次，未获该额外窗口授权。
+
+residual_risk:
+  - "安全：/upload_data 恢复为无认证写入且 5000 对公网开放，任何可达客户端可写 sensor_data；建议后续决策限流/来源白名单/正式鉴权（未实施）"
+  - "备份 /root/abr.py.bak_20261125T135902Z 仍包含被移除的共享令牌值（600 仅 root 可读），如需彻底移除需另行授权删除备份"
+  - "真实上传与落库回读未验证，UPLOAD-04/P1/FINAL-05 仍不能判通过"
+  - "未设立上传量监控/告警，异常灌入不会被自动发现"
+
+handoff:
+  to: software_tester
+  requirement: >-
+    用同一 APK（SHA-256 80232c50…3de4b）与同一手机 12f046690506 执行真实上传，
+    确认 POST /upload_data 返回 2xx、App 待发箱对应条目被 ack 清空；
+    并在获准的只读入口按 (phone, dev_id, time) 回读 temperature/humidity 与本地读数一致，
+    同一 (dev_id,time) 重放不新增行。若仍非 2xx，保留请求时间/响应码/响应体与平台日志窗口交回本能力。
+  also_required_authorization: "sensor_data 持久化回读需要只读查询授权；本轮未取得、未执行"
+  not_in_this_capability: "App 上传复测、端到端 P1 判定、限流/鉴权方案实施"

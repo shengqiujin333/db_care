@@ -1,0 +1,31 @@
+## pycache (rc=0)
+total 40
+drwxr-xr-x  2 root root  4096 Nov 25 21:59 .
+drwx------ 13 root root  4096 Nov 25 21:59 ..
+-rw-r--r--  1 root root 13251 Oct 22 19:31 abr.cpython-312.pyc
+-rw-r--r--  1 root root 12992 Nov 25 21:59 abr_patch_gqo8a3lg.cpython-312.pyc
+
+## workdir (rc=0)
+total 44
+drwx------  2 root root 4096 Nov 25 21:59 .
+drwx------ 13 root root 4096 Nov 25 21:59 ..
+-rw-r--r--  1 root root 7465 Nov 25 21:59 apply.log
+-rwxr-xr-x  1 root root 4691 Nov 25 21:58 apply_remote.sh
+-rw-r--r--  1 root root  100 Nov 25 21:59 BACKUP_SHA256SUMS.txt
+-rwxr-xr-x  1 root root 4314 Nov 25 21:58 patch_upload_gate.py
+-rwxr-xr-x  1 root root 1641 Nov 25 21:58 rollback_remote.sh
+-rwxr-xr-x  1 root root 3103 Nov 25 21:58 verify_upload_contract.sh
+
+## unit (rc=0)
+NRestarts=0
+ExecMainPID=312368
+ActiveState=active
+SubState=running
+
+## tail (rc=0)
+Nov 25 22:00:13 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:13] "GET /upload_data HTTP/1.1" 405 -
+Nov 25 22:00:23 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:23] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:00:32 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:32] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:00:41 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:41] "POST /upload_data HTTP/1.1" 400 -
+Nov 25 22:00:50 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [25/Nov/2026 22:00:50] "GET /login HTTP/1.1" 405 -
+

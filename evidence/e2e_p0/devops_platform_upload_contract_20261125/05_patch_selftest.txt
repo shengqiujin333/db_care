@@ -1,0 +1,12 @@
+# offline self-test of the upload-gate patch (synthetic fixture, no platform access)
+fixture=<temp dir, synthetic abr.py shape>
+PASS | dry_run_reports_4_removals | RESULT=DRY_RUN_READY removed=4 lines_after=28 sha256=f984bca52b896dbe791fda148654d3f8e6614ee57901a09dd1cfc3a592dd4538
+PASS | apply_patched | RESULT=PATCHED removed=4 lines_after=28 sha256_before=f984bca52b896dbe791fda148654d3f8e6614ee57901a09dd1cfc3a592dd4538 sha256_after=b7b45772f80967eeb1ff8f0115cf336b677c518dd825905b4a40aa0d9abf93b8
+PASS | no_token_reference_left | residual check
+PASS | body_validation_kept | gate removal did not disturb validation
+PASS | line_delta_4 | 32 -> 28
+PASS | syntax_ok | 
+PASS | idempotent_second_run | RESULT=ALREADY_APPLIED sha256=b7b45772f80967eeb1ff8f0115cf336b677c518dd825905b4a40aa0d9abf93b8
+PASS | drift_guard | RESULT=ABORT_SHA_MISMATCH expected=f984bca52b896dbe791fda148654d3f8e6614ee57901a09dd1cfc3a592dd4538 actual=d2aa0ff5b8b246435d8490a12e477ca81ba4ef89707a8e6015bca6a415390e10
+PASS | structure_guard | RESULT=ABORT_STRUCTURE gate=0 const=1 comment=1
+OVERALL=PASS

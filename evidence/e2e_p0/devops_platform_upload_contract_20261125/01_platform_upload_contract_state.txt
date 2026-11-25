@@ -1,0 +1,262 @@
+# read-only platform inspection for POST /upload_data deployment object
+started_utc=2026-11-25T10:13:47Z
+mode=READ_ONLY
+forbidden=write,sudo,restart,deploy,database,post-request,secret-output
+
+======================================================================
+## identity
+2026-11-25T10:13:47Z
+2026-11-25 18:13:47 CST
+iZ2zeih0gmrk47og5r4z7sZ
+ 18:13:47 up 33 days, 20:34,  1 user,  load average: 0.00, 0.00, 0.00
+
+======================================================================
+## unit_state
+Restart=on-failure
+NRestarts=0
+ExecMainStartTimestamp=Sun 2026-11-15 06:42:51 CST
+ExecMainPID=214002
+ExecStart={ path=/root/venv/bin/python ; argv[]=/root/venv/bin/python /root/abr.py ; ignore_errors=no ; start_time=[Sun 2026-11-15 06:42:51 CST] ; stop_time=[n/a] ; pid=214002 ; code=(null) ; status=0/0 }
+Environment=ALIBABA_CLOUD_ACCESS_KEY_ID=<secret-redacted> ALIBABA_CLOUD_ACCESS_KEY_SECRET=<credential-redacted>
+Id=user_script.service
+Description=user add Python Script
+ActiveState=active
+SubState=running
+FragmentPath=/etc/systemd/system/user_script.service
+DropInPaths=
+
+======================================================================
+## deployed_object
+path=/root/abr.py size=8949 mode=644 uid=0 gid=0 inode=1088447 mtime=2026-10-22 19:31:04.322027530 +0800
+<token-or-digest-redacted>  /root/abr.py
+254 /root/abr.py
+/root/abr.py
+-rw-r--r--  1 root root     8416 Nov 21  2025 abr_20241221.py
+-rw-r--r--  1 root root     7048 Dec 21  2024 abr_bkp.py
+-rw-r--r--  1 root root     8949 Oct 22 19:31 abr.py
+-rw-r--r--  1 root root     7048 Sep 26 08:57 abr.py.bak_20260926
+
+======================================================================
+## handler_excerpt
+201:@app.route('/upload_data', methods=['POST'])
+202:def upload_data():
+203-    """接收 App 上传的传感器温湿度读数,存储到 sensor_data 表。
+204-
+205-    请求体: { "phone": "13...", "mac": "网关MAC", "readings": [
+206-        {"devId":"A1B2C3D4","time":1699999999,"temperature":25.5,"humidity":60.0}, ... ] }
+207-    """
+208-    data = request.get_json()
+209-    if not data:
+210-        return jsonify({"error": "No json data"}), 400
+211-
+212-    if request.headers.get('X-Upload-Token') != UPLOAD_TOKEN:
+213-        return jsonify({"error": "unauthorized"}), 401
+214-
+215-    phone = data.get('phone')
+216-    readings = data.get('readings')
+217-    if not phone:
+218-        return jsonify({"error": "phone is required"}), 400
+219-    if not readings or not isinstance(readings, list) or len(readings) == 0:
+220-        return jsonify({"error": "readings is required"}), 400
+221-
+222-    conn = mysql.connect()
+223-    cursor = conn.cursor()
+224-    try:
+225-        # 幂等写入:同 (dev_id, time) 只存一次
+226-        sql = (
+227-            "INSERT IGNORE INTO sensor_data "
+228-            "(phone, dev_id, time, temperature, humidity) "
+229-            "VALUES (%s, %s, %s, %s, %s)"
+230-        )
+231-        inserted = 0
+232-        for r in readings:
+233-            dev_id = r.get('devId')
+234-            t = r.get('time')
+235-            temp = r.get('temperature')
+236-            humi = r.get('humidity')
+237-            if not dev_id or t is None:
+238-                continue
+239-            cursor.execute(sql, (phone, dev_id, int(t), temp, humi))
+240-            inserted += cursor.rowcount
+241-        conn.commit()
+242-        return jsonify({"message": "ok", "inserted": inserted}), 200
+
+======================================================================
+## token_metadata
+21:UPLOAD_TOKEN = "<token-value-redacted>"
+212:    if request.headers.get('X-Upload-Token') != UPLOAD_TOKEN:
+2
+token_defined=True
+token_len=48
+
+======================================================================
+## route_behaviour
+GET /upload_data -> 405
+OPTIONS /upload_data -> 200
+GET / -> 404
+GET /login -> 405
+
+======================================================================
+## listeners
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess
+
+======================================================================
+## emqx_state
+NRestarts=0
+ExecMainStartTimestamp=Wed 2026-11-25 10:58:15 CST
+ActiveState=active
+SubState=running
+tcp:default
+  listen_on       : 0.0.0.0:1883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : [{tcp_closed,6}]
+ssl:default
+  listen_on       : 0.0.0.0:8883
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : [{not_authorized,314},{ssl_closed,34},{malformed_packet,1},{ssl_upgrade_timeout,1},{einval,23},{ssl_error,14},{bad_username_or_password,5}]
+ws:default
+  listen_on       : 0.0.0.0:8083
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+wss:default
+  listen_on       : 0.0.0.0:8084
+  acceptors       : 16
+  proxy_protocol  : false
+  enbale          : true
+  running         : true
+  current_conn    : 0
+  max_conns       : infinity
+  shutdown_count  : []
+
+======================================================================
+## tls_leaf
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+notBefore=Nov 25 02:55:16 2026 GMT
+notAfter=Nov 24 02:55:16 2028 GMT
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+
+======================================================================
+## journal_today
+2026-11-25T01:24:28+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 59.82.135.19 - - [25/Nov/2026 01:24:28] code 400, message Bad request syntax ("\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03Ü\x10\x80\x8a¶Ð\x83/\x15\x18\x88-¿<\x9cÍcSL®r©\x18[¤ñ¯¹úì¿Â\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À")
+2026-11-25T01:24:28+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 59.82.135.19 - - [25/Nov/2026 01:24:28] "\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03Ü\x10\x80\x8a¶Ð\x83/\x15\x18\x88-¿<\x9cÍcSL®r©\x18[¤ñ¯¹úì¿Â\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À" 400 -
+2026-11-25T01:27:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 59.82.83.179 - - [25/Nov/2026 01:27:03] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03\x8d1ÿp\x10^\x87;Wð*µã@l')
+2026-11-25T01:27:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 59.82.83.179 - - [25/Nov/2026 01:27:03] "\x16\x03\x03\x01\x02\x01\x00\x00þ\x03\x03\x8d1ÿp\x10^\x87;Wð*µã@l ÷4o­?¿À_Aäæ÷ï_ós\x00\x00VÀ,À+À0À/\x00\x9f\x00£\x00\x9e\x00¢À$À(À#À'\x00k\x00j\x00g\x00@À.À2À-À1À&À*À%À)À" 400 -
+2026-11-25T01:27:04+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 85.104.193.187 - - [25/Nov/2026 01:27:04] code 400, message Bad request version ("?,\x95~\x05\x95+¥E\x06ÄÞM|ñ]Tº\x93àî¦\x9e°ÁÜ\x0f{ÒÐW\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ")
+2026-11-25T01:27:04+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 85.104.193.187 - - [25/Nov/2026 01:27:04] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03\x845\x86N\x0cgL\x1e²È\x9fã@§þ\x06'\x83M\x09öÚ\x8b´\x97Çãb\x14p÷\x18 \x1c?,\x95~\x05\x95+¥E\x06ÄÞM|ñ]Tº\x93àî¦\x9e°ÁÜ\x0f{ÒÐW\x00>\x13\x02\x13\x03\x13\x01À,À0\x00\x9fÌ©Ì¨ÌªÀ+À/\x00\x9eÀ$À(\x00kÀ#À'\x00gÀ" 400 -
+2026-11-25T02:14:23+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 02:14:23] "GET /@vite/client HTTP/1.1" 404 -
+2026-11-25T02:14:23+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 02:14:23] "GET /@fs/etc/passwd?raw?? HTTP/1.1" 404 -
+2026-11-25T02:14:23+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 02:14:23] "GET /webpack-dev-server/../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T02:14:23+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 02:14:23] "GET /_nuxt/../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T02:14:23+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 02:14:23] "GET /_next/../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T02:14:23+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 02:14:23] "GET /../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T02:32:08+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 02:32:08] code 400, message Bad request version ('À\x13À')
+2026-11-25T02:32:08+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 02:32:08] "\x16\x03\x01\x05â\x01\x00\x05Þ\x03\x03Ã\x02\x97K\x94\x82À#\x01?ãÉÆ§\x06±ÎJ'\x19$\x85\x8cg8k\x0eËDÙÞþ O\x1dtÏóÈîã&\x18¾\x0c\x8a¹ñvUðØîx¦0'ªÞ©Æï²ßz\x002À+À/À,À0Ì©Ì¨À\x09À\x13À" 400 -
+2026-11-25T02:32:09+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 02:32:09] "GET /health HTTP/1.1" 404 -
+2026-11-25T03:32:06+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 198.235.24.111 - - [25/Nov/2026 03:32:06] "GET / HTTP/1.1" 404 -
+2026-11-25T03:35:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 147.185.132.18 - - [25/Nov/2026 03:35:57] "GET / HTTP/1.0" 404 -
+2026-11-25T04:07:31+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 37.72.140.165 - - [25/Nov/2026 04:07:31] code 400, message Bad request syntax ('\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x03\x00\x00\x00')
+2026-11-25T04:07:31+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 37.72.140.165 - - [25/Nov/2026 04:07:31] "\x03\x00\x00\x13\x0eà\x00\x00\x00\x00\x00\x01\x00\x08\x00\x03\x00\x00\x00" 400 -
+2026-11-25T04:33:14+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:14] "GET / HTTP/1.0" 404 -
+2026-11-25T04:33:27+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:27] "GET / HTTP/1.0" 404 -
+2026-11-25T04:33:27+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:27] "GET /nmaplowercheck1795552407 HTTP/1.1" 404 -
+2026-11-25T04:33:27+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:27] "POST /sdk HTTP/1.1" 404 -
+2026-11-25T04:33:27+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:27] "GET /evox/about HTTP/1.1" 404 -
+2026-11-25T04:33:27+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:27] "GET /HNAP1 HTTP/1.1" 404 -
+2026-11-25T04:33:37+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:37] code 400, message Bad request version ('=8[a¦\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00')
+2026-11-25T04:33:37+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:37] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03ÝÑ°\x9cK\x88\x94Ê\x15\x0bÅ*Òª\\[yøÇÀWgq\x87±c\x1f=8[a¦\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00" 400 -
+2026-11-25T04:33:37+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:37] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03(êjÝíæx/\x13´lí')
+2026-11-25T04:33:37+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:37] "\x16\x03\x01\x02\x00\x01\x00\x01ü\x03\x03(êjÝíæx/\x13´lí\x1eðDTÚáµÉ\x86)ÓJÚ]\x17®n\x80á£\x00\x00Ú\x00\x05\x00\x04\x00\x02\x00\x01\x00\x16\x003\x009\x00:\x00\x18\x005\x00" 400 -
+2026-11-25T04:33:37+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:37] "GET / HTTP/1.0" 404 -
+2026-11-25T04:33:37+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 121.41.166.1 - - [25/Nov/2026 04:33:37] "GET / HTTP/1.1" 404 -
+2026-11-25T04:45:23+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 58.59.233.163 - - [25/Nov/2026 04:45:23] code 400, message Bad request syntax ('\x04\x01\x00PnòD\x04\x00')
+2026-11-25T04:45:23+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 58.59.233.163 - - [25/Nov/2026 04:45:23] "\x04\x01\x00PnòD\x04\x00" 400 -
+2026-11-25T06:13:30+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 06:13:30] code 400, message Bad request version ('À\x13À')
+2026-11-25T06:13:30+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 06:13:30] "\x16\x03\x01\x05â\x01\x00\x05Þ\x03\x03\x91ûËÎÐj[[¿Mò_\x07\x7fqµÓ:Ú¬³Ä\x8d\x09º1:²­[p} \x02_\x8f»½bq¯'\x0c\x8f-þÓ\x88ù\x9eµ÷\x84r`FWîgúÊÐ\x9d¼e\x002À+À/À,À0Ì©Ì¨À\x09À\x13À" 400 -
+2026-11-25T06:13:31+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 06:13:31] "GET /health HTTP/1.1" 404 -
+2026-11-25T08:19:09+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 198.235.24.4 - - [25/Nov/2026 08:19:09] "GET / HTTP/1.1" 404 -
+2026-11-25T08:43:42+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 08:43:42] "GET /@vite/client HTTP/1.1" 404 -
+2026-11-25T08:43:42+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 08:43:42] "GET /@fs/etc/passwd?raw?? HTTP/1.1" 404 -
+2026-11-25T08:43:42+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 08:43:42] "GET /webpack-dev-server/../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T08:43:42+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 08:43:42] "GET /_nuxt/../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T08:43:42+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 08:43:42] "GET /_next/../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T08:43:43+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 08:43:43] "GET /../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T08:57:31+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.209.77 - - [25/Nov/2026 08:57:31] "GET / HTTP/1.1" 404 -
+2026-11-25T08:57:31+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.209.77 - - [25/Nov/2026 08:57:31] "GET /favicon.ico HTTP/1.1" 404 -
+2026-11-25T10:56:19+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 10:56:19] "GET /login HTTP/1.1" 405 -
+2026-11-25T10:58:25+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 10:58:25] "GET /login HTTP/1.1" 405 -
+2026-11-25T11:03:35+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 11:03:35] "GET /login HTTP/1.1" 405 -
+2026-11-25T11:10:12+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 59.82.135.46 - - [25/Nov/2026 11:10:12] "GET / HTTP/1.1" 404 -
+2026-11-25T11:16:18+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 11:16:18] "GET /login HTTP/1.1" 405 -
+2026-11-25T11:16:37+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 11:16:37] "GET /login HTTP/1.1" 405 -
+2026-11-25T11:17:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 11:17:57] "GET /login HTTP/1.1" 405 -
+2026-11-25T12:29:44+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 65.49.1.94 - - [25/Nov/2026 12:29:44] "GET / HTTP/1.1" 404 -
+2026-11-25T12:30:14+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 65.49.1.96 - - [25/Nov/2026 12:30:14] "GET /favicon.ico HTTP/1.1" 404 -
+2026-11-25T14:35:44+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 14:35:44] code 400, message Bad request syntax ('\x16\x03\x01\x05â\x01\x00\x05Þ\x03\x03ô\x95\x16QMé°jà«Vàlom)eM))¬¾¦¦øA')
+2026-11-25T14:35:44+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 14:35:44] "\x16\x03\x01\x05â\x01\x00\x05Þ\x03\x03ô\x95\x16QMé°jà«Vàlom)eM))¬¾¦¦øA" 400 -
+2026-11-25T14:35:45+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 96.126.104.20 - - [25/Nov/2026 14:35:45] "GET /health HTTP/1.1" 404 -
+2026-11-25T14:38:49+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 14:38:49] "GET /login HTTP/1.1" 405 -
+2026-11-25T14:38:49+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 14:38:49] "GET /upload_data HTTP/1.1" 405 -
+2026-11-25T14:54:05+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 14:54:05] "GET / HTTP/1.1" 404 -
+2026-11-25T14:54:05+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 14:54:05] "GET /login HTTP/1.1" 405 -
+2026-11-25T14:54:05+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 14:54:05] "GET /upload_data HTTP/1.1" 405 -
+2026-11-25T15:11:12+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 15:11:12] "GET /@vite/client HTTP/1.1" 404 -
+2026-11-25T15:11:12+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 15:11:12] "GET /@fs/etc/passwd?raw?? HTTP/1.1" 404 -
+2026-11-25T15:11:12+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 15:11:12] "GET /webpack-dev-server/../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T15:11:12+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 15:11:12] "GET /_nuxt/../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T15:11:12+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 15:11:12] "GET /_next/../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T15:11:12+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 47.95.21.105 - - [25/Nov/2026 15:11:12] "GET /../../../../etc/passwd HTTP/1.1" 404 -
+2026-11-25T16:08:19+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:08:19] "GET / HTTP/1.1" 404 -
+2026-11-25T16:08:19+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:08:19] "OPTIONS /register HTTP/1.1" 200 -
+2026-11-25T16:08:38+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: /root/abr.py:104: DeprecationWarning: 'db' is deprecated, use 'database'
+2026-11-25T16:08:38+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]:   conn = mysql.connect()
+2026-11-25T16:08:38+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:08:38] "POST /register HTTP/1.1" 200 -
+2026-11-25T16:09:12+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: /root/abr.py:137: DeprecationWarning: 'db' is deprecated, use 'database'
+2026-11-25T16:09:12+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]:   conn = mysql.connect()
+2026-11-25T16:09:12+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:09:12] "POST /login HTTP/1.1" 200 -
+2026-11-25T16:13:59+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 20.169.55.170 - - [25/Nov/2026 16:13:59] "GET /v2/ HTTP/1.1" 404 -
+2026-11-25T16:15:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:15:57] "POST /login HTTP/1.1" 200 -
+2026-11-25T16:21:22+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: /root/abr.py:169: DeprecationWarning: 'db' is deprecated, use 'database'
+2026-11-25T16:21:22+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]:   conn = mysql.connect()
+2026-11-25T16:21:22+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:21:22] "POST /setmac HTTP/1.1" 200 -
+2026-11-25T16:21:31+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:21:31] "POST /upload_data HTTP/1.1" 401 -
+2026-11-25T16:27:17+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:27:17] "POST /upload_data HTTP/1.1" 401 -
+2026-11-25T16:28:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:28:57] "POST /upload_data HTTP/1.1" 400 -
+2026-11-25T16:28:57+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:28:57] "POST /upload_data HTTP/1.1" 401 -
+2026-11-25T16:38:31+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 27.128.89.184 - - [25/Nov/2026 16:38:31] "POST /upload_data HTTP/1.1" 401 -
+2026-11-25T18:13:48+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 18:13:48] "GET /upload_data HTTP/1.1" 405 -
+2026-11-25T18:13:48+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 18:13:48] "OPTIONS /upload_data HTTP/1.1" 200 -
+2026-11-25T18:13:48+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 18:13:48] "GET / HTTP/1.1" 404 -
+2026-11-25T18:13:48+08:00 iZ2zeih0gmrk47og5r4z7sZ python[214002]: 127.0.0.1 - - [25/Nov/2026 18:13:48] "GET /login HTTP/1.1" 405 -
+
+======================================================================
+## journal_upload_codes
+5
+      5 -
+
+======================================================================
+## cert_files_mtime
+total 20
+drwxr-xr-x 2 emqx emqx 4096 Nov 25 10:59 .
+drwxr-xr-x 3 emqx emqx 4096 Sep 30  2024 ..
+-rw-r--r-- 1 emqx emqx 1514 Oct 13  2024 cacert-613B9023E1E698F0
+-rw-r--r-- 1 emqx emqx 1452 Nov 25 10:58 cert-2D2ADC29A9BE14AA
+-rw------- 1 emqx emqx 1736 Nov 25 10:58 key-6E6F6ED56285A948
+
