@@ -111,6 +111,7 @@ artifacts/health_evidence_reliability_8883.yaml | active | HealthEvidence 指针
 artifacts/interface_contract.md | active | 系统架构：IC-002 v4.0，撤旧1/3强制要求、保留无光判据未决；兼容RF/BLE/平台，明确160B容量与完整读取、占位、观测时间、错误分类及服务闭合条件
 artifacts/monitoring_reliability_8883.yaml | active | MonitoringArtifact 指针：证书变更后可靠性观测与监控方案
 artifacts/software_e2e_plan.md | history | 历史软件端到端测试计划 E2E-SW-004 rev 4.0（AA-005 七项增量；当前 AA-006 阶段不适用，跨链路联调属后续阶段）
+artifacts/software_failure_analysis_cert8883_upload401.md | active | 软件测试：CERT8883-UPLOAD-04 上传 401 失败分析（只读核实部署处理器要求 X-Upload-Token，App 按 IC-002 不发送该头；判定 REPAIR_REQUIRED，对象为平台 /upload_data 受理逻辑；含竞争假设排除、影响范围与复验判据）
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-005 rev 5.0（AA-006 ITEM-001..003 扫描权限自动续跑/BLE 读取终态/报告再生成反馈逐条追踪；宿主机映射矩阵、静态核查、真机 API29 与真实网关 devCount=0 用例、证据边界、人工延期与阶段外项、最终判定规则）
 artifacts/software_test_design_cert8883.md | active | 软件测试：8883 证书与客户端地址不匹配修复测试设计 TD-CERT8883-001 v1.0（原 CA 签发/链/IP SAN/负例、App TLS/CONNACK 真实复验、不受影响路径回归、安卓上传与 P1 四段一致条件、信任锚变更分支、证据/退出准则/NOT EXECUTED；只做设计不执行）
 artifacts/software_test_report_cert8883.md | active | 软件测试：8883 证书修复后独立验证报告（两轮；SRV-01 PASS、CLI-02 TLS 维度 PASS/CONNACK rc=5 认证层另记、REG-03 PASS；UPLOAD-04 第 2 轮用模拟账号真实上传实测平台 401 FAIL、无受理行故持久化回读 NOT EXECUTED；P0 证书维度 PASS、P1 NOT EXECUTED；含竞争假设、证据索引与残留状态披露）
@@ -2009,6 +2010,9 @@ evidence/software_static_check_no_little_endian_parser.py | active | 可复跑�
 evidence/software_static_check_server_migration.py | active | 可复跑静态核查（ITEM-004：服务器常量/旧主机分布/XML 放行/兼容面）
 evidence/software_test.md | active | 软件验证证据 ST-002（Android ITEM-001..014 逐项独立验证/门禁结果与判定）；ST-AA005 原文保留（TEST_FAIL：D-AA005-1）；ST-AA005-R2：D-AA005-1 修复复验与真机 BLE/GATT，结论 TEST_PASS（限定版本/范围）；置底 ST-AA005-R3：当前构建包独立核验（安装校验哈希一致、覆盖升级保留数据、启动/关键路径、257 项+54 静态+12 门禁），结论 TEST_PASS（限定包/安装/启动/回归范围），含 O-PKG-1/2 观察项与跨链路未执行项；末段 ST-ANDROID-RECHECK-20261111 索引指向 D-01..D-04a 修复后真机复验报告（TEST_PASS，限定当前 APK/已执行范围）
 evidence/software_triage.md | active | 负责角色：软件测试。Android 软件失败归因（AA-005 G-6 / D-AA005-1）：401/403 后仅 park 本批、未读取全局阻塞，自动触发仍上传其余到期行；含对象版本、源码机制、独立复现、影响范围、竞争假设与复验目标；结论为需 Android 实现修复
+evidence/software_triage_cert8883_upload401_20261125/01_abr_upload_handler_redacted.txt | active | 只读 SSH 证据：服务单元/部署对象元数据、脱敏的 upload_data 处理器摘录、UPLOAD_TOKEN 元数据（不含值）、2026-09-26 备份对比
+evidence/software_triage_cert8883_upload401_20261125/check_no_secret_leak.py | active | 本地脱敏检查脚本（仅统计候选敏感字面量是否出现在证据文件，不输出值）
+evidence/software_triage_cert8883_upload401_20261125/read_upload_handler_ssh.py | active | 可复跑的只读 SSH 探针（stat/读取部署脚本、输出前脱敏、无写接口/DB/服务变更）
 evidence/software_verify_aa005_android_check.py | active | AA-005 七项增量独立静态核查（54 项：权限/MAC 单一来源/旧状态清零/容量与完整性接线/上传分类与阻塞/规则文案/版本/清单；退出码 0/1；含 FINDING E6）
 evidence/software_verify_card_status_item011.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_cert8883_20261125/01_srv_cert_verify.txt | active | 8883 叶子证书独立核验原始输出（tls_handshake/issuer/serial/SAN/chain/verify_ip/负例/serial_changed/overall=PASS）

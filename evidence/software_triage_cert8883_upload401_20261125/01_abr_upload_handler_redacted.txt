@@ -1,0 +1,211 @@
+# CERT8883-UPLOAD-04 triage: read-only inspection of the deployed upload handler
+started_utc=2026-11-25T09:41:49Z
+scope=read_only: stat+read deployed handler; no sudo, no write, no restart, no DB, no write endpoint
+
+connect_result=OK after=0.3s
+--- [identity]
+exit=0
+2026-11-25T09:41:48Z
+2026-11-25T17:41:48+0800
+iZ2zeih0gmrk47og5r4z7sZ
+
+--- [service_object]
+exit=0
+NRestarts=0
+ExecMainStartTimestamp=Sun 2026-11-15 06:42:51 CST
+ExecMainPID=214002
+ActiveState=active
+SubState=running
+path=/root/abr.py size=8949 mtime=2026-10-22 19:31:04.322027530 +0800 inode=1088447
+
+--- [upload_handler]
+exit=0
+total_lines=254 total_bytes=8703
+--- block lines 201-251
+ 201| @app.route('/upload_data', methods=['POST'])
+ 202| def upload_data():
+ 203|     """接收 App 上传的传感器温湿度读数,存储到 sensor_data 表。
+ 204| 
+ 205|     请求体: { "phone": "13...", "mac": "网关MAC", "readings": [
+ 206|         {"devId":"A1B2C3D4","time":1699999999,"temperature":25.5,"humidity":60.0}, ... ] }
+ 207|     """
+ 208|     data = request.get_json()
+ 209|     if not data:
+ 210|         return jsonify({"error": "No json data"}), 400
+ 211| 
+ 212|     if request.headers.get('X-Upload-Token') != UPLOAD_TOKEN:
+ 213|         return jsonify({"error": "unauthorized"}), 401
+ 214| 
+ 215|     phone = data.get('phone')
+ 216|     readings = data.get('readings')
+ 217|     if not phone:
+ 218|         return jsonify({"error": "phone is required"}), 400
+ 219|     if not readings or not isinstance(readings, list) or len(readings) == 0:
+ 220|         return jsonify({"error": "readings is required"}), 400
+ 221| 
+ 222|     conn = mysql.connect()
+ 223|     cursor = conn.cursor()
+ 224|     try:
+ 225|         # 幂等写入:同 (dev_id, time) 只存一次
+ 226|         sql = (
+ 227|             "INSERT IGNORE INTO sensor_data "
+ 228|             "(phone, dev_id, time, temperature, humidity) "
+ 229|             "VALUES (%s, %s, %s, %s, %s)"
+ 230|         )
+ 231|         inserted = 0
+ 232|         for r in readings:
+ 233|             dev_id = r.get('devId')
+ 234|             t = r.get('time')
+ 235|             temp = r.get('temperature')
+ 236|             humi = r.get('humidity')
+ 237|             if not dev_id or t is None:
+ 238|                 continue
+ 239|             cursor.execute(sql, (phone, dev_id, int(t), temp, humi))
+ 240|             inserted += cursor.rowcount
+ 241|         conn.commit()
+ 242|         return jsonify({"message": "ok", "inserted": inserted}), 200
+ 243|     except Exception as e:
+ 244|         print(e)
+ 245|         conn.rollback()
+ 246|         return jsonify({"message": "upload failed"}), 500
+ 247|     finally:
+ 248|         cursor.close()
+ 249|         conn.close()
+ 250| 
+ 251| 
+--- block lines 202-251
+ 202| def upload_data():
+ 203|     """接收 App 上传的传感器温湿度读数,存储到 sensor_data 表。
+ 204| 
+ 205|     请求体: { "phone": "13...", "mac": "网关MAC", "readings": [
+ 206|         {"devId":"A1B2C3D4","time":1699999999,"temperature":25.5,"humidity":60.0}, ... ] }
+ 207|     """
+ 208|     data = request.get_json()
+ 209|     if not data:
+ 210|         return jsonify({"error": "No json data"}), 400
+ 211| 
+ 212|     if request.headers.get('X-Upload-Token') != UPLOAD_TOKEN:
+ 213|         return jsonify({"error": "unauthorized"}), 401
+ 214| 
+ 215|     phone = data.get('phone')
+ 216|     readings = data.get('readings')
+ 217|     if not phone:
+ 218|         return jsonify({"error": "phone is required"}), 400
+ 219|     if not readings or not isinstance(readings, list) or len(readings) == 0:
+ 220|         return jsonify({"error": "readings is required"}), 400
+ 221| 
+ 222|     conn = mysql.connect()
+ 223|     cursor = conn.cursor()
+ 224|     try:
+ 225|         # 幂等写入:同 (dev_id, time) 只存一次
+ 226|         sql = (
+ 227|             "INSERT IGNORE INTO sensor_data "
+ 228|             "(phone, dev_id, time, temperature, humidity) "
+ 229|             "VALUES (%s, %s, %s, %s, %s)"
+ 230|         )
+ 231|         inserted = 0
+ 232|         for r in readings:
+ 233|             dev_id = r.get('devId')
+ 234|             t = r.get('time')
+ 235|             temp = r.get('temperature')
+ 236|             humi = r.get('humidity')
+ 237|             if not dev_id or t is None:
+ 238|                 continue
+ 239|             cursor.execute(sql, (phone, dev_id, int(t), temp, humi))
+ 240|             inserted += cursor.rowcount
+ 241|         conn.commit()
+ 242|         return jsonify({"message": "ok", "inserted": inserted}), 200
+ 243|     except Exception as e:
+ 244|         print(e)
+ 245|         conn.rollback()
+ 246|         return jsonify({"message": "upload failed"}), 500
+ 247|     finally:
+ 248|         cursor.close()
+ 249|         conn.close()
+ 250| 
+ 251| 
+--- block lines 86-101
+  86| def verify_code():
+  87|     data = request.get_json()
+  88|     phone_number = data.get('phoneNumber')
+  89|     code = data.get('code')
+  90|     if phone_number not in verification_codes:
+  91|         return jsonify({"error":"phone number not found"}),404
+  92|     stored_code = verification_codes[phone_number]
+  93|     if time.time() > stored_code["expires"]:
+  94|         return jsonify({"error":"verification code expired"}),400
+  95|     if stored_code["code"] == code:
+  96|         del verification_codes[phone_number]
+  97|         return jsonify({"message":"verification successful"}),200
+  98|     else:
+  99|         return jsonify({"error":"invalid verification code"}),400
+ 100| 
+ 101| 
+--- block lines 103-134
+ 103| def register():
+ 104|     conn = mysql.connect()
+ 105|     cursor = conn.cursor()
+ 106|     
+ 107|     data = request.get_json()
+ 108|     phone_number = data.get('phoneNumber')
+ 109|     password = data.get('password')
+ 110| 
+ 111|     hashed_password = hash_password(password)
+ 112|     
+ 113|     try:
+ 114|         cursor.execute("SELECT * FROM user_table WHERE phone_number = %s", (phone_number,))
+ 115|         user = cursor.fetchone()
+ 116|         if user:
+ 117|             query = "UPDATE user_table SET password = %s WHERE phone_number = %s"
+ 118|             cursor.execute(query, (hashed_password, phone_number))
+ 119|             conn.commit()
+ 120|             print("updating user passwd")
+ 121|             return jsonify({"message": "Password updated successfully"}), 200
+ 122|             
+ 123|         else:
+ 124|             query = "INSERT INTO user_table (phone_number, password) VALUES (%s, %s)" 
+ 125|             cursor.execute(query, (phone_number, hashed_password))
+ 126|             conn.commit()
+ 127|             return jsonify({"message": "User registered successfully"}), 200
+ 128|     except Exception as e:
+ 129|         print(e)
+ 130|         return jsonify({"message": "Registration failed"}), 500
+ 131|     finally:
+ 132|         cursor.close()
+ 133|         conn.close()
+ 134| 
+--- block lines 136-158
+ 136| def login():
+ 137|     conn = mysql.connect()
+ 138|     cursor = conn.cursor()
+ 139|     try: 
+ 140|         data = request.get_json()
+ 141|         phone_number = data.get('phoneNumber')
+ 142|         password = data.get('password')
+ 143| 
+ 144|         hashed_password = hash_password(password)
+ 145|         
+ 146|         query = "SELECT * FROM user_table WHERE phone_number = %s AND password = %s"
+ 147|         cursor.execute(query, (phone_number, hashed_password))
+ 148|         user = cursor.fetchone()
+ 149| 
+ 150|         if user:
+ 151|             return jsonify({"message": "Login successful", "token": "some-jwt-token"}), 200
+ 152|         else:
+ 153|             return jsonify({"message": "Invalid credentials"}), 400
+ 154|     finally:
+ 155|         cursor.close()
+ 156|         conn.close()
+ 157| 
+ 158| 
+--- end
+
+--- [token_metadata_no_value]
+exit=0
+upload_token_defined=YES dynamic=False
+upload_token_literal=YES length=48 sha256_8=fa25db12
+x_upload_token_refs=2
+/root/abr.py lines=254 has_x_upload_token=True has_upload_token_const=True
+/root/abr.py.bak_20260926 lines=199 has_x_upload_token=False has_upload_token_const=False
+
+finished_utc=2026-11-25T09:41:50Z total_s=1.3
