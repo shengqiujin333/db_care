@@ -80,6 +80,8 @@ artifacts/android_tasks.yaml | active | Android 待实现任务清单（AA-006 3
 artifacts/backend_feasibility.md | history | 后端可行性探索 BE-EXP-002（2026-11-09 只读 SSH 实测：EMQX 5.8.0/端口/unit/6 路由/401/零业务流量；历史记录保留不改写，当前入口见 backend_feasibility_current.md）
 artifacts/backend_feasibility_current.md | active | 后端可行性探索 BE-EXP-004（2026-11-10 15:47 重新只读核验：同一 abr.py 8949B/2026-10-22 未变、21 命令/7.2 s、EMQX 5.8.0 uptime 17d9h/0 连接、6 路由 405、OPTIONS 200、POST 仍 14 条/末次 10-22、本地桩复跑逐项一致；新增网关缓存复读→同值不同秒重复行的数据语义假设；service_context 与 D1–D6；上传受理条件仍未定性）
 artifacts/backend_feasibility_g002.md | active | 后端可行性探索 BE-EXP-003 原文保留（2026-11-10 07:08–07:14：同一 abr.py 未变、OPTIONS 无鉴权头提示、10-22 的 200 已进入 mysql.connect、仍无业务流量；历史记录不改写，当前入口见 backend_feasibility_current.md）
+artifacts/cert8883_cases.yaml | active | 软件测试：8883 证书修复与上传/受影响端到端用例机器清单（CERT8883-SRV-01/CLI-02/REG-03/UPLOAD-04、E2E-JOINT-P0/P1、CERT8883-FINAL-05；独立判定、前置条件、证据边界与 NOT EXECUTED 规则；与 TD-CERT8883-001 判据一致）
+artifacts/cert8883_e2e_plan.md | active | 软件测试：8883 证书修复跨系统端到端测试计划 E2E-CERT8883-001（平台证书独立核验→App TLS/CONNACK→回归→上传/持久化→受影响 P0/P1→本轮交付限定整体验收；真实环境优先、两类独立证据、未执行与阻塞披露）
 artifacts/codegraph_android_index.md | active | 代码智能：Android当前源码索引入口、版本与覆盖限制，四个定向源码查询及后续同步方式。
 artifacts/codegraph_current_index.md | history | 代码智能：此前三个子工程索引交接；当前入口见 artifacts/codegraph_prepare_index.md
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
@@ -108,6 +110,7 @@ artifacts/firmware_tasks.yaml | active | 固件任务清单 rev 8（6 项：FW-R
 artifacts/interface_contract.md | active | 系统架构：IC-002 v4.0，撤旧1/3强制要求、保留无光判据未决；兼容RF/BLE/平台，明确160B容量与完整读取、占位、观测时间、错误分类及服务闭合条件
 artifacts/software_e2e_plan.md | history | 历史软件端到端测试计划 E2E-SW-004 rev 4.0（AA-005 七项增量；当前 AA-006 阶段不适用，跨链路联调属后续阶段）
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-005 rev 5.0（AA-006 ITEM-001..003 扫描权限自动续跑/BLE 读取终态/报告再生成反馈逐条追踪；宿主机映射矩阵、静态核查、真机 API29 与真实网关 devCount=0 用例、证据边界、人工延期与阶段外项、最终判定规则）
+artifacts/software_test_design_cert8883.md | active | 软件测试：8883 证书与客户端地址不匹配修复测试设计 TD-CERT8883-001 v1.0（原 CA 签发/链/IP SAN/负例、App TLS/CONNACK 真实复验、不受影响路径回归、安卓上传与 P1 四段一致条件、信任锚变更分支、证据/退出准则/NOT EXECUTED；只做设计不执行）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
 artifacts/system_analysis_current.md | active | 系统架构：最新需求与旧1/3判据冲突、禁止调温调光功耗测试的当前边界、可复用候选版本及摘要、历史证据限制和后续集成缺口
 artifacts/test_design.md | active | 嵌入式联合测试设计 TD-002 rev 10.0（传感器→网关→安卓→平台 E2E）：用户不调温/不改光强且 T=0 时当前量产固件不会自然上报，方案规定测试专用构建在采样后判定前注入 367（36.7℃）走真实 >35 分支，默认关闭、正式版排除、E2E 后恢复发布镜像；含 J-00 先绑定/读就绪、J-01 同一 uid4+367+真实湿度跨端四段证据、J-02 负向不上传、EM-01..08 与退出准则；真实物理 >35℃/升温+无光/双态/功耗/433 电气/平台清理/手机 ADB 未授权/Wi-Fi 未连列 NOT EXECUTED；只做设计不执行）

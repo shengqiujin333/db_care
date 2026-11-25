@@ -1,0 +1,174 @@
+items:
+  - objective: "CERT8883-SRV-01：独立验证平台 8.140.23.253:8883 当前叶子证书已由 App 信任锚 dengbei_care/app/src/main/assets/jd-ca.crt（CN=Tiktok Root CA, O=LinkValue）签发，SAN 含 IP:8.140.23.253，serial 已从缺陷基线 77ADCFD924BA0F87F845C81934D4A3F346D4BB82 变更，负例 8.140.23.254 不通过；全程只读、不登录、不写、不使用 --insecure，且不依赖部署方自述。对应 TD-CERT8883-001 §3.1。"
+    input_refs:
+      - "artifacts/software_test_design_cert8883.md §0.1/§3.1/§7"
+      - "scripts/emqx_8883_cert_verify.sh（--expect-new；RESULT 行）"
+      - "dengbei_care/app/src/main/assets/jd-ca.crt（SHA-256 基线 75:33:09:B3:9F:1B:8F:85:B4:D7:57:76:BF:D3:8A:42:52:0D:C1:A0:5E:A2:0B:A3:11:7E:B3:9C:BA:B2:15:2B）"
+      - "evidence/e2e_p0/backend_cert_recheck_20261124_1015Z.txt（旧 serial/SAN 基线）"
+      - "evidence/e2e_p0/P0_backend_cert_issuance_and_rollback.md §4/§7"
+      - "evidence/e2e_p0/emqx_8883_execution_record_template.md（部署回传记录，引用不替代）"
+    acceptance:
+      - "执行前记录 UTC 时间、主机、openssl version、jd-ca.crt SHA-256；若信任锚指纹不是基线值，停止并转信任锚变更分支，不得继续判 PASS。"
+      - "tls_handshake=OK（8883 返回叶子证书）。"
+      - "chain_verify=OK（仅以 jd-ca.crt 为 CA）；叶子 issuer 为 CN=Tiktok Root CA, O=LinkValue。"
+      - "SAN 原文包含 IP Address:8.140.23.253；san_contains_target=YES。"
+      - "ip_san_match=OK（openssl verify -CAfile jd-ca.crt -verify_ip 8.140.23.253 返回 0）；不得仅用 -verify_hostname 或 CN 命中代替 IP SAN 判据。"
+      - "negative_control=OK（openssl verify -verify_ip 8.140.23.254 不通过，证明判据未被放宽）。"
+      - "serial_changed=YES，线上 serial 与部署/签发记录一致；notAfter 晚于执行时刻且不晚于 CA 的 2034-10-10。"
+      - "若仍取回旧 SAN=117.72.84.210 或旧 serial=77ADCFD9…，判 FAIL（修复未生效），不得判 NOT EXECUTED；若部署未完成且无法访问 8883，判 NOT EXECUTED 并记录实际错误。"
+      - "证据保存脚本完整原始输出（含 tls_handshake/chain_verify/san_contains_target/ip_san_match/negative_control/serial_changed/overall 等 RESULT 行）与 openssl 原文；不得以口头声明或部署记录代替握手证据。"
+    metadata:
+      stable_item_id: "CERT8883-SRV-01"
+      case_kind: "certificate_server_verification"
+      stage_order: ["platform_host_readonly"]
+      required_conditions: ["certificate_deployed", "public_8883_reachable", "jd_ca_unchanged"]
+      correlation_keys: ["leaf_serial", "leaf_sha256", "san", "jd_ca_sha256", "utc_window"]
+      design_ref: "artifacts/software_test_design_cert8883.md §3.1"
+
+  - objective: "CERT8883-CLI-02：在同一 Android App 候选（com.jinyuni.dengbei_care vC10/vN1.9，SHA-256 80232c50…de4b，或本轮重建后的新身份）、同一手机 12f046690506、同一 ZTE_607157 默认网络下，证明 App 对 ssl://8.140.23.253:8883 不再出现证书主机名/链错误，完成 TLS 并进入 MQTT CONNECT，并如实记录 CONNACK/认证结果；把认证失败与证书失败分层记录。对应 TD-CERT8883-001 §3.2。"
+    input_refs:
+      - "artifacts/software_test_design_cert8883.md §0.1/§3.2/§4/§7"
+      - "evidence/e2e_p0/P0_platform_stage_report.md §2.2（原始 SSLHandshakeException: No subjectAltNames on the certificate match）"
+      - "evidence/e2e_p0/platform_stage_retest_logcat_tls_fail.txt"
+      - "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudConfig.kt（ssl://8.140.23.253:8883）"
+      - "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/MqtttService.kt setupSSL/connectToBroker（Paho 默认主机名校验；不修改）"
+      - "runtime/environment.yaml（android_phone serial 12f046690506）"
+    acceptance:
+      - "记录设备 serial/型号/API、APK 主机侧与设备侧 SHA-256、versionCode/versionName；若与 AB-003 不同，记录新身份并按新组合执行，不沿用旧手机段证据。"
+      - "确认 ZTE_607157 为当前默认网络（系统原始 SSID/默认路由证据）；蓝牙/定位/权限按既有条件；密码只经 ui_set_text + text_env 注入，证据不出现明文。"
+      - "App 守护运行、MqtttService 前台存活；记录 PID 与 logcat 时间窗起点。"
+      - "同一时间窗内不再出现 SSLHandshakeException: No subjectAltNames on the certificate match，也不出现 Trust anchor for certification path not found / PKIX path building failed 等链/信任锚错误。"
+      - "有证据表明 TLS 握手完成并进入 MQTT CONNECT（Paho 回调/日志不再停在 TLS 校验）；记录实际结果：Connected to broker，或 Failed to connect 及其异常/原因码。"
+      - "分类记录：若失败原因是用户名/密码/未授权等认证层，记为本缺陷维度 PASS、认证层缺口另记；不得写成 TLS 失败，也不得据此判上传/P1 通过。"
+      - "App UI broker 状态（网关：已联网/断网）与日志一致；同一窗口网关 BLE 读取仍进入明确终态，作为非 MQTT 路径未受影响的证据。"
+      - "若仍出现 SAN/链错误，判 FAIL 并保留新证书输出与完整异常栈，交回平台/实现；不得复用旧证据或降低校验。"
+    metadata:
+      stable_item_id: "CERT8883-CLI-02"
+      case_kind: "certificate_client_verification"
+      stage_order: ["phone"]
+      depends_on: ["CERT8883-SRV-01"]
+      required_conditions: ["phone_online_adb_authorized", "app_installed_identity_verified", "wifi_ZTE_607157_default_network", "app_guard_running"]
+      correlation_keys: ["apk_sha256", "device_serial", "utc_window", "leaf_serial", "connack_result"]
+      design_ref: "artifacts/software_test_design_cert8883.md §3.2"
+
+  - objective: "CERT8883-REG-03：只读核对证书替换未改变其他 EMQX listener（1883/8083/8084）、Dashboard 18083、Flask 5000 路由与 MySQL 3306 端口语义，未新增公网诊断/免校验入口，App 启动/守护/网关读取等非 MQTT 路径未回归；既有 8083/8084 手机侧超时等差异与本次变更分开记录。对应 TD-CERT8883-001 §3.3。"
+    input_refs:
+      - "artifacts/software_test_design_cert8883.md §1.2/§3.3"
+      - "docs/05_平台服务器配置与联调前提.md §1/§4/§5"
+      - "evidence/e2e_p0/platform_stage_retest_http_phone.txt（5000 路由 GET 405/Allow 基线）"
+      - "evidence/e2e_p0/platform_stage_retest_identity.txt（EMQX API 401、MySQL 9.0.1 握手、8083/8084 超时基线）"
+      - "evidence/e2e_p0/platform_stage_retest_host.txt（18083 /status 200 基线）"
+    acceptance:
+      - "8883 仍为 TLS listener（由 CERT8883-SRV-01 的握手证据支持）。"
+      - "1883 TCP 可连；18083 GET /status 返回 200 且 body 表明 emqx 运行；5000 GET / 为 404、GET /login 与 GET /upload_data 为 405 且 Allow: POST, OPTIONS（与既有基线一致）。"
+      - "3306 返回 MySQL 握手并可辨识版本；不认证、不执行 SQL、不读库。"
+      - "8083/8084 如仍与既有手机侧超时一致，作为既有部署差异记录，不因本次证书变更判回归；只有可归因于本次变更的新不可达/异常才判 FAIL。"
+      - "未发现新增的公网免校验/诊断端口或放宽的鉴权边界；未发生任何 POST、登录 Dashboard/SSH/DB、写文件或重启服务。"
+      - "App 能正常启动/守护运行；至少一次网关读取进入明确终态（DATA_OK/GATEWAY_NO_DEVICE/GATEWAY_NO_DATA/READ_INCOMPLETE 等按实际记录）；无新增崩溃/ANR。"
+      - "与既有基线逐项列出差异；仅可归因于本次证书变更的回归判 FAIL，其余如实记录，不扩大责任。"
+    metadata:
+      stable_item_id: "CERT8883-REG-03"
+      case_kind: "regression_unaffected_paths"
+      stage_order: ["platform_host_readonly", "phone_readonly"]
+      depends_on: ["CERT8883-SRV-01"]
+      required_conditions: ["public_platform_ports_reachable", "phone_online", "readonly_only"]
+      correlation_keys: ["utc_window", "service_identity", "route_status", "app_runtime_state"]
+      design_ref: "artifacts/software_test_design_cert8883.md §3.3"
+
+  - objective: "CERT8883-UPLOAD-04：用 App 真实上传路径证明一条可关联读数经 POST /upload_data 被平台受理并在 MySQL bwusernamebase.sensor_data 可回读，字段一致，同一 (dev_id,time) 重试不新增行；不写 prefs/DB、不伪造身份、不以 HTTP 2xx 代替持久化。前置不足时如实 NOT EXECUTED。对应 TD-CERT8883-001 §3.4。"
+    input_refs:
+      - "artifacts/software_test_design_cert8883.md §0.3/§3.4/§7"
+      - "artifacts/interface_contract.md IC-002 v4.0 §8"
+      - "dengbei_care/app/src/main/java/com/jinyuni/dengbei_care/cloud/CloudUploadRepository.kt（门控/待发箱/RetrofitUploadApi）"
+      - "docs/05_平台服务器配置与联调前提.md §5 D1–D5"
+      - "docs/04_安卓App安装与使用.md §4.1/§4.2/§5"
+      - "evidence/e2e_p0/P0_phone_stage_report.md §4（registerphone/mac_addr 空）"
+    acceptance:
+      - "前置逐项记录：隔离测试手机号经 App 既有注册/登录路径设置且 registerphone 非空；已确认来源的平台网关 mac_addr（12 位 HEX）经 App 既有保存/ setMacAddress 路径设置；至少一条合法读数（真实 BLE DATA_OK 或经授权的受控注入并记录来源）；平台写与按 (dev_id,time) 只读回读授权；守护运行且 ZTE_607157 为默认网络。"
+      - "App 日志出现真实上传尝试（CloudUpload/enqueueAndUpload），载荷含 devId、time、temperature、humidity；未出现 upload gated off。"
+      - "HTTP 返回 2xx；且平台按 (dev_id,time) 回读到对应行 (phone, dev_id=uid4, time, temperature, humidity)，字段数值逐项一致（36.70 与 36.7 按数值相等并记录实际表示）。"
+      - "同一 (dev_id,time) 重试不新增行（以回读行数为准；服务端返回结构不同不预设 inserted 字段）。"
+      - "未写 SharedPreferences/本地数据库/待发箱、未伪造身份或成功；401/403/其他 4xx 按产品分类记录为平台受理/鉴权结果并交平台，不以手动重试冒充成功。"
+      - "测试行保留或清理必须有授权并披露；无授权时保留可识别信息（uid4+time+窗口）并披露。"
+      - "若 registerphone 空、mac_addr 未确认、无合法读数或无反读授权，判 NOT EXECUTED 并写明缺失条件、责任方与恢复后必须重做的步骤；HTTP 2xx 单独出现不得判 PASS。"
+    metadata:
+      stable_item_id: "CERT8883-UPLOAD-04"
+      case_kind: "android_upload_persistence"
+      stage_order: ["phone", "platform"]
+      depends_on: ["CERT8883-CLI-02"]
+      required_conditions: ["isolated_test_identity_registerphone", "confirmed_gateway_platform_mac", "valid_reading_source", "platform_write_authorization", "platform_readback_authorization", "app_guard_running", "wifi_ZTE_607157_default_network"]
+      correlation_keys: ["uid4", "dev_id_time", "apk_sha256", "utc_window"]
+      design_ref: "artifacts/software_test_design_cert8883.md §3.4"
+
+  - objective: "E2E-JOINT-P0：在证书修复后的当前组合版本上重新完成受影响联合用例 P0 的平台段（App→EMQX TLS/CONNACK 与平台只读基线），并以同版本身份复核嵌入式/手机段；不得沿用旧平台段证据，任一未授权项如实 NOT EXECUTED。对应 TD-CERT8883-001 §3.5 与 TD-E2E-SW-006 §4.1。"
+    input_refs:
+      - "artifacts/software_test_design_cert8883.md §3.5"
+      - "artifacts/e2e_joint_test_design.md TD-E2E-SW-006 §4.1/§8"
+      - "artifacts/e2e_cases.yaml（E2E-JOINT-P0 摘要）"
+      - "evidence/e2e_p0/P0_phone_stage_report.md（同版本手机段 PASS）"
+      - "evidence/e2e_p0/P0_platform_stage_report.md（原平台段 TEST_FAIL，不得沿用结论）"
+    acceptance:
+      - "记录三端身份：传感器构建/下载与 BOOT uid、网关 BLE 地址/GwID、APK SHA-256/versionCode、设备 serial/型号/API、平台服务身份与时间窗；与 §0.1 一致或差异已解释。"
+      - "若 APK/设备/网关与 P0 手机段同版本，引用其手机段 PASS 并重新确认设备在线、APK 摘要、ZTE_607157 默认网络、守护运行、网关绑定/0xA1/读取就绪有本轮复核证据；若版本变化，重做受影响手机段。"
+      - "平台段以 CERT8883-SRV-01 与 CERT8883-CLI-02 的实际结果为准：无 SAN/链错误，TLS 完成并进入 MQTT CONNECT，CONNACK 实际结果分类记录。"
+      - "平台只读基线（服务/端口/日志/连接数）按获准入口记录；无 SSH/DB 回读授权时相应子项 NOT EXECUTED，不冒充通过。"
+      - "关联键（uid4、APK 摘要、网关身份、UTC 时间窗）写入同一证据索引；不使用时间接近猜事件。"
+      - "任一必需项失败→该段 FAIL；未授权项→NOT EXECUTED，P0 整体不得判 PASS；不得复用 2026-11-23 旧平台段失败或旧证书结论。"
+    metadata:
+      stable_item_id: "E2E-JOINT-P0"
+      case_kind: "affected_joint_preparation_and_platform"
+      stage_order: ["embedded_reference", "phone", "platform"]
+      depends_on: ["CERT8883-SRV-01", "CERT8883-CLI-02", "CERT8883-REG-03"]
+      required_conditions: ["same_or_recorded_versions", "phone_online", "wifi_ZTE_607157_default_network", "gateway_binding_readiness", "platform_readonly_baseline"]
+      correlation_keys: ["uid4", "gateway_ble_addr", "gateway_GwID", "apk_sha256", "platform_service_identity", "utc_window"]
+      design_ref: "artifacts/software_test_design_cert8883.md §3.5 / artifacts/e2e_joint_test_design.md §4.1"
+
+  - objective: "E2E-JOINT-P1：在证书修复后的当前组合版本上，证明 App→EMQX 的 TLS 阻断已解除，并在条件具备时用固件测试构建受控注入 367，完成 uid4+367+h 的嵌入式判定/冻结/发送→网关→App 读取/解码/本地消费/上传→平台受理/回读四段一致；证书修复不自动提供测试构建/身份/回读，缺任一段不得部分通过。对应 TD-CERT8883-001 §3.6 与 TD-E2E-SW-006 §4.3。"
+    input_refs:
+      - "artifacts/software_test_design_cert8883.md §3.6"
+      - "artifacts/e2e_joint_test_design.md TD-E2E-SW-006 §3.1/§4.3/§8"
+      - "artifacts/e2e_cases.yaml（E2E-JOINT-P1 摘要）"
+      - "artifacts/interface_contract.md IC-002 v4.0 §5–§8"
+      - "artifacts/test_design.md TD-002 rev 10.0 §3/§6.2（注入接口与判据）"
+      - "evidence/e2e_p0/P0_platform_failure_triage.md §6.2（P1 仍需身份与回读，证书修复不自动可执行）"
+    acceptance:
+      - "前置逐项记录：P0 已完成；N1 或等价干净基线已记录（网关缓存实际状态可区分）；固件测试构建默认关闭、仅测试启用，在 measure_sample() 成功后、sensor_decide_report() 前注入 367，有可区分 TINJ（或等价）观测，正式构建排除，P1 后恢复标准构建并 Verify OK；隔离测试身份与已确认 mac_addr；平台回读授权。"
+      - "嵌入式段：测试构建身份且 Verify OK；第 1 次真实 S r=0；第 2 次 TINJ real=<real> inj=367，S t=367 q=1 r=1 s=1（或按实际重试记录）；P t=367 h=<h>；第 3 次 t≈real p=367 r=0；uid4 可读；帧/CRC/Feistel/发送逻辑未改。"
+      - "手机段：MTU≥35（期望 240）、valueSize≥32 且 16 B 对齐、devCount=1、id=uid4、T=36.7、H=h、DATA_OK；本地 temperature 行 (uid4,receiveTime,36.7,h)；上传发出并按成功/失败实际记录；读取不完整时整帧拒绝、不产生读数/不上传。"
+      - "MQTT 段：/<mac>/a/r0 载荷 <epoch>:36.7:<h>（N=1、按绑定顺序），epoch 与本地接收时间一致；若 mac_addr 以 1010 开头，按既有 shouldPublishBle() 分支记 N/A，不判缺陷；若应发布而连接/凭据失败，记录实际原因，不得用 HTTP 成功替代。"
+      - "平台段：HTTP 2xx 且存在 sensor_data 行 (phone, dev_id=uid4, time=epoch, temperature=36.7, humidity=h) 且字段逐项一致；同一 (dev_id,time) 重试不新增行；仅 2xx 或无回读入口不判通过。"
+      - "证书维度：同一时间窗内 App→EMQX 无 SAN/链错误，TLS 完成并进入 CONNECT；CONNACK 实际结果记录；不得把 CERT8883-CLI-02 通过当作 P1 通过。"
+      - "关联与披露：uid4+367+h 四段一致；网关缓存同值不同秒的复读记录并披露，不当作新物理采样；测试构建排除与恢复证据齐全。"
+      - "任一段缺失/不一致：该段 FAIL/NOT EXECUTED；P1 不通过、不得部分通过；测试构建/身份/回读缺失时整例 NOT EXECUTED 并写明责任方。"
+    metadata:
+      stable_item_id: "E2E-JOINT-P1"
+      case_kind: "affected_joint_positive_event"
+      stage_order: ["embedded", "phone", "platform"]
+      depends_on: ["E2E-JOINT-P0"]
+      required_conditions: ["firmware_test_build_injection", "isolated_test_identity", "confirmed_gateway_platform_mac", "platform_readback_authorization", "clean_or_explained_gateway_cache_baseline", "wifi_ZTE_607157_default_network"]
+      correlation_keys: ["uid4", "367", "real_humidity_h", "gateway_GwID", "app_receive_epoch", "platform_time"]
+      design_ref: "artifacts/software_test_design_cert8883.md §3.6 / artifacts/e2e_joint_test_design.md §4.3"
+
+  - objective: "CERT8883-FINAL-05：在当前组合版本上形成本轮交付的最终判定，覆盖证书修复、App TLS/CONNACK、不受影响路径回归、安卓上传与受影响联合用例的实际状态；明确区分“证书修复维度通过”与“完整产品验收通过”，未执行项不得写成通过。对应 TD-CERT8883-001 §3.7/§7。"
+    input_refs:
+      - "artifacts/software_test_design_cert8883.md §3.7/§7/§8"
+      - "artifacts/cert8883_e2e_plan.md E2E-CERT-06"
+      - "本轮 CERT8883-SRV-01/CLI-02/REG-03/UPLOAD-04 与 E2E-JOINT-P0/P1 的实际证据"
+    acceptance:
+      - "身份闭合：平台服务/端口/版本；8883 叶子 serial/SAN/SHA-256/有效期；jd-ca.crt SHA-256；APK SHA-256/versionCode 与设备侧摘要；设备 serial/API；传感器/网关身份；UTC 时间窗。"
+      - "证书维度：CERT8883-SRV-01 PASS；CERT8883-CLI-02 PASS 或 FAIL 有原始证据；证书仍未匹配时整体不得 PASS。"
+      - "回归维度：CERT8883-REG-03 PASS；既有 8083/8084 等差异如实记录，不扩大为本次回归。"
+      - "上传维度：CERT8883-UPLOAD-04 实际 PASS/FAIL/NOT EXECUTED；若 NOT EXECUTED，本轮交付不得判 PASS，按 TEST_FAIL/EXTERNAL_CONDITION_UNEXECUTED 报告具体缺项。"
+      - "联合维度：E2E-JOINT-P0 实际状态；E2E-JOINT-P1 实际状态；未执行不得写成通过。"
+      - "边界声明：只声明当前组合版本在已执行范围内的结论；真实物理 >35℃/升温+无光/光强/功耗/433 电气、release、iOS、API 31+、9 台等仍 NOT EXECUTED；阶段通过不代表完整产品通过。"
+      - "清理与披露：测试身份/绑定/测试行保留或清理、凭据未泄露、未执行项逐项列出；不得以旧 APK/旧证书/旧时间窗证据外推。"
+      - "若 C1/C2/C3 通过但 C4 未执行，或 P1 未执行且无用户明确批准本阶段不纳入：本轮证书修复维度通过、交付整体 TEST_FAIL（EXTERNAL_CONDITION_UNEXECUTED），不得写“整体验收通过”；任一实测缺陷按责任交回实现/部署并用当前组合复测。"
+      - "只有 C1/C2/C3/C4 全部实际通过，且 P0 通过、P1 通过或由用户明确批准本阶段不纳入 P1，才可判本轮交付 TEST_PASS；阶段通过不代表完整产品通过。"
+    metadata:
+      stable_item_id: "CERT8883-FINAL-05"
+      case_kind: "delivery_scoped_acceptance"
+      stage_order: ["summary"]
+      depends_on: ["CERT8883-SRV-01", "CERT8883-CLI-02", "CERT8883-REG-03", "CERT8883-UPLOAD-04", "E2E-JOINT-P0", "E2E-JOINT-P1"]
+      required_conditions: ["evidence_index_complete", "all_cases_judged_or_not_executed_with_reason"]
+      correlation_keys: ["leaf_serial", "jd_ca_sha256", "apk_sha256", "device_serial", "utc_window"]
+      design_ref: "artifacts/software_test_design_cert8883.md §3.7"
