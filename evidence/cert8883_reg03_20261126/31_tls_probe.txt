@@ -1,0 +1,6 @@
+# TLS handshake to 8.140.23.253:8883 with project trust anchor, verify_ip semantics
+handshake=OK
+tls_version=TLSv1.3
+cipher=TLS_AES_256_GCM_SHA384
+hostname_verification=OK (check_hostname=True, server_hostname=IP 8.140.23.253)
+handshake=FAIL AttributeError: module 'ssl' has no attribute 'cert_fingerprint'

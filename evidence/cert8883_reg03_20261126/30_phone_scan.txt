@@ -1,0 +1,42 @@
+# phone offline scan (input files captured by adb read-only)
+scan_utc=2026-11-26T03:52:24Z
+SCAN AndroidRuntime               0
+SCAN FATAL_EXCEPTION              0
+SCAN ANR                          0
+SCAN tls_error_signature          0
+SCAN link_state_DATA_OK           2
+SCAN link_state_CONNECT_FAILED    2
+SCAN link_state_CONNECTING        3
+SCAN CloudUpload_uploaded         2
+SCAN CONNACK_not_authorized       2
+
+## terminal-state / key lines in window
+11-26 11:40:04.547 14224 14244 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 11:40）
+11-26 11:40:04.743 14224 14259 I MqttService: Successfully connected and read data on attempt 3
+11-26 11:40:05.125 14224 14259 I CloudUpload: uploaded 1 reading(s)
+11-26 11:43:04.768 14224 14259 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 11:43:57.242 14224 14224 E MqttService: 无权连接 (5)
+11-26 11:44:32.862 14224 14259 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 11:47:32.884 14224 14259 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 11:48:14.760 14224 14259 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 11:48:55.949 14224 14224 E MqttService: 无权连接 (5)
+11-26 11:51:14.788 14224 14259 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 11:51:17.349 14224 14244 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 11:51）
+11-26 11:51:17.540 14224 14259 I MqttService: Successfully connected and read data on attempt 1
+11-26 11:51:17.714 14224 14259 I CloudUpload: uploaded 1 reading(s)
+
+## events (app proc/anr/crash)
+EVENT_HITS=8
+11-25 14:53:45.610  1580  1655 I am_proc_start: [0,20381,10169,com.jinyuni.dengbei_care,activity,{com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}]
+11-25 16:11:06.108  1580  1655 I am_proc_start: [0,22684,10169,com.jinyuni.dengbei_care,activity,{com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}]
+11-25 21:54:43.854  1580  1655 I am_proc_start: [0,31852,10169,com.jinyuni.dengbei_care,activity,{com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}]
+11-25 22:00:24.745  1580  3193 I am_crash: [31852,0,com.jinyuni.dengbei_care,552123974,java.lang.IllegalArgumentException,Navigation action/destination com.jinyuni.dengbei_care:id/action_homeFragment_to_deviceDetailFragment cannot be found from the current destination Destination(com.jinyuni.dengbei_care:id/deviceDetailFragment) label=首页 class=com.jinyuni.dengbei_care.ui.detail.DeviceDetailFragment,NavController.kt,1663]
+11-25 22:00:24.931  1580 21275 I am_proc_died: [0,31852,com.jinyuni.dengbei_care,0,2]
+11-25 22:00:26.701  1580  1655 I am_proc_start: [0,32061,10169,com.jinyuni.dengbei_care,activity,{com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}]
+11-26 10:36:21.613  1580  1655 I am_proc_start: [0,12980,10169,com.jinyuni.dengbei_care,activity,{com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}]
+11-26 11:28:53.719  1580  1655 I am_proc_start: [0,14224,10169,com.jinyuni.dengbei_care,activity,{com.jinyuni.dengbei_care/com.jinyuni.dengbei_care.MainActivity}]
+
+## crash buffer
+CRASH_BUFFER_FATAL_LINES=1
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: FATAL EXCEPTION: main
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: Process: com.jinyuni.dengbei_care, PID: 31852

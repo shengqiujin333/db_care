@@ -1,0 +1,22 @@
+# foreground / network state summary (derived from captured raw dumps)
+utc=2026-11-26T03:59:00Z
+== resumed activity ==
+        Run #0: ActivityRecord{2a2b39a u0 com.jinyuni.dengbei_care/.MainActivity t103}
+
+    mResumedActivity: ActivityRecord{2a2b39a u0 com.jinyuni.dengbei_care/.MainActivity t103}
+
+  Stack #0: type=home mode=fullscreen
+    mLastPausedActivity: ActivityRecord{ab5523 u0 com.android.systemui/.recents.RecentsActivity t66}
+
+ ResumedActivity:ActivityRecord{2a2b39a u0 com.jinyuni.dengbei_care/.MainActivity t103}
+
+  ResumedActivity: ActivityRecord{2a2b39a u0 com.jinyuni.dengbei_care/.MainActivity t103}
+
+ActivityStackSupervisor state:
+== current wifi ==
+mWifiInfo SSID: ZTE_607157, BSSID: 7c:21:d8:60:71:57, MAC: d8:ce:3a:ea:30:de, Supplicant state: COMPLETED, Wifi Generation: 4, TWT support: false, Eight Max VHT Spatial streams support: false, RSSI: -45, Link speed: 72Mbps, Tx Link speed: 72Mbps, Rx Link speed: -1Mbps, Frequency: 2462MHz, Net ID: 1, Metered hint: false, score: 60
+== wlan0 ==
+31: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether d8:ce:3a:ea:30:de brd ff:ff:ff:ff:ff:ff
+    inet 192.168.0.103/24 brd 192.168.0.255 scope global wlan0
+       valid_lft forever preferred_lft forever

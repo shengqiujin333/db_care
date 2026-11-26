@@ -1,0 +1,58 @@
+# HTTP GET-only probes 2026-11-26T03:52:23Z
+== GET http://8.140.23.253:18083/status ==
+status=200 OK
+header content-length: 46
+header content-type: text/plain
+header retry-after: 15
+header server: Cowboy
+body_first_600=b'Node emqx@127.0.0.1 is started\nemqx is running'
+
+== GET http://8.140.23.253:18083/api/v5/status ==
+status=200 OK
+header content-length: 46
+header content-type: text/plain
+header retry-after: 15
+header server: Cowboy
+body_first_600=b'Node emqx@127.0.0.1 is started\nemqx is running'
+
+== GET http://8.140.23.253:18083/api/v5/nodes ==
+status=401 Unauthorized
+header WWW-Authenticate: Basic Realm="emqx-dashboard"
+header content-length: 86
+header content-type: application/json
+header server: Cowboy
+body_first_600=b'{"code":"AUTHORIZATION_HEADER_ERROR","message":"Support authorization: basic/bearer "}'
+
+== GET http://8.140.23.253:18083/ ==
+status=200 OK
+header content-length: 9795
+header content-type: text/html
+header server: Cowboy
+body_first_600=b'<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="static/favicon.ico"><title>EMQX Dashboard</title><link href="static/css/chunk-01494b13.1fbab6e0.css" rel="prefetch"><link href="static/css/chunk-03711f65.3e96fc67.css" rel="prefetch"><link href="static/css/chunk-03f9c879.bfe13d3d.css" rel="prefetch"><link href="static/css/chunk-05bd1209.aa6246ba.css" rel="prefetch"><link href="static/css/chunk-05d5d78c.9acf6d4f.css" rel="prefetch"><link href="stat'
+
+== GET http://8.140.23.253:5000/ ==
+status=404 NOT FOUND
+header Server: Werkzeug/3.1.8 Python/3.12.3
+header Content-Type: text/html; charset=utf-8
+header Content-Length: 207
+header Access-Control-Allow-Origin: *
+body_first_600=b'<!doctype html>\n<html lang=en>\n<title>404 Not Found</title>\n<h1>Not Found</h1>\n<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>\n'
+
+== GET http://8.140.23.253:5000/login ==
+status=405 METHOD NOT ALLOWED
+header Server: Werkzeug/3.1.8 Python/3.12.3
+header Content-Type: text/html; charset=utf-8
+header Allow: OPTIONS, POST
+header Content-Length: 153
+header Access-Control-Allow-Origin: *
+body_first_600=b'<!doctype html>\n<html lang=en>\n<title>405 Method Not Allowed</title>\n<h1>Method Not Allowed</h1>\n<p>The method is not allowed for the requested URL.</p>\n'
+
+== GET http://8.140.23.253:5000/upload_data ==
+status=405 METHOD NOT ALLOWED
+header Server: Werkzeug/3.1.8 Python/3.12.3
+header Content-Type: text/html; charset=utf-8
+header Allow: OPTIONS, POST
+header Content-Length: 153
+header Access-Control-Allow-Origin: *
+body_first_600=b'<!doctype html>\n<html lang=en>\n<title>405 Method Not Allowed</title>\n<h1>Method Not Allowed</h1>\n<p>The method is not allowed for the requested URL.</p>\n'
+

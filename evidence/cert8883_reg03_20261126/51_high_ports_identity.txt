@@ -1,0 +1,11 @@
+# identify phone-reachable high ports (GET-only, no auth) UTC 2026-11-26T03:59:55Z
+== HTTP GET :21117 ==
+
+== raw first bytes :21115 / :21116 ==
+# host-side HTTP GET to high ports (identify only) 2026-11-26T04:00:05Z
+== GET http://8.140.23.253:21115/ ==
+curl: (28) Operation timed out after 7005 milliseconds with 0 bytes received
+
+== GET http://8.140.23.253:21117/ ==
+curl: (28) Operation timed out after 7012 milliseconds with 0 bytes received
+

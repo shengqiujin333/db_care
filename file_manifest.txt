@@ -120,6 +120,7 @@ artifacts/software_test_report_cert8883.md | active | 软件测试：8883 证书
 artifacts/software_test_report_cert8883_cli02_r6.md | active | 软件测试：CERT8883-CLI-02 第 6 轮真实 App TLS/CONNACK 复验（同窗无 SAN/链/信任锚错误，TLS 完成并收到 CONNACK rc=5 无权连接；网络层捕获 8883 ESTAB；BLE DATA_OK 与 UI 一致；证书维度 PASS、认证层缺口另记；UI broker 标签未渲染已披露）
 artifacts/software_test_report_cert8883_r3.md | active | 软件测试：8883 证书修复第 3 轮独立验证（上传受理修复后真实 App 上传 HTTP 200/进入 mysql 写库/待发箱清零/同键重放 inserted=0；SRV-01/CLI-02/REG-03/P0 PASS；字段级回读与 P1 NOT EXECUTED；待人工条件）
 artifacts/software_test_report_cert8883_r4.md | active | 软件测试：8883 证书修复第 4 轮最终复验（人工确认不要求字段级回读后，当前版本真实 App 两次上传 HTTP 200/待发箱清零/新增本地读数/同键重放 inserted=0；SRV-01/CLI-02/REG-03/UPLOAD-04 上传维度/P0 PASS；字段级回读经人工确认未执行；P1 未执行且未明确豁免，交付整体 TEST_FAIL EXTERNAL_CONDITION_UNEXECUTED）
+artifacts/software_test_report_cert8883_reg03_r7.md | active | 软件测试：CERT8883-REG-03 第 7 轮不受影响路径回归（8883 TLS listener、1883 可连、18083 /status 200、5000 / 404 与 /login、/upload_data 405+允许方法集合、3306 MySQL 9.0.1 握手；8083/8084 手机侧超时与基线一致记为既有差异；手机侧有界端口扫描未发现新增免校验/诊断入口，鉴权边界未放宽；App PID/前台服务/DATA_OK+CONNECT_FAILED 终态、无新增崩溃/ANR；主机 connect-only 受 TUN 拦截判无效；TEST_PASS 仅限本用例范围）
 artifacts/software_test_report_cert8883_srv01_r5.md | active | 软件测试：CERT8883-SRV-01 独立核验第 5 轮（2026-11-26T03:10Z 实测 8883 叶子 issuer=CN=Tiktok Root CA, O=LinkValue、SAN 含 IP:8.140.23.253、-verify_ip 返回 0、负例 8.140.23.254 被拒、serial …B83 已从基线 …B82 变更且与签发记录一致、notAfter 2028-11-24；信任锚指纹未变；本用例 TEST_PASS，仅限该用例范围）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
 artifacts/system_analysis_current.md | active | 系统架构：最新需求与旧1/3判据冲突、禁止调温调光功耗测试的当前边界、可复用候选版本及摘要、历史证据限制和后续集成缺口
@@ -652,6 +653,44 @@ evidence/backend_exploration/upload_contract_observations_g003.txt | active | BE
 evidence/backend_exploration/upload_contract_observations_rerun.txt | active | 桩实验复跑输出（13 用例/11×2xx/2×4xx/538 行/61440 B，与 2026-11-09 首跑逐项一致）
 evidence/backend_exploration/upload_contract_stub.py | active | 可复跑本地桩：13 个 /upload_data 请求覆盖负温/35.1℃/50 条批/重试幂等/同键冲突/精度/空集/缺字段/1 日 480 行；明确不可外推 MySQL 与真实服务
 evidence/build.md | active | 构建证据 BUILD-002 rev 6.4（F-1 修复后全量 rebuild 0 Error/1 既有告警、Code=25964、axf md5 a3b08774…；未下载）
+evidence/cert8883_reg03_20261126/ | active | CERT8883-REG-03 回归证据根：平台端口/HTTP/MySQL 与手机侧有界可达性、App 运行时/崩溃扫描、基线差异判定与可复跑只读脚本
+evidence/cert8883_reg03_20261126/00_precheck_identity.txt | active | 执行前 UTC/主机/git HEAD/工具版本/APK 主机与设备摘要/证书与信任锚基线引用
+evidence/cert8883_reg03_20261126/04_reg03_judgement.md | active | CERT8883-REG-03 逐项判定表、测量有效性说明、与既有基线差异与证据索引
+evidence/cert8883_reg03_20261126/10_phone_identity.txt | active | 设备型号/Android/API/serial/App PID/包路径
+evidence/cert8883_reg03_20261126/11_services.txt | active | MqtttService 前台与 Paho MqttService 绑定状态
+evidence/cert8883_reg03_20261126/12_ps_A.txt | active | 进程列表（App PID 14224）
+evidence/cert8883_reg03_20261126/13_logcat_since_1140.txt | active | 手机运行窗口 logcat（DATA_OK/CONNECT_FAILED/上传/CONNACK 5）
+evidence/cert8883_reg03_20261126/14_crash_buffer.txt | active | crash buffer（仅 11-25 旧崩溃 PID 31852）
+evidence/cert8883_reg03_20261126/15_events_recent.txt | active | events 缓冲（am_proc_start/am_crash 等）
+evidence/cert8883_reg03_20261126/16_activities.txt | active | mResumedActivity=MainActivity 证明 App 前台
+evidence/cert8883_reg03_20261126/17_window.txt | active | 窗口状态原始输出
+evidence/cert8883_reg03_20261126/18_airplane.txt | active | 飞行模式状态
+evidence/cert8883_reg03_20261126/19_connectivity.txt | active | 网络连接状态（Wi-Fi CONNECTED）
+evidence/cert8883_reg03_20261126/21_dumpsys_package.txt | active | versionCode 10/versionName 1.9 与权限
+evidence/cert8883_reg03_20261126/30_phone_scan.txt | active | 窗口扫描：崩溃/ANR/TLS 错误 0、DATA_OK/CONNECT_FAILED/上传行
+evidence/cert8883_reg03_20261126/31_tls_probe.txt | active | Python TLS 握手（主机，已记录 cert_fingerprint API 缺失后由 openssl 补证）
+evidence/cert8883_reg03_20261126/32_http_probes.txt | active | 18083/5000 GET-only 原始响应（200/404/405/401）
+evidence/cert8883_reg03_20261126/33_tcp_connect.txt | active | 主机 TCP connect 过程记录（受 TUN 拦截，不作可达性结论）
+evidence/cert8883_reg03_20261126/34_mysql_greeting.txt | active | MySQL 协议 10 / server_version 9.0.1（未认证）
+evidence/cert8883_reg03_20261126/35_bounded_port_scan.txt | active | 主机有界端口扫描原始输出（因 TUN 拦截判无效）
+evidence/cert8883_reg03_20261126/36_probe_timestamps.txt | active | 探测起止 UTC
+evidence/cert8883_reg03_20261126/37_host_scan_control.txt | active | 控制端口 1/9/9999/65000 均本地 OPEN，证明主机 connect-only 不可信
+evidence/cert8883_reg03_20261126/38_openssl_s_client.txt | active | openssl s_client：TLSv1.3、以 jd-ca.crt 校验 OK、verify_ip 返回 0
+evidence/cert8883_reg03_20261126/39_jdca_fingerprint.txt | active | 信任锚 X.509 SHA-256 与文件摘要（未变更）
+evidence/cert8883_reg03_20261126/40_phone_port_probe.txt | active | 手机侧 45 端口有界可达性（权威；仅 22/80/443/1883/8883/18083/5000/3306 可达）
+evidence/cert8883_reg03_20261126/41_web_ports_identity.txt | active | 80 Caddy 308→https、443 无站点 TLS 错误（既有主机服务）
+evidence/cert8883_reg03_20261126/42_foreground_state.txt | active | 前台/网络状态汇总
+evidence/cert8883_reg03_20261126/43_phone_network.txt | active | wlan0 192.168.0.103 与路由
+evidence/cert8883_reg03_20261126/44_wifi_head.txt | active | Wi-Fi 状态采样（ZTE_607157）
+evidence/cert8883_reg03_20261126/45_ui_dump.xml | active | UI 树（网关连接失败文案、温度）
+evidence/cert8883_reg03_20261126/46_wifi_full.txt | active | 完整 wifi dump（当前 mWifiInfo SSID ZTE_607157）
+evidence/cert8883_reg03_20261126/47_ui_screenshot.png | active | UI 截图（CONNECT_FAILED 终态）
+evidence/cert8883_reg03_20261126/48_logcat_since_1151.txt | active | 11:51 后 logcat（DATA_OK、CONNECT_FAILED、非 App 的 uia2 进程）
+evidence/cert8883_reg03_20261126/49_crash_buffer_end.txt | active | 结束时 crash buffer（无新增）
+evidence/cert8883_reg03_20261126/50_phone_remaining_ports.txt | active | 手机侧对服务器既有监听集合剩余端口（53/21115-21119/32969/44865）的可达性
+evidence/cert8883_reg03_20261126/51_high_ports_identity.txt | active | 21115/21116/21117 的 HTTP GET/原始读取尝试（无响应，身份未识别，既有暴露披露）
+evidence/cert8883_reg03_20261126/host_scan_control.py | active | 主机 connect-only 有效性控制脚本
+evidence/cert8883_reg03_20261126/reg03_probe.py | active | 可复跑只读探测脚本（TLS/HTTP/MySQL/有界扫描/手机离线扫描）
 evidence/cert8883_srv01_20261126/ | active | CERT8883-SRV-01 独立核验证据根：执行前身份、脚本完整输出、s_client 原文、叶子字段/链/正负例、判定表与握手稳定性采样
 evidence/cert8883_srv01_20261126/00_precheck_identity.txt | active | 执行前 UTC/主机/openssl version、jd-ca.crt 指纹与文件摘要、缺陷基线引用
 evidence/cert8883_srv01_20261126/01_srv_cert_verify_expect_new.txt | active | emqx_8883_cert_verify.sh --expect-new 完整原始输出（RESULT 行与 overall=PASS）

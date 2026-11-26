@@ -1,0 +1,32 @@
+# CERT8883-REG-03 precheck identity
+utc_start=2026-11-26T03:56:53Z
+host=kason / MINGW64_NT-10.0-26120 3.4.7-ea781829.x86_64 x86_64
+git_head=e9a1b825c7c2b7af44872a6ddde447411d2feb9b
+git_status_porcelain_lines=1
+openssl=OpenSSL 3.1.2 1 Aug 2023 (Library: OpenSSL 3.1.2 1 Aug 2023)
+curl=curl 8.2.1 (x86_64-w64-mingw32) libcurl/8.2.1 Schannel zlib/1.3 brotli/1.0.9 zstd/1.5.5 libidn2/2.3.4 libpsl/0.21.2 (+libidn2/2.3.3) libssh2/1.11.0
+python=Python 3.10.9
+--- app package (dumpsys head) ---
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        93d3c5b com.jinyuni.dengbei_care/.MainActivity filter 1ecc78e
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      android.intent.action.BATTERY_OKAY:
+        d89cf8 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter 1e15bbc
+          Action: "android.intent.action.BATTERY_OKAY"
+--- host APK ---
+-rw-r--r-- 1 kason 197121 10370964 Nov 13 12:49 dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+80232c50f5b132da8747d389fb11402e5110faaf0f740107da202ef8e7d3de4b *dengbei_care/app/build/outputs/apk/debug/app-debug.apk
+--- device base.apk ---
+device_apk_path=/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk
+sha256sum: C:/Program: No such file or directory
+sha256sum: Files/Git/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk: No such file or directory
+--- defect/cert baseline refs (comparison only) ---
+defect_leaf_serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB82 (old)
+current_leaf_serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83 (CERT8883-SRV-01 r5 PASS)
+jdca_x509_sha256=75:33:09:B3:9F:1B:8F:85:B4:D7:57:76:BF:D3:8A:42:52:0D:C1:A0:5E:A2:0B:A3:11:7E:B3:9C:BA:B2:15:2B

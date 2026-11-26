@@ -1,0 +1,30 @@
+# phone identity UTC 2026-11-26T03:51:28Z
+serial=12f046690506
+model=Redmi 8A
+release=10
+sdk=29
+device_date_utc=2026-11-26T03:51:26Z
+pid=14224
+--- package ---
+Activity Resolver Table:
+  Non-Data Actions:
+      android.intent.action.MAIN:
+        93d3c5b com.jinyuni.dengbei_care/.MainActivity filter 1ecc78e
+          Action: "android.intent.action.MAIN"
+          Category: "android.intent.category.LAUNCHER"
+
+Receiver Resolver Table:
+  Non-Data Actions:
+      android.intent.action.BATTERY_OKAY:
+        d89cf8 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy filter 1e15bbc
+          Action: "android.intent.action.BATTERY_OKAY"
+          Action: "android.intent.action.BATTERY_LOW"
+      android.intent.action.ACTION_POWER_DISCONNECTED:
+        bde95d1 com.jinyuni.dengbei_care/androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy filter c726baf
+          Action: "android.intent.action.ACTION_POWER_CONNECTED"
+          Action: "android.intent.action.ACTION_POWER_DISCONNECTED"
+      androidx.profileinstaller.action.SAVE_PROFILE:
+        11a836 com.jinyuni.dengbei_care/androidx.profileinstaller.ProfileInstallReceiver filter f5f6654
+          Action: "androidx.profileinstaller.action.SAVE_PROFILE"
+--- apk path ---
+package:/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk
