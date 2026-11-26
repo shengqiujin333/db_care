@@ -1,0 +1,77 @@
+# EMB-VER-IDENT-20261126 原始工具结果（只读观测，未烧录、未复位）
+# 采集时刻均为 UTC（本机本地时间 = UTC+8）。原始串口字节见同目录 capture_w1_300s.cap / capture_w2_200s.cap。
+
+## 0. 仓库身份（只读）
+workspace: D:\mypro\beiwo2\AIP
+branch: main
+HEAD: 635ab5a63e76187719a512ba72fc5d03460966ea (2026-11-26 23:11:15 +0800) [role:software_tester] Update project work
+git status --porcelain (开工): 空（clean）
+产品固件源（USER/MDK/COMMON/UM2005C）相对实现提交 82a7e74 的差异：
+  git diff --stat 82a7e74..HEAD -- <sensor>/{USER,MDK,COMMON,UM2005C}
+  -> 空（产品源码未变化；82a7e74 之后仅 test/ 宿主测试文件与其它角色产物变化）
+Keil 工程: MDK/Project.uvprojx  Device=CW32L010F8  Vendor=WHXY  TargetName=Project
+
+## 1. serial_list_ports  (started 2026-11-26T15:15:02.106227+00:00, finished 15:15:02.111149+00:00, exit 0)
+[
+  {
+    "port": "COM43",
+    "description": "Prolific USB-to-Serial Comm Port (COM43)",
+    "hwid": "USB VID:PID=067B:2303 SER= LOCATION=1-9.4.2",
+    "vid": 1659,
+    "pid": 8963,
+    "serial_number": ""
+  },
+  {
+    "port": "COM26",
+    "description": "USB 串行设备 (COM26)",
+    "hwid": "USB VID:PID=C251:F001 SER=87094109484987710672FF50",
+    "vid": 49745,
+    "pid": 61441,
+    "serial_number": "87094109484987710672FF50"
+  }
+]
+
+## 2. usb_list_devices  (started 2026-11-26T15:15:02.201710+00:00, finished 15:15:04.033989+00:00, exit 0)
+# 说明：PowerShell 输出的中文 FriendlyName 在本管道中出现编码损坏（显示为乱码），InstanceId 为原始可靠字段。
+# 摘录与目标相关条目（完整列表见工具原始返回）：
+USB\VID_C251&PID_F001&MI_02\...                 HIDClass   (CW-DAPLink 复合设备)
+USB\VID_067B&PID_2303\7&298A15B9&0&2            Ports      Prolific USB-to-Serial Comm Port (COM43)
+USB\VID_C251&PID_F001&MI_00\...                 Ports      USB 串行设备 (COM26)
+USB\VID_C251&PID_F001\87094109484987710672FF50   USB        USB Composite Device   (CW-DAPLink SN)
+USB\VID_18D1&PID_4EE7\12F046690506               USBDevice  SDM439-QRD _SN:3AE89DF1 (Redmi 8A)
+USB\VID_04B4&PID_8613\7&298A15B9&0&4             USBDevice  Unknown Device #1 (Cypress FX2 逻辑分析仪)
+（无示波器、电流表/SMU 条目）
+
+## 3. serial_capture 窗口 1  (tool: serial_capture, port=COM43, baudrate=9600, duration_sec=300)
+started_at : 2026-11-26T15:17:08.477379+00:00
+finished_at: 2026-11-26T15:22:08.692375+00:00
+success=True exit_code=0 bytes_received=162
+artifact   : roles/embedded_tester/work/verification_tools/serial-capture-1795706528691376600.bin
+raw (162 B, sha256 51548965a2ea00569625f2228d2a2928cc8a4d2da7f9c6446409c403698cc452):
+S k=4752 p=364 H=1 V=0 o=8 n=3947 x=3950 a=3948 D=0 t=350 h=242 q=1 r=0 s=0 y=0\r\n
+S k=4755 p=350 H=1 V=0 o=8 n=3947 x=3951 a=3948 D=0 t=341 h=251 q=1 r=0 s=0 y=0\r\n
+
+## 4. serial_capture 窗口 2  (tool: serial_capture, port=COM43, baudrate=9600, duration_sec=200)
+started_at : 2026-11-26T15:23:19.919004+00:00
+finished_at: 2026-11-26T15:26:40.127529+00:00
+success=True exit_code=0 bytes_received=81
+artifact   : roles/embedded_tester/work/verification_tools/serial-capture-1795706800126531800.bin
+raw (81 B, sha256 e67ab2fd2741ab57d12bd449e947f341d0e7354b3bd6cbdaa7a7769dfbf76f23):
+S k=4758 p=341 H=1 V=0 o=8 n=3945 x=3950 a=3947 D=0 t=336 h=258 q=1 r=0 s=0 y=0\r\n
+
+## 5. 发布包身份复算（只读，2026-11-26T15:24Z 前后）
+fw_release/fw_sensor_FD-002r8.zip  134791 B  md5 5df0c6d45ecddc8aae8bddbbcfc9cfdf  sha256 16ad3f69a9c83fc4984cf6efa2d9c0f43b5c5498716b5f253df090ef955bf4d0
+  member fw_sensor_FD-002r8_b6a15fed.axf  297380 B  md5 b6a15fed2ed5e3d0c4adc51ac87a4830  sha256 891dbdffd547bd506127fe88c3d7be3fbca0e5e462371d1f162c2187ebec3f95
+  member fw_sensor_FD-002r8_4d728dec.hex   75275 B  md5 4d728dec9b0d28a352c46436b7586c72  sha256 56fe3d555f6300e91507fb56970480e26668c58da6491b48e35c4e80024fab65
+  member PACKAGE.txt                        3202 B  md5 a58f67fcf5b760767ff5b65888c73dfb  sha256 77b349e67df97d34c7e2abfe91a303c20de290984ef98d9d4aff921a4b28bad7
+
+## 6. 手机只读枚举（仅记录环境上下文；App 身份判定属后续独立节点，本文件不作结论）
+adb devices -l (2026-11-26T15:15Z 前后):
+  12f046690506  device product:olivelite model:Redmi_8A device:olivelite transport_id:1
+pm list packages (267 行) 中无 com.jinyuni.dengbei_care / jinyuni 命中；App 当前未安装。
+
+## 7. 未执行的操作（本轮明确不做）
+- 未执行 mdk_build / mdk_flash / 任何烧录或擦除；本轮板件运行状态未被本能力改变。
+- 未主动复位、未断电、未触发 BOOT 上电五行；因此本轮无 BOOT/VDD/IOTEST/IOSIG/BUS 新捕获，uid 未重新回读。
+- 未运行 sigrok_probe / sigrok_capture（逻辑分析仪非本节点必需；且探针会访问 USB 并可能重新枚举）。
+- 未写产品源码，未改工程/权限/环境配置。

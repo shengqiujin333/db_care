@@ -1,0 +1,35 @@
+== capture_w1_300s.cap ==
+bytes=162 sha256=51548965a2ea00569625f2228d2a2928cc8a4d2da7f9c6446409c403698cc452
+raw repr: b'S k=4752 p=364 H=1 V=0 o=8 n=3947 x=3950 a=3948 D=0 t=350 h=242 q=1 r=0 s=0 y=0\r\nS k=4755 p=350 H=1 V=0 o=8 n=3947 x=3951 a=3948 D=0 t=341 h=251 q=1 r=0 s=0 y=0\r\n'
+  S#0 len=81(<=96) S k=4752 p=364 H=1 V=0 o=8 n=3947 x=3950 a=3948 D=0 t=350 h=242 q=1 r=0 s=0 y=0
+  S#1 len=81(<=96) S k=4755 p=350 H=1 V=0 o=8 n=3947 x=3951 a=3948 D=0 t=341 h=251 q=1 r=0 s=0 y=0
+== capture_w2_200s.cap ==
+bytes=81 sha256=e67ab2fd2741ab57d12bd449e947f341d0e7354b3bd6cbdaa7a7769dfbf76f23
+raw repr: b'S k=4758 p=341 H=1 V=0 o=8 n=3945 x=3950 a=3947 D=0 t=336 h=258 q=1 r=0 s=0 y=0\r\n'
+  S#0 len=81(<=96) S k=4758 p=341 H=1 V=0 o=8 n=3945 x=3950 a=3947 D=0 t=336 h=258 q=1 r=0 s=0 y=0
+
+== cadence / chain continuity ==
+  k 4752 -> 4755 (dk=3)
+  prev-sample t=350 vs this p=350 (chain OK)
+  H=1 V=0 D=0 q=1 r=0 s=0 y=0
+  k 4755 -> 4758 (dk=3)
+  prev-sample t=341 vs this p=341 (chain OK)
+  H=1 V=0 D=0 q=1 r=0 s=0 y=0
+
+== uptime consistency vs EV-041 last verified download ==
+  EV-041 flash end       : 2026-11-23T08:13:24.274000+00:00
+  first observed S k     : 4752  (inside window 2026-11-26T15:17:08.477379+00:00 .. 2026-11-26T15:22:08.692375+00:00)
+  elapsed since flash    : 4743.74 .. 4748.74 min
+  k - elapsed(window end): +3.26 min (+0.069 %)
+  A reset/flash after EV-041 would restart rtc_tick_total at 0 (RAM counter);
+  k=4752 is consistent with continuous run since the last verified download.
+
+== threshold / default-config signature ==
+  capture_w1_300s.cap: t=350 -> r=0 (strict >350 rule: consistent); V=0 D=0 (LIGHT_DARK_THRESHOLD_CODE=0 default); o=8 (LIGHT_ADC_SAMPLES=8)
+  capture_w1_300s.cap: t=341 -> r=0 (strict >350 rule: consistent); V=0 D=0 (LIGHT_DARK_THRESHOLD_CODE=0 default); o=8 (LIGHT_ADC_SAMPLES=8)
+  capture_w2_200s.cap: t=336 -> r=0 (strict >350 rule: consistent); V=0 D=0 (LIGHT_DARK_THRESHOLD_CODE=0 default); o=8 (LIGHT_ADC_SAMPLES=8)
+
+== verdict inputs ==
+  S lines observed: 3 across two windows (~9.5 min wall time)
+  P/G lines observed: 0 (no report/send attempt, no sample failure)
+  BOOT/VDD/IOTEST/IOSIG/BUS: not observed this round (no reset by design)

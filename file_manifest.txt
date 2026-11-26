@@ -1216,6 +1216,13 @@ evidence/e2e_p0/platform_stage_retest_network.txt | active | 平台段复测：d
 evidence/e2e_p0/platform_stage_tcp_rtt_probe.txt | active | 主机 TCP connect 延迟原始结果（服务端口与控制端口对比，均亚毫秒接受）
 evidence/embedded_verify_diag_item001.py | active | 实板诊断行独立复核脚本（ITEM-001：BUS/S/G 行字节级复核）
 evidence/embedded_verify_gxht40_item002.py | active | 实板判定脚本（当前轮）：解析 COM42 原始捕获的 BOOT/VDD/IOTEST/IOSIG/BUS/S/G 行，含 H ACCEPT 等硬门禁与 --selftest 定向变异自检
+evidence/embedded_verify_identity_20261126/ | active | 运行中固件身份核查原始证据目录（不改板、不烧录、不复位；COM43 两段被动采集、发布包复算、解析脚本与报告）
+evidence/embedded_verify_identity_20261126/capture_analysis.txt | active | 两次 COM43 采集的解析：3 条 S 行、k 步长 +3、p 链衔接、与 EV-041 下载后经过时间一致性（+0.069 %）、默认判据签名
+evidence/embedded_verify_identity_20261126/capture_w1_300s.cap | active | W1 原始串口字节 162 B（2026-11-26T15:17:08–15:22:08Z，COM43 9600 8N1）
+evidence/embedded_verify_identity_20261126/capture_w2_200s.cap | active | W2 原始串口字节 81 B（2026-11-26T15:23:19–15:26:40Z，COM43 9600 8N1）
+evidence/embedded_verify_identity_20261126/parse_identity_capture.py | active | 运行中固件身份核查的可复跑只读解析脚本（节拍/p 链/运行时间/判据签名）
+evidence/embedded_verify_identity_20261126/test_report.md | active | 运行中固件身份核查 TestEvidence（EV-EMB-IDENT-20261126）：本项 TEST_PASS 及证据边界、未执行项
+evidence/embedded_verify_identity_20261126/tool_results.txt | active | 本轮工具原始返回、时间戳、仓库/发布包身份复算与未执行操作清单
 evidence/embedded_verify_uart_trace_item001.py | active | 实板 UART1 调试串口独立复核脚本（ITEM-001：S 行字段/时序）
 evidence/ev012/ | history | EV-012 原始证据目录（5 份 .cap 捕获、flash 日志、run.sh；明细见目录内文件与 evidence/test.md）
 evidence/ev013/ | history | EV-013 原始证据目录（4 份 .cap、下载日志、collect/chain/run 脚本、判定与 selftest 输出）
