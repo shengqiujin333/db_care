@@ -1,0 +1,19 @@
+== release package ==
+path: fw_release/fw_sensor_FD-002r8.zip
+size: 134791
+md5: 5df0c6d45ecddc8aae8bddbbcfc9cfdf
+sha256: 16ad3f69a9c83fc4984cf6efa2d9c0f43b5c5498716b5f253df090ef955bf4d0
+members:
+  fw_sensor_FD-002r8_b6a15fed.axf          297380
+  fw_sensor_FD-002r8_4d728dec.hex          75275
+  PACKAGE.txt                              3202
+test-string hits: NONE
+
+== Keil project targets ==
+targets: ['Project']
+Define entries: ['', '']
+project contains SENSOR_TEST_INJECT: False
+project contains TINJ: False
+
+== source scan ==
+source files containing injection markers: NONE

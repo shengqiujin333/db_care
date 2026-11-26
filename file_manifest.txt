@@ -114,6 +114,7 @@ artifacts/monitoring_reliability_8883.yaml | active | MonitoringArtifact 指针�
 artifacts/monitoring_reliability_upload_contract.yaml | active | MonitoringArtifact 指针：上传受理修复后可靠性观测与监控方案
 artifacts/software_e2e_plan.md | history | 历史软件端到端测试计划 E2E-SW-004 rev 4.0（AA-005 七项增量；当前 AA-006 阶段不适用，跨链路联调属后续阶段）
 artifacts/software_failure_analysis_cert8883_upload401.md | active | 软件测试：CERT8883-UPLOAD-04 上传 401 失败分析（只读核实部署处理器要求 X-Upload-Token，App 按 IC-002 不发送该头；判定 REPAIR_REQUIRED，对象为平台 /upload_data 受理逻辑；含竞争假设排除、影响范围与复验判据）
+artifacts/software_failure_analysis_e2e_joint_p1.md | active | 软件测试：E2E-JOINT-P1 第 1 轮 TEST_FAIL 失败分析（证书/TLS 维度同窗口 PASS 但不等于 P1；四段因缺测试构建/注入、已确认 mac_addr 与身份、平台字段级回读授权、嵌入式 COM43 观测而 NOT EXECUTED；判定 EXTERNAL_CONDITION_MISSING，含竞争假设、责任方、准备动作与复验判据，未证实产品实现缺陷）
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-005 rev 5.0（AA-006 ITEM-001..003 扫描权限自动续跑/BLE 读取终态/报告再生成反馈逐条追踪；宿主机映射矩阵、静态核查、真机 API29 与真实网关 devCount=0 用例、证据边界、人工延期与阶段外项、最终判定规则）
 artifacts/software_test_design_cert8883.md | active | 软件测试：8883 证书与客户端地址不匹配修复测试设计 TD-CERT8883-001 v1.0（原 CA 签发/链/IP SAN/负例、App TLS/CONNACK 真实复验、不受影响路径回归、安卓上传与 P1 四段一致条件、信任锚变更分支、证据/退出准则/NOT EXECUTED；只做设计不执行）
 artifacts/software_test_report_cert8883.md | active | 软件测试：8883 证书修复后独立验证报告（两轮；SRV-01 PASS、CLI-02 TLS 维度 PASS/CONNACK rc=5 认证层另记、REG-03 PASS；UPLOAD-04 第 2 轮用模拟账号真实上传实测平台 401 FAIL、无受理行故持久化回读 NOT EXECUTED；P0 证书维度 PASS、P1 NOT EXECUTED；含竞争假设、证据索引与残留状态披露）
@@ -2256,6 +2257,9 @@ evidence/software_triage.md | active | 负责角色：软件测试。Android 软
 evidence/software_triage_cert8883_upload401_20261125/01_abr_upload_handler_redacted.txt | active | 只读 SSH 证据：服务单元/部署对象元数据、脱敏的 upload_data 处理器摘录、UPLOAD_TOKEN 元数据（不含值）、2026-09-26 备份对比
 evidence/software_triage_cert8883_upload401_20261125/check_no_secret_leak.py | active | 本地脱敏检查脚本（仅统计候选敏感字面量是否出现在证据文件，不输出值）
 evidence/software_triage_cert8883_upload401_20261125/read_upload_handler_ssh.py | active | 可复跑的只读 SSH 探针（stat/读取部署脚本、输出前脱敏、无写接口/DB/服务变更）
+evidence/software_triage_e2e_joint_p1_20261126/ | active | E2E-JOINT-P1 失败分析支撑证据目录（固件测试构建重跑审计、源码/配置只读交叉核对）
+evidence/software_triage_e2e_joint_p1_20261126/01_fw_testbuild_audit_rerun.txt | active | 本轮重跑的只读固件测试构建/正式包排除审计（发布包摘要、Keil target/Define、源码注入标记均为空）
+evidence/software_triage_e2e_joint_p1_20261126/02_source_and_config_crosscheck.md | active | 只读交叉核对：measure_sample/sensor_decide_report 注入点无测试分支、App 发布分支与 MQTT 凭据来源、平台仅 POST 无回读、TLS 校验通过、本地库温度 36.7 可区分性（含湿度同值披露）
 evidence/software_verify_aa005_android_check.py | active | AA-005 七项增量独立静态核查（54 项：权限/MAC 单一来源/旧状态清零/容量与完整性接线/上传分类与阻塞/规则文案/版本/清单；退出码 0/1；含 FINDING E6）
 evidence/software_verify_card_status_item011.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_cert8883_20261125/01_srv_cert_verify.txt | active | 8883 叶子证书独立核验原始输出（tls_handshake/issuer/serial/SAN/chain/verify_ip/负例/serial_changed/overall=PASS）
