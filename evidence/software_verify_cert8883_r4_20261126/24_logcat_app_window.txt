@@ -1,0 +1,325 @@
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: FATAL EXCEPTION: main
+11-26 05:46:52.632 32061 32102 I CloudUpload: uploaded 9 reading(s)
+11-26 05:49:06.243 32061 32102 I CloudUpload: uploaded 1 reading(s)
+11-26 10:36:22.314 12980 12980 D MqttService: onResume called
+11-26 10:36:22.584 12980 12980 I MqttService: delayalarm=10.0
+11-26 10:39:22.620 12980 13013 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=0200000000A1 (平台身份)
+11-26 10:39:22.621 12980 13013 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 10:39:22.621 12980 13013 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-26 10:39:22.629 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:39:22.629 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:39:22.630 12980 13013 D BluetoothGatt: registerApp() - UUID=bbe5f55f-ec40-4936-99b5-20e76719695b
+11-26 10:39:22.634 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:39:23.127 12980 12998 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:39:23.128 12980 12998 I MqttService: Connected to device, discovering services...
+11-26 10:39:23.142 12980 12998 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:39:38.640 12980 13013 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 10:39:38.640 12980 13013 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 10:39:38.640 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 10:39:38.640 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 10:39:38.640 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 10:39:38.640 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 10:39:38.640 12980 13013 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 10:39:38.640 12980 13013 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:39:38.641 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:39:38.642 12980 13013 D BluetoothGatt: close()
+11-26 10:39:38.643 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:39:38.646 12980 13013 I MqttService: Retrying connection after delay...
+11-26 10:39:40.648 12980 13013 I MqttService: Attempt 2 to connect to Bluetooth device...
+11-26 10:39:40.653 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:39:40.653 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:39:40.653 12980 13013 D BluetoothGatt: registerApp() - UUID=4d0c5a2d-4317-4c8c-b6ab-1feb2f659430
+11-26 10:39:40.657 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:39:41.214 12980 12998 D BluetoothGatt: onClientConnectionState() - status=133 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:39:41.214 12980 12998 I MqttService: Connect error status=133
+11-26 10:39:41.217 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:39:41.219 12980 13013 D BluetoothGatt: close()
+11-26 10:39:41.219 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:39:41.223 12980 13013 I MqttService: Retrying connection after delay...
+11-26 10:39:43.226 12980 13013 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-26 10:39:43.231 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:39:43.231 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:39:43.231 12980 13013 D BluetoothGatt: registerApp() - UUID=4fff593e-a8a7-4c62-8b00-7fc5a9a954cb
+11-26 10:39:43.235 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:39:43.992 12980 12998 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:39:43.992 12980 12998 I MqttService: Connected to device, discovering services...
+11-26 10:39:44.014 12980 12998 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:39:59.240 12980 13013 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 10:39:59.240 12980 13013 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 10:39:59.240 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 10:39:59.240 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 10:39:59.240 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 10:39:59.240 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 10:39:59.240 12980 13013 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 10:39:59.240 12980 13013 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:39:59.240 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:39:59.242 12980 13013 D BluetoothGatt: close()
+11-26 10:39:59.242 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:39:59.246 12980 13013 I MqttService: Retrying connection after delay...
+11-26 10:40:01.248 12980 13013 I MqttService: Attempt 4 to connect to Bluetooth device...
+11-26 10:40:01.253 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:40:01.253 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:40:01.254 12980 13013 D BluetoothGatt: registerApp() - UUID=b587381e-6c7d-4e37-95da-82e0949d9261
+11-26 10:40:01.257 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:40:01.642 12980 12998 D BluetoothGatt: onClientConnectionState() - status=133 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:40:01.642 12980 12998 I MqttService: Connect error status=133
+11-26 10:40:01.645 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:40:01.646 12980 13013 D BluetoothGatt: close()
+11-26 10:40:01.646 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:40:01.650 12980 13013 I MqttService: Retrying connection after delay...
+11-26 10:40:03.653 12980 13013 I MqttService: Attempt 5 to connect to Bluetooth device...
+11-26 10:40:03.658 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:40:03.658 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:40:03.659 12980 13013 D BluetoothGatt: registerApp() - UUID=b0354c8a-1266-4193-b85d-cae570b7cb6b
+11-26 10:40:03.662 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:40:04.715 12980 12998 D BluetoothGatt: onClientConnectionState() - status=133 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:40:04.715 12980 12998 I MqttService: Connect error status=133
+11-26 10:40:04.717 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:40:04.719 12980 13013 D BluetoothGatt: close()
+11-26 10:40:04.719 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:40:04.722 12980 13013 I MqttService: Max attempts reached. Connection failed.
+11-26 10:40:04.722 12980 13013 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 10:41:22.650 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 10:41:22.667 12980 13013 I MqttService: Saved MAC address: 0200000000A1
+11-26 10:41:23.528 12980 13121 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-26 10:41:23.985 12980 13125 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-26 10:41:24.035 12980 12980 E MqttService: Failed to connect to broker
+11-26 10:41:24.035 12980 12980 E MqttService: 无权连接 (5)
+11-26 10:41:24.035 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-26 10:41:24.035 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-26 10:41:24.035 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-26 10:41:24.035 12980 12980 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:43:04.747 12980 13013 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=0200000000A1 (平台身份)
+11-26 10:43:04.747 12980 13013 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 10:43:04.748 12980 13013 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-26 10:43:04.751 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:43:04.751 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:43:04.751 12980 13013 D BluetoothGatt: registerApp() - UUID=a29e0ab2-a9bb-4ae1-92c9-ff45b8d121ef
+11-26 10:43:04.755 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:43:05.134 12980 12998 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:43:05.135 12980 12998 I MqttService: Connected to device, discovering services...
+11-26 10:43:05.143 12980 12998 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:43:06.534 12980 12998 D BluetoothGatt: onConfigureMTU() - Device=84:C2:E4:03:02:02 mtu=240 status=0
+11-26 10:43:06.535 12980 12998 I MqttService: MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-26 10:43:06.536 12980 12998 D BluetoothGatt: discoverServices() - device: 84:C2:E4:03:02:02
+11-26 10:43:06.543 12980 12998 D BluetoothGatt: onSearchComplete() = Device=84:C2:E4:03:02:02 Status=0
+11-26 10:43:07.216 12980 12998 I MqttService: cipher length = 160
+11-26 10:43:07.242 12980 12998 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-26 10:43:07.244 12980 12998 I MqttService:  id=6A002C00, H=36.3%, T=21.1°C
+11-26 10:43:07.344 12980 12998 W MediaPlayer: 	at com.jinyuni.dengbei_care.MqtttService.processTemperatureHumidityData(MqtttService.kt:1223)
+11-26 10:43:07.344 12980 12998 W MediaPlayer: 	at com.jinyuni.dengbei_care.MqtttService.processBleSamples(MqtttService.kt:996)
+11-26 10:43:07.344 12980 12998 W MediaPlayer: 	at com.jinyuni.dengbei_care.MqtttService.access$processBleSamples(MqtttService.kt:111)
+11-26 10:43:07.344 12980 12998 W MediaPlayer: 	at com.jinyuni.dengbei_care.MqtttService$connectAndReadData$2$gattCallback$1.onCharacteristicRead(MqtttService.kt:927)
+11-26 10:43:07.344 12980 12998 W MediaPlayer: 	at android.bluetooth.BluetoothGatt$1$6.run(BluetoothGatt.java:394)
+11-26 10:43:07.344 12980 12998 W MediaPlayer: 	at android.bluetooth.BluetoothGatt.runOrQueueCallback(BluetoothGatt.java:780)
+11-26 10:43:07.344 12980 12998 W MediaPlayer: 	at android.bluetooth.BluetoothGatt.access$200(BluetoothGatt.java:41)
+11-26 10:43:07.344 12980 12998 W MediaPlayer: 	at android.bluetooth.BluetoothGatt$1.onCharacteristicRead(BluetoothGatt.java:388)
+11-26 10:43:07.344 12980 12998 W MediaPlayer: 	at android.bluetooth.IBluetoothGattCallback$Stub.onTransact(IBluetoothGattCallback.java:246)
+11-26 10:43:07.422 12980 12998 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 10:43）
+11-26 10:43:07.422 12980 12998 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 10:43:07.424 12980 12998 I MqttService: MQTT offline: keep latest BLE batch (bounded=1)
+11-26 10:43:07.426 12980 12998 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-26 10:43:07.507 12980 12998 I MqttService: Chunk written OK, left=0
+11-26 10:43:07.508 12980 12998 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:43:07.508 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:43:07.509 12980 12998 D BluetoothGatt: close()
+11-26 10:43:07.509 12980 13013 D BluetoothGatt: close()
+11-26 10:43:07.509 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:43:07.509 12980 12998 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:43:07.510 12980 13013 I MqttService: Successfully connected and read data on attempt 1
+11-26 10:43:07.832 12980 13013 I CloudUpload: uploaded 1 reading(s)
+11-26 10:46:07.535 12980 13013 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=0200000000A1 (平台身份)
+11-26 10:46:07.536 12980 13013 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 10:46:07.536 12980 13013 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-26 10:46:07.539 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:46:07.539 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:46:07.540 12980 13013 D BluetoothGatt: registerApp() - UUID=26c2acbb-5baa-4f71-9a94-80b945658570
+11-26 10:46:07.544 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:46:08.093 12980 12998 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:46:08.094 12980 12998 I MqttService: Connected to device, discovering services...
+11-26 10:46:08.105 12980 12998 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:46:22.691 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 10:46:22.714 12980 13013 I MqttService: Saved MAC address: 0200000000A1
+11-26 10:46:23.547 12980 13013 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 10:46:23.547 12980 13013 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 10:46:23.547 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 10:46:23.547 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 10:46:23.547 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 10:46:23.547 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 10:46:23.547 12980 13013 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 10:46:23.547 12980 13013 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:46:23.548 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:46:23.551 12980 13013 D BluetoothGatt: close()
+11-26 10:46:23.551 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:46:23.554 12980 13013 I MqttService: Retrying connection after delay...
+11-26 10:46:23.852 12980 13231 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-26 10:46:24.616 12980 13235 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-26 10:46:24.623 12980 12980 E MqttService: Failed to connect to broker
+11-26 10:46:24.623 12980 12980 E MqttService: 无权连接 (5)
+11-26 10:46:24.623 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-26 10:46:24.623 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-26 10:46:24.623 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-26 10:46:24.623 12980 12980 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:46:25.556 12980 13013 I MqttService: Attempt 2 to connect to Bluetooth device...
+11-26 10:46:25.561 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:46:25.561 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:46:25.561 12980 13013 D BluetoothGatt: registerApp() - UUID=a71bf57e-133b-4817-a3da-a269c29bb064
+11-26 10:46:25.565 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:46:26.081 12980 12998 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:46:26.081 12980 12998 I MqttService: Connected to device, discovering services...
+11-26 10:46:26.091 12980 12998 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:46:41.568 12980 13013 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 10:46:41.568 12980 13013 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 10:46:41.568 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 10:46:41.568 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 10:46:41.568 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 10:46:41.568 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 10:46:41.568 12980 13013 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 10:46:41.568 12980 13013 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:46:41.568 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:46:41.571 12980 13013 D BluetoothGatt: close()
+11-26 10:46:41.571 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:46:41.574 12980 13013 I MqttService: Retrying connection after delay...
+11-26 10:46:43.576 12980 13013 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-26 10:46:43.579 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:46:43.579 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:46:43.580 12980 13013 D BluetoothGatt: registerApp() - UUID=e070b9e0-5f4a-4139-9dc2-9179636205c8
+11-26 10:46:43.583 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:46:44.264 12980 12998 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:46:44.264 12980 12998 I MqttService: Connected to device, discovering services...
+11-26 10:46:44.274 12980 12998 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:46:59.586 12980 13013 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 10:46:59.586 12980 13013 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 10:46:59.586 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 10:46:59.586 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 10:46:59.586 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 10:46:59.586 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 10:46:59.586 12980 13013 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 10:46:59.586 12980 13013 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:46:59.586 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:46:59.589 12980 13013 D BluetoothGatt: close()
+11-26 10:46:59.589 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:46:59.595 12980 13013 I MqttService: Retrying connection after delay...
+11-26 10:47:01.597 12980 13013 I MqttService: Attempt 4 to connect to Bluetooth device...
+11-26 10:47:01.600 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:47:01.600 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:47:01.601 12980 13013 D BluetoothGatt: registerApp() - UUID=c1673788-d8a3-428d-9563-5c9f563e27e9
+11-26 10:47:01.604 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:47:02.059 12980 12998 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:47:02.059 12980 12998 I MqttService: Connected to device, discovering services...
+11-26 10:47:02.068 12980 12998 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:47:17.608 12980 13013 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 10:47:17.608 12980 13013 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 10:47:17.608 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 10:47:17.608 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 10:47:17.608 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 10:47:17.608 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 10:47:17.608 12980 13013 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 10:47:17.608 12980 13013 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:47:17.609 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:47:17.611 12980 13013 D BluetoothGatt: close()
+11-26 10:47:17.611 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:47:17.613 12980 13013 I MqttService: Retrying connection after delay...
+11-26 10:47:19.616 12980 13013 I MqttService: Attempt 5 to connect to Bluetooth device...
+11-26 10:47:19.619 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:47:19.619 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:47:19.619 12980 13013 D BluetoothGatt: registerApp() - UUID=e240cb83-11a6-49f3-92fe-d7503f0c4348
+11-26 10:47:19.623 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:47:20.001 12980 12998 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:47:20.001 12980 12998 I MqttService: Connected to device, discovering services...
+11-26 10:47:20.009 12980 12998 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:47:35.628 12980 13013 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 10:47:35.628 12980 13013 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 10:47:35.628 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 10:47:35.628 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 10:47:35.628 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 10:47:35.628 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 10:47:35.628 12980 13013 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 10:47:35.628 12980 13013 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:47:35.628 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:47:35.630 12980 13013 D BluetoothGatt: close()
+11-26 10:47:35.630 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:47:35.634 12980 13013 I MqttService: Max attempts reached. Connection failed.
+11-26 10:47:35.635 12980 13013 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 10:49:46.548 12980 12980 D MqttService: onPause called
+11-26 10:50:35.657 12980 13013 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=0200000000A1 (平台身份)
+11-26 10:50:35.658 12980 13013 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 10:50:35.658 12980 13013 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-26 10:50:35.661 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:50:35.661 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:50:35.661 12980 13013 D BluetoothGatt: registerApp() - UUID=397a4c21-1c94-4b4b-bda8-6367a3cbb2c7
+11-26 10:50:35.665 12980 12998 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:50:36.265 12980 12998 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:50:36.265 12980 12998 I MqttService: Connected to device, discovering services...
+11-26 10:50:36.274 12980 12998 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:50:51.670 12980 13013 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 10:50:51.670 12980 13013 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 10:50:51.670 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 10:50:51.670 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 10:50:51.670 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 10:50:51.670 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 10:50:51.670 12980 13013 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 10:50:51.670 12980 13013 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:50:51.671 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:50:51.674 12980 13013 D BluetoothGatt: close()
+11-26 10:50:51.675 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:50:51.678 12980 13013 I MqttService: Retrying connection after delay...
+11-26 10:50:53.681 12980 13013 I MqttService: Attempt 2 to connect to Bluetooth device...
+11-26 10:50:53.684 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:50:53.684 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:50:53.684 12980 13013 D BluetoothGatt: registerApp() - UUID=4a5f41df-e3e0-4d3d-b82e-4d724a15e94a
+11-26 10:50:53.688 12980 13000 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:50:54.497 12980 13000 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:50:54.497 12980 13000 I MqttService: Connected to device, discovering services...
+11-26 10:50:54.507 12980 13000 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:51:09.692 12980 13013 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 10:51:09.692 12980 13013 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 10:51:09.692 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 10:51:09.692 12980 13013 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 10:51:09.692 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 10:51:09.692 12980 13013 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 10:51:09.692 12980 13013 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 10:51:09.692 12980 13013 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:51:09.692 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:51:09.694 12980 13013 D BluetoothGatt: close()
+11-26 10:51:09.694 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:51:09.696 12980 13013 I MqttService: Retrying connection after delay...
+11-26 10:51:11.698 12980 13013 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-26 10:51:11.701 12980 13013 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 10:51:11.701 12980 13013 D BluetoothGatt: registerApp()
+11-26 10:51:11.702 12980 13013 D BluetoothGatt: registerApp() - UUID=32ce56d7-7624-4a6e-b966-e50c84c60188
+11-26 10:51:11.706 12980 13000 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 10:51:12.439 12980 13000 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 10:51:12.439 12980 13000 I MqttService: Connected to device, discovering services...
+11-26 10:51:12.448 12980 13000 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 10:51:14.133 12980 13000 D BluetoothGatt: onConfigureMTU() - Device=84:C2:E4:03:02:02 mtu=240 status=0
+11-26 10:51:14.134 12980 13000 I MqttService: MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-26 10:51:14.134 12980 13000 D BluetoothGatt: discoverServices() - device: 84:C2:E4:03:02:02
+11-26 10:51:14.140 12980 13000 D BluetoothGatt: onSearchComplete() = Device=84:C2:E4:03:02:02 Status=0
+11-26 10:51:15.058 12980 13000 I MqttService: cipher length = 160
+11-26 10:51:15.072 12980 13000 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-26 10:51:15.074 12980 13000 I MqttService:  id=6A002C00, H=36.3%, T=21.1°C
+11-26 10:51:15.111 12980 13000 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 10:51）
+11-26 10:51:15.111 12980 13000 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 10:51:15.113 12980 13000 I MqttService: MQTT offline: keep latest BLE batch (bounded=1)
+11-26 10:51:15.115 12980 13000 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-26 10:51:15.351 12980 13000 I MqttService: Chunk written OK, left=0
+11-26 10:51:15.351 12980 13000 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:51:15.354 12980 13000 D BluetoothGatt: close()
+11-26 10:51:15.354 12980 13000 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 10:51:15.354 12980 13013 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 10:51:15.356 12980 13013 D BluetoothGatt: close()
+11-26 10:51:15.356 12980 13013 D BluetoothGatt: unregisterApp() - mClientIf=0
+11-26 10:51:15.357 12980 13013 I MqttService: Successfully connected and read data on attempt 3
+11-26 10:51:15.533 12980 13013 I CloudUpload: uploaded 1 reading(s)
+11-26 10:51:22.717 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 10:51:22.741 12980 13013 I MqttService: Saved MAC address: 0200000000A1
+11-26 10:51:23.911 12980 13326 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-26 10:51:24.670 12980 13330 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-26 10:51:24.680 12980 12980 E MqttService: Failed to connect to broker
+11-26 10:51:24.680 12980 12980 E MqttService: 无权连接 (5)
+11-26 10:51:24.680 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-26 10:51:24.680 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-26 10:51:24.680 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-26 10:51:24.680 12980 12980 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 10:53:12.305 12980 12980 D MqttService: onResume called

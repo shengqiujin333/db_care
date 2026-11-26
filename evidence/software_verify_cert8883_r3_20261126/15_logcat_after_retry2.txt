@@ -1,0 +1,482 @@
+--------- beginning of main
+11-26 05:46:30.144     0     0 W swapper/4: type=1400 audit(0.0:43213): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 05:46:30.295   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:30.295   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:30.477  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:30.600  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:30.973  8097  8097 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-26 05:46:30.964  8097  8097 W app_process: type=1400 audit(0.0:43214): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:30.964  8097  8097 I chatty  : uid=2000(shell) app_process identical 1 line
+11-26 05:46:30.964  8097  8097 W app_process: type=1400 audit(0.0:43216): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:30.978  8097  8097 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-26 05:46:30.978  8097  8097 I AndroidRuntime: Using default boot image
+11-26 05:46:30.978  8097  8097 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-26 05:46:30.978  8097  8097 I AndroidRuntime: Leaving lock profiling enabled
+11-26 05:46:30.979  8097  8097 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-26 05:46:30.985  8097  8097 W app_process: Could not reserve sentinel fault page
+11-26 05:46:31.111  8097  8097 D ICU     : Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-26 05:46:31.177  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:31.296   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:31.296   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:31.428  8097  8097 W app_process: JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-26 05:46:31.443  8097  8097 D AndroidRuntime: Calling main entry com.wetest.uia2.Main
+11-26 05:46:31.454  8097  8097 I uidumper: [UiAutomator2Server] Starting Server
+11-26 05:46:31.489  8097  8097 D ThemeCompatibility: START loading theme compatibility config.
+11-26 05:46:31.489  8097  8097 D ThemeCompatibility: getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-26 05:46:31.496  8097  8097 D ThemeCompatibility: getConfigDocumentTree(): 140 vs -1
+11-26 05:46:31.496  8097  8097 D ThemeCompatibility:     parse file: /system/media/theme/theme_compatibility.xml
+11-26 05:46:31.501  8097  8097 D ThemeCompatibility: END loading: version=140 size=48
+11-26 05:46:31.502  8097  8097 E AssetManager: WTF--create system assets with illegal uid: 2000, gid:2000
+11-26 05:46:31.502  8097  8097 E AssetManager: java.lang.RuntimeException
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at android.content.res.Resources.<init>(Resources.java:285)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at java.lang.reflect.Method.invoke(Native Method)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at com.wetest.uia2.Main.main(Main.java:74)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-26 05:46:31.502  8097  8097 E AssetManager: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-26 05:46:31.494  8097  8097 W main    : type=1400 audit(0.0:43217): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-26 05:46:31.505  8097  8097 W asset   : unable to execute idmap2: Permission denied
+11-26 05:46:31.505  8097  8097 W AssetManager: 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-26 05:46:31.494  8097  8097 W main    : type=1400 audit(0.0:43218): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-26 05:46:31.508  8097  8097 W asset   : unable to execute idmap2: Permission denied
+11-26 05:46:31.508  8097  8097 W AssetManagerInjector: 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-26 05:46:31.535  8097  8097 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-26 05:46:31.579  8097  8097 W Java7Support: Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-26 05:46:31.712  8097  8097 I UiDevice: Creating a new instance, old instance exists: false
+11-26 05:46:31.732  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:31.735  8097  8097 D UiDevice: Setting accessibility service flags: 65618
+11-26 05:46:31.745  8097  8097 I uidumper: clipboardManager inited
+11-26 05:46:31.748  8097  8097 I uidumper: tmpdir is /data/local/tmp/u2
+11-26 05:46:31.767  8097  8097 I uidumper: http server listening on *:9008
+11-26 05:46:32.297   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:32.297   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:32.301  8097  8113 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:32.367  8097  8114 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "count", "params": [{"mask": 2097152, "childOrSibling": [], "childOrSiblingSelector": [], "resourceId": "com.jinyuni.dengbei_care:id/navigation_notifications"}]}}
+11-26 05:46:32.477  8097  8114 D UiObject: Waiting 0ms for UiSelector[RESOURCE_ID=com.jinyuni.dengbei_care:id/navigation_notifications].
+11-26 05:46:32.478  8097  8114 W QueryController: Could not detect idle state.
+11-26 05:46:32.506  8097  8114 I QueryController: Matched selector: UiSelector[RESOURCE_ID=com.jinyuni.dengbei_care:id/navigation_notifications] <<==>> [android.view.accessibility.AccessibilityNodeInfo@cd45; boundsInParent: Rect(0, 0 - 240, 160); boundsInScreen: Rect(480, 1360 - 720, 1520); packageName: com.jinyuni.dengbei_care; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: ÊàëÁöÑ; tooltipText: ÊàëÁöÑ; viewIdResName: com.jinyuni.dengbei_care:id/navigation_notifications; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: true; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_CLICK - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null, AccessibilityAction: ACTION_SHOW_TOOLTIP - null]]
+11-26 05:46:32.507  8097  8114 D UiObject: Waiting 0ms for UiSelector[INSTANCE=1, RESOURCE_ID=com.jinyuni.dengbei_care:id/navigation_notifications].
+11-26 05:46:32.507  8097  8114 W QueryController: Could not detect idle state.
+11-26 05:46:32.615  8097  8115 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "waitForExists", "params": [{"mask": 2097152, "childOrSibling": [], "childOrSiblingSelector": [], "resourceId": "com.jinyuni.dengbei_care:id/navigation_notifications"}, 10000]}}
+11-26 05:46:32.632  8097  8115 D UiDevice: Waiting 10000ms for SearchCondition[hasObject=BySelector [RES='\Qcom.jinyuni.dengbei_care:id/navigation_notifications\E']].
+11-26 05:46:32.632  8097  8115 D UiDevice: Searching for node with selector: BySelector [RES='\Qcom.jinyuni.dengbei_care:id/navigation_notifications\E'].
+11-26 05:46:32.633  8097  8115 W QueryController: Could not detect idle state.
+11-26 05:46:32.757  8097  8116 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "objInfo", "params": [{"mask": 2097152, "childOrSibling": [], "childOrSiblingSelector": [], "resourceId": "com.jinyuni.dengbei_care:id/navigation_notifications"}]}}
+11-26 05:46:32.762  8097  8116 D UiDevice: Retrieving node with selector: BySelector [RES='\Qcom.jinyuni.dengbei_care:id/navigation_notifications\E'].
+11-26 05:46:32.763  8097  8116 W QueryController: Could not detect idle state.
+11-26 05:46:32.928  8097  8116 I chatty  : uid=2000(shell) app_process identical 17 lines
+11-26 05:46:32.933  8097  8116 W QueryController: Could not detect idle state.
+11-26 05:46:32.934  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:46:33.039  8097  8117 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "click", "params": [600.0, 1440.0]}}
+11-26 05:46:33.238 32061 32061 D MqttService: onPause called
+11-26 05:46:33.239  8097  8120 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:33.249 32061 32061 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@2aa717b
+11-26 05:46:33.276 32061 32061 I chatty  : uid=10169(com.jinyuni.dengbei_care) identical 5 lines
+11-26 05:46:33.294 32061 32061 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@2aa717b
+11-26 05:46:33.297   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:33.297   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:33.306 32061 32061 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@2aa717b
+11-26 05:46:33.308 32061 32061 I chatty  : uid=10169(com.jinyuni.dengbei_care) identical 2 lines
+11-26 05:46:33.321 32061 32061 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@2aa717b
+11-26 05:46:33.786  8097  8122 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:34.199  1494  1494 W adbd    : timeout expired while flushing socket, closing
+--------- beginning of system
+11-26 05:46:34.232  1580  2579 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@bd77b56
+11-26 05:46:34.299   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:34.299   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:34.329  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:35.299   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:35.300   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:35.940  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:46:36.301   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:36.302   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:37.302   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:37.302   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:37.422  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:37.545  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:37.927  8127  8127 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-26 05:46:37.933  8127  8127 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-26 05:46:37.933  8127  8127 I AndroidRuntime: Using default boot image
+11-26 05:46:37.924  8127  8127 W app_process: type=1400 audit(0.0:43219): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:37.933  8127  8127 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-26 05:46:37.933  8127  8127 I AndroidRuntime: Leaving lock profiling enabled
+11-26 05:46:37.934  8127  8127 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-26 05:46:37.924  8127  8127 W app_process: type=1400 audit(0.0:43220): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:37.924  8127  8127 W app_process: type=1400 audit(0.0:43221): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:37.940  8127  8127 W app_process: Could not reserve sentinel fault page
+11-26 05:46:38.066  8127  8127 D ICU     : Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-26 05:46:38.109  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:38.303   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:38.303   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:38.384  8127  8127 W app_process: JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-26 05:46:38.399  8127  8127 D AndroidRuntime: Calling main entry com.wetest.uia2.Main
+11-26 05:46:38.409  8127  8127 I uidumper: [UiAutomator2Server] Starting Server
+11-26 05:46:38.444  8127  8127 D ThemeCompatibility: START loading theme compatibility config.
+11-26 05:46:38.445  8127  8127 D ThemeCompatibility: getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-26 05:46:38.451  8127  8127 D ThemeCompatibility: getConfigDocumentTree(): 140 vs -1
+11-26 05:46:38.451  8127  8127 D ThemeCompatibility:     parse file: /system/media/theme/theme_compatibility.xml
+11-26 05:46:38.456  8127  8127 D ThemeCompatibility: END loading: version=140 size=48
+11-26 05:46:38.457  8127  8127 E AssetManager: WTF--create system assets with illegal uid: 2000, gid:2000
+11-26 05:46:38.457  8127  8127 E AssetManager: java.lang.RuntimeException
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at android.content.res.Resources.<init>(Resources.java:285)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at java.lang.reflect.Method.invoke(Native Method)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at com.wetest.uia2.Main.main(Main.java:74)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-26 05:46:38.457  8127  8127 E AssetManager: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-26 05:46:38.460  8127  8127 W asset   : unable to execute idmap2: Permission denied
+11-26 05:46:38.460  8127  8127 W AssetManager: 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-26 05:46:38.444  8127  8127 W main    : type=1400 audit(0.0:43222): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-26 05:46:38.454  8127  8127 W main    : type=1400 audit(0.0:43223): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-26 05:46:38.463  8127  8127 W asset   : unable to execute idmap2: Permission denied
+11-26 05:46:38.464  8127  8127 W AssetManagerInjector: 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-26 05:46:38.490  8127  8127 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-26 05:46:38.533  8127  8127 W Java7Support: Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-26 05:46:38.667  8127  8127 I UiDevice: Creating a new instance, old instance exists: false
+11-26 05:46:38.667  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:38.683  8127  8127 D UiDevice: Setting accessibility service flags: 65618
+11-26 05:46:38.690  8127  8127 I uidumper: clipboardManager inited
+11-26 05:46:38.696  8127  8127 I uidumper: tmpdir is /data/local/tmp/u2
+11-26 05:46:38.715  8127  8127 I uidumper: http server listening on *:9008
+11-26 05:46:38.944  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:46:39.245  8127  8145 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:39.294  8127  8146 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "count", "params": [{"mask": 2097152, "childOrSibling": [], "childOrSiblingSelector": [], "resourceId": "com.jinyuni.dengbei_care:id/gatewayBleButton"}]}}
+11-26 05:46:39.304   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:39.304   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:39.401  8127  8146 D UiObject: Waiting 0ms for UiSelector[RESOURCE_ID=com.jinyuni.dengbei_care:id/gatewayBleButton].
+11-26 05:46:39.402  8127  8146 W QueryController: Could not detect idle state.
+11-26 05:46:39.427  8127  8146 I QueryController: Matched selector: UiSelector[RESOURCE_ID=com.jinyuni.dengbei_care:id/gatewayBleButton] <<==>> [android.view.accessibility.AccessibilityNodeInfo@16aa65; boundsInParent: Rect(0, 0 - 656, 96); boundsInScreen: Rect(32, 1321 - 688, 1360); packageName: com.jinyuni.dengbei_care; className: android.widget.Button; text: ÁΩëÂÖ≥‰∏é‰∏ä‰º†ËÆæÁΩÆ; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.jinyuni.dengbei_care:id/gatewayBleButton; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: true; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_CLICK - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]]
+11-26 05:46:39.427  8127  8146 D UiObject: Waiting 0ms for UiSelector[INSTANCE=1, RESOURCE_ID=com.jinyuni.dengbei_care:id/gatewayBleButton].
+11-26 05:46:39.428  8127  8146 W QueryController: Could not detect idle state.
+11-26 05:46:39.528  8127  8147 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "waitForExists", "params": [{"mask": 2097152, "childOrSibling": [], "childOrSiblingSelector": [], "resourceId": "com.jinyuni.dengbei_care:id/gatewayBleButton"}, 10000]}}
+11-26 05:46:39.546  8127  8147 D UiDevice: Waiting 10000ms for SearchCondition[hasObject=BySelector [RES='\Qcom.jinyuni.dengbei_care:id/gatewayBleButton\E']].
+11-26 05:46:39.546  8127  8147 D UiDevice: Searching for node with selector: BySelector [RES='\Qcom.jinyuni.dengbei_care:id/gatewayBleButton\E'].
+11-26 05:46:39.547  8127  8147 W QueryController: Could not detect idle state.
+11-26 05:46:39.671  8127  8148 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "objInfo", "params": [{"mask": 2097152, "childOrSibling": [], "childOrSiblingSelector": [], "resourceId": "com.jinyuni.dengbei_care:id/gatewayBleButton"}]}}
+11-26 05:46:39.676  8127  8148 D UiDevice: Retrieving node with selector: BySelector [RES='\Qcom.jinyuni.dengbei_care:id/gatewayBleButton\E'].
+11-26 05:46:39.677  8127  8148 W QueryController: Could not detect idle state.
+11-26 05:46:39.805  8127  8148 I chatty  : uid=2000(shell) app_process identical 17 lines
+11-26 05:46:39.809  8127  8148 W QueryController: Could not detect idle state.
+11-26 05:46:39.922  8127  8149 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "click", "params": [360.0, 1340.5]}}
+11-26 05:46:40.075 32061 32061 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@2aa717b
+11-26 05:46:40.111 32061 32061 I chatty  : uid=10169(com.jinyuni.dengbei_care) identical 10 lines
+11-26 05:46:40.112 32061 32061 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@2aa717b
+11-26 05:46:40.139  8127  8150 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:40.168  1580  3111 E WindowManager: App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-26 05:46:40.305   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:40.305   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:40.689  8127  8154 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:41.089  1494  1494 W adbd    : timeout expired while flushing socket, closing
+11-26 05:46:41.126  1580  2579 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@9a16260
+11-26 05:46:41.228  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:41.305   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:41.305   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:41.946  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:46:42.306   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:42.306   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:43.306   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:43.307   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:43.627  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:43.704  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:44.104  8159  8159 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-26 05:46:44.109  8159  8159 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-26 05:46:44.109  8159  8159 I AndroidRuntime: Using default boot image
+11-26 05:46:44.109  8159  8159 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-26 05:46:44.109  8159  8159 I AndroidRuntime: Leaving lock profiling enabled
+11-26 05:46:44.094  8159  8159 W app_process: type=1400 audit(0.0:43224): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:44.110  8159  8159 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-26 05:46:44.094  8159  8159 W app_process: type=1400 audit(0.0:43225): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:44.094  8159  8159 W app_process: type=1400 audit(0.0:43226): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:44.117  8159  8159 W app_process: Could not reserve sentinel fault page
+11-26 05:46:44.244  8159  8159 D ICU     : Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-26 05:46:44.264  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:44.307   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:44.307   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:44.559  8159  8159 W app_process: JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-26 05:46:44.575  8159  8159 D AndroidRuntime: Calling main entry com.wetest.uia2.Main
+11-26 05:46:44.585  8159  8159 I uidumper: [UiAutomator2Server] Starting Server
+11-26 05:46:44.621  8159  8159 D ThemeCompatibility: START loading theme compatibility config.
+11-26 05:46:44.621  8159  8159 D ThemeCompatibility: getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-26 05:46:44.628  8159  8159 D ThemeCompatibility: getConfigDocumentTree(): 140 vs -1
+11-26 05:46:44.628  8159  8159 D ThemeCompatibility:     parse file: /system/media/theme/theme_compatibility.xml
+11-26 05:46:44.624  8159  8159 W main    : type=1400 audit(0.0:43227): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-26 05:46:44.633  8159  8159 D ThemeCompatibility: END loading: version=140 size=48
+11-26 05:46:44.634  8159  8159 E AssetManager: WTF--create system assets with illegal uid: 2000, gid:2000
+11-26 05:46:44.634  8159  8159 E AssetManager: java.lang.RuntimeException
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at android.content.res.Resources.<init>(Resources.java:285)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at java.lang.reflect.Method.invoke(Native Method)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at com.wetest.uia2.Main.main(Main.java:74)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-26 05:46:44.634  8159  8159 E AssetManager: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-26 05:46:44.637  8159  8159 W asset   : unable to execute idmap2: Permission denied
+11-26 05:46:44.637  8159  8159 W AssetManager: 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-26 05:46:44.624  8159  8159 W main    : type=1400 audit(0.0:43228): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-26 05:46:44.639  8159  8159 W asset   : unable to execute idmap2: Permission denied
+11-26 05:46:44.639  8159  8159 W AssetManagerInjector: 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-26 05:46:44.665  8159  8159 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-26 05:46:44.709  8159  8159 W Java7Support: Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-26 05:46:44.812  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:44.841  8159  8159 I UiDevice: Creating a new instance, old instance exists: false
+11-26 05:46:44.872  8159  8159 D UiDevice: Setting accessibility service flags: 65618
+11-26 05:46:44.881  8159  8159 I uidumper: clipboardManager inited
+11-26 05:46:44.884  8159  8159 I uidumper: tmpdir is /data/local/tmp/u2
+11-26 05:46:44.903  8159  8159 I uidumper: http server listening on *:9008
+11-26 05:46:44.949  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:46:45.308   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:45.308   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:45.379  8159  8176 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:45.427  8159  8177 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "dumpWindowHierarchy", "params": [false, 50]}}
+11-26 05:46:45.497  8159  8177 W QueryController: Could not detect idle state.
+11-26 05:46:45.498  8159  8177 W QueryController: Could not detect idle state.
+11-26 05:46:45.571  8159  8177 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@17084c; boundsInParent: Rect(0, 0 - 524, 0); boundsInScreen: Rect(98, 795 - 622, 795); packageName: com.jinyuni.dengbei_care; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:46:45.581  8159  8177 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@d11f; boundsInParent: Rect(0, 0 - 720, 500); boundsInScreen: Rect(0, 0 - 720, 55); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/heads_up_scrim; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:46:45.613  8159  8177 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@abe84; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(35, 34 - 35, 34); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_prompt_content_container; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:46:45.615  8159  8177 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bb285; boundsInParent: Rect(0, 0 - 0, 55); boundsInScreen: Rect(537, 14 - 537, 55); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_mobile; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:46:45.615  8159  8177 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bc54a; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(545, 35 - 545, 35); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:46:45.616  8159  8177 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@b9fc0; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(537, 35 - 537, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_1; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:46:45.616  8159  8177 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@b983e; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(537, 35 - 537, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_0; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:46:45.616  8159  8177 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bf617; boundsInParent: Rect(0, 0 - 0, 50); boundsInScreen: Rect(618, 14 - 618, 55); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:46:45.616  8159  8177 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bfd99; boundsInParent: Rect(0, 0 - 0, 8); boundsInScreen: Rect(618, 31 - 618, 39); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/wifi_signal_spacer; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:46:45.707  8159  8178 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:46.255  8159  8179 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:46.309   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:46.309   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:46.666  1494  1494 W adbd    : timeout expired while flushing socket, closing
+11-26 05:46:46.703  1580  2037 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@a3d9045
+11-26 05:46:46.812  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:47.309   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:47.309   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:47.953  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:46:48.310   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:48.310   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:49.311   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:49.311   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:49.778  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:49.884  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:50.144     0     0 W swapper/6: type=1400 audit(0.0:43229): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 05:46:50.272  8184  8184 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-26 05:46:50.277  8184  8184 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-26 05:46:50.277  8184  8184 I AndroidRuntime: Using default boot image
+11-26 05:46:50.264  8184  8184 W app_process: type=1400 audit(0.0:43230): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:50.277  8184  8184 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-26 05:46:50.264  8184  8184 W app_process: type=1400 audit(0.0:43231): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:50.278  8184  8184 I AndroidRuntime: Leaving lock profiling enabled
+11-26 05:46:50.278  8184  8184 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-26 05:46:50.264  8184  8184 W app_process: type=1400 audit(0.0:43232): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-26 05:46:50.284  8184  8184 W app_process: Could not reserve sentinel fault page
+11-26 05:46:50.312   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:50.312   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:50.410  8184  8184 D ICU     : Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-26 05:46:50.433  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:50.728  8184  8184 W app_process: JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-26 05:46:50.743  8184  8184 D AndroidRuntime: Calling main entry com.wetest.uia2.Main
+11-26 05:46:50.754  8184  8184 I uidumper: [UiAutomator2Server] Starting Server
+11-26 05:46:50.790  8184  8184 D ThemeCompatibility: START loading theme compatibility config.
+11-26 05:46:50.791  8184  8184 D ThemeCompatibility: getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-26 05:46:50.797  8184  8184 D ThemeCompatibility: getConfigDocumentTree(): 140 vs -1
+11-26 05:46:50.798  8184  8184 D ThemeCompatibility:     parse file: /system/media/theme/theme_compatibility.xml
+11-26 05:46:50.803  8184  8184 D ThemeCompatibility: END loading: version=140 size=48
+11-26 05:46:50.804  8184  8184 E AssetManager: WTF--create system assets with illegal uid: 2000, gid:2000
+11-26 05:46:50.804  8184  8184 E AssetManager: java.lang.RuntimeException
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at android.content.res.Resources.<init>(Resources.java:285)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at java.lang.reflect.Method.invoke(Native Method)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at com.wetest.uia2.Main.main(Main.java:74)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-26 05:46:50.804  8184  8184 E AssetManager: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-26 05:46:50.794  8184  8184 W main    : type=1400 audit(0.0:43233): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-26 05:46:50.807  8184  8184 W asset   : unable to execute idmap2: Permission denied
+11-26 05:46:50.807  8184  8184 W AssetManager: 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-26 05:46:50.794  8184  8184 W main    : type=1400 audit(0.0:43234): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-26 05:46:50.809  8184  8184 W asset   : unable to execute idmap2: Permission denied
+11-26 05:46:50.809  8184  8184 W AssetManagerInjector: 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-26 05:46:50.836  8184  8184 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-26 05:46:50.879  8184  8184 W Java7Support: Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-26 05:46:50.958  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:46:50.995  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:51.014  8184  8184 I UiDevice: Creating a new instance, old instance exists: false
+11-26 05:46:51.031  8184  8184 D UiDevice: Setting accessibility service flags: 65618
+11-26 05:46:51.040  8184  8184 I uidumper: clipboardManager inited
+11-26 05:46:51.044  8184  8184 I uidumper: tmpdir is /data/local/tmp/u2
+11-26 05:46:51.063  8184  8184 I uidumper: http server listening on *:9008
+11-26 05:46:51.313   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:51.313   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:51.569  8184  8201 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:51.637  8184  8202 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "count", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u91cd\u8bd5\u4e0a\u4f20"}]}}
+11-26 05:46:51.754  8184  8202 D UiObject: Waiting 0ms for UiSelector[TEXT=ÈáçËØï‰∏ä‰º†].
+11-26 05:46:51.755  8184  8202 W QueryController: Could not detect idle state.
+11-26 05:46:51.767  8184  8202 I QueryController: Matched selector: UiSelector[TEXT=ÈáçËØï‰∏ä‰º†] <<==>> [android.view.accessibility.AccessibilityNodeInfo@17139e; boundsInParent: Rect(0, 0 - 524, 96); boundsInScreen: Rect(98, 959 - 622, 1055); packageName: com.jinyuni.dengbei_care; className: android.widget.Button; text: ÈáçËØï‰∏ä‰º†; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: true; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: true; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_CLICK - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_NEXT_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_PREVIOUS_AT_MOVEMENT_GRANULARITY - null, AccessibilityAction: ACTION_SET_SELECTION - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]]
+11-26 05:46:51.768  8184  8202 D UiObject: Waiting 0ms for UiSelector[TEXT=ÈáçËØï‰∏ä‰º†, INSTANCE=1].
+11-26 05:46:51.769  8184  8202 W QueryController: Could not detect idle state.
+11-26 05:46:51.853  8184  8203 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "waitForExists", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u91cd\u8bd5\u4e0a\u4f20"}, 10000]}}
+11-26 05:46:51.871  8184  8203 D UiDevice: Waiting 10000ms for SearchCondition[hasObject=BySelector [TEXT='\QÈáçËØï‰∏ä‰º†\E']].
+11-26 05:46:51.871  8184  8203 D UiDevice: Searching for node with selector: BySelector [TEXT='\QÈáçËØï‰∏ä‰º†\E'].
+11-26 05:46:51.872  8184  8203 W QueryController: Could not detect idle state.
+11-26 05:46:51.964  8184  8204 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "objInfo", "params": [{"mask": 1, "childOrSibling": [], "childOrSiblingSelector": [], "text": "\u91cd\u8bd5\u4e0a\u4f20"}]}}
+11-26 05:46:51.969  8184  8204 D UiDevice: Retrieving node with selector: BySelector [TEXT='\QÈáçËØï‰∏ä‰º†\E'].
+11-26 05:46:51.971  8184  8204 W QueryController: Could not detect idle state.
+11-26 05:46:52.087  8184  8204 I chatty  : uid=2000(shell) app_process identical 17 lines
+11-26 05:46:52.090  8184  8204 W QueryController: Could not detect idle state.
+11-26 05:46:52.195  8184  8205 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "click", "params": [360.0, 1007.0]}}
+11-26 05:46:52.313   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:52.313   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:52.347 32061 32061 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@2aa717b
+11-26 05:46:52.387  1580  2037 E WindowManager: App trying to use insecure INPUT_FEATURE_NO_INPUT_CHANNEL flag. Ignoring
+11-26 05:46:52.354 32061 32061 D ForceDarkHelper: updateByCheckExcludeList: pkg: com.jinyuni.dengbei_care activity: com.jinyuni.dengbei_care.MainActivity@2aa717b
+11-26 05:46:52.396 32061 32061 I Toast   : Show toast from OpPackageName:com.jinyuni.dengbei_care, PackageName:com.jinyuni.dengbei_care
+11-26 05:46:52.399 32061 32102 W ni.dengbei_car: Accessing hidden field Lsun/misc/Unsafe;->theUnsafe:Lsun/misc/Unsafe; (greylist, reflection, allowed)
+11-26 05:46:52.400 32061 32102 W ni.dengbei_car: Accessing hidden method Lsun/misc/Unsafe;->allocateInstance(Ljava/lang/Class;)Ljava/lang/Object; (greylist, reflection, allowed)
+11-26 05:46:52.427  8184  8198 I uidumper: detect toast:[Áà±ÂÆàÊä§ÔºöÂ∑≤Ëß¶Âèë‰∏ä‰º†ÈáçËØï]
+11-26 05:46:52.449  8184  8209 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:52.449  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-26 05:46:52.449  1580  1639 I MiuiNetworkPolicy: label wlan0, uid 10169, active true, tsNanos 382982406258216
+11-26 05:46:52.449   514  1033 D OemNetd : setLimit: enable, rate=100000
+11-26 05:46:52.486  1904  1904 D StatusBar: onNotificationPosted key=0|com.jinyuni.dengbei_care|1|null|10169 isUpdate=true
+11-26 05:46:52.487  3355  3400 W Parcel  : **** enforceInterface() expected 'com.miui.gamebooster.service.ISecurityCenterNotificationListener' but read 'android.service.notification.INotificationListener'
+11-26 05:46:52.487  1904  1904 D StatusBar: updateNotification old=StatusBarNotification(pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null key=0|com.jinyuni.dengbei_care|1|null|10169: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+11-26 05:46:52.487  1904  1904 D StatusBar:     pkgName=com.jinyuni.dengbei_care appUid=10169 sdk=34 imp=3 sysApp=F priApp=F hasShown=F float=F keyguard=F peek=F fullscreen=F
+11-26 05:46:52.487  1904  1904 D StatusBar:     showMiuiAction=F enableFloat=T enableKeyguard=T floatTime=5000 messageCount=1 persistent=F customHeight=F customHideBorder=F
+11-26 05:46:52.487  3355  3400 W Binder  : Caught a RuntimeException from the binder stub implementation.
+11-26 05:46:52.487  3355  3400 W Binder  : java.lang.SecurityException: Binder invocation to an incorrect interface
+11-26 05:46:52.487  3355  3400 W Binder  : 	at android.os.Parcel.nativeEnforceInterface(Native Method)
+11-26 05:46:52.487  3355  3400 W Binder  : 	at android.os.Parcel.enforceInterface(Parcel.java:626)
+11-26 05:46:52.487  3355  3400 W Binder  : 	at com.miui.gamebooster.service.ISecurityCenterNotificationListener$Stub.onTransact(Unknown Source:22)
+11-26 05:46:52.487  3355  3400 W Binder  : 	at android.os.Binder.execTransactInternal(Binder.java:1021)
+11-26 05:46:52.487  3355  3400 W Binder  : 	at android.os.Binder.execTransact(Binder.java:994)
+11-26 05:46:52.489  1580  2037 D AudioManager: getStreamVolume isRestricted mode = 0
+11-26 05:46:52.489 26348 26359 D APM::AudioPolicyEngine: XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-26 05:46:52.491  3355  3355 V onNotificationPostedCallBack: flags=98
+11-26 05:46:52.491  1580  2037 D AudioManager: getStreamVolume isRestricted mode = 0
+11-26 05:46:52.492 26348 26359 D APM::AudioPolicyEngine: XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-26 05:46:52.492  3355  3355 V h       : ret=0
+11-26 05:46:52.524  1904  1904 D StatusBar: No peeking: unimportant notification: 0|com.jinyuni.dengbei_care|1|null|10169
+11-26 05:46:52.525  1904  1904 D StatusBar: updateHeadsUp wasHeadsUp=false shouldPeek=false alertAgain=true
+11-26 05:46:52.632 32061 32102 I CloudUpload: uploaded 9 reading(s)
+11-26 05:46:52.636  1580  1799 D NtpTrustedTime: currentTimeMillis() cache hit
+11-26 05:46:52.711   514  1033 I netd    : trafficSwapActiveStatsMap() <74.46ms>
+11-26 05:46:52.715   514  1033 I netd    : tetherGetStats() <1.84ms>
+11-26 05:46:52.719  1580  1799 D NtpTrustedTime: currentTimeMillis() cache hit
+11-26 05:46:52.722  3355  4144 I TrafficManageService: mina mTrafficStatsReceiver onReceive
+11-26 05:46:52.722   514  1033 I netd    : bandwidthSetGlobalAlert(131072) <0.44ms>
+11-26 05:46:52.981  8184  8213 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:46:53.023  1882  2353 V bt_stack: [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=30:95:87:4c:2f:96
+11-26 05:46:53.023  1882  2353 V bt_stack: [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 30:95:87:4c:2f:96
+11-26 05:46:53.025  1882  2034 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-26 05:46:53.027  1882  2034 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-26 05:46:53.314   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:53.314   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:53.429  1494  1494 W adbd    : timeout expired while flushing socket, closing
+11-26 05:46:53.464  1580  3111 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@e53e2a7
+11-26 05:46:53.510  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:46:53.962  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:46:54.315   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:54.315   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:54.392  1580  3099 W NotificationService: Toast already killed. pkg=com.jinyuni.dengbei_care callback=android.app.ITransientNotification$Stub$Proxy@8968e8f
+11-26 05:46:55.316   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:55.316   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:55.890  1580  1642 W WindowManager: Unable to start animation, surface is null or no children.
+11-26 05:46:56.318   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:56.318   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:56.967  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:46:57.318   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:57.318   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:58.320   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:58.320   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:59.322   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:46:59.322   783  1848 D         : readbrightness,out2:1953.
+11-26 05:46:59.970  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:47:00.006  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 05:47:00.144     0     0 W swapper/4: type=1400 audit(0.0:43235): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 05:47:00.322   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:00.323   783  1848 D         : readbrightness,out2:1953.
+11-26 05:47:00.780  1882  2353 V bt_stack: [VERBOSE1:btm_ble_gap.cc(1847)] btm_ble_process_adv_addr: bda=30:95:87:4c:2f:96
+11-26 05:47:00.780  1882  2353 V bt_stack: [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 30:95:87:4c:2f:96
+11-26 05:47:00.782  1882  2034 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-26 05:47:00.783  1882  2034 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-26 05:47:01.323   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:01.323   783  1848 D         : readbrightness,out2:1953.
+11-26 05:47:02.325   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:02.325   783  1848 D         : readbrightness,out2:1953.
+11-26 05:47:02.975  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:47:03.326   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:03.326   783  1848 D         : readbrightness,out2:1953.
+11-26 05:47:04.254  1904  1904 D StatusBar: updateNotificationRankingDelayed messageReceiveTime=373065863
+11-26 05:47:04.326   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:04.326   783  1848 D         : readbrightness,out2:1953.
+11-26 05:47:05.327   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:05.327   783  1848 D         : readbrightness,out2:1953.
+11-26 05:47:05.374  1580  1580 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@9520243
+11-26 05:47:05.979  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:47:06.328   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:06.328   783  1848 D         : readbrightness,out2:1953.
+11-26 05:47:07.222  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 05:47:07.225  2194  2194 D QtiCarrierConfigHelper: WARNING, no carrier configs on phone Id: 0
+11-26 05:47:07.228  3355  3355 I BatteryInfoReceiver: ACTION_BATTERY_CHANGED
+11-26 05:47:07.229  3039  8216 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 4893146
+11-26 05:47:07.233 30961 30998 D PowerCheckerService: onBatteryChanged, mBatteryLevel = 100, status = 5, level = 100, plug = 2, scale = 100
+11-26 05:47:07.328   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:07.328   783  1848 D         : readbrightness,out2:1953.
+11-26 05:47:08.112  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-26 05:47:08.112  1580  1639 I MiuiNetworkPolicy: label wlan0, uid -1, active false, tsNanos 382997585931757
+11-26 05:47:08.113   514  1033 D OemNetd : setLimit: disable, rate=0
+11-26 05:47:08.329   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:08.329   783  1848 D         : readbrightness,out2:1953.
+11-26 05:47:08.983  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:47:09.329   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:09.330   783  1848 D         : readbrightness,out2:1953.
+11-26 05:47:10.144     0     0 W swapper/6: type=1400 audit(0.0:43236): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 05:47:10.330   783  1848 D         : readbrightness,out1:1953·å´@B.
+11-26 05:47:10.330   783  1848 D         : readbrightness,out2:1953.

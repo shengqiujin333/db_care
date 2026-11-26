@@ -1,0 +1,117 @@
+# round-4 bounded read-only phone re-check (software verification)
+started_utc=2026-11-26T02:34:10Z
+started_local=2026-11-26 10:34:10
+forbidden=install,uninstall,data-clear,prefs-edit,ui-interaction
+
+--- [devices]
+exit=0
+List of devices attached
+12f046690506	device
+
+--- [time_utc]
+exit=0
+2026-11-26T02:34:07Z
+2026-11-26 10:34:07 CST
+
+--- [package_version]
+exit=0
+    versionCode=10 minSdk=26 targetSdk=34
+    versionName=1.9
+    firstInstallTime=2026-11-23 21:25:13
+    lastUpdateTime=2026-11-23 21:25:13
+
+--- [pm_path]
+exit=0
+package:/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk
+
+--- [pid]
+exit=0
+  PID     ELAPSED NAME
+
+--- [default_network]
+exit=0
+192.168.0.0/24 dev wlan0 proto kernel scope link src 192.168.0.103 
+31: wlan0    inet 192.168.0.103/24 brd 192.168.0.255 scope global wlan0\       valid_lft forever preferred_lft forever
+
+--- [prefs]
+exit=1
+stderr: cat: shared_prefs/myprefs.xml: No such file or directory
+
+--- [db_list]
+exit=0
+total 196
+drwxrwx--x 2 u0_a169 u0_a169  4096 2026-11-24 03:31 .
+drwx------ 8 u0_a169 u0_a169  4096 2026-11-23 21:28 ..
+-rw-rw---- 1 u0_a169 u0_a169 98304 2026-11-26 05:49 bwtemperature_database1
+-rw------- 1 u0_a169 u0_a169 29240 2026-11-26 05:49 bwtemperature_database1-journal
+-rw-rw---- 1 u0_a169 u0_a169 20480 2026-11-23 21:33 mqttAndroidService.db
+-rw------- 1 u0_a169 u0_a169  8720 2026-11-23 21:33 mqttAndroidService.db-journal
+
+--- [crash_buffer]
+exit=0
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: FATAL EXCEPTION: main
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: Process: com.jinyuni.dengbei_care, PID: 31852
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: java.lang.IllegalArgumentException: Navigation action/destination com.jinyuni.dengbei_care:id/action_homeFragment_to_deviceDetailFragment cannot be found from the current destination Destination(com.jinyuni.dengbei_care:id/deviceDetailFragment) label=首页 class=com.jinyuni.dengbei_care.ui.detail.DeviceDetailFragment
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at androidx.navigation.NavController.navigate(NavController.kt:1663)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at androidx.navigation.NavController.navigate(NavController.kt:1595)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at androidx.navigation.NavController.navigate(NavController.kt:1577)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at com.jinyuni.dengbei_care.ui.home.HomeFragment$setupRecyclerView$1.invoke(HomeFragment.kt:69)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at com.jinyuni.dengbei_care.ui.home.HomeFragment$setupRecyclerView$1.invoke(HomeFragment.kt:65)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at com.jinyuni.dengbei_care.ui.home.DeviceCardAdapter$CardViewHolder._init_$lambda$0(DeviceCardAdapter.kt:47)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at com.jinyuni.dengbei_care.ui.home.DeviceCardAdapter$CardViewHolder.$r8$lambda$T3ICK7iknNEGoLD2aZ-B1kUgCFM(Unknown Source:0)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at com.jinyuni.dengbei_care.ui.home.DeviceCardAdapter$CardViewHolder$$ExternalSyntheticLambda0.onClick(D8$$SyntheticClass:0)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at android.view.View.performClick(View.java:7184)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at android.view.View.performClickInternal(View.java:7161)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at android.view.View.access$3500(View.java:818)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at android.view.View$PerformClick.run(View.java:27677)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at android.os.Handler.handleCallback(Handler.java:883)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at android.os.Handler.dispatchMessage(Handler.java:100)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at android.os.Looper.loop(Looper.java:223)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at android.app.ActivityThread.main(ActivityThread.java:7562)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at java.lang.reflect.Method.invoke(Native Method)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:539)
+11-25 22:00:24.731 31852 31852 E AndroidRuntime: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:950)
+
+--- [local_db_snapshot]
+exit=0 bytes=69
+saved=06_local_db_now.db
+
+--- [logcat_relevant_tail]
+exit=0 total_lines=5407 kept=36
+11-26 10:11:17.094  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 10:11:17.102  3039 11984 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 10021911
+11-26 10:11:25.827  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 10:11:25.828  1904  1904 I KeyguardIndication: updateIndication: mVisible true mDozing false mTransientIndication null mPowerPluggedIn true mUpArrowIndication null
+11-26 10:12:22.263  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 10:12:22.270  3039 11995 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 10087079
+11-26 10:13:27.432  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 10:13:27.439  3039 12004 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 10152248
+11-26 10:13:50.044  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 10:13:50.044  1904  1904 I KeyguardIndication: updateIndication: mVisible true mDozing false mTransientIndication null mPowerPluggedIn true mUpArrowIndication null
+11-26 10:15:37.784  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 10:15:37.791  3039 12033 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 10282600
+11-26 10:16:42.943  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 10:16:42.951  3039 12043 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 10347760
+11-26 10:17:48.115  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 10:17:48.120  3039 12052 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 10412929
+11-26 10:19:58.463  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 10:19:58.470  3039 12067 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 10543279
+11-26 10:23:13.593  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 10:23:13.600  3039 12090 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 10738409
+11-26 10:23:50.046  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 10:23:50.046  1904  1904 I KeyguardIndication: updateIndication: mVisible true mDozing false mTransientIndication null mPowerPluggedIn true mUpArrowIndication null
+11-26 10:24:14.812  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 10:24:14.813  1904  1904 I KeyguardIndication: updateIndication: mVisible true mDozing false mTransientIndication null mPowerPluggedIn true mUpArrowIndication null
+11-26 10:28:39.825  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 10:28:39.831  3039 12138 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 11064640
+11-26 10:28:39.831  3039 12138 D UploadVoiceJobService: uploadVoiceDatas start
+11-26 10:28:39.833  3039 12138 D VoiceTrigger:Uploader: isPrivacySwitchOpen name:key_voice_wakeup status:true
+11-26 10:28:39.834  3039 12138 D VoiceTrigger:Uploader: permissionAllow = true hasFloatWindowPermission = true
+11-26 10:28:39.836  3039 12138 D UploadVoiceJobService: uploadVoiceDatas end
+11-26 10:29:44.988  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 10:29:44.996  3039 12145 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 65161
+11-26 10:33:10.706  1580  1639 D MiuiMultiWindowAdapter: MiuiMultiWindowAdapter::getFreeformBlackList::sSmallWindowBlackList = [com.miui.securitycenter, com.miui.weather2, com.miui.miservice, com.android.calendar, com.xiaomi.calendar, com.android.contacts, com.miui.mishare.connectivity, com.android.settings, com.android.printspooler, com.miui.backup, com.miui.huanji, com.miui.calculator, com.android.deskclock, com.android.thememanager, com.mfashiongallery.emag, com.miui.virtualsim, com.miui.smarttravel, com.mi.health, com.android.camera, com.lbe.security.miui, com.miui.cleanmaster, com.miui.newhome, com.miui.voiceassist, com.android.phone, com.miui.yellowpage, com.android.updater, com.miui.tsmclient, com.miui.securitycore, com.xiaomi.account, com.xiaomi.shop, com.mipay.wallet, com.xiaomi.youpin, com.xiaomi.hm.health, com.miui.bugreport, com.xiaomi.mibrain.speech, com.xiaomi.mimoji, com.xiaomi.scanner, com.duokan.phone.remotecontroller, com.miui.hybrid, com.android.incallui, com.miui.video, com.miui.videoplayer, com.miui.player, com.miui.fm, com.miui.packageinstaller, com.mi.android.globallauncher, com.google.android.dialer, com.google.android.apps.magazines, com.miui.compass, com.miui.greenguard, com.kiteguard, com.google.android.apps.prodcasts, com.google.ar.lens, com.xiangkan.android, com.android.bankabc, com.sohu.inputmethod.sogou, com.tencent.mtt, com.shyz.toutiao, com.netease.mc.mi, com.outfit7.talkingtomgoldrun.mi, com.doudz.mi, com.wepie.snake.new.mi, cn.jj, com.standddz002.mi, com.miHoYo.bh3.mi, com.qqgame.hlddz, com.happyelements.AndroidAnimal, com.minitech.miniworld.TMobile.mi, com.mfp.jelly.xiaomi, com.lilithgames.afk.mi, com.tencent.peng, com.teenpatti.hd.gold, blockpuzzle.jewelgames.jewelslegend, com.playgendary.tanks, com.chillingo.robberybobfree.android.row, com.episodeinteractive.android.catalog, com.playrix.township, com.ansangha.drdriving, com.google.android.youtube, com.gbits.atm.mi]
+11-26 10:33:10.802  1580  1639 D MiuiMultiWindowAdapter: MiuiMultiWindowAdapter::getFreeformBlackList::sSmallWindowBlackList = [com.miui.securitycenter, com.miui.weather2, com.miui.miservice, com.android.calendar, com.xiaomi.calendar, com.android.contacts, com.miui.mishare.connectivity, com.android.settings, com.android.printspooler, com.miui.backup, com.miui.huanji, com.miui.calculator, com.android.deskclock, com.android.thememanager, com.mfashiongallery.emag, com.miui.virtualsim, com.miui.smarttravel, com.mi.health, com.android.camera, com.lbe.security.miui, com.miui.cleanmaster, com.miui.newhome, com.miui.voiceassist, com.android.phone, com.miui.yellowpage, com.android.updater, com.miui.tsmclient, com.miui.securitycore, com.xiaomi.account, com.xiaomi.shop, com.mipay.wallet, com.xiaomi.youpin, com.xiaomi.hm.health, com.miui.bugreport, com.xiaomi.mibrain.speech, com.xiaomi.mimoji, com.xiaomi.scanner, com.duokan.phone.remotecontroller, com.miui.hybrid, com.android.incallui, com.miui.video, com.miui.videoplayer, com.miui.player, com.miui.fm, com.miui.packageinstaller, com.mi.android.globallauncher, com.google.android.dialer, com.google.android.apps.magazines, com.miui.compass, com.miui.greenguard, com.kiteguard, com.google.android.apps.prodcasts, com.google.ar.lens, com.xiangkan.android, com.android.bankabc, com.sohu.inputmethod.sogou, com.tencent.mtt, com.shyz.toutiao, com.netease.mc.mi, com.outfit7.talkingtomgoldrun.mi, com.doudz.mi, com.wepie.snake.new.mi, cn.jj, com.standddz002.mi, com.miHoYo.bh3.mi, com.qqgame.hlddz, com.happyelements.AndroidAnimal, com.minitech.miniworld.TMobile.mi, com.mfp.jelly.xiaomi, com.lilithgames.afk.mi, com.tencent.peng, com.teenpatti.hd.gold, blockpuzzle.jewelgames.jewelslegend, com.playgendary.tanks, com.chillingo.robberybobfree.android.row, com.episodeinteractive.android.catalog, com.playrix.township, com.ansangha.drdriving, com.google.android.youtube, com.gbits.atm.mi]
+11-26 10:33:50.045  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 10:33:50.046  1904  1904 I KeyguardIndication: updateIndication: mVisible true mDozing false mTransientIndication null mPowerPluggedIn true mUpArrowIndication null
+

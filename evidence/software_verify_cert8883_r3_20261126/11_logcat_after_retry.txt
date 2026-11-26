@@ -1,0 +1,400 @@
+11-26 05:45:05.473  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:45:05.483  7929  7929 I uidumper: http server listening on *:9008
+11-26 05:45:05.805  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:45:06.038  7929  7946 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:45:06.103  7929  7947 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "dumpWindowHierarchy", "params": [false, 50]}}
+11-26 05:45:06.175  7929  7947 W QueryController: Could not detect idle state.
+11-26 05:45:06.176  7929  7947 W QueryController: Could not detect idle state.
+11-26 05:45:06.212   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:06.212   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:06.259  7929  7947 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@15e31a; boundsInParent: Rect(0, 0 - 524, 0); boundsInScreen: Rect(98, 795 - 622, 795); packageName: com.jinyuni.dengbei_care; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:45:06.272  7929  7947 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@d0be; boundsInParent: Rect(0, 0 - 720, 500); boundsInScreen: Rect(0, 0 - 720, 55); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/heads_up_scrim; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:45:06.302  7929  7947 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@abe23; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(35, 34 - 35, 34); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_prompt_content_container; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:45:06.304  7929  7947 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bb224; boundsInParent: Rect(0, 0 - 0, 55); boundsInScreen: Rect(537, 14 - 537, 55); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_mobile; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:45:06.305  7929  7947 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bc4e9; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(545, 35 - 545, 35); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:45:06.305  7929  7947 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@b9f5f; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(537, 35 - 537, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_1; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:45:06.305  7929  7947 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@b97dd; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(537, 35 - 537, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_0; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:45:06.306  7929  7947 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bf5b6; boundsInParent: Rect(0, 0 - 0, 50); boundsInScreen: Rect(618, 14 - 618, 55); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:45:06.306  7929  7947 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bfd38; boundsInParent: Rect(0, 0 - 0, 8); boundsInScreen: Rect(618, 31 - 618, 39); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/wifi_signal_spacer; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-26 05:45:06.417  7929  7948 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:45:06.965  7929  7949 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-26 05:45:07.213   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:07.213   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:07.349  1580  1799 D NtpTrustedTime: currentTimeMillis() cache hit
+11-26 05:45:07.357  1494  1494 W adbd    : timeout expired while flushing socket, closing
+11-26 05:45:07.371   514  1033 I netd    : trafficSwapActiveStatsMap() <20.40ms>
+11-26 05:45:07.376   514  1033 I netd    : tetherGetStats() <3.29ms>
+11-26 05:45:07.383  1580  1799 D NtpTrustedTime: currentTimeMillis() cache hit
+11-26 05:45:07.388  3355  4144 I TrafficManageService: mina mTrafficStatsReceiver onReceive
+11-26 05:45:07.389   514  1033 I netd    : bandwidthSetGlobalAlert(131072) <0.65ms>
+11-26 05:45:07.394  1580  1609 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@e7e3321
+11-26 05:45:07.503  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-26 05:45:08.214   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:08.215   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:08.810  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:45:08.894  3985  4119 I AppOpsAdapter: start apply permission record!, writeAll:true
+11-26 05:45:08.894  3985  4119 I DatabaseUtil: writeApplyOperatorDetailInfo
+11-26 05:45:09.216   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:09.216   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:09.251 32061 32101 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 05:45:09.251 32061 32101 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 05:45:09.251 32061 32101 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 05:45:09.251 32061 32101 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 05:45:09.251 32061 32101 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 05:45:09.251 32061 32101 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 05:45:09.251 32061 32101 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 05:45:09.251 32061 32101 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 05:45:09.251 32061 32101 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 05:45:09.252  1882 26344 D BtGatt.GattService: clientDisconnect() - address=84:C2:E4:03:02:02, connId=null
+11-26 05:45:09.252 32061 32101 D BluetoothGatt: close()
+11-26 05:45:09.253  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CANCEL_OPEN_EVT
+11-26 05:45:09.253 32061 32101 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 05:45:09.253  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f02[BTA_GATTC_API_CANCEL_OPEN_EVT]
+11-26 05:45:09.253  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f02
+11-26 05:45:09.253  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CANCEL_OPEN_EVT
+11-26 05:45:09.253  1882  2353 E bt_stack: [ERROR:bta_gattc_utils.cc(458)] bta_gattc_mark_bg_conn unable to find the bg connection mask for bd_addr=XXXX
+11-26 05:45:09.253  1882 26344 D BtGatt.GattService: unregisterClient() - clientIf=6
+11-26 05:45:09.254  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(538)] bta_gattc_close: conn_id=0x0006
+11-26 05:45:09.254  1882  2353 I bt_stack: [INFO:gatt_api.cc(1246)] GATT_Disconnect conn_id=0x0006
+11-26 05:45:09.254  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(359)] gatt_update_app_use_link_flag: is_add=0 chk_link=1
+11-26 05:45:09.254  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(325)] gatt_update_app_hold_link_status
+11-26 05:45:09.254  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(342)] removed gatt_if=6
+11-26 05:45:09.254  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(389)]  start link idle timer = 1 sec
+11-26 05:45:09.254 32061 32101 I MqttService: Retrying connection after delay...
+11-26 05:45:09.255  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(936)] GATT_SetIdleTimeout idle_tout=1, status=1 (1-OK 0-not performed)
+11-26 05:45:09.255  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=6
+11-26 05:45:09.255  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:09.255  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(307)] gatt_is_app_holding_linkgatt_if= 6not found;
+11-26 05:45:09.255  1882  2034 D BtGatt.GattService: onDisconnected() - clientIf=6, connId=6, address=84:C2:E4:03:02:02
+11-26 05:45:09.255  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(359)] gatt_update_app_use_link_flag: is_add=0 chk_link=1
+11-26 05:45:09.255  1882  2034 E BtGatt.ContextMap: Context not found for ID 6
+11-26 05:45:09.255  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(325)] gatt_update_app_hold_link_status
+11-26 05:45:09.255  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(338)] attempt to remove nonexisting gatt_if=6
+11-26 05:45:09.255  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x06
+11-26 05:45:09.261  1580  1654 D CompatibilityInfo: mCompatibilityFlags - 0
+11-26 05:45:09.261  1580  1654 D CompatibilityInfo: applicationDensity - 320
+11-26 05:45:09.261  1580  1654 D CompatibilityInfo: applicationScale - 1.0
+11-26 05:45:09.263  2482  2482 D MiuiNearbyService: getNearbyService() - returning com.android.bluetooth.ble.app.MiuiNearbyService@9de9ff1
+11-26 05:45:09.263  2482  2482 E MiuiThirdPartAppScanManager: DeviceDisconnected : 84:C2:E4:03:02:02
+11-26 05:45:10.217   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:10.217   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:10.595  1882  2353 I bt_stack: [INFO:btsnoop.cc(380)] clear_l2cap_whitelist: Clearing whitelist from l2cap channel. conn_handle=21 cid=4:4
+11-26 05:45:10.595  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(457)] GATT   ATT protocol channel with BDA: 84:c2:e4:03:02:02 is disconnected
+11-26 05:45:10.595  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(312)] gatt_is_bda_in_the_srv_chg_clt_list: 84:c2:e4:03:02:02
+11-26 05:45:10.595  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1247)] gatt_cleanup_upon_disc
+11-26 05:45:10.595  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1073)] gatt_set_ch_state: old=4 new=0000
+11-26 05:45:10.595  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(92)] gatt_free_pending_ind
+11-26 05:45:10.595  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=1  conn_id=0x1
+11-26 05:45:10.596  1882  2353 V bt_stack: [VERBOSE1:gatt_attr.cc(245)] gatt_connect_cback: from 84:c2:e4:03:02:02 connected: 0, conn_id: 0x0001reason: 0x0016
+11-26 05:45:10.596  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=2  conn_id=0x2
+11-26 05:45:10.596  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=3  conn_id=0x3
+11-26 05:45:10.596  1882  2353 W bt_stack: [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=3 connected=0 conn_id=0x0003 reason=0x0016
+11-26 05:45:10.596  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=4  conn_id=0x4
+11-26 05:45:10.596  1882  2353 W bt_stack: [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=4 connected=0 conn_id=0x0004 reason=0x0016
+11-26 05:45:10.596  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=5  conn_id=0x5
+11-26 05:45:10.596  1882  2353 W bt_stack: [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=5 connected=0 conn_id=0x0005 reason=0x0016
+11-26 05:45:10.596  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1287)] gatt_cleanup_upon_disc: exit
+11-26 05:45:10.596  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(470)] ATT disconnected
+11-26 05:45:10.596  1882  2353 I bt_btm_sec: btm_sec_disconnected clearing pending flag handle:21 reason:22
+11-26 05:45:10.596  1882  2353 I bt_stack: [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-26 05:45:10.597  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-26 05:45:10.597  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:3 not used by BTA
+11-26 05:45:10.597  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 3
+11-26 05:45:10.597  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-26 05:45:10.597  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:4 not used by BTA
+11-26 05:45:10.597  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 4
+11-26 05:45:10.597  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-26 05:45:10.597  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:5 not used by BTA
+11-26 05:45:10.597  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 5
+11-26 05:45:10.597  1882  2353 W bt_l2cap: L2CA_SetDesireRole() new:x1, disallow_switch:0
+11-26 05:45:10.597  1882  2034 D bt_btif : btif_av_move_idle: Already in IDLE
+11-26 05:45:10.604  1904  1904 W BluetoothEventManager: AclStateChangedHandler: activeDevice is null
+11-26 05:45:10.604  2482  2482 W BluetoothEventManager: AclStateChangedHandler: activeDevice is null
+11-26 05:45:10.606  1882  1882 D BluetoothMapService: onReceive: android.bluetooth.device.action.ACL_DISCONNECTED
+11-26 05:45:10.606  1882  1882 I BluetoothMapService: sRemoteDevice :null device:84:C2:E4:03:02:02
+11-26 05:45:10.609  3970  3970 W Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onReceive: ACTION_ACL_DISCONNECTED, device:xxx type:2
+11-26 05:45:10.611  3039  3039 W Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onReceive: ACTION_ACL_DISCONNECTED, device:xxx type:2
+11-26 05:45:10.611  3039  3039 D BluetoothHelper: >>> BT SCO state changed !!! action = android.bluetooth.device.action.ACL_DISCONNECTED
+11-26 05:45:11.219   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:11.219   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:11.257 32061 32101 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-26 05:45:11.259 32061 32101 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 05:45:11.259 32061 32101 D BluetoothGatt: registerApp()
+11-26 05:45:11.259 32061 32101 D BluetoothGatt: registerApp() - UUID=092537e5-7e79-44ad-9747-9c1489023e79
+11-26 05:45:11.260  1882  1901 D BtGatt.GattService: registerClient() - UUID=092537e5-7e79-44ad-9747-9c1489023e79
+11-26 05:45:11.261  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-26 05:45:11.261  1882  2353 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register 172ba6ce-cf41-9426-313b-d5d22a7b8dd8
+11-26 05:45:11.261  1882  2353 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=6
+11-26 05:45:11.262  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=6
+11-26 05:45:11.262  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-26 05:45:11.262  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-26 05:45:11.262  1882  2034 D BtGatt.GattService: onClientRegistered() - UUID=092537e5-7e79-44ad-9747-9c1489023e79, clientIf=6
+11-26 05:45:11.262 32061  6216 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 05:45:11.263  1882  1901 D BtGatt.GattService: clientConnect() - address=84:C2:E4:03:02:02, isDirect=true, opportunistic=false, phy=1
+11-26 05:45:11.264  1882  2034 D bt_btif_config: btif_get_address_type: Device [XXXX] address type 0
+11-26 05:45:11.264  1882  2034 D bt_btif_config: btif_get_device_type: Device [XXXX] type 2
+11-26 05:45:11.264  1882  2353 V bt_stack: [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-26 05:45:11.264  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_OPEN_EVT
+11-26 05:45:11.264  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x00 [GATTC_IDLE_ST], Event 0x1f00[BTA_GATTC_API_OPEN_EVT]
+11-26 05:45:11.264  1882  2353 I bt_stack: [INFO:gatt_api.cc(1131)] GATT_Connect gatt_if=6, address=84:c2:e4:03:02:02 is_direct 1
+11-26 05:45:11.264  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=0
+11-26 05:45:11.264  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1073)] gatt_set_ch_state: old=0 new=0x02
+11-26 05:45:11.265  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=2
+11-26 05:45:11.265  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(216)] direct_connect_add : address:84:c2:e4:03:02:02
+11-26 05:45:11.265  1882  2353 V bt_stack: [VERBOSE1:btm_ble_bgconn.cc(488)] BTM_WhiteListAdd: 84:c2:e4:03:02:02
+11-26 05:45:11.265  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(53)] scheduling timer %spc:0x7f3aaf5b
+11-26 05:45:11.265  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(359)] gatt_update_app_use_link_flag: is_add=1 chk_link=0
+11-26 05:45:11.265  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(325)] gatt_update_app_hold_link_status
+11-26 05:45:11.265  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(329)] added gatt_if=6
+11-26 05:45:11.265  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=2
+11-26 05:45:11.265  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1314)] GATT_GetConnIdIfConnected status= 0
+11-26 05:45:11.265  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x00 -> 0x01 after Event 0x1f00
+11-26 05:45:11.503  1882  2353 I bt_stack: [INFO:connection_manager.cc(277)] lower the scan parameters used for connecting
+11-26 05:45:11.504  1882  2353 V bt_stack: [VERBOSE1:btm_ble_bgconn.cc(506)] BTM_WhiteListRemove: 84:c2:e4:03:02:02
+11-26 05:45:11.504  1882  2353 V bt_stack: [VERBOSE1:btm_ble_bgconn.cc(89)] background_connection_remove : 84:c2:e4:03:02:02
+11-26 05:45:11.504  1882  2353 I bt_stack: [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-26 05:45:11.504  1882  2353 V bt_stack: [VERBOSE1:btm_ble.cc(1905)] btm_ble_connected Security Manager: handle:22 enc_mode:0000  bda: 84:c2:e4:03:02:02 RName:  p_dev_rec:0x90232880
+11-26 05:45:11.504  1882  2353 W bt_btm  : btm_acl_created hci_handle=22 link_role=0  transport=2
+11-26 05:45:11.504  1882  2353 V bt_stack: [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-26 05:45:11.504  1882  2353 I bt_stack: [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-26 05:45:11.706  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(457)] GATT   ATT protocol channel with BDA: 84:c2:e4:03:02:02 is connected
+11-26 05:45:11.706  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(312)] gatt_is_bda_in_the_srv_chg_clt_list: 84:c2:e4:03:02:02
+11-26 05:45:11.707  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=2
+11-26 05:45:11.707  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1073)] gatt_set_ch_state: old=2 new=0x04
+11-26 05:45:11.707  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(858)] gatt_send_conn_cback : address 84:c2:e4:03:02:02
+11-26 05:45:11.707  1882  2353 V bt_stack: [VERBOSE1:gatt_attr.cc(245)] gatt_connect_cback: from 84:c2:e4:03:02:02 connected: 1, conn_id: 0x0001reason: 000000
+11-26 05:45:11.707  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(936)] GATT_SetIdleTimeout idle_tout=65535, status=1 (1-OK 0-not performed)
+11-26 05:45:11.707  1882  2353 W bt_btm  : btm_read_remote_version_complete lmp_version 12 manufacturer 2007 lmp_subversion 49424
+11-26 05:45:11.707  1882  2353 E bt_btif : bta_dm_acl_change new acl connetion:count = 1
+11-26 05:45:11.707  1882  2353 W bt_btif : bta_dm_acl_change info: 0x0
+11-26 05:45:11.707  1882  2353 W bt_l2cap: L2CA_SetDesireRole() new:x1, disallow_switch:0
+11-26 05:45:11.707  1882  2034 D bt_btif_dm: remote version info [XXXX]: 0, 0, 0
+11-26 05:45:11.707  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-26 05:45:11.707  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 3
+11-26 05:45:11.707  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-26 05:45:11.708  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 4
+11-26 05:45:11.708  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-26 05:45:11.708  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 5
+11-26 05:45:11.708  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-26 05:45:11.708  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x01 [GATTC_W4_CONN_ST], Event 0x1f0c[BTA_GATTC_INT_CONN_EVT]
+11-26 05:45:11.708  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(462)] bta_gattc_conn: server cache state=0
+11-26 05:45:11.708  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(465)] bta_gattc_conn: conn_id=0x0006
+11-26 05:45:11.708  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1278)] GATT_GetConnectionInfor conn_id=0x0006
+11-26 05:45:11.708  1882  2353 E bt_stack: [ERROR:bta_gattc_cache.cc(733)] bta_gattc_cache_load: can't open GATT cache file /data/misc/bluetooth/gatt_cache_84c2e4030202 for reading, error: No such file or directory
+11-26 05:45:11.708  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(641)] bta_gattc_start_discover: conn_id:0x0006 p_clcb->p_srcb->state:3
+11-26 05:45:11.709  1882  2353 I bt_stack: [INFO:hearing_aid.cc(1804)] GetDeviceCount: Not initialized yet
+11-26 05:45:11.709  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=1, s_handle=0x0001, e_handle=0xffff
+11-26 05:45:11.710  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x01 -> 0x03 after Event 0x1f0c
+11-26 05:45:11.712  1882  2034 D BtGatt.GattService: onConnected() - clientIf=6, connId=6, address=84:C2:E4:03:02:02
+11-26 05:45:11.713  2482  2482 W BluetoothEventManager: AclStateChangedHandler: activeDevice is null
+11-26 05:45:11.714  1904  1904 W BluetoothEventManager: AclStateChangedHandler: activeDevice is null
+11-26 05:45:11.715  3039  3039 I Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onConnection Find device :84:C2:E4:03:02:02 not exist.
+11-26 05:45:11.716  3970  3970 I Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onConnection Find device :84:C2:E4:03:02:02 not exist.
+11-26 05:45:11.721 32061  6216 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 05:45:11.721 32061  6216 I MqttService: Connected to device, discovering services...
+11-26 05:45:11.722  3970  3970 I Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onReceive: ACTION_ACL_CONNECTED,  device : BluetoothDeviceInfo{ mCurrentOpType: 2 Device Ble='xxx; 84:C2:E4:03:02:02 vid:0xffff pid:0xffff MandatoryUpgrade:false channelStatus:0bleStatus:0 sppStatus:0 authStage:0 PowerMode:0 mBackUpMode:-1 isDeviceInfoUpdated:false authCmd:false FailedReason:0x0}
+11-26 05:45:11.726  3039  3039 I Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onReceive: ACTION_ACL_CONNECTED,  device : BluetoothDeviceInfo{ mCurrentOpType: 2 Device Ble='xxx; 84:C2:E4:03:02:02 vid:0xffff pid:0xffff MandatoryUpgrade:false channelStatus:0bleStatus:0 sppStatus:0 authStage:0 PowerMode:0 mBackUpMode:-1 isDeviceInfoUpdated:false authCmd:false FailedReason:0x0}
+11-26 05:45:11.728  3970  3970 I BluetoothProxy: onBleStatus: device = bluetoothDeviceExt{ mCurrentOpType: 2, Device Ble='xxx; 84:C2:E4:03:02:02, vid:0xffff, pid:0xffff, Status : MandatoryUpgrade:false, PowerMode:0, mChannelType:-1, DualBackupFlag:-1, mRssi:-9999, mConnectType:0, mIsBoundByOtherDevice:false, mIsDirectlyConnectSpp:false, mIsEdrConnectedByOtherDevice:false, color type:0, count:0, fast pair:false, mma:false, mFailedReason:0x0}, status = 4
+11-26 05:45:11.728  3039  3039 D BluetoothHelper: >>> BT SCO state changed !!! action = android.bluetooth.device.action.ACL_CONNECTED
+11-26 05:45:11.729 32061  6216 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 05:45:11.730  3970  3970 I BaseBluetoothBusEvent: onBleStatus: bluetoothDevice = bluetoothDeviceExt{ mCurrentOpType: 2, Device Ble='xxx; 84:C2:E4:03:02:02, vid:0xffff, pid:0xffff, Status : MandatoryUpgrade:false, PowerMode:0, mChannelType:-1, DualBackupFlag:-1, mRssi:-9999, mConnectType:0, mIsBoundByOtherDevice:false, mIsDirectlyConnectSpp:false, mIsEdrConnectedByOtherDevice:false, color type:0, count:0, fast pair:false, mma:false, mFailedReason:0x0} , status = 4
+11-26 05:45:11.730  3039  3039 I BluetoothProxy: onBleStatus: device = bluetoothDeviceExt{ mCurrentOpType: 2, Device Ble='xxx; 84:C2:E4:03:02:02, vid:0xffff, pid:0xffff, Status : MandatoryUpgrade:false, PowerMode:0, mChannelType:-1, DualBackupFlag:-1, mRssi:-9999, mConnectType:0, mIsBoundByOtherDevice:false, mIsDirectlyConnectSpp:false, mIsEdrConnectedByOtherDevice:false, color type:0, count:0, fast pair:false, mma:false, mFailedReason:0x0}, status = 4
+11-26 05:45:11.731  1882 26344 D BtGatt.GattService: configureMTU() - address=84:C2:E4:03:02:02 mtu=240
+11-26 05:45:11.731  1882 26344 E BtGatt.GattService: configureMTU() - No connection for 84:C2:E4:03:02:02...
+11-26 05:45:11.732  3039  3039 I BaseBluetoothBusEvent: onBleStatus: bluetoothDevice = bluetoothDeviceExt{ mCurrentOpType: 2, Device Ble='xxx; 84:C2:E4:03:02:02, vid:0xffff, pid:0xffff, Status : MandatoryUpgrade:false, PowerMode:0, mChannelType:-1, DualBackupFlag:-1, mRssi:-9999, mConnectType:0, mIsBoundByOtherDevice:false, mIsDirectlyConnectSpp:false, mIsEdrConnectedByOtherDevice:false, color type:0, count:0, fast pair:false, mma:false, mFailedReason:0x0} , status = 4
+11-26 05:45:11.732  3039  5591 D BluetoothProxy: isConnecting : mIsConnecting = false
+11-26 05:45:11.732  3039  5591 D Bluetooth_AIVS_SDK: AIVS:BluetoothBle:-isBleConnecting- mConnectingBleDevice : null
+11-26 05:45:11.732  3039  5591 I Bluetooth_AIVS_SDK: AIVS:BluetoothSpp:-isSppConnecting- mConnectingSppDevice : null
+11-26 05:45:11.732  3039  5591 I Bluetooth_AIVS_SDK: AIVS:BluetoothEdr:Current connecting edr device:null
+11-26 05:45:11.732  3039  5591 D XmDeviceStateUtils:  isReallyConnection : state = 4
+11-26 05:45:11.732  3039  5591 D BleSysSystemBluetoothTemplate: checkDeviceIsInHistory : synList = 84:C2:E4:03:02:02
+11-26 05:45:11.733  3039  5591 D BleSysSystemBluetoothTemplate: checkDeviceIsInHistory : historyList = []
+11-26 05:45:11.733  3039  5591 D BleSysSystemBluetoothTemplate: checkDeviceIsInHistory : synList = 84:C2:E4:03:02:02
+11-26 05:45:11.733  3039  5591 D BleSysSystemBluetoothTemplate: checkDeviceIsInHistory : historyList = []
+11-26 05:45:11.733  3039  5591 E NetJsonConfigUtils: getMacSupportList : fixed(2)-pool-1-thread-0
+11-26 05:45:11.733  3039  5591 I BluetoothProxy: isBleAudioDevice ï¼švalue is null myMac is 84:C2:E4:03:02:02
+11-26 05:45:11.734  3039  5591 D NetJsonConfigUtils: deviceName = xxx
+11-26 05:45:11.734  3039  5591 D SynConnectOperation: startDeviceSyn ï¼šstart syn
+11-26 05:45:11.734  3039  5591 D SynConnectOperation: canSynNextDevice : mBleutoothSynInfos = []
+11-26 05:45:11.735  3039  5591 D SynConnectOperation: closeSyn : syn finish
+11-26 05:45:11.805  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:11.805  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 17, msg_len = 7
+11-26 05:45:11.805  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 17, len = 7rsp_code: 17
+11-26 05:45:11.805  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 05:45:11.806  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=1
+11-26 05:45:11.806  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 05:45:11.806  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(168)] Start service discovery
+11-26 05:45:11.806  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=3, s_handle=0x0001, e_handle=0xffff
+11-26 05:45:11.814  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:45:11.949  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:11.949  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 1, msg_len = 4
+11-26 05:45:11.949  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 1, len = 4rsp_code: 9
+11-26 05:45:11.949  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(519)] gatt_process_error_rsp
+11-26 05:45:11.949  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(481)] gatt_proc_disc_error_rspreason: 0a cmd_code 0008
+11-26 05:45:11.950  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(491)] Discovery completed
+11-26 05:45:11.950  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=3
+11-26 05:45:11.950  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 05:45:11.950  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=4, s_handle=0x0001, e_handle=0xffff
+11-26 05:45:12.097  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:12.097  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 9, msg_len = 22
+11-26 05:45:12.097  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 9, len = 22rsp_code: 9
+11-26 05:45:12.098  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 05:45:12.098  1882  2353 I chatty  : uid=1002(bluetooth) btu message loo identical 1 line
+11-26 05:45:12.098  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 05:45:12.221   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:12.221   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:12.486  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:12.486  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 9, msg_len = 8
+11-26 05:45:12.487  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 9, len = 8rsp_code: 9
+11-26 05:45:12.487  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 05:45:12.682  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:12.682  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 1, msg_len = 4
+11-26 05:45:12.682  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 1, len = 4rsp_code: 9
+11-26 05:45:12.682  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(519)] gatt_process_error_rsp
+11-26 05:45:12.682  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(481)] gatt_proc_disc_error_rspreason: 0a cmd_code 0008
+11-26 05:45:12.683  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(491)] Discovery completed
+11-26 05:45:12.683  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=4
+11-26 05:45:12.683  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 05:45:12.683  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-26 05:45:12.683  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x0004, e_handle=0x0004
+11-26 05:45:12.780  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:12.780  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-26 05:45:12.780  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-26 05:45:12.780  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 05:45:12.780  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-26 05:45:12.780  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 05:45:12.780  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-26 05:45:12.780  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x0007, e_handle=0x0007
+11-26 05:45:12.876  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:12.876  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-26 05:45:12.876  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-26 05:45:12.876  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 05:45:12.876  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-26 05:45:12.876  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 05:45:12.876  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-26 05:45:12.876  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x000a, e_handle=0x000a
+11-26 05:45:12.975  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:12.975  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-26 05:45:12.975  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-26 05:45:12.975  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 05:45:12.975  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-26 05:45:12.975  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 05:45:12.975  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-26 05:45:12.975  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x000d, e_handle=0xffff
+11-26 05:45:13.070  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:13.070  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-26 05:45:13.070  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-26 05:45:13.070  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 05:45:13.218  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:13.218  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 1, msg_len = 4
+11-26 05:45:13.219  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 1, len = 4rsp_code: 5
+11-26 05:45:13.219  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(519)] gatt_process_error_rsp
+11-26 05:45:13.219  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(481)] gatt_proc_disc_error_rspreason: 0a cmd_code 0004
+11-26 05:45:13.219  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(491)] Discovery completed
+11-26 05:45:13.219  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-26 05:45:13.219  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 05:45:13.219  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-26 05:45:13.219  1882  2353 I bt_stack: [INFO:bta_gattc_cache.cc(183)] bta_gattc_explore_srvc_finished: service discovery finished
+11-26 05:45:13.219  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x03 [GATTC_DISCOVER_ST], Event 0x1f0e[BTA_GATTC_DISCOVER_CMPL_EVT]
+11-26 05:45:13.219  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(693)] bta_gattc_disc_cmpl: conn_id=0x0006
+11-26 05:45:13.220  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x03 -> 0x02 after Event 0x1f0e
+11-26 05:45:13.220  1882  2034 E bt_btif_gattc: btif_gattc_upstreams_evt: Unhandled event (8)!
+11-26 05:45:13.222   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:13.222   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:13.308  2482  2620 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-26 05:45:13.309  2482  2620 D MiuiFastConnectService: stopBleScan: scanning: true
+11-26 05:45:13.311  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 05:45:13.311  1882  1901 D BtGatt.GattService: stopScan() - queue size =1
+11-26 05:45:13.313  1882  2332 I BtGatt.ScanManager: msg.what = 1
+11-26 05:45:13.314  1882  2332 D BtGatt.ScanManager: stop scan
+11-26 05:45:13.315  1882  1901 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-26 05:45:13.315  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-26 05:45:13.315  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 05:45:13.315  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(307)] gatt_is_app_holding_linkgatt_if= 5not found;
+11-26 05:45:13.315  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(359)] gatt_update_app_use_link_flag: is_add=0 chk_link=1
+11-26 05:45:13.316  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(325)] gatt_update_app_hold_link_status
+11-26 05:45:13.316  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(338)] attempt to remove nonexisting gatt_if=5
+11-26 05:45:13.316  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-26 05:45:13.316  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-26 05:45:13.316  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.322  2482  2620 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-26 05:45:13.324  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-26 05:45:13.324  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.324  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 05:45:13.326  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-26 05:45:13.326  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.328  1882  1901 D BtGatt.GattService: registerScanner() - UUID=70fb3709-f986-4cb1-9e10-fce1ebc0db57
+11-26 05:45:13.329  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-26 05:45:13.329  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-26 05:45:13.329  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.329  1882  2353 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register e8815837-8df0-f47f-b07b-280dbce97f04
+11-26 05:45:13.329  1882  2353 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-26 05:45:13.329  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-26 05:45:13.329  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-26 05:45:13.329  1882  2034 D BtGatt.GattService: onScannerRegistered() - UUID=70fb3709-f986-4cb1-9e10-fce1ebc0db57, scannerId=5, status=0
+11-26 05:45:13.329  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(262)]  bda :84:c2:e4:03:02:02
+11-26 05:45:13.329  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=1 found_idx=0
+11-26 05:45:13.329  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=1
+11-26 05:45:13.330  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-26 05:45:13.330  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-26 05:45:13.330  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 5
+11-26 05:45:13.330  2482  9835 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-26 05:45:13.332  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-26 05:45:13.332  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.332  1882  1901 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-26 05:45:13.332  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-26 05:45:13.332  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-26 05:45:13.332  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 05:45:13.332  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 05:45:13.336  1882  1901 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@aee62a0
+11-26 05:45:13.338  1882  1901 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-26 05:45:13.339  1882  1901 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-26 05:45:13.342  1882  2332 I BtGatt.ScanManager: msg.what = 0
+11-26 05:45:13.342  1882  2332 D BtGatt.ScanManager: handling starting scan
+11-26 05:45:13.345  1882  2332 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-26 05:45:13.349  1882  2034 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-26 05:45:13.349  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.349  1882  2332 D BtGatt.ScanManager: Available Filter size: 13
+11-26 05:45:13.350  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 05:45:13.350  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.350  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 05:45:13.354  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-26 05:45:13.354  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.355  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 05:45:13.355  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.355  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 05:45:13.358  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-26 05:45:13.358  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.359  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 05:45:13.359  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.359  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 05:45:13.363  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-26 05:45:13.363  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.364  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 05:45:13.364  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.364  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 05:45:13.367  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-26 05:45:13.367  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.368  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 05:45:13.368  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.369  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 05:45:13.371  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-26 05:45:13.372  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 05:45:13.372  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-26 05:45:13.372  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-26 05:45:13.374  1882  2332 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-26 05:45:13.375  1882  2034 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-26 05:45:14.222   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:14.222   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:14.820  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s
+11-26 05:45:15.224   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:15.224   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:15.507  1882  2353 I bt_stack: [INFO:hearing_aid.cc(1804)] GetDeviceCount: Not initialized yet
+11-26 05:45:16.225   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:16.225   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:16.785  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-26 05:45:16.785  1580  1639 I MiuiNetworkPolicy: label wlan0, uid 1051, active true, tsNanos 382886741685596
+11-26 05:45:16.786   514  1033 D OemNetd : setLimit: enable, rate=100000
+11-26 05:45:17.226   783  1848 D         : readbrightness,out1:1953áŒ«@B.
+11-26 05:45:17.226   783  1848 D         : readbrightness,out2:1953.
+11-26 05:45:17.822  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 200 KB/s

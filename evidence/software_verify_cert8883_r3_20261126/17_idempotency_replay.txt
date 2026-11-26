@@ -1,0 +1,6 @@
+# idempotency replay of the 9 readings already uploaded by the real App
+# payload rows=9 phone=14000000001 mac=0200000000A1
+[replay-1] utc=2026-11-25T21:48:06Z status=200 elapsed_ms=132 body={"inserted":0,"message":"ok"}
+
+[replay-2] utc=2026-11-25T21:48:08Z status=200 elapsed_ms=120 body={"inserted":0,"message":"ok"}
+

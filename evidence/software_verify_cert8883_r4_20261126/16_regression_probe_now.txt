@@ -1,0 +1,13 @@
+tcp port=1883 OPEN
+tcp port=8883 OPEN
+tcp port=8083 OPEN
+tcp port=8084 OPEN
+tcp port=18083 OPEN
+tcp port=5000 OPEN
+tcp port=3306 OPEN
+tls_8883_with_jd_ca_and_hostname OK version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384
+http_5000_/ status=404 allow='' body='<!doctype html> <html lang=en> <title>404 Not Found</title> <h1>Not Found</h1> <p>The requested URL was not found on the server. If you entered the URL manually'
+http_5000_/login status=405 allow='OPTIONS, POST' body='<!doctype html> <html lang=en> <title>405 Method Not Allowed</title> <h1>Method Not Allowed</h1> <p>The method is not allowed for the requested URL.</p> '
+http_5000_/upload_data_GET status=405 allow='OPTIONS, POST' body='<!doctype html> <html lang=en> <title>405 Method Not Allowed</title> <h1>Method Not Allowed</h1> <p>The method is not allowed for the requested URL.</p> '
+http_18083_/status status=200 allow='' body='Node emqx@127.0.0.1 is started emqx is running'
+mysql_3306_banner='I....9.0.1.p...}'

@@ -1,0 +1,19 @@
+# round-4 read-only connection counts (ss -tn)
+connect_result=OK
+--- [all_established]
+exit=0
+      1 80
+      1 443
+      1 22870
+      1 22701
+      1 20132
+
+--- [per_port_detail]
+exit=0
+Recv-Q Send-Q          Local Address:Port            Peer Address:Port Process
+0      0               172.31.81.253:45220         100.100.105.60:443         
+0      0               172.31.81.253:47542          100.100.30.25:80          
+0      0               172.31.81.253:5000          195.140.214.22:20132       
+0      112             172.31.81.253:22             27.128.89.184:22701       
+0      0      [::ffff:172.31.81.253]:21116 [::ffff:27.128.89.184]:22870
+

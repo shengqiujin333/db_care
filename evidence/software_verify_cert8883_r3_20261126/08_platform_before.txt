@@ -1,0 +1,46 @@
+# round-3 bounded read-only platform observation (software verification)
+started_utc=2026-11-25T21:44:41Z
+forbidden=mutation,sudo,restart,deploy,database,write-endpoint,private-key-output
+
+connect_result=OK
+--- [identity]
+exit=0
+2026-11-25T21:44:41Z
+2026-11-26 05:44:41 CST
+iZ2zeih0gmrk47og5r4z7sZ
+
+--- [upload_service]
+exit=0
+NRestarts=0
+ExecMainStartTimestamp=Wed 2026-11-25 21:59:02 CST
+ExecMainPID=312368
+ActiveState=active
+SubState=running
+
+--- [handler_identity]
+exit=0
+/root/abr.py size=8688 mtime=2026-11-25 21:59:02.622930574 +0800 inode=1054060
+a062b05f524dc8f6bce596e4571d339f697ef909b318503ad418ee0add24017c  /root/abr.py
+
+--- [upload_requests_since]
+exit=0
+
+--- [tail_since]
+exit=0
+2026-11-26T05:42:37+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [26/Nov/2026 05:42:37] "GET / HTTP/1.1" 404 -
+2026-11-26T05:42:37+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [26/Nov/2026 05:42:37] "GET /login HTTP/1.1" 405 -
+2026-11-26T05:42:37+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [26/Nov/2026 05:42:37] "GET /upload_data HTTP/1.1" 405 -
+
+--- [service_errors_since]
+exit=0
+-- No entries --
+
+--- [listeners]
+exit=0
+LISTEN 0      1024         0.0.0.0:8883       0.0.0.0:*    users:(("beam.smp",pid=299216,fd=35))                    
+LISTEN 0      128          0.0.0.0:5000       0.0.0.0:*    users:(("python",pid=312368,fd=3))                       
+LISTEN 0      1024         0.0.0.0:18083      0.0.0.0:*    users:(("beam.smp",pid=299216,fd=30))                    
+LISTEN 0      1024         0.0.0.0:1883       0.0.0.0:*    users:(("beam.smp",pid=299216,fd=33))                    
+LISTEN 0      4096         0.0.0.0:3306       0.0.0.0:*    users:(("docker-proxy",pid=1721,fd=7))                   
+LISTEN 0      4096            [::]:3306          [::]:*    users:(("docker-proxy",pid=1727,fd=7))
+
