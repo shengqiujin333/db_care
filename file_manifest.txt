@@ -122,6 +122,7 @@ artifacts/software_test_report_cert8883_r3.md | active | 软件测试：8883 证
 artifacts/software_test_report_cert8883_r4.md | active | 软件测试：8883 证书修复第 4 轮最终复验（人工确认不要求字段级回读后，当前版本真实 App 两次上传 HTTP 200/待发箱清零/新增本地读数/同键重放 inserted=0；SRV-01/CLI-02/REG-03/UPLOAD-04 上传维度/P0 PASS；字段级回读经人工确认未执行；P1 未执行且未明确豁免，交付整体 TEST_FAIL EXTERNAL_CONDITION_UNEXECUTED）
 artifacts/software_test_report_cert8883_reg03_r7.md | active | 软件测试：CERT8883-REG-03 第 7 轮不受影响路径回归（8883 TLS listener、1883 可连、18083 /status 200、5000 / 404 与 /login、/upload_data 405+允许方法集合、3306 MySQL 9.0.1 握手；8083/8084 手机侧超时与基线一致记为既有差异；手机侧有界端口扫描未发现新增免校验/诊断入口，鉴权边界未放宽；App PID/前台服务/DATA_OK+CONNECT_FAILED 终态、无新增崩溃/ANR；主机 connect-only 受 TUN 拦截判无效；TEST_PASS 仅限本用例范围）
 artifacts/software_test_report_cert8883_srv01_r5.md | active | 软件测试：CERT8883-SRV-01 独立核验第 5 轮（2026-11-26T03:10Z 实测 8883 叶子 issuer=CN=Tiktok Root CA, O=LinkValue、SAN 含 IP:8.140.23.253、-verify_ip 返回 0、负例 8.140.23.254 被拒、serial …B83 已从基线 …B82 变更且与签发记录一致、notAfter 2028-11-24；信任锚指纹未变；本用例 TEST_PASS，仅限该用例范围）
+artifacts/software_test_report_cert8883_upload04_r5.md | active | 软件测试：CERT8883-UPLOAD-04 第 5 轮单项复验（2026-11-26 12:10 CST 真实 BLE 读数 6A002C00/1795666245/21.1/37.6 经 App enqueueAndUpload 上传，平台 POST /upload_data 200、待发箱清零、upload_last_status=OK、无 gated off/4xx；同键重放服务端返回 inserted=0 作补充；字段级 MySQL 回读与按行数幂等按人工“不用回读，传上去就行了”NOT EXECUTED/APPROVED_DEFERRED 且不写成 PASS；mac_addr=0200000000A1 为合成测试值来源未确认已披露；测试行保留未清理并披露；本轮结论仅覆盖上传受理维度与当前版本）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
 artifacts/system_analysis_current.md | active | 系统架构：最新需求与旧1/3判据冲突、禁止调温调光功耗测试的当前边界、可复用候选版本及摘要、历史证据限制和后续集成缺口
 artifacts/test_design.md | active | 嵌入式联合测试设计 TD-002 rev 10.0（传感器→网关→安卓→平台 E2E）：用户不调温/不改光强且 T=0 时当前量产固件不会自然上报，方案规定测试专用构建在采样后判定前注入 367（36.7℃）走真实 >35 分支，默认关闭、正式版排除、E2E 后恢复发布镜像；含 J-00 先绑定/读就绪、J-01 同一 uid4+367+真实湿度跨端四段证据、J-02 负向不上传、EM-01..08 与退出准则；真实物理 >35℃/升温+无光/双态/功耗/433 电气/平台清理/手机 ADB 未授权/Wi-Fi 未连列 NOT EXECUTED；只做设计不执行）
@@ -2305,6 +2306,45 @@ evidence/software_verify_cert8883_r4_20261126/idempotency_new_reading.py | activ
 evidence/software_verify_cert8883_r4_20261126/phone_state_now.py | active | 手机只读状态采集脚本（设备/包/prefs/本地库快照/logcat）
 evidence/software_verify_cert8883_r4_20261126/platform_conn_counts.py | active | 平台只读连接计数采集脚本（无管理 API、无写库）
 evidence/software_verify_cert8883_r4_20261126/regression_probe_now.py | active | 只读回归探测脚本（端口/TLS/HTTP 语义/MySQL 握手）
+evidence/software_verify_cert8883_upload04_r5_20261126/ | active | CERT8883-UPLOAD-04 第 5 轮验证证据根：当前平台/App/手机身份、真实 BLE 读数与真实 App 上传受理、平台只读日志、同键幂等重放、本地库与 prefs 前后、UI 截图、逐项判定
+evidence/software_verify_cert8883_upload04_r5_20261126/00_utc_start.txt | active | 起始 UTC 与 git HEAD
+evidence/software_verify_cert8883_upload04_r5_20261126/01_dumpsys_package.txt | active | App 包信息（versionCode 10/versionName 1.9、lastUpdateTime、DEBUGGABLE、权限）
+evidence/software_verify_cert8883_upload04_r5_20261126/02_pid.txt | active | 起始 App PID（14224）
+evidence/software_verify_cert8883_upload04_r5_20261126/03_apk_path.txt | active | 设备侧 base.apk 路径
+evidence/software_verify_cert8883_upload04_r5_20261126/04_device_apk_sha256.txt | active | 设备侧 base.apk SHA-256（=80232c50…de4b，与主机一致）
+evidence/software_verify_cert8883_upload04_r5_20261126/05_prefs_list.txt | active | App shared_prefs 目录列表
+evidence/software_verify_cert8883_upload04_r5_20261126/06_prefs_before.xml | active | 上传前 prefs（registerphone/mac_addr、measure_state=stopping、upload_last_status=OK、待发 0）
+evidence/software_verify_cert8883_upload04_r5_20261126/07_logcat_buffer_start.txt | active | 起始全量 logcat（含 12:10:45 真实 BLE 读数与 12:10:46 上传、无 gated off）
+evidence/software_verify_cert8883_upload04_r5_20261126/08_db_list.txt | active | App databases 目录列表
+evidence/software_verify_cert8883_upload04_r5_20261126/09_local_db_before-journal | active | 上传前本地库 journal 附件
+evidence/software_verify_cert8883_upload04_r5_20261126/09_local_db_before.db | active | 上传前本地库快照（temperature 135 行、pending 0）
+evidence/software_verify_cert8883_upload04_r5_20261126/10_connectivity.txt | active | dumpsys connectivity（默认网络 101=WIFI）
+evidence/software_verify_cert8883_upload04_r5_20261126/11_wifi_dump.txt | active | WiFi 转储（SSID ZTE_607157）
+evidence/software_verify_cert8883_upload04_r5_20261126/12_services.txt | active | App 服务状态
+evidence/software_verify_cert8883_upload04_r5_20261126/13_platform_window_upload.txt | active | 平台只读窗口：12:02/12:10 POST /upload_data 200
+evidence/software_verify_cert8883_upload04_r5_20261126/14_idempotency_replay.txt | active | 同键幂等重放原始结果（200 inserted=0，补充非行数回读）
+evidence/software_verify_cert8883_upload04_r5_20261126/15_prefs_after.xml | active | 上传后 prefs（upload_last_status=OK、upload_pending_count=0、measure_state=stopping）
+evidence/software_verify_cert8883_upload04_r5_20261126/16_local_db_after-journal | active | 上传后本地库 journal 附件
+evidence/software_verify_cert8883_upload04_r5_20261126/16_local_db_after.db | active | 上传后本地库快照（temperature 135 行、pending 0、含 1795666245/21.1/37.6）
+evidence/software_verify_cert8883_upload04_r5_20261126/17_logcat_buffer_end.txt | active | 结束全量 logcat（CloudUpload 仅 uploaded、无 gated off/失败/拒绝）
+evidence/software_verify_cert8883_upload04_r5_20261126/18_platform_window_replay.txt | active | 平台只读窗口：12:14 重放 POST /upload_data 200
+evidence/software_verify_cert8883_upload04_r5_20261126/19_wlan0.txt | active | wlan0 地址（192.168.0.103/24）
+evidence/software_verify_cert8883_upload04_r5_20261126/20_netstats_head.txt | active | netstats 头部（网络使用状态）
+evidence/software_verify_cert8883_upload04_r5_20261126/21_ui_home.png | active | 首页截图（e2ep0 21.1℃/38%、最近读取 刚刚、守护运行）
+evidence/software_verify_cert8883_upload04_r5_20261126/22_ui_dump.xml | active | 首页 UI 控件树
+evidence/software_verify_cert8883_upload04_r5_20261126/23_crash_buffer.txt | active | crash buffer（仅 11-25 22:00 旧崩溃，当前 PID 无新增）
+evidence/software_verify_cert8883_upload04_r5_20261126/24_utc_end.txt | active | 结束 UTC
+evidence/software_verify_cert8883_upload04_r5_20261126/25_pid_end.txt | active | 结束 App PID（14224）
+evidence/software_verify_cert8883_upload04_r5_20261126/30_upload04_r5_judgement.md | active | 本项逐项判定（前置、真实上传、幂等补充、未执行项、披露、证据索引）
+evidence/software_verify_cert8883_upload04_r5_20261126/analyze_db.py | active | 本地库只读解析脚本（表/行数/最新读数/pending）
+evidence/software_verify_cert8883_upload04_r5_20261126/check_manifest_paths.py | active | 清单新增路径存在性自检脚本（只读）
+evidence/software_verify_cert8883_upload04_r5_20261126/dbsnap_after/ | coarse | 上传后本地库 SQLite 快照副本（db+journal）
+evidence/software_verify_cert8883_upload04_r5_20261126/dbsnap_after/bwt.db | active | 由 software_tester 新增或修改的项目相关文件
+evidence/software_verify_cert8883_upload04_r5_20261126/dbsnap_after/bwt.db-journal | active | 由 software_tester 新增或修改的项目相关文件
+evidence/software_verify_cert8883_upload04_r5_20261126/dbsnap_before/ | coarse | 上传前本地库 SQLite 快照副本（db+journal）
+evidence/software_verify_cert8883_upload04_r5_20261126/dbsnap_before/bwt.db | active | 由 software_tester 新增或修改的项目相关文件
+evidence/software_verify_cert8883_upload04_r5_20261126/dbsnap_before/bwt.db-journal | active | 由 software_tester 新增或修改的项目相关文件
+evidence/software_verify_cert8883_upload04_r5_20261126/idempotency_replay.py | active | 同键幂等重放脚本（真实读数同键，记录服务端响应）
 evidence/software_verify_cloud_upload_item009.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_db_migration_item006.py | active | Android ITEM-006 独立验证脚本（SQLite v1→v3 迁移与数据保留）
 evidence/software_verify_detail_presentation_item012.py | active | 由 software_tester 新增或修改的项目相关文件

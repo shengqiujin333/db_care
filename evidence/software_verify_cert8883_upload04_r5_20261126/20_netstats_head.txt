@@ -1,0 +1,40 @@
+Active interfaces:
+  iface=wlan0 ident=[{type=WIFI, subType=COMBINED, networkId="ZTE_607157", metered=false, defaultNetwork=true}] 
+Active UID interfaces:
+  iface=wlan0 ident=[{type=WIFI, subType=COMBINED, networkId="ZTE_607157", metered=false, defaultNetwork=true}] 
+Top openSession callers (uid=count):
+  10174=22
+
+Dev stats:
+  Pending bytes: 56825
+  History since boot:
+  ident=[{type=WIFI, subType=COMBINED, networkId="ZTE_607157", metered=false, defaultNetwork=false}] uid=-1 set=ALL tag=0x0
+    NetworkStatsHistory: bucketDuration=3600
+      st=1795438800 rb=0 rp=0 tb=132 tp=2 op=0
+      st=1795539600 rb=0 rp=0 tb=132 tp=2 op=0
+  ident=[{type=WIFI, subType=COMBINED, networkId="ZTE_607157", metered=false, defaultNetwork=true}] uid=-1 set=ALL tag=0x0
+    NetworkStatsHistory: bucketDuration=3600
+      st=1795438800 rb=7244815 rp=8834 tb=1159796 tp=4775 op=0
+      st=1795442400 rb=458467 rp=3923 tb=99709 tp=1068 op=0
+      st=1795446000 rb=524138 rp=3850 tb=107262 tp=1095 op=0
+      st=1795449600 rb=480028 rp=3741 tb=89630 tp=997 op=0
+      st=1795453200 rb=508808 rp=3830 tb=96897 tp=1042 op=0
+      st=1795456800 rb=516286 rp=4016 tb=102870 tp=1088 op=0
+      st=1795460400 rb=562795 rp=3966 tb=96721 tp=1026 op=0
+      st=1795464000 rb=438033 rp=4179 tb=269309 tp=949 op=0
+      st=1795467600 rb=433366 rp=4079 tb=70317 tp=800 op=0
+      st=1795471200 rb=414259 rp=4006 tb=67882 tp=764 op=0
+      st=1795474800 rb=488154 rp=4140 tb=190132 tp=1047 op=0
+      st=1795478400 rb=399212 rp=3889 tb=63146 tp=721 op=0
+      st=1795482000 rb=442756 rp=3844 tb=90537 tp=882 op=0
+      st=1795485600 rb=392709 rp=3646 tb=70131 tp=750 op=0
+      st=1795489200 rb=417414 rp=3692 tb=74302 tp=821 op=0
+      st=1795492800 rb=644638 rp=3813 tb=89593 tp=901 op=0
+      st=1795496400 rb=503257 rp=3958 tb=117592 tp=1019 op=0
+      st=1795500000 rb=5211234 rp=8006 tb=482863 tp=4081 op=0
+      st=1795503600 rb=469068 rp=3537 tb=74372 tp=847 op=0
+      st=1795507200 rb=398092 rp=3621 tb=79862 tp=798 op=0
+      st=1795510800 rb=136673289 rp=101018 tb=4690646 tp=63298 op=0
+      st=1795514400 rb=797631347 rp=573793 tb=29797595 tp=421192 op=0
+      st=1795518000 rb=76738 rp=157 tb=29292 tp=231 op=0
+      st=1795521600 rb=44092 rp=106 tb=40356 tp=121 op=0

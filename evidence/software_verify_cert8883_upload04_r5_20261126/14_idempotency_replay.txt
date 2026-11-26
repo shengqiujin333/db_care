@@ -1,0 +1,7 @@
+# same-key idempotency replay (supplementary; NOT row-count readback)
+# utc=2026-11-26T04:13:54Z
+# payload: phone=14000000001 mac=0200000000A1 readings=[{devId:6A002C00,time:1795666245,temperature:21.1,humidity:37.6}]
+# this is the 12:10:45 real BLE reading already uploaded by the App
+http_status=200 elapsed_ms=9226
+body={"inserted":0,"message":"ok"}
+
