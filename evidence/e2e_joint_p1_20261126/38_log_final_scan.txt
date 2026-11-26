@@ -1,0 +1,135 @@
+file: evidence/e2e_joint_p1_20261126/20_logcat_window.txt lines: 7249
+first: --------- beginning of main
+last: 11-26 13:02:56.707 D/        (  783): readbrightness,out2:8.
+
+== tls_san_or_chain_errors: 0 line(s)
+
+== mqtt_connect: 151 line(s)
+   11-26 13:01:51.361 E/MqttService(14224): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+   11-26 13:01:51.361 E/MqttService(14224): 	at java.lang.Thread.run(Thread.java:919)
+   11-26 13:01:51.366 I/MqttService(14224): Retrying connection after delay...
+   11-26 13:01:53.368 I/MqttService(14224): Attempt 2 to connect to Bluetooth device...
+   11-26 13:01:54.029 I/MqttService(14224): Connect error status=133
+   11-26 13:01:54.035 I/MqttService(14224): Retrying connection after delay...
+   11-26 13:01:56.037 I/MqttService(14224): Attempt 3 to connect to Bluetooth device...
+   11-26 13:01:56.559 I/MqttService(14224): Connected to device, discovering services...
+   11-26 13:02:12.048 E/MqttService(14224): Error during connection or data read: Timed out waiting for 16000 ms
+   11-26 13:02:12.048 E/MqttService(14224): kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+   11-26 13:02:12.048 E/MqttService(14224): 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+   11-26 13:02:12.048 E/MqttService(14224): 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+   11-26 13:02:12.048 E/MqttService(14224): 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+   11-26 13:02:12.048 E/MqttService(14224): 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+   11-26 13:02:12.048 E/MqttService(14224): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+   11-26 13:02:12.048 E/MqttService(14224): 	at java.lang.Thread.run(Thread.java:919)
+   11-26 13:02:12.054 I/MqttService(14224): Retrying connection after delay...
+   11-26 13:02:14.056 I/MqttService(14224): Attempt 4 to connect to Bluetooth device...
+   11-26 13:02:14.452 I/MqttService(14224): Connected to device, discovering services...
+   11-26 13:02:30.066 E/MqttService(14224): Error during connection or data read: Timed out waiting for 16000 ms
+   11-26 13:02:30.066 E/MqttService(14224): kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+   11-26 13:02:30.066 E/MqttService(14224): 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+   11-26 13:02:30.066 E/MqttService(14224): 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+   11-26 13:02:30.066 E/MqttService(14224): 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+   11-26 13:02:30.066 E/MqttService(14224): 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+   11-26 13:02:30.066 E/MqttService(14224): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+   11-26 13:02:30.066 E/MqttService(14224): 	at java.lang.Thread.run(Thread.java:919)
+   11-26 13:02:30.073 I/MqttService(14224): Retrying connection after delay...
+   11-26 13:02:32.075 I/MqttService(14224): Attempt 5 to connect to Bluetooth device...
+   11-26 13:02:32.587 I/MqttService(14224): Connected to device, discovering services...
+   11-26 13:02:48.084 E/MqttService(14224): Error during connection or data read: Timed out waiting for 16000 ms
+   11-26 13:02:48.084 E/MqttService(14224): kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+   11-26 13:02:48.084 E/MqttService(14224): 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+   11-26 13:02:48.084 E/MqttService(14224): 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+   11-26 13:02:48.084 E/MqttService(14224): 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+   11-26 13:02:48.084 E/MqttService(14224): 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+   11-26 13:02:48.084 E/MqttService(14224): 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+   11-26 13:02:48.084 E/MqttService(14224): 	at java.lang.Thread.run(Thread.java:919)
+   11-26 13:02:48.089 I/MqttService(14224): Max attempts reached. Connection failed.
+   11-26 13:02:48.090 I/MqttService(14224): link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+
+== ble_read: 59 line(s)
+   11-26 12:54:35.384 V/bt_stack( 1882): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x03 [GATTC_DISCOVER_ST], Event 0x1f07[BTA_GATTC_API_CFG_MTU_EVT]
+   11-26 12:54:36.724 V/bt_stack( 1882): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f07[BTA_GATTC_API_CFG_MTU_EVT]
+   11-26 12:54:36.724 V/bt_stack( 1882): [VERBOSE1:gatt_api.cc(578)] GATTC_ConfigureMTU: conn_id=0x0006, mtu=240
+   11-26 12:54:36.870 D/BtGatt.GattService( 1882): onConfigureMTU() address=84:C2:E4:03:02:02, status=0, mtu=240
+   11-26 12:54:36.871 D/BluetoothGatt(14224): onConfigureMTU() - Device=84:C2:E4:03:02:02 mtu=240 status=0
+   11-26 12:54:36.871 I/MqttService(14224): MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+   11-26 12:54:36.885 V/bt_stack( 1882): [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_READ_EVT
+   11-26 12:54:36.886 V/bt_stack( 1882): [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f04[BTA_GATTC_API_READ_EVT]
+   11-26 12:54:37.614 I/MqttService(14224): GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+   11-26 12:54:37.645 I/MqttService(14224): link_state=DATA_OK msg=网关已连接（最近读取 12:54）
+   11-26 12:54:37.645 I/MqttService(14224): BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+   11-26 12:55:38.074 W/d.process.media(18914): type=1400 audit(0.0:47193): avc: denied { read } for name="u:object_r:vendor_display_prop:s0" dev="tmpfs" ino=11210 scontext=u:r:mediaprovider:s0:c512,c768 tcontext=u:object_r:vendor_display_prop:s0 tclass=file permissive=0
+   11-26 12:55:38.164 W/d.process.media(18914): type=1400 audit(0.0:47194): avc: denied { read } for name="plat_file_contexts" dev="dm-0" ino=1545 scontext=u:r:mediaprovider:s0:c512,c768 tcontext=u:object_r:file_contexts_file:s0 tclass=file permissive=0
+   11-26 12:55:59.774 W/ot_track_worker( 9886): type=1400 audit(0.0:47197): avc: denied { read } for name="u:object_r:pcba_config_prop:s0" dev="tmpfs" ino=11161 scontext=u:r:platform_app:s0:c512,c768 tcontext=u:object_r:pcba_config_prop:s0 tclass=file permissive=0
+   11-26 12:57:37.919 I/MqttService(14224): link_state=CONNECTING msg=正在连接网关…
+   11-26 12:57:38.392 D/BluetoothGatt(14224): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+   11-26 12:57:38.394 D/BtGatt.GattService( 1882): configureMTU() - address=84:C2:E4:03:02:02 mtu=240
+   11-26 12:57:38.394 E/BtGatt.GattService( 1882): configureMTU() - No connection for 84:C2:E4:03:02:02...
+   11-26 12:57:56.326 D/BluetoothGatt(14224): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+   11-26 12:57:56.327 D/BtGatt.GattService( 1882): configureMTU() - address=84:C2:E4:03:02:02 mtu=240
+   11-26 12:57:56.327 E/BtGatt.GattService( 1882): configureMTU() - No connection for 84:C2:E4:03:02:02...
+   11-26 12:58:17.388 D/BluetoothGatt(14224): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+   11-26 12:58:17.391 D/BtGatt.GattService( 1882): configureMTU() - address=84:C2:E4:03:02:02 mtu=240
+   11-26 12:58:17.391 E/BtGatt.GattService( 1882): configureMTU() - No connection for 84:C2:E4:03:02:02...
+   11-26 12:58:35.330 I/MqttService(14224): link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+   11-26 12:59:32.674 W/ip      (19069): type=1400 audit(0.0:47216): avc: denied { search } for name="net" dev="mmcblk0p62" ino=1523724 scontext=u:r:shell:s0 tcontext=u:object_r:net_data_file:s0 tclass=dir permissive=0
+   11-26 13:01:35.352 I/MqttService(14224): link_state=CONNECTING msg=正在连接网关…
+   11-26 13:01:35.953 D/BluetoothGatt(14224): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+   11-26 13:01:35.953 D/BtGatt.GattService( 1882): configureMTU() - address=84:C2:E4:03:02:02 mtu=240
+   11-26 13:01:35.953 E/BtGatt.GattService( 1882): configureMTU() - No connection for 84:C2:E4:03:02:02...
+   11-26 13:01:56.571 D/BluetoothGatt(14224): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+   11-26 13:01:56.572 D/BtGatt.GattService( 1882): configureMTU() - address=84:C2:E4:03:02:02 mtu=240
+   11-26 13:01:56.572 E/BtGatt.GattService( 1882): configureMTU() - No connection for 84:C2:E4:03:02:02...
+   11-26 13:02:14.460 D/BluetoothGatt(14224): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+   11-26 13:02:14.462 D/BtGatt.GattService( 1882): configureMTU() - address=84:C2:E4:03:02:02 mtu=240
+   11-26 13:02:14.462 E/BtGatt.GattService( 1882): configureMTU() - No connection for 84:C2:E4:03:02:02...
+   11-26 13:02:32.595 D/BluetoothGatt(14224): configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+   11-26 13:02:32.596 D/BtGatt.GattService( 1882): configureMTU() - address=84:C2:E4:03:02:02 mtu=240
+   11-26 13:02:32.596 E/BtGatt.GattService( 1882): configureMTU() - No connection for 84:C2:E4:03:02:02...
+   11-26 13:02:48.090 I/MqttService(14224): link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+
+== reading: 333 line(s)
+   11-26 13:02:15.412 I/bt_stack( 1882): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x000a, e_handle=0x000a
+   11-26 13:02:15.509 I/bt_stack( 1882): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x000d, e_handle=0xffff
+   11-26 13:02:15.753 V/bt_stack( 1882): [VERBOSE1:bta_gattc_act.cc(693)] bta_gattc_disc_cmpl: conn_id=0x0006
+   11-26 13:02:25.192 I/chatty  ( 2833): uid=1000(system) /system/vendor/bin/cnss_diag identical 2 lines
+   11-26 13:02:30.071 V/bt_stack( 1882): [VERBOSE1:bta_gattc_act.cc(538)] bta_gattc_close: conn_id=0x0006
+   11-26 13:02:30.071 I/bt_stack( 1882): [INFO:gatt_api.cc(1246)] GATT_Disconnect conn_id=0x0006
+   11-26 13:02:31.115 I/bt_stack( 1882): [INFO:btsnoop.cc(380)] clear_l2cap_whitelist: Clearing whitelist from l2cap channel. conn_handle=10 cid=4:4
+   11-26 13:02:31.116 V/bt_stack( 1882): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=1  conn_id=0x1
+   11-26 13:02:31.116 V/bt_stack( 1882): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=2  conn_id=0x2
+   11-26 13:02:31.116 V/bt_stack( 1882): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=3  conn_id=0x3
+   11-26 13:02:31.116 W/bt_stack( 1882): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=3 connected=0 conn_id=0x0003 reason=0x0016
+   11-26 13:02:31.117 V/bt_stack( 1882): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=4  conn_id=0x4
+   11-26 13:02:31.117 W/bt_stack( 1882): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=4 connected=0 conn_id=0x0004 reason=0x0016
+   11-26 13:02:31.117 V/bt_stack( 1882): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=5  conn_id=0x5
+   11-26 13:02:31.117 W/bt_stack( 1882): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=5 connected=0 conn_id=0x0005 reason=0x0016
+   11-26 13:02:32.573 V/bt_stack( 1882): [VERBOSE1:bta_gattc_act.cc(465)] bta_gattc_conn: conn_id=0x0006
+   11-26 13:02:32.573 V/bt_stack( 1882): [VERBOSE1:gatt_api.cc(1278)] GATT_GetConnectionInfor conn_id=0x0006
+   11-26 13:02:32.574 I/bt_stack( 1882): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=1, s_handle=0x0001, e_handle=0xffff
+   11-26 13:02:32.669 I/bt_stack( 1882): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=3, s_handle=0x0001, e_handle=0xffff
+   11-26 13:02:32.767 I/bt_stack( 1882): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=4, s_handle=0x0001, e_handle=0xffff
+   11-26 13:02:32.962 I/chatty  ( 1882): uid=1002(bluetooth) btu message loo identical 1 line
+   11-26 13:02:33.155 I/bt_stack( 1882): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x0004, e_handle=0x0004
+   11-26 13:02:33.352 I/bt_stack( 1882): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x0007, e_handle=0x0007
+   11-26 13:02:33.447 I/bt_stack( 1882): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x000a, e_handle=0x000a
+   11-26 13:02:33.547 I/bt_stack( 1882): [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x000d, e_handle=0xffff
+   11-26 13:02:33.936 V/bt_stack( 1882): [VERBOSE1:bta_gattc_act.cc(693)] bta_gattc_disc_cmpl: conn_id=0x0006
+   11-26 13:02:36.064 D/BluetoothUtils( 1882): blockedByLocationOff callingUid=1002
+   11-26 13:02:43.124 I/chatty  ( 2833): uid=1000(system) /system/vendor/bin/cnss_diag identical 2 lines
+   11-26 13:02:48.087 V/bt_stack( 1882): [VERBOSE1:bta_gattc_act.cc(538)] bta_gattc_close: conn_id=0x0006
+   11-26 13:02:48.088 I/bt_stack( 1882): [INFO:gatt_api.cc(1246)] GATT_Disconnect conn_id=0x0006
+   11-26 13:02:49.106 I/bt_stack( 1882): [INFO:btsnoop.cc(380)] clear_l2cap_whitelist: Clearing whitelist from l2cap channel. conn_handle=11 cid=4:4
+   11-26 13:02:49.107 V/bt_stack( 1882): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=1  conn_id=0x1
+   11-26 13:02:49.107 V/bt_stack( 1882): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=2  conn_id=0x2
+   11-26 13:02:49.107 V/bt_stack( 1882): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=3  conn_id=0x3
+   11-26 13:02:49.108 W/bt_stack( 1882): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=3 connected=0 conn_id=0x0003 reason=0x0016
+   11-26 13:02:49.108 V/bt_stack( 1882): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=4  conn_id=0x4
+   11-26 13:02:49.108 W/bt_stack( 1882): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=4 connected=0 conn_id=0x0004 reason=0x0016
+   11-26 13:02:49.108 V/bt_stack( 1882): [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=5  conn_id=0x5
+   11-26 13:02:49.108 W/bt_stack( 1882): [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=5 connected=0 conn_id=0x0005 reason=0x0016
+   11-26 13:02:54.646 E/WifiService( 1580): Permission violation - getScanResults not allowed for uid=10067, packageName=com.miui.personalassistant, reason=java.lang.SecurityException: UID 10067 has no location permission
+
+== upload: 1 line(s)
+   11-26 12:54:37.834 I/CloudUpload(14224): uploaded 1 reading(s)
+

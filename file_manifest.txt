@@ -124,6 +124,7 @@ artifacts/software_test_report_cert8883_reg03_r7.md | active | 软件测试：CE
 artifacts/software_test_report_cert8883_srv01_r5.md | active | 软件测试：CERT8883-SRV-01 独立核验第 5 轮（2026-11-26T03:10Z 实测 8883 叶子 issuer=CN=Tiktok Root CA, O=LinkValue、SAN 含 IP:8.140.23.253、-verify_ip 返回 0、负例 8.140.23.254 被拒、serial …B83 已从基线 …B82 变更且与签发记录一致、notAfter 2028-11-24；信任锚指纹未变；本用例 TEST_PASS，仅限该用例范围）
 artifacts/software_test_report_cert8883_upload04_r5.md | active | 软件测试：CERT8883-UPLOAD-04 第 5 轮单项复验（2026-11-26 12:10 CST 真实 BLE 读数 6A002C00/1795666245/21.1/37.6 经 App enqueueAndUpload 上传，平台 POST /upload_data 200、待发箱清零、upload_last_status=OK、无 gated off/4xx；同键重放服务端返回 inserted=0 作补充；字段级 MySQL 回读与按行数幂等按人工“不用回读，传上去就行了”NOT EXECUTED/APPROVED_DEFERRED 且不写成 PASS；mac_addr=0200000000A1 为合成测试值来源未确认已披露；测试行保留未清理并披露；本轮结论仅覆盖上传受理维度与当前版本）
 artifacts/software_test_report_e2e_joint_p0_r1.md | active | 软件测试：E2E-JOINT-P0 证书修复后平台段第 1 轮联合复验（三端同版本身份；手机段引用+本轮复核 DATA_OK/0xA1 6B/默认网络/守护；平台 TLS -verify_ip OK、0 个 SAN/链错误、四次 CONNECT→CONNACK rc=5 not_authorized 分类记录并有 EMQX 同 username 服务端日志；SSH 只读服务/端口/日志/连接数基线；DB 字段级回读与嵌入式板上重验 NOT EXECUTED 且不写成 PASS；仅本用例必需项 TEST_PASS）
+artifacts/software_test_report_e2e_joint_p1_r1.md | active | 软件测试：E2E-JOINT-P1 证书修复后第 1 轮受控注入联合验证（证书维度同窗口 PASS：项目信任锚 -verify_ip 0、App 0 个 SAN/链错误、两次 CONNECT→CONNACK rc=5 not_authorized 并有 EMQX 同 username/clientid 服务端日志；P1 四段整例 NOT EXECUTED：固件测试构建/注入 367/TINJ 不存在、mac_addr 为合成未确认、平台无字段级回读接口或授权；记录缓存值 22.4/36.4 的 BLE 读取/本地行/上传仅作附录不作 P1 证据；结论 TEST_FAIL，责任方与恢复条件逐项列出）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
 artifacts/system_analysis_current.md | active | 系统架构：最新需求与旧1/3判据冲突、禁止调温调光功耗测试的当前边界、可复用候选版本及摘要、历史证据限制和后续集成缺口
 artifacts/test_design.md | active | 嵌入式联合测试设计 TD-002 rev 10.0（传感器→网关→安卓→平台 E2E）：用户不调温/不改光强且 T=0 时当前量产固件不会自然上报，方案规定测试专用构建在采样后判定前注入 367（36.7℃）走真实 >35 分支，默认关闭、正式版排除、E2E 后恢复发布镜像；含 J-00 先绑定/读就绪、J-01 同一 uid4+367+真实湿度跨端四段证据、J-02 负向不上传、EM-01..08 与退出准则；真实物理 >35℃/升温+无光/双态/功耗/433 电气/平台清理/手机 ADB 未授权/Wi-Fi 未连列 NOT EXECUTED；只做设计不执行）
@@ -960,6 +961,57 @@ evidence/e2e_joint_p0_platform_20261126/platform_p0_ssh.py | active | 由 softwa
 evidence/e2e_joint_p0_platform_20261126/poll_8883.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/e2e_joint_p0_platform_20261126/run_tls_check.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/e2e_joint_p0_platform_20261126/scan_p0_log.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p1_20261126/ | active | E2E-JOINT-P1 第 1 轮原始证据目录（设备/APK/网络/守护/网关缓存基线、App 实时 TLS/CONNACK 与 BLE 读取、EMQX 同窗口认证失败、平台只读服务/路由/回读检索、固件测试构建审计、可复跑只读脚本）
+evidence/e2e_joint_p1_20261126/00_utc_start.txt | active | 起止 UTC/CST、git HEAD 与起始工作区状态
+evidence/e2e_joint_p1_20261126/01_model.txt | active | 设备型号 Redmi 8A
+evidence/e2e_joint_p1_20261126/02_release.txt | active | Android 10
+evidence/e2e_joint_p1_20261126/03_sdk.txt | active | API 29
+evidence/e2e_joint_p1_20261126/04_serial.txt | active | 已授权 serial 12f046690506
+evidence/e2e_joint_p1_20261126/05_package_dump.txt | active | App 包信息 vC10/vN1.9
+evidence/e2e_joint_p1_20261126/06_apk_path.txt | active | 设备侧 base.apk 路径
+evidence/e2e_joint_p1_20261126/07_pid.txt | active | App 起始 PID 14224
+evidence/e2e_joint_p1_20261126/08_apk_sha256.txt | active | 设备侧 base.apk SHA-256 80232c50…de4b
+evidence/e2e_joint_p1_20261126/09_prefs_list.txt | active | SharedPreferences 文件清单
+evidence/e2e_joint_p1_20261126/10_db_list.txt | active | 本地数据库文件清单
+evidence/e2e_joint_p1_20261126/11_services.txt | active | App 前台服务状态（起始）
+evidence/e2e_joint_p1_20261126/12_logcat_buffer_start.txt | active | 窗口前 logcat 缓冲原文
+evidence/e2e_joint_p1_20261126/13_connectivity.txt | active | 默认网络 101/WIFI 与 VALIDATED 能力
+evidence/e2e_joint_p1_20261126/14_ip_route.txt | active | wlan0 路由 192.168.0.0/24
+evidence/e2e_joint_p1_20261126/15_prefs_before.xml | active | 身份/守护/上传状态（mac_addr 0200000000A1、registerphone 14000000001）
+evidence/e2e_joint_p1_20261126/16_local_db_before.db | active | 本地库起始快照（只读副本）
+evidence/e2e_joint_p1_20261126/17_ui_dump.xml | active | 12:52 UI 树（23.5°C/36%、网关连接失败状态）
+evidence/e2e_joint_p1_20261126/18_ui_screen.png | active | 12:52 首页截图
+evidence/e2e_joint_p1_20261126/19_local_db_summary.json | active | 起始库 139 行/最新行/无 36.7/待发 0
+evidence/e2e_joint_p1_20261126/20_logcat_window.txt | active | 12:52–13:02 实时 logcat 原文（两次 CONNACK rc=5、一次 DATA_OK 缓存读取、一次 CONNECT_FAILED、上传）
+evidence/e2e_joint_p1_20261126/21_fw_testbuild_audit.txt | active | 固件测试构建审计：源码无 SENSOR_TEST_INJECT/TINJ、Keil 仅单 target、发布包无测试字符串、无第二固件包
+evidence/e2e_joint_p1_20261126/22_platform_readonly.txt | active | 平台只读：服务/PID/NRestarts、监听端口、仅 POST 路由清单、无回读路由、upload_data INSERT IGNORE、HTTP 方法集合
+evidence/e2e_joint_p1_20261126/23_log_signature_scan.txt | active | 首轮 TLS/MQTT/BLE/上传签名扫描
+evidence/e2e_joint_p1_20261126/24_host_tls_verify_ip.txt | active | openssl s_client 以项目 jd-ca.crt + -verify_ip 8.140.23.253 校验，rc=0
+evidence/e2e_joint_p1_20261126/24b_host_tls_showcerts.txt | active | 线上证书链原文
+evidence/e2e_joint_p1_20261126/24c_host_leaf_fields.txt | active | 叶子 serial/SHA-256/issuer/notAfter/SAN
+evidence/e2e_joint_p1_20261126/24d_host_tls_plain.txt | active | 仅 CA 校验的完整握手原文
+evidence/e2e_joint_p1_20261126/25_platform_window_1254.txt | active | 12:53:40 起平台只读窗口：12:54:40 POST /upload_data 200
+evidence/e2e_joint_p1_20261126/26_emqx_window_1254.txt | active | EMQX 12:53:57.824 authentication_failure（username 0200000000A1/clientid android_client/not_authorized）
+evidence/e2e_joint_p1_20261126/27_log_signature_scan_late.txt | active | 12:59 前第二轮签名扫描（含 BLE 重试与 CONNECT_FAILED）
+evidence/e2e_joint_p1_20261126/28_local_db_after.db | active | 本地库窗口后快照（只读副本）
+evidence/e2e_joint_p1_20261126/29_prefs_after.xml | active | 窗口后身份/上传状态（upload_last_status OK、pending 0）
+evidence/e2e_joint_p1_20261126/30_local_db_after_summary.json | active | 窗口后 140 行/最新行 1795668877,22.4,36.4/无 36.7/待发 0
+evidence/e2e_joint_p1_20261126/31_emqx_window_1259.txt | active | EMQX 12:58:57.854 authentication_failure（同一 username/clientid）
+evidence/e2e_joint_p1_20261126/32_wifi_head.txt | active | WiFi 记录：SSID ZTE_607157、BSSID 7c:21:d8:60:71:57、RSSI -44
+evidence/e2e_joint_p1_20261126/33_wlan0.txt | active | wlan0 192.168.0.103/24
+evidence/e2e_joint_p1_20261126/34_crash_buffer.txt | active | crash buffer（仅 11-25 旧崩溃，当前 PID 无新增）
+evidence/e2e_joint_p1_20261126/35_services_end.txt | active | App 前台服务状态（结束）
+evidence/e2e_joint_p1_20261126/36_pid_end.txt | active | App 结束 PID 14224（与起始一致）
+evidence/e2e_joint_p1_20261126/37_n1_equivalent_baseline.md | active | P1 前置 N1 等价干净基线：网关实际缓存值、无 36.7、缓存复读语义与边界
+evidence/e2e_joint_p1_20261126/38_log_final_scan.txt | active | 全窗口最终签名扫描（SAN/链错误 0、CONNACK rc=5 2 次）
+evidence/e2e_joint_p1_20261126/analyze_db.py | active | 本地库只读摘要脚本
+evidence/e2e_joint_p1_20261126/audit_fw_test_build.py | active | 固件发布包/Keil target/源码注入标记只读审计脚本
+evidence/e2e_joint_p1_20261126/emqx_window.py | active | EMQX 日志窗口只读脚本（凭据脱敏）
+evidence/e2e_joint_p1_20261126/leaf_8.140.23.253_p1.pem | active | 本轮抓取的 8883 叶子证书
+evidence/e2e_joint_p1_20261126/p1_platform_ssh.py | active | 平台只读 SSH 观察脚本（服务/端口/日志/路由/回读检索）
+evidence/e2e_joint_p1_20261126/run_tls_check_p1.py | active | 主机侧 8883 TLS/SAN/链校验脚本
+evidence/e2e_joint_p1_20261126/scan_p1_log.py | active | logcat 签名扫描脚本
+evidence/e2e_joint_p1_20261126/verify_manifest_paths.py | active | 本轮 manifest 路径与证据文件双向只读校验脚本
 evidence/e2e_p0/ | active | E2E-JOINT-P0 执行证据目录（手机段复验通过、上一轮 ADB 未授权对照、平台只读基线、平台段 NOT EXECUTED 与路径勘误、关联索引）
 evidence/e2e_p0/P0_backend_cert_issuance_and_rollback.md | active | E2E-JOINT-P0 平台段 8883 证书核发与回退条件（后端工程）：操作者“允许维护证书、先定核发与回退条件”要求下的 C1–C6 前置、SAN/扩展规范、签发与部署命令、R1–R4 回退触发与回退后判据、服务器/客户端/正式面判据、风险与未执行项
 evidence/e2e_p0/P0_backend_cert_ops_runbook.md | active | E2E-JOINT-P0 平台段 8883 证书变更运维执行手册：只读侦察/备份/签发/部署重载/变更后判据/回退步骤与回传要求；明确禁止自签替代、关闭客户端校验、改认证库或新增诊断端口

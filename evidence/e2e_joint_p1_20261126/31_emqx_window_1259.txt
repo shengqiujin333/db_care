@@ -1,0 +1,58 @@
+# read-only emqx window
+since=12:58:50
+
+--- [ls -l /var/log/emqx 2>&1 | head -20]
+total 100
+-rw-r--r-- 1 emqx emqx 89844 Nov 26 12:58 emqx.log.1
+-rw-r--r-- 1 emqx emqx    18 Nov 25 10:58 emqx.log.idx
+-rw-r--r-- 1 emqx emqx    13 Nov 25 10:58 emqx.log.siz
+
+--- [for f in /var/log/emqx/emqx.log /var/log/emqx/emqx.log.1; do]
+== /var/log/emqx/emqx.log.1
+
+--- [for f in /var/log/emqx/emqx.log /var/log/emqx/emqx.log.1; do]
+== /var/log/emqx/emqx.log.1 authn
+462:2026-11-26T11:16:26.313834+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22831, username: 0200000000A1, reason: not_authorized
+463:2026-11-26T11:17:21.556748+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+464:2026-11-26T11:21:25.704965+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22681, username: 0200000000A1, reason: not_authorized
+465:2026-11-26T11:22:21.561785+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+466:2026-11-26T11:30:39.069444+08:00 [warning] tag: AUTHN, clientid: test, msg: authentication_failure, peername: 198.235.24.185:63282, reason: bad_username_or_password
+467:2026-11-26T11:33:57.785244+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22764, username: 0200000000A1, reason: not_authorized
+468:2026-11-26T11:34:21.573739+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+469:2026-11-26T11:38:57.675947+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22793, username: 0200000000A1, reason: not_authorized
+470:2026-11-26T11:39:21.578750+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+471:2026-11-26T11:43:58.332296+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22775, username: 0200000000A1, reason: not_authorized
+472:2026-11-26T11:44:21.583732+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+473:2026-11-26T11:48:57.761915+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22835, username: 0200000000A1, reason: not_authorized
+474:2026-11-26T11:49:21.588741+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+475:2026-11-26T11:53:57.692127+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22716, username: 0200000000A1, reason: not_authorized
+476:2026-11-26T11:54:21.593744+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+477:2026-11-26T11:58:58.259379+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22782, username: 0200000000A1, reason: not_authorized
+478:2026-11-26T11:59:21.598738+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+479:2026-11-26T12:03:57.724994+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22716, username: 0200000000A1, reason: not_authorized
+480:2026-11-26T12:04:21.603776+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+481:2026-11-26T12:08:57.740949+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22712, username: 0200000000A1, reason: not_authorized
+482:2026-11-26T12:09:21.608775+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+483:2026-11-26T12:13:58.869676+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22852, username: 0200000000A1, reason: not_authorized
+484:2026-11-26T12:14:21.613784+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+485:2026-11-26T12:18:58.119601+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22704, username: 0200000000A1, reason: not_authorized
+486:2026-11-26T12:19:21.618796+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+487:2026-11-26T12:23:57.898836+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22907, username: 0200000000A1, reason: not_authorized
+488:2026-11-26T12:24:21.623781+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+489:2026-11-26T12:28:57.794224+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22843, username: 0200000000A1, reason: not_authorized
+490:2026-11-26T12:29:21.628784+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+491:2026-11-26T12:33:57.809795+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22739, username: 0200000000A1, reason: not_authorized
+492:2026-11-26T12:34:21.633733+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+493:2026-11-26T12:38:57.816214+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22873, username: 0200000000A1, reason: not_authorized
+494:2026-11-26T12:39:21.638807+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+495:2026-11-26T12:43:57.816577+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22732, username: 0200000000A1, reason: not_authorized
+496:2026-11-26T12:44:21.643783+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+497:2026-11-26T12:48:57.921043+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22846, username: 0200000000A1, reason: not_authorized
+498:2026-11-26T12:49:21.648734+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+499:2026-11-26T12:53:57.824178+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22687, username: 0200000000A1, reason: not_authorized
+500:2026-11-26T12:54:21.653776+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+501:2026-11-26T12:58:57.854433+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22847, username: 0200000000A1, reason: not_authorized
+
+--- [journalctl -u emqx --since '2026-11-26 12:53:40' --no-pager ]
+-- No entries --
+

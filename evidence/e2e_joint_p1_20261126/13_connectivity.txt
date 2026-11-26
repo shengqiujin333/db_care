@@ -1,0 +1,351 @@
+NetworkFactories for: TelephonyNetworkFactory[0] WifiNetworkFactory UntrustedWifiNetworkFactory Ethernet TelephonyNetworkFactory[1] PhoneSwitcherNetworkRequstListener
+
+Active default network: 101
+
+Current Networks:
+  NetworkAgentInfo{ ni{[type: WIFI[], state: CONNECTED/CONNECTED, reason: (unspecified), extra: (none), failover: false, available: true, roaming: false]}  network{101}  nethandle{437197393933}  lp{{InterfaceName: wlan0 LinkAddresses: [ ] DnsAddresses: [ /192.168.0.1 ] Domains: null MTU: 0 TcpBufferSizes: 524288,1048576,5505024,262144,524288,4194304 Routes: [ fe80::/64 -> :: wlan0,192.168.0.0/24 -> 0.0.0.0 wlan0,0.0.0.0/0 -> 192.168.0.1 wlan0 ]}}  nc{[ Transports: WIFI Capabilities: NOT_METERED&INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN&VALIDATED&NOT_ROAMING&FOREGROUND&NOT_CONGESTED&NOT_SUSPENDED LinkUpBandwidth>=1048576Kbps LinkDnBandwidth>=1048576Kbps Specifier: <WifiNetworkAgentSpecifier [WifiConfiguration=, SSID="ZTE_607157", BSSID=7c:21:d8:60:71:57, mOriginalRequestorUid=-1, mOriginalRequestorPackageName=]> SignalStrength: -45 SSID: xxxx]}  Score{60}  everValidated{true}  lastValidated{true}  created{true} lingering{false} explicitlySelected{false} acceptUnvalidated{false} everCaptivePortalDetected{false} lastCaptivePortalDetected{false} captivePortalValidationPending{false} partialConnectivity{false} acceptPartialConnectivity{false} clat{mBaseIface: null, mIface: null, mState: IDLE} }
+    Requests: REQUEST:2 LISTEN:14 BACKGROUND_REQUEST:0 total:16
+      NetworkRequest [ REQUEST id=1, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN] ]
+      NetworkRequest [ LISTEN id=4, [ Capabilities: FOREGROUND] ]
+      NetworkRequest [ LISTEN id=5, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN&FOREGROUND Uid: 1000] ]
+      NetworkRequest [ LISTEN id=6, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN&FOREGROUND Uid: 1000] ]
+      NetworkRequest [ REQUEST id=7, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN] ]
+      NetworkRequest [ LISTEN id=9, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1000] ]
+      NetworkRequest [ TRACK_DEFAULT id=10, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1000] ]
+      NetworkRequest [ LISTEN id=11, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&VALIDATED Uid: 1000] ]
+      NetworkRequest [ LISTEN id=12, [ Transports: WIFI Capabilities: NOT_VPN] ]
+      NetworkRequest [ LISTEN id=13, [ Transports: WIFI Capabilities: INTERNET&TRUSTED&NOT_VPN Uid: 1001] ]
+      NetworkRequest [ LISTEN id=14, [ Transports: WIFI Capabilities: INTERNET&TRUSTED&NOT_VPN Uid: 1001] ]
+      NetworkRequest [ LISTEN id=15, [ Uid: 1000] ]
+      NetworkRequest [ TRACK_DEFAULT id=18, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1001] ]
+      NetworkRequest [ LISTEN id=19, [ Transports: WIFI Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1001] ]
+      NetworkRequest [ TRACK_DEFAULT id=101, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1000] ]
+      NetworkRequest [ LISTEN id=102, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 10120] ]
+    Lingered:
+
+Restrict background: false
+
+Status for known UIDs:
+  UID=10067 rules=32 (ALLOW_ALL|NONE)
+  UID=10068 rules=64 (NONE|REJECT_ALL)
+  UID=10079 rules=32 (ALLOW_ALL|NONE)
+  UID=10109 rules=64 (NONE|REJECT_ALL)
+  UID=10123 rules=64 (NONE|REJECT_ALL)
+  UID=10160 rules=64 (NONE|REJECT_ALL)
+  UID=10170 rules=64 (NONE|REJECT_ALL)
+  UID=10173 rules=64 (NONE|REJECT_ALL)
+  UID=10194 rules=64 (NONE|REJECT_ALL)
+  
+Network Requests:
+  uid/pid:1000/1580 NetworkRequest [ REQUEST id=1, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN] ]
+  uid/pid:1000/1580 NetworkRequest [ LISTEN id=4, [ Capabilities: FOREGROUND] ]
+  uid/pid:1000/1580 NetworkRequest [ LISTEN id=5, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN&FOREGROUND Uid: 1000] ]
+  uid/pid:1000/1580 NetworkRequest [ LISTEN id=6, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN&FOREGROUND Uid: 1000] ]
+  uid/pid:1000/1580 NetworkRequest [ REQUEST id=7, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN] ]
+  uid/pid:1000/1580 NetworkRequest [ LISTEN id=8, [ Transports: CELLULAR Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1000] ]
+  uid/pid:1000/1580 NetworkRequest [ LISTEN id=9, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1000] ]
+  uid/pid:1000/1580 NetworkRequest [ TRACK_DEFAULT id=10, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1000] ]
+  uid/pid:1000/1580 NetworkRequest [ LISTEN id=11, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&VALIDATED Uid: 1000] ]
+  uid/pid:1000/1904 NetworkRequest [ LISTEN id=12, [ Transports: WIFI Capabilities: NOT_VPN] ]
+  uid/pid:1001/2194 NetworkRequest [ LISTEN id=13, [ Transports: WIFI Capabilities: INTERNET&TRUSTED&NOT_VPN Uid: 1001] ]
+  uid/pid:1001/2194 NetworkRequest [ LISTEN id=14, [ Transports: WIFI Capabilities: INTERNET&TRUSTED&NOT_VPN Uid: 1001] ]
+  uid/pid:1000/1904 NetworkRequest [ LISTEN id=15, [ Uid: 1000] ]
+  uid/pid:1001/2125 NetworkRequest [ TRACK_DEFAULT id=18, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1001] ]
+  uid/pid:1001/2125 NetworkRequest [ LISTEN id=19, [ Transports: WIFI Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1001] ]
+  uid/pid:1001/2125 NetworkRequest [ LISTEN id=20, [ Transports: CELLULAR Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 1001] ]
+  uid/pid:1000/11775 NetworkRequest [ TRACK_DEFAULT id=101, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1000] ]
+  uid/pid:10120/12365 NetworkRequest [ LISTEN id=102, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 10120] ]
+
+mLegacyTypeTracker:
+  Supported types: 0 1 2 3 4 5 7 9 10 11 12 15 17
+  Current state:
+    1 NetworkAgentInfo [WIFI () - 101] CONNECTED/CONNECTED
+
+
+Tethering:
+  Configuration:
+    subId: 1
+    tetherableUsbRegexs: [usb\d, rndis\d]
+    tetherableWifiRegexs: [softap0, wlan0]
+    tetherableBluetoothRegexs: [bnep\d, bt-pan]
+    isDunRequired: false
+    chooseUpstreamAutomatically: true
+    preferredUpstreamIfaceTypes: [ETHERNET, MOBILE, WIFI, MOBILE_HIPRI, BLUETOOTH]
+    legacyDhcpRanges: [192.168.42.2, 192.168.42.254, 192.168.43.2, 192.168.43.254, 192.168.44.2, 192.168.44.254, 192.168.45.2, 192.168.45.254, 192.168.46.2, 192.168.46.254, 192.168.47.2, 192.168.47.254, 192.168.48.2, 192.168.48.254, 192.168.49.2, 192.168.49.254, 192.168.50.2, 192.168.50.254, 192.168.51.2, 192.168.51.254]
+    defaultIPv4DNS: [8.8.4.4, 8.8.8.8]
+    provisioningApp: []
+    provisioningAppNoUi: 
+    enableLegacyDhcpServer: false
+  Entitlement:
+    mCellularUpstreamPermitted: true
+  Tether state:
+    wlan0 - AvailableState - lastError = 0
+    Upstream wanted: false
+    Current upstream interface(s): null
+  Hardware offload:
+    Offload HALs not started
+    Current upstream: null
+    Exempt prefixes: []
+    NAT timeout update callbacks received during the last offload session: 0
+    NAT timeout update netlink errors during the last offload session: 0
+  Log:
+    2026-11-21T19:24:12.912 - MARK constructed
+    2026-11-21T19:24:12.915 - [config] TetheringConfiguration{subId:-1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+    2026-11-21T19:24:14.099 - adding TetheringInterfaceStateMachine for: wlan0
+    2026-11-21T19:24:14.100 - OBSERVED iface=wlan0 state=1 error=0
+    2026-11-21T19:24:14.100 - p2p0 is not a tetherable iface, ignoring
+    2026-11-21T19:24:14.101 - OBSERVED LinkProperties update iface=wlan0 state=AVAILABLE lp={InterfaceName: wlan0 LinkAddresses: [ ] DnsAddresses: [ ] Domains: null MTU: 0 Routes: [ ]}
+    2026-11-21T19:24:14.101 - InitialState got EVENT_IFACE_SERVING_STATE_INACTIVE
+    2026-11-21T19:24:14.101 - InitialState got EVENT_IFACE_UPDATE_LINKPROPERTIES
+    2026-11-21T19:24:14.102 - [wlan0] InitialState got CMD_IPV6_TETHER_UPDATE
+    2026-11-21T19:24:14.139 - OBSERVED configuration changed
+    2026-11-21T19:24:14.140 - [config] TetheringConfiguration{subId:-1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+    2026-11-21T19:24:14.413 - removing TetheringInterfaceStateMachine for: wlan0
+    2026-11-21T19:24:14.433 - [wlan0] InitialState got CMD_INTERFACE_DOWN
+    2026-11-21T19:24:14.433 - OBSERVED iface=wlan0 state=0 error=0
+    2026-11-21T19:24:14.433 - got notification from stale iface wlan0
+    2026-11-21T19:24:14.433 - InitialState got EVENT_IFACE_SERVING_STATE_INACTIVE
+    2026-11-21T19:24:14.567 - attempting to remove unknown iface (p2p0), ignoring
+    2026-11-21T19:24:15.772 - OBSERVED configuration changed
+    2026-11-21T19:24:15.773 - [config] TetheringConfiguration{subId:-1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+    2026-11-21T19:24:16.154 - adding TetheringInterfaceStateMachine for: wlan0
+    2026-11-21T19:24:16.155 - OBSERVED iface=wlan0 state=1 error=0
+    2026-11-21T19:24:16.155 - OBSERVED LinkProperties update iface=wlan0 state=AVAILABLE lp={InterfaceName: wlan0 LinkAddresses: [ ] DnsAddresses: [ ] Domains: null MTU: 0 Routes: [ ]}
+    2026-11-21T19:24:16.155 - InitialState got EVENT_IFACE_SERVING_STATE_INACTIVE
+    2026-11-21T19:24:16.155 - InitialState got EVENT_IFACE_UPDATE_LINKPROPERTIES
+    2026-11-21T19:24:16.155 - [wlan0] InitialState got CMD_IPV6_TETHER_UPDATE
+    2026-11-21T19:24:16.165 - p2p0 is not a tetherable iface, ignoring
+    2026-11-21T19:24:18.495 - OBSERVED carrier config change
+    2026-11-21T19:24:18.503 - [config] TetheringConfiguration{subId:1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+    2026-11-21T19:24:18.536 - OBSERVED carrier config change
+    2026-11-21T19:24:18.540 - [config] TetheringConfiguration{subId:1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+    2026-11-21T19:24:19.545 - USB bcast connected:true configured:true rndis:false
+    2026-11-21T19:24:30.817 - OBSERVED carrier config change
+    2026-11-21T19:24:30.827 - [config] TetheringConfiguration{subId:1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+    2026-11-21T19:24:30.839 - OBSERVED carrier config change
+    2026-11-21T19:24:30.845 - [config] TetheringConfiguration{subId:1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+    2026-11-23T21:26:55.289 - active iface (wlan0) reported as added, ignoring
+    2026-11-23T21:26:55.319 - active iface (wlan0) reported as added, ignoring
+    2026-11-23T21:27:01.244 - InitialState got CMD_UPSTREAM_CHANGED
+    2026-11-24T18:29:56.242 - USB bcast connected:false configured:false rndis:false
+    2026-11-24T21:36:03.546 - USB bcast connected:true configured:false rndis:false
+    2026-11-24T21:36:03.633 - USB bcast connected:true configured:true rndis:false
+    2026-11-24T21:36:16.736 - OBSERVED configuration changed
+    2026-11-24T21:36:16.868 - [config] TetheringConfiguration{subId:1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+    2026-11-24T21:36:42.660 - OBSERVED configuration changed
+    2026-11-24T21:36:42.665 - [config] TetheringConfiguration{subId:1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+    2026-11-25T00:37:46.097 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T00:37:46.193 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T00:37:46.196 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T00:37:46.250 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T00:37:47.484 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T00:37:47.492 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T00:37:59.061 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T00:37:59.171 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T00:37:59.203 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T00:37:59.683 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:33:51.067 - removing TetheringInterfaceStateMachine for: wlan0
+    2026-11-25T01:33:51.067 - [wlan0] InitialState got CMD_INTERFACE_DOWN
+    2026-11-25T01:33:51.067 - OBSERVED iface=wlan0 state=0 error=0
+    2026-11-25T01:33:51.069 - got notification from stale iface wlan0
+    2026-11-25T01:33:51.069 - InitialState got EVENT_IFACE_SERVING_STATE_INACTIVE
+    2026-11-25T01:33:51.227 - attempting to remove unknown iface (p2p0), ignoring
+    2026-11-25T01:33:52.096 - InitialState got CMD_UPSTREAM_CHANGED
+    2026-11-25T01:33:52.718 - adding TetheringInterfaceStateMachine for: wlan0
+    2026-11-25T01:33:52.720 - OBSERVED iface=wlan0 state=1 error=0
+    2026-11-25T01:33:52.723 - OBSERVED LinkProperties update iface=wlan0 state=AVAILABLE lp={InterfaceName: wlan0 LinkAddresses: [ ] DnsAddresses: [ ] Domains: null MTU: 0 Routes: [ ]}
+    2026-11-25T01:33:52.723 - InitialState got EVENT_IFACE_SERVING_STATE_INACTIVE
+    2026-11-25T01:33:52.723 - InitialState got EVENT_IFACE_UPDATE_LINKPROPERTIES
+    2026-11-25T01:33:52.723 - [wlan0] InitialState got CMD_IPV6_TETHER_UPDATE
+    2026-11-25T01:33:52.735 - p2p0 is not a tetherable iface, ignoring
+    2026-11-25T01:33:53.023 - removing TetheringInterfaceStateMachine for: wlan0
+    2026-11-25T01:33:53.023 - [wlan0] InitialState got CMD_INTERFACE_DOWN
+    2026-11-25T01:33:53.024 - OBSERVED iface=wlan0 state=0 error=0
+    2026-11-25T01:33:53.025 - got notification from stale iface wlan0
+    2026-11-25T01:33:53.025 - InitialState got EVENT_IFACE_SERVING_STATE_INACTIVE
+    2026-11-25T01:33:53.133 - attempting to remove unknown iface (p2p0), ignoring
+    2026-11-25T01:45:40.585 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:45:40.674 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:45:40.685 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T01:45:41.611 - adding TetheringInterfaceStateMachine for: wlan0
+    2026-11-25T01:45:41.613 - OBSERVED iface=wlan0 state=1 error=0
+    2026-11-25T01:45:41.617 - OBSERVED LinkProperties update iface=wlan0 state=AVAILABLE lp={InterfaceName: wlan0 LinkAddresses: [ ] DnsAddresses: [ ] Domains: null MTU: 0 Routes: [ ]}
+    2026-11-25T01:45:41.617 - InitialState got EVENT_IFACE_SERVING_STATE_INACTIVE
+    2026-11-25T01:45:41.617 - InitialState got EVENT_IFACE_UPDATE_LINKPROPERTIES
+    2026-11-25T01:45:41.617 - [wlan0] InitialState got CMD_IPV6_TETHER_UPDATE
+    2026-11-25T01:45:41.618 - p2p0 is not a tetherable iface, ignoring
+    2026-11-25T01:45:43.519 - active iface (wlan0) reported as added, ignoring
+    2026-11-25T01:45:43.553 - active iface (wlan0) reported as added, ignoring
+    2026-11-25T01:45:44.550 - InitialState got CMD_UPSTREAM_CHANGED
+    2026-11-25T01:45:51.716 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:45:51.798 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:45:51.886 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:45:52.324 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:45:52.521 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T01:47:12.445 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:47:12.550 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:47:12.550 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:47:12.648 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:47:12.652 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T01:47:12.662 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:47:12.858 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:47:13.857 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T01:48:12.766 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:48:12.854 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:48:12.862 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T01:48:12.917 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:48:14.168 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:48:14.183 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T01:48:25.685 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:48:25.770 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:48:25.830 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:48:26.295 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:50:04.996 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:50:05.083 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:50:05.088 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T01:50:17.238 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:50:17.321 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:50:17.397 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T01:50:17.722 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T01:50:19.567 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T19:28:44.994 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T19:28:45.081 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T19:28:45.098 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T19:28:45.141 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T19:28:45.343 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T19:28:45.363 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T19:28:45.871 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T19:28:45.959 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T19:28:46.009 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T19:28:46.213 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T19:28:46.233 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T19:39:44.478 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T19:39:44.588 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T19:39:44.588 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T19:39:44.672 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T19:39:44.830 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T19:39:44.871 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T19:41:13.389 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T19:41:13.487 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T19:41:13.504 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T19:41:13.582 - USB bcast connected:false configured:false rndis:false
+    2026-11-25T19:41:13.764 - USB bcast connected:true configured:false rndis:false
+    2026-11-25T19:41:13.780 - USB bcast connected:true configured:true rndis:false
+    2026-11-25T21:58:55.662 - OBSERVED configuration changed
+    2026-11-25T21:58:55.730 - [config] TetheringConfiguration{subId:1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+    2026-11-25T21:58:57.516 - OBSERVED configuration changed
+    2026-11-25T21:58:57.521 - [config] TetheringConfiguration{subId:1 tetherableUsbRegexs:[usb\d,rndis\d] tetherableWifiRegexs:[softap0,wlan0] tetherableBluetoothRegexs:[bnep\d,bt-pan] isDunRequired:false chooseUpstreamAutomatically:true preferredUpstreamIfaceTypes:[ETHERNET,MOBILE,WIFI,MOBILE_HIPRI,BLUETOOTH] provisioningApp:[] provisioningAppNoUi: enableLegacyDhcpServer:false}
+
+Supported Socket keepalives: [1, 3, 0, 0, 0, 0, 0, 0]
+Reserved Privileged keepalives: 2
+Allowed Unprivileged keepalives per uid: 2
+Socket keepalives:
+
+Bad Wi-Fi avoidance: unrestricted
+
+MultipathPolicyTracker:
+
+mNetworkRequestInfoLogs (most recent first):
+  2026-11-26T10:35:09.816 - REGISTER uid/pid:10120/12365 NetworkRequest [ LISTEN id=102, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 10120] ]
+  2026-11-26T10:04:11.523 - REGISTER uid/pid:1000/11775 NetworkRequest [ TRACK_DEFAULT id=101, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1000] ]
+  2026-11-26T10:03:50.303 - RELEASE uid/pid:10120/27806 NetworkRequest [ LISTEN id=95, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 10120] ]
+  2026-11-26T10:03:50.265 - RELEASE uid/pid:1000/25373 NetworkRequest [ TRACK_DEFAULT id=89, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 1000] ]
+  2026-11-26T06:20:34.364 - RELEASE uid/pid:10132/9861 NetworkRequest [ TRACK_DEFAULT id=100, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10132] ]
+  2026-11-26T06:20:34.304 - REGISTER uid/pid:10132/9861 NetworkRequest [ TRACK_DEFAULT id=100, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10132] ]
+  2026-11-26T02:58:14.582 - RELEASE uid/pid:10086/3544 NetworkRequest [ TRACK_DEFAULT id=99, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10086] ]
+  2026-11-26T00:54:16.681 - REGISTER uid/pid:10086/3544 NetworkRequest [ TRACK_DEFAULT id=99, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10086] ]
+  2026-11-26T00:00:00.722 - RELEASE uid/pid:10086/31171 NetworkRequest [ TRACK_DEFAULT id=98, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10086] ]
+  2026-11-25T21:36:05.128 - REGISTER uid/pid:10086/31171 NetworkRequest [ TRACK_DEFAULT id=98, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10086] ]
+  2026-11-25T21:35:44.721 - RELEASE uid/pid:10133/3039 NetworkRequest [ TRACK_DEFAULT id=97, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10133] ]
+  2026-11-25T21:35:44.662 - REGISTER uid/pid:10133/3039 NetworkRequest [ TRACK_DEFAULT id=97, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10133] ]
+  2026-11-25T19:24:35.123 - RELEASE uid/pid:10086/28131 NetworkRequest [ TRACK_DEFAULT id=96, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10086] ]
+  2026-11-25T18:32:54.695 - REGISTER uid/pid:10086/28131 NetworkRequest [ TRACK_DEFAULT id=96, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10086] ]
+  2026-11-25T18:15:39.707 - REGISTER uid/pid:10120/27806 NetworkRequest [ LISTEN id=95, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 10120] ]
+  2026-11-25T18:15:34.718 - RELEASE uid/pid:10120/26591 NetworkRequest [ LISTEN id=92, [ Capabilities: NOT_RESTRICTED&TRUSTED&NOT_VPN Uid: 10120] ]
+  2026-11-25T18:15:34.716 - RELEASE uid/pid:10120/26591 NetworkRequest [ LISTEN id=94, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10120] ]
+  2026-11-25T18:15:34.715 - RELEASE uid/pid:10120/26591 NetworkRequest [ TRACK_DEFAULT id=93, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10120] ]
+  2026-11-25T18:15:26.997 - REGISTER uid/pid:10120/26591 NetworkRequest [ LISTEN id=94, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10120] ]
+  2026-11-25T18:15:26.996 - REGISTER uid/pid:10120/26591 NetworkRequest [ TRACK_DEFAULT id=93, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED Uid: 10120] ]
+
+mNetworkInfoBlockingLogs (most recent first):
+  2026-11-26T03:04:15.768 - BLOCKED 10068
+  2026-11-26T02:58:24.618 - UNBLOCKED 10068
+  2026-11-26T02:58:14.526 - BLOCKED 10068
+  2026-11-25T23:05:34.522 - UNBLOCKED 10109
+  2026-11-25T22:09:10.734 - BLOCKED 10194
+  2026-11-25T21:46:56.843 - UNBLOCKED 10061
+  2026-11-25T21:35:56.627 - BLOCKED 10061
+  2026-11-25T14:53:45.020 - BLOCKED 10109
+  2026-11-25T14:53:43.998 - UNBLOCKED 10109
+  2026-11-25T06:59:17.312 - BLOCKED 10109
+  2026-11-25T06:59:16.303 - UNBLOCKED 10109
+  2026-11-25T02:04:52.352 - UNBLOCKED 10194
+  2026-11-25T02:01:07.545 - UNBLOCKED 10068
+  2026-11-25T01:45:44.650 - BLOCKED 10194
+  2026-11-25T00:40:32.215 - BLOCKED 10068
+  2026-11-25T00:38:29.311 - BLOCKED 10109
+  2026-11-24T21:48:26.280 - UNBLOCKED 10109
+  2026-11-24T21:46:55.583 - UNBLOCKED 10061
+  2026-11-24T21:43:26.174 - BLOCKED 10109
+  2026-11-24T21:38:26.069 - UNBLOCKED 10109
+  2026-11-24T21:37:24.923 - BLOCKED 10109
+  2026-11-24T21:37:11.359 - UNBLOCKED 10174
+  2026-11-24T18:42:59.479 - BLOCKED 10174
+  2026-11-24T18:42:56.023 - BLOCKED 10174
+  2026-11-24T18:42:56.021 - BLOCKED 10174
+  2026-11-24T18:42:56.021 - BLOCKED 10174
+  2026-11-24T18:42:56.020 - BLOCKED 10174
+  2026-11-24T18:42:56.019 - BLOCKED 10174
+  2026-11-24T18:42:56.018 - BLOCKED 10174
+  2026-11-24T18:42:56.017 - BLOCKED 10174
+  2026-11-24T18:40:38.285 - UNBLOCKED 10174
+  2026-11-24T18:40:38.285 - UNBLOCKED 10174
+  2026-11-24T18:40:38.285 - UNBLOCKED 10174
+  2026-11-24T18:40:38.279 - BLOCKED 10174
+  2026-11-24T18:40:38.278 - BLOCKED 10174
+  2026-11-24T18:40:38.278 - BLOCKED 10174
+  2026-11-24T18:40:33.310 - BLOCKED 10174
+  2026-11-24T18:40:33.310 - BLOCKED 10174
+  2026-11-24T18:40:33.310 - BLOCKED 10174
+  2026-11-24T18:40:33.310 - BLOCKED 10174
+
+NetTransition WakeLock activity (most recent first):
+  total acquisitions: 1
+  total releases: 1
+  cumulative duration: 60s
+  longest duration: 60s
+  2026-11-25T01:34:52.093 - RELEASE (EVENT_EXPIRE_NET_TRANSITION_WAKELOCK)
+  2026-11-25T01:33:52.090 - ACQUIRE for NetworkAgentInfo [WIFI () - 100]
+  
+  bandwidth update requests (by uid):
+
+NetworkStackClient logs:
+  2026-11-21T19:24:12.632 - Network stack init
+  2026-11-21T19:24:14.930 - Starting network stack
+  2026-11-21T19:24:14.930 - Starting network stack in-process
+  2026-11-21T19:24:14.934 - Network stack service start requested
+  2026-11-21T19:24:16.871 - Network stack service connected
+  2026-11-21T19:24:16.872 - Network stack service registered
+  
+  pendingNetStackRequests length: 0
+
+Permission Monitor:
+  Interface filtering rules:
+
+
+WifiAssistant: 
+  2026-11-23T21:27:01.731 - handleNetworkValidationResult: 100 | true | false | false
+  2026-11-23T21:27:01.731 - maybeClearNotification: 100
+  2026-11-23T21:27:01.731 - maybeClearNotification: no eventId 100
+  2026-11-23T21:27:01.731 - maybeClearNoInternetAccessFeature: 100
+  2026-11-23T21:27:01.733 - getAssociatedWifiConfiguration: 100 | 1
+  2026-11-23T21:27:01.733 - handleNetworkValidationResult: abort for validated: true
+  2026-11-25T01:33:52.093 - maybeClearNotification: 100
+  2026-11-25T01:33:52.093 - maybeClearNotification: no eventId 100
+  2026-11-25T01:45:44.888 - handleNetworkValidationResult: 101 | true | false | false
+  2026-11-25T01:45:44.888 - maybeClearNotification: 101
+  2026-11-25T01:45:44.889 - maybeClearNotification: no eventId 101
+  2026-11-25T01:45:44.889 - maybeClearNoInternetAccessFeature: 101
+  2026-11-25T01:45:44.892 - getAssociatedWifiConfiguration: 101 | 1
+  2026-11-25T01:45:44.892 - handleNetworkValidationResult: abort for validated: true
+

@@ -1,0 +1,41 @@
+ACTIVITY MANAGER SERVICES (dumpsys activity services)
+  User 0 active services:
+  * ServiceRecord{10239ee u0 com.jinyuni.dengbei_care/.MqtttService}
+    intent={cmp=com.jinyuni.dengbei_care/.MqtttService}
+    packageName=com.jinyuni.dengbei_care
+    processName=com.jinyuni.dengbei_care
+    baseDir=/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk
+    dataDir=/data/user/0/com.jinyuni.dengbei_care
+    app=ProcessRecord{3828a5a 14224:com.jinyuni.dengbei_care/u0a169}
+    isForeground=true foregroundId=1 foregroundNoti=Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE)
+    createTime=-1h30m56s141ms startingBgTimeout=--
+    lastActivity=-1h30m56s141ms restartTime=-1h30m56s141ms createdFromFg=true
+    startRequested=true delayedStop=false stopIfKilled=false callStart=true lastStartId=1
+    callerPackage=com.jinyuni.dengbei_care
+
+  * ServiceRecord{1489911 u0 com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService}
+    intent={cmp=com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService}
+    packageName=com.jinyuni.dengbei_care
+    processName=com.jinyuni.dengbei_care
+    baseDir=/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk
+    dataDir=/data/user/0/com.jinyuni.dengbei_care
+    app=ProcessRecord{3828a5a 14224:com.jinyuni.dengbei_care/u0a169}
+    createTime=-1h25m55s747ms startingBgTimeout=--
+    lastActivity=-1h25m55s732ms restartTime=-1h25m55s748ms createdFromFg=true
+    startRequested=true delayedStop=false stopIfKilled=false callStart=true lastStartId=1
+    callerPackage=com.jinyuni.dengbei_care
+    Bindings:
+    * IntentBindRecord{a3de350 CREATE}:
+      intent={cmp=com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService}
+      binder=android.os.BinderProxy@77c5949
+      requested=true received=true hasBound=true doRebind=false
+      * Client AppBindRecord{a9c724e ProcessRecord{3828a5a 14224:com.jinyuni.dengbei_care/u0a169}}
+        Per-process Connections:
+          ConnectionRecord{5b4d802 u0 CR com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService:@48cb54d}
+    All Connections:
+      ConnectionRecord{5b4d802 u0 CR com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService:@48cb54d}
+
+  Connection bindings to services:
+  * ConnectionRecord{5b4d802 u0 CR com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService:@48cb54d}
+    binding=AppBindRecord{a9c724e com.jinyuni.dengbei_care/org.eclipse.paho.android.service.MqttService:com.jinyuni.dengbei_care}
+    conn=android.os.BinderProxy@48cb54d flags=0x1
