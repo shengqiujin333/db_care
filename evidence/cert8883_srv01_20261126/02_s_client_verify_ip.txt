@@ -1,0 +1,44 @@
+=== openssl s_client direct (verify_ip authoritative, verify_return_error) ===
+time_utc=2026-11-26T03:10:13Z
+cmd: openssl s_client -connect 8.140.23.253:8883 -servername 8.140.23.253 -CAfile dengbei_care/app/src/main/assets/jd-ca.crt -verify_ip 8.140.23.253 -verify_return_error
+ARYQc25hY2tfeXhAMTI2LmNvbTAeFw0yNjExMjUwMjU1MTZaFw0yODExMjQwMjU1
+MTZaMHgxCzAJBgNVBAYTAlVTMQ4wDAYDVQQIDAVTdGF0ZTENMAsGA1UEBwwEQ2l0
+eTEVMBMGA1UECgwMT3JnYW5pemF0aW9uMRwwGgYDVQQLDBNPcmdhbml6YXRpb25h
+bCBVbml0MRUwEwYDVQQDDAw4LjE0MC4yMy4yNTMwggEiMA0GCSqGSIb3DQEBAQUA
+A4IBDwAwggEKAoIBAQD3Q7EL+RgBaVz9W6nW65H4niDYE7okiC4CC7MoTO00QlkE
+mu3tVQddV8jksLJofWP6hG7J2OAVW7hOFGWIOeYRq5sonrmrcA0CXtaJctIzN+dh
+efJkHErmu3nC36QCgKqmmy+dVvsoVieVD+NRXYfiKB1bEIZzyUjpl9UyLte19pli
+op6bipDjLk3c4nGe0igKiBLLjKkymHyX4Tczf9ZPsHzubzB3joyvRxFvKlCdPZSq
+hgdDzsrIGb94jP9gpq1Or4omotWXLVJZpjn8CE6gnb+jporLic2VTWxYSLllipYB
+41rtciRr+mH40yoIPWb/SkQOt7Pv0bVdiaJcTQM3AgMBAAGjTDBKMAwGA1UdEwEB
+/wQCMAAwDgYDVR0PAQH/BAQDAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMBMBUGA1Ud
+EQQOMAyHBAiMF/2HBHVIVNIwDQYJKoZIhvcNAQELBQADggEBAAvfYFpaRu9u/rAS
+K2+7A4MxFIbHYJSHXjrfH0mrfBmdzI7/1iELSOPXDS7nkPVz71vIunw3KaYqZ7Jz
++PPKPcegf80u4w0/omQe3LpHMud78A7aJchtV8Ixn7PjnFAwjqRbOVHQD4RPRMzW
+C+VnBq5gaTwtqj8k2du9OIh9LvaPb5yc7zy9YtqLGIYpCwPc6091DzU1YuLIT2Hn
+tzunHK8pZvVRULX2e2UU83EdLxNPGCL4S8xI1pKaKrdmuNjmceFKpU8lndc3uC0q
+HsN3p8l0ZDqL0S2VBniPcSDbuWAbIyHS4S0F2asEfKSNH7S8fjN9JKUQeyvux6Xp
+RH1qN7I=
+-----END CERTIFICATE-----
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+---
+No client certificate CA names sent
+Peer signing digest: SHA256
+Peer signature type: RSA-PSS
+Server Temp Key: X25519, 253 bits
+---
+SSL handshake has read 2632 bytes and written 394 bytes
+Verification: OK
+---
+New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
+Server public key is 2048 bit
+This TLS version forbids renegotiation.
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 0 (ok)
+---
+DONE
+S_CLIENT_RC=0

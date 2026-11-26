@@ -119,6 +119,7 @@ artifacts/software_test_design_cert8883.md | active | 软件测试：8883 证书
 artifacts/software_test_report_cert8883.md | active | 软件测试：8883 证书修复后独立验证报告（两轮；SRV-01 PASS、CLI-02 TLS 维度 PASS/CONNACK rc=5 认证层另记、REG-03 PASS；UPLOAD-04 第 2 轮用模拟账号真实上传实测平台 401 FAIL、无受理行故持久化回读 NOT EXECUTED；P0 证书维度 PASS、P1 NOT EXECUTED；含竞争假设、证据索引与残留状态披露）
 artifacts/software_test_report_cert8883_r3.md | active | 软件测试：8883 证书修复第 3 轮独立验证（上传受理修复后真实 App 上传 HTTP 200/进入 mysql 写库/待发箱清零/同键重放 inserted=0；SRV-01/CLI-02/REG-03/P0 PASS；字段级回读与 P1 NOT EXECUTED；待人工条件）
 artifacts/software_test_report_cert8883_r4.md | active | 软件测试：8883 证书修复第 4 轮最终复验（人工确认不要求字段级回读后，当前版本真实 App 两次上传 HTTP 200/待发箱清零/新增本地读数/同键重放 inserted=0；SRV-01/CLI-02/REG-03/UPLOAD-04 上传维度/P0 PASS；字段级回读经人工确认未执行；P1 未执行且未明确豁免，交付整体 TEST_FAIL EXTERNAL_CONDITION_UNEXECUTED）
+artifacts/software_test_report_cert8883_srv01_r5.md | active | 软件测试：CERT8883-SRV-01 独立核验第 5 轮（2026-11-26T03:10Z 实测 8883 叶子 issuer=CN=Tiktok Root CA, O=LinkValue、SAN 含 IP:8.140.23.253、-verify_ip 返回 0、负例 8.140.23.254 被拒、serial …B83 已从基线 …B82 变更且与签发记录一致、notAfter 2028-11-24；信任锚指纹未变；本用例 TEST_PASS，仅限该用例范围）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
 artifacts/system_analysis_current.md | active | 系统架构：最新需求与旧1/3判据冲突、禁止调温调光功耗测试的当前边界、可复用候选版本及摘要、历史证据限制和后续集成缺口
 artifacts/test_design.md | active | 嵌入式联合测试设计 TD-002 rev 10.0（传感器→网关→安卓→平台 E2E）：用户不调温/不改光强且 T=0 时当前量产固件不会自然上报，方案规定测试专用构建在采样后判定前注入 367（36.7℃）走真实 >35 分支，默认关闭、正式版排除、E2E 后恢复发布镜像；含 J-00 先绑定/读就绪、J-01 同一 uid4+367+真实湿度跨端四段证据、J-02 负向不上传、EM-01..08 与退出准则；真实物理 >35℃/升温+无光/双态/功耗/433 电气/平台清理/手机 ADB 未授权/Wi-Fi 未连列 NOT EXECUTED；只做设计不执行）
@@ -650,6 +651,14 @@ evidence/backend_exploration/upload_contract_observations_g003.txt | active | BE
 evidence/backend_exploration/upload_contract_observations_rerun.txt | active | 桩实验复跑输出（13 用例/11×2xx/2×4xx/538 行/61440 B，与 2026-11-09 首跑逐项一致）
 evidence/backend_exploration/upload_contract_stub.py | active | 可复跑本地桩：13 个 /upload_data 请求覆盖负温/35.1℃/50 条批/重试幂等/同键冲突/精度/空集/缺字段/1 日 480 行；明确不可外推 MySQL 与真实服务
 evidence/build.md | active | 构建证据 BUILD-002 rev 6.4（F-1 修复后全量 rebuild 0 Error/1 既有告警、Code=25964、axf md5 a3b08774…；未下载）
+evidence/cert8883_srv01_20261126/ | active | CERT8883-SRV-01 独立核验证据根：执行前身份、脚本完整输出、s_client 原文、叶子字段/链/正负例、判定表与握手稳定性采样
+evidence/cert8883_srv01_20261126/00_precheck_identity.txt | active | 执行前 UTC/主机/openssl version、jd-ca.crt 指纹与文件摘要、缺陷基线引用
+evidence/cert8883_srv01_20261126/01_srv_cert_verify_expect_new.txt | active | emqx_8883_cert_verify.sh --expect-new 完整原始输出（RESULT 行与 overall=PASS）
+evidence/cert8883_srv01_20261126/02_s_client_verify_ip.txt | active | openssl s_client -verify_ip -verify_return_error 原文（Verification OK / rc 0）
+evidence/cert8883_srv01_20261126/03_leaf_fields_chain_and_negative.txt | active | 叶子字段、链校验、-verify_ip 正例/负例原文与返回码
+evidence/cert8883_srv01_20261126/04_srv01_judgement.md | active | CERT8883-SRV-01 逐项判定表与范围说明
+evidence/cert8883_srv01_20261126/05_handshake_stability_samples.txt | active | 三次重复握手的 serial/SHA-256/SAN 一致性采样
+evidence/cert8883_srv01_20261126/leaf_8.140.23.253.pem | active | 本次握手取回的公开叶子证书（供复核）
 evidence/codegraph_android_validation.json | active | 代码智能：Android增量同步、110文件摘要、四个当前源码查询与退出状态证据；保留布局未覆盖限制。
 evidence/codegraph_current_validation.json | history | 代码智能：三个子工程本轮 status/sync/explore/files 原始结果、时间、退出码与源码摘要
 evidence/codegraph_dengbei11_validation.json | active | ????????? status?????????? explore ???????????

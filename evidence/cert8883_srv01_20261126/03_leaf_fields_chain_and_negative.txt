@@ -1,0 +1,34 @@
+=== leaf certificate field parse (openssl x509) ===
+time_utc=2026-11-26T03:10:24Z
+subject=C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB83
+notBefore=Nov 25 02:55:16 2026 GMT
+notAfter=Nov 24 02:55:16 2028 GMT
+sha256 Fingerprint=E7:AD:1E:46:FA:5B:5D:06:02:C5:AD:04:B7:8B:1C:AF:2E:78:EE:47:8A:9F:6A:79:EA:B6:3B:D5:54:BD:88:84
+X509v3 Subject Alternative Name: 
+    IP Address:8.140.23.253, IP Address:117.72.84.210
+
+=== chain verify (only jd-ca.crt as CA) ===
+evidence/cert8883_srv01_20261126/leaf_8.140.23.253.pem: OK
+chain_rc=0
+
+=== verify_ip 8.140.23.253 (authoritative) ===
+evidence/cert8883_srv01_20261126/leaf_8.140.23.253.pem: OK
+ip_target_rc=0
+
+=== negative control: verify_ip 8.140.23.254 (must fail) ===
+C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+error 64 at 0 depth lookup: IP address mismatch
+error evidence/cert8883_srv01_20261126/leaf_8.140.23.253.pem: verification failed
+ip_negative_rc=2
+
+=== negative control: verify_ip 117.72.84.210 (old SAN, must also fail for target judgement? informational only) ===
+evidence/cert8883_srv01_20261126/leaf_8.140.23.253.pem: OK
+ip_old_san_rc=0
+
+=== extra: -verify_hostname control (informational; not used as IP criterion) ===
+C = US, ST = State, L = City, O = Organization, OU = Organizational Unit, CN = 8.140.23.253
+error 62 at 0 depth lookup: hostname mismatch
+error evidence/cert8883_srv01_20261126/leaf_8.140.23.253.pem: verification failed
+hostname_negative_rc=2

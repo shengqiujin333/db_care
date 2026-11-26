@@ -1,0 +1,31 @@
+=== CERT8883-SRV-01 pre-execution identity ===
+time_utc=2026-11-26T03:09:59Z
+host=kason
+runner_os=MINGW64_NT-10.0-26120 x86_64
+pwd=/d/mypro/beiwo2/AIP
+--- openssl version ---
+OpenSSL 3.1.2 1 Aug 2023 (Library: OpenSSL 3.1.2 1 Aug 2023)
+built on: Thu Aug  3 10:09:31 2023 UTC
+platform: mingw64
+options:  bn(64,64)
+compiler: gcc -m64 -Wall -O3 -DL_ENDIAN -DOPENSSL_PIC -DUNICODE -D_UNICODE -DWIN32_LEAN_AND_MEAN -D_MT -DOPENSSL_BUILDING_OPENSSL -DZLIB -DZLIB_SHARED -DNDEBUG -DOPENSSLBIN="\"/mingw64/bin\""
+OPENSSLDIR: "/mingw64/etc/ssl"
+ENGINESDIR: "/mingw64/lib/engines-3"
+MODULESDIR: "/mingw64/lib/ossl-modules"
+Seeding source: os-specific
+CPUINFO: OPENSSL_ia32cap=0xfffaf38bffcbffff:0x184027a4239c27a9
+--- CA file ---
+path=dengbei_care/app/src/main/assets/jd-ca.crt
+-rw-r--r-- 1 kason 197121 1512 Oct 13  2024 dengbei_care/app/src/main/assets/jd-ca.crt
+5c17cf740ffdf416c2f31f90172ad3565966cd62c0952920b9b2ac974aefe1e4 *dengbei_care/app/src/main/assets/jd-ca.crt
+--- CA x509 sha256 fingerprint (baseline 75:33:09:B3:...:15:2B) ---
+sha256 Fingerprint=75:33:09:B3:9F:1B:8F:85:B4:D7:57:76:BF:D3:8A:42:52:0D:C1:A0:5E:A2:0B:A3:11:7E:B3:9C:BA:B2:15:2B
+subject=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+issuer=C = US, ST = California, L = San Francisco, O = LinkValue, OU = Engineering, CN = Tiktok Root CA, emailAddress = snack_yx@126.com
+serial=1C963AC926A5ADC6D394B1F5346375722B4345
+notBefore=Oct 12 16:05:01 2024 GMT
+notAfter=Oct 10 16:05:01 2034 GMT
+--- defect baseline reference ---
+baseline_serial=77ADCFD924BA0F87F845C81934D4A3F346D4BB82
+baseline_san=IP Address:117.72.84.210
+ca_expiry_limit=2034-10-10
