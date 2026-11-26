@@ -1,0 +1,13 @@
+capture_at: 2026-11-26T15:56:05Z
+== vibrator ==
+Vibrator Service:
+  mCurrentVibration=startTime: 2026年11月26日 下午11:54:37, effect: Waveform{mTimings=[0, 500, 1000], mAmplitudes=[0, -1, 0], mRepeat=0}, originalEffect: null, usageHint: 0, uid: 10195, opPkg: com.jinyuni.dengbei_care, reason: null
+  mCurrentExternalVibration=null
+== audio players ==
+  players:
+  ID:15 -- type:android.media.SoundPool -- u/pid:1000/1580 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:31 -- type:android.media.SoundPool -- u/pid:10081/2211 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:39 -- type:android.media.SoundPool -- u/pid:10133/3039 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:711 -- type:android.media.MediaPlayer -- u/pid:10195/29700 -- state:started -- attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null
+
+  ducked players piids:

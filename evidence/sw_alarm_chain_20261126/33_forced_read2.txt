@@ -1,0 +1,22 @@
+capture_at 2026-11-26T16:22:26Z
+11-27 00:21:21.872 32264 32297 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-27 00:21:22.699 32264 32283 I MqttService: Connected to device, discovering services...
+11-27 00:21:24.290 32264 32283 I MqttService: MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-27 00:21:24.826 32264 32283 I MqttService: cipher length = 160
+11-27 00:21:24.854 32264 32283 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-27 00:21:24.859 32264 32283 I MqttService:  id=6A002C00, H=35.8%, T=23.4°C
+11-27 00:21:24.904 32264 32283 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 00:21）
+11-27 00:21:24.904 32264 32283 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-27 00:21:24.906 32264 32283 I MqttService: MQTT offline: keep latest BLE batch (bounded=1)
+11-27 00:21:24.909 32264 32283 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-27 00:21:25.019 32264 32283 I MqttService: Chunk written OK, left=0
+11-27 00:21:25.023 32264 32297 I MqttService: Successfully connected and read data on attempt 3
+== vibrator ==
+Vibrator Service:
+  mCurrentVibration=null
+  mCurrentExternalVibration=null
+== audio ==
+  ID:31 -- type:android.media.SoundPool -- u/pid:10081/2211 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:39 -- type:android.media.SoundPool -- u/pid:10133/3039 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+
+  ducked players piids:

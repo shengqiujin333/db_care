@@ -1,0 +1,1218 @@
+Current Notification Manager state:
+  Notification List:
+    NotificationRecord(0x07cef9df: pkg=com.miui.securitycenter user=UserHandle{0} id=20006 tag=null importance=5 key=0|com.miui.securitycenter|20006|null|1000appImportanceLocked=false: Notification(channel=securitycenter_resident_notification pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+      uid=1000 userId=0
+      opPkg=com.miui.securitycenter
+      icon=Icon(typ=RESOURCE pkg=com.miui.securitycenter id=0x7f0801dd) / com.miui.securitycenter:drawable/app_icon_securitycenter
+      flags=0x62
+      pri=0
+      key=0|com.miui.securitycenter|20006|null|1000
+      seen=false
+      groupKey=0|com.miui.securitycenter|20006|null|1000
+      fullscreenIntent=null
+      contentIntent=PendingIntent{4bc862c: PendingIntentRecord{a39feb8 android startActivity}}
+      deleteIntent=null
+      number=0
+      groupAlertBehavior=0
+      tickerText=null
+      contentView=null
+      bigContentView=null
+      headsUpContentView=null
+      color=0xff607d8b      timeout=unknown
+      extras={
+          android.title=String (“手机管家”正在运行)
+          android.reduced.images=Boolean (true)
+          android.text=String (点按即可了解详情或停止应用。)
+          android.appInfo=ApplicationInfo (ApplicationInfo{72eb8f5 com.miui.securitycenter})
+      }
+      stats=SingleNotificationStats{posttimeElapsedMs=34451, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=0, airtimeMs=0, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=5, isNoisy=true}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=HIGH
+      mImportanceExplanation=app
+      mIsAppImportanceLocked=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0000:gsmry=1:nsk:rnk=0x0000
+      mRankingTimeMs=1795260264388
+      mCreationTimeMs=1795260264389
+      mVisibleSinceMs=0
+      mUpdateTimeMs=1795260264389
+      mInterruptionTimeMs=1795260264493
+      mSuppressedVisualEffects= 0
+      mSound= null
+      mVibration= [J@dbd968a
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=true
+      mColorized=false
+      mIsInterruptive=true
+      effectiveNotificationChannel=NotificationChannel{mId='securitycenter_resident_notification', mName=安全常驻通知, mDescription=, mImportance=5, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=[0], mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      mAdjustments=[]
+    NotificationRecord(0x0a9cc7d2: pkg=com.miui.systemAdSolution user=UserHandle{0} id=6 tag={"ex":"ema_ZlJTqEbA1TEdKSnpmsj8xuJt-Swu_44q3Slj_grE-voigxB0WpPtp6ObeCGxUQoCL9bQJn8IJbctYcGSMDiaBzMf0PhY8MbBKogRRqhxcKUMLaClJgd51PSvrWHujaBIENVvRBqpcn3nmKXPmabHKQlS-OVtvS-l8H6sw_Y3uIN4dhOc8pG6hIQULdD0k1BrrEKbxbE-C3teiwM3cQttT26mg2PDPASDTSnSPNeZD30DZGAZ-9wzEbMLOBS1jh4v_Cwm15oSlQ25V5ghXf043pSbC5RzLwF1uNEm97ejgsnquIdJgTXvYgOZcAL-UxSIrgN-u7126b8knIX58UkGQicMXPQ_Ad6xhrv27rd1EKA5txmmLSLURgI4Rriczchg1_MSicnI5FSmoab9gzmdcEm2C6pnsK9RkSBQLW81o_ebfvQcNzS3hmW3YnqJf2v51RKl4pp5jhT6MyJNop1bmojeoxbprn8hef7ZRFWJaUIagobTs3-D7gGB6C_cq4hOBpMGkrSCcmrVeb3fOqaEgfllkN7ConRO-LoFeDdluLGgxY4me4yGNuIqk6WPwGbd_7DfdZ9RO2ENE6dGBffejI9f0YQ0wiuXAO0xQoVBha2aYoRX4Gp5SEVBA-W4YaY-LgFLTTDIOC_i5WdJck7x-KpjsbU8O2pldp2s2n7Hwk6SOSv7HpiDOPSC1vOJBzqLvtNtcOt4ad8m0q0RyCVU3AkLwJSzCoAegqsmoWQzqgieDFL6rwKj5jasgb_7q93WxqsS7WYkrtWqv3yibsgaLvBkDnHKZAKEQEvfxixTCIN7e8Ztu4LyWdut8_9eREnldeB_isDb5yrz4X3mv4Tn6lB46E25Fnd2wJ0KuEBwBUC7PH9dJJYGAmgYQRxc3y_dY6_KcvbbJ0wA2e0HBcLXdThLEalHn_H8Zr0g51urh7KrOjcmRi1pbJyaGKOiSqMEk1ViuPNnUUPWWfRxt99RnbbWUWkgi4xhmI5QDI6YYzmS0txaFytRMihonrzNOzxPFTtpcvVfQJUO6OS05vfAoG2LiOSqKiL09YwgdXpDOXVeWrwtN9qcAarMLUbUHn_nYVpSI3YboD_YOrMlHVxaxMYSFO8uY0iL9TzN-BFgNxdFTgovU9qXwyUgllNUxDO_d7Urj4s-v_DN32lL9Hs8DGehXluG0_SXUjEvzBAAINvc0X2eXV2Vdlf3QqDZpyanZs-guGDPeDv-93j3szKSGkGBoBwWwMxGSyaKgieOVXRS2VDg_0u3saYEMhglMkzSXMMXZiLHEM7c0cPKU1yaB0bAQvVWlAuPPMxHBr_Ws9Z8htxzS8ev4JWFK1XPOmbdFgJpsnP6luSLSkYngAFxqumpDOAZwOnkkzjFBK50OwU4dtGpwEsalJWTlMUx0DCBlMdYm44y3mDwy4dTZmSuSsEGdL8dG4FwPlKeDdi1ddE15M70gSH1Od-pznXvySbUSpD_I50C0HS9yYRaH3WViIM-O433PStQG_QG6UgUOeIXEfIcoIE4dAn7xqZfQqOrdAEOkB9FduPGe1P7b0WlHv-HYf51Sf6ZCY5rPx-xtqvkaeyZVa1hHDMo5CHPLNxofFXIr-Bb1o2I2nrr5y-oYEwQ2pKKpYr4leTCxLO2FtEhu6cD6uFJc0ylomH7UPMzgyltQ9vobGih7XTvn1VKfm5le-2U4ZgBsjgT_eK7YVCGQ0Xf-gCtJwQLPcng_wSMkA2AgRB7hX23a6Zpf_tB482A2-ifdxkfuSewyBI4TagE8fNzHmSz9kRC84KnikSYVMoOjdIi97EpeetZV1ov7aLEN7GoPES71JxuuuVbbeUJYjierpQ392NQiKEG99fSLIRhPiYskzWdeKpNaZx83lNKyK9gG3IW1aSNz3C-BDY2iwsUENbVL4NBpXR7Hvm9F7ZD5mJk0f1QWel1ybjdDFOO-av-coAfRkDXnKx5oKT6Y-3CtlYSI0ZRLKPh3kG9aQygOmSd8rIhyTiZ1DzUrIfiGO5RWdCUFsLar2dalIGq2H_r34OGHLlkxsn-679tlkt_fmwKouqu5qv-DivAa_A5FoVDkn7X53Y7z-gChRFGkcL2jAKyIzf-DuRbGpmEGdayvtqBxmJ3cuHOraTJqIJIac81hYOL0et4LWPs4UFKYrnN9_EVSNReMmTvRmGQxu9d40NEjc6_ee8OqMTEobkqHK8Bgay7ybat0N13lRyf4twHNI2f-SxuMRgPcLq8B6BRYXpv6KPDv7GqxwhUj09wExbn09F6fctKPZrwJrmEIjd0EggMc-aG-xvbfyEp"} importance=4 key=0|com.miui.systemAdSolution|6|{"ex":"ema_ZlJTqEbA1TEdKSnpmsj8xuJt-Swu_44q3Slj_grE-voigxB0WpPtp6ObeCGxUQoCL9bQJn8IJbctYcGSMDiaBzMf0PhY8MbBKogRRqhxcKUMLaClJgd51PSvrWHujaBIENVvRBqpcn3nmKXPmabHKQlS-OVtvS-l8H6sw_Y3uIN4dhOc8pG6hIQULdD0k1BrrEKbxbE-C3teiwM3cQttT26mg2PDPASDTSnSPNeZD30DZGAZ-9wzEbMLOBS1jh4v_Cwm15oSlQ25V5ghXf043pSbC5RzLwF1uNEm97ejgsnquIdJgTXvYgOZcAL-UxSIrgN-u7126b8knIX58UkGQicMXPQ_Ad6xhrv27rd1EKA5txmmLSLURgI4Rriczchg1_MSicnI5FSmoab9gzmdcEm2C6pnsK9RkSBQLW81o_ebfvQcNzS3hmW3YnqJf2v51RKl4pp5jhT6MyJNop1bmojeoxbprn8hef7ZRFWJaUIagobTs3-D7gGB6C_cq4hOBpMGkrSCcmrVeb3fOqaEgfllkN7ConRO-LoFeDdluLGgxY4me4yGNuIqk6WPwGbd_7DfdZ9RO2ENE6dGBffejI9f0YQ0wiuXAO0xQoVBha2aYoRX4Gp5SEVBA-W4YaY-LgFLTTDIOC_i5WdJck7x-KpjsbU8O2pldp2s2n7Hwk6SOSv7HpiDOPSC1vOJBzqLvtNtcOt4ad8m0q0RyCVU3AkLwJSzCoAegqsmoWQzqgieDFL6rwKj5jasgb_7q93WxqsS7WYkrtWqv3yibsgaLvBkDnHKZAKEQEvfxixTCIN7e8Ztu4LyWdut8_9eREnldeB_isDb5yrz4X3mv4Tn6lB46E25Fnd2wJ0KuEBwBUC7PH9dJJYGAmgYQRxc3y_dY6_KcvbbJ0wA2e0HBcLXdThLEalHn_H8Zr0g51urh7KrOjcmRi1pbJyaGKOiSqMEk1ViuPNnUUPWWfRxt99RnbbWUWkgi4xhmI5QDI6YYzmS0txaFytRMihonrzNOzxPFTtpcvVfQJUO6OS05vfAoG2LiOSqKiL09YwgdXpDOXVeWrwtN9qcAarMLUbUHn_nYVpSI3YboD_YOrMlHVxaxMYSFO8uY0iL9TzN-BFgNxdFTgovU9qXwyUgllNUxDO_d7Urj4s-v_DN32lL9Hs8DGehXluG0_SXUjEvzBAAINvc0X2eXV2Vdlf3QqDZpyanZs-guGDPeDv-93j3szKSGkGBoBwWwMxGSyaKgieOVXRS2VDg_0u3saYEMhglMkzSXMMXZiLHEM7c0cPKU1yaB0bAQvVWlAuPPMxHBr_Ws9Z8htxzS8ev4JWFK1XPOmbdFgJpsnP6luSLSkYngAFxqumpDOAZwOnkkzjFBK50OwU4dtGpwEsalJWTlMUx0DCBlMdYm44y3mDwy4dTZmSuSsEGdL8dG4FwPlKeDdi1ddE15M70gSH1Od-pznXvySbUSpD_I50C0HS9yYRaH3WViIM-O433PStQG_QG6UgUOeIXEfIcoIE4dAn7xqZfQqOrdAEOkB9FduPGe1P7b0WlHv-HYf51Sf6ZCY5rPx-xtqvkaeyZVa1hHDMo5CHPLNxofFXIr-Bb1o2I2nrr5y-oYEwQ2pKKpYr4leTCxLO2FtEhu6cD6uFJc0ylomH7UPMzgyltQ9vobGih7XTvn1VKfm5le-2U4ZgBsjgT_eK7YVCGQ0Xf-gCtJwQLPcng_wSMkA2AgRB7hX23a6Zpf_tB482A2-ifdxkfuSewyBI4TagE8fNzHmSz9kRC84KnikSYVMoOjdIi97EpeetZV1ov7aLEN7GoPES71JxuuuVbbeUJYjierpQ392NQiKEG99fSLIRhPiYskzWdeKpNaZx83lNKyK9gG3IW1aSNz3C-BDY2iwsUENbVL4NBpXR7Hvm9F7ZD5mJk0f1QWel1ybjdDFOO-av-coAfRkDXnKx5oKT6Y-3CtlYSI0ZRLKPh3kG9aQygOmSd8rIhyTiZ1DzUrIfiGO5RWdCUFsLar2dalIGq2H_r34OGHLlkxsn-679tlkt_fmwKouqu5qv-DivAa_A5FoVDkn7X53Y7z-gChRFGkcL2jAKyIzf-DuRbGpmEGdayvtqBxmJ3cuHOraTJqIJIac81hYOL0et4LWPs4UFKYrnN9_EVSNReMmTvRmGQxu9d40NEjc6_ee8OqMTEobkqHK8Bgay7ybat0N13lRyf4twHNI2f-SxuMRgPcLq8B6BRYXpv6KPDv7GqxwhUj09wExbn09F6fctKPZrwJrmEIjd0EggMc-aG-xvbfyEp"}|10132appImportanceLocked=false: Notification(channel=enhancementPushAd_false_false_false pri=1 contentView=null vibrate=null sound=null defaults=0x0 flags=0x18 color=0x00000000 actions=2 vis=PRIVATE))
+      uid=10132 userId=0
+      opPkg=com.miui.systemAdSolution
+      icon=Icon(typ=RESOURCE pkg=com.miui.systemAdSolution id=0x7f0600b5) / com.miui.systemAdSolution:drawable/push_ad_small_icon
+      flags=0x18
+      pri=1
+      key=0|com.miui.systemAdSolution|6|{"ex":"ema_ZlJTqEbA1TEdKSnpmsj8xuJt-Swu_44q3Slj_grE-voigxB0WpPtp6ObeCGxUQoCL9bQJn8IJbctYcGSMDiaBzMf0PhY8MbBKogRRqhxcKUMLaClJgd51PSvrWHujaBIENVvRBqpcn3nmKXPmabHKQlS-OVtvS-l8H6sw_Y3uIN4dhOc8pG6hIQULdD0k1BrrEKbxbE-C3teiwM3cQttT26mg2PDPASDTSnSPNeZD30DZGAZ-9wzEbMLOBS1jh4v_Cwm15oSlQ25V5ghXf043pSbC5RzLwF1uNEm97ejgsnquIdJgTXvYgOZcAL-UxSIrgN-u7126b8knIX58UkGQicMXPQ_Ad6xhrv27rd1EKA5txmmLSLURgI4Rriczchg1_MSicnI5FSmoab9gzmdcEm2C6pnsK9RkSBQLW81o_ebfvQcNzS3hmW3YnqJf2v51RKl4pp5jhT6MyJNop1bmojeoxbprn8hef7ZRFWJaUIagobTs3-D7gGB6C_cq4hOBpMGkrSCcmrVeb3fOqaEgfllkN7ConRO-LoFeDdluLGgxY4me4yGNuIqk6WPwGbd_7DfdZ9RO2ENE6dGBffejI9f0YQ0wiuXAO0xQoVBha2aYoRX4Gp5SEVBA-W4YaY-LgFLTTDIOC_i5WdJck7x-KpjsbU8O2pldp2s2n7Hwk6SOSv7HpiDOPSC1vOJBzqLvtNtcOt4ad8m0q0RyCVU3AkLwJSzCoAegqsmoWQzqgieDFL6rwKj5jasgb_7q93WxqsS7WYkrtWqv3yibsgaLvBkDnHKZAKEQEvfxixTCIN7e8Ztu4LyWdut8_9eREnldeB_isDb5yrz4X3mv4Tn6lB46E25Fnd2wJ0KuEBwBUC7PH9dJJYGAmgYQRxc3y_dY6_KcvbbJ0wA2e0HBcLXdThLEalHn_H8Zr0g51urh7KrOjcmRi1pbJyaGKOiSqMEk1ViuPNnUUPWWfRxt99RnbbWUWkgi4xhmI5QDI6YYzmS0txaFytRMihonrzNOzxPFTtpcvVfQJUO6OS05vfAoG2LiOSqKiL09YwgdXpDOXVeWrwtN9qcAarMLUbUHn_nYVpSI3YboD_YOrMlHVxaxMYSFO8uY0iL9TzN-BFgNxdFTgovU9qXwyUgllNUxDO_d7Urj4s-v_DN32lL9Hs8DGehXluG0_SXUjEvzBAAINvc0X2eXV2Vdlf3QqDZpyanZs-guGDPeDv-93j3szKSGkGBoBwWwMxGSyaKgieOVXRS2VDg_0u3saYEMhglMkzSXMMXZiLHEM7c0cPKU1yaB0bAQvVWlAuPPMxHBr_Ws9Z8htxzS8ev4JWFK1XPOmbdFgJpsnP6luSLSkYngAFxqumpDOAZwOnkkzjFBK50OwU4dtGpwEsalJWTlMUx0DCBlMdYm44y3mDwy4dTZmSuSsEGdL8dG4FwPlKeDdi1ddE15M70gSH1Od-pznXvySbUSpD_I50C0HS9yYRaH3WViIM-O433PStQG_QG6UgUOeIXEfIcoIE4dAn7xqZfQqOrdAEOkB9FduPGe1P7b0WlHv-HYf51Sf6ZCY5rPx-xtqvkaeyZVa1hHDMo5CHPLNxofFXIr-Bb1o2I2nrr5y-oYEwQ2pKKpYr4leTCxLO2FtEhu6cD6uFJc0ylomH7UPMzgyltQ9vobGih7XTvn1VKfm5le-2U4ZgBsjgT_eK7YVCGQ0Xf-gCtJwQLPcng_wSMkA2AgRB7hX23a6Zpf_tB482A2-ifdxkfuSewyBI4TagE8fNzHmSz9kRC84KnikSYVMoOjdIi97EpeetZV1ov7aLEN7GoPES71JxuuuVbbeUJYjierpQ392NQiKEG99fSLIRhPiYskzWdeKpNaZx83lNKyK9gG3IW1aSNz3C-BDY2iwsUENbVL4NBpXR7Hvm9F7ZD5mJk0f1QWel1ybjdDFOO-av-coAfRkDXnKx5oKT6Y-3CtlYSI0ZRLKPh3kG9aQygOmSd8rIhyTiZ1DzUrIfiGO5RWdCUFsLar2dalIGq2H_r34OGHLlkxsn-679tlkt_fmwKouqu5qv-DivAa_A5FoVDkn7X53Y7z-gChRFGkcL2jAKyIzf-DuRbGpmEGdayvtqBxmJ3cuHOraTJqIJIac81hYOL0et4LWPs4UFKYrnN9_EVSNReMmTvRmGQxu9d40NEjc6_ee8OqMTEobkqHK8Bgay7ybat0N13lRyf4twHNI2f-SxuMRgPcLq8B6BRYXpv6KPDv7GqxwhUj09wExbn09F6fctKPZrwJrmEIjd0EggMc-aG-xvbfyEp"}|10132
+      seen=false
+      groupKey=0|com.miui.systemAdSolution|6|{"ex":"ema_ZlJTqEbA1TEdKSnpmsj8xuJt-Swu_44q3Slj_grE-voigxB0WpPtp6ObeCGxUQoCL9bQJn8IJbctYcGSMDiaBzMf0PhY8MbBKogRRqhxcKUMLaClJgd51PSvrWHujaBIENVvRBqpcn3nmKXPmabHKQlS-OVtvS-l8H6sw_Y3uIN4dhOc8pG6hIQULdD0k1BrrEKbxbE-C3teiwM3cQttT26mg2PDPASDTSnSPNeZD30DZGAZ-9wzEbMLOBS1jh4v_Cwm15oSlQ25V5ghXf043pSbC5RzLwF1uNEm97ejgsnquIdJgTXvYgOZcAL-UxSIrgN-u7126b8knIX58UkGQicMXPQ_Ad6xhrv27rd1EKA5txmmLSLURgI4Rriczchg1_MSicnI5FSmoab9gzmdcEm2C6pnsK9RkSBQLW81o_ebfvQcNzS3hmW3YnqJf2v51RKl4pp5jhT6MyJNop1bmojeoxbprn8hef7ZRFWJaUIagobTs3-D7gGB6C_cq4hOBpMGkrSCcmrVeb3fOqaEgfllkN7ConRO-LoFeDdluLGgxY4me4yGNuIqk6WPwGbd_7DfdZ9RO2ENE6dGBffejI9f0YQ0wiuXAO0xQoVBha2aYoRX4Gp5SEVBA-W4YaY-LgFLTTDIOC_i5WdJck7x-KpjsbU8O2pldp2s2n7Hwk6SOSv7HpiDOPSC1vOJBzqLvtNtcOt4ad8m0q0RyCVU3AkLwJSzCoAegqsmoWQzqgieDFL6rwKj5jasgb_7q93WxqsS7WYkrtWqv3yibsgaLvBkDnHKZAKEQEvfxixTCIN7e8Ztu4LyWdut8_9eREnldeB_isDb5yrz4X3mv4Tn6lB46E25Fnd2wJ0KuEBwBUC7PH9dJJYGAmgYQRxc3y_dY6_KcvbbJ0wA2e0HBcLXdThLEalHn_H8Zr0g51urh7KrOjcmRi1pbJyaGKOiSqMEk1ViuPNnUUPWWfRxt99RnbbWUWkgi4xhmI5QDI6YYzmS0txaFytRMihonrzNOzxPFTtpcvVfQJUO6OS05vfAoG2LiOSqKiL09YwgdXpDOXVeWrwtN9qcAarMLUbUHn_nYVpSI3YboD_YOrMlHVxaxMYSFO8uY0iL9TzN-BFgNxdFTgovU9qXwyUgllNUxDO_d7Urj4s-v_DN32lL9Hs8DGehXluG0_SXUjEvzBAAINvc0X2eXV2Vdlf3QqDZpyanZs-guGDPeDv-93j3szKSGkGBoBwWwMxGSyaKgieOVXRS2VDg_0u3saYEMhglMkzSXMMXZiLHEM7c0cPKU1yaB0bAQvVWlAuPPMxHBr_Ws9Z8htxzS8ev4JWFK1XPOmbdFgJpsnP6luSLSkYngAFxqumpDOAZwOnkkzjFBK50OwU4dtGpwEsalJWTlMUx0DCBlMdYm44y3mDwy4dTZmSuSsEGdL8dG4FwPlKeDdi1ddE15M70gSH1Od-pznXvySbUSpD_I50C0HS9yYRaH3WViIM-O433PStQG_QG6UgUOeIXEfIcoIE4dAn7xqZfQqOrdAEOkB9FduPGe1P7b0WlHv-HYf51Sf6ZCY5rPx-xtqvkaeyZVa1hHDMo5CHPLNxofFXIr-Bb1o2I2nrr5y-oYEwQ2pKKpYr4leTCxLO2FtEhu6cD6uFJc0ylomH7UPMzgyltQ9vobGih7XTvn1VKfm5le-2U4ZgBsjgT_eK7YVCGQ0Xf-gCtJwQLPcng_wSMkA2AgRB7hX23a6Zpf_tB482A2-ifdxkfuSewyBI4TagE8fNzHmSz9kRC84KnikSYVMoOjdIi97EpeetZV1ov7aLEN7GoPES71JxuuuVbbeUJYjierpQ392NQiKEG99fSLIRhPiYskzWdeKpNaZx83lNKyK9gG3IW1aSNz3C-BDY2iwsUENbVL4NBpXR7Hvm9F7ZD5mJk0f1QWel1ybjdDFOO-av-coAfRkDXnKx5oKT6Y-3CtlYSI0ZRLKPh3kG9aQygOmSd8rIhyTiZ1DzUrIfiGO5RWdCUFsLar2dalIGq2H_r34OGHLlkxsn-679tlkt_fmwKouqu5qv-DivAa_A5FoVDkn7X53Y7z-gChRFGkcL2jAKyIzf-DuRbGpmEGdayvtqBxmJ3cuHOraTJqIJIac81hYOL0et4LWPs4UFKYrnN9_EVSNReMmTvRmGQxu9d40NEjc6_ee8OqMTEobkqHK8Bgay7ybat0N13lRyf4twHNI2f-SxuMRgPcLq8B6BRYXpv6KPDv7GqxwhUj09wExbn09F6fctKPZrwJrmEIjd0EggMc-aG-xvbfyEp"}|10132
+      fullscreenIntent=null
+      contentIntent=PendingIntent{80f40a3: PendingIntentRecord{69e4a1f com.miui.systemAdSolution broadcastIntent (whitelist: 60618fd:+30s0ms)}}
+      deleteIntent=PendingIntent{5425fa0: PendingIntentRecord{ef5316c com.miui.systemAdSolution broadcastIntent (whitelist: 60618fd:+30s0ms)}}
+      number=0
+      groupAlertBehavior=0
+      tickerText=null
+      contentView=null
+      bigContentView=null
+      headsUpContentView=null
+      color=0x00000000      timeout=unknown
+      actions={
+          [0] "忽略" -> PendingIntent{c25a759: PendingIntentRecord{ef5316c com.miui.systemAdSolution broadcastIntent (whitelist: 60618fd:+30s0ms)}}
+          [1] "立即打开" -> PendingIntent{cdb8f1e: PendingIntentRecord{69e4a1f com.miui.systemAdSolution broadcastIntent (whitelist: 60618fd:+30s0ms)}}
+        }
+      extras={
+          android.title=String (购物优惠自动识别)
+          android.reduced.images=Boolean (true)
+          android.subText=null
+          message_id=String (435274487)
+          android.showChronometer=Boolean (false)
+          android.text=String (覆盖京东淘宝美团等6大平台，浏览商品自动弹出优惠‌​‍)
+          android.progress=Integer (0)
+          android.progressMax=Integer (0)
+          android.appInfo=ApplicationInfo (ApplicationInfo{503d25c com.miui.systemAdSolution})
+          android.showWhen=Boolean (true)
+          android.largeIcon=Icon (Icon(typ=BITMAP size=75x75))
+          adId=Long (435274487)
+          android.infoText=null
+          android.progressIndeterminate=Boolean (false)
+          android.remoteInputHistory=null
+          miui.appIcon=Icon (Icon(typ=BITMAP size=512x512))
+      }
+      stats=SingleNotificationStats{posttimeElapsedMs=429793940, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=1, airtimeMs=5384, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=4, naturalImportance=4, isNoisy=true}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=HIGH
+      mImportanceExplanation=app
+      mIsAppImportanceLocked=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0001:gsmry=1:nsk:rnk=0x0001
+      mRankingTimeMs=1795708023963
+      mCreationTimeMs=1795690023880
+      mVisibleSinceMs=1795707933401
+      mUpdateTimeMs=1795708023973
+      mInterruptionTimeMs=1795708023973
+      mSuppressedVisualEffects= 0
+      mSound= null
+      mVibration= [J@be0c965
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=true
+      mColorized=false
+      mIsInterruptive=false
+      effectiveNotificationChannel=NotificationChannel{mId='enhancementPushAd_false_false_false', mName=msa, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=[0], mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      mAdjustments=[]
+    NotificationRecord(0x099dd4d8: pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null importance=3 key=0|com.jinyuni.dengbei_care|1|null|10195appImportanceLocked=false: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
+      uid=10195 userId=0
+      opPkg=com.jinyuni.dengbei_care
+      icon=Icon(typ=RESOURCE pkg=com.jinyuni.dengbei_care id=0x7f0e0000) / com.jinyuni.dengbei_care:mipmap/ic_launcher
+      flags=0x62
+      pri=0
+      key=0|com.jinyuni.dengbei_care|1|null|10195
+      seen=false
+      groupKey=0|com.jinyuni.dengbei_care|1|null|10195
+      fullscreenIntent=null
+      contentIntent=PendingIntent{61da031: PendingIntentRecord{e71f051 android startActivity}}
+      deleteIntent=null
+      number=0
+      groupAlertBehavior=0
+      tickerText=null
+      contentView=null
+      bigContentView=null
+      headsUpContentView=null
+      color=0xff607d8b      timeout=unknown
+      extras={
+          android.title=String (“爱守护”正在运行)
+          android.reduced.images=Boolean (true)
+          android.text=String (点按即可了解详情或停止应用。)
+          android.appInfo=ApplicationInfo (ApplicationInfo{d71e31e com.jinyuni.dengbei_care})
+      }
+      stats=SingleNotificationStats{posttimeElapsedMs=447356874, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=1, airtimeMs=5385, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=3, isNoisy=true}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=DEFAULT
+      mImportanceExplanation=app
+      mIsAppImportanceLocked=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0002:gsmry=1:nsk:rnk=0x0002
+      mRankingTimeMs=1795708557012
+      mCreationTimeMs=1795707586805
+      mVisibleSinceMs=1795707933399
+      mUpdateTimeMs=1795708557017
+      mInterruptionTimeMs=1795708557152
+      mSuppressedVisualEffects= 0
+      mSound= content://settings/system/notification_sound
+      mVibration= null
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=true
+      mColorized=false
+      mIsInterruptive=true
+      effectiveNotificationChannel=NotificationChannel{mId='MqttServiceChannel', mName=MQTT Service Channel, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      mAdjustments=[]
+    NotificationRecord(0x04f30a30: pkg=com.miui.notification user=UserHandle{0} id=2012875145 tag=UNIMPORTANT importance=3 key=0|com.miui.notification|2012875145|UNIMPORTANT|1000appImportanceLocked=false: Notification(channel=id_aggregate pri=0 contentView=com.miui.notification/0x7f0d0024 vibrate=null sound=null defaults=0x0 flags=0x0 color=0x00000000 vis=PRIVATE))
+      uid=1000 userId=0
+      opPkg=com.miui.notification
+      icon=Icon(typ=RESOURCE pkg=com.miui.notification id=0x7f080084) / com.miui.notification:drawable/ic_app
+      flags=0x0
+      pri=0
+      key=0|com.miui.notification|2012875145|UNIMPORTANT|1000
+      seen=false
+      groupKey=0|com.miui.notification|2012875145|UNIMPORTANT|1000
+      fullscreenIntent=null
+      contentIntent=PendingIntent{9b626a9: PendingIntentRecord{f738947 com.miui.notification startActivity (whitelist: 60618fd:+30s0ms)}}
+      deleteIntent=PendingIntent{20c242e: PendingIntentRecord{a5ffc86 com.miui.notification broadcastIntent (whitelist: 60618fd:+30s0ms)}}
+      number=0
+      groupAlertBehavior=0
+      tickerText=null
+      contentView=com.miui.notification/0x7f0d0024 (0 bytes): android.widget.RemoteViews@bc59bcf
+      bigContentView=null
+      headsUpContentView=null
+      color=0x00000000      timeout=unknown
+      extras={
+          android.reduced.images=Boolean (true)
+          miui.longPressIntent=PendingIntent (PendingIntent{9b6995c: PendingIntentRecord{1fb4961 com.miui.notification startActivity (whitelist: 60618fd:+30s0ms)}})
+          miui.showDivider=Boolean (true)
+          android.appInfo=ApplicationInfo (ApplicationInfo{60052c7 com.miui.notification})
+          miui.showAtTail=Boolean (true)
+          android.contains.customView=Boolean (true)
+          miui.enableKeyguard=Boolean (false)
+          miui.isPersistent=Boolean (true)
+          miui.noCustomViewDecoration=Boolean (false)
+          miui.customHeight=Boolean (true)
+      }
+      stats=SingleNotificationStats{posttimeElapsedMs=448247805, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=0, airtimeMs=0, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=3, isNoisy=false}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=DEFAULT
+      mImportanceExplanation=app
+      mIsAppImportanceLocked=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0003:gsmry=1:nsk:rnk=0x0003
+      mRankingTimeMs=1795708477744
+      mCreationTimeMs=1795708477745
+      mVisibleSinceMs=0
+      mUpdateTimeMs=1795708477745
+      mInterruptionTimeMs=1795708477847
+      mSuppressedVisualEffects= 0
+      mSound= null
+      mVibration= null
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=true
+      mColorized=false
+      mIsInterruptive=true
+      effectiveNotificationChannel=NotificationChannel{mId='id_aggregate', mName=通知聚合入口, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      mAdjustments=[]
+    NotificationRecord(0x0d006015: pkg=android user=UserHandle{-1} id=32 tag=null importance=3 key=-1|android|32|null|1000appImportanceLocked=false: Notification(channel=USB pri=0 contentView=null vibrate=null sound=null tick defaults=0x0 flags=0x2 color=0xff607d8b vis=PUBLIC))
+      uid=1000 userId=-1
+      opPkg=android
+      icon=Icon(typ=RESOURCE pkg=android id=0x01080812) / android:drawable/stat_sys_adb
+      flags=0x2
+      pri=0
+      key=-1|android|32|null|1000
+      seen=true
+      groupKey=-1|android|32|null|1000
+      fullscreenIntent=null
+      contentIntent=PendingIntent{bad7f2a: PendingIntentRecord{d798fef android startActivity}}
+      deleteIntent=null
+      number=0
+      groupAlertBehavior=0
+      tickerText=正在通过 USB 充电
+      contentView=null
+      bigContentView=null
+      headsUpContentView=null
+      color=0xff607d8b      timeout=unknown
+      extras={
+          android.title=String (正在通过 USB 充电)
+          android.reduced.images=Boolean (true)
+          android.text=String (点按即可查看更多选项。)
+          android.appInfo=ApplicationInfo (ApplicationInfo{f2d4860 android})
+      }
+      stats=SingleNotificationStats{posttimeElapsedMs=346643821, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=4, airtimeMs=10060, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=3, isNoisy=false}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=DEFAULT
+      mImportanceExplanation=app
+      mIsAppImportanceLocked=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0004:gsmry=1:nsk:rnk=0x0004
+      mRankingTimeMs=1795606873758
+      mCreationTimeMs=1795606873758
+      mVisibleSinceMs=1795707933400
+      mUpdateTimeMs=1795606873758
+      mInterruptionTimeMs=1795606873863
+      mSuppressedVisualEffects= 0
+      mSound= null
+      mVibration= null
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=false
+      mColorized=false
+      mIsInterruptive=true
+      effectiveNotificationChannel=NotificationChannel{mId='USB', mName=USB 连接, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      mAdjustments=[]
+    NotificationRecord(0x0c954119: pkg=com.miui.notification user=UserHandle{0} id=1 tag=null importance=3 key=0|com.miui.notification|1|null|1000appImportanceLocked=false: Notification(channel=id_notification_center pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0x00000000 vis=PRIVATE))
+      uid=1000 userId=0
+      opPkg=com.miui.notification
+      icon=Icon(typ=RESOURCE pkg=com.miui.notification id=0x7f080084) / com.miui.notification:drawable/ic_app
+      flags=0x62
+      pri=0
+      key=0|com.miui.notification|1|null|1000
+      seen=false
+      groupKey=0|com.miui.notification|1|null|1000
+      fullscreenIntent=null
+      contentIntent=null
+      deleteIntent=null
+      number=0
+      groupAlertBehavior=0
+      tickerText=null
+      contentView=null
+      bigContentView=null
+      headsUpContentView=null
+      color=0x00000000      timeout=unknown
+      extras={
+          android.reduced.images=Boolean (true)
+          android.appInfo=ApplicationInfo (ApplicationInfo{60052c7 com.miui.notification})
+      }
+      stats=SingleNotificationStats{posttimeElapsedMs=256646033, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=0, airtimeMs=0, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=3, isNoisy=true}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=DEFAULT
+      mImportanceExplanation=app
+      mIsAppImportanceLocked=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0005:gsmry=1:nsk:rnk=0x0005
+      mRankingTimeMs=1795516877193
+      mCreationTimeMs=1795516876073
+      mVisibleSinceMs=0
+      mUpdateTimeMs=1795516877194
+      mInterruptionTimeMs=1795516877194
+      mSuppressedVisualEffects= 0
+      mSound= content://settings/system/notification_sound
+      mVibration= null
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=true
+      mColorized=false
+      mIsInterruptive=false
+      effectiveNotificationChannel=NotificationChannel{mId='id_notification_center', mName=通知管理, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      mAdjustments=[]
+    NotificationRecord(0x0a1a211b: pkg=com.miui.voiceassist user=UserHandle{0} id=-36066152 tag=null importance=2 key=0|com.miui.voiceassist|-36066152|null|10133appImportanceLocked=false: Notification(channel=com.miui.voiceassistforeground pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0x00000000 vis=PRIVATE))
+      uid=10133 userId=0
+      opPkg=com.miui.voiceassist
+      icon=Icon(typ=RESOURCE pkg=com.miui.voiceassist id=0x7f08092b) / com.miui.voiceassist:drawable/xiaoai_icon
+      flags=0x62
+      pri=0
+      key=0|com.miui.voiceassist|-36066152|null|10133
+      seen=false
+      groupKey=0|com.miui.voiceassist|-36066152|null|10133
+      fullscreenIntent=null
+      contentIntent=null
+      deleteIntent=null
+      number=0
+      groupAlertBehavior=0
+      tickerText=null
+      contentView=null
+      bigContentView=null
+      headsUpContentView=null
+      color=0x00000000      timeout=unknown
+      extras={
+          android.title=String (语音唤醒正在运行中)
+          android.reduced.images=Boolean (true)
+          android.subText=null
+          android.showChronometer=Boolean (false)
+          android.text=null
+          android.progress=Integer (0)
+          android.progressMax=Integer (0)
+          android.appInfo=ApplicationInfo (ApplicationInfo{91882b8 com.miui.voiceassist})
+          android.showWhen=Boolean (true)
+          android.largeIcon=null
+          android.infoText=null
+          android.progressIndeterminate=Boolean (false)
+          android.remoteInputHistory=null
+      }
+      stats=SingleNotificationStats{posttimeElapsedMs=432026340, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=0, airtimeMs=0, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=2, isNoisy=false}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=LOW
+      mImportanceExplanation=app
+      mIsAppImportanceLocked=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0006:gsmry=1:nsk:rnk=0x0006
+      mRankingTimeMs=1795692256261
+      mCreationTimeMs=1795692256271
+      mVisibleSinceMs=0
+      mUpdateTimeMs=1795692256271
+      mInterruptionTimeMs=1795692256382
+      mSuppressedVisualEffects= 0
+      mSound= null
+      mVibration= null
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=true
+      mColorized=false
+      mIsInterruptive=true
+      effectiveNotificationChannel=NotificationChannel{mId='com.miui.voiceassistforeground', mName=foreground, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      mAdjustments=[]
+    NotificationRecord(0x0993e891: pkg=android user=UserHandle{-1} id=26 tag=null importance=2 key=-1|android|26|null|1000appImportanceLocked=false: Notification(channel=DEVELOPER pri=0 contentView=null vibrate=null sound=null tick defaults=0x0 flags=0x2 color=0xff607d8b vis=PUBLIC))
+      uid=1000 userId=-1
+      opPkg=android
+      icon=Icon(typ=RESOURCE pkg=android id=0x01080812) / android:drawable/stat_sys_adb
+      flags=0x2
+      pri=0
+      key=-1|android|26|null|1000
+      seen=true
+      groupKey=-1|android|26|null|1000
+      fullscreenIntent=null
+      contentIntent=PendingIntent{5fc63f6: PendingIntentRecord{7a09b50 android startActivity}}
+      deleteIntent=null
+      number=0
+      groupAlertBehavior=0
+      tickerText=已连接到 USB 调试
+      contentView=null
+      bigContentView=null
+      headsUpContentView=null
+      color=0xff607d8b      timeout=unknown
+      extras={
+          android.title=String (已连接到 USB 调试)
+          android.reduced.images=Boolean (true)
+          android.text=String (点按即可关闭 USB 调试)
+          android.appInfo=ApplicationInfo (ApplicationInfo{f2d4860 android})
+          android.tv.EXTENSIONS=Bundle (Bundle[{channel_id=usbdevicemanager.adb.tv, suppressShowOverApps=false, flags=1}])
+      }
+      stats=SingleNotificationStats{posttimeElapsedMs=346643824, posttimeToFirstClickMs=-1, posttimeToDismissMs=-1, airtimeCount=4, airtimeMs=10066, currentAirtimeStartElapsedMs=-1, airtimeExpandedMs=0, posttimeToFirstVisibleExpansionMs=-1, currentAirtimeExpandedStartElapsedMs=-1, requestedImportance=3, naturalImportance=2, isNoisy=true}
+      mContactAffinity=0.0
+      mRecentlyIntrusive=false
+      mPackagePriority=0
+      mPackageVisibility=-1000
+      mSystemImportance=UNSPECIFIED
+      mAsstImportance=UNSPECIFIED
+      mImportance=LOW
+      mImportanceExplanation=app
+      mIsAppImportanceLocked=false
+      mIntercept=false
+      mHidden==false
+      mGlobalSortKey=crtcl=0x0002:intrsv=1:grnk=0x0007:gsmry=1:nsk:rnk=0x0007
+      mRankingTimeMs=1795606873759
+      mCreationTimeMs=1795606873759
+      mVisibleSinceMs=1795707933398
+      mUpdateTimeMs=1795606873759
+      mInterruptionTimeMs=1795606873866
+      mSuppressedVisualEffects= 0
+      mSound= content://settings/system/notification_sound
+      mVibration= null
+      mAttributes= AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+      mLight= null
+      mShowBadge=false
+      mColorized=false
+      mIsInterruptive=true
+      effectiveNotificationChannel=NotificationChannel{mId='DEVELOPER', mName=开发者消息, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      mAdjustments=[]
+  
+  mUseAttentionLight=false
+  mHasLight=false
+  mNotificationPulseEnabled=true
+  mSoundNotificationKey=0|com.jinyuni.dengbei_care|1|null|10195
+  mVibrateNotificationKey=0|com.jinyuni.dengbei_care|1|null|10195
+  mDisableNotificationEffects=false
+  mCallState=CALL_STATE_IDLE
+  mSystemReady=true
+  mMaxPackageEnqueueRate=5.0
+  mArchive=Archive (100 notifications)
+    StatusBarNotification(pkg=android user=UserHandle{-1} id=8 tag=null key=-1|android|8|null|1000: Notification(channel=VIRTUAL_KEYBOARD_MIUI pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff607d8b category=sys vis=PRIVATE))
+    StatusBarNotification(pkg=android user=UserHandle{-1} id=8 tag=null key=-1|android|8|null|1000: Notification(channel=VIRTUAL_KEYBOARD_MIUI pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x2 color=0xff607d8b category=sys vis=PRIVATE))
+    StatusBarNotification(pkg=com.xiaomi.market user=UserHandle{0} id=194079380 tag=null key=0|com.xiaomi.market|194079380|null|10120: Notification(channel=com.xiaomi.market_hide pri=-2 contentView=null vibrate=null sound=null defaults=0x0 flags=0x7a color=0xffff8a00 vis=PRIVATE))
+    StatusBarNotification(pkg=com.xiaomi.market user=UserHandle{0} id=0 tag=pending_update1 key=0|com.xiaomi.market|0|pending_update1|10120: Notification(channel=com.xiaomi.market pri=2 contentView=null vibrate=null sound=null defaults=0x0 flags=0x18 color=0xffff8a00 actions=1 vis=PRIVATE))
+    StatusBarNotification(pkg=com.xiaomi.market user=UserHandle{0} id=0 tag=pending_update key=0|com.xiaomi.market|0|pending_update|10120: Notification(channel=com.xiaomi.market pri=2 contentView=null vibrate=null sound=null defaults=0x0 flags=0x18 color=0xffff8a00 actions=1 vis=PRIVATE))
+    ...
+
+  Snoozed notifications:
+
+  Ranking Config:
+    mSignalExtractors.length = 11
+      NotificationChannelExtractor
+      NotificationAdjustmentExtractor
+      BubbleExtractor
+      ValidateNotificationPeople
+      PriorityExtractor
+      ZenModeExtractor
+      ImportanceExtractor
+      NotificationIntrusivenessExtractor
+      VisibilityExtractor
+      BadgeExtractor
+      CriticalNotificationExtractor
+
+ Notification Preferences:
+    per-package config:
+PackagePreferences:
+      AppSettings: com.android.phone:demo_Version (0)
+      AppSettings: com.miui.securitycenter (1000)
+        NotificationChannel{mId='batteryNoticeNew', mName=电池, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=file:///system/media/audio/ui/LowBattery.ogg, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION_EVENT content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='poweroffNotice', mName=关机时间, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='com.miui.securitycenter', mName=系统安全, mDescription=, mImportance=5, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=[0], mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='securitycenter_resident_notification', mName=安全常驻通知, mDescription=, mImportance=5, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=[0], mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='com.miui.applicationlock', mName=应用锁, mDescription=, mImportance=5, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=[0], mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.emergency (10152) defaultAppLocked=true
+      AppSettings: com.miui.newhome (10189)
+      AppSettings: com.mipay.wallet (10100)
+      AppSettings: com.xiaomi.mi_connect_service (1000)
+        NotificationChannel{mId='com.xiaomi.mi_connect_service', mName=扫描设备, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='10010', mName=notification, mDescription=hasDescription , mImportance=5, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.xiaomi.mibrain.speech (10179)
+      AppSettings: com.android.providers.contacts (10049)
+        NotificationChannel{mId='contactsprovider.silent', mName=其他, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.thememanager (9801)
+      AppSettings: com.xiaomi.finddevice (9810)
+        NotificationChannel{mId='default', mName=查找设备, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.gallery (10086)
+        NotificationChannel{mId='com.miui.gallery.MIN', mName=应用消息, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.bluetooth (1002)
+        NotificationChannel{mId='avrcp_notification', mName=BT ADVANCE FEATURE AVRCP, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=, mLights=true, mLightColor=-16711936, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='opp_notification_channel', mName=蓝牙共享, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.updater (9802)
+      AppSettings: com.miui.voiceassist (10133)
+        NotificationChannel{mId='com.miui.voiceassistforeground', mName=foreground, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='xiaoai', mName=小爱同学, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: android (1000)
+        NotificationChannel{mId='NETWORK_ALERTS', mName=网络提醒, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='DEVELOPER', mName=开发者消息, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='NETWORK_STATUS', mName=网络状态, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='PHYSICAL_KEYBOARD', mName=实体键盘, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='SYSTEM_CHANGES', mName=系统变更, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='HEAVY_WEIGHT_APP', mName=应用正在运行中, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION_EVENT content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='ACCOUNT', mName=帐号状态, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='DEVICE_ADMIN_ALERTS', mName=您的 IT 管理员发来的提醒, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='FOREGROUND_SERVICE', mName=消耗电量的应用, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='DO_NOT_DISTURB', mName=勿扰, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='USB', mName=USB 连接, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='VPN', mName=VPN 状态, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='UPDATES', mName=更新, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='RETAIL_MODE', mName=零售演示模式, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='CAR_MODE', mName=车载模式, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='SECURITY', mName=安全性, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='NETWORK_AVAILABLE', mName=有可用的网络, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='ALERTS', mName=提醒, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='VIRTUAL_KEYBOARD_MIUI', mName=虚拟键盘, mDescription=, mImportance=5, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.hybrid (10109)
+      AppSettings: com.miui.video (10078) importance=NONE
+        NotificationChannel{mId='mivideo_channel_common', mName=常规通知, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='mivideo_airplay', mName=投屏, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.mi.health (10194)
+        NotificationChannel{mId='com.mi.health', mName=com.mi.health, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='channel:background_service', mName=后台服务, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.contacts (10074) defaultAppLocked=true
+      AppSettings: com.android.camera (10061)
+      AppSettings: com.miui.player (10085)
+        NotificationChannel{mId='com.miui.player:download-notification', mName=下载管理, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.incallui (10082)
+        NotificationChannel{mId='phone_incall', mName=电话, mDescription=, mImportance=5, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='phone_incall_record', mName=录音, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.iflytek.inputmethod.miui (10187)
+        NotificationChannel{mId='iFlytekIme', mName=应用通知, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.server.telecom (1000)
+        NotificationChannel{mId='MiuiTelecomMissedCalls', mName=未接电话, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='TelecomIncomingCalls', mName=来电, mDescription=, mImportance=5, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='MiuiTelecomMissedCallsForDNDMode', mName=未接电话, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.cloudservice (10102)
+        NotificationChannel{mId='CloudServiceChannelId', mName=小米云服务, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.mms (10072)
+        NotificationChannel{mId='Mms_Default', mName=其他, mDescription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='Channel_Msg_Default1636096556154', mName=消息, mDescription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/sms_received_sound, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='Channel_Msg_Group', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannelGroup{mId='Channel_Msg_Group', mName=短信, mDescription=, mBlocked=false, mChannels=[], mUserLockedFields=0}
+      AppSettings: com.android.deskclock (10096)
+      AppSettings: com.android.calendar (10068)
+      AppSettings: com.miui.newmidrive (10181)
+      AppSettings: com.google.android.dialer (0)
+      AppSettings: cn.wps.moffice_eng.xiaomi.lite (10172)
+      AppSettings: com.android.mtp (10053)
+        NotificationChannel{mId='device_notification_channel', mName=未分类, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.core (10124) importance=NONE
+        NotificationChannel{mId='auto_install_progress_notification', mName=auto_install_progress, mDescription=hasDescription , mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='auto_install_notification', mName=auto_install, mDescription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=false, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.xiaomi.xmsf (10091)
+      AppSettings: com.android.printspooler (10115)
+        NotificationChannel{mId='PRINT_PROGRESS', mName=进行中的打印作业, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='PRINT_FAILURES', mName=失败的打印作业, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.bugreport (1000)
+        NotificationChannel{mId='bugreport_channel_id', mName=用户反馈, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.carrierdefaultapp (10111)
+        NotificationChannel{mId='mobile_data_status', mName=移动数据状态, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.traceur (10103)
+        NotificationChannel{mId='trace-is-being-recorded', mName=正在录制跟踪记录, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='system-tracing', mName=正在保存跟踪记录, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.miservice (10083)
+        NotificationChannel{mId='miservice_guide_channel_id', mName=服务与反馈, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.notification (1000)
+        NotificationChannel{mId='id_aggregate', mName=通知聚合入口, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='id_recovered', mName=恢复应用通知, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='id_notification_center', mName=通知管理, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.soundrecorder (10080)
+        NotificationChannel{mId='channel_id_record', mName=录音机, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='channel_id_record_recognition', mName=语音转写, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='channel_id_record_led4', mName=录音, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=true, mLightColor=-65536, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.mi.liveassistant (10171)
+      AppSettings: com.miui.userguide (10168)
+      AppSettings: com.android.providers.downloads.ui (10053)
+      AppSettings: com.mfashiongallery.emag (10186)
+      AppSettings: com.android.browser (10063)
+      AppSettings: com.android.fileexplorer (10128)
+      AppSettings: com.android.settings (1000)
+        NotificationChannel{mId='DangerousOptionsHintChannel', mName=高风险开发者选项, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=[0], mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=false, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.freeform (1000)
+        NotificationChannel{mId='small_window_channel_id', mName=small_window_channel_name, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.cloudservice.sysbase (1000)
+        NotificationChannel{mId='CloudServiceChannelId', mName=CloudServiceSysbase, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.micloudsync (10102)
+        NotificationChannel{mId='micloud_notification_channel_id', mName=micloud_notification_channel_name, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.xiaomi.market (10120)
+        NotificationChannel{mId='com.xiaomi.market_lowPriority', mName=其他, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='com.xiaomi.market', mName=消息, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='com.xiaomi.market_hide', mName=应用检查更新服务, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.personalassistant (10067)
+        NotificationChannel{mId='3_shopping', mName=我的购物, mDescription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='1_payment', mName=我的支出, mDescription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='2_favorite', mName=我的收藏, mDescription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='4_default', mName=其他通知, mDescription=hasDescription , mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='4_assist_sleep', mName=健康助眠, mDescription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.phone (1001)
+        NotificationChannel{mId='voiceMail', mName=语音邮件, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='voiceRoamingOn', mName=国家码设置, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='wifiCallWelcomeNotification', mName=wifiCallWelcomeNotification, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='mobileDataAlertNew', mName=移动数据状态, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='sim', mName=SIM 卡状态, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='sms', mName=短信, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='wfc', mName=WLAN 通话, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='alert', mName=提醒, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null, mBlockableSystem=true, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='ctVolteNoCallServcieWarning', mName=ctVolteNoCallServiceChannel, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='callForwardNew', mName=来电转接, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.miui.smarttravel (10176)
+      AppSettings: com.miui.systemAdSolution (10132)
+        NotificationChannel{mId='enhancementPushAd_false_false_false', mName=msa, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=null, mLights=false, mLightColor=0, mVibration=[0], mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='enhancementPushAd_true_true_true', mName=msa, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=true, mLightColor=-1, mVibration=[300, 300, 300, 300], mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.jinyuni.dengbei_care (10195)
+        NotificationChannel{mId='alarm_channel', mName=设备报警, mDescription=hasDescription , mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=[0, 500, 200, 500], mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='MqttServiceChannel', mName=MQTT Service Channel, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='daily_report_channel', mName=早起报告, mDescription=hasDescription , mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.providers.downloads (10053)
+        NotificationChannel{mId='active', mName=下载中, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='complete', mName=下载完成, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='waiting', mName=等待中, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='insufficient_space', mName=空间不足, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+      AppSettings: com.android.systemui (1000)
+        NotificationChannel{mId='BAT', mName=电池, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=true, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='DND', mName=勿扰, mDescription=, mImportance=5, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='DSK', mName=存储空间, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='GEN', mName=常规消息, mDescription=, mImportance=1, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='LOC', mName=位置, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='SCB', mName=屏蔽按键, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='SCN', mName=屏幕截图, mDescription=, mImportance=2, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=true, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='USB', mName=USB, mDescription=, mImportance=3, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='ALRT', mName=提醒, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=true, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+        NotificationChannel{mId='DSK_FLOAT', mName=外接存储, mDescription=, mImportance=4, mBypassDnd=false, mLockscreenVisibility=-1000, mSound=content://settings/system/notification_sound, mLights=false, mLightColor=0, mVibration=null, mUserLockedFields=0, mFgServiceShown=false, mVibrationEnabled=false, mShowBadge=true, mDeleted=false, mGroup='null', mAudioAttributes=AudioAttributes: usage=USAGE_NOTIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null, mBlockableSystem=false, mAllowBubbles=true, mImportanceLockedByOEM=false, mImportanceLockedDefaultApp=false}
+Restored without uid:
+
+  Notification listeners:
+    Allowed notification listeners:
+      com.xiaomi.xmsf/com.xiaomi.xmsf.push.service.notificationcollection.NotificationListener:com.miui.analytics/com.miui.analytics.internal.collection.MusicStateListener:com.miui.securitycenter/com.miui.gamebooster.service.NotificationListener (user: 0 isPrimary: true)
+(user 0):   All notification listeners (3) enabled for current profiles:
+      ComponentInfo{com.miui.securitycenter/com.miui.gamebooster.service.NotificationListener}
+      ComponentInfo{com.xiaomi.xmsf/com.xiaomi.xmsf.push.service.notificationcollection.NotificationListener}
+      ComponentInfo{com.miui.analytics/com.miui.analytics.internal.collection.MusicStateListener}
+    Live notification listeners (7):
+      ComponentInfo{android/com.android.server.VibratorService} (user -1): android.service.notification.NotificationListenerService$NotificationListenerWrapper@51d8509 SYSTEM
+      ComponentInfo{com.android.systemui/com.android.systemui.statusbar.phone.StatusBar} (user -1): android.service.notification.INotificationListener$Stub$Proxy@a375d13 SYSTEM
+      ComponentInfo{com.xiaomi.xmsf/com.xiaomi.xmsf.push.service.notificationcollection.NotificationListener} (user 10091): android.service.notification.INotificationListener$Stub$Proxy@5f40f94 SYSTEM
+      ComponentInfo{com.xiaomi.xmsf/com.xiaomi.xmsf.push.service.notificationcollection.NotificationListener} (user 0): android.service.notification.INotificationListener$Stub$Proxy@621ea3d
+      ComponentInfo{com.miui.securitycenter/com.miui.gamebooster.service.NotificationListener} (user -1): android.service.notification.INotificationListener$Stub$Proxy@2108a6c SYSTEM
+      ComponentInfo{com.miui.securitycenter/com.miui.gamebooster.service.NotificationListener} (user 0): android.service.notification.INotificationListener$Stub$Proxy@6c00835
+      ComponentInfo{com.miui.notification/com.miui.notification.NotificationListener} (user 0): android.service.notification.INotificationListener$Stub$Proxy@1463059 GUEST
+    Snoozed notification listeners (0):
+    mListenerHints: 0
+    mListenersDisablingEffects: ()
+
+  Notification assistant services:
+    Allowed notification assistants:
+      com.miui.notification/com.miui.notification.NotificationListener (user: 0 isPrimary: true)
+(user 0):   All notification assistants (1) enabled for current profiles:
+      ComponentInfo{com.miui.notification/com.miui.notification.NotificationListener}
+    Live notification assistants (1):
+      ComponentInfo{com.miui.notification/com.miui.notification.NotificationListener} (user 0): android.service.notification.INotificationListener$Stub$Proxy@1463059
+    Snoozed notification assistants (0):
+    Has user set:
+      userId=0 value=true
+
+  Zen Mode:
+    mInterruptionFilter=5
+    mZenMode=ZEN_MODE_MIUI_SILENT
+mConsolidatedPolicy=NotificationManager.Policy[priorityCategories=PRIORITY_CATEGORY_ALARMS,PRIORITY_CATEGORY_MEDIA,priorityCallSenders=PRIORITY_SENDERS_CONTACTS,priorityMessageSenders=PRIORITY_SENDERS_CONTACTS,suppressedVisualEffects=,areChannelsBypassingDnd=false]    mConfigs[u=0]=allow(alarms=true,media=true,system=false,calls=false,callsFrom=contacts,repeatCallers=false,messages=false,messagesFrom=contacts,events=false,reminders=true)
+ disallow(visualEffects=0)
+      manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]
+      automaticRules=ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]
+    mUser=0
+    mConfig=allow(alarms=true,media=true,system=false,calls=false,callsFrom=contacts,repeatCallers=false,messages=false,messagesFrom=contacts,events=false,reminders=true)
+ disallow(visualEffects=0)
+      manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]
+      automaticRules=ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]
+    mSuppressedEffects=0
+    mDefaultPhoneApp=ComponentInfo{com.android.contacts/com.android.contacts.activities.TwelveKeyDialer}
+    RepeatCallers.mThresholdMinutes=0
+    mSubscriptions={condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider}}
+
+  Zen Log:
+    11-24 07:00:00.030 config: conditionChanged,ZenModeConfig[user=0,allowAlarms=true,allowMedia=true,allowSystem=false,allowReminders=true,allowEvents=false,allowCalls=false,allowRepeatCallers=false,allowMessages=false,allowCallsFrom=contacts,allowMessagesFrom=contacts,suppressedVisualEffects=0,areChannelsBypassingDnd=false,
+automaticRules={ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]},
+manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]],Diff[automaticRule[fb2550dd71df48cab30e9111c153fee9].condition:Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2]->Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],
+automaticRule[fb2550dd71df48cab30e9111c153fee9].pkg:android->android]
+    11-24 07:00:00.034 set_zen_mode: unknown,conditionChanged
+    11-24 18:39:30.201 config: removeAutomaticZenRules,ZenModeConfig[user=0,allowAlarms=true,allowMedia=true,allowSystem=false,allowReminders=true,allowEvents=false,allowCalls=false,allowRepeatCallers=false,allowMessages=false,allowCallsFrom=contacts,allowMessagesFrom=contacts,suppressedVisualEffects=0,areChannelsBypassingDnd=false,
+automaticRules={ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]},
+manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]],Diff[automaticRule[fb2550dd71df48cab30e9111c153fee9].pkg:android->android]
+    11-24 18:39:30.224 set_zen_mode: unknown,removeAutomaticZenRules
+    11-24 18:39:32.591 config: removeAutomaticZenRules,ZenModeConfig[user=0,allowAlarms=true,allowMedia=true,allowSystem=false,allowReminders=true,allowEvents=false,allowCalls=false,allowRepeatCallers=false,allowMessages=false,allowCallsFrom=contacts,allowMessagesFrom=contacts,suppressedVisualEffects=0,areChannelsBypassingDnd=false,
+automaticRules={ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]},
+manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]],Diff[automaticRule[fb2550dd71df48cab30e9111c153fee9].pkg:android->android]
+    11-24 18:39:32.612 set_zen_mode: unknown,removeAutomaticZenRules
+    11-24 21:37:23.728 config: removeAutomaticZenRules,ZenModeConfig[user=0,allowAlarms=true,allowMedia=true,allowSystem=false,allowReminders=true,allowEvents=false,allowCalls=false,allowRepeatCallers=false,allowMessages=false,allowCallsFrom=contacts,allowMessagesFrom=contacts,suppressedVisualEffects=0,areChannelsBypassingDnd=false,
+automaticRules={ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]},
+manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]],Diff[automaticRule[fb2550dd71df48cab30e9111c153fee9].pkg:android->android]
+    11-24 21:37:23.734 set_zen_mode: unknown,removeAutomaticZenRules
+    11-24 23:00:00.016 config: conditionChanged,ZenModeConfig[user=0,allowAlarms=true,allowMedia=true,allowSystem=false,allowReminders=true,allowEvents=false,allowCalls=false,allowRepeatCallers=false,allowMessages=false,allowCallsFrom=contacts,allowMessagesFrom=contacts,suppressedVisualEffects=0,areChannelsBypassingDnd=false,
+automaticRules={ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]},
+manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]],Diff[automaticRule[fb2550dd71df48cab30e9111c153fee9].condition:Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2]->Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],
+automaticRule[fb2550dd71df48cab30e9111c153fee9].pkg:android->android]
+    11-24 23:00:00.019 set_zen_mode: unknown,conditionChanged
+    11-25 07:00:00.047 config: conditionChanged,ZenModeConfig[user=0,allowAlarms=true,allowMedia=true,allowSystem=false,allowReminders=true,allowEvents=false,allowCalls=false,allowRepeatCallers=false,allowMessages=false,allowCallsFrom=contacts,allowMessagesFrom=contacts,suppressedVisualEffects=0,areChannelsBypassingDnd=false,
+automaticRules={ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]},
+manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]],Diff[automaticRule[fb2550dd71df48cab30e9111c153fee9].condition:Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2]->Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],
+automaticRule[fb2550dd71df48cab30e9111c153fee9].pkg:android->android]
+    11-25 07:00:00.050 set_zen_mode: unknown,conditionChanged
+    11-25 23:00:00.024 config: conditionChanged,ZenModeConfig[user=0,allowAlarms=true,allowMedia=true,allowSystem=false,allowReminders=true,allowEvents=false,allowCalls=false,allowRepeatCallers=false,allowMessages=false,allowCallsFrom=contacts,allowMessagesFrom=contacts,suppressedVisualEffects=0,areChannelsBypassingDnd=false,
+automaticRules={ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]},
+manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]],Diff[automaticRule[fb2550dd71df48cab30e9111c153fee9].condition:Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2]->Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],
+automaticRule[fb2550dd71df48cab30e9111c153fee9].pkg:android->android]
+    11-25 23:00:00.028 set_zen_mode: unknown,conditionChanged
+    11-26 07:00:00.033 config: conditionChanged,ZenModeConfig[user=0,allowAlarms=true,allowMedia=true,allowSystem=false,allowReminders=true,allowEvents=false,allowCalls=false,allowRepeatCallers=false,allowMessages=false,allowCallsFrom=contacts,allowMessagesFrom=contacts,suppressedVisualEffects=0,areChannelsBypassingDnd=false,
+automaticRules={ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]},
+manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]],Diff[automaticRule[fb2550dd71df48cab30e9111c153fee9].condition:Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2]->Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],
+automaticRule[fb2550dd71df48cab30e9111c153fee9].pkg:android->android]
+    11-26 07:00:00.036 set_zen_mode: unknown,conditionChanged
+    11-26 13:31:46.565 config: removeAutomaticZenRules,ZenModeConfig[user=0,allowAlarms=true,allowMedia=true,allowSystem=false,allowReminders=true,allowEvents=false,allowCalls=false,allowRepeatCallers=false,allowMessages=false,allowCallsFrom=contacts,allowMessagesFrom=contacts,suppressedVisualEffects=0,areChannelsBypassingDnd=false,
+automaticRules={ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]},
+manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]],Diff[automaticRule[fb2550dd71df48cab30e9111c153fee9].pkg:android->android]
+    11-26 13:31:46.567 set_zen_mode: unknown,removeAutomaticZenRules
+    11-26 23:00:00.035 config: conditionChanged,ZenModeConfig[user=0,allowAlarms=true,allowMedia=true,allowSystem=false,allowReminders=true,allowEvents=false,allowCalls=false,allowRepeatCallers=false,allowMessages=false,allowCallsFrom=contacts,allowMessagesFrom=contacts,suppressedVisualEffects=0,areChannelsBypassingDnd=false,
+automaticRules={ZenRule[id=fb2550dd71df48cab30e9111c153fee9,enabled=FALSE,snoozing=false,name=定时规则1,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,condition=Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],pkg=android,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},configActivity=null,creationTime=1636096653633,enabler=null,zenPolicy=null,modified=false]},
+manualRule=ZenRule[id=null,enabled=FALSE,snoozing=false,name=null,zenMode=ZEN_MODE_MIUI_SILENT,conditionId=condition://com.android.systemui/forever,condition=null,pkg=null,component=null,configActivity=null,creationTime=0,enabler=null,zenPolicy=null,modified=false]],Diff[automaticRule[fb2550dd71df48cab30e9111c153fee9].condition:Condition[state=STATE_FALSE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2]->Condition[state=STATE_TRUE,id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,summary=...,line1=...,line2=...,icon=0,flags=2],
+automaticRule[fb2550dd71df48cab30e9111c153fee9].pkg:android->android]
+    11-26 23:00:00.039 set_zen_mode: unknown,conditionChanged
+
+  Condition providers:
+    Allowed condition providers:
+      com.android.camera2 (user: 0 isPrimary: true)
+      com.miui.securitycenter:com.miui.notification:com.xiaomi.xmsf:com.miui.analytics (user: 0 isPrimary: false)
+(user 0):   All condition providers (0) enabled for current profiles:
+    Live condition providers (3):
+      ComponentInfo{android/com.android.server.notification.CountdownConditionProvider} (user 0): android.service.notification.ConditionProviderService$Provider@18e8a8c SYSTEM
+      ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider} (user 0): android.service.notification.ConditionProviderService$Provider@c2fd5d5 SYSTEM
+      ComponentInfo{android/com.android.server.notification.EventConditionProvider} (user 0): android.service.notification.ConditionProviderService$Provider@b4321ea SYSTEM
+    Snoozed condition providers (0):
+    mRecords(1):
+      ConditionRecord[id=condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false,component=ComponentInfo{android/com.android.server.notification.ScheduleConditionProvider},subscribed=true]
+    mSystemConditionProviders: {schedule, event, countdown}
+    EventConditionProvider:
+      mConnected=true
+      mRegistered=false
+      mBootComplete=true
+      mNextAlarmTime=0
+      mSubscriptions=
+      mTrackers=
+        user=0
+          mCallback=null
+          mRegistered=false
+          u=0
+    ScheduleConditionProvider:
+      mConnected=true
+      mRegistered=true
+      mSubscriptions=
+        * condition://android/schedule?days=1.2.3.4.5.6.7&start=23.0&end=7.0&exitAtAlarm=false
+            ScheduleCalendar[mDays={1, 2, 3, 4, 5, 6, 7}, mSchedule=ScheduleInfo{days=[1, 2, 3, 4, 5, 6, 7], startHour=23, startMinute=0, endHour=7, endMinute=0, exitAtAlarm=false, nextAlarm=Thu Jan 01 08:00:00 GMT+08:00 1970 (0)}]
+      snoozed due to alarm: 
+      mNextAlarmTime=Fri Nov 27 07:00:00 GMT+08:00 2026 (1795734000000), in +7h1m25s779ms, now=Thu Nov 26 23:58:34 GMT+08:00 2026 (1795708714221)
+    CountdownConditionProvider:
+      mConnected=true
+      mTime=0
+
+  Group summaries:
+
+  Usage Stats:
+    AggregatedStats{
+      key='com.miui.voiceassist',
+      numEnqueuedByApp=2,
+      numPostedByApp=2,
+      numUpdatedByApp=0,
+      numRemovedByApp=1,
+      numPeopleCacheHit=89,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=0,
+      numSuspendedByAdmin=0,
+      numWithActions=0,
+      numPrivate=2,
+      numSecret=0,
+      numInterrupt=0,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=2
+      numOngoing=0
+      numAutoCancel=0
+      numWithLargeIcon=2
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=2
+      numWithText=0
+      numWithSubText=0
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numVibViolations=0
+      numQuotaViolations=0
+      note_imp_noisy_: [0, 0, 0, 0, 0, 0]
+      note_imp_quiet_: [0, 0, 0, 2, 0, 0]
+      note_importance_: [0, 0, 2, 0, 0, 0]
+    }
+    AggregatedStats{
+      key='com.miui.securitycenter',
+      numEnqueuedByApp=1,
+      numPostedByApp=1,
+      numUpdatedByApp=0,
+      numRemovedByApp=0,
+      numPeopleCacheHit=446,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=0,
+      numSuspendedByAdmin=0,
+      numWithActions=0,
+      numPrivate=1,
+      numSecret=0,
+      numInterrupt=0,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=0
+      numOngoing=0
+      numAutoCancel=1
+      numWithLargeIcon=0
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=0
+      numWithText=0
+      numWithSubText=0
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numVibViolations=0
+      numQuotaViolations=0
+      note_imp_noisy_: [0, 0, 0, 0, 1, 0]
+      note_imp_quiet_: [0, 0, 0, 0, 0, 0]
+      note_importance_: [0, 0, 0, 0, 0, 1]
+    }
+    AggregatedStats{
+      key='android',
+      numEnqueuedByApp=6,
+      numPostedByApp=2,
+      numUpdatedByApp=4,
+      numRemovedByApp=2,
+      numPeopleCacheHit=0,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=0,
+      numSuspendedByAdmin=0,
+      numWithActions=0,
+      numPrivate=6,
+      numSecret=0,
+      numInterrupt=0,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=0
+      numOngoing=6
+      numAutoCancel=0
+      numWithLargeIcon=0
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=6
+      numWithText=6
+      numWithSubText=0
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numVibViolations=0
+      numQuotaViolations=0
+      note_imp_noisy_: [0, 0, 0, 0, 0, 0]
+      note_imp_quiet_: [0, 0, 0, 6, 0, 0]
+      note_importance_: [0, 0, 0, 0, 0, 6]
+    }
+    AggregatedStats{
+      key='com.jinyuni.dengbei_care',
+      numEnqueuedByApp=5,
+      numPostedByApp=1,
+      numUpdatedByApp=3,
+      numRemovedByApp=0,
+      numPeopleCacheHit=76,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=0,
+      numSuspendedByAdmin=0,
+      numWithActions=0,
+      numPrivate=4,
+      numSecret=0,
+      numInterrupt=0,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=4
+      numOngoing=0
+      numAutoCancel=0
+      numWithLargeIcon=0
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=4
+      numWithText=4
+      numWithSubText=0
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numVibViolations=0
+      numQuotaViolations=0
+      note_imp_noisy_: [0, 0, 0, 4, 0, 0]
+      note_imp_quiet_: [0, 0, 0, 0, 0, 0]
+      note_importance_: [0, 0, 0, 4, 0, 0]
+    }
+    AggregatedStats{
+      key='com.xiaomi.market',
+      numEnqueuedByApp=47,
+      numPostedByApp=48,
+      numUpdatedByApp=0,
+      numRemovedByApp=43,
+      numPeopleCacheHit=390,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=0,
+      numSuspendedByAdmin=0,
+      numWithActions=8,
+      numPrivate=48,
+      numSecret=0,
+      numInterrupt=1,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=38
+      numOngoing=0
+      numAutoCancel=47
+      numWithLargeIcon=0
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=47
+      numWithText=9
+      numWithSubText=0
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numVibViolations=0
+      numQuotaViolations=0
+      note_imp_noisy_: [0, 38, 0, 1, 9, 0]
+      note_imp_quiet_: [0, 0, 0, 0, 0, 0]
+      note_importance_: [0, 0, 38, 0, 10, 0]
+    }
+    AggregatedStats{
+      key='__global',
+      numEnqueuedByApp=915,
+      numPostedByApp=318,
+      numUpdatedByApp=561,
+      numRemovedByApp=289,
+      numPeopleCacheHit=3087,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=1,
+      numSuspendedByAdmin=0,
+      numWithActions=43,
+      numPrivate=825,
+      numSecret=0,
+      numInterrupt=1,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=262
+      numOngoing=575
+      numAutoCancel=138
+      numWithLargeIcon=591
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=858
+      numWithText=688
+      numWithSubText=455
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numVibViolations=0
+      numQuotaViolations=0
+      note_imp_noisy_: [0, 2, 0, 4, 2, 0]
+      note_imp_quiet_: [0, 0, 0, 7, 0, 0]
+      note_importance_: [0, 0, 2, 5, 2, 6]
+    }
+    AggregatedStats{
+      key='com.miui.systemAdSolution',
+      numEnqueuedByApp=6,
+      numPostedByApp=1,
+      numUpdatedByApp=5,
+      numRemovedByApp=0,
+      numPeopleCacheHit=95,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=0,
+      numSuspendedByAdmin=0,
+      numWithActions=6,
+      numPrivate=6,
+      numSecret=0,
+      numInterrupt=0,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=0
+      numOngoing=0
+      numAutoCancel=6
+      numWithLargeIcon=6
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=6
+      numWithText=6
+      numWithSubText=0
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numVibViolations=0
+      numQuotaViolations=0
+      note_imp_noisy_: [0, 0, 0, 0, 6, 0]
+      note_imp_quiet_: [0, 0, 0, 0, 0, 0]
+      note_importance_: [0, 0, 0, 0, 6, 0]
+    }
+    AggregatedStats{
+      key='com.android.mms',
+      numEnqueuedByApp=4,
+      numPostedByApp=2,
+      numUpdatedByApp=2,
+      numRemovedByApp=2,
+      numPeopleCacheHit=4,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=0,
+      numSuspendedByAdmin=0,
+      numWithActions=0,
+      numPrivate=4,
+      numSecret=0,
+      numInterrupt=0,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=4
+      numOngoing=0
+      numAutoCancel=0
+      numWithLargeIcon=0
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=4
+      numWithText=4
+      numWithSubText=0
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numVibViolations=0
+      numQuotaViolations=0
+      note_imp_noisy_: [0, 0, 0, 0, 0, 0]
+      note_imp_quiet_: [0, 0, 0, 4, 0, 0]
+      note_importance_: [0, 0, 0, 0, 4, 0]
+    }
+    AggregatedStats{
+      key='com.miui.gallery',
+      numEnqueuedByApp=6,
+      numPostedByApp=6,
+      numUpdatedByApp=0,
+      numRemovedByApp=6,
+      numPeopleCacheHit=8,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=0,
+      numSuspendedByAdmin=0,
+      numWithActions=0,
+      numPrivate=6,
+      numSecret=0,
+      numInterrupt=0,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=6
+      numOngoing=0
+      numAutoCancel=0
+      numWithLargeIcon=0
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=6
+      numWithText=6
+      numWithSubText=0
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numVibViolations=0
+      numQuotaViolations=0
+      note_imp_noisy_: [0, 0, 0, 6, 0, 0]
+      note_imp_quiet_: [0, 0, 0, 0, 0, 0]
+      note_importance_: [0, 0, 6, 0, 0, 0]
+    }
+    AggregatedStats{
+      key='com.miui.notification',
+      numEnqueuedByApp=15,
+      numPostedByApp=10,
+      numUpdatedByApp=5,
+      numRemovedByApp=7,
+      numPeopleCacheHit=554,
+      numWithStaredPeople=0,
+      numWithValidPeople=0,
+      numPeopleCacheMiss=0,
+      numBlocked=0,
+      numSuspendedByAdmin=0,
+      numWithActions=0,
+      numPrivate=15,
+      numSecret=0,
+      numInterrupt=0,
+      numWithBigText=0,
+      numWithBigPicture=0
+      numForegroundService=2
+      numOngoing=1
+      numAutoCancel=0
+      numWithLargeIcon=0
+      numWithInbox=0
+      numWithMediaSession=0
+      numWithTitle=0
+      numWithText=0
+      numWithSubText=0
+      numWithInfoText=0
+      numRateViolations=0
+      numAlertViolations=0
+      numVibViolations=0
+      numQuotaViolations=0
+      note_imp_noisy_: [0, 0, 0, 2, 0, 0]
+      note_imp_quiet_: [0, 0, 0, 13, 0, 0]
+      note_importance_: [0, 0, 0, 15, 0, 0]
+    }
+    mStatsArrays.size(): 1
+    mStats.size(): 10
+    post_frequency{user_id=-1,pkg=android,day=0,count=9,muted=0/0,demoted=0}
+    post_frequency{user_id=-1,pkg=android,day=1,count=64,muted=25/25,demoted=25}
+    post_frequency{user_id=-1,pkg=android,day=2,count=16,muted=1/1,demoted=1}
+    post_frequency{user_id=-1,pkg=android,day=3,count=9,muted=0/0,demoted=0}
+    post_frequency{user_id=-1,pkg=android,day=5,count=178,muted=27/27,demoted=27}
+    post_frequency{user_id=-1,pkg=android,day=6,count=2,muted=1/1,demoted=1}
+    post_frequency{user_id=0,pkg=com.android.mms,day=0,count=4,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.jinyuni.dengbei_care,day=0,count=10,muted=10/10,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.gallery,day=0,count=7,muted=7/7,demoted=7}
+    post_frequency{user_id=0,pkg=com.miui.notification,day=0,count=4,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.systemAdSolution,day=0,count=6,muted=0/6,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.voiceassist,day=0,count=12,muted=0/0,demoted=12}
+    post_frequency{user_id=0,pkg=com.xiaomi.market,day=0,count=31,muted=26/31,demoted=0}
+    post_frequency{user_id=0,pkg=com.xiaomi.mi_connect_service,day=0,count=2,muted=2/2,demoted=0}
+    post_frequency{user_id=0,pkg=com.android.mms,day=1,count=2,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.jinyuni.dengbei_care,day=1,count=8,muted=8/8,demoted=0}
+    post_frequency{user_id=0,pkg=com.mi.health,day=1,count=2,muted=2/2,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.gallery,day=1,count=6,muted=6/6,demoted=6}
+    post_frequency{user_id=0,pkg=com.miui.notification,day=1,count=5,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.personalassistant,day=1,count=2,muted=2/2,demoted=2}
+    post_frequency{user_id=0,pkg=com.miui.systemAdSolution,day=1,count=9,muted=0/9,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.voiceassist,day=1,count=42,muted=0/0,demoted=42}
+    post_frequency{user_id=0,pkg=com.xiaomi.market,day=1,count=18,muted=13/18,demoted=0}
+    post_frequency{user_id=0,pkg=com.xiaomi.mi_connect_service,day=1,count=10,muted=10/10,demoted=0}
+    post_frequency{user_id=0,pkg=com.android.mms,day=2,count=2,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.android.providers.downloads,day=2,count=455,muted=455/455,demoted=455}
+    post_frequency{user_id=0,pkg=com.jinyuni.dengbei_care,day=2,count=7,muted=7/7,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.gallery,day=2,count=3,muted=3/3,demoted=3}
+    post_frequency{user_id=0,pkg=com.miui.notification,day=2,count=6,muted=2/2,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.personalassistant,day=2,count=4,muted=4/4,demoted=4}
+    post_frequency{user_id=0,pkg=com.miui.securitycenter,day=2,count=1,muted=0/1,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.systemAdSolution,day=2,count=5,muted=0/5,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.voiceassist,day=2,count=33,muted=0/0,demoted=33}
+    post_frequency{user_id=0,pkg=com.xiaomi.market,day=2,count=37,muted=26/37,demoted=0}
+    post_frequency{user_id=0,pkg=com.xiaomi.mi_connect_service,day=2,count=6,muted=6/6,demoted=0}
+    post_frequency{user_id=0,pkg=com.android.mms,day=3,count=2,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.jinyuni.dengbei_care,day=3,count=3,muted=3/3,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.cloudservice,day=3,count=1,muted=1/1,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.voiceassist,day=3,count=2,muted=0/0,demoted=2}
+    post_frequency{user_id=0,pkg=com.xiaomi.market,day=3,count=10,muted=5/10,demoted=0}
+    post_frequency{user_id=0,pkg=com.android.mms,day=4,count=2,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.notification,day=4,count=1,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.xiaomi.market,day=4,count=3,muted=3/3,demoted=0}
+    post_frequency{user_id=0,pkg=android,day=5,count=4,muted=0/4,demoted=0}
+    post_frequency{user_id=0,pkg=com.android.mms,day=5,count=10,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.android.providers.contacts,day=5,count=7,muted=0/0,demoted=7}
+    post_frequency{user_id=0,pkg=com.android.systemui,day=5,count=5,muted=5/5,demoted=5}
+    post_frequency{user_id=0,pkg=com.miui.bugreport,day=5,count=2,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.gallery,day=5,count=23,muted=23/23,demoted=23}
+    post_frequency{user_id=0,pkg=com.miui.notification,day=5,count=6,muted=6/6,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.personalassistant,day=5,count=4,muted=4/4,demoted=4}
+    post_frequency{user_id=0,pkg=com.miui.securitycenter,day=5,count=2,muted=0/2,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.voiceassist,day=5,count=149,muted=0/0,demoted=149}
+    post_frequency{user_id=0,pkg=com.xiaomi.finddevice,day=5,count=1,muted=0/1,demoted=0}
+    post_frequency{user_id=0,pkg=com.xiaomi.market,day=5,count=1,muted=1/1,demoted=0}
+    post_frequency{user_id=0,pkg=com.xiaomi.mi_connect_service,day=5,count=17,muted=17/17,demoted=0}
+    post_frequency{user_id=0,pkg=com.android.mms,day=6,count=10,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.android.providers.contacts,day=6,count=1,muted=0/0,demoted=1}
+    post_frequency{user_id=0,pkg=com.miui.cloudservice,day=6,count=1,muted=1/1,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.gallery,day=6,count=4,muted=4/4,demoted=4}
+    post_frequency{user_id=0,pkg=com.miui.notification,day=6,count=1,muted=0/0,demoted=0}
+    post_frequency{user_id=0,pkg=com.miui.voiceassist,day=6,count=10,muted=0/1,demoted=9}
+    post_frequency{user_id=0,pkg=com.xiaomi.market,day=6,count=3,muted=2/3,demoted=0}

@@ -1,0 +1,18 @@
+== date ==
+2026-11-26T15:40:48Z
+== location_mode ==
+3
+== bt_state ==
+1
+== permissions ==
+      runtime permissions:
+        android.permission.ACCESS_FINE_LOCATION: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.ACCESS_COARSE_LOCATION: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.READ_PHONE_STATE: granted=true, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+        android.permission.CAMERA: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+      enabledComponents:
+        androidx.work.impl.background.systemalarm.RescheduleReceiver
+        androidx.work.impl.background.systemjob.SystemJobService
+
+== db files ==
+total 0

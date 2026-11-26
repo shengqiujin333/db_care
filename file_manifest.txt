@@ -2487,6 +2487,72 @@ evidence/software_verify_release_item014.py | active | 由 software_tester 新�
 evidence/software_verify_report_wording_item013.py | active | Android ITEM-013 独立验证脚本（报告与条件上报文案）
 evidence/software_verify_timestamp_write_item007.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/software_verify_upload_payload_item008.py | active | Android ITEM-008 独立验证脚本（/upload_data 请求体构造）
+evidence/sw_alarm_chain_20261126/ | active | 软件验证 TestEvidence 目录（EV-SW-ALM-20261127）：Redmi 8A 真机安装 vC10/vN1.9、真实网关缓存→App、阈值报警、停止按钮/空白静音、守护门控、反复报警复现、本地库/通知/播放器原始证据
+evidence/sw_alarm_chain_20261126/01_dumpsys_package.txt | active | 安装包身份/versionCode/versionName/安装时间/签名/权限
+evidence/sw_alarm_chain_20261126/02_env_state.txt | active | 定位模式、蓝牙开关、运行时权限、数据库目录
+evidence/sw_alarm_chain_20261126/03_app_logcat.txt | active | 整窗连续原始 logcat（23:40–00:50，约 6.5 MB；BLE/数据库/动画/系统强制停止）
+evidence/sw_alarm_chain_20261126/04_prefs_after_register.txt | active | 绑定 6A002C00/t1 后的 SharedPreferences
+evidence/sw_alarm_chain_20261126/05_prefs_after_gateway.txt | active | 保存网关 84:C2:E4:03:02:02 后的 SharedPreferences
+evidence/sw_alarm_chain_20261126/06_logcat_apptags.txt | active | 首轮 App 标签日志（连接/超时/扫描/保存网关）
+evidence/sw_alarm_chain_20261126/07_logcat_apptags_2.txt | active | 首次 BLE 读取成功（GwID/id/H/T/DATA_OK）与守护初始状态日志
+evidence/sw_alarm_chain_20261126/10_baseline_dumpsys.txt | active | 启动守护前的 vibrator/audio/notification 基线
+evidence/sw_alarm_chain_20261126/11_logcat_after_guard_on.txt | active | 守护启动后首轮读取尝试日志
+evidence/sw_alarm_chain_20261126/12_logcat_alarm_window.txt | active | 首个报警窗口前的连接重试日志
+evidence/sw_alarm_chain_20261126/13_logcat_cycle2.txt | active | 第二读取周期的重试日志
+evidence/sw_alarm_chain_20261126/13b_logcat_cycle2b.txt | active | 第二周期成功读取与状态日志
+evidence/sw_alarm_chain_20261126/14_after_alarm_dumpsys.txt | active | A1（23:54:37）后 vibrator/audio/notification 原文
+evidence/sw_alarm_chain_20261126/15_before_stop_click.txt | active | 点「停止」前震动/播放器状态
+evidence/sw_alarm_chain_20261126/16_after_stop_click_5s.txt | active | 点「停止」后约 +9 s 状态（震动/播放器仍在，D1 证据）
+evidence/sw_alarm_chain_20261126/17_after_stop_click_34s.txt | active | 点「停止」后约 +34 s 状态（仍震动/播放，D1 证据）
+evidence/sw_alarm_chain_20261126/18_after_blank_tap.txt | active | 卡片下方空白点击后状态（未停止，D3 证据）
+evidence/sw_alarm_chain_20261126/19_after_toolbar_tap.txt | active | 标题栏空白点击后状态（未停止，D3 证据）
+evidence/sw_alarm_chain_20261126/20_after_tap120.txt | active | 内容顶部窄条点击后状态（停止，D3 对照）
+evidence/sw_alarm_chain_20261126/21_notification_now.txt | active | 报警后通知列表/归档（无 alarm_channel 记录）
+evidence/sw_alarm_chain_20261126/22_appops.txt | active | AppOps（POST_NOTIFICATION allow、VIBRATE 允许与最近时长）
+evidence/sw_alarm_chain_20261126/23_logcat_guard_off_window.txt | active | 守护关闭窗口的重试/失败日志
+evidence/sw_alarm_chain_20261126/24_logcat_forced_read_guardoff.txt | active | 守护关闭下强制读取失败日志
+evidence/sw_alarm_chain_20261126/25_logcat_cycle_guardoff2.txt | active | 守护关闭窗口后续周期日志
+evidence/sw_alarm_chain_20261126/26_cycle2_guardoff.txt | active | 守护关闭第 2 个读取周期状态（无震动）
+evidence/sw_alarm_chain_20261126/27_after_guard_restart.txt | active | 重启守护后的读取周期日志
+evidence/sw_alarm_chain_20261126/28_after_guard_restart_b.txt | active | 重启守护后周期失败与 prefs 状态
+evidence/sw_alarm_chain_20261126/29_forced_read_guardon.txt | active | 守护开启下强制读取成功日志（00:13:34 报警窗口）
+evidence/sw_alarm_chain_20261126/30_sideeffect_history.txt | active | 震动/通知/音频事件历史（含 A1/A2/A4/A5 起始时刻）
+evidence/sw_alarm_chain_20261126/31_notification_after_restart_alarm.txt | active | 进程重启后通知列表/归档与音频历史
+evidence/sw_alarm_chain_20261126/32_newproc_alarm_watch.txt | active | 新进程首个读取周期观察
+evidence/sw_alarm_chain_20261126/33_forced_read2.txt | active | 新进程强制读取成功日志（00:21:24，开关为 0 的无效前置）
+evidence/sw_alarm_chain_20261126/34_logcat_raw_tail.txt | active | 原始 logcat 尾部切片
+evidence/sw_alarm_chain_20261126/35_prefs_now.txt | active | 发现 zhendongalarm/xianglingalarm=0 时的 SharedPreferences
+evidence/sw_alarm_chain_20261126/36_prefs_mtime.txt | active | MyPrefs.xml 最后写入时间
+evidence/sw_alarm_chain_20261126/37_prefs_restored_switches.txt | active | 通过「设定」恢复四开关=1 后核对的 SharedPreferences
+evidence/sw_alarm_chain_20261126/38_after_restore_watch.txt | active | 恢复开关后读取周期观察
+evidence/sw_alarm_chain_20261126/39_alarm_poll.txt | active | 每 12 s 震动轮询：A4 00:28:54、A5 00:45:10（D2 直接证据）
+evidence/sw_alarm_chain_20261126/40_alarm_A4_state.txt | active | A4 时的播放器与通知状态（MediaPlayer started）
+evidence/sw_alarm_chain_20261126/41_after_silence_A4.txt | active | A4 顶部轻触静音后状态（守护保持开启）
+evidence/sw_alarm_chain_20261126/42_repeat_alarm_A5.txt | active | A5 读取日志、震动/播放器与开关状态
+evidence/sw_alarm_chain_20261126/44_prefs_after_kill2.txt | active | 第二次 SwipeUpClean 后的进程/prefs/报告键状态
+evidence/sw_alarm_chain_20261126/45_input_accessibility.txt | active | 无障碍服务与输入设备清单（仅真实触摸屏，用于 D4 归因边界）
+evidence/sw_alarm_chain_20261126/50_gradle_unit_tests.log | active | 宿主机单测首次运行（UP-TO-DATE）
+evidence/sw_alarm_chain_20261126/51_gradle_unit_tests_rerun.log | active | 宿主机单测 --rerun-tasks 实际执行（BUILD SUCCESSFUL）
+evidence/sw_alarm_chain_20261126/52_prefs_final.txt | active | 清理后最终 SharedPreferences（四开关=1、守护停止）
+evidence/sw_alarm_chain_20261126/53_notification_final.txt | active | 最终通知列表/归档/渠道/投递计数（muted 11/11）
+evidence/sw_alarm_chain_20261126/54_db_final_query.txt | active | 最终本地库查询（6 条 23.4/35.8 读数、8 条 threshold 事件）
+evidence/sw_alarm_chain_20261126/60_home_after_alarm.png | active | 首页报警卡片截图（t1/警告/23.4°C/36%/温湿度超限报警）
+evidence/sw_alarm_chain_20261126/61_home_final.png | active | 清理后首页截图
+evidence/sw_alarm_chain_20261126/62_ui_home_alarm_card.xml | active | 报警时首页 UI 树
+evidence/sw_alarm_chain_20261126/63_ui_home_relaunch.xml | active | 进程重启后首页 UI 树（守护恢复、未收到/--）
+evidence/sw_alarm_chain_20261126/db2.sqlite | active | A1 后本地库副本（1 条读数、2 条事件）
+evidence/sw_alarm_chain_20261126/db2.sqlite-journal | active | A1 后本地库回滚日志副本
+evidence/sw_alarm_chain_20261126/db3.sqlite | active | 守护关闭读取后本地库副本（读数未增、事件增加）
+evidence/sw_alarm_chain_20261126/db3.sqlite-journal | active | 守护关闭读取后回滚日志副本
+evidence/sw_alarm_chain_20261126/db4.sqlite | active | 00:21:24 后本地库副本（读数/事件增加）
+evidence/sw_alarm_chain_20261126/db4.sqlite-journal | active | 00:21:24 后回滚日志副本
+evidence/sw_alarm_chain_20261126/db_bwtemperature_database1-journal | active | 初始本地库回滚日志副本
+evidence/sw_alarm_chain_20261126/db_bwtemperature_database1.sqlite | active | 初始本地库副本（守护关闭，1 条 alarm_event）
+evidence/sw_alarm_chain_20261126/db_final.sqlite | active | 最终本地库副本
+evidence/sw_alarm_chain_20261126/db_final.sqlite-journal | active | 最终本地库回滚日志副本
+evidence/sw_alarm_chain_20261126/poll_alarm.py | active | 可复跑的只读震动轮询脚本（每 12 s dumpsys vibrator，记录报警起始时刻）
+evidence/sw_alarm_chain_20261126/query_db.py | active | 可复跑的只读本地库查询脚本（temperature/alarm_events 计数与明细）
+evidence/sw_alarm_chain_20261126/test_report.md | active | 本轮 TestEvidence 正文：TEST_FAIL（MEASURED_DEFECT），版本/时间线/D1-D6/用例矩阵/未执行项/证据索引/交接
 evidence/test.md | active | 嵌入式验证证据 EV-041（当前轮，置顶）：E2E-JOINT-P0 嵌入式段 TEST_PASS — 构建 axf b6a15fed…/hex 4d728dec… 与发布包逐字节一致、mdk_flash Verify OK、端口先开后下载复位取得有序上电五行与 uid=6A002C00、S k=0/k=3 q=1 r=0 s=0 无 P、首次下载驱动加载失败重试成功；手机/平台段 NOT EXECUTED。EV-040（历史）：当前发布候选 FW-REL-001 rev 3 独立实板复核 — 包 134791 B/md5 5df0c6d4… 三成员 CRC OK、产品源 82a7e74 零差异、重建 axf b6a15fed…/hex 4d728dec… 与包成员逐字节一致、mdk_flash Verify OK、两次端口先开后 pyocd HW reset 取上电五行、COM43 k=0/3/6/9 四连续机会 38/38 断言（q=1、V=0 D=0、p 链匹配、稳定节拍 179.66/179.59 s、无 G/P）；人工 SKIP_CONFIRMED 的 FW-LIGHT-DEF2-ENABLE 明示 NOT EXECUTED 且不作返工依据、E2E-04/真实升温光强/跨链路未执行、可选 L3 未解析；EV-039/EV-038/EV-037 及更早保留为历史
 evidence/triage.md | active | 嵌入式测试失败归因证据（EV-030 置顶，EV-029/EV-027/EV-025/EV-023/EV-021 原文保留）：EV-030 完整交付 TEST_FAIL 复核——同一镜像新增 2 周期 q=1、F-1 保持；剩余为上电段采集编排（串口/下载串行、pyocd 未登记授权）、光敏双态/标定、升温与跨链路刺激、功耗仪器；未见新固件功能缺陷（仅归因，不代表整体通过）
 file_manifest.txt | active | 本清单（planning_context_curator.project_file_inventory 维护，薄的项目相关性地图）

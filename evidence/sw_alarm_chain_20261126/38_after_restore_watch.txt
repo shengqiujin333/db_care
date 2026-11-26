@@ -1,0 +1,22 @@
+capture 2026-11-26T16:27:35Z
+11-27 00:25:38.077 32264 32297 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-27 00:25:38.083 32264 32297 I MqttService: Max attempts reached. Connection failed.
+11-27 00:25:38.083 32264 32297 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-27 00:25:45.830 32264 32297 D MqttService: Attempting to reconnect to broker
+11-27 00:25:45.845 32264 32297 I MqttService: Saved MAC address: 000000000000
+11-27 00:25:48.270 32264 32264 E MqttService: Failed to connect to broker
+11-27 00:25:48.270 32264 32264 E MqttService: 无权连接 (5)
+11-27 00:25:48.270 32264 32264 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-27 00:25:48.270 32264 32264 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-27 00:25:48.270 32264 32264 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-27 00:25:48.270 32264 32264 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-27 00:27:26.305 32264 32264 D MqttService: onResume called
+== vibrator ==
+Vibrator Service:
+  mCurrentVibration=null
+  mCurrentExternalVibration=null
+== audio ==
+  ID:31 -- type:android.media.SoundPool -- u/pid:10081/2211 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:39 -- type:android.media.SoundPool -- u/pid:10133/3039 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+
+  ducked players piids:

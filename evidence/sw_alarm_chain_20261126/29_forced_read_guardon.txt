@@ -1,0 +1,32 @@
+capture_at 2026-11-26T16:15:11Z
+11-27 00:13:31.800 29700 29760 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-27 00:13:31.800 29700 29760 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-27 00:13:32.113 29700 29734 I MqttService: Connected to device, discovering services...
+11-27 00:13:33.511 29700 29734 I MqttService: MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-27 00:13:34.336 29700 29734 I MqttService: cipher length = 160
+11-27 00:13:34.352 29700 29734 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-27 00:13:34.353 29700 29734 I MqttService:  id=6A002C00, H=35.8%, T=23.4°C
+11-27 00:13:34.477 29700 29734 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 00:13）
+11-27 00:13:34.477 29700 29734 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-27 00:13:34.480 29700 29734 I MqttService: MQTT offline: keep latest BLE batch (bounded=1)
+11-27 00:13:34.482 29700 29734 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-27 00:13:34.630 29700 29734 I MqttService: Chunk written OK, left=0
+11-27 00:13:34.636 29700 29760 I MqttService: Successfully connected and read data on attempt 1
+11-27 00:14:06.378 29700 29700 D MqttService: onResume called
+11-27 00:14:07.191 29700 29700 D MqttService: onPause called
+11-27 00:14:17.846 32264 32264 D MqttService: onResume called
+11-27 00:14:18.230 32264 32264 I MqttService: delayalarm=10.0
+11-27 00:14:20.456 32264 32264 D MqttService: onPause called
+11-27 00:14:22.246 32264 32264 D MqttService: onResume called
+11-27 00:14:22.973 32264 32264 D MqttService: onPause called
+== vibrator ==
+Vibrator Service:
+  mCurrentVibration=null
+  mCurrentExternalVibration=null
+== audio ==
+  players:
+  ID:15 -- type:android.media.SoundPool -- u/pid:1000/1580 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:31 -- type:android.media.SoundPool -- u/pid:10081/2211 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:39 -- type:android.media.SoundPool -- u/pid:10133/3039 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+
+  ducked players piids:

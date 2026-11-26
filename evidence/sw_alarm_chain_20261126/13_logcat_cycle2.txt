@@ -1,0 +1,221 @@
+--------- beginning of main
+11-26 23:40:55.100 29700 29700 D MqttService: onPause called
+--------- beginning of system
+11-26 23:42:46.679 29700 29759 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-26 23:42:46.680 29700 29759 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 23:42:46.681 29700 29759 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-26 23:42:47.264 29700 29734 I MqttService: Connect error status=133
+11-26 23:42:47.274 29700 29759 I MqttService: Retrying connection after delay...
+11-26 23:42:49.276 29700 29759 I MqttService: Attempt 2 to connect to Bluetooth device...
+11-26 23:42:49.748 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:43:05.292 29700 29759 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:43:05.292 29700 29759 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:43:05.292 29700 29759 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:43:05.292 29700 29759 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:43:05.292 29700 29759 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:43:05.292 29700 29759 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:43:05.292 29700 29759 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:43:05.292 29700 29759 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:43:05.298 29700 29759 I MqttService: Retrying connection after delay...
+11-26 23:43:07.300 29700 29759 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-26 23:43:07.835 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:43:23.312 29700 29759 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:43:23.312 29700 29759 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:43:23.312 29700 29759 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:43:23.312 29700 29759 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:43:23.312 29700 29759 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:43:23.312 29700 29759 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:43:23.312 29700 29759 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:43:23.312 29700 29759 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:43:23.319 29700 29759 I MqttService: Retrying connection after delay...
+11-26 23:43:25.321 29700 29759 I MqttService: Attempt 4 to connect to Bluetooth device...
+11-26 23:43:25.725 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:43:41.334 29700 29759 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:43:41.334 29700 29759 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:43:41.334 29700 29759 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:43:41.334 29700 29759 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:43:41.334 29700 29759 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:43:41.334 29700 29759 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:43:41.334 29700 29759 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:43:41.334 29700 29759 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:43:41.339 29700 29759 I MqttService: Retrying connection after delay...
+11-26 23:43:43.342 29700 29759 I MqttService: Attempt 5 to connect to Bluetooth device...
+11-26 23:43:43.721 29700 29732 I MqttService: Connected to device, discovering services...
+11-26 23:43:59.352 29700 29759 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:43:59.352 29700 29759 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:43:59.352 29700 29759 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:43:59.352 29700 29759 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:43:59.352 29700 29759 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:43:59.352 29700 29759 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:43:59.352 29700 29759 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:43:59.352 29700 29759 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:43:59.358 29700 29759 I MqttService: Max attempts reached. Connection failed.
+11-26 23:43:59.358 29700 29759 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 23:44:46.812 29700 29759 D MqttService: Attempting to reconnect to broker
+11-26 23:44:46.845 29700 29759 I MqttService: Saved MAC address: 000000000000
+11-26 23:44:48.196 29700 29700 E MqttService: Failed to connect to broker
+11-26 23:44:48.196 29700 29700 E MqttService: 无权连接 (5)
+11-26 23:44:48.196 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-26 23:44:48.196 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-26 23:44:48.196 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-26 23:44:48.196 29700 29700 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:45:29.005 29700 30765 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-26 23:45:29.005 29700 30765 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 23:45:29.005 29700 30765 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-26 23:45:29.847 29700 29734 I MqttService: Connect error status=133
+11-26 23:45:29.856 29700 30765 I MqttService: Retrying connection after delay...
+11-26 23:45:31.859 29700 30765 I MqttService: Attempt 2 to connect to Bluetooth device...
+11-26 23:45:32.769 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:45:47.873 29700 30765 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:45:47.873 29700 30765 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:45:47.873 29700 30765 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:45:47.873 29700 30765 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:45:47.873 29700 30765 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:45:47.873 29700 30765 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:45:47.873 29700 30765 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:45:47.873 29700 30765 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:45:47.879 29700 30765 I MqttService: Retrying connection after delay...
+11-26 23:45:49.882 29700 30765 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-26 23:45:50.564 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:46:05.893 29700 30765 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:46:05.893 29700 30765 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:46:05.893 29700 30765 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:46:05.893 29700 30765 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:46:05.893 29700 30765 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:46:05.893 29700 30765 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:46:05.893 29700 30765 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:46:05.893 29700 30765 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:46:05.897 29700 30765 I MqttService: Retrying connection after delay...
+11-26 23:46:07.899 29700 30765 I MqttService: Attempt 4 to connect to Bluetooth device...
+11-26 23:46:08.502 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:46:23.911 29700 30765 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:46:23.911 29700 30765 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:46:23.911 29700 30765 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:46:23.911 29700 30765 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:46:23.911 29700 30765 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:46:23.911 29700 30765 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:46:23.911 29700 30765 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:46:23.911 29700 30765 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:46:23.916 29700 30765 I MqttService: Retrying connection after delay...
+11-26 23:46:25.918 29700 30765 I MqttService: Attempt 5 to connect to Bluetooth device...
+11-26 23:46:26.346 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:46:27.697 29700 29734 I MqttService: MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-26 23:46:28.282 29700 29734 I MqttService: cipher length = 160
+11-26 23:46:28.309 29700 29734 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-26 23:46:28.315 29700 29734 I MqttService:  id=6A002C00, H=35.8%, T=23.4°C
+11-26 23:46:28.382 29700 29734 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 23:46）
+11-26 23:46:28.382 29700 29734 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 23:46:28.384 29700 29734 I MqttService: MQTT offline: keep latest BLE batch (bounded=1)
+11-26 23:46:28.387 29700 29734 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-26 23:46:28.576 29700 29734 I MqttService: Chunk written OK, left=0
+11-26 23:46:28.580 29700 30765 I MqttService: Successfully connected and read data on attempt 5
+11-26 23:47:40.189 29700 29700 D MqttService: onResume called
+11-26 23:49:28.600 29700 29760 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-26 23:49:28.601 29700 29760 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 23:49:28.601 29700 29760 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-26 23:49:29.449 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:49:44.613 29700 29760 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:49:44.613 29700 29760 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:49:44.613 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:49:44.613 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:49:44.613 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:49:44.613 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:49:44.613 29700 29760 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:49:44.613 29700 29760 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:49:44.618 29700 29760 I MqttService: Retrying connection after delay...
+11-26 23:49:46.621 29700 29760 I MqttService: Attempt 2 to connect to Bluetooth device...
+11-26 23:49:46.872 29700 29760 D MqttService: Attempting to reconnect to broker
+11-26 23:49:46.896 29700 29760 I MqttService: Saved MAC address: 000000000000
+11-26 23:49:47.053 29700 29734 I MqttService: Connect error status=133
+11-26 23:49:47.061 29700 29760 I MqttService: Retrying connection after delay...
+11-26 23:49:48.812 29700 29700 E MqttService: Failed to connect to broker
+11-26 23:49:48.812 29700 29700 E MqttService: 无权连接 (5)
+11-26 23:49:48.812 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-26 23:49:48.812 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-26 23:49:48.812 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-26 23:49:48.812 29700 29700 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:49:49.064 29700 29760 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-26 23:49:49.685 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:50:05.075 29700 29760 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:50:05.075 29700 29760 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:50:05.075 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:50:05.075 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:50:05.075 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:50:05.075 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:50:05.075 29700 29760 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:50:05.075 29700 29760 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:50:05.079 29700 29760 I MqttService: Retrying connection after delay...
+11-26 23:50:07.082 29700 29760 I MqttService: Attempt 4 to connect to Bluetooth device...
+11-26 23:50:07.624 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:50:23.094 29700 29760 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:50:23.094 29700 29760 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:50:23.094 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:50:23.094 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:50:23.094 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:50:23.094 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:50:23.094 29700 29760 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:50:23.094 29700 29760 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:50:23.100 29700 29760 I MqttService: Retrying connection after delay...
+11-26 23:50:25.103 29700 29760 I MqttService: Attempt 5 to connect to Bluetooth device...
+11-26 23:50:25.464 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:50:28.993 29700 29760 D MqttService: Attempting to reconnect to broker
+11-26 23:50:29.017 29700 29760 I MqttService: Saved MAC address: 000000000000
+11-26 23:50:31.194 29700 29700 E MqttService: Failed to connect to broker
+11-26 23:50:31.194 29700 29700 E MqttService: 无权连接 (5)
+11-26 23:50:31.194 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-26 23:50:31.194 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-26 23:50:31.194 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-26 23:50:31.194 29700 29700 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:50:41.113 29700 29760 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:50:41.113 29700 29760 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:50:41.113 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:50:41.113 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:50:41.113 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:50:41.113 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:50:41.113 29700 29760 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:50:41.113 29700 29760 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:50:41.117 29700 29760 I MqttService: Max attempts reached. Connection failed.
+11-26 23:50:41.118 29700 29760 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 23:53:04.345 29700 29760 D MqttService: Attempting to reconnect to broker
+11-26 23:53:04.354 29700 29760 I MqttService: Saved MAC address: 000000000000
+11-26 23:53:05.423 29700 29700 E MqttService: Failed to connect to broker
+11-26 23:53:05.423 29700 29700 E MqttService: 无权连接 (5)
+11-26 23:53:05.423 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-26 23:53:05.423 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-26 23:53:05.423 29700 29700 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-26 23:53:05.423 29700 29700 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:53:41.134 29700 29760 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=000000000000 (平台身份)
+11-26 23:53:41.134 29700 29760 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 23:53:41.134 29700 29760 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-26 23:53:41.877 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:53:57.142 29700 29760 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:53:57.142 29700 29760 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:53:57.142 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:53:57.142 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:53:57.142 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:53:57.142 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:53:57.142 29700 29760 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:53:57.142 29700 29760 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:53:57.147 29700 29760 I MqttService: Retrying connection after delay...
+11-26 23:53:59.151 29700 29760 I MqttService: Attempt 2 to connect to Bluetooth device...
+11-26 23:53:59.526 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:54:15.163 29700 29760 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:54:15.163 29700 29760 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:54:15.163 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:54:15.163 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:54:15.163 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:54:15.163 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:54:15.163 29700 29760 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:54:15.163 29700 29760 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:54:15.168 29700 29760 I MqttService: Retrying connection after delay...
+11-26 23:54:17.172 29700 29760 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-26 23:54:18.004 29700 29734 I MqttService: Connected to device, discovering services...
+11-26 23:54:33.182 29700 29760 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 23:54:33.182 29700 29760 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 23:54:33.182 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 23:54:33.182 29700 29760 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 23:54:33.182 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 23:54:33.182 29700 29760 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 23:54:33.182 29700 29760 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 23:54:33.182 29700 29760 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 23:54:33.189 29700 29760 I MqttService: Retrying connection after delay...

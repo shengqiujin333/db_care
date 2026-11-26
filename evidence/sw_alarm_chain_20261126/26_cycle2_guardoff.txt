@@ -1,0 +1,17 @@
+capture_at 2026-11-26T16:07:05Z
+11-27 00:06:44.231 29700 30767 I MqttService: Retrying connection after delay...
+11-27 00:06:46.233 29700 30767 I MqttService: Attempt 2 to connect to Bluetooth device...
+11-27 00:06:46.858 29700 29734 I MqttService: Connected to device, discovering services...
+11-27 00:07:02.243 29700 30767 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-27 00:07:02.243 29700 30767 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-27 00:07:02.243 29700 30767 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-27 00:07:02.243 29700 30767 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-27 00:07:02.243 29700 30767 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-27 00:07:02.243 29700 30767 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-27 00:07:02.243 29700 30767 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-27 00:07:02.243 29700 30767 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-27 00:07:02.250 29700 30767 I MqttService: Retrying connection after delay...
+== vibrator ==
+Vibrator Service:
+  mCurrentVibration=null
+  mCurrentExternalVibration=null

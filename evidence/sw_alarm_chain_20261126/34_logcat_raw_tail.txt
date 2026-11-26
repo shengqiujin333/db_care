@@ -1,0 +1,400 @@
+11-27 00:21:59.977   783  1848 D         : .
+11-27 00:21:59.977   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:00.003  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-27 00:22:00.978   783  1848 D         : readbrightness,out1:6
+11-27 00:22:00.978   783  1848 D         : .
+11-27 00:22:00.978   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:01.635  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:01.978   783  1848 D         : readbrightness,out1:6
+11-27 00:22:01.978   783  1848 D         : .
+11-27 00:22:01.979   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:02.894     0     0 W swapper/5: type=1400 audit(0.0:53098): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-27 00:22:02.979   783  1848 D         : readbrightness,out1:6
+11-27 00:22:02.979   783  1848 D         : .
+11-27 00:22:02.979   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:03.980   783  1848 D         : readbrightness,out1:6
+11-27 00:22:03.980   783  1848 D         : .
+11-27 00:22:03.980   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:04.639  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:04.981   783  1848 D         : readbrightness,out1:6
+11-27 00:22:04.981   783  1848 D         : .
+11-27 00:22:04.981   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:05.982   783  1848 D         : readbrightness,out1:6
+11-27 00:22:05.982   783  1848 D         : .
+11-27 00:22:05.982   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:06.985   783  1848 D         : readbrightness,out1:6
+11-27 00:22:06.985   783  1848 D         : .
+11-27 00:22:06.985   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:07.645  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:07.986   783  1848 D         : readbrightness,out1:6
+11-27 00:22:07.986   783  1848 D         : .
+11-27 00:22:07.986   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:08.988   783  1848 D         : readbrightness,out1:6
+11-27 00:22:08.988   783  1848 D         : .
+11-27 00:22:08.988   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:09.990   783  1848 D         : readbrightness,out1:6
+11-27 00:22:09.990   783  1848 D         : .
+11-27 00:22:09.990   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:10.651  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:10.991   783  1848 D         : readbrightness,out1:6
+11-27 00:22:10.991   783  1848 D         : .
+11-27 00:22:10.991   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:11.993   783  1848 D         : readbrightness,out1:6
+11-27 00:22:11.993   783  1848 D         : .
+11-27 00:22:11.993   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:12.006  2482  2620 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-27 00:22:12.006  2482  2620 D MiuiFastConnectService: stopBleScan: scanning: true
+11-27 00:22:12.008  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-27 00:22:12.008  1882  3108 D BtGatt.GattService: stopScan() - queue size =1
+11-27 00:22:12.010  1882  2332 I BtGatt.ScanManager: msg.what = 1
+11-27 00:22:12.011  1882  3108 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-27 00:22:12.011  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-27 00:22:12.011  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-27 00:22:12.011  1882  2332 D BtGatt.ScanManager: stop scan
+11-27 00:22:12.014  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-27 00:22:12.014  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.017  2482  2620 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-27 00:22:12.020  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-27 00:22:12.022  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-27 00:22:12.022  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.023  1882  3108 D BtGatt.GattService: registerScanner() - UUID=6970fb4a-42f2-4fe2-9237-0936b8a1d963
+11-27 00:22:12.024  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-27 00:22:12.024  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-27 00:22:12.024  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.024  1882  2353 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register fb15aa7b-0a14-26b6-2490-ed41495b19f0
+11-27 00:22:12.024  1882  2353 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-27 00:22:12.024  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-27 00:22:12.024  1882  2034 D BtGatt.GattService: onScannerRegistered() - UUID=6970fb4a-42f2-4fe2-9237-0936b8a1d963, scannerId=5, status=0
+11-27 00:22:12.025  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-27 00:22:12.025  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-27 00:22:12.025  2482 29863 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-27 00:22:12.027  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-27 00:22:12.027  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.027  1882  3108 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-27 00:22:12.029  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-27 00:22:12.029  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.029  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-27 00:22:12.030  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-27 00:22:12.030  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-27 00:22:12.030  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-27 00:22:12.033  1882  3108 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@2fdb9f5
+11-27 00:22:12.036  1882  3108 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-27 00:22:12.037  1882  3108 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-27 00:22:12.040  1882  2332 I BtGatt.ScanManager: msg.what = 0
+11-27 00:22:12.041  1882  2332 D BtGatt.ScanManager: handling starting scan
+11-27 00:22:12.044  1882  2332 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-27 00:22:12.048  1882  2034 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-27 00:22:12.048  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.048  1882  2332 D BtGatt.ScanManager: Available Filter size: 13
+11-27 00:22:12.049  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-27 00:22:12.049  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.049  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-27 00:22:12.053  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-27 00:22:12.053  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.054  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-27 00:22:12.054  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.054  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-27 00:22:12.057  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-27 00:22:12.057  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.058  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-27 00:22:12.058  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.059  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-27 00:22:12.062  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-27 00:22:12.062  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.063  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-27 00:22:12.063  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.063  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-27 00:22:12.066  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-27 00:22:12.066  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.067  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-27 00:22:12.067  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.067  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-27 00:22:12.070  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-27 00:22:12.070  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-27 00:22:12.070  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-27 00:22:12.070  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-27 00:22:12.076  1882  2332 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-27 00:22:12.077  1882  2034 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-27 00:22:12.894     0     0 W swapper/4: type=1400 audit(0.0:53099): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-27 00:22:12.994   783  1848 D         : readbrightness,out1:6
+11-27 00:22:12.994   783  1848 D         : .
+11-27 00:22:12.994   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:13.595  2194  2194 D QtiCarrierConfigHelper: WARNING, no carrier configs on phone Id: 0
+11-27 00:22:13.597  3355  3355 I BatteryInfoReceiver: ACTION_BATTERY_CHANGED
+11-27 00:22:13.598  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-27 00:22:13.599  3039 32597 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 7078754
+11-27 00:22:13.605 30961 30998 D PowerCheckerService: onBatteryChanged, mBatteryLevel = 100, status = 5, level = 100, plug = 2, scale = 100
+11-27 00:22:13.655  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:13.995   783  1848 D         : readbrightness,out1:6
+11-27 00:22:13.995   783  1848 D         : .
+11-27 00:22:13.995   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:14.995   783  1848 D         : readbrightness,out1:6
+11-27 00:22:14.995   783  1848 D         : .
+11-27 00:22:14.995   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:15.996   783  1848 D         : readbrightness,out1:6
+11-27 00:22:15.996   783  1848 D         : .
+11-27 00:22:15.996   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:16.659  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:16.997   783  1848 D         : readbrightness,out1:6
+11-27 00:22:16.997   783  1848 D         : .
+11-27 00:22:16.997   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:17.997   783  1848 D         : readbrightness,out1:6
+11-27 00:22:17.997   783  1848 D         : .
+11-27 00:22:17.997   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:18.998   783  1848 D         : readbrightness,out1:6
+11-27 00:22:18.998   783  1848 D         : .
+11-27 00:22:18.998   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:19.665  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:19.999   783  1848 D         : readbrightness,out1:6
+11-27 00:22:19.999   783  1848 D         : .
+11-27 00:22:19.999   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:21.000   783  1848 D         : readbrightness,out1:6
+11-27 00:22:21.000   783  1848 D         : .
+11-27 00:22:21.000   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:22.000   783  1848 D         : readbrightness,out1:6
+11-27 00:22:22.000   783  1848 D         : .
+11-27 00:22:22.001   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:22.670  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:22.904     0     0 W swapper/5: type=1400 audit(0.0:53100): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-27 00:22:23.001   783  1848 D         : readbrightness,out1:6
+11-27 00:22:23.001   783  1848 D         : .
+11-27 00:22:23.001   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:24.002   783  1848 D         : readbrightness,out1:6
+11-27 00:22:24.002   783  1848 D         : .
+11-27 00:22:24.002   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:24.950  1580  1605 I system_server: Background young concurrent copying GC freed 439846(18MB) AllocSpace objects, 32(832KB) LOS objects, 38% free, 29MB/47MB, paused 372us total 111.668ms
+11-27 00:22:24.976  1580  1607 W System  : A resource failed to call release. 
+11-27 00:22:24.985 26348 26359 D APM::AudioPolicyEngine: XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-27 00:22:24.985 26348 26359 D APM::AudioPolicyEngine: XXX -4: getDeviceForStrategyInt() STRATEGY_SONIFICATION_RESPECTFUL :Use STRATEGY_SONIFICATION to getDevice
+11-27 00:22:25.002   783  1848 D         : readbrightness,out1:6
+11-27 00:22:25.002   783  1848 D         : .
+11-27 00:22:25.002   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:25.674  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:26.004   783  1848 D         : readbrightness,out1:6
+11-27 00:22:26.004   783  1848 D         : .
+11-27 00:22:26.004   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:27.004   783  1848 D         : readbrightness,out1:6
+11-27 00:22:27.004   783  1848 D         : .
+11-27 00:22:27.004   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:28.006   783  1848 D         : readbrightness,out1:6
+11-27 00:22:28.006   783  1848 D         : .
+11-27 00:22:28.006   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:28.679  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:29.008   783  1848 D         : readbrightness,out1:6
+11-27 00:22:29.008   783  1848 D         : .
+11-27 00:22:29.008   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:29.457  3970  3970 I VoiceTrigger:AudioMode: voice trigger timer task 60*1000ms :61951
+11-27 00:22:29.458  3970  3970 I VoiceTrigger:AudioMode: voice trigger running:1795710149458
+11-27 00:22:30.010   783  1848 D         : readbrightness,out1:6
+11-27 00:22:30.010   783  1848 D         : .
+11-27 00:22:30.010   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:31.010   783  1848 D         : readbrightness,out1:6
+11-27 00:22:31.010   783  1848 D         : .
+11-27 00:22:31.010   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:31.683  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:32.012   783  1848 D         : readbrightness,out1:6
+11-27 00:22:32.012   783  1848 D         : .
+11-27 00:22:32.012   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:32.894     0     0 W swapper/4: type=1400 audit(0.0:53101): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-27 00:22:33.012   783  1848 D         : readbrightness,out1:6
+11-27 00:22:33.012   783  1848 D         : .
+11-27 00:22:33.013   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:33.024  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-27 00:22:33.026  2194  2194 D QtiCarrierConfigHelper: WARNING, no carrier configs on phone Id: 0
+11-27 00:22:33.028  3355  3355 I BatteryInfoReceiver: ACTION_BATTERY_CHANGED
+11-27 00:22:33.035 30961 30998 D PowerCheckerService: onBatteryChanged, mBatteryLevel = 100, status = 5, level = 100, plug = 2, scale = 100
+11-27 00:22:33.035  3039 32612 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 7098190
+11-27 00:22:34.013   783  1848 D         : readbrightness,out1:6
+11-27 00:22:34.013   783  1848 D         : .
+11-27 00:22:34.013   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:34.687  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:35.013   783  1848 D         : readbrightness,out1:6
+11-27 00:22:35.013   783  1848 D         : .
+11-27 00:22:35.014   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:36.015   783  1848 D         : readbrightness,out1:6
+11-27 00:22:36.015   783  1848 D         : .
+11-27 00:22:36.015   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:37.016   783  1848 D         : readbrightness,out1:6
+11-27 00:22:37.016   783  1848 D         : .
+11-27 00:22:37.016   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:37.692  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:38.017   783  1848 D         : readbrightness,out1:6
+11-27 00:22:38.017   783  1848 D         : .
+11-27 00:22:38.017   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:39.017   783  1848 D         : readbrightness,out1:6
+11-27 00:22:39.017   783  1848 D         : .
+11-27 00:22:39.017   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:40.018   783  1848 D         : readbrightness,out1:6
+11-27 00:22:40.018   783  1848 D         : .
+11-27 00:22:40.018   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:40.438  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-27 00:22:40.561  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-27 00:22:40.697  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:40.932 32624 32624 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-27 00:22:40.937 32624 32624 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_apex_image"
+11-27 00:22:40.937 32624 32624 I AndroidRuntime: Using default boot image
+11-27 00:22:40.937 32624 32624 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.disable_lock_profiling"
+11-27 00:22:40.924 32624 32624 W app_process: type=1400 audit(0.0:53102): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-27 00:22:40.937 32624 32624 I AndroidRuntime: Leaving lock profiling enabled
+11-27 00:22:40.938 32624 32624 E libc    : Access denied finding property "persist.device_config.runtime_native_boot.enable_generational_cc"
+11-27 00:22:40.924 32624 32624 W app_process: type=1400 audit(0.0:53103): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-27 00:22:40.924 32624 32624 W app_process: type=1400 audit(0.0:53104): avc: denied { read } for name="u:object_r:device_config_runtime_native_boot_prop:s0" dev="tmpfs" ino=11094 scontext=u:r:shell:s0 tcontext=u:object_r:device_config_runtime_native_boot_prop:s0 tclass=file permissive=0
+11-27 00:22:40.944 32624 32624 W app_process: Could not reserve sentinel fault page
+11-27 00:22:41.019   783  1848 D         : readbrightness,out1:6
+11-27 00:22:41.019   783  1848 D         : .
+11-27 00:22:41.019   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:41.074 32624 32624 D ICU     : Time zone APEX file found: /apex/com.android.tzdata/etc/icu/icu_tzdata.dat
+11-27 00:22:41.125  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-27 00:22:41.389 32624 32624 W app_process: JNI RegisterNativeMethods: attempt to register 0 native methods for android.media.AudioAttributes
+11-27 00:22:41.405 32624 32624 D AndroidRuntime: Calling main entry com.wetest.uia2.Main
+11-27 00:22:41.416 32624 32624 I uidumper: [UiAutomator2Server] Starting Server
+11-27 00:22:41.452 32624 32624 D ThemeCompatibility: START loading theme compatibility config.
+11-27 00:22:41.452 32624 32624 D ThemeCompatibility: getVersion(): /data/system/theme_config/theme_compatibility.xml  java.io.FileNotFoundException: /data/system/theme_config/theme_compatibility.xml: open failed: ENOENT (No such file or directory)
+11-27 00:22:41.459 32624 32624 D ThemeCompatibility: getConfigDocumentTree(): 140 vs -1
+11-27 00:22:41.459 32624 32624 D ThemeCompatibility:     parse file: /system/media/theme/theme_compatibility.xml
+11-27 00:22:41.464 32624 32624 D ThemeCompatibility: END loading: version=140 size=48
+11-27 00:22:41.454 32624 32624 W main    : type=1400 audit(0.0:53105): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-27 00:22:41.465 32624 32624 E AssetManager: WTF--create system assets with illegal uid: 2000, gid:2000
+11-27 00:22:41.465 32624 32624 E AssetManager: java.lang.RuntimeException
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at android.content.res.AssetManager.createSystemAssetsInZygoteLocked(AssetManager.java:217)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at android.content.res.AssetManager.getSystem(AssetManager.java:295)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at android.content.res.Resources.<init>(Resources.java:285)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at android.content.res.MiuiResources.<init>(MiuiResources.java:49)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at android.content.res.Resources.getSystem(Resources.java:206)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at android.app.LoadedApk.<init>(LoadedApk.java:235)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at android.app.ContextImpl.createSystemContext(ContextImpl.java:2430)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at android.app.ActivityThread.getSystemContext(ActivityThread.java:2431)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at java.lang.reflect.Method.invoke(Native Method)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.getSystemContext(Workarounds.java:184)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<init>(FakeContext.java:22)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.<clinit>(FakeContext.java:15)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at com.genymobile.scrcpy.FakeContext.get(FakeContext.java:18)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.fillAppContext(Workarounds.java:153)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at com.genymobile.scrcpy.Workarounds.apply(Workarounds.java:105)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at com.wetest.uia2.Main.runServer(Main.java:92)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at com.wetest.uia2.Main.main(Main.java:74)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+11-27 00:22:41.465 32624 32624 E AssetManager: 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:380)
+11-27 00:22:41.468 32624 32624 W asset   : unable to execute idmap2: Permission denied
+11-27 00:22:41.468 32624 32624 W AssetManager: 'idmap2 --scan' failed: no static="true" overlays targeting "android" will be loaded
+11-27 00:22:41.471 32624 32624 W asset   : unable to execute idmap2: Permission denied
+11-27 00:22:41.471 32624 32624 W AssetManagerInjector: 'idmap2 --scan' failed: no static="true" overlays targeting "miui" will be loaded
+11-27 00:22:41.464 32624 32624 W main    : type=1400 audit(0.0:53106): avc: denied { execute } for name="idmap2" dev="dm-0" ino=775 scontext=u:r:shell:s0 tcontext=u:object_r:idmap_exec:s0 tclass=file permissive=0
+11-27 00:22:41.498 32624 32624 I FeatureParser: can't find olivelite.xml in assets/device_features/,it may be in /system/etc/device_features
+11-27 00:22:41.542 32624 32624 W Java7Support: Unable to load JDK7 types (annotations, java.nio.file.Path): no Java7 support added
+11-27 00:22:41.676 32624 32624 I UiDevice: Creating a new instance, old instance exists: false
+11-27 00:22:41.691  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-27 00:22:41.697 32624 32624 D UiDevice: Setting accessibility service flags: 65618
+11-27 00:22:41.708 32624 32624 I uidumper: clipboardManager inited
+11-27 00:22:41.711 32624 32624 I uidumper: tmpdir is /data/local/tmp/u2
+11-27 00:22:41.730 32624 32624 I uidumper: http server listening on *:9008
+11-27 00:22:42.020   783  1848 D         : readbrightness,out1:6
+11-27 00:22:42.020   783  1848 D         : .
+11-27 00:22:42.020   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:42.265 32624 32640 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-27 00:22:42.344 32624 32641 D UIAutomatorStub: URI: /jsonrpc/0, Method: POST, params, {NanoHttpd.QUERY_STRING=null}, files: {postData={"jsonrpc": "2.0", "id": 1, "method": "dumpWindowHierarchy", "params": [false, 50]}}
+11-27 00:22:42.416 32624 32641 W QueryController: Could not detect idle state.
+11-27 00:22:42.416 32624 32641 W QueryController: Could not detect idle state.
+11-27 00:22:42.475 32624 32641 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@d5b1; boundsInParent: Rect(0, 0 - 720, 500); boundsInScreen: Rect(0, 0 - 720, 55); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/heads_up_scrim; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-27 00:22:42.519 32624 32641 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@ac316; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(35, 34 - 35, 34); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_prompt_content_container; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-27 00:22:42.531 32624 32641 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bb717; boundsInParent: Rect(0, 0 - 0, 55); boundsInScreen: Rect(537, 14 - 537, 55); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/notch_mobile; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-27 00:22:42.532 32624 32641 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bc9dc; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(545, 35 - 545, 35); packageName: com.android.systemui; className: android.widget.FrameLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-27 00:22:42.533 32624 32641 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@ba452; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(537, 35 - 537, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_1; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-27 00:22:42.533 32624 32641 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@b9cd0; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(537, 35 - 537, 35); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/mobile_signal_group_0; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-27 00:22:42.536 32624 32641 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@bfaa9; boundsInParent: Rect(0, 0 - 0, 50); boundsInScreen: Rect(618, 14 - 618, 55); packageName: com.android.systemui; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: true; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: true; visible: false; actions: [AccessibilityAction: ACTION_FOCUS - null, AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-27 00:22:42.536 32624 32641 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@c022b; boundsInParent: Rect(0, 0 - 0, 8); boundsInScreen: Rect(618, 31 - 618, 39); packageName: com.android.systemui; className: android.view.View; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: com.android.systemui:id/wifi_signal_spacer; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-27 00:22:42.549 32624 32641 I AccessibilityNodeInfoDumper: Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@3796b; boundsInParent: Rect(0, 0 - 524, 0); boundsInScreen: Rect(98, 795 - 622, 795); packageName: com.jinyuni.dengbei_care; className: android.widget.LinearLayout; text: null; error: null; maxTextLength: -1; contentDescription: null; tooltipText: null; viewIdResName: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]
+11-27 00:22:42.643 32624 32642 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-27 00:22:42.904     0     0 W swapper/5: type=1400 audit(0.0:53107): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-27 00:22:43.021   783  1848 D         : readbrightness,out1:6
+11-27 00:22:43.021   783  1848 D         : .
+11-27 00:22:43.021   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:43.179 32624 32644 D UIAutomatorStub: URI: /ping, Method: GET, params, {NanoHttpd.QUERY_STRING=null}, files: {}
+11-27 00:22:43.588  1494  1494 W adbd    : timeout expired while flushing socket, closing
+11-27 00:22:43.619  1580  3118 W WindowManager: removeWindowToken: Attempted to remove non-existing token: android.os.Binder@9f4763c
+11-27 00:22:43.701  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:43.718  1494  1494 E adbd    : failed to connect to socket 'tcp:9008': Connection refused
+11-27 00:22:44.022   783  1848 D         : readbrightness,out1:6
+11-27 00:22:44.022   783  1848 D         : .
+11-27 00:22:44.022   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:45.023   783  1848 D         : readbrightness,out1:6
+11-27 00:22:45.023   783  1848 D         : .
+11-27 00:22:45.023   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:46.025   783  1848 D         : readbrightness,out1:6
+11-27 00:22:46.025   783  1848 D         : .
+11-27 00:22:46.025   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:46.707  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:47.026   783  1848 D         : readbrightness,out1:6
+11-27 00:22:47.026   783  1848 D         : .
+11-27 00:22:47.026   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:48.027   783  1848 D         : readbrightness,out1:6
+11-27 00:22:48.027   783  1848 D         : .
+11-27 00:22:48.027   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:49.029   783  1848 D         : readbrightness,out1:6
+11-27 00:22:49.029   783  1848 D         : .
+11-27 00:22:49.029   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:49.711  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:50.031   783  1848 D         : readbrightness,out1:6
+11-27 00:22:50.031   783  1848 D         : .
+11-27 00:22:50.031   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:51.031   783  1848 D         : readbrightness,out1:6
+11-27 00:22:51.031   783  1848 D         : .
+11-27 00:22:51.032   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:52.033   783  1848 D         : readbrightness,out1:6
+11-27 00:22:52.033   783  1848 D         : .
+11-27 00:22:52.033   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:52.715  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:52.904     0     0 W swapper/4: type=1400 audit(0.0:53108): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-27 00:22:53.034   783  1848 D         : readbrightness,out1:6
+11-27 00:22:53.034   783  1848 D         : .
+11-27 00:22:53.034   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:54.035   783  1848 D         : readbrightness,out1:6
+11-27 00:22:54.035   783  1848 D         : .
+11-27 00:22:54.035   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:54.051 30961 30961 I PowerKeeperBackgroundService: onStartCommand()
+11-27 00:22:54.051 30961 30961 I PowerKeeperService: onAlarm
+11-27 00:22:54.576  1580  2571 D WificondControl: Scan result ready event
+11-27 00:22:54.579   868  8348 I LOWI-8.6.0.72: [LOWI-Scan] lowi_close_record:Scan done in 449920479ms, 13 APs in scan results
+11-27 00:22:54.584   813   813 I wificond: wifi generation capability mask: 5
+11-27 00:22:54.588  1580  1808 D WifiGbk : removing bss - Bss(xxxx:xxxx, isGbk=false, security=PSK, level=-85, frequency=2462)
+11-27 00:22:54.588  1580  1808 D WifiGbk : removing bss - Bss(xxxx:xxxx, isGbk=false, security=NONE, level=-82, frequency=2412)
+11-27 00:22:54.588  1580  1808 D WifiGbk : removing bss - Bss(xxxx:xxxx, isGbk=false, security=PSK, level=-86, frequency=2412)
+11-27 00:22:54.598  1580  1846 E AppScanObserverService: Result available, null observers for user: 0
+11-27 00:22:54.600  1580 21306 E WifiService: Permission violation - getScanResults not allowed for uid=10067, packageName=com.miui.personalassistant, reason=java.lang.SecurityException: UID 10067 has no location permission
+11-27 00:22:54.600 12745 12796 W WifiMonitor: available wifis has none
+11-27 00:22:54.600 12745 12796 W WifiMonitor: getScanResults has none
+11-27 00:22:55.035   783  1848 D         : readbrightness,out1:6
+11-27 00:22:55.035   783  1848 D         : .
+11-27 00:22:55.035   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:55.720  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:56.036   783  1848 D         : readbrightness,out1:6
+11-27 00:22:56.036   783  1848 D         : .
+11-27 00:22:56.036   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:57.037   783  1848 D         : readbrightness,out1:6
+11-27 00:22:57.037   783  1848 D         : .
+11-27 00:22:57.037   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:58.037   783  1848 D         : readbrightness,out1:6
+11-27 00:22:58.037   783  1848 D         : .
+11-27 00:22:58.037   783  1848 D         : readbrightness,out2:6.
+11-27 00:22:58.724  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:22:59.038   783  1848 D         : readbrightness,out1:6
+11-27 00:22:59.038   783  1848 D         : .
+11-27 00:22:59.038   783  1848 D         : readbrightness,out2:6.
+11-27 00:23:00.003  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-27 00:23:00.039   783  1848 D         : readbrightness,out1:6
+11-27 00:23:00.039   783  1848 D         : .
+11-27 00:23:00.039   783  1848 D         : readbrightness,out2:6.
+11-27 00:23:01.039   783  1848 D         : readbrightness,out1:6
+11-27 00:23:01.039   783  1848 D         : .
+11-27 00:23:01.039   783  1848 D         : readbrightness,out2:6.
+11-27 00:23:01.729  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-27 00:23:02.040   783  1848 D         : readbrightness,out1:6
+11-27 00:23:02.040   783  1848 D         : .
+11-27 00:23:02.040   783  1848 D         : readbrightness,out2:6.
+11-27 00:23:02.894     0     0 W swapper/5: type=1400 audit(0.0:53109): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-27 00:23:03.040   783  1848 D         : readbrightness,out1:6
+11-27 00:23:03.040   783  1848 D         : .
+11-27 00:23:03.041   783  1848 D         : readbrightness,out2:6.
+11-27 00:23:04.041   783  1848 D         : readbrightness,out1:6
+11-27 00:23:04.041   783  1848 D         : .
+11-27 00:23:04.041   783  1848 D         : readbrightness,out2:6.

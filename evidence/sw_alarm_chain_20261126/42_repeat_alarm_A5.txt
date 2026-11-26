@@ -1,0 +1,33 @@
+capture 2026-11-26T16:45:36Z
+== logcat ==
+11-27 00:45:05.624 32264 32578 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-27 00:45:05.624 32264 32578 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-27 00:45:05.624 32264 32578 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-27 00:45:05.629 32264 32578 I MqttService: Retrying connection after delay...
+11-27 00:45:07.632 32264 32578 I MqttService: Attempt 3 to connect to Bluetooth device...
+11-27 00:45:08.146 32264  1738 I MqttService: Connected to device, discovering services...
+11-27 00:45:09.642 32264  1738 I MqttService: MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-27 00:45:10.276 32264  1738 I MqttService: cipher length = 160
+11-27 00:45:10.289 32264  1738 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-27 00:45:10.291 32264  1738 I MqttService:  id=6A002C00, H=35.8%, T=23.4°C
+11-27 00:45:10.414 32264  1738 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 00:45）
+11-27 00:45:10.414 32264  1738 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-27 00:45:10.416 32264  1738 I MqttService: MQTT offline: keep latest BLE batch (bounded=1)
+11-27 00:45:10.418 32264  1738 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-27 00:45:10.516 32264  1738 I MqttService: Chunk written OK, left=0
+11-27 00:45:10.519 32264 32578 I MqttService: Successfully connected and read data on attempt 3
+== vibrator ==
+Vibrator Service:
+  mCurrentVibration=null
+  mCurrentExternalVibration=null
+== audio ==
+  players:
+  ID:15 -- type:android.media.SoundPool -- u/pid:1000/1580 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:31 -- type:android.media.SoundPool -- u/pid:10081/2211 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:39 -- type:android.media.SoundPool -- u/pid:10133/3039 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+
+  ducked players piids:
+== prefs ==
+    <string name="zhendongalarm">0</string>
+    <string name="xianglingalarm">0</string>
+    <string name="measure_state">stopping</string>

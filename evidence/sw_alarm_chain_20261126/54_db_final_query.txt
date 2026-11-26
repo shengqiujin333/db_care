@@ -1,0 +1,19 @@
+tables: ['alarm_events', 'android_metadata', 'pending_uploads', 'sqlite_sequence', 'temperature']
+-- temperature count: 6
+-- temperature columns: ['time', 'device_id', 'temperature', 'humidity']
+   (1795711510, '6A002C00', 23.4, 35.8)
+   (1795711023, '6A002C00', 23.4, 35.8)
+   (1795710534, '6A002C00', 23.4, 35.8)
+   (1795710084, '6A002C00', 23.4, 35.8)
+   (1795709614, '6A002C00', 23.4, 35.8)
+   (1795708477, '6A002C00', 23.4, 35.8)
+-- alarm_events count: 8
+-- alarm_events columns: ['id', 'time', 'device_id', 'type', 'message']
+   (8, 1795711510, '6A002C00', 'threshold', '温湿度超限报警')
+   (7, 1795711023, '6A002C00', 'threshold', '温湿度超限报警')
+   (6, 1795710534, '6A002C00', 'threshold', '温湿度超限报警')
+   (5, 1795710084, '6A002C00', 'threshold', '温湿度超限报警')
+   (4, 1795709614, '6A002C00', 'threshold', '温湿度超限报警')
+   (3, 1795709023, '6A002C00', 'threshold', '温湿度超限报警')
+   (2, 1795708477, '6A002C00', 'threshold', '温湿度超限报警')
+   (1, 1795707988, '6A002C00', 'threshold', '温湿度超限报警')

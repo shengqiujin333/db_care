@@ -1,0 +1,9 @@
+capture 2026-11-26T16:29:07Z
+  players:
+  ID:15 -- type:android.media.SoundPool -- u/pid:1000/1580 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:31 -- type:android.media.SoundPool -- u/pid:10081/2211 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:39 -- type:android.media.SoundPool -- u/pid:10133/3039 -- state:idle -- attr:AudioAttributes: usage=USAGE_ASSISTANCE_SONIFICATION content=CONTENT_TYPE_SONIFICATION flags=0x800 tags= bundle=null
+  ID:727 -- type:android.media.MediaPlayer -- u/pid:10195/32264 -- state:started -- attr:AudioAttributes: usage=USAGE_UNKNOWN content=CONTENT_TYPE_UNKNOWN flags=0x800 tags= bundle=null
+
+  ducked players piids:
+    NotificationRecord(0x0322bbf6: pkg=com.jinyuni.dengbei_care user=UserHandle{0} id=1 tag=null importance=3 key=0|com.jinyuni.dengbei_care|1|null|10195appImportanceLocked=false: Notification(channel=MqttServiceChannel pri=0 contentView=null vibrate=null sound=null defaults=0x0 flags=0x62 color=0xff607d8b vis=PRIVATE))
