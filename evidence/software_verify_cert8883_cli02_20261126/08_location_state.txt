@@ -1,0 +1,236 @@
+Current Location Manager state:
+  Current System Time: 11-26 11:21:08.207, Current Elapsed Time: +4d15h57m18s166ms
+  Current user: 0 [0]
+  Location mode: true
+  Battery Saver Location Mode: NO_CHANGE
+  Location Listeners:
+    Reciever[21b9669 listener UpdateRecord[passive android(1000 foreground) Request[POWER_NONE passive fastest=+30m0s0ms] null] monitoring location: true]
+    Reciever[bc938ee listener UpdateRecord[passive com.xiaomi.location.fused(1000 foreground) Request[POWER_NONE passive fastest=+1s0ms] null] monitoring location: true]
+    Reciever[a19f18f listener UpdateRecord[passive com.xiaomi.metoknlp(10136 background) Request[POWER_NONE passive fastest=+1s0ms] null] monitoring location: true]
+    Reciever[83f9c1c listener UpdateRecord[passive com.xiaomi.metoknlp(10136 background) Request[POWER_NONE passive fastest=+1s0ms] null] monitoring location: true]
+    Reciever[e4e3025 listener UpdateRecord[passive android(1000 foreground) Request[POWER_NONE passive fastest=0] null] monitoring location: false]
+  Active Records by Provider:
+    fused:
+    gps:
+    passive:
+      UpdateRecord[passive android(1000 foreground) Request[POWER_NONE passive fastest=0] null]
+      UpdateRecord[passive android(1000 foreground) Request[POWER_NONE passive fastest=+30m0s0ms] null]
+      UpdateRecord[passive com.xiaomi.metoknlp(10136 background) Request[POWER_NONE passive fastest=+1s0ms] null]
+      UpdateRecord[passive com.xiaomi.location.fused(1000 foreground) Request[POWER_NONE passive fastest=+1s0ms] null]
+      UpdateRecord[passive com.xiaomi.metoknlp(10136 background) Request[POWER_NONE passive fastest=+1s0ms] null]
+    network:
+  Active GnssMeasurement Listeners:
+  Active GnssNavigationMessage Listeners:
+  Active GnssStatus Listeners:
+    3476 10136 com.xiaomi.metoknlp: true
+  Historical Records by Provider:
+    com.miui.personalassistant: gps: Interval 0 seconds: Duration requested 0 total, 0 foreground, out of the last 2676 minutes: Last active 806 minutes ago
+    android: fused: Interval 0 seconds: Duration requested 0 total, 0 foreground, out of the last 2393 minutes: Last active 2048 minutes ago
+    com.miui.personalassistant: network: Interval 0 seconds: Duration requested 0 total, 0 foreground, out of the last 2676 minutes: Last active 806 minutes ago
+    android: passive: Min interval 0 seconds: Max interval 1800 seconds: Duration requested 6716 total, 6716 foreground, out of the last 6716 minutes: Currently active
+    android: network: Interval 1 seconds: Duration requested 2 total, 2 foreground, out of the last 2676 minutes: Last active 806 minutes ago
+    com.xiaomi.location.fused: gps: Min interval 0 seconds: Max interval 60 seconds: Duration requested 0 total, 0 foreground, out of the last 2528 minutes: Last active 2048 minutes ago
+    com.xiaomi.location.fused: network: Interval 0 seconds: Duration requested 0 total, 0 foreground, out of the last 2528 minutes: Last active 2048 minutes ago
+    com.xiaomi.metoknlp: passive: Interval 1 seconds: Duration requested 6716 total, 0 foreground, out of the last 6716 minutes: Currently active
+    com.miui.voiceassist: fused: Interval 60 seconds: Duration requested 0 total, 0 foreground, out of the last 2528 minutes: Last active 2528 minutes ago
+    com.xiaomi.location.fused: passive: Interval 1 seconds: Duration requested 6716 total, 3714 foreground, out of the last 6716 minutes: Currently active
+    android: gps: Interval 1 seconds: Duration requested 0 total, 0 foreground, out of the last 2393 minutes: Last active 2047 minutes ago
+  Last Known Locations:
+    passive: Location[network 38.074196,114.457407 hAcc=40 et=+4d2h30m57s936ms vAcc=??? sAcc=??? bAcc=??? {Bundle[{networkLocationType=wifi, source=2}]}]
+    network: Location[network 38.074196,114.457407 hAcc=40 et=+4d2h30m57s936ms vAcc=??? sAcc=??? bAcc=??? {Bundle[{networkLocationType=wifi, source=2}]}]
+  Last Known Locations Coarse Intervals:
+    passive: Location[network 38.074196,114.457407 hAcc=40 et=+4d2h30m48s464ms vAcc=??? sAcc=??? bAcc=??? {Bundle[{networkLocationType=wifi, source=6}]}]
+    network: Location[network 38.074196,114.457407 hAcc=40 et=+4d2h30m48s464ms vAcc=??? sAcc=??? bAcc=??? {Bundle[{networkLocationType=wifi, source=6}]}]
+  Geofences:
+  mWhitelist=[] mBlacklist=[]
+  fudger: offset: -53, 150 (meters)
+  passive provider:
+    useable=true
+    properties=com.android.internal.location.ProviderProperties@b93f5fa
+ report location=true
+  gps provider:
+    useable=true
+    properties=com.android.internal.location.ProviderProperties@c4e17ab
+  mStarted=false   (changed +13h26m29s788ms ago)
+  mFixInterval=0
+  mLowPowerMode=false
+  mGnssMeasurementsProvider.isRegistered()=false
+  mGnssNavigationMessageProvider.isRegistered()=false
+  mDisableGpsForPowerManager=false
+  mTopHalCapabilities=0x63 ( SCHEDULING MSB GEOFENCING MEASUREMENTS )
+GNSS_KPI_START
+  KPI logging start time: +24s904ms
+  KPI logging end time: +4d15h57m18s169ms
+  Number of location reports: 0
+  Number of TTFF reports: 0
+  Number of position accuracy reports: 0
+  Number of CN0 reports: 0
+  Used-in-fix constellation types: 
+GNSS_KPI_END
+Power Metrics
+  Time on battery (min): 0.0049833333333333335
+  Amount of time (while on battery) Top 4 Avg CN0 > 20.0 dB-Hz (min): 0.0
+  Amount of time (while on battery) Top 4 Avg CN0 <= 20.0 dB-Hz (min): 0.0
+  Energy consumed while on battery (mAh): 0.0
+Hardware Version: 
+  native internal state: Gnss Location Data:: LatitudeDegrees: 30, LongitudeDegrees: 104, altitudeMeters: 0, speedMetersPerSecond: 0, bearingDegrees: 0, horizontalAccuracyMeters: 1.63359e+06, verticalAccuracyMeters: 20000, speedAccuracyMetersPerSecond: 500, bearingAccuracyDegrees: 180, ageSeconds: 48389.9
+Gnss Time Data:: timeEstimate: 1795540391023, timeUncertaintyNs: 1.59662e+10, frequencyUncertaintyNsPerSec: 299
+Satellite Data for 148 satellites:: 
+constell: 1=GPS, 2=SBAS, 3=GLO, 4=QZSS, 5=BDS, 6=GAL, 7=IRNSS; ephType: 0=Eph, 1=Alm, 2=Unk; ephSource: 0=Demod, 1=Supl, 2=Server, 3=Unk; ephHealth: 0=Good, 1=Bad, 2=Unk
+constell: 1, svid:   1, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:   2, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:   3, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:   4, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:   5, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:   6, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:   7, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:   8, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:   9, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  10, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  11, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  12, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  13, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  14, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  15, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  16, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  17, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  18, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  19, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  20, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  21, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  22, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  23, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  24, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  25, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  26, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  27, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  28, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  29, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  30, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  31, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 1, svid:  32, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  -84679
+constell: 3, svid:   1, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:   2, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:   3, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:   4, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:   5, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:   6, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:   7, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:   8, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:   9, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  10, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  11, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  12, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  13, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  14, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  15, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  16, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  17, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  18, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  19, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  20, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  21, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  22, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  23, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 3, svid:  24, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  245590
+constell: 4, svid: 193, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 3, ephHealth: 2, ephAgeSec: 1.47115e+08
+constell: 4, svid: 194, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec: -113351
+constell: 4, svid: 195, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec: -113351
+constell: 4, svid: 196, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec: -113351
+constell: 4, svid: 197, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 5, svid:   1, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:   2, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:   3, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:   4, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:   5, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 3, ephHealth: 2, ephAgeSec: 3.22155e+07
+constell: 5, svid:   6, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:   7, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:   8, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:   9, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  10, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  11, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  12, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  13, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  14, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  15, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 5, svid:  16, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 3, ephHealth: 2, ephAgeSec: 3.22155e+07
+constell: 5, svid:  17, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 5, svid:  18, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 3, ephHealth: 2, ephAgeSec: 2.01113e+08
+constell: 5, svid:  19, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  20, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  21, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  22, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  23, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  24, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  25, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  26, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  27, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  28, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  29, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  30, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  368554
+constell: 5, svid:  31, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 5, svid:  32, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 5, svid:  33, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 5, svid:  34, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 5, svid:  35, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 5, svid:  36, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 5, svid:  37, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 6, svid:   1, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 3, ephHealth: 0, ephAgeSec: 1.12719e+08
+constell: 6, svid:   2, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:   3, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:   4, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:   5, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:   6, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:   7, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:   8, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:   9, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:  10, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:  11, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:  12, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:  13, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:  14, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 0, ephAgeSec:       0
+constell: 6, svid:  15, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:  16, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  103408
+constell: 6, svid:  17, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 0, ephAgeSec:       0
+constell: 6, svid:  18, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 0, ephAgeSec:       0
+constell: 6, svid:  19, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  104008
+constell: 6, svid:  20, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 0, ephAgeSec:       0
+constell: 6, svid:  21, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  104008
+constell: 6, svid:  22, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 0, ephAgeSec:       0
+constell: 6, svid:  23, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  104008
+constell: 6, svid:  24, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 3, ephHealth: 0, ephAgeSec: 3.46034e+07
+constell: 6, svid:  25, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  104008
+constell: 6, svid:  26, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  104008
+constell: 6, svid:  27, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  104008
+constell: 6, svid:  28, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  104008
+constell: 6, svid:  29, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  104008
+constell: 6, svid:  30, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  104008
+constell: 6, svid:  31, serverPredAvail: 1, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 0, ephAgeSec:  104008
+constell: 6, svid:  32, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  104008
+constell: 6, svid:  33, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  104008
+constell: 6, svid:  34, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  103408
+constell: 6, svid:  35, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 6, svid:  36, serverPredAvail: 0, serverPredAgeSec:  105208, ephType: 1, ephSource: 2, ephHealth: 2, ephAgeSec:  103408
+constell: 7, svid:   1, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:   2, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:   3, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:   4, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:   5, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:   6, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:   7, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:   8, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:   9, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:  10, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:  11, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:  12, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:  13, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+constell: 7, svid:  14, serverPredAvail: 0, serverPredAgeSec:       0, ephType: 2, ephSource: 3, ephHealth: 2, ephAgeSec:       0
+
+  network provider:
+    useable=true
+    properties=com.android.internal.location.ProviderProperties@1b85e08
+    service={com.xiaomi.metoknlp/com.xiaomi.location.metoknlp.MetokLocationService}@1
+  fused provider:
+    useable=true
+    properties=com.android.internal.location.ProviderProperties@a56a9a1
+    service={com.xiaomi.location.fused/com.xiaomi.location.fused.FusedLocationService}@1

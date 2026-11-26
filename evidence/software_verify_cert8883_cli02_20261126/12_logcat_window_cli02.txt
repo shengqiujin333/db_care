@@ -1,0 +1,1132 @@
+--------- beginning of main
+11-26 11:20:19.215  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:19.946   783  1848 D         : readbrightness,out1:8
+11-26 11:20:19.946   783  1848 D         : .
+11-26 11:20:19.947   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:20.492 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:20.495 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:20.496 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:20.947   783  1848 D         : readbrightness,out1:8
+11-26 11:20:20.947   783  1848 D         : .
+11-26 11:20:20.947   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:21.948   783  1848 D         : readbrightness,out1:8
+11-26 11:20:21.948   783  1848 D         : .
+11-26 11:20:21.948   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:22.220  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:22.352 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:22.355 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:22.356 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:22.950   783  1848 D         : readbrightness,out1:8
+11-26 11:20:22.950   783  1848 D         : .
+11-26 11:20:22.950   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:23.950   783  1848 D         : readbrightness,out1:8
+11-26 11:20:23.950   783  1848 D         : .
+11-26 11:20:23.950   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:24.163 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:24.166 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:24.167 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:24.630  1580  1605 I system_server: Background young concurrent copying GC freed 456316(15MB) AllocSpace objects, 19(1088KB) LOS objects, 24% free, 36MB/48MB, paused 292us total 125.348ms
+11-26 11:20:24.632   613   613 E WifiHAL : wifi_get_wake_reason_stats: Wake lock logging feature not supported 6
+11-26 11:20:24.633  1580  3117 E WifiVendorHal: getWlanWakeReasonCount(l.2103) failed {.code = ERROR_NOT_SUPPORTED, .description = }
+11-26 11:20:24.636  1580  3117 W WifiDiags: CaptureBugReport 7
+11-26 11:20:24.655  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 11:20:24.671   613  8350 E WifiHAL : Error reading from socket
+11-26 11:20:24.671   613  8350 E WifiHAL : Error :-5 while reading nl msg
+11-26 11:20:24.672  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 11:20:24.675   613   613 E WifiHAL : Packet monitoring is not yet triggered
+11-26 11:20:24.676  1580  3117 E WifiVendorHal: getTxPktFates(l.1857) failed {.code = ERROR_NOT_AVAILABLE, .description = }
+11-26 11:20:24.676   613   613 E WifiHAL : Packet monitoring is not yet triggered
+11-26 11:20:24.677  1580  3117 E WifiVendorHal: getRxPktFates(l.1899) failed {.code = ERROR_NOT_AVAILABLE, .description = }
+11-26 11:20:24.734 13900 13900 W ip      : type=1400 audit(0.0:46256): avc: denied { search } for name="net" dev="mmcblk0p62" ino=1523724 scontext=u:r:shell:s0 tcontext=u:object_r:net_data_file:s0 tclass=dir permissive=0
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: Write failure
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: java.io.IOException: write failed: EPIPE (Broken pipe)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at libcore.io.IoBridge.write(IoBridge.java:545)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at java.io.FileOutputStream.write(FileOutputStream.java:392)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at com.android.internal.util.FastPrintWriter.flushBytesLocked(FastPrintWriter.java:354)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at com.android.internal.util.FastPrintWriter.flushLocked(FastPrintWriter.java:377)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at com.android.internal.util.FastPrintWriter.appendLocked(FastPrintWriter.java:322)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at com.android.internal.util.FastPrintWriter.appendLocked(FastPrintWriter.java:315)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at com.android.internal.util.FastPrintWriter.print(FastPrintWriter.java:499)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at com.android.server.wifi.LastMileLogger.dumpInternal(LastMileLogger.java:155)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at com.android.server.wifi.LastMileLogger.dump(LastMileLogger.java:75)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at com.android.server.wifi.WifiDiagnostics.dump(WifiDiagnostics.java:282)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at com.android.server.wifi.ClientModeImpl.dump(ClientModeImpl.java:2152)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at com.android.server.wifi.WifiServiceImpl.dump(WifiServiceImpl.java:2948)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at android.os.Binder.doDump(Binder.java:818)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at android.os.Binder.dump(Binder.java:808)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at android.os.Binder.onTransact(Binder.java:744)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at android.net.wifi.IWifiManager$Stub.onTransact(IWifiManager.java:1889)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at android.os.Binder.execTransactInternal(Binder.java:1021)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at android.os.Binder.execTransact(Binder.java:994)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: Caused by: android.system.ErrnoException: write failed: EPIPE (Broken pipe)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at libcore.io.Linux.writeBytes(Native Method)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at libcore.io.Linux.write(Linux.java:294)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at libcore.io.ForwardingOs.write(ForwardingOs.java:241)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at libcore.io.BlockGuardOs.write(BlockGuardOs.java:416)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	at libcore.io.IoBridge.write(IoBridge.java:540)
+11-26 11:20:24.750  1580  3117 W FastPrintWriter: 	... 17 more
+11-26 11:20:24.951   783  1848 D         : readbrightness,out1:8
+11-26 11:20:24.951   783  1848 D         : .
+11-26 11:20:24.951   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:25.224  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:25.712 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:25.716 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:25.717 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:25.952   783  1848 D         : readbrightness,out1:8
+11-26 11:20:25.952   783  1848 D         : .
+11-26 11:20:25.952   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:26.952   783  1848 D         : readbrightness,out1:8
+11-26 11:20:26.952   783  1848 D         : .
+11-26 11:20:26.952   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:27.172 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:27.175 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:27.175 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:27.664     0     0 W swapper/5: type=1400 audit(0.0:46257): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:20:27.953   783  1848 D         : readbrightness,out1:8
+11-26 11:20:27.953   783  1848 D         : .
+11-26 11:20:27.953   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:28.229  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:28.632 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:28.636 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:28.636 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:28.954   783  1848 D         : readbrightness,out1:8
+11-26 11:20:28.954   783  1848 D         : .
+11-26 11:20:28.954   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:29.954   783  1848 D         : readbrightness,out1:8
+11-26 11:20:29.954   783  1848 D         : .
+11-26 11:20:29.954   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:30.112 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:30.116 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:30.116 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:30.661  2482  2620 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-26 11:20:30.661  2482  2620 D MiuiFastConnectService: stopBleScan: scanning: true
+11-26 11:20:30.664  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 11:20:30.664  1882  1901 D BtGatt.GattService: stopScan() - queue size =1
+11-26 11:20:30.666  1882  2332 I BtGatt.ScanManager: msg.what = 1
+11-26 11:20:30.666  1882  2332 D BtGatt.ScanManager: stop scan
+11-26 11:20:30.667  1882  1901 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-26 11:20:30.667  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-26 11:20:30.667  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-26 11:20:30.669  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-26 11:20:30.669  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.674  2482  2620 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-26 11:20:30.676  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 11:20:30.678  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-26 11:20:30.678  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.679  1882  1901 D BtGatt.GattService: registerScanner() - UUID=a4aeabfb-da9d-4cc5-bab0-52ea7f1beab9
+11-26 11:20:30.680  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-26 11:20:30.680  1882  2353 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register 7edb5778-85c4-d3f5-3f74-ab36edfec205
+11-26 11:20:30.680  1882  2353 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-26 11:20:30.680  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-26 11:20:30.680  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-26 11:20:30.681  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-26 11:20:30.681  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-26 11:20:30.681  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.681  1882  2034 D BtGatt.GattService: onScannerRegistered() - UUID=a4aeabfb-da9d-4cc5-bab0-52ea7f1beab9, scannerId=5, status=0
+11-26 11:20:30.681  2482 12038 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-26 11:20:30.683  1882  1901 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-26 11:20:30.684  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-26 11:20:30.684  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.686  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-26 11:20:30.686  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.686  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-26 11:20:30.686  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-26 11:20:30.687  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 11:20:30.687  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 11:20:30.688  1882  1901 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@ff84cb3
+11-26 11:20:30.691  1882  1901 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-26 11:20:30.692  1882  1901 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-26 11:20:30.695  1882  2332 I BtGatt.ScanManager: msg.what = 0
+11-26 11:20:30.695  1882  2332 D BtGatt.ScanManager: handling starting scan
+11-26 11:20:30.698  1882  2332 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-26 11:20:30.702  1882  2034 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-26 11:20:30.702  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.702  1882  2332 D BtGatt.ScanManager: Available Filter size: 13
+11-26 11:20:30.703  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 11:20:30.703  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.703  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 11:20:30.705  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-26 11:20:30.705  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.706  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 11:20:30.706  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.706  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 11:20:30.708  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-26 11:20:30.708  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.710  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 11:20:30.710  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.710  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 11:20:30.712  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-26 11:20:30.713  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.713  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 11:20:30.713  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.713  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 11:20:30.716  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-26 11:20:30.716  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.717  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 11:20:30.717  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.717  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 11:20:30.719  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-26 11:20:30.720  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:20:30.720  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-26 11:20:30.720  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-26 11:20:30.722  1882  2332 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-26 11:20:30.722  1882  2034 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-26 11:20:30.748  2194  2235 W m.android.phon: Reducing the number of considered missed Gc histogram windows from 242 to 100
+11-26 11:20:30.955   783  1848 D         : readbrightness,out1:8
+11-26 11:20:30.955   783  1848 D         : .
+11-26 11:20:30.955   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:31.231  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:31.792 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:31.795 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:31.796 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:31.956   783  1848 D         : readbrightness,out1:8
+11-26 11:20:31.956   783  1848 D         : .
+11-26 11:20:31.956   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:32.956   783  1848 D         : readbrightness,out1:8
+11-26 11:20:32.956   783  1848 D         : .
+11-26 11:20:32.956   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:33.544 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:33.550 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:33.550 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:33.957   783  1848 D         : readbrightness,out1:8
+11-26 11:20:33.957   783  1848 D         : .
+11-26 11:20:33.957   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:34.235  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:34.595   868  8348 I LOWI-8.6.0.72: [LOWI-Scan] lowi_close_record:Scan done in 402980495ms, 10 APs in scan results
+11-26 11:20:34.595  1580  3118 D WificondControl: Scan result ready event
+--------- beginning of system
+11-26 11:20:34.603   813   813 I wificond: wifi generation capability mask: 5
+11-26 11:20:34.615  1580  1846 E AppScanObserverService: Result available, null observers for user: 0
+11-26 11:20:34.620  1580  3889 E WifiService: Permission violation - getScanResults not allowed for uid=10067, packageName=com.miui.personalassistant, reason=java.lang.SecurityException: UID 10067 has no location permission
+11-26 11:20:34.621 12745 12796 W WifiMonitor: available wifis has none
+11-26 11:20:34.621 12745 12796 W WifiMonitor: getScanResults has none
+11-26 11:20:34.958   783  1848 D         : readbrightness,out1:8
+11-26 11:20:34.958   783  1848 D         : .
+11-26 11:20:34.958   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:35.392 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:35.395 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:35.395 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:35.959   783  1848 D         : readbrightness,out1:8
+11-26 11:20:35.959   783  1848 D         : .
+11-26 11:20:35.959   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:36.960   783  1848 D         : readbrightness,out1:8
+11-26 11:20:36.960   783  1848 D         : .
+11-26 11:20:36.960   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:37.163 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:37.167 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:37.167 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:37.240  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:37.664     0     0 W swapper/6: type=1400 audit(0.0:46258): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:20:37.961   783  1848 D         : readbrightness,out1:8
+11-26 11:20:37.961   783  1848 D         : .
+11-26 11:20:37.961   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:38.764 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:38.770 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:38.770 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:38.962   783  1848 D         : readbrightness,out1:8
+11-26 11:20:38.962   783  1848 D         : .
+11-26 11:20:38.962   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:39.964   783  1848 D         : readbrightness,out1:8
+11-26 11:20:39.964   783  1848 D         : .
+11-26 11:20:39.964   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:40.246  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:40.464 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:40.466 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:40.467 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:40.965   783  1848 D         : readbrightness,out1:8
+11-26 11:20:40.965   783  1848 D         : .
+11-26 11:20:40.965   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:41.966   783  1848 D         : readbrightness,out1:8
+11-26 11:20:41.966   783  1848 D         : .
+11-26 11:20:41.966   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:42.224 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:42.230 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:42.230 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:42.967   783  1848 D         : readbrightness,out1:8
+11-26 11:20:42.967   783  1848 D         : .
+11-26 11:20:42.967   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:43.251  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:43.844 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:43.848 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:43.848 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:43.968   783  1848 D         : readbrightness,out1:8
+11-26 11:20:43.968   783  1848 D         : .
+11-26 11:20:43.968   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:44.969   783  1848 D         : readbrightness,out1:8
+11-26 11:20:44.969   783  1848 D         : .
+11-26 11:20:44.969   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:45.444 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:45.450 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:45.450 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:45.971   783  1848 D         : readbrightness,out1:8
+11-26 11:20:45.971   783  1848 D         : .
+11-26 11:20:45.971   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:46.255  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:46.884 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:46.890 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:46.890 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:46.972   783  1848 D         : readbrightness,out1:8
+11-26 11:20:46.972   783  1848 D         : .
+11-26 11:20:46.972   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:47.664     0     0 W swapper/4: type=1400 audit(0.0:46259): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:20:47.972   783  1848 D         : readbrightness,out1:8
+11-26 11:20:47.972   783  1848 D         : .
+11-26 11:20:47.972   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:48.472 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:48.476 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:48.476 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:48.491   805 13191 D NuPlayerDecoderPassThrough: return aggregated buffer and save err(=-1011) for later
+11-26 11:20:48.973   783  1848 D         : readbrightness,out1:8
+11-26 11:20:48.973   783  1848 D         : .
+11-26 11:20:48.973   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:49.260  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:49.973   783  1848 D         : readbrightness,out1:8
+11-26 11:20:49.973   783  1848 D         : .
+11-26 11:20:49.973   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:50.067 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:50.071 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:50.072 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:50.974   783  1848 D         : readbrightness,out1:8
+11-26 11:20:50.974   783  1848 D         : .
+11-26 11:20:50.974   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:51.752 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:51.758 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:51.759 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:51.975   783  1848 D         : readbrightness,out1:8
+11-26 11:20:51.975   783  1848 D         : .
+11-26 11:20:51.975   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:52.264  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:52.975   783  1848 D         : readbrightness,out1:8
+11-26 11:20:52.975   783  1848 D         : .
+11-26 11:20:52.975   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:53.372 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:53.374 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:53.375 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:53.379 26348 26360 E AudioFlinger: open /proc/805/cmdline error
+11-26 11:20:53.379 26348 26360 I AudioFlinger: setAppName(), name=[], active=[0]
+11-26 11:20:53.379 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=24
+11-26 11:20:53.379 26347 31971 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_APP_NAME: stream=3, name=-
+11-26 11:20:53.976   783  1848 D         : readbrightness,out1:8
+11-26 11:20:53.976   783  1848 D         : .
+11-26 11:20:53.976   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:54.976   783  1848 D         : readbrightness,out1:8
+11-26 11:20:54.976   783  1848 D         : .
+11-26 11:20:54.977   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:55.042 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:55.045 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:20:55.045 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:20:55.270  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:55.977   783  1848 D         : readbrightness,out1:8
+11-26 11:20:55.977   783  1848 D         : .
+11-26 11:20:55.977   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:56.632 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:20:56.635 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_partial_drain
+11-26 11:20:56.978   783  1848 D         : readbrightness,out1:8
+11-26 11:20:56.978   783  1848 D         : .
+11-26 11:20:56.978   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:57.664     0     0 W swapper/6: type=1400 audit(0.0:46260): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:20:57.979   783  1848 D         : readbrightness,out1:8
+11-26 11:20:57.979   783  1848 D         : .
+11-26 11:20:57.979   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:58.275  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:20:58.980   783  1848 D         : readbrightness,out1:8
+11-26 11:20:58.980   783  1848 D         : .
+11-26 11:20:58.980   783  1848 D         : readbrightness,out2:8.
+11-26 11:20:59.981   783  1848 D         : readbrightness,out1:8
+11-26 11:20:59.981   783  1848 D         : .
+11-26 11:20:59.981   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:00.003  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 11:21:00.982   783  1848 D         : readbrightness,out1:8
+11-26 11:21:00.982   783  1848 D         : .
+11-26 11:21:00.982   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:01.279  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:01.984   783  1848 D         : readbrightness,out1:8
+11-26 11:21:01.984   783  1848 D         : .
+11-26 11:21:01.984   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:02.438 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_partial_drain
+11-26 11:21:02.440 26347 13192 D audio_hw_utils: audio_extn_utils_compress_get_dsp_latency:: Using Fix DSP delay
+11-26 11:21:02.440 26347 13192 D audio_hw_utils: audio_extn_utils_compress_get_dsp_latency:: delay in ms is 50
+11-26 11:21:02.441   805 13180 D NuPlayer:  audio  end  mAudioEOS: 1
+11-26 11:21:02.441   805 13180 D NuPlayer:  video  end  mVideoEOS: 0
+11-26 11:21:02.441 26348 26357 D APM_AudioPolicyManager: stopOutput portId 99
+11-26 11:21:02.441 26348 26357 D APM_AudioPolicyManager: getNewOutputDevices selected devices AUDIO_DEVICE_NONE
+11-26 11:21:02.448 26347 26351 V EffectMiSound: MiSound_command() start, cmdCode=20
+11-26 11:21:02.448 26347 26351 V EffectMiSound: MiSound_Command EFFECT_CMD_OFFLOAD
+11-26 11:21:02.448 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=1
+11-26 11:21:02.448 26347 31971 V EffectMiSound: MiSound_setConfig start
+11-26 11:21:02.448 26347 31971 I EffectMiSound: MiSound_updateState(), enable=0, hifi=0, device=0x2, headset=5, samplingRate=48000
+11-26 11:21:02.448 26347 31971 I EffectMiSound: MiSound_updateState(), mode=0, music=0, movie=0, reset=0
+11-26 11:21:02.448 26347 31971 I EffectMiSound: MiSound_updateState(), Speaker Dual Mode is not supported. Stop update state.
+11-26 11:21:02.449 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=9
+11-26 11:21:02.449 26347 31971 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_DEVICE: 0x00000002
+11-26 11:21:02.449 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=11
+11-26 11:21:02.449 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_AUDIO_MODE: 0
+11-26 11:21:02.450 26348 26357 D APM_AudioPolicyManager: startOutput portId 99
+11-26 11:21:02.456 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=20
+11-26 11:21:02.456 26347 31971 V EffectMiSound: MiSound_Command EFFECT_CMD_OFFLOAD
+11-26 11:21:02.456 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=1
+11-26 11:21:02.456 26347 26350 V EffectMiSound: MiSound_setConfig start
+11-26 11:21:02.457 26347 26350 I EffectMiSound: MiSound_updateState(), enable=0, hifi=0, device=0x2, headset=5, samplingRate=48000
+11-26 11:21:02.457 26347 26350 I EffectMiSound: MiSound_updateState(), mode=0, music=0, movie=0, reset=0
+11-26 11:21:02.457 26347 26350 I EffectMiSound: MiSound_updateState(), Speaker Dual Mode is not supported. Stop update state.
+11-26 11:21:02.457 26347 26351 V EffectMiSound: MiSound_command() start, cmdCode=9
+11-26 11:21:02.457 26347 26351 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_DEVICE: 0x00000002
+11-26 11:21:02.457 26347 31970 V EffectMiSound: MiSound_command() start, cmdCode=11
+11-26 11:21:02.457 26347 31970 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_AUDIO_MODE: 0
+11-26 11:21:02.458 26348 26357 D APM_AudioPolicyManager: getNewOutputDevices selected devices {type:0x2,@:}
+11-26 11:21:02.459 26348 26360 E AudioFlinger: open /proc/805/cmdline error
+11-26 11:21:02.459 26348 26360 I AudioFlinger: setAppName(), name=[], active=[1]
+11-26 11:21:02.459 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=24
+11-26 11:21:02.459 26347 31971 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_APP_NAME: stream=3, name=+
+11-26 11:21:02.463   805 13186 W AudioTrack: getTimestamp_l(99): startup glitch detected deltaTimeUs(13636) deltaPositionUs(50376000) tsmPosition(2418048)
+11-26 11:21:02.465 26348 26360 E AudioFlinger: open /proc/805/cmdline error
+11-26 11:21:02.465 26348 26360 I AudioFlinger: setAppName(), name=[], active=[0]
+11-26 11:21:02.465 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=24
+11-26 11:21:02.465 26347 31971 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_APP_NAME: stream=3, name=-
+11-26 11:21:02.466 26347 31971 D audio_hw_primary: copl(0xaf909800):pause compress driver
+11-26 11:21:02.467 26348 26357 D APM_AudioPolicyManager: stopOutput portId 99
+11-26 11:21:02.468 26348 26357 D APM_AudioPolicyManager: getNewOutputDevices selected devices AUDIO_DEVICE_NONE
+11-26 11:21:02.474 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=20
+11-26 11:21:02.474 26347 31971 V EffectMiSound: MiSound_Command EFFECT_CMD_OFFLOAD
+11-26 11:21:02.474 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=1
+11-26 11:21:02.474 26347 26350 V EffectMiSound: MiSound_setConfig start
+11-26 11:21:02.474 26347 26350 I EffectMiSound: MiSound_updateState(), enable=0, hifi=0, device=0x2, headset=5, samplingRate=48000
+11-26 11:21:02.474 26347 26350 I EffectMiSound: MiSound_updateState(), mode=0, music=0, movie=0, reset=0
+11-26 11:21:02.474 26347 26350 I EffectMiSound: MiSound_updateState(), Speaker Dual Mode is not supported. Stop update state.
+11-26 11:21:02.475 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=9
+11-26 11:21:02.475 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_DEVICE: 0x00000002
+11-26 11:21:02.475 26347 26351 V EffectMiSound: MiSound_command() start, cmdCode=11
+11-26 11:21:02.475 26347 26351 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_AUDIO_MODE: 0
+11-26 11:21:02.478 26348 26357 D APM_AudioPolicyManager: startOutput portId 99
+11-26 11:21:02.484 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=20
+11-26 11:21:02.484 26347 31971 V EffectMiSound: MiSound_Command EFFECT_CMD_OFFLOAD
+11-26 11:21:02.484 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=1
+11-26 11:21:02.484 26347 26350 V EffectMiSound: MiSound_setConfig start
+11-26 11:21:02.484 26347 26350 I EffectMiSound: MiSound_updateState(), enable=0, hifi=0, device=0x2, headset=5, samplingRate=48000
+11-26 11:21:02.484 26347 26350 I EffectMiSound: MiSound_updateState(), mode=0, music=0, movie=0, reset=0
+11-26 11:21:02.484 26347 26350 I EffectMiSound: MiSound_updateState(), Speaker Dual Mode is not supported. Stop update state.
+11-26 11:21:02.484 26347 26351 V EffectMiSound: MiSound_command() start, cmdCode=9
+11-26 11:21:02.484 26347 26351 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_DEVICE: 0x00000002
+11-26 11:21:02.485 26347 31970 V EffectMiSound: MiSound_command() start, cmdCode=11
+11-26 11:21:02.485 26347 31970 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_AUDIO_MODE: 0
+11-26 11:21:02.485 26348 26357 D APM_AudioPolicyManager: getNewOutputDevices selected devices {type:0x2,@:}
+11-26 11:21:02.487 26348 26384 E AudioFlinger: open /proc/805/cmdline error
+11-26 11:21:02.487 26348 26384 I AudioFlinger: setAppName(), name=[], active=[1]
+11-26 11:21:02.487 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=24
+11-26 11:21:02.487 26347 31971 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_APP_NAME: stream=3, name=+
+11-26 11:21:02.488 26347 31971 D audio_hw_primary: copl(0xaf909800):calling compress flush
+11-26 11:21:02.524 26347 31971 D audio_hw_primary: copl(0xaf909800):out of compress flush
+11-26 11:21:02.537 26347 26350 D audio_hw_primary: out_set_volume: called with left_vol=0.002172, right_vol=0.002172
+11-26 11:21:02.538 26347 26350 E audio_hw_primary: out_set_compr_volume:ctl for mixer cmd - Compress Playback 9 Volume, left 0.002172, right 0.002172
+11-26 11:21:02.550 26347 13192 D audio_hw_primary: copl(0xaf909800):send new gapless metadata
+11-26 11:21:02.552   805 13186 D AudioSink: callbackwrapper: EVENT_UNDERRUN (discarded)
+11-26 11:21:02.567   805 13186 D AudioSink: callbackwrapper: EVENT_UNDERRUN (discarded)
+11-26 11:21:02.583 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:02.583 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:02.595   805 13186 D AudioSink: callbackwrapper: EVENT_UNDERRUN (discarded)
+11-26 11:21:02.986   783  1848 D         : readbrightness,out1:8
+11-26 11:21:02.986   783  1848 D         : .
+11-26 11:21:02.986   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:03.472 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:03.475 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:03.475 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:03.987   783  1848 D         : readbrightness,out1:8
+11-26 11:21:03.987   783  1848 D         : .
+11-26 11:21:03.987   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:04.283  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:04.864 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:04.870 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:04.871 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:04.988   783  1848 D         : readbrightness,out1:8
+11-26 11:21:04.988   783  1848 D         : .
+11-26 11:21:04.988   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:05.990   783  1848 D         : readbrightness,out1:8
+11-26 11:21:05.990   783  1848 D         : .
+11-26 11:21:05.990   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:06.295 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:06.299 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:06.299 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:06.991   783  1848 D         : readbrightness,out1:8
+11-26 11:21:06.991   783  1848 D         : .
+11-26 11:21:06.991   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:07.277  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.280  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 1 line
+11-26 11:21:07.286  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.287  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:07.292  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.294  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 1 line
+11-26 11:21:07.300  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.308  1904  2321 V NFC     : this device does not have NFC support
+11-26 11:21:07.309  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.312  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 1 line
+11-26 11:21:07.315  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.321  1904  2321 V NFC     : this device does not have NFC support
+11-26 11:21:07.322  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.323  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 1 line
+11-26 11:21:07.325  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.329  1904  2321 V NFC     : this device does not have NFC support
+11-26 11:21:07.330  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.330  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 1 line
+11-26 11:21:07.333  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.424  1904  2321 V NFC     : this device does not have NFC support
+11-26 11:21:07.428  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.434  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 1 line
+11-26 11:21:07.451  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.459  1904  2321 V NFC     : this device does not have NFC support
+11-26 11:21:07.460  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.461  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 1 line
+11-26 11:21:07.461  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.488  1904  2321 V NFC     : this device does not have NFC support
+11-26 11:21:07.583   613   613 E WifiHAL : wifi_get_wake_reason_stats: Wake lock logging feature not supported 6
+11-26 11:21:07.583  1580  3118 E WifiVendorHal: getWlanWakeReasonCount(l.2103) failed {.code = ERROR_NOT_SUPPORTED, .description = }
+11-26 11:21:07.585  1580  3118 W WifiDiags: CaptureBugReport 7
+11-26 11:21:07.597  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 11:21:07.612  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 11:21:07.616  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.618  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 8 lines
+11-26 11:21:07.626  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.629  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 11:21:07.629  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.645  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 28 lines
+11-26 11:21:07.645  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.645  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 11:21:07.645  1904  2321 D QSTile.BluetoothTile: handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-26 11:21:07.647  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 5 lines
+11-26 11:21:07.648  1904  2321 D QSTile.BluetoothTile: handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-26 11:21:07.648  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.664  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 18 lines
+11-26 11:21:07.664  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.665  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 11:21:07.667  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.670  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.671   613   613 E WifiHAL : Packet monitoring is not yet triggered
+11-26 11:21:07.671  1580  3118 E WifiVendorHal: getTxPktFates(l.1857) failed {.code = ERROR_NOT_AVAILABLE, .description = }
+11-26 11:21:07.672   613   613 E WifiHAL : Packet monitoring is not yet triggered
+11-26 11:21:07.672  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.673  1580  3118 E WifiVendorHal: getRxPktFates(l.1899) failed {.code = ERROR_NOT_AVAILABLE, .description = }
+11-26 11:21:07.673  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.702  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 38 lines
+11-26 11:21:07.703  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.704  1904  1904 D BluetoothController: fireStateChange
+11-26 11:21:07.704  1904  1904 D QSTile.BluetoothTile: onBluetoothStateChange: enabled = true
+11-26 11:21:07.704  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.704  1904  1904 D QSTile.BluetoothTile: onBluetoothStateChange: enabled = true
+11-26 11:21:07.705  1904  1904 I chatty  : uid=1000(system) com.android.systemui identical 3 lines
+11-26 11:21:07.705  1904  1904 D QSTile.BluetoothTile: onBluetoothStateChange: enabled = true
+11-26 11:21:07.705  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.705  1904  1904 D QSTile.BluetoothTile: onBluetoothStateChange: enabled = true
+11-26 11:21:07.705  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.712  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 26 lines
+11-26 11:21:07.712  1904  2321 D QSTile.CellularTile: handleUpdateState: airplaneModeEnabled: false, isMobileDataSupported: false
+11-26 11:21:07.713  1904  2321 D QSTile.BluetoothTile: handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-26 11:21:07.716  1904  2321 I chatty  : uid=1000(system) SysUiBg identical 5 lines
+11-26 11:21:07.716  1904  2321 D QSTile.BluetoothTile: handleUpdateState: mTargetEnable = truemController.getBluetoothState() = 12
+11-26 11:21:07.732 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:07.740 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:07.740 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:07.941 13927 13928 W BpBinder: Slow Binder: BpBinder transact took 541ms, interface=android.net.wifi.IWifiManager, code=1598311760 oneway=false
+11-26 11:21:07.992   783  1848 D         : readbrightness,out1:8
+11-26 11:21:07.992   783  1848 D         : .
+11-26 11:21:07.992   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:08.606   613   613 E WifiHAL : wifi_get_wake_reason_stats: Wake lock logging feature not supported 6
+11-26 11:21:08.606  1580  3118 E WifiVendorHal: getWlanWakeReasonCount(l.2103) failed {.code = ERROR_NOT_SUPPORTED, .description = }
+11-26 11:21:08.609  1580  3118 W WifiDiags: CaptureBugReport 7
+11-26 11:21:08.618  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 11:21:08.630  2833  2833 I chatty  : uid=1000(system) /system/vendor/bin/cnss_diag identical 1 line
+11-26 11:21:08.639  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 11:21:08.640   613  8350 E WifiHAL : Error reading from socket
+11-26 11:21:08.640   613  8350 E WifiHAL : Error :-5 while reading nl msg
+11-26 11:21:08.642   613   613 E WifiHAL : Packet monitoring is not yet triggered
+11-26 11:21:08.642  1580  3118 E WifiVendorHal: getTxPktFates(l.1857) failed {.code = ERROR_NOT_AVAILABLE, .description = }
+11-26 11:21:08.643   613   613 E WifiHAL : Packet monitoring is not yet triggered
+11-26 11:21:08.643  1580  3118 E WifiVendorHal: getRxPktFates(l.1899) failed {.code = ERROR_NOT_AVAILABLE, .description = }
+11-26 11:21:08.992   783  1848 D         : readbrightness,out1:8
+11-26 11:21:08.992   783  1848 D         : .
+11-26 11:21:08.992   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:09.002 13940 13942 W BpBinder: Slow Binder: BpBinder transact took 665ms, interface=android.net.wifi.IWifiManager, code=1598311760 oneway=false
+11-26 11:21:09.313 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:09.315 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:09.316 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:09.993   783  1848 D         : readbrightness,out1:8
+11-26 11:21:09.993   783  1848 D         : .
+11-26 11:21:09.993   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:10.292  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:10.994   783  1848 D         : readbrightness,out1:8
+11-26 11:21:10.994   783  1848 D         : .
+11-26 11:21:10.994   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:11.062 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:11.066 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:11.067 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:11.192  3970  3970 I VoiceTrigger:AudioMode: voice trigger timer task 60*1000ms :54151
+11-26 11:21:11.193  3970  3970 I VoiceTrigger:AudioMode: voice trigger running:1795663271193
+11-26 11:21:11.994   783  1848 D         : readbrightness,out1:8
+11-26 11:21:11.994   783  1848 D         : .
+11-26 11:21:11.995   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:12.922 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:12.929 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:12.929 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:12.995   783  1848 D         : readbrightness,out1:8
+11-26 11:21:12.995   783  1848 D         : .
+11-26 11:21:12.995   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:13.297  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:13.996   783  1848 D         : readbrightness,out1:8
+11-26 11:21:13.996   783  1848 D         : .
+11-26 11:21:13.996   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:14.732 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:14.735 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:14.736 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:14.997   783  1848 D         : readbrightness,out1:8
+11-26 11:21:14.997   783  1848 D         : .
+11-26 11:21:14.997   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:15.998   783  1848 D         : readbrightness,out1:8
+11-26 11:21:15.998   783  1848 D         : .
+11-26 11:21:15.998   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:16.283 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:16.287 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:16.287 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:16.301  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:16.998   783  1848 D         : readbrightness,out1:8
+11-26 11:21:16.998   783  1848 D         : .
+11-26 11:21:16.998   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:17.664     0     0 W swapper/7: type=1400 audit(0.0:46261): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:21:17.744 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:17.747 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:17.747 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:17.999   783  1848 D         : readbrightness,out1:8
+11-26 11:21:17.999   783  1848 D         : .
+11-26 11:21:17.999   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:19.000   783  1848 D         : readbrightness,out1:8
+11-26 11:21:19.000   783  1848 D         : .
+11-26 11:21:19.000   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:19.204 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:19.209 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:19.210 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:19.306  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:20.000   783  1848 D         : readbrightness,out1:8
+11-26 11:21:20.000   783  1848 D         : .
+11-26 11:21:20.001   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:20.683 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:20.692 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:20.693 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:21.002   783  1848 D         : readbrightness,out1:8
+11-26 11:21:21.002   783  1848 D         : .
+11-26 11:21:21.002   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:22.004   783  1848 D         : readbrightness,out1:8
+11-26 11:21:22.004   783  1848 D         : .
+11-26 11:21:22.004   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:22.312  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:22.364 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:22.370 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:22.370 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:22.809 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 11:21:22.818 12980 13013 I MqttService: Saved MAC address: 0200000000A1
+11-26 11:21:22.838  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-26 11:21:22.838  1580  1639 I MiuiNetworkPolicy: label wlan0, uid 10169, active true, tsNanos 403052795345299
+11-26 11:21:22.840   514  1033 D OemNetd : setLimit: enable, rate=206939
+11-26 11:21:23.004   783  1848 D         : readbrightness,out1:8
+11-26 11:21:23.004   783  1848 D         : .
+11-26 11:21:23.004   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:23.426 12980 13949 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-26 11:21:23.887 12980 13953 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-26 11:21:23.895 12980 12980 E MqttService: Failed to connect to broker
+11-26 11:21:23.895 12980 12980 E MqttService: 无权连接 (5)
+11-26 11:21:23.895 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-26 11:21:23.895 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-26 11:21:23.895 12980 12980 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-26 11:21:23.895 12980 12980 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 11:21:24.005   783  1848 D         : readbrightness,out1:8
+11-26 11:21:24.005   783  1848 D         : .
+11-26 11:21:24.005   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:24.112 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:24.116 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:24.117 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:25.007   783  1848 D         : readbrightness,out1:8
+11-26 11:21:25.007   783  1848 D         : .
+11-26 11:21:25.007   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:25.315  1580  1802 I MiuiNetworkPolicy: bandwidth: 1 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:25.964 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:25.970 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:25.971 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:26.008   783  1848 D         : readbrightness,out1:8
+11-26 11:21:26.008   783  1848 D         : .
+11-26 11:21:26.008   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:27.009   783  1848 D         : readbrightness,out1:8
+11-26 11:21:27.009   783  1848 D         : .
+11-26 11:21:27.009   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:27.664     0     0 W swapper/4: type=1400 audit(0.0:46262): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:21:27.732 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:27.736 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:27.736 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:28.010   783  1848 D         : readbrightness,out1:8
+11-26 11:21:28.010   783  1848 D         : .
+11-26 11:21:28.010   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:28.320  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:29.012   783  1848 D         : readbrightness,out1:8
+11-26 11:21:29.012   783  1848 D         : .
+11-26 11:21:29.012   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:29.332 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:29.338 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:29.339 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:30.012   783  1848 D         : readbrightness,out1:8
+11-26 11:21:30.012   783  1848 D         : .
+11-26 11:21:30.013   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:30.666  2482  2620 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-26 11:21:30.666  2482  2620 D MiuiFastConnectService: stopBleScan: scanning: true
+11-26 11:21:30.668  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 11:21:30.670  1882  1901 D BtGatt.GattService: stopScan() - queue size =1
+11-26 11:21:30.673  1882  2332 I BtGatt.ScanManager: msg.what = 1
+11-26 11:21:30.673  1882  2332 D BtGatt.ScanManager: stop scan
+11-26 11:21:30.674  1882  1901 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-26 11:21:30.675  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-26 11:21:30.675  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-26 11:21:30.676  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-26 11:21:30.676  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.682  2482  2620 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-26 11:21:30.684  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-26 11:21:30.684  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.685  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 11:21:30.686  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-26 11:21:30.686  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.689  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-26 11:21:30.690  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.692  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-26 11:21:30.692  1882  1900 D BtGatt.GattService: registerScanner() - UUID=34736bbc-c02a-408f-acc4-7f7ac898f0a0
+11-26 11:21:30.692  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.692  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-26 11:21:30.692  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-26 11:21:30.692  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 11:21:30.692  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 11:21:30.693  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-26 11:21:30.693  1882  2353 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register 7d3d80ef-f39d-9019-8323-48f2803121cc
+11-26 11:21:30.693  1882  2353 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-26 11:21:30.693  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-26 11:21:30.693  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-26 11:21:30.693  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-26 11:21:30.693  1882  2034 D BtGatt.GattService: onScannerRegistered() - UUID=34736bbc-c02a-408f-acc4-7f7ac898f0a0, scannerId=5, status=0
+11-26 11:21:30.694  2482 12038 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-26 11:21:30.696  1882  1901 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-26 11:21:30.699  1882  1901 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@f868ba5
+11-26 11:21:30.701  1882  1901 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-26 11:21:30.701  1882  1901 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-26 11:21:30.703  1882  2332 I BtGatt.ScanManager: msg.what = 0
+11-26 11:21:30.704  1882  2332 D BtGatt.ScanManager: handling starting scan
+11-26 11:21:30.706  1882  2332 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-26 11:21:30.709  1882  2034 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-26 11:21:30.709  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.709  1882  2332 D BtGatt.ScanManager: Available Filter size: 13
+11-26 11:21:30.709  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 11:21:30.709  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.710  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 11:21:30.713  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-26 11:21:30.713  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.714  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 11:21:30.714  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.714  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 11:21:30.716  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-26 11:21:30.716  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.717  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 11:21:30.717  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.717  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 11:21:30.720  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-26 11:21:30.720  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.720  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 11:21:30.720  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.720  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 11:21:30.722  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-26 11:21:30.723  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.723  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 11:21:30.723  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.724  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 11:21:30.725  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-26 11:21:30.726  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 11:21:30.726  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-26 11:21:30.726  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-26 11:21:30.728  1882  2332 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-26 11:21:30.728  1882  2034 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-26 11:21:31.013   783  1848 D         : readbrightness,out1:8
+11-26 11:21:31.013   783  1848 D         : .
+11-26 11:21:31.013   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:31.032 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:31.036 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:31.036 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:31.324  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:32.014   783  1848 D         : readbrightness,out1:8
+11-26 11:21:32.014   783  1848 D         : .
+11-26 11:21:32.014   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:32.792 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:32.796 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:32.796 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:33.014   783  1848 D         : readbrightness,out1:8
+11-26 11:21:33.014   783  1848 D         : .
+11-26 11:21:33.014   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:34.015   783  1848 D         : readbrightness,out1:8
+11-26 11:21:34.015   783  1848 D         : .
+11-26 11:21:34.015   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:34.329  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:34.412 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:34.417 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:34.417 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:35.016   783  1848 D         : readbrightness,out1:8
+11-26 11:21:35.016   783  1848 D         : .
+11-26 11:21:35.016   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:36.012 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:36.016 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:36.016   783  1848 D         : readbrightness,out1:8
+11-26 11:21:36.016   783  1848 D         : .
+11-26 11:21:36.016   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:36.017 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:37.017   783  1848 D         : readbrightness,out1:8
+11-26 11:21:37.017   783  1848 D         : .
+11-26 11:21:37.017   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:37.334  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:37.452 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:37.455 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:37.456 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:37.664     0     0 W swapper/5: type=1400 audit(0.0:46263): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:21:38.018   783  1848 D         : readbrightness,out1:8
+11-26 11:21:38.018   783  1848 D         : .
+11-26 11:21:38.018   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:39.019   783  1848 D         : readbrightness,out1:8
+11-26 11:21:39.019   783  1848 D         : .
+11-26 11:21:39.019   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:39.043 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:39.049 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:39.050 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:39.054   805 13191 D NuPlayerDecoderPassThrough: return aggregated buffer and save err(=-1011) for later
+11-26 11:21:39.152  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-26 11:21:39.152  1580  1639 I MiuiNetworkPolicy: label wlan0, uid -1, active false, tsNanos 403068844127278
+11-26 11:21:39.152   514  1033 D OemNetd : setLimit: disable, rate=0
+11-26 11:21:40.019   783  1848 D         : readbrightness,out1:8
+11-26 11:21:40.019   783  1848 D         : .
+11-26 11:21:40.020   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:40.335  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:40.634 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:40.641 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:40.641 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:41.021   783  1848 D         : readbrightness,out1:8
+11-26 11:21:41.021   783  1848 D         : .
+11-26 11:21:41.021   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:42.021   783  1848 D         : readbrightness,out1:8
+11-26 11:21:42.021   783  1848 D         : .
+11-26 11:21:42.021   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:42.324 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:42.330 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:42.330 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:43.022   783  1848 D         : readbrightness,out1:8
+11-26 11:21:43.022   783  1848 D         : .
+11-26 11:21:43.022   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:43.340  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:43.942 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:43.945 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:43.946 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:43.950 26348 26360 E AudioFlinger: open /proc/805/cmdline error
+11-26 11:21:43.950 26348 26360 I AudioFlinger: setAppName(), name=[], active=[0]
+11-26 11:21:43.951 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=24
+11-26 11:21:43.951 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_APP_NAME: stream=3, name=-
+11-26 11:21:44.024   783  1848 D         : readbrightness,out1:8
+11-26 11:21:44.024   783  1848 D         : .
+11-26 11:21:44.024   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:45.026   783  1848 D         : readbrightness,out1:8
+11-26 11:21:45.026   783  1848 D         : .
+11-26 11:21:45.026   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:45.612 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:45.616 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:45.616 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:46.026   783  1848 D         : readbrightness,out1:8
+11-26 11:21:46.026   783  1848 D         : .
+11-26 11:21:46.026   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:46.344  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:47.028   783  1848 D         : readbrightness,out1:8
+11-26 11:21:47.028   783  1848 D         : .
+11-26 11:21:47.028   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:47.204 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:47.210 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_partial_drain
+11-26 11:21:47.664     0     0 W swapper/7: type=1400 audit(0.0:46264): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:21:48.030   783  1848 D         : readbrightness,out1:8
+11-26 11:21:48.030   783  1848 D         : .
+11-26 11:21:48.030   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:49.031   783  1848 D         : readbrightness,out1:8
+11-26 11:21:49.031   783  1848 D         : .
+11-26 11:21:49.031   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:49.350  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:50.032   783  1848 D         : readbrightness,out1:8
+11-26 11:21:50.032   783  1848 D         : .
+11-26 11:21:50.032   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:51.033   783  1848 D         : readbrightness,out1:8
+11-26 11:21:51.033   783  1848 D         : .
+11-26 11:21:51.033   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:52.033   783  1848 D         : readbrightness,out1:8
+11-26 11:21:52.033   783  1848 D         : .
+11-26 11:21:52.033   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:52.301  1904  1904 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-26 11:21:52.302  2194  2194 D QtiCarrierConfigHelper: WARNING, no carrier configs on phone Id: 0
+11-26 11:21:52.304  3355  3355 I BatteryInfoReceiver: ACTION_BATTERY_CHANGED
+11-26 11:21:52.308 30961 30998 D PowerCheckerService: onBatteryChanged, mBatteryLevel = 100, status = 5, level = 100, plug = 2, scale = 100
+11-26 11:21:52.309  3039 13960 D UploadVoiceJobService: needUploadVoice timeSinceLastUpload = 2810285
+11-26 11:21:52.352  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:53.009 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_partial_drain
+11-26 11:21:53.010 26347 13192 D audio_hw_utils: audio_extn_utils_compress_get_dsp_latency:: Using Fix DSP delay
+11-26 11:21:53.010 26347 13192 D audio_hw_utils: audio_extn_utils_compress_get_dsp_latency:: delay in ms is 50
+11-26 11:21:53.010   805 13180 D NuPlayer:  audio  end  mAudioEOS: 1
+11-26 11:21:53.011   805 13180 D NuPlayer:  video  end  mVideoEOS: 0
+11-26 11:21:53.011 26348 26357 D APM_AudioPolicyManager: stopOutput portId 99
+11-26 11:21:53.011 26348 26357 D APM_AudioPolicyManager: getNewOutputDevices selected devices AUDIO_DEVICE_NONE
+11-26 11:21:53.018 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=20
+11-26 11:21:53.018 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_OFFLOAD
+11-26 11:21:53.019 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=1
+11-26 11:21:53.019 26347 31971 V EffectMiSound: MiSound_setConfig start
+11-26 11:21:53.019 26347 31971 I EffectMiSound: MiSound_updateState(), enable=0, hifi=0, device=0x2, headset=5, samplingRate=48000
+11-26 11:21:53.019 26347 31971 I EffectMiSound: MiSound_updateState(), mode=0, music=0, movie=0, reset=0
+11-26 11:21:53.019 26347 31971 I EffectMiSound: MiSound_updateState(), Speaker Dual Mode is not supported. Stop update state.
+11-26 11:21:53.019 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=9
+11-26 11:21:53.019 26347 31971 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_DEVICE: 0x00000002
+11-26 11:21:53.019 26347 31970 V EffectMiSound: MiSound_command() start, cmdCode=11
+11-26 11:21:53.019 26347 31970 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_AUDIO_MODE: 0
+11-26 11:21:53.020 26348 26357 D APM_AudioPolicyManager: startOutput portId 99
+11-26 11:21:53.026 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=20
+11-26 11:21:53.026 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_OFFLOAD
+11-26 11:21:53.026 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=1
+11-26 11:21:53.026 26347 26350 V EffectMiSound: MiSound_setConfig start
+11-26 11:21:53.026 26347 26350 I EffectMiSound: MiSound_updateState(), enable=0, hifi=0, device=0x2, headset=5, samplingRate=48000
+11-26 11:21:53.026 26347 26350 I EffectMiSound: MiSound_updateState(), mode=0, music=0, movie=0, reset=0
+11-26 11:21:53.026 26347 26350 I EffectMiSound: MiSound_updateState(), Speaker Dual Mode is not supported. Stop update state.
+11-26 11:21:53.027 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=9
+11-26 11:21:53.027 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_DEVICE: 0x00000002
+11-26 11:21:53.027 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=11
+11-26 11:21:53.027 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_AUDIO_MODE: 0
+11-26 11:21:53.028 26348 26357 D APM_AudioPolicyManager: getNewOutputDevices selected devices {type:0x2,@:}
+11-26 11:21:53.029 26348 26360 E AudioFlinger: open /proc/805/cmdline error
+11-26 11:21:53.029 26348 26360 I AudioFlinger: setAppName(), name=[], active=[1]
+11-26 11:21:53.029 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=24
+11-26 11:21:53.029 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_APP_NAME: stream=3, name=+
+11-26 11:21:53.033   805 13186 W AudioTrack: getTimestamp_l(99): startup glitch detected deltaTimeUs(19044) deltaPositionUs(50376000) tsmPosition(2418048)
+11-26 11:21:53.034   783  1848 D         : readbrightness,out1:8
+11-26 11:21:53.034   783  1848 D         : .
+11-26 11:21:53.034   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:53.035 26348 26384 E AudioFlinger: open /proc/805/cmdline error
+11-26 11:21:53.035 26348 26384 I AudioFlinger: setAppName(), name=[], active=[0]
+11-26 11:21:53.035 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=24
+11-26 11:21:53.035 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_APP_NAME: stream=3, name=-
+11-26 11:21:53.036 26347 26350 D audio_hw_primary: copl(0xaf909800):pause compress driver
+11-26 11:21:53.037 26348 26357 D APM_AudioPolicyManager: stopOutput portId 99
+11-26 11:21:53.037 26348 26357 D APM_AudioPolicyManager: getNewOutputDevices selected devices AUDIO_DEVICE_NONE
+11-26 11:21:53.042 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=20
+11-26 11:21:53.043 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_OFFLOAD
+11-26 11:21:53.043 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=1
+11-26 11:21:53.043 26347 31971 V EffectMiSound: MiSound_setConfig start
+11-26 11:21:53.043 26347 31971 I EffectMiSound: MiSound_updateState(), enable=0, hifi=0, device=0x2, headset=5, samplingRate=48000
+11-26 11:21:53.043 26347 31971 I EffectMiSound: MiSound_updateState(), mode=0, music=0, movie=0, reset=0
+11-26 11:21:53.043 26347 31971 I EffectMiSound: MiSound_updateState(), Speaker Dual Mode is not supported. Stop update state.
+11-26 11:21:53.043 26347 31970 V EffectMiSound: MiSound_command() start, cmdCode=9
+11-26 11:21:53.043 26347 31970 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_DEVICE: 0x00000002
+11-26 11:21:53.043 26347 26351 V EffectMiSound: MiSound_command() start, cmdCode=11
+11-26 11:21:53.043 26347 26351 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_AUDIO_MODE: 0
+11-26 11:21:53.046 26348 26357 D APM_AudioPolicyManager: startOutput portId 99
+11-26 11:21:53.052 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=20
+11-26 11:21:53.052 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_OFFLOAD
+11-26 11:21:53.052 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=1
+11-26 11:21:53.052 26347 31971 V EffectMiSound: MiSound_setConfig start
+11-26 11:21:53.052 26347 31971 I EffectMiSound: MiSound_updateState(), enable=0, hifi=0, device=0x2, headset=5, samplingRate=48000
+11-26 11:21:53.052 26347 31971 I EffectMiSound: MiSound_updateState(), mode=0, music=0, movie=0, reset=0
+11-26 11:21:53.052 26347 31971 I EffectMiSound: MiSound_updateState(), Speaker Dual Mode is not supported. Stop update state.
+11-26 11:21:53.052 26347 31971 V EffectMiSound: MiSound_command() start, cmdCode=9
+11-26 11:21:53.052 26347 31971 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_DEVICE: 0x00000002
+11-26 11:21:53.053 26347 31970 V EffectMiSound: MiSound_command() start, cmdCode=11
+11-26 11:21:53.053 26347 31970 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_AUDIO_MODE: 0
+11-26 11:21:53.053 26348 26357 D APM_AudioPolicyManager: getNewOutputDevices selected devices {type:0x2,@:}
+11-26 11:21:53.055 26348 26383 E AudioFlinger: open /proc/805/cmdline error
+11-26 11:21:53.055 26348 26383 I AudioFlinger: setAppName(), name=[], active=[1]
+11-26 11:21:53.055 26347 26350 V EffectMiSound: MiSound_command() start, cmdCode=24
+11-26 11:21:53.055 26347 26350 V EffectMiSound: MiSound_Command EFFECT_CMD_SET_APP_NAME: stream=3, name=+
+11-26 11:21:53.056 26347 26350 D audio_hw_primary: copl(0xaf909800):calling compress flush
+11-26 11:21:53.091 26347 26350 D audio_hw_primary: copl(0xaf909800):out of compress flush
+11-26 11:21:53.104 26347 26350 D audio_hw_primary: out_set_volume: called with left_vol=0.002172, right_vol=0.002172
+11-26 11:21:53.104 26347 26350 E audio_hw_primary: out_set_compr_volume:ctl for mixer cmd - Compress Playback 9 Volume, left 0.002172, right 0.002172
+11-26 11:21:53.116 26347 13192 D audio_hw_primary: copl(0xaf909800):send new gapless metadata
+11-26 11:21:53.119   805 13186 D AudioSink: callbackwrapper: EVENT_UNDERRUN (discarded)
+11-26 11:21:53.136   805 13186 I chatty  : uid=1013(media) AudioTrack identical 2 lines
+11-26 11:21:53.149   805 13186 D AudioSink: callbackwrapper: EVENT_UNDERRUN (discarded)
+11-26 11:21:53.153 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:53.154 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:54.035   783  1848 D         : readbrightness,out1:8
+11-26 11:21:54.035   783  1848 D         : .
+11-26 11:21:54.035   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:54.037 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:54.040 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:54.040 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:55.035   783  1848 D         : readbrightness,out1:8
+11-26 11:21:55.035   783  1848 D         : .
+11-26 11:21:55.035   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:55.354  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:55.427 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:55.429 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:55.429 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:56.035   783  1848 D         : readbrightness,out1:8
+11-26 11:21:56.035   783  1848 D         : .
+11-26 11:21:56.035   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:56.858 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:56.862 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:56.863 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:57.036   783  1848 D         : readbrightness,out1:8
+11-26 11:21:57.036   783  1848 D         : .
+11-26 11:21:57.036   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:57.664     0     0 W swapper/4: type=1400 audit(0.0:46265): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:21:58.036   783  1848 D         : readbrightness,out1:8
+11-26 11:21:58.036   783  1848 D         : .
+11-26 11:21:58.036   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:58.297 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:58.301 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:58.301 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:21:58.358  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:21:59.036   783  1848 D         : readbrightness,out1:8
+11-26 11:21:59.036   783  1848 D         : .
+11-26 11:21:59.037   783  1848 D         : readbrightness,out2:8.
+11-26 11:21:59.878 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:21:59.880 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:21:59.881 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:00.002  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 11:22:00.037   783  1848 D         : readbrightness,out1:8
+11-26 11:22:00.037   783  1848 D         : .
+11-26 11:22:00.037   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:01.038   783  1848 D         : readbrightness,out1:8
+11-26 11:22:01.038   783  1848 D         : .
+11-26 11:22:01.038   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:01.363  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:22:01.629 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:01.632 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:01.633 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:02.038   783  1848 D         : readbrightness,out1:8
+11-26 11:22:02.038   783  1848 D         : .
+11-26 11:22:02.039   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:03.039   783  1848 D         : readbrightness,out1:8
+11-26 11:22:03.039   783  1848 D         : .
+11-26 11:22:03.039   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:03.489 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:03.493 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:03.493 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:04.040   783  1848 D         : readbrightness,out1:8
+11-26 11:22:04.040   783  1848 D         : .
+11-26 11:22:04.040   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:04.369  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:22:05.041   783  1848 D         : readbrightness,out1:8
+11-26 11:22:05.041   783  1848 D         : .
+11-26 11:22:05.041   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:05.300 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:05.305 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:05.305 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:06.041   783  1848 D         : readbrightness,out1:8
+11-26 11:22:06.041   783  1848 D         : .
+11-26 11:22:06.042   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:06.849 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:06.853 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:06.853 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:07.043   783  1848 D         : readbrightness,out1:8
+11-26 11:22:07.043   783  1848 D         : .
+11-26 11:22:07.043   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:07.373  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:22:07.664     0     0 W swapper/6: type=1400 audit(0.0:46266): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:22:08.045   783  1848 D         : readbrightness,out1:8
+11-26 11:22:08.045   783  1848 D         : .
+11-26 11:22:08.045   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:08.309 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:08.312 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:08.313 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:09.047   783  1848 D         : readbrightness,out1:8
+11-26 11:22:09.047   783  1848 D         : .
+11-26 11:22:09.047   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:09.769 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:09.773 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:09.774 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:10.048   783  1848 D         : readbrightness,out1:8
+11-26 11:22:10.048   783  1848 D         : .
+11-26 11:22:10.049   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:10.378  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:22:11.050   783  1848 D         : readbrightness,out1:8
+11-26 11:22:11.050   783  1848 D         : .
+11-26 11:22:11.051   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:11.249 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:11.254 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:11.254 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:11.289  3970  3970 I VoiceTrigger:AudioMode: voice trigger timer task 60*1000ms :54161
+11-26 11:22:11.289  3970  3970 I VoiceTrigger:AudioMode: voice trigger running:1795663331289
+11-26 11:22:12.051   783  1848 D         : readbrightness,out1:8
+11-26 11:22:12.051   783  1848 D         : .
+11-26 11:22:12.052   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:12.929 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:12.935 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:12.935 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:13.052   783  1848 D         : readbrightness,out1:8
+11-26 11:22:13.052   783  1848 D         : .
+11-26 11:22:13.052   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:13.382  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:22:14.053   783  1848 D         : readbrightness,out1:8
+11-26 11:22:14.053   783  1848 D         : .
+11-26 11:22:14.053   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:14.679 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:14.685 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:14.685 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:15.053   783  1848 D         : readbrightness,out1:8
+11-26 11:22:15.053   783  1848 D         : .
+11-26 11:22:15.053   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:16.054   783  1848 D         : readbrightness,out1:8
+11-26 11:22:16.054   783  1848 D         : .
+11-26 11:22:16.054   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:16.388  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:22:16.529 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:16.532 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:16.532 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:17.054   783  1848 D         : readbrightness,out1:8
+11-26 11:22:17.054   783  1848 D         : .
+11-26 11:22:17.055   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:17.664     0     0 W swapper/4: type=1400 audit(0.0:46267): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 11:22:18.055   783  1848 D         : readbrightness,out1:8
+11-26 11:22:18.055   783  1848 D         : .
+11-26 11:22:18.055   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:18.297 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:18.301 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:18.302 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:19.056   783  1848 D         : readbrightness,out1:8
+11-26 11:22:19.056   783  1848 D         : .
+11-26 11:22:19.056   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:19.392  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:22:19.899 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:19.904 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:19.904 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:20.057   783  1848 D         : readbrightness,out1:8
+11-26 11:22:20.057   783  1848 D         : .
+11-26 11:22:20.057   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:21.057   783  1848 D         : readbrightness,out1:8
+11-26 11:22:21.057   783  1848 D         : .
+11-26 11:22:21.057   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:21.599 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:21.606 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:21.607 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:22.058   783  1848 D         : readbrightness,out1:8
+11-26 11:22:22.058   783  1848 D         : .
+11-26 11:22:22.058   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:22.397  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:22:23.059   783  1848 D         : readbrightness,out1:8
+11-26 11:22:23.059   783  1848 D         : .
+11-26 11:22:23.059   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:23.359 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:23.363 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:23.363 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:24.060   783  1848 D         : readbrightness,out1:8
+11-26 11:22:24.060   783  1848 D         : .
+11-26 11:22:24.060   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:24.979 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:24.984 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:24.984 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:25.061   783  1848 D         : readbrightness,out1:8
+11-26 11:22:25.061   783  1848 D         : .
+11-26 11:22:25.061   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:25.402  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 11:22:26.063   783  1848 D         : readbrightness,out1:8
+11-26 11:22:26.063   783  1848 D         : .
+11-26 11:22:26.063   783  1848 D         : readbrightness,out2:8.
+11-26 11:22:26.579 26347 13187 D audio_hw_primary: copl(0xaf909800):out of compress_wait
+11-26 11:22:26.585 26347 13192 D audio_hw_primary: No space available in compress driver, post msg to cb thread
+11-26 11:22:26.585 26347 13187 D audio_hw_primary: copl(0xaf909800):calling compress_wait
+11-26 11:22:27.065   783  1848 D         : readbrightness,out1:8
+11-26 11:22:27.065   783  1848 D         : .
+11-26 11:22:27.065   783  1848 D         : readbrightness,out2:8.

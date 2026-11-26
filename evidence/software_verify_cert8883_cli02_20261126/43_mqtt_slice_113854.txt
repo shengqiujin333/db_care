@@ -1,0 +1,23 @@
+--------- beginning of main
+11-26 11:38:54.775 14224 14259 D MqttService: Attempting to reconnect to broker
+11-26 11:38:54.802 14224 14259 I MqttService: Saved MAC address: 0200000000A1
+11-26 11:38:55.875 14224 14224 E MqttService: Failed to connect to broker
+11-26 11:38:55.875 14224 14224 E MqttService: 无权连接 (5)
+11-26 11:38:55.875 14224 14224 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-26 11:38:55.875 14224 14224 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-26 11:38:55.875 14224 14224 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-26 11:38:55.875 14224 14224 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+--------- beginning of system
+11-26 11:39:25.874 14224 14259 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=0200000000A1 (平台身份)
+11-26 11:39:25.874 14224 14259 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 11:39:25.874 14224 14259 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-26 11:39:26.241 14224 14244 I MqttService: Connected to device, discovering services...
+11-26 11:39:41.882 14224 14259 E MqttService: Error during connection or data read: Timed out waiting for 16000 ms
+11-26 11:39:41.882 14224 14259 E MqttService: kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 16000 ms
+11-26 11:39:41.882 14224 14259 E MqttService: 	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:191)
+11-26 11:39:41.882 14224 14259 E MqttService: 	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:159)
+11-26 11:39:41.882 14224 14259 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:501)
+11-26 11:39:41.882 14224 14259 E MqttService: 	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:280)
+11-26 11:39:41.882 14224 14259 E MqttService: 	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:108)
+11-26 11:39:41.882 14224 14259 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 11:39:41.886 14224 14259 I MqttService: Retrying connection after delay...

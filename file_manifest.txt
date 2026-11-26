@@ -117,6 +117,7 @@ artifacts/software_failure_analysis_cert8883_upload401.md | active | 软件测�
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-005 rev 5.0（AA-006 ITEM-001..003 扫描权限自动续跑/BLE 读取终态/报告再生成反馈逐条追踪；宿主机映射矩阵、静态核查、真机 API29 与真实网关 devCount=0 用例、证据边界、人工延期与阶段外项、最终判定规则）
 artifacts/software_test_design_cert8883.md | active | 软件测试：8883 证书与客户端地址不匹配修复测试设计 TD-CERT8883-001 v1.0（原 CA 签发/链/IP SAN/负例、App TLS/CONNACK 真实复验、不受影响路径回归、安卓上传与 P1 四段一致条件、信任锚变更分支、证据/退出准则/NOT EXECUTED；只做设计不执行）
 artifacts/software_test_report_cert8883.md | active | 软件测试：8883 证书修复后独立验证报告（两轮；SRV-01 PASS、CLI-02 TLS 维度 PASS/CONNACK rc=5 认证层另记、REG-03 PASS；UPLOAD-04 第 2 轮用模拟账号真实上传实测平台 401 FAIL、无受理行故持久化回读 NOT EXECUTED；P0 证书维度 PASS、P1 NOT EXECUTED；含竞争假设、证据索引与残留状态披露）
+artifacts/software_test_report_cert8883_cli02_r6.md | active | 软件测试：CERT8883-CLI-02 第 6 轮真实 App TLS/CONNACK 复验（同窗无 SAN/链/信任锚错误，TLS 完成并收到 CONNACK rc=5 无权连接；网络层捕获 8883 ESTAB；BLE DATA_OK 与 UI 一致；证书维度 PASS、认证层缺口另记；UI broker 标签未渲染已披露）
 artifacts/software_test_report_cert8883_r3.md | active | 软件测试：8883 证书修复第 3 轮独立验证（上传受理修复后真实 App 上传 HTTP 200/进入 mysql 写库/待发箱清零/同键重放 inserted=0；SRV-01/CLI-02/REG-03/P0 PASS；字段级回读与 P1 NOT EXECUTED；待人工条件）
 artifacts/software_test_report_cert8883_r4.md | active | 软件测试：8883 证书修复第 4 轮最终复验（人工确认不要求字段级回读后，当前版本真实 App 两次上传 HTTP 200/待发箱清零/新增本地读数/同键重放 inserted=0；SRV-01/CLI-02/REG-03/UPLOAD-04 上传维度/P0 PASS；字段级回读经人工确认未执行；P1 未执行且未明确豁免，交付整体 TEST_FAIL EXTERNAL_CONDITION_UNEXECUTED）
 artifacts/software_test_report_cert8883_srv01_r5.md | active | 软件测试：CERT8883-SRV-01 独立核验第 5 轮（2026-11-26T03:10Z 实测 8883 叶子 issuer=CN=Tiktok Root CA, O=LinkValue、SAN 含 IP:8.140.23.253、-verify_ip 返回 0、负例 8.140.23.254 被拒、serial …B83 已从基线 …B82 变更且与签发记录一致、notAfter 2028-11-24；信任锚指纹未变；本用例 TEST_PASS，仅限该用例范围）
@@ -2121,6 +2122,51 @@ evidence/software_verify_cert8883_20261125/18_sim_state.txt | active | 测试手
 evidence/software_verify_cert8883_20261125/extract_ui_text.py | active | UI XML 文本提取辅助脚本（只读）
 evidence/software_verify_cert8883_20261125/platform_baseline_ssh.py | active | 平台只读基线探针（从项目资料读取连接信息、脱敏、无写/无 DB/无 sudo）
 evidence/software_verify_cert8883_20261125/regression_probe.py | active | 平台端口/TLS/HTTP/MySQL 只读回归探针（无 POST/登录/DB 认证）
+evidence/software_verify_cert8883_cli02_20261126/ | active | CERT8883-CLI-02 第 6 轮验证证据根：同一 AB-003 App/手机在 ZTE_607157 默认网络下对 ssl://8.140.23.253:8883 的真实 TLS/CONNACK、BLE 终态、UI 与网络关联证据
+evidence/software_verify_cert8883_cli02_20261126/01_device_identity.txt | active | 设备 serial/型号/Android/API 与主机侧 APK SHA-256（AB-003 一致）
+evidence/software_verify_cert8883_cli02_20261126/02_device_apk_sha256.txt | active | 设备侧 base.apk SHA-256（与 AB-003 主机侧一致）
+evidence/software_verify_cert8883_cli02_20261126/03_dumpsys_package.txt | active | 包信息、versionCode/versionName、蓝牙/定位/前台服务权限授予
+evidence/software_verify_cert8883_cli02_20261126/04_services.txt | active | 早先窗口 MqtttService/MqttService 服务与前台状态
+evidence/software_verify_cert8883_cli02_20261126/05_ps.txt | active | 早先窗口 App 进程 PID
+evidence/software_verify_cert8883_cli02_20261126/06_default_route.txt | active | 默认路由原文（wlan0 192.168.0.103）
+evidence/software_verify_cert8883_cli02_20261126/07_bluetooth_on.txt | active | 蓝牙开关状态
+evidence/software_verify_cert8883_cli02_20261126/08_location_state.txt | active | 定位服务状态转储
+evidence/software_verify_cert8883_cli02_20261126/09_wifi_dump.txt | active | 含 SSID ZTE_607157 的 WiFi 转储
+evidence/software_verify_cert8883_cli02_20261126/10_logcat_pre_window.txt | active | 声明窗口前的 App 日志切片
+evidence/software_verify_cert8883_cli02_20261126/11_logcat_full_buffer.txt | active | 首次全量 logcat 缓冲（用于确认修复后无 TLS 错误）
+evidence/software_verify_cert8883_cli02_20261126/12_logcat_window_cli02.txt | active | 早先窗口 11:20:19 起的原始 logcat
+evidence/software_verify_cert8883_cli02_20261126/13_app_window_cli02.txt | active | 早先窗口 MqttService/CloudUpload 切片（含 CONNACK 5）
+evidence/software_verify_cert8883_cli02_20261126/14_ui_dump_window.xml | active | 早先窗口 UI 控件树
+evidence/software_verify_cert8883_cli02_20261126/15_ui_window.png | active | 早先窗口 UI 截图
+evidence/software_verify_cert8883_cli02_20261126/16_apk_trust_anchor.txt | active | APK 内 assets/jd-ca.crt 指纹/摘要（与基线一致，未更换信任锚）
+evidence/software_verify_cert8883_cli02_20261126/17_prefs_app.xml | active | App prefs：mac_addr/registerphone 等既有测试身份（无密码明文）
+evidence/software_verify_cert8883_cli02_20261126/18_ui_dump_after_ble_terminal.xml | active | BLE CONNECT_FAILED 后 UI 控件树（网关连接失败文案）
+evidence/software_verify_cert8883_cli02_20261126/19_ui_after_ble_terminal.png | active | BLE CONNECT_FAILED 后 UI 截图
+evidence/software_verify_cert8883_cli02_20261126/20_logcat_full_now.txt | active | 会话中全量 logcat 快照
+evidence/software_verify_cert8883_cli02_20261126/21_capture_end_utc.txt | active | 早先捕获结束的 UTC/设备时间
+evidence/software_verify_cert8883_cli02_20261126/22_services_final.txt | active | 早先进程结束后 MqtttService 查询
+evidence/software_verify_cert8883_cli02_20261126/23_ps_final.txt | active | 早先进程结束后的进程列表
+evidence/software_verify_cert8883_cli02_20261126/24_logcat_window_final.txt | active | 早先窗口扩展后的原始 logcat
+evidence/software_verify_cert8883_cli02_20261126/25_events_buffer.txt | active | events 缓冲：SwipeUpClean 结束 12980 与 14224 重启事件
+evidence/software_verify_cert8883_cli02_20261126/26_services_after_relaunch.txt | active | 重启后 MqtttService 前台/PID 14224
+evidence/software_verify_cert8883_cli02_20261126/30_window2_start_utc.txt | active | 主证据窗口起点声明（11:28:53 CST）
+evidence/software_verify_cert8883_cli02_20261126/31_logcat_window2.txt | active | 主证据窗口原始 logcat（BLE DATA_OK、CONNACK 5、无 TLS 错误）
+evidence/software_verify_cert8883_cli02_20261126/32_logcat_full_after_window2.txt | active | 主窗口后的全量缓冲扫描输入
+evidence/software_verify_cert8883_cli02_20261126/33_services_window2.txt | active | 主窗口 MqtttService 前台状态
+evidence/software_verify_cert8883_cli02_20261126/34_ps_window2.txt | active | 主窗口 App PID 14224
+evidence/software_verify_cert8883_cli02_20261126/35_wifi_window2.txt | active | 主窗口 SSID/BSSID/RSSI 转储
+evidence/software_verify_cert8883_cli02_20261126/36_route_window2.txt | active | 主窗口默认路由
+evidence/software_verify_cert8883_cli02_20261126/37_ui_dump_window2.xml | active | 主窗口 UI：网关已连接（最近读取 11:31）与 22.3°C
+evidence/software_verify_cert8883_cli02_20261126/38_ui_window2.png | active | 主窗口 UI 截图
+evidence/software_verify_cert8883_cli02_20261126/39_scan_window2.txt | active | 窗口扫描汇总：TLS 错误 0、CONNACK 5、BLE DATA_OK
+evidence/software_verify_cert8883_cli02_20261126/40_scan_full_after_fix.txt | active | 修复后全量缓冲扫描汇总
+evidence/software_verify_cert8883_cli02_20261126/41_leaf_correlation.txt | active | 与客户端窗口相邻的线上叶子证书 serial/SAN/链校验
+evidence/software_verify_cert8883_cli02_20261126/42_tcp_poll_8883.txt | active | 手机到 8.140.23.253:8883 的 TCP ESTAB 轮询原始记录
+evidence/software_verify_cert8883_cli02_20261126/43_mqtt_slice_113854.txt | active | 11:38:54 重连与 CONNACK 5 原始切片
+evidence/software_verify_cert8883_cli02_20261126/44_logcat_full_final.txt | active | 结束时全量 logcat
+evidence/software_verify_cert8883_cli02_20261126/45_scan_full_final.txt | active | 结束时全量扫描：TLS 错误 0、36 次 CONNACK 5
+evidence/software_verify_cert8883_cli02_20261126/46_services_end.txt | active | 结束时 MqtttService 前台/PID 14224
+evidence/software_verify_cert8883_cli02_20261126/scan_cli02_log.py | active | CERT8883-CLI-02 离线日志扫描脚本（TLS 错误/连接/BLE/上传计数）
 evidence/software_verify_cert8883_r2_20261125/01_pkg_dump.txt | active | 第 2 轮设备包信息（vC10/1.9、codePath、lastUpdateTime）
 evidence/software_verify_cert8883_r2_20261125/02_prefs.xml | active | 第 2 轮起始 MyPrefs（无 registerphone/mac_addr，守护运行，网关 BLE 地址与绑定设备）
 evidence/software_verify_cert8883_r2_20261125/03_connectivity.txt | active | 第 2 轮连接状态原始 dump

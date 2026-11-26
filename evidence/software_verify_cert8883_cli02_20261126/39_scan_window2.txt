@@ -1,0 +1,30 @@
+# CERT8883-CLI-02 scanner label=window2 file=evidence/software_verify_cert8883_cli02_20261126/31_logcat_window2.txt
+tls_error_signatures_total=0
+  tls[SSLHandshakeException]=0
+  tls[No subjectAltNames on the certificate match]=0
+  tls[Trust anchor for certification path not found]=0
+  tls[PKIX path building failed]=0
+  tls[CertPathValidatorException]=0
+  tls[SSLPeerUnverifiedException]=0
+  broker[Attempting to reconnect to broker]=1
+  broker[Connected to broker]=0
+  broker[Failed to connect to broker]=1
+  broker[MQTT connection exception]=0
+  broker[无权连接]=1
+  ble[link_state=DATA_OK]=1
+  ble[link_state=CONNECT_FAILED]=0
+  ble[link_state=GATEWAY_NO_DATA]=0
+  ble[link_state=BINDING_CAPACITY_EXCEEDED]=0
+  ble[Max attempts reached]=0
+  ble[Successfully connected and read data]=1
+  ble[BLE batch:]=1
+  upload[CloudUpload: uploaded]=1
+  upload[uploaded \d+ reading]=1
+--- matched lines (deduplicated, chronological) ---
+11-26 11:31:57.460 14224 14241 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 11:31）
+11-26 11:31:57.461 14224 14241 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 11:31:57.728 14224 14259 I MqttService: Successfully connected and read data on attempt 1
+11-26 11:31:57.946 14224 14259 I CloudUpload: uploaded 1 reading(s)
+11-26 11:33:54.720 14224 14259 D MqttService: Attempting to reconnect to broker
+11-26 11:33:56.020 14224 14224 E MqttService: Failed to connect to broker
+11-26 11:33:56.020 14224 14224 E MqttService: 无权连接 (5)

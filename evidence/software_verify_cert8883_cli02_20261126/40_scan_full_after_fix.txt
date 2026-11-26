@@ -1,0 +1,253 @@
+# CERT8883-CLI-02 scanner label=full_after_fix file=evidence/software_verify_cert8883_cli02_20261126/32_logcat_full_after_window2.txt
+tls_error_signatures_total=0
+  tls[SSLHandshakeException]=0
+  tls[No subjectAltNames on the certificate match]=0
+  tls[Trust anchor for certification path not found]=0
+  tls[PKIX path building failed]=0
+  tls[CertPathValidatorException]=0
+  tls[SSLPeerUnverifiedException]=0
+  broker[Attempting to reconnect to broker]=37
+  broker[Connected to broker]=0
+  broker[Failed to connect to broker]=37
+  broker[MQTT connection exception]=0
+  broker[无权连接]=37
+  ble[link_state=DATA_OK]=21
+  ble[link_state=CONNECT_FAILED]=24
+  ble[link_state=GATEWAY_NO_DATA]=0
+  ble[link_state=BINDING_CAPACITY_EXCEEDED]=0
+  ble[Max attempts reached]=24
+  ble[Successfully connected and read data]=21
+  ble[BLE batch:]=21
+  upload[CloudUpload: uploaded]=8
+  upload[uploaded \d+ reading]=8
+--- matched lines (deduplicated, chronological) ---
+11-26 03:55:29.246 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 03:55:30.317 32061 32061 E MqttService: Failed to connect to broker
+11-26 03:55:30.317 32061 32061 E MqttService: 无权连接 (5)
+11-26 03:56:48.063 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 03:56:48.065 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 04:00:11.728 32061  2749 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 04:00）
+11-26 04:00:11.729 32061  2749 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 04:00:11.792 32061 32101 I MqttService: Successfully connected and read data on attempt 3
+11-26 04:00:29.266 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:00:31.733 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:00:31.733 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:04:09.468 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 04:04:09.469 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 04:05:29.287 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:05:30.323 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:05:30.323 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:07:58.275 32061  2749 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 04:07）
+11-26 04:07:58.276 32061  2749 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 04:07:58.378 32061 32101 I MqttService: Successfully connected and read data on attempt 5
+11-26 04:10:29.306 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:10:30.569 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:10:30.569 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:12:10.951 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 04:12:10.952 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 04:15:29.326 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:15:31.437 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:15:31.437 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:15:31.938 32061  2749 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 04:15）
+11-26 04:15:31.938 32061  2749 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 04:15:32.096 32061 32101 I MqttService: Successfully connected and read data on attempt 2
+11-26 04:20:00.181 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 04:20:00.181 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 04:20:29.346 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:20:30.372 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:20:30.372 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:23:03.116 32061  2749 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 04:23）
+11-26 04:23:03.116 32061  2749 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 04:23:03.232 32061 32101 I MqttService: Successfully connected and read data on attempt 1
+11-26 04:25:29.365 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:25:30.414 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:25:30.414 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:27:15.733 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 04:27:15.733 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 04:30:29.385 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:30:31.498 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:30:31.498 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:30:36.396 32061  6216 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 04:30）
+11-26 04:30:36.396 32061  6216 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 04:30:36.458 32061 32101 I MqttService: Successfully connected and read data on attempt 2
+11-26 04:34:49.540 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 04:34:49.540 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 04:35:29.405 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:35:30.490 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:35:30.490 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:38:10.062 32061  6216 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 04:38）
+11-26 04:38:10.063 32061  6216 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 04:38:10.175 32061 32101 I MqttService: Successfully connected and read data on attempt 2
+11-26 04:40:29.425 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:40:30.516 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:40:30.516 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:42:38.260 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 04:42:38.260 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 04:45:29.445 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:45:30.517 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:45:30.517 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:45:41.307 32061  6216 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 04:45）
+11-26 04:45:41.308 32061  6216 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 04:45:41.457 32061 32101 I MqttService: Successfully connected and read data on attempt 1
+11-26 04:49:23.238 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 04:49:23.239 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 04:50:29.466 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:50:30.533 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:50:30.533 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:53:20.711 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 04:53:20.711 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 04:55:29.487 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 04:55:30.545 32061 32061 E MqttService: Failed to connect to broker
+11-26 04:55:30.545 32061 32061 E MqttService: 无权连接 (5)
+11-26 04:56:24.206 32061  6216 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 04:56）
+11-26 04:56:24.207 32061  6216 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 04:56:24.274 32061 32101 I MqttService: Successfully connected and read data on attempt 1
+11-26 05:00:29.506 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 05:00:31.691 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:00:31.691 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:00:52.361 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 05:00:52.361 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 05:03:54.956 32061  2749 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 05:03）
+11-26 05:03:54.956 32061  2749 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 05:03:55.067 32061 32101 I MqttService: Successfully connected and read data on attempt 1
+11-26 05:05:29.526 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 05:05:30.631 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:05:30.631 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:08:23.155 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 05:08:23.155 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 05:10:29.546 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 05:10:30.607 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:10:30.607 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:11:26.133 32061  2749 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 05:11）
+11-26 05:11:26.133 32061  2749 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 05:11:26.195 32061 32101 I MqttService: Successfully connected and read data on attempt 1
+11-26 05:15:29.566 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 05:15:31.635 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:15:31.635 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:15:38.693 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 05:15:38.693 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 05:18:59.359 32061  2749 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 05:18）
+11-26 05:18:59.359 32061  2749 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 05:18:59.424 32061 32101 I MqttService: Successfully connected and read data on attempt 2
+11-26 05:20:29.586 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 05:20:30.956 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:20:30.956 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:23:27.508 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 05:23:27.508 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 05:25:29.606 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 05:25:30.780 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:25:30.780 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:26:30.070 32061  2749 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 05:26）
+11-26 05:26:30.070 32061  2749 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 05:26:30.221 32061 32101 I MqttService: Successfully connected and read data on attempt 1
+11-26 05:30:29.625 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 05:30:31.638 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:30:31.638 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:30:42.766 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 05:30:42.766 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 05:34:04.114 32061  2749 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 05:34）
+11-26 05:34:04.114 32061  2749 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 05:34:04.226 32061 32101 I MqttService: Successfully connected and read data on attempt 2
+11-26 05:35:29.644 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 05:35:30.795 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:35:30.795 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:38:32.308 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 05:38:32.309 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 05:40:29.665 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 05:40:30.841 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:40:30.841 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:41:35.115 32061  2749 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 05:41）
+11-26 05:41:35.115 32061  2749 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 05:41:35.211 32061 32101 I MqttService: Successfully connected and read data on attempt 1
+11-26 05:45:29.684 32061 32101 D MqttService: Attempting to reconnect to broker
+11-26 05:45:31.741 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:45:31.741 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:46:03.296 32061 32101 I MqttService: Max attempts reached. Connection failed.
+11-26 05:46:03.297 32061 32101 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 05:46:52.632 32061 32102 I CloudUpload: uploaded 9 reading(s)
+11-26 05:49:05.917 32061  6216 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 05:49）
+11-26 05:49:05.917 32061  6216 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 05:49:06.056 32061 32102 I MqttService: Successfully connected and read data on attempt 1
+11-26 05:49:06.243 32061 32102 I CloudUpload: uploaded 1 reading(s)
+11-26 05:49:46.956 32061 32102 D MqttService: Attempting to reconnect to broker
+11-26 05:49:47.967 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:49:47.967 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:50:29.705 32061 32102 D MqttService: Attempting to reconnect to broker
+11-26 05:50:30.702 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:50:30.702 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:51:12.324 32061 32102 D MqttService: Attempting to reconnect to broker
+11-26 05:51:13.357 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:51:13.357 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:51:52.383 32061 32102 D MqttService: Attempting to reconnect to broker
+11-26 05:51:53.396 32061 32061 E MqttService: Failed to connect to broker
+11-26 05:51:53.396 32061 32061 E MqttService: 无权连接 (5)
+11-26 05:53:03.247 32061 32102 I MqttService: Max attempts reached. Connection failed.
+11-26 05:53:03.247 32061 32102 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 10:40:04.722 12980 13013 I MqttService: Max attempts reached. Connection failed.
+11-26 10:40:04.722 12980 13013 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 10:41:22.650 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 10:41:24.035 12980 12980 E MqttService: Failed to connect to broker
+11-26 10:41:24.035 12980 12980 E MqttService: 无权连接 (5)
+11-26 10:43:07.422 12980 12998 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 10:43）
+11-26 10:43:07.422 12980 12998 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 10:43:07.510 12980 13013 I MqttService: Successfully connected and read data on attempt 1
+11-26 10:43:07.832 12980 13013 I CloudUpload: uploaded 1 reading(s)
+11-26 10:46:22.691 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 10:46:24.623 12980 12980 E MqttService: Failed to connect to broker
+11-26 10:46:24.623 12980 12980 E MqttService: 无权连接 (5)
+11-26 10:47:35.634 12980 13013 I MqttService: Max attempts reached. Connection failed.
+11-26 10:47:35.635 12980 13013 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 10:51:15.111 12980 13000 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 10:51）
+11-26 10:51:15.111 12980 13000 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 10:51:15.357 12980 13013 I MqttService: Successfully connected and read data on attempt 3
+11-26 10:51:15.533 12980 13013 I CloudUpload: uploaded 1 reading(s)
+11-26 10:51:22.717 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 10:51:24.680 12980 12980 E MqttService: Failed to connect to broker
+11-26 10:51:24.680 12980 12980 E MqttService: 无权连接 (5)
+11-26 10:55:43.472 12980 13013 I MqttService: Max attempts reached. Connection failed.
+11-26 10:55:43.472 12980 13013 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 10:56:22.746 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 10:56:23.825 12980 12980 E MqttService: Failed to connect to broker
+11-26 10:56:23.825 12980 12980 E MqttService: 无权连接 (5)
+11-26 10:59:22.000 12980 12998 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 10:59）
+11-26 10:59:22.000 12980 12998 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 10:59:22.078 12980 13013 I MqttService: Successfully connected and read data on attempt 3
+11-26 10:59:22.304 12980 13013 I CloudUpload: uploaded 1 reading(s)
+11-26 11:01:22.759 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 11:01:23.813 12980 12980 E MqttService: Failed to connect to broker
+11-26 11:01:23.813 12980 12980 E MqttService: 无权连接 (5)
+11-26 11:03:50.194 12980 13013 I MqttService: Max attempts reached. Connection failed.
+11-26 11:03:50.194 12980 13013 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 11:06:22.772 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 11:06:23.829 12980 12980 E MqttService: Failed to connect to broker
+11-26 11:06:23.829 12980 12980 E MqttService: 无权连接 (5)
+11-26 11:07:31.184 12980 12998 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 11:07）
+11-26 11:07:31.184 12980 12998 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 11:07:31.342 12980 13013 I CloudUpload: uploaded 1 reading(s)
+11-26 11:07:31.377 12980 13013 I MqttService: Successfully connected and read data on attempt 4
+11-26 11:11:22.784 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 11:11:24.964 12980 12980 E MqttService: Failed to connect to broker
+11-26 11:11:24.964 12980 12980 E MqttService: 无权连接 (5)
+11-26 11:11:59.483 12980 13013 I MqttService: Max attempts reached. Connection failed.
+11-26 11:11:59.483 12980 13013 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 11:15:41.666 12980 12998 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 11:15）
+11-26 11:15:41.666 12980 12998 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 11:15:41.900 12980 13013 I MqttService: Successfully connected and read data on attempt 4
+11-26 11:15:41.988 12980 13013 I CloudUpload: uploaded 1 reading(s)
+11-26 11:16:22.796 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 11:16:25.524 12980 12980 E MqttService: Failed to connect to broker
+11-26 11:16:25.524 12980 12980 E MqttService: 无权连接 (5)
+11-26 11:19:54.536 12980 13013 I MqttService: Max attempts reached. Connection failed.
+11-26 11:19:54.536 12980 13013 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 11:21:22.809 12980 13013 D MqttService: Attempting to reconnect to broker
+11-26 11:21:23.895 12980 12980 E MqttService: Failed to connect to broker
+11-26 11:21:23.895 12980 12980 E MqttService: 无权连接 (5)
+11-26 11:23:51.653 12980 13013 I MqttService: Max attempts reached. Connection failed.
+11-26 11:23:51.653 12980 13013 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 11:31:57.460 14224 14241 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 11:31）
+11-26 11:31:57.461 14224 14241 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 11:31:57.728 14224 14259 I MqttService: Successfully connected and read data on attempt 1
+11-26 11:31:57.946 14224 14259 I CloudUpload: uploaded 1 reading(s)
+11-26 11:33:54.720 14224 14259 D MqttService: Attempting to reconnect to broker
+11-26 11:33:56.020 14224 14224 E MqttService: Failed to connect to broker
+11-26 11:33:56.020 14224 14224 E MqttService: 无权连接 (5)
