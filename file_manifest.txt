@@ -82,6 +82,7 @@ artifacts/backend_feasibility_current.md | active | 后端可行性探索 BE-EXP
 artifacts/backend_feasibility_g002.md | active | 后端可行性探索 BE-EXP-003 原文保留（2026-11-10 07:08–07:14：同一 abr.py 未变、OPTIONS 无鉴权头提示、10-22 的 200 已进入 mysql.connect、仍无业务流量；历史记录不改写，当前入口见 backend_feasibility_current.md）
 artifacts/cert8883_cases.yaml | active | 软件测试：8883 证书修复与上传/受影响端到端用例机器清单（CERT8883-SRV-01/CLI-02/REG-03/UPLOAD-04、E2E-JOINT-P0/P1、CERT8883-FINAL-05；独立判定、前置条件、证据边界与 NOT EXECUTED 规则；与 TD-CERT8883-001 判据一致）
 artifacts/cert8883_e2e_plan.md | active | 软件测试：8883 证书修复跨系统端到端测试计划 E2E-CERT8883-001（平台证书独立核验→App TLS/CONNACK→回归→上传/持久化→受影响 P0/P1→本轮交付限定整体验收；真实环境优先、两类独立证据、未执行与阻塞披露）
+artifacts/codegraph_alarm_chain_index.md | active | Code intelligence: current three-root index entry, source versions, coverage, alarm navigation and refresh instructions.
 artifacts/codegraph_android_index.md | active | 代码智能：Android当前源码索引入口、版本与覆盖限制，四个定向源码查询及后续同步方式。
 artifacts/codegraph_current_index.md | history | 代码智能：此前三个子工程索引交接；当前入口见 artifacts/codegraph_prepare_index.md
 artifacts/codegraph_dengbei11_index.md | active | ????????????? CodeGraph ????????????????????????
@@ -703,6 +704,8 @@ evidence/cert8883_srv01_20261126/03_leaf_fields_chain_and_negative.txt | active 
 evidence/cert8883_srv01_20261126/04_srv01_judgement.md | active | CERT8883-SRV-01 逐项判定表与范围说明
 evidence/cert8883_srv01_20261126/05_handshake_stability_samples.txt | active | 三次重复握手的 serial/SHA-256/SAN 一致性采样
 evidence/cert8883_srv01_20261126/leaf_8.140.23.253.pem | active | 本次握手取回的公开叶子证书（供复核）
+evidence/codegraph_alarm_chain_20261126.json | active | Code intelligence: incremental sync, live source queries, call context, hashes and manifest validation.
+evidence/codegraph_alarm_chain_20261126.py | active | Code intelligence: bounded existing-index synchronization and targeted query collector.
 evidence/codegraph_android_validation.json | active | 代码智能：Android增量同步、110文件摘要、四个当前源码查询与退出状态证据；保留布局未覆盖限制。
 evidence/codegraph_current_validation.json | history | 代码智能：三个子工程本轮 status/sync/explore/files 原始结果、时间、退出码与源码摘要
 evidence/codegraph_dengbei11_validation.json | active | ????????? status?????????? explore ???????????
