@@ -115,9 +115,11 @@ artifacts/interface_contract.md | active | 系统架构：IC-002 v4.0，撤旧1/
 artifacts/monitoring_reliability_8883.yaml | active | MonitoringArtifact 指针：证书变更后可靠性观测与监控方案
 artifacts/monitoring_reliability_upload_contract.yaml | active | MonitoringArtifact 指针：上传受理修复后可靠性观测与监控方案
 artifacts/software_e2e_plan.md | history | 历史软件端到端测试计划 E2E-SW-004 rev 4.0（AA-005 七项增量；当前 AA-006 阶段不适用，跨链路联调属后续阶段）
+artifacts/software_e2e_plan_alarm_chain.md | active | 软件测试：跨专业联合测试计划 E2E-SW-ALM-001 rev 1.0（dengbei14 传感器→网关→安卓 App；版本闭合、uid4+TINJ 关联、接收端先就绪、串行分段采集编排、P0–P8 顺序、联合判定/证据/清理/分工；平台/云/DB/iOS 与调温调光功耗不纳入；只做设计不执行）
 artifacts/software_failure_analysis_cert8883_upload401.md | active | 软件测试：CERT8883-UPLOAD-04 上传 401 失败分析（只读核实部署处理器要求 X-Upload-Token，App 按 IC-002 不发送该头；判定 REPAIR_REQUIRED，对象为平台 /upload_data 受理逻辑；含竞争假设排除、影响范围与复验判据）
 artifacts/software_failure_analysis_e2e_joint_p1.md | active | 软件测试：E2E-JOINT-P1 第 1 轮 TEST_FAIL 失败分析（证书/TLS 维度同窗口 PASS 但不等于 P1；四段因缺测试构建/注入、已确认 mac_addr 与身份、平台字段级回读授权、嵌入式 COM43 观测而 NOT EXECUTED；判定 EXTERNAL_CONDITION_MISSING，含竞争假设、责任方、准备动作与复验判据，未证实产品实现缺陷）
 artifacts/software_test_design.md | active | 软件测试设计 TD-SW-005 rev 5.0（AA-006 ITEM-001..003 扫描权限自动续跑/BLE 读取终态/报告再生成反馈逐条追踪；宿主机映射矩阵、静态核查、真机 API29 与真实网关 devCount=0 用例、证据边界、人工延期与阶段外项、最终判定规则）
+artifacts/software_test_design_alarm_chain.md | active | 软件测试设计 TD-SW-ALM-001 rev 1.0（dengbei14 安卓 App 真机报警/停止/守护链路；安装版本身份、真实缓存与受控注入分层、显示/正常不误报/异常/重复/停止/守护/重启/完整复测/回归用例、H1–H5 区分实验、证据与退出准则；平台/云/DB/iOS 与调温调光功耗不纳入；只做设计不执行）
 artifacts/software_test_design_cert8883.md | active | 软件测试：8883 证书与客户端地址不匹配修复测试设计 TD-CERT8883-001 v1.0（原 CA 签发/链/IP SAN/负例、App TLS/CONNACK 真实复验、不受影响路径回归、安卓上传与 P1 四段一致条件、信任锚变更分支、证据/退出准则/NOT EXECUTED；只做设计不执行）
 artifacts/software_test_report_cert8883.md | active | 软件测试：8883 证书修复后独立验证报告（两轮；SRV-01 PASS、CLI-02 TLS 维度 PASS/CONNACK rc=5 认证层另记、REG-03 PASS；UPLOAD-04 第 2 轮用模拟账号真实上传实测平台 401 FAIL、无受理行故持久化回读 NOT EXECUTED；P0 证书维度 PASS、P1 NOT EXECUTED；含竞争假设、证据索引与残留状态披露）
 artifacts/software_test_report_cert8883_cli02_r6.md | active | 软件测试：CERT8883-CLI-02 第 6 轮真实 App TLS/CONNACK 复验（同窗无 SAN/链/信任锚错误，TLS 完成并收到 CONNACK rc=5 无权连接；网络层捕获 8883 ESTAB；BLE DATA_OK 与 UI 一致；证书维度 PASS、认证层缺口另记；UI broker 标签未渲染已披露）
