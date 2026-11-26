@@ -1,0 +1,12 @@
+Security exception: Uid 2000 does not have access to wifi commands
+
+java.lang.SecurityException: Uid 2000 does not have access to wifi commands
+	at com.android.server.wifi.WifiShellCommand.checkRootPermission(WifiShellCommand.java:223)
+	at com.android.server.wifi.WifiShellCommand.onCommand(WifiShellCommand.java:61)
+	at android.os.ShellCommand.exec(ShellCommand.java:111)
+	at com.android.server.wifi.WifiServiceImpl.onShellCommand(WifiServiceImpl.java:2894)
+	at android.os.Binder.shellCommand(Binder.java:881)
+	at android.os.Binder.onTransact(Binder.java:765)
+	at android.net.wifi.IWifiManager$Stub.onTransact(IWifiManager.java:1889)
+	at android.os.Binder.execTransactInternal(Binder.java:1021)
+	at android.os.Binder.execTransact(Binder.java:994)

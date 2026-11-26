@@ -1,0 +1,204 @@
+ACTIVITY MANAGER ACTIVITIES (dumpsys activity activities)
+Display #0 (activities from top to bottom):
+
+  Stack #44: type=standard mode=fullscreen
+  isSleeping=false
+  mBounds=Rect(0, 0 - 0, 0)
+    Task id #103
+    mBounds=Rect(0, 0 - 0, 0)
+    mMinWidth=-1
+    mMinHeight=-1
+    mLastNonFullscreenBounds=null
+    * TaskRecord{329335f #103 A=com.jinyuni.dengbei_care U=0 StackId=44 sz=1}
+      userId=0 effectiveUid=u0a169 mCallingUid=u0a81 mUserSetupComplete=true mCallingPackage=com.miui.home
+      affinity=com.jinyuni.dengbei_care
+      intent={act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.jinyuni.dengbei_care/.MainActivity}
+      mActivityComponent=com.jinyuni.dengbei_care/.MainActivity
+      autoRemoveRecents=false isPersistable=true numFullscreen=1 activityType=1
+      rootWasReset=true mNeverRelinquishIdentity=true mReuseTask=false mLockTaskAuth=LOCK_TASK_AUTH_PINNABLE
+      Activities=[ActivityRecord{2a2b39a u0 com.jinyuni.dengbei_care/.MainActivity t103}]
+      askedCompatMode=false inRecents=true isAvailable=true
+      mRootProcess=ProcessRecord{3828a5a 14224:com.jinyuni.dengbei_care/u0a169}
+      stackId=44
+      hasBeenVisible=true mResizeMode=RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION mSupportsPictureInPicture=false isResizeable=true supportsSplitScreenWindowingMode=true lastActiveTime=407144256 (inactive for 36s)
+      * Hist #0: ActivityRecord{2a2b39a u0 com.jinyuni.dengbei_care/.MainActivity t103}
+          packageName=com.jinyuni.dengbei_care processName=com.jinyuni.dengbei_care
+          launchedFromUid=10081 launchedFromPackage=com.miui.home userId=0
+          app=ProcessRecord{3828a5a 14224:com.jinyuni.dengbei_care/u0a169}
+          Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.jinyuni.dengbei_care/.MainActivity bnds=[52,317][168,433] (has extras) }
+          frontOfTask=true task=TaskRecord{329335f #103 A=com.jinyuni.dengbei_care U=0 StackId=44 sz=1}
+          taskAffinity=com.jinyuni.dengbei_care
+          mActivityComponent=com.jinyuni.dengbei_care/.MainActivity
+          baseDir=/data/app/com.jinyuni.dengbei_care-h0RE7rmDWPPUA40DY_WMqw==/base.apk
+          dataDir=/data/user/0/com.jinyuni.dengbei_care
+          stateNotNeeded=false componentSpecified=true mActivityType=standard
+          compat={320dpi} labelRes=0x7f12001e icon=0x7f0e0000 theme=0x7f130246
+          mLastReportedConfigurations:
+           mGlobalConfig={1.0 ?mcc?mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.219 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+           mOverrideConfig={1.0 ?mcc?mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.1 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+          CurrentConfiguration={1.0 ?mcc?mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=standard mAlwaysOnTop=undefined mRotation=ROTATION_0} s.1 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+          taskDescription: label="null" icon=null iconResource=0 iconFilename=null primaryColor=ff6750a4
+           backgroundColor=fffef7ff
+           statusBarColor=0
+           navigationBarColor=0
+          launchFailed=false launchCount=1 lastLaunchTime=-1h1m17s308ms
+          haveState=false icicle=null
+          state=RESUMED stopped=false delayedResume=false finishing=false
+          keysPaused=false inHistory=true visible=true mIsCastMode=false mIsLastFrame=false sleeping=false idle=true mStartingWindowState=STARTING_WINDOW_SHOWN
+          fullscreen=true noDisplay=false immersive=false launchMode=0
+          frozenBeforeDestroy=false forceNewConfig=false
+          mActivityType=standard
+           nowVisible=true lastVisibleTime=-1h1m16s476ms
+          resizeMode=RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION
+          mLastReportedMultiWindowMode=false mLastReportedPictureInPictureMode=false
+          realComponentName=com.jinyuni.dengbei_care/.MainActivity
+
+    Running activities (most recent first):
+      TaskRecord{329335f #103 A=com.jinyuni.dengbei_care U=0 StackId=44 sz=1}
+        Run #0: ActivityRecord{2a2b39a u0 com.jinyuni.dengbei_care/.MainActivity t103}
+
+    mResumedActivity: ActivityRecord{2a2b39a u0 com.jinyuni.dengbei_care/.MainActivity t103}
+
+  Stack #0: type=home mode=fullscreen
+  isSleeping=false
+  mBounds=Rect(0, 0 - 0, 0)
+
+    Task id #1
+    mBounds=Rect(0, 0 - 0, 0)
+    mMinWidth=-1
+    mMinHeight=-1
+    mLastNonFullscreenBounds=null
+    * TaskRecord{db376e9 #1 I=com.miui.home/.launcher.Launcher U=0 StackId=0 sz=1}
+      userId=0 effectiveUid=u0a81 mCallingUid=1000 mUserSetupComplete=true mCallingPackage=com.android.systemui
+      intent={act=android.intent.action.MAIN cat=[android.intent.category.HOME] flg=0x10800100 cmp=com.miui.home/.launcher.Launcher}
+      mActivityComponent=com.miui.home/.launcher.Launcher
+      autoRemoveRecents=false isPersistable=false numFullscreen=1 activityType=2
+      rootWasReset=false mNeverRelinquishIdentity=true mReuseTask=false mLockTaskAuth=LOCK_TASK_AUTH_PINNABLE
+      Activities=[ActivityRecord{e9e54e6 u0 com.miui.home/.launcher.Launcher t1}]
+      askedCompatMode=false inRecents=true isAvailable=true
+      stackId=0
+      hasBeenVisible=true mResizeMode=RESIZE_MODE_RESIZEABLE mSupportsPictureInPicture=false isResizeable=true supportsSplitScreenWindowingMode=true lastActiveTime=403503625 (inactive for 3677s)
+      * Hist #0: ActivityRecord{e9e54e6 u0 com.miui.home/.launcher.Launcher t1}
+          packageName=com.miui.home processName=com.miui.home
+          launchedFromUid=0 launchedFromPackage=null userId=0
+          app=ProcessRecord{9cd49a5 2211:com.miui.home/u0a81}
+          Intent { act=android.intent.action.MAIN cat=[android.intent.category.HOME] flg=0x10800100 cmp=com.miui.home/.launcher.Launcher }
+          frontOfTask=true task=TaskRecord{db376e9 #1 I=com.miui.home/.launcher.Launcher U=0 StackId=0 sz=1}
+          taskAffinity=null
+          mActivityComponent=com.miui.home/.launcher.Launcher
+          baseDir=/system/priv-app/MiuiHome/MiuiHome.apk
+          dataDir=/data/user/0/com.miui.home
+          stateNotNeeded=true componentSpecified=false mActivityType=home
+          compat={320dpi} labelRes=0x7f10008f icon=0x7f08017c theme=0x7f1100ca
+          mLastReportedConfigurations:
+           mGlobalConfig={1.0 ?mcc?mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.9 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+           mOverrideConfig={1.0 ?mcc?mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=home mAlwaysOnTop=undefined mRotation=ROTATION_0} s.4 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+          CurrentConfiguration={1.0 ?mcc?mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=home mAlwaysOnTop=undefined mRotation=ROTATION_0} s.12 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+          RequestedOverrideConfiguration={0.0 ?mcc?mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?ldr ?wideColorGamut ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/? winConfig={ mBounds=Rect(0, 0 - 0, 0) mAppBounds=null mWindowingMode=undefined mDisplayWindowingMode=undefined mActivityType=home mAlwaysOnTop=undefined mRotation=undefined} themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+          taskDescription: label="null" icon=null iconResource=0 iconFilename=null primaryColor=ff212121
+           backgroundColor=fffafafa
+           statusBarColor=0
+           navigationBarColor=0
+          launchFailed=false launchCount=0 lastLaunchTime=-4d14h20m27s214ms
+          haveState=false icicle=null
+          state=PAUSED stopped=false delayedResume=false finishing=false
+          keysPaused=false inHistory=true visible=true mIsCastMode=false mIsLastFrame=false sleeping=false idle=true mStartingWindowState=STARTING_WINDOW_NOT_SHOWN
+          fullscreen=true noDisplay=false immersive=false launchMode=2
+          frozenBeforeDestroy=false forceNewConfig=false
+          mActivityType=home
+           nowVisible=true lastVisibleTime=-1h54m47s427ms
+          connections=com.android.server.wm.ActivityServiceConnectionsHolder@4dacf6e
+          resizeMode=RESIZE_MODE_RESIZEABLE
+          mLastReportedMultiWindowMode=false mLastReportedPictureInPictureMode=false
+          realComponentName=com.miui.home/.launcher.Launcher
+
+    Running activities (most recent first):
+      TaskRecord{db376e9 #1 I=com.miui.home/.launcher.Launcher U=0 StackId=0 sz=1}
+        Run #0: ActivityRecord{e9e54e6 u0 com.miui.home/.launcher.Launcher t1}
+
+    mLastPausedActivity: ActivityRecord{e9e54e6 u0 com.miui.home/.launcher.Launcher t1}
+
+  Stack #6: type=recents mode=fullscreen
+  isSleeping=false
+  mBounds=Rect(0, 0 - 0, 0)
+
+    Task id #66
+    mBounds=Rect(0, 0 - 0, 0)
+    mMinWidth=-1
+    mMinHeight=-1
+    mLastNonFullscreenBounds=null
+    * TaskRecord{f6f919 #66 A=com.android.systemui U=0 StackId=6 sz=1}
+      userId=0 effectiveUid=1000 mCallingUid=1000 mUserSetupComplete=true mCallingPackage=com.android.systemui
+      affinity=com.android.systemui
+      intent={flg=0x10804000 cmp=com.android.systemui/.recents.RecentsActivity}
+      mActivityComponent=com.android.systemui/.recents.RecentsActivity
+      autoRemoveRecents=false isPersistable=false numFullscreen=1 activityType=3
+      rootWasReset=false mNeverRelinquishIdentity=true mReuseTask=false mLockTaskAuth=LOCK_TASK_AUTH_PINNABLE
+      Activities=[ActivityRecord{ab5523 u0 com.android.systemui/.recents.RecentsActivity t66}]
+      askedCompatMode=false inRecents=true isAvailable=true
+      stackId=6
+      hasBeenVisible=true mResizeMode=RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION mSupportsPictureInPicture=false isResizeable=true supportsSplitScreenWindowingMode=true lastActiveTime=403327323 (inactive for 3853s)
+      * Hist #0: ActivityRecord{ab5523 u0 com.android.systemui/.recents.RecentsActivity t66}
+          packageName=com.android.systemui processName=com.android.systemui
+          launchedFromUid=1000 launchedFromPackage=com.android.systemui userId=0
+          app=ProcessRecord{bab5a6e 1904:com.android.systemui/1000}
+          Intent { flg=0x10804000 cmp=com.android.systemui/.recents.RecentsActivity }
+          frontOfTask=true task=TaskRecord{f6f919 #66 A=com.android.systemui U=0 StackId=6 sz=1}
+          taskAffinity=com.android.systemui
+          mActivityComponent=com.android.systemui/.recents.RecentsActivity
+          baseDir=/system/priv-app/MiuiSystemUI/MiuiSystemUI.apk
+          dataDir=/data/user_de/0/com.android.systemui
+          stateNotNeeded=true componentSpecified=true mActivityType=recents
+          compat={320dpi} labelRes=0x7f110066 icon=0x7f08062c theme=0x7f120164
+          mLastReportedConfigurations:
+           mGlobalConfig={1.0 ?mcc?mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} s.8 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+           mOverrideConfig={1.0 ?mcc?mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=recents mAlwaysOnTop=undefined mRotation=ROTATION_0} s.2 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+          CurrentConfiguration={1.0 ?mcc?mnc [zh_CN] ldltr sw360dp w360dp h684dp 320dpi nrml long port finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 720, 1520) mAppBounds=Rect(0, 55 - 720, 1424) mWindowingMode=fullscreen mDisplayWindowingMode=fullscreen mActivityType=recents mAlwaysOnTop=undefined mRotation=ROTATION_0} s.10 themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+          RequestedOverrideConfiguration={0.0 ?mcc?mnc ?localeList ?layoutDir ?swdp ?wdp ?hdp ?density ?lsize ?long ?ldr ?wideColorGamut ?orien ?uimode ?night ?touch ?keyb/?/? ?nav/? winConfig={ mBounds=Rect(0, 0 - 0, 0) mAppBounds=null mWindowingMode=undefined mDisplayWindowingMode=undefined mActivityType=recents mAlwaysOnTop=undefined mRotation=undefined} themeChanged=0 themeChangedFlags=0 extraData = Bundle[{}]}
+          taskDescription: label="null" icon=null iconResource=0 iconFilename=null primaryColor=ff212121
+           backgroundColor=ff303030
+           statusBarColor=0
+           navigationBarColor=80000000
+          launchFailed=false launchCount=0 lastLaunchTime=-2d6h13m5s176ms
+          haveState=true icicle=Bundle[mParcelledData.dataSize=1852]
+          state=STOPPED stopped=true delayedResume=false finishing=false
+          keysPaused=false inHistory=true visible=false mIsCastMode=false mIsLastFrame=false sleeping=false idle=true mStartingWindowState=STARTING_WINDOW_NOT_SHOWN
+          fullscreen=true noDisplay=false immersive=false launchMode=3
+          frozenBeforeDestroy=false forceNewConfig=false
+          mActivityType=recents
+           nowVisible=false lastVisibleTime=-1h4m16s98ms
+          resizeMode=RESIZE_MODE_RESIZEABLE_VIA_SDK_VERSION
+          mLastReportedMultiWindowMode=false mLastReportedPictureInPictureMode=false
+          realComponentName=com.android.systemui/.recents.RecentsActivity
+
+    Running activities (most recent first):
+      TaskRecord{f6f919 #66 A=com.android.systemui U=0 StackId=6 sz=1}
+        Run #0: ActivityRecord{ab5523 u0 com.android.systemui/.recents.RecentsActivity t66}
+
+    mLastPausedActivity: ActivityRecord{ab5523 u0 com.android.systemui/.recents.RecentsActivity t66}
+
+ ResumedActivity:ActivityRecord{2a2b39a u0 com.jinyuni.dengbei_care/.MainActivity t103}
+
+  ResumedActivity: ActivityRecord{2a2b39a u0 com.jinyuni.dengbei_care/.MainActivity t103}
+
+ActivityStackSupervisor state:
+  topDisplayFocusedStack=ActivityStack{ac01ac stackId=44 type=standard mode=fullscreen visible=true translucent=false, 1 tasks}
+  displayId=0 stacks=3
+   mHomeStack=ActivityStack{972060f stackId=0 type=home mode=fullscreen visible=false translucent=true, 1 tasks}
+   mRecentsStack=ActivityStack{ed34bbf stackId=6 type=recents mode=fullscreen visible=false translucent=true, 1 tasks}
+   mPreferredTopFocusableStack=ActivityStack{ac01ac stackId=44 type=standard mode=fullscreen visible=true translucent=false, 1 tasks}
+   mLastFocusedStack=ActivityStack{ac01ac stackId=44 type=standard mode=fullscreen visible=true translucent=false, 1 tasks}
+  mCurTaskIdForUser={0=103}
+  mUserStackInFront={}
+  isHomeRecentsComponent=true  KeyguardController:
+    mKeyguardShowing=false
+    mAodShowing=false
+    mKeyguardGoingAway=false
+    Occluded=false DismissingKeyguardActivity=null at display=0
+    mDismissalRequested=false
+    mVisibilityTransactionDepth=0
+  LockTaskController
+    mLockTaskModeState=NONE
+    mLockTaskModeTasks=
+    mLockTaskPackages (userId:packages)=
+      u0:[]

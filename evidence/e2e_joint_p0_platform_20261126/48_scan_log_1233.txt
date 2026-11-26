@@ -1,0 +1,25 @@
+file=47_logcat_1233_onward.txt
+tls[SSLHandshakeException]=0
+tls[No subjectAltNames on the certificate match]=0
+tls[Trust anchor for certification path not found]=0
+tls[PKIX path building failed]=0
+tls[CertPathValidatorException]=0
+tls[SSLPeerUnverifiedException]=0
+broker[Attempting to reconnect to broker]=1
+broker[Connected to broker]=0
+broker[Failed to connect to broker]=1
+broker[not_authorized_5]=1
+ble[link_state=DATA_OK]=0
+ble[link_state=CONNECT_FAILED]=1
+ble[MTU negotiated]=0
+ble[GwID=]=0
+ble[writeCharacteristic bytes 6]=0
+ble[id=uid4]=0
+ble[Successfully connected and read data]=0
+upload[CloudUpload uploaded]=0
+
+--- matched lines (chronological, deduplicated) ---
+11-26 12:33:54.940 14224 14259 D MqttService: Attempting to reconnect to broker
+11-26 12:33:55.977 14224 14224 E MqttService: Failed to connect to broker
+11-26 12:33:55.977 14224 14224 E MqttService: 无权连接 (5)
+11-26 12:35:14.592 14224 14259 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）

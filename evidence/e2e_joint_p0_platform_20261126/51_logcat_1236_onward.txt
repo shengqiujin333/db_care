@@ -1,0 +1,1473 @@
+--------- beginning of main
+11-26 12:36:00.004  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 12:36:00.193   783  1848 D         : readbrightness,out1:8
+11-26 12:36:00.193   783  1848 D         : .
+11-26 12:36:00.193   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:00.554 17579 17579 W ss      : type=1400 audit(0.0:47058): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:01.194   783  1848 D         : readbrightness,out1:8
+11-26 12:36:01.194   783  1848 D         : .
+11-26 12:36:01.194   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:01.996  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:02.195   783  1848 D         : readbrightness,out1:8
+11-26 12:36:02.195   783  1848 D         : .
+11-26 12:36:02.195   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:02.744 17593 17593 W ss      : type=1400 audit(0.0:47059): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:03.195   783  1848 D         : readbrightness,out1:8
+11-26 12:36:03.195   783  1848 D         : .
+11-26 12:36:03.195   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:04.196   783  1848 D         : readbrightness,out1:8
+11-26 12:36:04.196   783  1848 D         : .
+11-26 12:36:04.196   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:04.894 17607 17607 W ss      : type=1400 audit(0.0:47060): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:05.001  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:05.197   783  1848 D         : readbrightness,out1:8
+11-26 12:36:05.197   783  1848 D         : .
+11-26 12:36:05.197   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:06.198   783  1848 D         : readbrightness,out1:8
+11-26 12:36:06.198   783  1848 D         : .
+11-26 12:36:06.198   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:07.074 17621 17621 W ss      : type=1400 audit(0.0:47061): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:07.199   783  1848 D         : readbrightness,out1:8
+11-26 12:36:07.199   783  1848 D         : .
+11-26 12:36:07.199   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:08.005  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:08.164     0     0 W swapper/4: type=1400 audit(0.0:47062): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:36:08.200   783  1848 D         : readbrightness,out1:8
+11-26 12:36:08.200   783  1848 D         : .
+11-26 12:36:08.200   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:09.200   783  1848 D         : readbrightness,out1:8
+11-26 12:36:09.200   783  1848 D         : .
+11-26 12:36:09.200   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:09.224 17638 17638 W ss      : type=1400 audit(0.0:47063): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:10.201   783  1848 D         : readbrightness,out1:8
+11-26 12:36:10.201   783  1848 D         : .
+11-26 12:36:10.201   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:11.011  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:11.202   783  1848 D         : readbrightness,out1:8
+11-26 12:36:11.202   783  1848 D         : .
+11-26 12:36:11.202   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:11.344 17654 17654 W ss      : type=1400 audit(0.0:47064): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:12.203   783  1848 D         : readbrightness,out1:8
+11-26 12:36:12.203   783  1848 D         : .
+11-26 12:36:12.203   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:13.204   783  1848 D         : readbrightness,out1:8
+11-26 12:36:13.204   783  1848 D         : .
+11-26 12:36:13.204   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:13.474 17668 17668 W ss      : type=1400 audit(0.0:47065): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:14.015  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:14.204   783  1848 D         : readbrightness,out1:8
+11-26 12:36:14.204   783  1848 D         : .
+11-26 12:36:14.204   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:15.206   783  1848 D         : readbrightness,out1:8
+11-26 12:36:15.206   783  1848 D         : .
+11-26 12:36:15.206   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:15.624 17682 17682 W ss      : type=1400 audit(0.0:47066): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:16.207   783  1848 D         : readbrightness,out1:8
+11-26 12:36:16.207   783  1848 D         : .
+11-26 12:36:16.207   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:17.018  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:17.207   783  1848 D         : readbrightness,out1:8
+11-26 12:36:17.207   783  1848 D         : .
+11-26 12:36:17.207   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:17.764 17696 17696 W ss      : type=1400 audit(0.0:47067): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:18.164     0     0 W swapper/6: type=1400 audit(0.0:47068): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:36:18.208   783  1848 D         : readbrightness,out1:8
+11-26 12:36:18.208   783  1848 D         : .
+11-26 12:36:18.208   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:18.525  3970  3970 I VoiceTrigger:AudioMode: voice trigger timer task 60*1000ms :54901
+11-26 12:36:18.526  3970  3970 I VoiceTrigger:AudioMode: voice trigger running:1795667778526
+11-26 12:36:19.210   783  1848 D         : readbrightness,out1:8
+11-26 12:36:19.210   783  1848 D         : .
+11-26 12:36:19.210   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:19.924 17711 17711 W ss      : type=1400 audit(0.0:47069): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:20.022  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:20.211   783  1848 D         : readbrightness,out1:8
+11-26 12:36:20.211   783  1848 D         : .
+11-26 12:36:20.211   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:21.211   783  1848 D         : readbrightness,out1:8
+11-26 12:36:21.211   783  1848 D         : .
+11-26 12:36:21.211   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:22.084 17725 17725 W ss      : type=1400 audit(0.0:47070): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:22.212   783  1848 D         : readbrightness,out1:8
+11-26 12:36:22.212   783  1848 D         : .
+11-26 12:36:22.212   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:23.028  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:23.213   783  1848 D         : readbrightness,out1:8
+11-26 12:36:23.213   783  1848 D         : .
+11-26 12:36:23.213   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:24.213   783  1848 D         : readbrightness,out1:8
+11-26 12:36:24.213   783  1848 D         : .
+11-26 12:36:24.213   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:24.214 17743 17743 W ss      : type=1400 audit(0.0:47071): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:25.214   783  1848 D         : readbrightness,out1:8
+11-26 12:36:25.214   783  1848 D         : .
+11-26 12:36:25.214   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:26.031  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:26.215   783  1848 D         : readbrightness,out1:8
+11-26 12:36:26.215   783  1848 D         : .
+11-26 12:36:26.215   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:26.354 17757 17757 W ss      : type=1400 audit(0.0:47072): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:27.215   783  1848 D         : readbrightness,out1:8
+11-26 12:36:27.215   783  1848 D         : .
+11-26 12:36:27.216   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:28.164     0     0 W swapper/7: type=1400 audit(0.0:47073): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:36:28.216   783  1848 D         : readbrightness,out1:8
+11-26 12:36:28.216   783  1848 D         : .
+11-26 12:36:28.216   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:28.514 17772 17772 W ss      : type=1400 audit(0.0:47074): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:29.035  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:29.217   783  1848 D         : readbrightness,out1:8
+11-26 12:36:29.217   783  1848 D         : .
+11-26 12:36:29.217   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:30.218   783  1848 D         : readbrightness,out1:8
+11-26 12:36:30.218   783  1848 D         : .
+11-26 12:36:30.218   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:30.654 17786 17786 W ss      : type=1400 audit(0.0:47075): avc: denied { create } for scontext=u:r:shell:s0 tcontext=u:r:shell:s0 tclass=netlink_tcpdiag_socket permissive=0
+11-26 12:36:31.218   783  1848 D         : readbrightness,out1:8
+11-26 12:36:31.218   783  1848 D         : .
+11-26 12:36:31.218   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:32.039  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:32.219   783  1848 D         : readbrightness,out1:8
+11-26 12:36:32.219   783  1848 D         : .
+11-26 12:36:32.219   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:33.220   783  1848 D         : readbrightness,out1:8
+11-26 12:36:33.220   783  1848 D         : .
+11-26 12:36:33.220   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:34.220   783  1848 D         : readbrightness,out1:8
+11-26 12:36:34.220   783  1848 D         : .
+11-26 12:36:34.220   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:34.670  2482  2620 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-26 12:36:34.670  2482  2620 D MiuiFastConnectService: stopBleScan: scanning: true
+11-26 12:36:34.673  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 12:36:34.674  1882 26344 D BtGatt.GattService: stopScan() - queue size =1
+11-26 12:36:34.675  1882  2332 I BtGatt.ScanManager: msg.what = 1
+11-26 12:36:34.676  1882  2332 D BtGatt.ScanManager: stop scan
+11-26 12:36:34.677  1882 26344 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-26 12:36:34.677  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-26 12:36:34.677  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-26 12:36:34.679  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-26 12:36:34.679  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.684  2482  2620 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-26 12:36:34.684  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-26 12:36:34.684  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.686  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 12:36:34.686  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-26 12:36:34.687  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.689  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-26 12:36:34.689  1882  1898 D BtGatt.GattService: registerScanner() - UUID=e530dc06-b9aa-486a-9617-7315e87a2cc4
+11-26 12:36:34.689  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.690  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-26 12:36:34.690  1882  2353 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register f443c91b-6edf-489c-dc01-525a4d035c58
+11-26 12:36:34.690  1882  2353 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-26 12:36:34.690  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-26 12:36:34.690  1882  2034 D BtGatt.GattService: onScannerRegistered() - UUID=e530dc06-b9aa-486a-9617-7315e87a2cc4, scannerId=5, status=0
+11-26 12:36:34.690  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-26 12:36:34.690  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-26 12:36:34.691  2482 12038 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-26 12:36:34.692  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-26 12:36:34.692  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.693  1882 26344 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-26 12:36:34.694  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-26 12:36:34.694  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-26 12:36:34.694  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 12:36:34.694  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 12:36:34.697  1882 26344 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@c4a1d2b
+11-26 12:36:34.699  1882 26344 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-26 12:36:34.700  1882 26344 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-26 12:36:34.703  1882  2332 I BtGatt.ScanManager: msg.what = 0
+11-26 12:36:34.704  1882  2332 D BtGatt.ScanManager: handling starting scan
+11-26 12:36:34.706  1882  2332 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-26 12:36:34.709  1882  2034 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-26 12:36:34.709  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.710  1882  2332 D BtGatt.ScanManager: Available Filter size: 13
+11-26 12:36:34.710  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:36:34.710  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.711  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:36:34.713  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-26 12:36:34.713  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.714  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:36:34.714  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.714  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:36:34.717  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-26 12:36:34.717  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.718  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:36:34.718  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.718  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:36:34.720  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-26 12:36:34.720  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.721  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:36:34.721  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.721  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:36:34.724  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-26 12:36:34.724  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.724  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:36:34.724  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.725  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:36:34.727  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-26 12:36:34.727  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:36:34.727  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-26 12:36:34.727  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-26 12:36:34.729  1882  2332 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-26 12:36:34.730  1882  2034 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-26 12:36:35.044  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:35.221   783  1848 D         : readbrightness,out1:8
+11-26 12:36:35.221   783  1848 D         : .
+11-26 12:36:35.221   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:36.222   783  1848 D         : readbrightness,out1:8
+11-26 12:36:36.222   783  1848 D         : .
+11-26 12:36:36.222   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:37.224   783  1848 D         : readbrightness,out1:8
+11-26 12:36:37.224   783  1848 D         : .
+11-26 12:36:37.224   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:38.048  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:38.164     0     0 W swapper/4: type=1400 audit(0.0:47076): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:36:38.224   783  1848 D         : readbrightness,out1:8
+11-26 12:36:38.224   783  1848 D         : .
+11-26 12:36:38.224   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:39.225   783  1848 D         : readbrightness,out1:8
+11-26 12:36:39.225   783  1848 D         : .
+11-26 12:36:39.225   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:40.226   783  1848 D         : readbrightness,out1:8
+11-26 12:36:40.226   783  1848 D         : .
+11-26 12:36:40.226   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:41.051  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:41.227   783  1848 D         : readbrightness,out1:8
+11-26 12:36:41.227   783  1848 D         : .
+11-26 12:36:41.227   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:42.228   783  1848 D         : readbrightness,out1:8
+11-26 12:36:42.228   783  1848 D         : .
+11-26 12:36:42.228   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:43.229   783  1848 D         : readbrightness,out1:8
+11-26 12:36:43.229   783  1848 D         : .
+11-26 12:36:43.229   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:44.055  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:44.230   783  1848 D         : readbrightness,out1:8
+11-26 12:36:44.230   783  1848 D         : .
+11-26 12:36:44.230   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:45.232   783  1848 D         : readbrightness,out1:8
+11-26 12:36:45.232   783  1848 D         : .
+11-26 12:36:45.232   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:46.232   783  1848 D         : readbrightness,out1:8
+11-26 12:36:46.232   783  1848 D         : .
+11-26 12:36:46.232   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:47.059  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:47.233   783  1848 D         : readbrightness,out1:8
+11-26 12:36:47.233   783  1848 D         : .
+11-26 12:36:47.233   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:48.234   783  1848 D         : readbrightness,out1:8
+11-26 12:36:48.234   783  1848 D         : .
+11-26 12:36:48.234   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:49.234   783  1848 D         : readbrightness,out1:8
+11-26 12:36:49.234   783  1848 D         : .
+11-26 12:36:49.234   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:50.063  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:50.235   783  1848 D         : readbrightness,out1:8
+11-26 12:36:50.235   783  1848 D         : .
+11-26 12:36:50.235   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:51.236   783  1848 D         : readbrightness,out1:8
+11-26 12:36:51.236   783  1848 D         : .
+11-26 12:36:51.236   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:52.237   783  1848 D         : readbrightness,out1:8
+11-26 12:36:52.237   783  1848 D         : .
+11-26 12:36:52.237   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:53.067  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:53.238   783  1848 D         : readbrightness,out1:8
+11-26 12:36:53.238   783  1848 D         : .
+11-26 12:36:53.238   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:54.238   783  1848 D         : readbrightness,out1:8
+11-26 12:36:54.238   783  1848 D         : .
+11-26 12:36:54.238   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:55.239   783  1848 D         : readbrightness,out1:8
+11-26 12:36:55.239   783  1848 D         : .
+11-26 12:36:55.239   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:56.071  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:56.240   783  1848 D         : readbrightness,out1:8
+11-26 12:36:56.240   783  1848 D         : .
+11-26 12:36:56.240   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:57.241   783  1848 D         : readbrightness,out1:8
+11-26 12:36:57.241   783  1848 D         : .
+11-26 12:36:57.241   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:58.164     0     0 W swapper/4: type=1400 audit(0.0:47077): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:36:58.242   783  1848 D         : readbrightness,out1:8
+11-26 12:36:58.242   783  1848 D         : .
+11-26 12:36:58.242   783  1848 D         : readbrightness,out2:8.
+11-26 12:36:59.076  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:36:59.243   783  1848 D         : readbrightness,out1:8
+11-26 12:36:59.243   783  1848 D         : .
+11-26 12:36:59.243   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:00.004  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 12:37:00.244   783  1848 D         : readbrightness,out1:8
+11-26 12:37:00.244   783  1848 D         : .
+11-26 12:37:00.244   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:01.244   783  1848 D         : readbrightness,out1:8
+11-26 12:37:01.244   783  1848 D         : .
+11-26 12:37:01.244   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:02.080  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:02.246   783  1848 D         : readbrightness,out1:8
+11-26 12:37:02.246   783  1848 D         : .
+11-26 12:37:02.246   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:03.247   783  1848 D         : readbrightness,out1:8
+11-26 12:37:03.247   783  1848 D         : .
+11-26 12:37:03.247   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:04.249   783  1848 D         : readbrightness,out1:8
+11-26 12:37:04.249   783  1848 D         : .
+11-26 12:37:04.249   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:05.083  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:05.249   783  1848 D         : readbrightness,out1:8
+11-26 12:37:05.249   783  1848 D         : .
+11-26 12:37:05.250   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:06.251   783  1848 D         : readbrightness,out1:8
+11-26 12:37:06.251   783  1848 D         : .
+11-26 12:37:06.251   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:07.252   783  1848 D         : readbrightness,out1:8
+11-26 12:37:07.252   783  1848 D         : .
+11-26 12:37:07.252   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:08.087  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:08.164     0     0 W swapper/6: type=1400 audit(0.0:47078): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:37:08.253   783  1848 D         : readbrightness,out1:8
+11-26 12:37:08.253   783  1848 D         : .
+11-26 12:37:08.253   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:09.253   783  1848 D         : readbrightness,out1:8
+11-26 12:37:09.253   783  1848 D         : .
+11-26 12:37:09.254   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:10.254   783  1848 D         : readbrightness,out1:8
+11-26 12:37:10.254   783  1848 D         : .
+11-26 12:37:10.254   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:11.092  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:11.255   783  1848 D         : readbrightness,out1:8
+11-26 12:37:11.255   783  1848 D         : .
+11-26 12:37:11.255   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:12.255   783  1848 D         : readbrightness,out1:8
+11-26 12:37:12.255   783  1848 D         : .
+11-26 12:37:12.256   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:13.256   783  1848 D         : readbrightness,out1:8
+11-26 12:37:13.256   783  1848 D         : .
+11-26 12:37:13.256   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:14.096  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:14.257   783  1848 D         : readbrightness,out1:8
+11-26 12:37:14.257   783  1848 D         : .
+11-26 12:37:14.257   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:15.258   783  1848 D         : readbrightness,out1:8
+11-26 12:37:15.258   783  1848 D         : .
+11-26 12:37:15.258   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:16.259   783  1848 D         : readbrightness,out1:8
+11-26 12:37:16.259   783  1848 D         : .
+11-26 12:37:16.259   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:17.101  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:17.259   783  1848 D         : readbrightness,out1:8
+11-26 12:37:17.259   783  1848 D         : .
+11-26 12:37:17.259   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:18.260   783  1848 D         : readbrightness,out1:8
+11-26 12:37:18.260   783  1848 D         : .
+11-26 12:37:18.260   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:18.629  3970  3970 I VoiceTrigger:AudioMode: voice trigger timer task 60*1000ms :54911
+11-26 12:37:18.629  3970  3970 I VoiceTrigger:AudioMode: voice trigger running:1795667838629
+11-26 12:37:19.262   783  1848 D         : readbrightness,out1:8
+11-26 12:37:19.262   783  1848 D         : .
+11-26 12:37:19.262   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:20.105  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:20.262   783  1848 D         : readbrightness,out1:8
+11-26 12:37:20.262   783  1848 D         : .
+11-26 12:37:20.262   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:21.264   783  1848 D         : readbrightness,out1:8
+11-26 12:37:21.264   783  1848 D         : .
+11-26 12:37:21.264   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:22.265   783  1848 D         : readbrightness,out1:8
+11-26 12:37:22.265   783  1848 D         : .
+11-26 12:37:22.265   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:23.111  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:23.267   783  1848 D         : readbrightness,out1:8
+11-26 12:37:23.267   783  1848 D         : .
+11-26 12:37:23.267   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:24.268   783  1848 D         : readbrightness,out1:8
+11-26 12:37:24.268   783  1848 D         : .
+11-26 12:37:24.268   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:25.269   783  1848 D         : readbrightness,out1:8
+11-26 12:37:25.269   783  1848 D         : .
+11-26 12:37:25.269   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:26.115  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:26.269   783  1848 D         : readbrightness,out1:8
+11-26 12:37:26.269   783  1848 D         : .
+11-26 12:37:26.269   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:27.270   783  1848 D         : readbrightness,out1:8
+11-26 12:37:27.270   783  1848 D         : .
+11-26 12:37:27.271   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:28.164     0     0 W swapper/5: type=1400 audit(0.0:47079): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:37:28.271   783  1848 D         : readbrightness,out1:8
+11-26 12:37:28.271   783  1848 D         : .
+11-26 12:37:28.271   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:29.119  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:29.272   783  1848 D         : readbrightness,out1:8
+11-26 12:37:29.272   783  1848 D         : .
+11-26 12:37:29.272   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:30.273   783  1848 D         : readbrightness,out1:8
+11-26 12:37:30.273   783  1848 D         : .
+11-26 12:37:30.273   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:31.273   783  1848 D         : readbrightness,out1:8
+11-26 12:37:31.273   783  1848 D         : .
+11-26 12:37:31.273   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:32.124  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:32.274   783  1848 D         : readbrightness,out1:8
+11-26 12:37:32.274   783  1848 D         : .
+11-26 12:37:32.274   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:33.275   783  1848 D         : readbrightness,out1:8
+11-26 12:37:33.275   783  1848 D         : .
+11-26 12:37:33.275   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:34.275   783  1848 D         : readbrightness,out1:8
+11-26 12:37:34.275   783  1848 D         : .
+11-26 12:37:34.275   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:34.731  2482  2620 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-26 12:37:34.731  2482  2620 D MiuiFastConnectService: stopBleScan: scanning: true
+11-26 12:37:34.733  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 12:37:34.734  1882 26344 D BtGatt.GattService: stopScan() - queue size =1
+11-26 12:37:34.736  1882  2332 I BtGatt.ScanManager: msg.what = 1
+11-26 12:37:34.736  1882  2332 D BtGatt.ScanManager: stop scan
+11-26 12:37:34.737  1882 26344 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-26 12:37:34.737  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-26 12:37:34.737  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-26 12:37:34.739  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-26 12:37:34.739  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.744  2482  2620 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-26 12:37:34.746  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 12:37:34.746  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-26 12:37:34.747  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.749  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-26 12:37:34.749  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.750  1882 26344 D BtGatt.GattService: registerScanner() - UUID=3c6d9271-1492-4b48-8374-0adf8e0b5ea3
+11-26 12:37:34.751  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-26 12:37:34.751  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-26 12:37:34.751  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.751  1882  2353 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register f6533921-dc85-7f5e-9f61-9837de933f82
+11-26 12:37:34.751  1882  2353 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-26 12:37:34.751  1882  2034 D BtGatt.GattService: onScannerRegistered() - UUID=3c6d9271-1492-4b48-8374-0adf8e0b5ea3, scannerId=5, status=0
+11-26 12:37:34.751  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-26 12:37:34.752  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-26 12:37:34.752  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-26 12:37:34.752  2482 12038 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-26 12:37:34.753  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-26 12:37:34.753  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.753  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-26 12:37:34.753  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-26 12:37:34.753  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 12:37:34.753  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 12:37:34.754  1882 26344 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-26 12:37:34.758  1882 26344 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@813185d
+11-26 12:37:34.760  1882 26344 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-26 12:37:34.761  1882 26344 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-26 12:37:34.764  1882  2332 I BtGatt.ScanManager: msg.what = 0
+11-26 12:37:34.765  1882  2332 D BtGatt.ScanManager: handling starting scan
+11-26 12:37:34.767  1882  2332 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-26 12:37:34.771  1882  2034 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-26 12:37:34.771  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.772  1882  2332 D BtGatt.ScanManager: Available Filter size: 13
+11-26 12:37:34.772  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:37:34.772  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.773  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:37:34.775  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-26 12:37:34.775  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.776  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:37:34.776  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.776  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:37:34.779  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-26 12:37:34.779  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.780  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:37:34.780  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.781  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:37:34.783  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-26 12:37:34.784  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.784  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:37:34.784  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.785  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:37:34.787  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-26 12:37:34.787  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.788  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:37:34.788  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.788  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:37:34.791  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-26 12:37:34.791  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:37:34.793  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-26 12:37:34.793  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-26 12:37:34.795  1882  2332 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-26 12:37:34.795  1882  2034 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-26 12:37:35.128  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:35.276   783  1848 D         : readbrightness,out1:8
+11-26 12:37:35.276   783  1848 D         : .
+11-26 12:37:35.276   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:36.277   783  1848 D         : readbrightness,out1:8
+11-26 12:37:36.277   783  1848 D         : .
+11-26 12:37:36.277   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:37.278   783  1848 D         : readbrightness,out1:8
+11-26 12:37:37.278   783  1848 D         : .
+11-26 12:37:37.278   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:38.132  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:38.164     0     0 W swapper/6: type=1400 audit(0.0:47080): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:37:38.279   783  1848 D         : readbrightness,out1:8
+11-26 12:37:38.279   783  1848 D         : .
+11-26 12:37:38.279   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:39.279   783  1848 D         : readbrightness,out1:8
+11-26 12:37:39.279   783  1848 D         : .
+11-26 12:37:39.280   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:40.281   783  1848 D         : readbrightness,out1:8
+11-26 12:37:40.281   783  1848 D         : .
+11-26 12:37:40.281   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:41.137  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:41.281   783  1848 D         : readbrightness,out1:8
+11-26 12:37:41.281   783  1848 D         : .
+11-26 12:37:41.281   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:42.283   783  1848 D         : readbrightness,out1:8
+11-26 12:37:42.283   783  1848 D         : .
+11-26 12:37:42.283   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:43.284   783  1848 D         : readbrightness,out1:8
+11-26 12:37:43.284   783  1848 D         : .
+11-26 12:37:43.284   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:44.141  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:44.286   783  1848 D         : readbrightness,out1:8
+11-26 12:37:44.286   783  1848 D         : .
+11-26 12:37:44.286   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:45.287   783  1848 D         : readbrightness,out1:8
+11-26 12:37:45.287   783  1848 D         : .
+11-26 12:37:45.287   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:46.289   783  1848 D         : readbrightness,out1:8
+11-26 12:37:46.289   783  1848 D         : .
+11-26 12:37:46.289   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:47.145  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:47.291   783  1848 D         : readbrightness,out1:8
+11-26 12:37:47.291   783  1848 D         : .
+11-26 12:37:47.291   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:48.164     0     0 W swapper/4: type=1400 audit(0.0:47081): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:37:48.292   783  1848 D         : readbrightness,out1:8
+11-26 12:37:48.292   783  1848 D         : .
+11-26 12:37:48.292   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:49.292   783  1848 D         : readbrightness,out1:8
+11-26 12:37:49.292   783  1848 D         : .
+11-26 12:37:49.292   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:50.150  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:50.293   783  1848 D         : readbrightness,out1:8
+11-26 12:37:50.293   783  1848 D         : .
+11-26 12:37:50.293   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:51.293   783  1848 D         : readbrightness,out1:8
+11-26 12:37:51.293   783  1848 D         : .
+11-26 12:37:51.294   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:52.294   783  1848 D         : readbrightness,out1:8
+11-26 12:37:52.294   783  1848 D         : .
+11-26 12:37:52.294   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:53.155  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:53.295   783  1848 D         : readbrightness,out1:8
+11-26 12:37:53.295   783  1848 D         : .
+11-26 12:37:53.295   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:54.296   783  1848 D         : readbrightness,out1:8
+11-26 12:37:54.296   783  1848 D         : .
+11-26 12:37:54.296   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:55.296   783  1848 D         : readbrightness,out1:8
+11-26 12:37:55.296   783  1848 D         : .
+11-26 12:37:55.296   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:56.159  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:56.297   783  1848 D         : readbrightness,out1:8
+11-26 12:37:56.297   783  1848 D         : .
+11-26 12:37:56.297   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:57.297   783  1848 D         : readbrightness,out1:8
+11-26 12:37:57.297   783  1848 D         : .
+11-26 12:37:57.297   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:58.164     0     0 W swapper/5: type=1400 audit(0.0:47082): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:37:58.298   783  1848 D         : readbrightness,out1:8
+11-26 12:37:58.298   783  1848 D         : .
+11-26 12:37:58.298   783  1848 D         : readbrightness,out2:8.
+11-26 12:37:59.164  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:37:59.299   783  1848 D         : readbrightness,out1:8
+11-26 12:37:59.299   783  1848 D         : .
+11-26 12:37:59.299   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:00.002  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 12:38:00.299   783  1848 D         : readbrightness,out1:8
+11-26 12:38:00.299   783  1848 D         : .
+11-26 12:38:00.299   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:01.300   783  1848 D         : readbrightness,out1:8
+11-26 12:38:01.300   783  1848 D         : .
+11-26 12:38:01.300   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:02.170  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:02.302   783  1848 D         : readbrightness,out1:8
+11-26 12:38:02.302   783  1848 D         : .
+11-26 12:38:02.302   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:03.307   783  1848 D         : readbrightness,out1:8
+11-26 12:38:03.307   783  1848 D         : .
+11-26 12:38:03.307   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:04.307   783  1848 D         : readbrightness,out1:8
+11-26 12:38:04.307   783  1848 D         : .
+11-26 12:38:04.307   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:05.174  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:05.309   783  1848 D         : readbrightness,out1:8
+11-26 12:38:05.309   783  1848 D         : .
+11-26 12:38:05.309   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:06.310   783  1848 D         : readbrightness,out1:8
+11-26 12:38:06.310   783  1848 D         : .
+11-26 12:38:06.310   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:07.311   783  1848 D         : readbrightness,out1:8
+11-26 12:38:07.311   783  1848 D         : .
+11-26 12:38:07.311   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:08.178  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:08.164     0     0 W swapper/4: type=1400 audit(0.0:47083): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:38:08.311   783  1848 D         : readbrightness,out1:8
+11-26 12:38:08.311   783  1848 D         : .
+11-26 12:38:08.311   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:09.312   783  1848 D         : readbrightness,out1:8
+11-26 12:38:09.312   783  1848 D         : .
+11-26 12:38:09.312   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:10.313   783  1848 D         : readbrightness,out1:8
+11-26 12:38:10.313   783  1848 D         : .
+11-26 12:38:10.313   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:11.184  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:11.314   783  1848 D         : readbrightness,out1:8
+11-26 12:38:11.314   783  1848 D         : .
+11-26 12:38:11.314   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:12.315   783  1848 D         : readbrightness,out1:8
+11-26 12:38:12.315   783  1848 D         : .
+11-26 12:38:12.315   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:13.315   783  1848 D         : readbrightness,out1:8
+11-26 12:38:13.315   783  1848 D         : .
+11-26 12:38:13.315   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:14.056 30961 30961 I PowerKeeperBackgroundService: onStartCommand()
+11-26 12:38:14.056 30961 30961 I PowerKeeperService: onAlarm
+11-26 12:38:14.188  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:14.316   783  1848 D         : readbrightness,out1:8
+11-26 12:38:14.316   783  1848 D         : .
+11-26 12:38:14.316   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:14.611  1580  2272 D WificondControl: Scan result ready event
+11-26 12:38:14.614   868  8348 I LOWI-8.6.0.72: [LOWI-Scan] lowi_close_record:Scan done in 407640514ms, 15 APs in scan results
+11-26 12:38:14.619 14224 14259 I MqttService: BLE target: gateway_ble_addr=84:C2:E4:03:02:02 (BLE 连接目标), mac_addr=0200000000A1 (平台身份)
+11-26 12:38:14.619 14224 14259 I MqttService: link_state=CONNECTING msg=正在连接网关…
+11-26 12:38:14.620 14224 14259 I MqttService: Attempt 1 to connect to Bluetooth device...
+11-26 12:38:14.623 14224 14259 D BluetoothGatt: connect() - device: 84:C2:E4:03:02:02, auto: false
+11-26 12:38:14.624 14224 14259 D BluetoothGatt: registerApp()
+11-26 12:38:14.624 14224 14259 D BluetoothGatt: registerApp() - UUID=648ce331-2337-45b7-87a1-90746d310368
+--------- beginning of system
+11-26 12:38:14.625   813   813 I wificond: wifi generation capability mask: 5
+11-26 12:38:14.626  1882 26344 D BtGatt.GattService: registerClient() - UUID=648ce331-2337-45b7-87a1-90746d310368
+11-26 12:38:14.627  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-26 12:38:14.627  1882  2353 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register 8beda6b5-4e38-bad6-097a-47bca2513c4e
+11-26 12:38:14.627  1882  2353 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=6
+11-26 12:38:14.627  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=6
+11-26 12:38:14.628  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-26 12:38:14.628  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-26 12:38:14.628  1882  2034 D BtGatt.GattService: onClientRegistered() - UUID=648ce331-2337-45b7-87a1-90746d310368, clientIf=6
+11-26 12:38:14.629 14224 14244 D BluetoothGatt: onClientRegistered() - status=0 clientIf=6
+11-26 12:38:14.630  1882 26344 D BtGatt.GattService: clientConnect() - address=84:C2:E4:03:02:02, isDirect=true, opportunistic=false, phy=1
+11-26 12:38:14.631  1882  2034 D bt_btif_config: btif_get_address_type: Device [XXXX] address type 0
+11-26 12:38:14.631  1882  2034 D bt_btif_config: btif_get_device_type: Device [XXXX] type 2
+11-26 12:38:14.631  1882  2353 V bt_stack: [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_OPEN_EVT
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x00 [GATTC_IDLE_ST], Event 0x1f00[BTA_GATTC_API_OPEN_EVT]
+11-26 12:38:14.632  1882  2353 I bt_stack: [INFO:gatt_api.cc(1131)] GATT_Connect gatt_if=6, address=84:c2:e4:03:02:02 is_direct 1
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=0
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1073)] gatt_set_ch_state: old=0 new=0x02
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=2
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(216)] direct_connect_add : address:84:c2:e4:03:02:02
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:btm_ble_bgconn.cc(488)] BTM_WhiteListAdd: 84:c2:e4:03:02:02
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(53)] scheduling timer %spc:0x7f3aaf5b
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(359)] gatt_update_app_use_link_flag: is_add=1 chk_link=0
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(325)] gatt_update_app_hold_link_status
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(329)] added gatt_if=6
+11-26 12:38:14.632  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=2
+11-26 12:38:14.633  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1314)] GATT_GetConnIdIfConnected status= 0
+11-26 12:38:14.633  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x00 -> 0x01 after Event 0x1f00
+11-26 12:38:14.642  1580  1846 E AppScanObserverService: Result available, null observers for user: 0
+11-26 12:38:14.644  1580  1880 E WifiService: Permission violation - getScanResults not allowed for uid=10067, packageName=com.miui.personalassistant, reason=java.lang.SecurityException: UID 10067 has no location permission
+11-26 12:38:14.644 12745 12796 W WifiMonitor: available wifis has none
+11-26 12:38:14.644 12745 12796 W WifiMonitor: getScanResults has none
+11-26 12:38:14.918  1882  2353 I bt_stack: [INFO:connection_manager.cc(277)] lower the scan parameters used for connecting
+11-26 12:38:14.918  1882  2353 V bt_stack: [VERBOSE1:btm_ble_bgconn.cc(506)] BTM_WhiteListRemove: 84:c2:e4:03:02:02
+11-26 12:38:14.918  1882  2353 V bt_stack: [VERBOSE1:btm_ble_bgconn.cc(89)] background_connection_remove : 84:c2:e4:03:02:02
+11-26 12:38:14.918  1882  2353 I bt_stack: [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-26 12:38:14.918  1882  2353 V bt_stack: [VERBOSE1:btm_ble.cc(1905)] btm_ble_connected Security Manager: handle:11 enc_mode:0000  bda: 84:c2:e4:03:02:02 RName:  p_dev_rec:0x90232880
+11-26 12:38:14.918  1882  2353 W bt_btm  : btm_acl_created hci_handle=11 link_role=0  transport=2
+11-26 12:38:14.919  1882  2353 V bt_stack: [VERBOSE1:btm_inq.cc(1019)] BTM_InqDbRead: bd addr 84:c2:e4:03:02:02
+11-26 12:38:14.919  1882  2353 I bt_stack: [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-26 12:38:15.288  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(457)] GATT   ATT protocol channel with BDA: 84:c2:e4:03:02:02 is connected
+11-26 12:38:15.288  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(312)] gatt_is_bda_in_the_srv_chg_clt_list: 84:c2:e4:03:02:02
+11-26 12:38:15.288  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=2
+11-26 12:38:15.288  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1073)] gatt_set_ch_state: old=2 new=0x04
+11-26 12:38:15.288  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(858)] gatt_send_conn_cback : address 84:c2:e4:03:02:02
+11-26 12:38:15.288  1882  2353 V bt_stack: [VERBOSE1:gatt_attr.cc(245)] gatt_connect_cback: from 84:c2:e4:03:02:02 connected: 1, conn_id: 0x0001reason: 000000
+11-26 12:38:15.288  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(936)] GATT_SetIdleTimeout idle_tout=65535, status=1 (1-OK 0-not performed)
+11-26 12:38:15.288  1882  2353 W bt_btm  : btm_read_remote_version_complete lmp_version 12 manufacturer 2007 lmp_subversion 49424
+11-26 12:38:15.288  1882  2353 E bt_btif : bta_dm_acl_change new acl connetion:count = 1
+11-26 12:38:15.288  1882  2353 W bt_btif : bta_dm_acl_change info: 0x0
+11-26 12:38:15.288  1882  2353 W bt_l2cap: L2CA_SetDesireRole() new:x1, disallow_switch:0
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-26 12:38:15.289  1882  2034 D bt_btif_dm: remote version info [XXXX]: 0, 0, 0
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 3
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 4
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 5
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_CONN_EVT
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x01 [GATTC_W4_CONN_ST], Event 0x1f0c[BTA_GATTC_INT_CONN_EVT]
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(462)] bta_gattc_conn: server cache state=0
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(465)] bta_gattc_conn: conn_id=0x0006
+11-26 12:38:15.289  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1278)] GATT_GetConnectionInfor conn_id=0x0006
+11-26 12:38:15.290  1882  2353 E bt_stack: [ERROR:bta_gattc_cache.cc(733)] bta_gattc_cache_load: can't open GATT cache file /data/misc/bluetooth/gatt_cache_84c2e4030202 for reading, error: No such file or directory
+11-26 12:38:15.290  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(641)] bta_gattc_start_discover: conn_id:0x0006 p_clcb->p_srcb->state:3
+11-26 12:38:15.290  1882  2353 I bt_stack: [INFO:hearing_aid.cc(1804)] GetDeviceCount: Not initialized yet
+11-26 12:38:15.291  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=1, s_handle=0x0001, e_handle=0xffff
+11-26 12:38:15.291  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x01 -> 0x03 after Event 0x1f0c
+11-26 12:38:15.293  1882  2034 D BtGatt.GattService: onConnected() - clientIf=6, connId=6, address=84:C2:E4:03:02:02
+11-26 12:38:15.294  2482  2482 W BluetoothEventManager: AclStateChangedHandler: activeDevice is null
+11-26 12:38:15.296  1904  1904 W BluetoothEventManager: AclStateChangedHandler: activeDevice is null
+11-26 12:38:15.297  3039  3039 I Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onConnection Find device :84:C2:E4:03:02:02 not exist.
+11-26 12:38:15.298  3970  3970 I Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onConnection Find device :84:C2:E4:03:02:02 not exist.
+11-26 12:38:15.300 14224 14244 D BluetoothGatt: onClientConnectionState() - status=0 clientIf=6 device=84:C2:E4:03:02:02
+11-26 12:38:15.300 14224 14244 I MqttService: Connected to device, discovering services...
+11-26 12:38:15.302  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 4104	 indicator = 3	 ring_id = 0
+11-26 12:38:15.308  3970  3970 I Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onReceive: ACTION_ACL_CONNECTED,  device : BluetoothDeviceInfo{ mCurrentOpType: 2 Device Ble='xxx; 84:C2:E4:03:02:02 vid:0xffff pid:0xffff MandatoryUpgrade:false channelStatus:0bleStatus:0 sppStatus:0 authStage:0 PowerMode:0 mBackUpMode:-1 isDeviceInfoUpdated:false authCmd:false FailedReason:0x0}
+11-26 12:38:15.311 14224 14244 D BluetoothGatt: configureMTU() - device: 84:C2:E4:03:02:02 mtu: 240
+11-26 12:38:15.312  1882 26344 D BtGatt.GattService: configureMTU() - address=84:C2:E4:03:02:02 mtu=240
+11-26 12:38:15.312  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CFG_MTU_EVT
+11-26 12:38:15.312  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x03 [GATTC_DISCOVER_ST], Event 0x1f07[BTA_GATTC_API_CFG_MTU_EVT]
+11-26 12:38:15.312  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x03 -> 0x03 after Event 0x1f07
+11-26 12:38:15.312   613  8350 E WifiHAL : Received fatal event, sending alert
+11-26 12:38:15.313  1580  1789 W WifiVendorHal: onDebugErrorAlert 4104
+11-26 12:38:15.313  1580  1804 W WifiDiags: CaptureBugReport 3848
+11-26 12:38:15.314  3970  3970 I BluetoothProxy: onBleStatus: device = bluetoothDeviceExt{ mCurrentOpType: 2, Device Ble='xxx; 84:C2:E4:03:02:02, vid:0xffff, pid:0xffff, Status : MandatoryUpgrade:false, PowerMode:0, mChannelType:-1, DualBackupFlag:-1, mRssi:-9999, mConnectType:0, mIsBoundByOtherDevice:false, mIsDirectlyConnectSpp:false, mIsEdrConnectedByOtherDevice:false, color type:0, count:0, fast pair:false, mma:false, mFailedReason:0x0}, status = 4
+11-26 12:38:15.316  3970  3970 I BaseBluetoothBusEvent: onBleStatus: bluetoothDevice = bluetoothDeviceExt{ mCurrentOpType: 2, Device Ble='xxx; 84:C2:E4:03:02:02, vid:0xffff, pid:0xffff, Status : MandatoryUpgrade:false, PowerMode:0, mChannelType:-1, DualBackupFlag:-1, mRssi:-9999, mConnectType:0, mIsBoundByOtherDevice:false, mIsDirectlyConnectSpp:false, mIsEdrConnectedByOtherDevice:false, color type:0, count:0, fast pair:false, mma:false, mFailedReason:0x0} , status = 4
+11-26 12:38:15.317   783  1848 D         : readbrightness,out1:8
+11-26 12:38:15.317   783  1848 D         : .
+11-26 12:38:15.317   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:15.318  3039  3039 I Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onReceive: ACTION_ACL_CONNECTED,  device : BluetoothDeviceInfo{ mCurrentOpType: 2 Device Ble='xxx; 84:C2:E4:03:02:02 vid:0xffff pid:0xffff MandatoryUpgrade:false channelStatus:0bleStatus:0 sppStatus:0 authStage:0 PowerMode:0 mBackUpMode:-1 isDeviceInfoUpdated:false authCmd:false FailedReason:0x0}
+11-26 12:38:15.320  3039  3039 D BluetoothHelper: >>> BT SCO state changed !!! action = android.bluetooth.device.action.ACL_CONNECTED
+11-26 12:38:15.321  3039  3039 I BluetoothProxy: onBleStatus: device = bluetoothDeviceExt{ mCurrentOpType: 2, Device Ble='xxx; 84:C2:E4:03:02:02, vid:0xffff, pid:0xffff, Status : MandatoryUpgrade:false, PowerMode:0, mChannelType:-1, DualBackupFlag:-1, mRssi:-9999, mConnectType:0, mIsBoundByOtherDevice:false, mIsDirectlyConnectSpp:false, mIsEdrConnectedByOtherDevice:false, color type:0, count:0, fast pair:false, mma:false, mFailedReason:0x0}, status = 4
+11-26 12:38:15.322  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 12:38:15.323  3039  3039 I BaseBluetoothBusEvent: onBleStatus: bluetoothDevice = bluetoothDeviceExt{ mCurrentOpType: 2, Device Ble='xxx; 84:C2:E4:03:02:02, vid:0xffff, pid:0xffff, Status : MandatoryUpgrade:false, PowerMode:0, mChannelType:-1, DualBackupFlag:-1, mRssi:-9999, mConnectType:0, mIsBoundByOtherDevice:false, mIsDirectlyConnectSpp:false, mIsEdrConnectedByOtherDevice:false, color type:0, count:0, fast pair:false, mma:false, mFailedReason:0x0} , status = 4
+11-26 12:38:15.323  3039  6265 D BluetoothProxy: isConnecting : mIsConnecting = false
+11-26 12:38:15.323  3039  6265 D Bluetooth_AIVS_SDK: AIVS:BluetoothBle:-isBleConnecting- mConnectingBleDevice : null
+11-26 12:38:15.323  3039  6265 I Bluetooth_AIVS_SDK: AIVS:BluetoothSpp:-isSppConnecting- mConnectingSppDevice : null
+11-26 12:38:15.323  3039  6265 I Bluetooth_AIVS_SDK: AIVS:BluetoothEdr:Current connecting edr device:null
+11-26 12:38:15.323  3039  6265 D XmDeviceStateUtils:  isReallyConnection : state = 4
+11-26 12:38:15.323  3039  6265 D BleSysSystemBluetoothTemplate: checkDeviceIsInHistory : synList = 84:C2:E4:03:02:02
+11-26 12:38:15.323  3039  6265 D BleSysSystemBluetoothTemplate: checkDeviceIsInHistory : historyList = []
+11-26 12:38:15.323  3039  6265 D BleSysSystemBluetoothTemplate: checkDeviceIsInHistory : synList = 84:C2:E4:03:02:02
+11-26 12:38:15.324  3039  6265 D BleSysSystemBluetoothTemplate: checkDeviceIsInHistory : historyList = []
+11-26 12:38:15.324  3039  6265 E NetJsonConfigUtils: getMacSupportList : fixed(2)-pool-1-thread-1
+11-26 12:38:15.324  3039  6265 I BluetoothProxy: isBleAudioDevice ：value is null myMac is 84:C2:E4:03:02:02
+11-26 12:38:15.325  3039  6265 D NetJsonConfigUtils: deviceName = xxx
+11-26 12:38:15.325  3039  6265 D SynConnectOperation: startDeviceSyn ：start syn
+11-26 12:38:15.326  3039  6265 D SynConnectOperation: canSynNextDevice : mBleutoothSynInfos = []
+11-26 12:38:15.326  3039  6265 D SynConnectOperation: closeSyn : syn finish
+11-26 12:38:15.334  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 12:38:15.342  2833  2833 I chatty  : uid=1000(system) /system/vendor/bin/cnss_diag identical 1 line
+11-26 12:38:15.348  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 12:38:15.353   613  8350 E WifiHAL : Error reading from socket
+11-26 12:38:15.353   613  8350 E WifiHAL : Error :-5 while reading nl msg
+11-26 12:38:15.354  2833  2833 I CNSS    : EVENT_WLAN_LOG_COMPLETE event received Reason code 10	 indicator = 1	 ring_id = 0
+11-26 12:38:15.482  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:15.483  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 17, msg_len = 7
+11-26 12:38:15.483  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 17, len = 7rsp_code: 17
+11-26 12:38:15.483  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 12:38:15.483  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=1
+11-26 12:38:15.483  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 12:38:15.483  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(168)] Start service discovery
+11-26 12:38:15.483  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=3, s_handle=0x0001, e_handle=0xffff
+11-26 12:38:15.626  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:15.626  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 1, msg_len = 4
+11-26 12:38:15.626  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 1, len = 4rsp_code: 9
+11-26 12:38:15.626  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(519)] gatt_process_error_rsp
+11-26 12:38:15.626  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(481)] gatt_proc_disc_error_rspreason: 0a cmd_code 0008
+11-26 12:38:15.626  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(491)] Discovery completed
+11-26 12:38:15.626  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=3
+11-26 12:38:15.626  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 12:38:15.627  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=4, s_handle=0x0001, e_handle=0xffff
+11-26 12:38:15.726  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:15.726  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 9, msg_len = 22
+11-26 12:38:15.726  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 9, len = 22rsp_code: 9
+11-26 12:38:15.726  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 12:38:15.727  1882  2353 I chatty  : uid=1002(bluetooth) btu message loo identical 1 line
+11-26 12:38:15.727  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 12:38:15.921  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:15.921  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 9, msg_len = 8
+11-26 12:38:15.921  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 9, len = 8rsp_code: 9
+11-26 12:38:15.922  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 12:38:16.114  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:16.114  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 1, msg_len = 4
+11-26 12:38:16.114  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 1, len = 4rsp_code: 9
+11-26 12:38:16.114  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(519)] gatt_process_error_rsp
+11-26 12:38:16.114  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(481)] gatt_proc_disc_error_rspreason: 0a cmd_code 0008
+11-26 12:38:16.114  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(491)] Discovery completed
+11-26 12:38:16.114  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=4
+11-26 12:38:16.114  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 12:38:16.115  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-26 12:38:16.115  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x0004, e_handle=0x0004
+11-26 12:38:16.211  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:16.211  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-26 12:38:16.211  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-26 12:38:16.212  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 12:38:16.212  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-26 12:38:16.212  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 12:38:16.212  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-26 12:38:16.212  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x0007, e_handle=0x0007
+11-26 12:38:16.309  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:16.309  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-26 12:38:16.309  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-26 12:38:16.309  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 12:38:16.309  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-26 12:38:16.309  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 12:38:16.309  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-26 12:38:16.310  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x000a, e_handle=0x000a
+11-26 12:38:16.318   783  1848 D         : readbrightness,out1:8
+11-26 12:38:16.318   783  1848 D         : .
+11-26 12:38:16.318   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:16.457  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:16.457  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-26 12:38:16.457  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-26 12:38:16.457  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 12:38:16.458  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-26 12:38:16.458  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 12:38:16.458  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-26 12:38:16.458  1882  2353 I bt_stack: [INFO:gatt_api.cc(644)] GATTC_Discover conn_id=0x0006, disc_type=5, s_handle=0x000d, e_handle=0xffff
+11-26 12:38:16.652  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:16.652  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 5, msg_len = 5
+11-26 12:38:16.652  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 5, len = 5rsp_code: 5
+11-26 12:38:16.652  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(332)] bta_gattc_disc_res_cbackconn_id 6disc_type 
+11-26 12:38:16.750  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:16.750  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 1, msg_len = 4
+11-26 12:38:16.750  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 1, len = 4rsp_code: 5
+11-26 12:38:16.750  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(519)] gatt_process_error_rsp
+11-26 12:38:16.750  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(481)] gatt_proc_disc_error_rspreason: 0a cmd_code 0004
+11-26 12:38:16.751  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(491)] Discovery completed
+11-26 12:38:16.751  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=1 subtype=5
+11-26 12:38:16.751  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(369)] bta_gattc_disc_cmpl_cbackDisc_type  status:
+11-26 12:38:16.751  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(204)] starting discover characteristics descriptor
+11-26 12:38:16.751  1882  2353 I bt_stack: [INFO:bta_gattc_cache.cc(183)] bta_gattc_explore_srvc_finished: service discovery finished
+11-26 12:38:16.751  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x03 [GATTC_DISCOVER_ST], Event 0x1f0e[BTA_GATTC_DISCOVER_CMPL_EVT]
+11-26 12:38:16.751  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(693)] bta_gattc_disc_cmpl: conn_id=0x0006
+11-26 12:38:16.751  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f07[BTA_GATTC_API_CFG_MTU_EVT]
+11-26 12:38:16.751  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(578)] GATTC_ConfigureMTU: conn_id=0x0006, mtu=240
+11-26 12:38:16.752  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f07
+11-26 12:38:16.752  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x03 -> 0x02 after Event 0x1f0e
+11-26 12:38:16.752  1882  2034 E bt_btif_gattc: btif_gattc_upstreams_evt: Unhandled event (8)!
+11-26 12:38:16.894  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:16.894  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 3, msg_len = 2
+11-26 12:38:16.894  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 3, len = 2rsp_code: 3
+11-26 12:38:16.894  1882  2353 W bt_l2cap: l2cble_set_fixed_channel_tx_data_length, request not supported
+11-26 12:38:16.894  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=5 subtype=0
+11-26 12:38:16.895  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(1309)] bta_gattc_cmpl_cback: conn_id:6 op:5 status:0
+11-26 12:38:16.895  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_OP_CMPL_EVT
+11-26 12:38:16.895  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f0f[BTA_GATTC_OP_CMPL_EVT]
+11-26 12:38:16.895  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(936)] bta_gattc_op_cmpl: op:5
+11-26 12:38:16.895  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f0f
+11-26 12:38:16.895  1882  2034 D BtGatt.GattService: onConfigureMTU() address=84:C2:E4:03:02:02, status=0, mtu=240
+11-26 12:38:16.896 14224 14244 D BluetoothGatt: onConfigureMTU() - Device=84:C2:E4:03:02:02 mtu=240 status=0
+11-26 12:38:16.897 14224 14244 I MqttService: MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-26 12:38:16.897 14224 14244 D BluetoothGatt: discoverServices() - device: 84:C2:E4:03:02:02
+11-26 12:38:16.898  1882  1899 D BtGatt.GattService: discoverServices() - address=84:C2:E4:03:02:02, connId=6
+11-26 12:38:16.899  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_SEARCH_EVT
+11-26 12:38:16.899  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f09[BTA_GATTC_API_SEARCH_EVT]
+11-26 12:38:16.899  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(1004)] bta_gattc_search: conn_id=0x0006
+11-26 12:38:16.900  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f09
+11-26 12:38:16.900  1882  2034 D BtGatt.GattService: onSearchCompleted() - connId=6, status=0
+11-26 12:38:16.901  1882  2034 D bt_bta_gattc: bta_gattc_get_gatt_db
+11-26 12:38:16.901  1882  2034 V bt_stack: [VERBOSE1:bta_gattc_cache.cc(618)] bta_gattc_get_gatt_db_impl: start_handle 0x0000, end_handle 0xffff
+11-26 12:38:16.901  1882  2034 D BtGatt.GattService: onGetGattDb() - address=84:C2:E4:03:02:02
+11-26 12:38:16.902  1882  2034 D BtGatt.GattService: got service with UUID=0000ffe0-0000-1000-8000-00805f9b34fb id: 1
+11-26 12:38:16.902  1882  2034 D BtGatt.GattService: got characteristic with UUID=0000ffe1-0000-1000-8000-00805f9b34fb id: 3
+11-26 12:38:16.902  1882  2034 D BtGatt.GattService: got descriptor with UUID=00002901-0000-1000-8000-00805f9b34fb id: 4
+11-26 12:38:16.902  1882  2034 D BtGatt.GattService: got characteristic with UUID=0000ffe2-0000-1000-8000-00805f9b34fb id: 6
+11-26 12:38:16.902  1882  2034 D BtGatt.GattService: got descriptor with UUID=00002901-0000-1000-8000-00805f9b34fb id: 7
+11-26 12:38:16.902  1882  2034 D BtGatt.GattService: got characteristic with UUID=0000ffe3-0000-1000-8000-00805f9b34fb id: 9
+11-26 12:38:16.902  1882  2034 D BtGatt.GattService: got descriptor with UUID=00002901-0000-1000-8000-00805f9b34fb id: 10
+11-26 12:38:16.902  1882  2034 D BtGatt.GattService: got characteristic with UUID=0000ffe4-0000-1000-8000-00805f9b34fb id: 12
+11-26 12:38:16.902  1882  2034 D BtGatt.GattService: got descriptor with UUID=00002901-0000-1000-8000-00805f9b34fb id: 13
+11-26 12:38:16.904 14224 14244 D BluetoothGatt: onSearchComplete() = Device=84:C2:E4:03:02:02 Status=0
+11-26 12:38:16.909  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_READ_EVT
+11-26 12:38:16.909  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f04[BTA_GATTC_API_READ_EVT]
+11-26 12:38:16.910  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(701)] GATTC_Read: conn_id=0x0006, type=0x02
+11-26 12:38:16.910  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f04
+11-26 12:38:17.192  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:17.318   783  1848 D         : readbrightness,out1:8
+11-26 12:38:17.318   783  1848 D         : .
+11-26 12:38:17.318   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:17.431  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:17.431  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 11, msg_len = 160
+11-26 12:38:17.432  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 11, len = 160rsp_code: 11
+11-26 12:38:17.432  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=2 subtype=2
+11-26 12:38:17.432  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(1309)] bta_gattc_cmpl_cback: conn_id:6 op:2 status:0
+11-26 12:38:17.432  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_OP_CMPL_EVT
+11-26 12:38:17.432  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f0f[BTA_GATTC_OP_CMPL_EVT]
+11-26 12:38:17.432  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(936)] bta_gattc_op_cmpl: op:2
+11-26 12:38:17.432  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f0f
+11-26 12:38:17.433 14224 14244 I MqttService: cipher length = 160
+11-26 12:38:17.446 14224 14244 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-26 12:38:17.447 14224 14244 I MqttService:  id=6A002C00, H=35.2%, T=23.1°C
+11-26 12:38:17.468 14224 14244 I TempDb  : Save reading devId=6A002C00 time=1795667897
+11-26 12:38:17.484 14224 14244 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 12:38）
+11-26 12:38:17.485 14224 14244 I MqttService: BLE batch: gw=B1:17:9C:7A:4E:E0 dev=1 valid=1 placeholder=0 valueSize=160 mtu=240
+11-26 12:38:17.488 14224 14244 I MqttService: MQTT offline: keep latest BLE batch (bounded=1)
+11-26 12:38:17.492 14224 14244 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-26 12:38:17.492  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_WRITE_EVT
+11-26 12:38:17.493  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f05[BTA_GATTC_API_WRITE_EVT]
+11-26 12:38:17.493  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f05
+11-26 12:38:17.509  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-26 12:38:17.509  1580  1639 I MiuiNetworkPolicy: label wlan0, uid 10169, active true, tsNanos 407667465477237
+11-26 12:38:17.511   514  1033 D OemNetd : setLimit: enable, rate=206939
+11-26 12:38:17.674  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:17.675  1882  2353 I bt_stack: [INFO:gatt_main.cc(915)] gatt_data_process op_code = 19, msg_len = 0
+11-26 12:38:17.675  1882  2353 V bt_stack: [VERBOSE1:gatt_cl.cc(1112)] gatt_client_handle_server_rsp op_code: 19, len = 0rsp_code: 19
+11-26 12:38:17.675  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1191)] gatt_end_operation status=0 op=3 subtype=2
+11-26 12:38:17.675  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(1309)] bta_gattc_cmpl_cback: conn_id:6 op:3 status:0
+11-26 12:38:17.675  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_OP_CMPL_EVT
+11-26 12:38:17.675  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f0f[BTA_GATTC_OP_CMPL_EVT]
+11-26 12:38:17.675  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(936)] bta_gattc_op_cmpl: op:3
+11-26 12:38:17.675  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x02 after Event 0x1f0f
+11-26 12:38:17.677 14224 14244 I MqttService: Chunk written OK, left=0
+11-26 12:38:17.677 14224 14244 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 12:38:17.678 14224 14259 D BluetoothGatt: cancelOpen() - device: 84:C2:E4:03:02:02
+11-26 12:38:17.679  1882  1898 D BtGatt.GattService: clientDisconnect() - address=84:C2:E4:03:02:02, connId=6
+11-26 12:38:17.679  1882  1899 D BtGatt.GattService: clientDisconnect() - address=84:C2:E4:03:02:02, connId=6
+11-26 12:38:17.679 14224 14259 D BluetoothGatt: close()
+11-26 12:38:17.679 14224 14244 D BluetoothGatt: close()
+11-26 12:38:17.679 14224 14259 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 12:38:17.679 14224 14244 D BluetoothGatt: unregisterApp() - mClientIf=6
+11-26 12:38:17.679  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CLOSE_EVT
+11-26 12:38:17.680  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(305)] bta_gattc_sm_execute: State 0x02 [GATTC_CONN_ST], Event 0x1f08[BTA_GATTC_API_CLOSE_EVT]
+11-26 12:38:17.680  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(538)] bta_gattc_close: conn_id=0x0006
+11-26 12:38:17.680  1882  2353 I bt_stack: [INFO:gatt_api.cc(1246)] GATT_Disconnect conn_id=0x0006
+11-26 12:38:17.680  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(359)] gatt_update_app_use_link_flag: is_add=0 chk_link=1
+11-26 12:38:17.680  1882  1898 D BtGatt.GattService: unregisterClient() - clientIf=6
+11-26 12:38:17.680  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(325)] gatt_update_app_hold_link_status
+11-26 12:38:17.680  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(342)] removed gatt_if=6
+11-26 12:38:17.680  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(389)]  start link idle timer = 1 sec
+11-26 12:38:17.680  1882  1899 D BtGatt.GattService: unregisterClient() - clientIf=6
+11-26 12:38:17.680  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(936)] GATT_SetIdleTimeout idle_tout=1, status=1 (1-OK 0-not performed)
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(341)] bta_gattc_sm_execute: GATTC State Change: 0x02 -> 0x00 after Event 0x1f08
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CANCEL_OPEN_EVT
+11-26 12:38:17.681 14224 14259 I MqttService: Successfully connected and read data on attempt 1
+11-26 12:38:17.681  1882  2034 D BtGatt.GattService: onDisconnected() - clientIf=6, connId=6, address=84:C2:E4:03:02:02
+11-26 12:38:17.681  1882  2353 E bt_stack: [ERROR:bta_gattc_utils.cc(458)] bta_gattc_mark_bg_conn unable to find the bg connection mask for bd_addr=XXXX
+11-26 12:38:17.681  1882  2034 E BtGatt.ContextMap: Context not found for ID 6
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CLOSE_EVT
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 6
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_API_CANCEL_OPEN_EVT
+11-26 12:38:17.681  1882  2353 E bt_stack: [ERROR:bta_gattc_utils.cc(458)] bta_gattc_mark_bg_conn unable to find the bg connection mask for bd_addr=XXXX
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=6
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1082)] gatt_get_ch_state: ch_state=4
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(307)] gatt_is_app_holding_linkgatt_if= 6not found;
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(359)] gatt_update_app_use_link_flag: is_add=0 chk_link=1
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(325)] gatt_update_app_hold_link_status
+11-26 12:38:17.681  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(338)] attempt to remove nonexisting gatt_if=6
+11-26 12:38:17.682  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x06
+11-26 12:38:17.682  1882  2353 E bt_stack: [ERROR:bta_gattc_act.cc(211)] bta_gattc_deregister: Deregister Failed unknown client cif
+11-26 12:38:17.684  1580  1654 D CompatibilityInfo: mCompatibilityFlags - 0
+11-26 12:38:17.684  1580  1654 D CompatibilityInfo: applicationDensity - 320
+11-26 12:38:17.684  1580  1654 D CompatibilityInfo: applicationScale - 1.0
+11-26 12:38:17.685  2482  2482 D MiuiNearbyService: getNearbyService() - returning com.android.bluetooth.ble.app.MiuiNearbyService@9de9ff1
+11-26 12:38:17.686  2482  2482 E MiuiThirdPartAppScanManager: DeviceDisconnected : 84:C2:E4:03:02:02
+11-26 12:38:17.864 14224 14259 I CloudUpload: uploaded 1 reading(s)
+11-26 12:38:18.164     0     0 W swapper/5: type=1400 audit(0.0:47084): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:38:18.319   783  1848 D         : readbrightness,out1:8
+11-26 12:38:18.319   783  1848 D         : .
+11-26 12:38:18.319   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:18.710  1882  2353 I bt_stack: [INFO:btsnoop.cc(380)] clear_l2cap_whitelist: Clearing whitelist from l2cap channel. conn_handle=11 cid=4:4
+11-26 12:38:18.710  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(457)] GATT   ATT protocol channel with BDA: 84:c2:e4:03:02:02 is disconnected
+11-26 12:38:18.710  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(312)] gatt_is_bda_in_the_srv_chg_clt_list: 84:c2:e4:03:02:02
+11-26 12:38:18.710  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1247)] gatt_cleanup_upon_disc
+11-26 12:38:18.711  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(1073)] gatt_set_ch_state: old=4 new=0000
+11-26 12:38:18.711  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(92)] gatt_free_pending_ind
+11-26 12:38:18.711  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=1  conn_id=0x1
+11-26 12:38:18.711  1882  2353 V bt_stack: [VERBOSE1:gatt_attr.cc(245)] gatt_connect_cback: from 84:c2:e4:03:02:02 connected: 0, conn_id: 0x0001reason: 0x0016
+11-26 12:38:18.711  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=2  conn_id=0x2
+11-26 12:38:18.711  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=3  conn_id=0x3
+11-26 12:38:18.711  1882  2353 W bt_stack: [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=3 connected=0 conn_id=0x0003 reason=0x0016
+11-26 12:38:18.711  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=4  conn_id=0x4
+11-26 12:38:18.711  1882  2353 W bt_stack: [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=4 connected=0 conn_id=0x0004 reason=0x0016
+11-26 12:38:18.711  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1279)] found p_reg tcb_idx=0 gatt_if=5  conn_id=0x5
+11-26 12:38:18.711  1882  2353 W bt_stack: [WARNING:bta_gattc_act.cc(1060)] bta_gattc_conn_cback: cif=5 connected=0 conn_id=0x0005 reason=0x0016
+11-26 12:38:18.711  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(1287)] gatt_cleanup_upon_disc: exit
+11-26 12:38:18.712  1882  2353 V bt_stack: [VERBOSE1:gatt_main.cc(470)] ATT disconnected
+11-26 12:38:18.712  1882  2353 I bt_btm_sec: btm_sec_disconnected clearing pending flag handle:11 reason:22
+11-26 12:38:18.712  1882  2353 I bt_stack: [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-26 12:38:18.712  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-26 12:38:18.712  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:3 not used by BTA
+11-26 12:38:18.712  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 3
+11-26 12:38:18.712  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-26 12:38:18.712  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:4 not used by BTA
+11-26 12:38:18.712  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 4
+11-26 12:38:18.712  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(361)] bta_gattc_hdl_event: Event:BTA_GATTC_INT_DISCONN_EVT
+11-26 12:38:18.712  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_utils.cc(679)]  disconnection ID:5 not used by BTA
+11-26 12:38:18.712  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_main.cc(385)] Ignore unknown conn ID: 5
+11-26 12:38:18.713  1882  2353 W bt_l2cap: L2CA_SetDesireRole() new:x1, disallow_switch:0
+11-26 12:38:18.714  1882  2034 D bt_btif : btif_av_move_idle: Already in IDLE
+11-26 12:38:18.716  3970  3970 I VoiceTrigger:AudioMode: voice trigger timer task 60*1000ms :54921
+11-26 12:38:18.717  3970  3970 I VoiceTrigger:AudioMode: voice trigger running:1795667898717
+11-26 12:38:18.719  1882  1882 D BluetoothMapService: onReceive: android.bluetooth.device.action.ACL_DISCONNECTED
+11-26 12:38:18.719  1882  1882 I BluetoothMapService: sRemoteDevice :null device:84:C2:E4:03:02:02
+11-26 12:38:18.720  1904  1904 W BluetoothEventManager: AclStateChangedHandler: activeDevice is null
+11-26 12:38:18.720  2482  2482 W BluetoothEventManager: AclStateChangedHandler: activeDevice is null
+11-26 12:38:18.726  3970  3970 W Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onReceive: ACTION_ACL_DISCONNECTED, device:xxx type:2
+11-26 12:38:18.726  3039  3039 W Bluetooth_AIVS_SDK: AIVS:BluetoothBase:onReceive: ACTION_ACL_DISCONNECTED, device:xxx type:2
+11-26 12:38:18.726  3039  3039 D BluetoothHelper: >>> BT SCO state changed !!! action = android.bluetooth.device.action.ACL_DISCONNECTED
+11-26 12:38:19.320   783  1848 D         : readbrightness,out1:8
+11-26 12:38:19.320   783  1848 D         : .
+11-26 12:38:19.320   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:20.197  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:20.320   783  1848 D         : readbrightness,out1:8
+11-26 12:38:20.320   783  1848 D         : .
+11-26 12:38:20.320   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:21.321   783  1848 D         : readbrightness,out1:8
+11-26 12:38:21.321   783  1848 D         : .
+11-26 12:38:21.321   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:22.323   783  1848 D         : readbrightness,out1:8
+11-26 12:38:22.323   783  1848 D         : .
+11-26 12:38:22.323   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:23.200  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:23.323   783  1848 D         : readbrightness,out1:8
+11-26 12:38:23.323   783  1848 D         : .
+11-26 12:38:23.323   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:24.325   783  1848 D         : readbrightness,out1:8
+11-26 12:38:24.325   783  1848 D         : .
+11-26 12:38:24.325   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:25.327   783  1848 D         : readbrightness,out1:8
+11-26 12:38:25.327   783  1848 D         : .
+11-26 12:38:25.327   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:26.206  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:26.328   783  1848 D         : readbrightness,out1:8
+11-26 12:38:26.328   783  1848 D         : .
+11-26 12:38:26.328   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:27.329   783  1848 D         : readbrightness,out1:8
+11-26 12:38:27.329   783  1848 D         : .
+11-26 12:38:27.329   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:28.174     0     0 W swapper/4: type=1400 audit(0.0:47085): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:38:28.331   783  1848 D         : readbrightness,out1:8
+11-26 12:38:28.331   783  1848 D         : .
+11-26 12:38:28.331   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:29.212  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:29.332   783  1848 D         : readbrightness,out1:8
+11-26 12:38:29.332   783  1848 D         : .
+11-26 12:38:29.332   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:30.332   783  1848 D         : readbrightness,out1:8
+11-26 12:38:30.332   783  1848 D         : .
+11-26 12:38:30.332   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:31.333   783  1848 D         : readbrightness,out1:8
+11-26 12:38:31.333   783  1848 D         : .
+11-26 12:38:31.333   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:32.214  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:32.333   783  1848 D         : readbrightness,out1:8
+11-26 12:38:32.333   783  1848 D         : .
+11-26 12:38:32.333   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:33.334   783  1848 D         : readbrightness,out1:8
+11-26 12:38:33.334   783  1848 D         : .
+11-26 12:38:33.334   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:33.553  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-26 12:38:33.554  1580  1639 I MiuiNetworkPolicy: label wlan0, uid -1, active false, tsNanos 407682952233851
+11-26 12:38:33.554   514  1033 D OemNetd : setLimit: disable, rate=0
+11-26 12:38:34.335   783  1848 D         : readbrightness,out1:8
+11-26 12:38:34.335   783  1848 D         : .
+11-26 12:38:34.335   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:34.790  2482  2620 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-26 12:38:34.790  2482  2620 D MiuiFastConnectService: stopBleScan: scanning: true
+11-26 12:38:34.793  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 12:38:34.793  1882  1899 D BtGatt.GattService: stopScan() - queue size =1
+11-26 12:38:34.795  1882  2332 I BtGatt.ScanManager: msg.what = 1
+11-26 12:38:34.796  1882  2332 D BtGatt.ScanManager: stop scan
+11-26 12:38:34.797  1882  1899 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-26 12:38:34.798  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-26 12:38:34.798  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-26 12:38:34.799  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-26 12:38:34.799  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.804  2482  2620 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-26 12:38:34.806  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-26 12:38:34.807  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.807  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 12:38:34.809  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-26 12:38:34.809  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.811  1882  1899 D BtGatt.GattService: registerScanner() - UUID=c6488601-07f8-4a8e-8436-3eab26a2960f
+11-26 12:38:34.811  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-26 12:38:34.811  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.812  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-26 12:38:34.812  1882  2353 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register 27ea4c69-4312-7a45-8e4e-d99410d8c9de
+11-26 12:38:34.812  1882  2353 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-26 12:38:34.812  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-26 12:38:34.813  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-26 12:38:34.813  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-26 12:38:34.813  1882  2034 D BtGatt.GattService: onScannerRegistered() - UUID=c6488601-07f8-4a8e-8436-3eab26a2960f, scannerId=5, status=0
+11-26 12:38:34.813  2482 12038 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-26 12:38:34.814  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-26 12:38:34.814  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.814  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-26 12:38:34.814  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-26 12:38:34.814  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 12:38:34.814  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 12:38:34.815  1882  1899 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-26 12:38:34.819  1882  1899 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@23403cc
+11-26 12:38:34.822  1882  1899 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-26 12:38:34.822  1882  1899 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-26 12:38:34.825  1882  2332 I BtGatt.ScanManager: msg.what = 0
+11-26 12:38:34.826  1882  2332 D BtGatt.ScanManager: handling starting scan
+11-26 12:38:34.829  1882  2332 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-26 12:38:34.833  1882  2034 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-26 12:38:34.833  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.834  1882  2332 D BtGatt.ScanManager: Available Filter size: 13
+11-26 12:38:34.834  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:38:34.834  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.835  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:38:34.837  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-26 12:38:34.837  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.838  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:38:34.838  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.838  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:38:34.841  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-26 12:38:34.841  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.842  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:38:34.842  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.842  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:38:34.845  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-26 12:38:34.845  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.846  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:38:34.846  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.846  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:38:34.848  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-26 12:38:34.848  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.850  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:38:34.850  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.850  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:38:34.852  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-26 12:38:34.852  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:38:34.853  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-26 12:38:34.853  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-26 12:38:34.855  1882  2332 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-26 12:38:34.856  1882  2034 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-26 12:38:35.217  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:35.335   783  1848 D         : readbrightness,out1:8
+11-26 12:38:35.335   783  1848 D         : .
+11-26 12:38:35.335   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:36.336   783  1848 D         : readbrightness,out1:8
+11-26 12:38:36.336   783  1848 D         : .
+11-26 12:38:36.336   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:37.337   783  1848 D         : readbrightness,out1:8
+11-26 12:38:37.337   783  1848 D         : .
+11-26 12:38:37.337   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:38.174     0     0 W swapper/5: type=1400 audit(0.0:47086): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:38:38.221  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:38.337   783  1848 D         : readbrightness,out1:8
+11-26 12:38:38.337   783  1848 D         : .
+11-26 12:38:38.338   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:39.338   783  1848 D         : readbrightness,out1:8
+11-26 12:38:39.338   783  1848 D         : .
+11-26 12:38:39.338   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:40.339   783  1848 D         : readbrightness,out1:8
+11-26 12:38:40.339   783  1848 D         : .
+11-26 12:38:40.339   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:41.226  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:41.340   783  1848 D         : readbrightness,out1:8
+11-26 12:38:41.340   783  1848 D         : .
+11-26 12:38:41.341   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:42.341   783  1848 D         : readbrightness,out1:8
+11-26 12:38:42.341   783  1848 D         : .
+11-26 12:38:42.341   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:43.343   783  1848 D         : readbrightness,out1:8
+11-26 12:38:43.343   783  1848 D         : .
+11-26 12:38:43.343   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:44.230  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:44.344   783  1848 D         : readbrightness,out1:8
+11-26 12:38:44.344   783  1848 D         : .
+11-26 12:38:44.344   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:45.344   783  1848 D         : readbrightness,out1:8
+11-26 12:38:45.344   783  1848 D         : .
+11-26 12:38:45.344   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:46.345   783  1848 D         : readbrightness,out1:8
+11-26 12:38:46.345   783  1848 D         : .
+11-26 12:38:46.345   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:47.235  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:47.346   783  1848 D         : readbrightness,out1:8
+11-26 12:38:47.346   783  1848 D         : .
+11-26 12:38:47.347   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:48.184     0     0 W swapper/4: type=1400 audit(0.0:47087): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:38:48.347   783  1848 D         : readbrightness,out1:8
+11-26 12:38:48.347   783  1848 D         : .
+11-26 12:38:48.347   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:49.348   783  1848 D         : readbrightness,out1:8
+11-26 12:38:49.348   783  1848 D         : .
+11-26 12:38:49.348   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:50.239  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:50.349   783  1848 D         : readbrightness,out1:8
+11-26 12:38:50.349   783  1848 D         : .
+11-26 12:38:50.349   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:51.350   783  1848 D         : readbrightness,out1:8
+11-26 12:38:51.350   783  1848 D         : .
+11-26 12:38:51.350   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:52.352   783  1848 D         : readbrightness,out1:8
+11-26 12:38:52.352   783  1848 D         : .
+11-26 12:38:52.352   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:53.245  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:53.352   783  1848 D         : readbrightness,out1:8
+11-26 12:38:53.352   783  1848 D         : .
+11-26 12:38:53.352   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:54.353   783  1848 D         : readbrightness,out1:8
+11-26 12:38:54.353   783  1848 D         : .
+11-26 12:38:54.353   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:54.953 14224 14259 D MqttService: Attempting to reconnect to broker
+11-26 12:38:54.961 14224 14259 I MqttService: Saved MAC address: 0200000000A1
+11-26 12:38:54.981  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-26 12:38:54.982  1580  1639 I MiuiNetworkPolicy: label wlan0, uid 10169, active true, tsNanos 407704938703524
+11-26 12:38:54.983   514  1033 D OemNetd : setLimit: enable, rate=206939
+11-26 12:38:55.354   783  1848 D         : readbrightness,out1:8
+11-26 12:38:55.354   783  1848 D         : .
+11-26 12:38:55.354   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:55.529 14224 18471 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-26 12:38:55.984 14224 18475 D AlarmPingSender: Unregister alarmreceiver to MqttServiceandroid_client
+11-26 12:38:55.990 14224 14224 E MqttService: Failed to connect to broker
+11-26 12:38:55.990 14224 14224 E MqttService: 无权连接 (5)
+11-26 12:38:55.990 14224 14224 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ExceptionHelper.createMqttException(ExceptionHelper.java:28)
+11-26 12:38:55.990 14224 14224 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.ClientState.notifyReceivedAck(ClientState.java:1053)
+11-26 12:38:55.990 14224 14224 E MqttService: 	at org.eclipse.paho.client.mqttv3.internal.CommsReceiver.run(CommsReceiver.java:151)
+11-26 12:38:55.990 14224 14224 E MqttService: 	at java.lang.Thread.run(Thread.java:919)
+11-26 12:38:56.248  1580  1802 I MiuiNetworkPolicy: bandwidth: 1 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:56.354   783  1848 D         : readbrightness,out1:8
+11-26 12:38:56.354   783  1848 D         : .
+11-26 12:38:56.355   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:57.355   783  1848 D         : readbrightness,out1:8
+11-26 12:38:57.355   783  1848 D         : .
+11-26 12:38:57.355   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:58.184     0     0 W swapper/5: type=1400 audit(0.0:47088): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:38:58.356   783  1848 D         : readbrightness,out1:8
+11-26 12:38:58.356   783  1848 D         : .
+11-26 12:38:58.356   783  1848 D         : readbrightness,out2:8.
+11-26 12:38:59.252  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:38:59.357   783  1848 D         : readbrightness,out1:8
+11-26 12:38:59.357   783  1848 D         : .
+11-26 12:38:59.357   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:00.003  1904  1904 D KeyguardUpdateMonitor: handleTimeUpdate
+11-26 12:39:00.358   783  1848 D         : readbrightness,out1:8
+11-26 12:39:00.358   783  1848 D         : .
+11-26 12:39:00.358   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:01.358   783  1848 D         : readbrightness,out1:8
+11-26 12:39:01.358   783  1848 D         : .
+11-26 12:39:01.358   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:02.256  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:02.359   783  1848 D         : readbrightness,out1:8
+11-26 12:39:02.359   783  1848 D         : .
+11-26 12:39:02.359   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:03.360   783  1848 D         : readbrightness,out1:8
+11-26 12:39:03.360   783  1848 D         : .
+11-26 12:39:03.360   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:04.361   783  1848 D         : readbrightness,out1:8
+11-26 12:39:04.361   783  1848 D         : .
+11-26 12:39:04.361   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:05.261  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:05.362   783  1848 D         : readbrightness,out1:8
+11-26 12:39:05.362   783  1848 D         : .
+11-26 12:39:05.362   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:06.363   783  1848 D         : readbrightness,out1:8
+11-26 12:39:06.363   783  1848 D         : .
+11-26 12:39:06.363   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:07.363   783  1848 D         : readbrightness,out1:8
+11-26 12:39:07.363   783  1848 D         : .
+11-26 12:39:07.364   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:08.174     0     0 W swapper/4: type=1400 audit(0.0:47089): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:39:08.266  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:08.364   783  1848 D         : readbrightness,out1:8
+11-26 12:39:08.364   783  1848 D         : .
+11-26 12:39:08.364   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:09.366   783  1848 D         : readbrightness,out1:8
+11-26 12:39:09.366   783  1848 D         : .
+11-26 12:39:09.366   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:10.368   783  1848 D         : readbrightness,out1:8
+11-26 12:39:10.368   783  1848 D         : .
+11-26 12:39:10.368   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:11.271  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:11.313  1580  1639 D NetworkManagement: wlan0 <====> 1
+11-26 12:39:11.313  1580  1639 I MiuiNetworkPolicy: label wlan0, uid -1, active false, tsNanos 407720940226753
+11-26 12:39:11.317   514  1033 D OemNetd : setLimit: disable, rate=0
+11-26 12:39:11.370   783  1848 D         : readbrightness,out1:8
+11-26 12:39:11.370   783  1848 D         : .
+11-26 12:39:11.370   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:12.372   783  1848 D         : readbrightness,out1:8
+11-26 12:39:12.372   783  1848 D         : .
+11-26 12:39:12.372   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:13.373   783  1848 D         : readbrightness,out1:8
+11-26 12:39:13.373   783  1848 D         : .
+11-26 12:39:13.373   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:14.276  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:14.374   783  1848 D         : readbrightness,out1:8
+11-26 12:39:14.374   783  1848 D         : .
+11-26 12:39:14.374   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:15.374   783  1848 D         : readbrightness,out1:8
+11-26 12:39:15.374   783  1848 D         : .
+11-26 12:39:15.374   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:16.375   783  1848 D         : readbrightness,out1:8
+11-26 12:39:16.375   783  1848 D         : .
+11-26 12:39:16.375   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:17.279  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:17.375   783  1848 D         : readbrightness,out1:8
+11-26 12:39:17.375   783  1848 D         : .
+11-26 12:39:17.375   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:18.184     0     0 W swapper/5: type=1400 audit(0.0:47090): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:39:18.376   783  1848 D         : readbrightness,out1:8
+11-26 12:39:18.376   783  1848 D         : .
+11-26 12:39:18.376   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:18.813  3970  3970 I VoiceTrigger:AudioMode: voice trigger timer task 60*1000ms :54931
+11-26 12:39:18.814  3970  3970 I VoiceTrigger:AudioMode: voice trigger running:1795667958814
+11-26 12:39:19.377   783  1848 D         : readbrightness,out1:8
+11-26 12:39:19.377   783  1848 D         : .
+11-26 12:39:19.377   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:20.283  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:20.378   783  1848 D         : readbrightness,out1:8
+11-26 12:39:20.378   783  1848 D         : .
+11-26 12:39:20.378   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:21.379   783  1848 D         : readbrightness,out1:8
+11-26 12:39:21.379   783  1848 D         : .
+11-26 12:39:21.379   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:21.444  1580  1664 E KernelCpuSpeedReader: Failed to read cpu-freq: /sys/devices/system/cpu/cpu0/cpufreq/stats/time_in_state: open failed: ENOENT (No such file or directory)
+11-26 12:39:21.521   514  1033 I netd    : trafficSwapActiveStatsMap() <62.44ms>
+11-26 12:39:21.526   514  1033 I netd    : tetherGetStats() <2.87ms>
+11-26 12:39:22.380   783  1848 D         : readbrightness,out1:8
+11-26 12:39:22.380   783  1848 D         : .
+11-26 12:39:22.380   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:23.289  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:23.380   783  1848 D         : readbrightness,out1:8
+11-26 12:39:23.380   783  1848 D         : .
+11-26 12:39:23.381   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:24.382   783  1848 D         : readbrightness,out1:8
+11-26 12:39:24.382   783  1848 D         : .
+11-26 12:39:24.382   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:25.384   783  1848 D         : readbrightness,out1:8
+11-26 12:39:25.384   783  1848 D         : .
+11-26 12:39:25.384   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:26.293  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:26.384   783  1848 D         : readbrightness,out1:8
+11-26 12:39:26.384   783  1848 D         : .
+11-26 12:39:26.385   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:27.386   783  1848 D         : readbrightness,out1:8
+11-26 12:39:27.386   783  1848 D         : .
+11-26 12:39:27.386   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:28.184     0     0 W swapper/6: type=1400 audit(0.0:47091): avc: denied { kill } for capability=5 scontext=u:r:kernel:s0 tcontext=u:r:kernel:s0 tclass=capability permissive=0
+11-26 12:39:28.388   783  1848 D         : readbrightness,out1:8
+11-26 12:39:28.388   783  1848 D         : .
+11-26 12:39:28.388   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:29.298  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:29.389   783  1848 D         : readbrightness,out1:8
+11-26 12:39:29.389   783  1848 D         : .
+11-26 12:39:29.389   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:30.366  3970  3994 I t:voice_trigge: Background concurrent copying GC freed 121662(17MB) AllocSpace objects, 0(0B) LOS objects, 90% free, 1835KB/19MB, paused 134us total 133.760ms
+11-26 12:39:30.372  1882  2353 I bt_stack: [INFO:btm_ble_bgconn.cc(403)] Already connection initiated (or) No Pending connections(or) Resources of lcb are exhausted
+11-26 12:39:30.390   783  1848 D         : readbrightness,out1:8
+11-26 12:39:30.390   783  1848 D         : .
+11-26 12:39:30.390   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:31.390   783  1848 D         : readbrightness,out1:8
+11-26 12:39:31.390   783  1848 D         : .
+11-26 12:39:31.390   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:32.303  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:32.391   783  1848 D         : readbrightness,out1:8
+11-26 12:39:32.391   783  1848 D         : .
+11-26 12:39:32.391   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:33.391   783  1848 D         : readbrightness,out1:8
+11-26 12:39:33.391   783  1848 D         : .
+11-26 12:39:33.391   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:34.392   783  1848 D         : readbrightness,out1:8
+11-26 12:39:34.392   783  1848 D         : .
+11-26 12:39:34.392   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:34.834  2482  2620 D MiuiFastConnectService: handleMessage: what: 15, msg.arg1: 0, msg.arg2: 0
+11-26 12:39:34.834  2482  2620 D MiuiFastConnectService: stopBleScan: scanning: true
+11-26 12:39:34.836  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 12:39:34.837  1882  1899 D BtGatt.GattService: stopScan() - queue size =1
+11-26 12:39:34.838  1882  2332 I BtGatt.ScanManager: msg.what = 1
+11-26 12:39:34.839  1882  2332 D BtGatt.ScanManager: stop scan
+11-26 12:39:34.840  1882  1899 D BtGatt.GattService: unregisterScanner() - scannerId=5
+11-26 12:39:34.840  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1002)] GATT_Deregister gatt_if=5
+11-26 12:39:34.840  1882  2353 V bt_stack: [VERBOSE1:connection_manager.cc(161)] on_app_deregistered : app_id 0x05
+11-26 12:39:34.842  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=12
+11-26 12:39:34.842  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.847  2482  2620 D MiuiFastConnectService: handleMessage: what: 2, msg.arg1: 0, msg.arg2: 0
+11-26 12:39:34.849  2482  2620 D BluetoothAdapter: isLeEnabled(): ON
+11-26 12:39:34.850  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=13
+11-26 12:39:34.850  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.853  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=14
+11-26 12:39:34.853  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.853  1882  1899 D BtGatt.GattService: registerScanner() - UUID=20791a94-1adf-4280-973e-ff53a090573e
+11-26 12:39:34.854  1882  2353 V bt_stack: [VERBOSE1:bta_gattc_act.cc(175)] bta_gattc_register: state:2
+11-26 12:39:34.854  1882  2353 I bt_stack: [INFO:gatt_api.cc(959)] GATT_Register a5b43f7b-f9e1-2166-6eb2-1c47af359276
+11-26 12:39:34.854  1882  2353 I bt_stack: [INFO:gatt_api.cc(979)] allocated gatt_if=5
+11-26 12:39:34.854  1882  2353 V bt_stack: [VERBOSE1:gatt_api.cc(1089)] GATT_StartIf gatt_if=5
+11-26 12:39:34.854  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(254)] gatt_find_the_connected_bda start_idx=0
+11-26 12:39:34.854  1882  2034 D BtGatt.GattService: onScannerRegistered() - UUID=20791a94-1adf-4280-973e-ff53a090573e, scannerId=5, status=0
+11-26 12:39:34.855  1882  2353 V bt_stack: [VERBOSE1:gatt_utils.cc(266)]  found=0 found_idx=10
+11-26 12:39:34.855  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=15
+11-26 12:39:34.855  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.855  2482 12038 D BluetoothLeScanner: onScannerRegistered() - status=0 scannerId=5 mScannerId=0
+11-26 12:39:34.857  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=1, availableSpace=16
+11-26 12:39:34.857  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.857  1882  1899 D BtGatt.GattService: start scan with filters. callingPackage: com.xiaomi.bluetooth
+11-26 12:39:34.858  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=0
+11-26 12:39:34.858  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=-2147483648ScanSetting LE Coded Scan mode=-2147483648 mLastConfiguredScanSettingLE1M=0 mLastConfiguredScanSettingLECoded=0scanPhy=1
+11-26 12:39:34.858  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 12:39:34.858  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue emtpy, scan stopped
+11-26 12:39:34.862  1882  1899 E BtGatt.GattService:  [Landroid.content.pm.ServiceInfo;@b5121f6
+11-26 12:39:34.865  1882  1899 D BluetoothUtils: blockedByLocationOff callingUid=1002
+11-26 12:39:34.865  1882  1899 I BluetoothUtils: packagename is android.uid.bluetooth:1002 ,and its permission is false
+11-26 12:39:34.868  1882  2332 I BtGatt.ScanManager: msg.what = 0
+11-26 12:39:34.869  1882  2332 D BtGatt.ScanManager: handling starting scan
+11-26 12:39:34.871  1882  2332 D BtGatt.ScanManager: isAptXLowLatencyModeEnabled: false
+11-26 12:39:34.875  1882  2034 D BtGatt.GattService: onScanFilterEnableDisabled() - clientIf=5, status=0, action=1
+11-26 12:39:34.875  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.875  1882  2332 D BtGatt.ScanManager: Available Filter size: 13
+11-26 12:39:34.876  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:39:34.876  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.876  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:39:34.879  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=15
+11-26 12:39:34.879  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.880  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:39:34.880  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.881  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:39:34.885  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=14
+11-26 12:39:34.885  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.886  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:39:34.886  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.886  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:39:34.889  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=13
+11-26 12:39:34.889  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.890  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:39:34.890  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.890  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:39:34.893  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=12
+11-26 12:39:34.893  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.894  1882  2034 D BtGatt.GattService: onScanFilterConfig() - clientIf=5, action = 0 status = 0, filterType=0, availableSpace=0
+11-26 12:39:34.894  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.894  1882  2332 D BtGatt.ScanManager: configureFilterParamter 500 10000 1 0, deliveryMode=0
+11-26 12:39:34.897  1882  2034 D BtGatt.GattService: onScanFilterParamsConfigured() - clientIf=5, status=0, action=0, availableSpace=11
+11-26 12:39:34.897  1882  2034 D BtGatt.ScanManager: callback done for scannerId - 5 status - 0
+11-26 12:39:34.897  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - queue=1
+11-26 12:39:34.897  1882  2332 D BtGatt.ScanManager: configureRegularScanParams() - ScanSetting LE 1M Scan mode=0ScanSetting LE Coded Scan mode=0 mLastConfiguredScanSettingLE1M=-2147483648 mLastConfiguredScanSettingLECoded=-2147483648scanPhy=255
+11-26 12:39:34.899  1882  2332 D BtGatt.ScanManager: configureRegularScanParams - scanInterval LE 1M = 1200configureRegularScanParams - scanWindow LE 1M= 80configureRegularScanParams - scanInterval LE Coded= 1200configureRegularScanParams - scanWindow LE Coded= 80
+11-26 12:39:34.900  1882  2034 D BtGatt.GattService: onScanParamSetupCompleted : 0
+11-26 12:39:35.307  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:35.392   783  1848 D         : readbrightness,out1:8
+11-26 12:39:35.392   783  1848 D         : .
+11-26 12:39:35.392   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:36.393   783  1848 D         : readbrightness,out1:8
+11-26 12:39:36.393   783  1848 D         : .
+11-26 12:39:36.393   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:37.394   783  1848 D         : readbrightness,out1:8
+11-26 12:39:37.394   783  1848 D         : .
+11-26 12:39:37.394   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:38.311  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:38.394   783  1848 D         : readbrightness,out1:8
+11-26 12:39:38.394   783  1848 D         : .
+11-26 12:39:38.395   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:39.395   783  1848 D         : readbrightness,out1:8
+11-26 12:39:39.395   783  1848 D         : .
+11-26 12:39:39.395   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:40.396   783  1848 D         : readbrightness,out1:8
+11-26 12:39:40.396   783  1848 D         : .
+11-26 12:39:40.396   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:41.316  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:41.396   783  1848 D         : readbrightness,out1:8
+11-26 12:39:41.396   783  1848 D         : .
+11-26 12:39:41.397   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:42.397   783  1848 D         : readbrightness,out1:8
+11-26 12:39:42.397   783  1848 D         : .
+11-26 12:39:42.397   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:43.398   783  1848 D         : readbrightness,out1:8
+11-26 12:39:43.398   783  1848 D         : .
+11-26 12:39:43.398   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:44.321  1580  1802 I MiuiNetworkPolicy: bandwidth: 0 KB/s, Max bandwidth: 706 KB/s
+11-26 12:39:44.399   783  1848 D         : readbrightness,out1:8
+11-26 12:39:44.399   783  1848 D         : .
+11-26 12:39:44.399   783  1848 D         : readbrightness,out2:8.
+11-26 12:39:45.400   783  1848 D         : readbrightness,out1:8
+11-26 12:39:45.400   783  1848 D         : .
+11-26 12:39:45.400   783  1848 D         : readbrightness,out2:8.

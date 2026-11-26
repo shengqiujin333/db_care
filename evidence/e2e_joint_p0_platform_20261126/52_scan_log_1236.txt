@@ -1,0 +1,31 @@
+file=51_logcat_1236_onward.txt
+tls[SSLHandshakeException]=0
+tls[No subjectAltNames on the certificate match]=0
+tls[Trust anchor for certification path not found]=0
+tls[PKIX path building failed]=0
+tls[CertPathValidatorException]=0
+tls[SSLPeerUnverifiedException]=0
+broker[Attempting to reconnect to broker]=1
+broker[Connected to broker]=0
+broker[Failed to connect to broker]=1
+broker[not_authorized_5]=1
+ble[link_state=DATA_OK]=1
+ble[link_state=CONNECT_FAILED]=0
+ble[MTU negotiated]=1
+ble[GwID=]=1
+ble[writeCharacteristic bytes 6]=1
+ble[id=uid4]=1
+ble[Successfully connected and read data]=1
+upload[CloudUpload uploaded]=1
+
+--- matched lines (chronological, deduplicated) ---
+11-26 12:38:16.897 14224 14244 I MqttService: MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-26 12:38:17.446 14224 14244 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-26 12:38:17.447 14224 14244 I MqttService:  id=6A002C00, H=35.2%, T=23.1°C
+11-26 12:38:17.484 14224 14244 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 12:38）
+11-26 12:38:17.492 14224 14244 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-26 12:38:17.681 14224 14259 I MqttService: Successfully connected and read data on attempt 1
+11-26 12:38:17.864 14224 14259 I CloudUpload: uploaded 1 reading(s)
+11-26 12:38:54.953 14224 14259 D MqttService: Attempting to reconnect to broker
+11-26 12:38:55.990 14224 14224 E MqttService: Failed to connect to broker
+11-26 12:38:55.990 14224 14224 E MqttService: 无权连接 (5)

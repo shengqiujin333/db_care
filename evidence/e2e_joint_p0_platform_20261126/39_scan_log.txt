@@ -1,0 +1,35 @@
+file=22_logcat_window.txt
+tls[SSLHandshakeException]=0
+tls[No subjectAltNames on the certificate match]=0
+tls[Trust anchor for certification path not found]=0
+tls[PKIX path building failed]=0
+tls[CertPathValidatorException]=0
+tls[SSLPeerUnverifiedException]=0
+broker[Attempting to reconnect to broker]=2
+broker[Connected to broker]=0
+broker[Failed to connect to broker]=2
+broker[not_authorized_5]=2
+ble[link_state=DATA_OK]=1
+ble[link_state=CONNECT_FAILED]=1
+ble[MTU negotiated]=1
+ble[GwID=]=1
+ble[writeCharacteristic bytes 6]=1
+ble[id=uid4]=1
+ble[Successfully connected and read data]=1
+upload[CloudUpload uploaded]=1
+
+--- matched lines (chronological, deduplicated) ---
+11-26 12:23:26.221 14224 14259 I MqttService: link_state=CONNECT_FAILED msg=网关连接失败（重试 / 检查网关电源）
+11-26 12:23:54.915 14224 14259 D MqttService: Attempting to reconnect to broker
+11-26 12:23:56.100 14224 14224 E MqttService: Failed to connect to broker
+11-26 12:23:56.100 14224 14224 E MqttService: 无权连接 (5)
+11-26 12:27:04.099 14224 14244 I MqttService: MTU negotiated: mtu=240 (status=0), expectedDevices=1, requiredMtu=35
+11-26 12:27:04.647 14224 14244 I MqttService: GwID=B1:17:9C:7A:4E:E0, dev=1, valueSize=160, mtu=240
+11-26 12:27:04.649 14224 14244 I MqttService:  id=6A002C00, H=37.5%, T=21.2°C
+11-26 12:27:04.682 14224 14244 I MqttService: link_state=DATA_OK msg=网关已连接（最近读取 12:27）
+11-26 12:27:04.687 14224 14244 I MqttService: writeCharacteristic(legacy) ok=true, bytes=6
+11-26 12:27:04.834 14224 14259 I MqttService: Successfully connected and read data on attempt 3
+11-26 12:27:05.067 14224 14259 I CloudUpload: uploaded 1 reading(s)
+11-26 12:28:54.927 14224 14259 D MqttService: Attempting to reconnect to broker
+11-26 12:28:55.978 14224 14224 E MqttService: Failed to connect to broker
+11-26 12:28:55.978 14224 14224 E MqttService: 无权连接 (5)

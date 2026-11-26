@@ -123,6 +123,7 @@ artifacts/software_test_report_cert8883_r4.md | active | 软件测试：8883 证
 artifacts/software_test_report_cert8883_reg03_r7.md | active | 软件测试：CERT8883-REG-03 第 7 轮不受影响路径回归（8883 TLS listener、1883 可连、18083 /status 200、5000 / 404 与 /login、/upload_data 405+允许方法集合、3306 MySQL 9.0.1 握手；8083/8084 手机侧超时与基线一致记为既有差异；手机侧有界端口扫描未发现新增免校验/诊断入口，鉴权边界未放宽；App PID/前台服务/DATA_OK+CONNECT_FAILED 终态、无新增崩溃/ANR；主机 connect-only 受 TUN 拦截判无效；TEST_PASS 仅限本用例范围）
 artifacts/software_test_report_cert8883_srv01_r5.md | active | 软件测试：CERT8883-SRV-01 独立核验第 5 轮（2026-11-26T03:10Z 实测 8883 叶子 issuer=CN=Tiktok Root CA, O=LinkValue、SAN 含 IP:8.140.23.253、-verify_ip 返回 0、负例 8.140.23.254 被拒、serial …B83 已从基线 …B82 变更且与签发记录一致、notAfter 2028-11-24；信任锚指纹未变；本用例 TEST_PASS，仅限该用例范围）
 artifacts/software_test_report_cert8883_upload04_r5.md | active | 软件测试：CERT8883-UPLOAD-04 第 5 轮单项复验（2026-11-26 12:10 CST 真实 BLE 读数 6A002C00/1795666245/21.1/37.6 经 App enqueueAndUpload 上传，平台 POST /upload_data 200、待发箱清零、upload_last_status=OK、无 gated off/4xx；同键重放服务端返回 inserted=0 作补充；字段级 MySQL 回读与按行数幂等按人工“不用回读，传上去就行了”NOT EXECUTED/APPROVED_DEFERRED 且不写成 PASS；mac_addr=0200000000A1 为合成测试值来源未确认已披露；测试行保留未清理并披露；本轮结论仅覆盖上传受理维度与当前版本）
+artifacts/software_test_report_e2e_joint_p0_r1.md | active | 软件测试：E2E-JOINT-P0 证书修复后平台段第 1 轮联合复验（三端同版本身份；手机段引用+本轮复核 DATA_OK/0xA1 6B/默认网络/守护；平台 TLS -verify_ip OK、0 个 SAN/链错误、四次 CONNECT→CONNACK rc=5 not_authorized 分类记录并有 EMQX 同 username 服务端日志；SSH 只读服务/端口/日志/连接数基线；DB 字段级回读与嵌入式板上重验 NOT EXECUTED 且不写成 PASS；仅本用例必需项 TEST_PASS）
 artifacts/system_analysis.md | history | 系统架构：历史需求与约束分析，当前入口见 system_analysis_current.md
 artifacts/system_analysis_current.md | active | 系统架构：最新需求与旧1/3判据冲突、禁止调温调光功耗测试的当前边界、可复用候选版本及摘要、历史证据限制和后续集成缺口
 artifacts/test_design.md | active | 嵌入式联合测试设计 TD-002 rev 10.0（传感器→网关→安卓→平台 E2E）：用户不调温/不改光强且 T=0 时当前量产固件不会自然上报，方案规定测试专用构建在采样后判定前注入 367（36.7℃）走真实 >35 分支，默认关闭、正式版排除、E2E 后恢复发布镜像；含 J-00 先绑定/读就绪、J-01 同一 uid4+367+真实湿度跨端四段证据、J-02 负向不上传、EM-01..08 与退出准则；真实物理 >35℃/升温+无光/双态/功耗/433 电气/平台清理/手机 ADB 未授权/Wi-Fi 未连列 NOT EXECUTED；只做设计不执行）
@@ -895,6 +896,70 @@ evidence/doc_verification_20261113_rev14/ui_05_home_after_reinstall.xml | active
 evidence/doc_verification_20261113_rev14/ui_06_sensor_list_empty.xml | active | 「打开传感器列表」空态 UI 原始树（已保存的 ID（0）、删除选中 disabled）
 evidence/doc_verification_20261113_rev14/usb_devices.txt | active | USB 枚举身份记录（COM43 Prolific 067B:2303、COM26 C251:F001 CDC、CW-DAPLink 序列号）
 evidence/driver_test.md | active | 驱动测试证据 DRV-002 rev 6.4（F-1 后宿主回归 218+60+42+22=342 项 0 失败；不证明实板首行/失败率）
+evidence/e2e_joint_p0_platform_20261126/ | active | E2E-JOINT-P0 平台段第 1 轮原始证据目录（设备/APK/网络/守护/网关读取、TLS/SAN/CA、App CONNACK 与 EMQX 认证失败同事件配对、平台 SSH 只读基线、关联索引与可复跑脚本）
+evidence/e2e_joint_p0_platform_20261126/00_utc_start.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/01_devices.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/02_model.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/03_android_release.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/04_sdk.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/05_serial.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/06_apk_path.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/07_package_dump.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/08_wifi_status.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/09_ip_route.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/10_correlation_index.md | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/11_connectivity.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/12_wifi_dump.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/13_device_apk_sha256.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/14_device_apk_size.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/15_host_apk_sha256.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/16_host_apk_size.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/17_prefs.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/17b_prefs_list.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/18_services.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/19_ps.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/20_window.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/21_activities.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/22_logcat_window.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/23_ui_dump.xml | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/24_phone_tcp_now.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/25_tcp_poll_8883.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/30_platform_readonly.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/30b_platform_readonly_routes.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/30c_platform_readonly_emqxlog.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/30d_platform_readonly_version.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/30e_platform_readonly_1238.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/31_host_tls_verify_ip.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/31b_host_tls_showcerts.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/31c_host_tls_plain.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/32_host_leaf_fields.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/33_jdca_fields.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/34_jdca_filesha.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/35_http_18083_status.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/36_http_5000_root.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/37_http_5000_login.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/38_http_5000_upload_data.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/39_scan_log.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/40_proc_net_tcp6_sample.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/41_proc_net_tcp_sample.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/42_crash_buffer.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/43_ui_1232.png | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/44_fw_release_identity.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/46_mysql_greeting.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/47_logcat_1233_onward.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/48_scan_log_1233.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/49_logcat_1238_onward.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/50_scan_log_1238.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/51_logcat_1236_onward.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/52_scan_log_1236.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/53_final_state.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/54_services_final.txt | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/leaf_8.140.23.253_round.pem | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/mysql_greeting.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/platform_p0_ssh.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/poll_8883.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/run_tls_check.py | active | 由 software_tester 新增或修改的项目相关文件
+evidence/e2e_joint_p0_platform_20261126/scan_p0_log.py | active | 由 software_tester 新增或修改的项目相关文件
 evidence/e2e_p0/ | active | E2E-JOINT-P0 执行证据目录（手机段复验通过、上一轮 ADB 未授权对照、平台只读基线、平台段 NOT EXECUTED 与路径勘误、关联索引）
 evidence/e2e_p0/P0_backend_cert_issuance_and_rollback.md | active | E2E-JOINT-P0 平台段 8883 证书核发与回退条件（后端工程）：操作者“允许维护证书、先定核发与回退条件”要求下的 C1–C6 前置、SAN/扩展规范、签发与部署命令、R1–R4 回退触发与回退后判据、服务器/客户端/正式面判据、风险与未执行项
 evidence/e2e_p0/P0_backend_cert_ops_runbook.md | active | E2E-JOINT-P0 平台段 8883 证书变更运维执行手册：只读侦察/备份/签发/部署重载/变更后判据/回退步骤与回传要求；明确禁止自签替代、关闭客户端校验、改认证库或新增诊断端口

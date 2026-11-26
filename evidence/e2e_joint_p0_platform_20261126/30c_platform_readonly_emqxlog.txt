@@ -1,0 +1,209 @@
+# E2E-JOINT-P0 platform stage: bounded read-only platform observation
+started_utc=2026-11-26T04:33:14Z
+forbidden=mutation,sudo,restart,deploy,database,write-endpoint,private-key-output
+
+connect_result=OK
+--- [identity]
+exit=0
+2026-11-26T04:33:15Z
+2026-11-26 12:33:15 CST
+iZ2zeih0gmrk47og5r4z7sZ
+6.8.0-136-generic
+
+--- [emqx_service]
+exit=0
+active
+enabled
+NRestarts=0
+ExecMainStartTimestamp=Wed 2026-11-25 10:58:15 CST
+ExecMainPID=299216
+ActiveState=active
+SubState=running
+
+--- [upload_service]
+exit=0
+NRestarts=0
+ExecMainStartTimestamp=Wed 2026-11-25 21:59:02 CST
+ExecMainPID=312368
+ActiveState=active
+SubState=running
+
+--- [handler_identity]
+exit=0
+/root/abr.py size=8688 mtime=2026-11-25 21:59:02.622930574 +0800 inode=1054060
+a062b05f524dc8f6bce596e4571d339f697ef909b318503ad418ee0add24017c  /root/abr.py
+
+--- [listeners]
+exit=0
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess                                                   
+LISTEN 0      511        127.0.0.1:3000       0.0.0.0:*    users:(("next-server (v1",pid=214283,fd=21))             
+LISTEN 0      1024         0.0.0.0:8883       0.0.0.0:*    users:(("beam.smp",pid=299216,fd=35))                    
+LISTEN 0      128          0.0.0.0:5000       0.0.0.0:*    users:(("python",pid=312368,fd=3))                       
+LISTEN 0      4096         0.0.0.0:22         0.0.0.0:*    users:(("sshd",pid=214030,fd=3),("systemd",pid=1,fd=120))
+LISTEN 0      4096   127.0.0.53%lo:53         0.0.0.0:*    users:(("systemd-resolve",pid=213999,fd=15))             
+LISTEN 0      4096       127.0.0.1:32969      0.0.0.0:*    users:(("hbrclient",pid=857,fd=9))                       
+LISTEN 0      128          0.0.0.0:4370       0.0.0.0:*    users:(("beam.smp",pid=299216,fd=26))                    
+LISTEN 0      1024         0.0.0.0:18083      0.0.0.0:*    users:(("beam.smp",pid=299216,fd=30))                    
+LISTEN 0      4096       127.0.0.1:2019       0.0.0.0:*    users:(("caddy",pid=848,fd=4))                           
+LISTEN 0      200        127.0.1.1:5432       0.0.0.0:*    users:(("postgres",pid=214207,fd=7))                     
+LISTEN 0      4096      127.0.0.54:53         0.0.0.0:*    users:(("systemd-resolve",pid=213999,fd=17))             
+LISTEN 0      4096       127.0.0.1:44865      0.0.0.0:*    users:(("containerd",pid=213960,fd=16))                  
+LISTEN 0      1024         0.0.0.0:8084       0.0.0.0:*    users:(("beam.smp",pid=299216,fd=38))                    
+LISTEN 0      1024         0.0.0.0:8083       0.0.0.0:*    users:(("beam.smp",pid=299216,fd=37))                    
+LISTEN 0      1024         0.0.0.0:1883       0.0.0.0:*    users:(("beam.smp",pid=299216,fd=33))                    
+LISTEN 0      4096         0.0.0.0:3306       0.0.0.0:*    users:(("docker-proxy",pid=1721,fd=7))                   
+LISTEN 0      5            0.0.0.0:5370       0.0.0.0:*    users:(("beam.smp",pid=299216,fd=28))                    
+LISTEN 0      200        127.0.0.1:5432       0.0.0.0:*    users:(("postgres",pid=214207,fd=6))                     
+LISTEN 0      128                *:21118            *:*    users:(("hbbs",pid=873,fd=20))                           
+LISTEN 0      128                *:21119            *:*    users:(("hbbr",pid=872,fd=10))                           
+LISTEN 0      128                *:21116            *:*    users:(("hbbs",pid=873,fd=18))                           
+LISTEN 0      128                *:21117            *:*    users:(("hbbr",pid=872,fd=9))                            
+LISTEN 0      128                *:21115            *:*    users:(("hbbs",pid=873,fd=19))                           
+LISTEN 0      4096            [::]:22            [::]:*    users:(("sshd",pid=214030,fd=4),("systemd",pid=1,fd=121))
+LISTEN 0      4096               *:80               *:*    users:(("caddy",pid=848,fd=9))                           
+LISTEN 0      4096               *:443              *:*    users:(("caddy",pid=848,fd=7))                           
+LISTEN 0      4096            [::]:3306          [::]:*    users:(("docker-proxy",pid=1727,fd=7))
+
+--- [established_8883]
+exit=0
+estab_8883_count=0
+
+--- [established_1883]
+exit=0
+estab_1883_count=0
+
+--- [emqx_errors_since]
+exit=0
+-- No entries --
+
+--- [emqx_logfiles]
+exit=0
+total 100
+-rw-r--r-- 1 emqx emqx 87921 Nov 26 12:29 emqx.log.1
+-rw-r--r-- 1 emqx emqx    18 Nov 25 10:58 emqx.log.idx
+-rw-r--r-- 1 emqx emqx    13 Nov 25 10:58 emqx.log.siz
+
+--- [emqx_log_tail]
+exit=0
+== /var/log/emqx/emqx.log.1
+2026-11-26T05:45:32.989466+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22849, username: 0200000000A1, reason: not_authorized
+2026-11-26T05:46:21.225793+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T05:49:49.760451+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22912, username: 0200000000A1, reason: not_authorized
+2026-11-26T05:50:21.229799+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T05:50:32.509574+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22804, username: 0200000000A1, reason: not_authorized
+2026-11-26T05:51:21.230788+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 3}
+2026-11-26T05:51:55.180375+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22796, username: 0200000000A1, reason: not_authorized
+2026-11-26T05:52:21.231728+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T07:49:42.784515+08:00 [warning] tag: AUTHN, clientid: MzMxMjM5MDY3NDY0MzIxOTE2OTUwNjk2OTE3NTA5NzM0NDA, msg: authentication_failure, peername: 87.236.176.60:45793, reason: bad_username_or_password
+2026-11-26T08:31:47.178058+08:00 [warning] tag: AUTHN, clientid: nmap, msg: authentication_failure, peername: 152.32.200.22:46766, reason: bad_username_or_password
+2026-11-26T08:32:21.391751+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T10:12:46.048129+08:00 [warning] tag: AUTHN, clientid: test, msg: authentication_failure, peername: 205.210.31.200:58754, reason: bad_username_or_password
+2026-11-26T10:16:55.174493+08:00 [warning] tag: AUTHN, clientid: go, msg: authentication_failure, peername: 45.133.173.236:54861, reason: bad_username_or_password
+2026-11-26T10:17:55.754900+08:00 [warning] tag: AUTHN, clientid: iw-c04958, msg: authentication_failure, peername: 89.37.172.133:2824, reason: bad_username_or_password
+2026-11-26T10:41:25.801529+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22899, username: 0200000000A1, reason: not_authorized
+2026-11-26T10:42:21.521767+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T10:46:19.683286+08:00 [warning] msg: unexpected_api_access, request: #{pid => <0.18491.0>,port => 18083,scheme => <<"http">>,version => 'HTTP/1.1',path => <<"/favicon.ico">>,host => <<"8.140.23.253">>,peer => {{66,132,172,142},8968},bindings => #{},sock => {{172,31,81,253},18083},ref => 'http:dashboard',cert => undefined,headers => #{<<"accept-encoding">> => <<"gzip">>,<<"connection">> => <<"close">>,<<"host">> => <<"8.140.23.253:18083">>,<<"user-agent">> => <<"Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)">>},method => <<"GET">>,body_length => 0,path_info => undefined,qs => <<>>,streamid => 1,has_body => false,host_info => undefined}
+2026-11-26T10:46:26.024424+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22763, username: 0200000000A1, reason: not_authorized
+2026-11-26T10:46:56.419896+08:00 [warning] msg: unexpected_api_access, request: #{pid => <0.18522.0>,port => 18083,scheme => <<"http">>,version => 'HTTP/1.1',path => <<"/phpinfo.php">>,host => <<"8.140.23.253">>,peer => {{66,132,172,142},46656},bindings => #{},sock => {{172,31,81,253},18083},ref => 'http:dashboard',cert => undefined,headers => #{<<"accept">> => <<"*/*">>,<<"accept-encoding">> => <<"gzip">>,<<"host">> => <<"8.140.23.253:18083">>,<<"user-agent">> => <<"Mozilla/5.0 (compatible; CensysInspect/1.1; +https://about.censys.io/)">>},method => <<"GET">>,body_length => 0,path_info => undefined,qs => <<>>,streamid => 1,has_body => false,host_info => undefined}
+2026-11-26T10:47:21.526747+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T10:51:26.098665+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22726, username: 0200000000A1, reason: not_authorized
+2026-11-26T10:52:21.531731+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T10:56:25.605129+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22770, username: 0200000000A1, reason: not_authorized
+2026-11-26T10:57:21.536768+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:01:25.619558+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22718, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:02:21.541788+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:06:25.624881+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22873, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:07:10.992085+08:00 [warning] msg: unexpected_api_access, request: #{pid => <0.18759.0>,port => 18083,scheme => <<"http">>,version => 'HTTP/1.1',path => <<"/favicon.ico">>,host => <<"8.140.23.253">>,peer => {{212,73,148,4},40362},bindings => #{},sock => {{172,31,81,253},18083},ref => 'http:dashboard',cert => undefined,headers => #{<<"accept-encoding">> => <<"gzip">>,<<"host">> => <<"8.140.23.253:18083">>,<<"user-agent">> => <<"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 ModatScanner/1.2 (+https://modat.io/)">>},method => <<"GET">>,body_length => 0,path_info => undefined,qs => <<>>,streamid => 3,has_body => false,host_info => undefined}
+2026-11-26T11:07:21.546749+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:11:26.090369+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22689, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:12:21.551779+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:16:26.313834+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22831, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:17:21.556748+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:21:25.704965+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22681, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:22:21.561785+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:30:39.069444+08:00 [warning] tag: AUTHN, clientid: test, msg: authentication_failure, peername: 198.235.24.185:63282, reason: bad_username_or_password
+2026-11-26T11:33:57.785244+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22764, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:34:21.573739+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:38:57.675947+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22793, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:39:21.578750+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:43:58.332296+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22775, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:44:21.583732+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:48:57.761915+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22835, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:49:21.588741+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:53:57.692127+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22716, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:54:21.593744+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T11:58:58.259379+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22782, username: 0200000000A1, reason: not_authorized
+2026-11-26T11:59:21.598738+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T12:03:57.724994+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22716, username: 0200000000A1, reason: not_authorized
+2026-11-26T12:04:21.603776+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T12:08:57.740949+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22712, username: 0200000000A1, reason: not_authorized
+2026-11-26T12:09:21.608775+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T12:13:58.869676+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22852, username: 0200000000A1, reason: not_authorized
+2026-11-26T12:14:21.613784+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T12:18:58.119601+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22704, username: 0200000000A1, reason: not_authorized
+2026-11-26T12:19:21.618796+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T12:23:57.898836+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22907, username: 0200000000A1, reason: not_authorized
+2026-11-26T12:24:21.623781+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+2026-11-26T12:28:57.794224+08:00 [warning] tag: AUTHN, clientid: android_client, msg: authentication_failure, peername: 27.128.89.184:22843, username: 0200000000A1, reason: not_authorized
+2026-11-26T12:29:21.628784+08:00 [warning] msg: log_events_throttled_during_last_period, period: 1 minutes, 0 seconds, dropped: #{authentication_failure => 1}
+
+--- [emqx_tail_since]
+exit=0
+-- No entries --
+
+--- [upload_tail_since]
+exit=0
+2026-11-26T12:27:07+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [26/Nov/2026 12:27:07] "POST /upload_data HTTP/1.1" 200 -
+2026-11-26T12:32:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [26/Nov/2026 12:32:03] "GET / HTTP/1.1" 404 -
+2026-11-26T12:32:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [26/Nov/2026 12:32:03] "GET /login HTTP/1.1" 405 -
+2026-11-26T12:32:03+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 27.128.89.184 - - [26/Nov/2026 12:32:03] "GET /upload_data HTTP/1.1" 405 -
+2026-11-26T12:32:06+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [26/Nov/2026 12:32:06] "GET / HTTP/1.1" 404 -
+2026-11-26T12:32:06+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [26/Nov/2026 12:32:06] "GET / HTTP/1.1" 404 -
+2026-11-26T12:32:06+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [26/Nov/2026 12:32:06] "GET /login HTTP/1.1" 405 -
+2026-11-26T12:32:06+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [26/Nov/2026 12:32:06] "GET /login HTTP/1.1" 405 -
+2026-11-26T12:32:06+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [26/Nov/2026 12:32:06] "GET /upload_data HTTP/1.1" 405 -
+2026-11-26T12:32:06+08:00 iZ2zeih0gmrk47og5r4z7sZ python[312368]: 127.0.0.1 - - [26/Nov/2026 12:32:06] "GET /upload_data HTTP/1.1" 405 -
+
+--- [mysql_container]
+exit=0
+mysql mysql:latest Up 4 weeks
+
+--- [emqx_http_status]
+exit=0
+http_status=200
+Node emqx@127.0.0.1 is started
+emqx is running
+
+--- [upload_http_routes]
+exit=0
+== GET /
+http_status=404
+HTTP/1.1 404 NOT FOUND
+Server: Werkzeug/3.1.8 Python/3.12.3
+Date: Thu, 26 Nov 2026 04:33:16 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 207
+Access-Control-Allow-Origin: *
+Connection: close
+
+== GET /login
+http_status=405
+HTTP/1.1 405 METHOD NOT ALLOWED
+Server: Werkzeug/3.1.8 Python/3.12.3
+Date: Thu, 26 Nov 2026 04:33:16 GMT
+Content-Type: text/html; charset=utf-8
+Allow: OPTIONS, POST
+Content-Length: 153
+Access-Control-Allow-Origin: *
+Connection: close
+== GET /upload_data
+http_status=405
+HTTP/1.1 405 METHOD NOT ALLOWED
+Server: Werkzeug/3.1.8 Python/3.12.3
+Date: Thu, 26 Nov 2026 04:33:16 GMT
+Content-Type: text/html; charset=utf-8
+Allow: OPTIONS, POST
+Content-Length: 153
+Access-Control-Allow-Origin: *
+Connection: close
+
